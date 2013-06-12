@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+
+              <field name="id" type="text" default="0" label="JGLOBAL_FIELD_ID_LABEL"
+                    readonly="true" class="readonly"
+                    description="JGLOBAL_FIELD_ID_DESC" /> 
+
+         <field
+                name="state"
+                type="list"
+                label="JSTATUS"
+                description="JFIELD_PUBLISHED_DESC"
+                class="inputbox"
+                size="1"
+                default="1">
+                <option value="1">JPUBLISHED</option>
+                <option value="0">JUNPUBLISHED</option>
+            </field> 
+            <field
+                name="tax_name"
+                type="text"
+                label="MYMUSE_TAX_NAME_LABEL"
+                description="MYMUSE_TAX_NAME_DESC"
+                class="inputbox"
+                size="10"
+                required="true"
+               />
+             <field
+                name="tax_rate"
+                type="text"
+                label="MYMUSE_TAX_RATE_LABEL"
+                description="MYMUSE_TAX_RATE_DESC"
+                class="inputbox"
+                size="10"
+                required="true"
+               />
+			<field
+                name="tax_applies_to"
+                type="list"
+                label="MYMUSE_TAX_APPLIES_TO_LABEL"
+                description="MYMUSE_TAX_APPLIES_TO_DESC"
+                class="inputbox"
+                default="S">
+				<option value="S">MYMUSE_TAX_PROVINCE</option>
+				<option value="C">MYMUSE_TAX_COUNTRY</option>
+               </field>
+            <field
+                name="country"
+                type="sql"
+                label="MYMUSE_TAX_COUNTRY_LABEL"
+                description="MYMUSE_TAX_COUNTRY_DESC"
+                class="inputbox"
+                query="SELECT country_3_code,  country_name AS country FROM #__mymuse_country"
+                key_field="country_3_code"
+                default="CA"
+                size="1"
+               />
+              <field
+                name="province"
+                type="sql"
+                label="MYMUSE_TAX_PROVINCE_LABEL"
+                description="MYMUSE_TAX_PROVINCE_DESC"
+                class="inputbox"
+                query="SELECT id,  state_name AS province FROM #__mymuse_state"
+                key_field="id"
+                default="QC"
+                size="1"
+               />
+               <field
+                name="tax_format"
+                type="list"
+                label="MYMUSE_TAX_FORMAT_LABEL"
+                description="MYMUSE_TAX_FORMAT_DESC"
+                class="inputbox"
+                default="S">
+				<option value="RATE">MYMUSE_TAX_RATE</option>
+				<option value="AMOUNT">MYMUSE_TAX_AMOUNT</option>
+               </field>
+               <field
+                name="compounded"
+                type="list"
+                label="MYMUSE_TAX_COMPOUNDED_LABEL"
+                description="MYMUSE_TAX_COMPOUNDED_DESC"
+                class="inputbox"
+                default="0">
+				<option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>
+               </field>
+               <field name="ordering" type="text" label="JFIELD_ORDERING_LABEL"
+			description="JFIELD_ORDERING_DESC" class="inputbox" size="6"
+			default="0" />
+                
+                
+                <field name="checked_out" type="hidden" filter="unset" />
+                <field name="checked_out_time" type="hidden" filter="unset" />
+
+	</fieldset>
+
+</form>

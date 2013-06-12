@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0"  type="plugin" group="mymuse">
+	<name>plg_payment_pesapal</name>
+	<author>Arboreta</author>
+	<creationDate>June 2013</creationDate>
+	<copyright>Copyright (C) 2013 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>3.0.0</version>
+	<description>MYMUSE_BUILD_PESAPAL_PAYMENT_FORM</description>
+	
+	<files>
+		<filename plugin="payment_pesapal">payment_pesapal.php</filename>
+		<filename plugin="payment_pesapal">OAuth.php</filename>
+	</files>
+
+	<languages folder="languages">
+		<language tag="en-GB">en-GB.plg_mymuse_payment_pesapal.ini</language>
+		<language tag="en-GB">en-GB.plg_mymuse_payment_pesapal.sys.ini</language>
+	</languages>
+
+	<config>
+	<fields  name="params">
+		<fieldset name="basic">
+		<field name="my_pesapal_mode" type="radio" default="test" label="MYMUSE_PESAPAL_TRANSACTIONMODE_LABEL" description="MYMUSE_PESAPAL_TRANSACTIONMODE_DESC">
+		  <option value="test">MYMUSE_PESAPAL_TEST</option>
+		  <option value="production">MYMUSE_PESAPAL_PRODUCTION</option>
+		</field>
+		<field name="my_pesapal_consumer_key" type="text" size="35" default="" label="MYMUSE_PESAPAL_MERCHANTID_LABEL" description="MYMUSE_PESAPAL_MERCHANTID_DESC"/>
+		<field name="my_pesapal_consumer_secret" type="text" size="35" default="" label="MYMUSE_PESAPAL_SECRET_LABEL" description="MYMUSE_PESAPAL_SECRET_DESC"/>
+
+	</fieldset>
+	</fields>
+	</config>
+</extension>

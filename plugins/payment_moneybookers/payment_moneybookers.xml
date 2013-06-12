@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0"  type="plugin" group="mymuse" method="upgrade">
+	<name>plg_mymuse_payment_moneybookers</name>
+	<author>Arboreta</author>
+	<creationDate>June 2013</creationDate>
+	<copyright>Copyright (C) 2013 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>3.0.0</version>
+	<description>MYMUSE_BUILD_MONEYBOOKERS_PAYMENT_FORM</description>
+	
+	<files>
+		<filename plugin="payment_moneybookers">payment_moneybookers.php</filename>
+	</files>
+
+	<languages folder="languages">
+		<language tag="en-GB">en-GB.plg_mymuse_payment_moneybookers.ini</language>
+		<language tag="en-GB">en-GB.plg_mymuse_payment_moneybookers.sys.ini</language>
+	</languages>
+
+	<config>
+	<fields name="params">
+		<fieldset name="basic">
+		<field name="my_moneybookers_email" type="text" size="35" default="" label="MYMUSE_MONEYBOOKERS_EMAIL_LABEL" description="MYMUSE_MONEYBOOKERS_EMAIL_DESC"/>
+		<field name="use_secret" type="radio" default="0" label="MYMUSE_MONEYBOOKERS_USESECRET_LABEL" description="MYMUSE_MONEYBOOKERS_USESECRET_DESC">
+	 			<option value="0">JNO</option>
+	 			<option value="1">JYES</option>
+	 	</field>
+		<field name="my_moneybookers_secret" type="text" size="35" default="" label="MYMUSE_MONEYBOOKERS_SECRET_LABEL" description="MYMUSE_MONEYBOOKERS_SECRET_DESC"/>
+		<field name="my_moneybookers_status_url2" type="text" size="35" default="" label="MYMUSE_MONEYBOOKERS_EMAIL_RESULTS_LABEL" description="MYMUSE_MONEYBOOKERS_SECRET_DESC"/>
+		<field name="my_moneybookers_logo" type="text" size="35" default="" label="MYMUSE_MONEYBOOKERS_LOGO_LABEL" description="MYMUSE_MONEYBOOKERS_LOGO_DESC"/>
+	</fieldset>
+	</fields>
+	</config>
+	<updateservers>
+    <server type="extension" priority="1"
+        name="Plug MyMuse Payment Moneybookers">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=7</server>
+</updateservers>
+</extension>

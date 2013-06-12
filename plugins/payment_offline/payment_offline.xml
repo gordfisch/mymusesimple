@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="mymuse">
+	<name>plg_mymuse_payoffline</name>
+	<author>Arboreta</author>
+	<creationDate>June 2013</creationDate>
+	<copyright>Copyright (C) 2013 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>3.0.0</version>
+	<description>MYMUSE_PAYMENTOFFLINE_DESC</description>
+	
+	<languages folder="languages">
+		<language tag="en-GB">en-GB.plg_mymuse_payment_offline.ini</language>
+		<language tag="en-GB">en-GB.plg_mymuse_payment_offline.sys.ini</language>
+	</languages>
+	
+	<files>
+		<filename plugin="payment_offline">payment_offline.php</filename>
+	</files>
+	<config>
+	<fields  name="params">
+		<fieldset name="basic">
+        <field name="paymentoffline_msg" 
+        type="textarea"  
+        rows="2" 
+        cols="35" 
+        default="" 
+        label="MYMUSE_PAYMENTOFFLINE_MSG_LABEL" 
+        description="MYMUSE_PAYMENTOFFLINE_MSG_DESC" />
+    </fieldset>
+	</fields>
+	</config>
+<updateservers>
+    <server type="extension" priority="1"
+        name="Plug MyMuse Payment Offline">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=12</server>
+</updateservers>
+</extension>

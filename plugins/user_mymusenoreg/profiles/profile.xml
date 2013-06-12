@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fields name="profile">
+		<fieldset name="profile"
+			label="MYMUSE_USER_PROFILE_SLIDER_LABEL"
+		>
+		
+			<field
+				name="first_name"
+				type="text"
+				id="first_name"
+				description="MYMUSE_USER_PROFILE_FIELD_FIRSTNAME_DESC"
+				filter="string"
+				label="MYMUSE_USER_PROFILE_FIELD_FIRSTNAME_LABEL"
+				message="MYMUSE_USER_PROFILE_FIELD_FIRSTNAME_MESSAGE"
+				size="30"
+			/>
+			
+			<field
+				name="last_name"
+				type="text"
+				id="last_name"
+				description="MYMUSE_USER_PROFILE_FIELD_LASTNAME_DESC"
+				filter="string"
+				label="MYMUSE_USER_PROFILE_FIELD_LASTNAME_LABEL"
+				message="MYMUSE_USER_PROFILE_FIELD_LASTNAME_MESSAGE"
+				size="30"
+			/>
+			
+			<field
+				name="email"
+				type="text"
+				id="email"
+				description="MYMUSE_USER_PROFILE_FIELD_EMAIL_DESC"
+				filter="string"
+				label="MYMUSE_USER_PROFILE_FIELD_EMAIL_LABEL"
+				message="MYMUSE_USER_PROFILE_FIELD_EMAIL_MESSAGE"
+				size="30"
+			/>
+				
+			<field
+				name="address1"
+				type="text"
+				id="address1"
+				description="MYMUSE_USER_PROFILE_FIELD_ADDRESS1_DESC"
+				filter="string"
+				label="MYMUSE_USER_PROFILE_FIELD_ADDRESS1_LABEL"
+				message="MYMUSE_USER_PROFILE_FIELD_ADDRESS1_MESSAGE"
+				size="30"
+			/>
+
+			<field
+				name="address2"
+				type="text"
+				id="address2"
+				description="MYMUSE_USER_PROFILE_FIELD_ADDRESS2_DESC"
+				filter="string"
+				label="MYMUSE_USER_PROFILE_FIELD_ADDRESS2_LABEL"
+				message="MYMUSE_USER_PROFILE_FIELD_ADDRESS1_MESSAGE"
+				size="30"
+			/>
+
+			<field
+				name="city"
+				type="text"
+				id="city"
+				description="MYMUSE_USER_PROFILE_FIELD_CITY_DESC"
+				filter="string"
+				label="MYMUSE_USER_PROFILE_FIELD_CITY_LABEL"
+				message="MYMUSE_USER_PROFILE_FIELD_CITY_MESSAGE"
+				size="30"
+			/>
+
+			
+
+			<field
+				name="country"
+				type="sql"
+				id="country"
+				description="MYMUSE_USER_PROFILE_FIELD_COUNTRY_DESC"
+				filter="string"
+				default=""
+				onchange="changeDynaList2(jform_profile_region, jform_profile_country, countrystates,0,0);"
+				label="MYMUSE_USER_PROFILE_FIELD_COUNTRY_LABEL"
+				message="MYMUSE_USER_PROFILE_FIELD_COUNTRY_MESSAGE"
+				query="SELECT country_3_code as value, country_name as country FROM #__mymuse_country 
+				ORDER by country"
+			/>
+			
+			<field
+				name="region"
+				type="sql"
+				id="region"
+				description="MYMUSE_USER_PROFILE_FIELD_REGION_DESC"
+				filter="string"
+				default=""
+				label="MYMUSE_USER_PROFILE_FIELD_REGION_LABEL"
+				message="MYMUSE_USER_PROFILE_FIELD_REGION_MESSAGE"
+				query="SELECT id as value, state_name as region FROM #__mymuse_state 
+				ORDER by country_id, state_name"
+				
+			/>
+
+			<field
+				name="postal_code"
+				type="text"
+				id="postal_code"
+				description="MYMUSE_USER_PROFILE_FIELD_POSTAL_CODE_DESC"
+				filter="string"
+				label="MYMUSE_USER_PROFILE_FIELD_POSTAL_CODE_LABEL"
+				message="MYMUSE_USER_PROFILE_FIELD_POSTAL_CODE_MESSAGE"
+				size="30"
+			/>
+
+			<field
+				name="phone"
+				type="tel"
+				id="phone"
+				description="MYMUSE_USER_PROFILE_FIELD_PHONE_DESC"
+				filter="string"
+				label="MYMUSE_USER_PROFILE_FIELD_PHONE_LABEL"
+				message="MYMUSE_USER_PROFILE_FIELD_PHONE_MESSAGE"
+				size="30"
+			/>
+			
+			<field
+				name="mobile"
+				type="tel"
+				id="mobile"
+				description="MYMUSE_USER_PROFILE_FIELD_MOBILE_DESC"
+				filter="string"
+				label="MYMUSE_USER_PROFILE_FIELD_MOBILE_LABEL"
+				message="MYMUSE_USER_PROFILE_FIELD_PHONE_MESSAGE"
+				size="30"
+			/>
+
+			<field
+					name="tos"
+					type="tos"
+					label="MYMUSE_USER_PROFILE_FIELD_TOS_LABEL"
+					description="MYMUSE_USER_PROFILE_FIELD_TOS_DESC">
+					<option	value="1">MYMUSE_USER_PROFILE_OPTION_AGREE</option>
+			</field>
+
+
+		</fieldset>
+	</fields>
+</form>
