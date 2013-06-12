@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0"  type="plugin" group="mymuse">
+	<name>plg_mymuse_shipping_price</name>
+	<author>Arboreta</author>
+	<creationDate>June 2013</creationDate>
+	<copyright>Copyright (C) 2013 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>3.0.0</version>
+	<description>MYMUSE_SHIPPING_PRICE_DESC</description>
+	
+	<languages folder="languages">
+		<language tag="en-GB">en-GB.plg_mymuse_shipping_price.ini</language>
+		<language tag="en-GB">en-GB.plg_mymuse_shipping_price.sys.ini</language>
+	</languages>
+
+	
+	<files>
+		<filename plugin="shipping_price">shipping_price.php</filename>
+	</files>
+	
+	<config>
+	<fields  name="params">
+		<fieldset name="basic">
+    <field name="@spacer" type="spacer" default="First Level Shipping" label="" description="" />
+		<field name="ship_1_active" type="radio" default="0" label="MYMUSE_SHIPACTIVE_1_LABEL" description="MYMUSE_SHIPACTIVE_1_DESC">
+	 			<option value="0">JNO</option>
+	 			<option value="1">JYES</option>
+	 	</field>
+		<field name="ship_carrier_1" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
+		<field name="ship_method_1" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
+<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_11" type="text" size="20" default="0.00" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_11" type="text" size="20" default="100.00" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+		<field name="ship_percent_11" type="text" size="20" default="6" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_12" type="text" size="20" default="100.01" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_12" type="text" size="20" default="500.00" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+		<field name="ship_percent_12" type="text" size="20" default="4" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_13" type="text" size="20" default="500.01" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_13" type="text" size="20" default="1000.00" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+		<field name="ship_percent_13" type="text" size="20" default="2" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_14" type="text" size="20" default="1000.01" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_14" type="text" size="20" default="0" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+		<field name="ship_percent_14" type="text" size="20" default="1" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+	
+
+
+<field name="@spacer" type="spacer" default="Second Level Shipping" label="" description="" />
+		<field name="ship_2_active" type="radio" default="0" label="MYMUSE_SHIPACTIVE_1_LABEL" description="MYMUSE_SHIPACTIVE_1_DESC">
+	 			<option value="0">JNO</option>
+	 			<option value="1">JYES</option>
+	 	</field>
+		<field name="ship_carrier_2" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
+		<field name="ship_method_2" type="text" size="35" default="Priority" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
+<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_21" type="text" size="20" default="0.00" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_21" type="text" size="20" default="100.00" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+		<field name="ship_percent_21" type="text" size="20" default="10" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_22" type="text" size="20" default="100.01" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_22" type="text" size="20" default="500.00" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+		<field name="ship_percent_22" type="text" size="20" default="8" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_23" type="text" size="20" default="500.01" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_23" type="text" size="20" default="1000.00" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+		<field name="ship_percent_23" type="text" size="20" default="6" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+<field name="@spacer" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_24" type="text" size="20" default="1000.01" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_24" type="text" size="20" default="0" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+		<field name="ship_percent_24" type="text" size="20" default="3" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+
+	</fieldset>
+	</fields>
+	</config>
+<updateservers>
+    <server type="extension" priority="1"
+        name="Plug MyMuse Shipping Price">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=16</server>
+</updateservers>
+</extension>

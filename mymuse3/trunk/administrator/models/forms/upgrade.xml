@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+		<field 
+		name="artistcat"
+		type="sql"  
+		label="Select a 2.5 Category" 
+		query="SELECT id AS value, title as artistcat FROM #__categories WHERE extension='com_mymuse'" 
+		/>
+		<field 
+		name="genrecat"
+		type="sql"  
+		label="Select a 2.5 Category" 
+		query="SELECT id AS value, title as genrecat FROM #__categories WHERE extension='com_mymuse'" 
+		/>
+
+		<field 
+		name="oldartistcat"
+		type="sql"  
+		label="Select a 1.5 Section/Artists" 
+		query="SELECT id AS value, title as oldartistcat FROM jos_sections WHERE scope='com_mymuse'" 
+		/>
+		<field 
+		name="oldgenrecat"
+		type="sql"  
+		label="Select a 1.5 Section/Catalog/Genres" 
+		query="SELECT id AS value, title as oldgenrecat FROM jos_sections WHERE scope='com_mymuse'" 
+		/>
+	</fieldset>
+
+</form>

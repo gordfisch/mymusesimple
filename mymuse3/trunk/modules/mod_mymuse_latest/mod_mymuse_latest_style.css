@@ -1,0 +1,24 @@
+@CHARSET "UTF-8";
+/**
+CSS for module mymuse_latest
+*/
+
+div#mod_mymuse_latest_1 {
+
+}
+div#mod_mymuse_latest_1 ul{
+   
+}
+div#mod_mymuse_latest_1 li{
+	border-bottom : 1px solid #cccccc;
+    padding-top: 5px;
+	font-weight: bold;
+}
+
+div#mod_mymuse_latest_1 li a, div#mod_mymuse_latest_1 li a:active, div#mod_mymuse_latest_1 li a:visited{
+
+} 
+
+div#mod_mymuse_latest_1 a:hover{
+
+} 
