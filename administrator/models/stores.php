@@ -106,19 +106,19 @@ class MymuseModelstores extends JModelList
 		$query->from('`#__mymuse_store` AS a');
 
 
-                // Join over the users for the checked out user.
-                $query->select('uc.name AS editor');
-                $query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-            
+		// Join over the users for the checked out user.
+		$query->select('uc.name AS editor');
+		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
 
 
-                // Filter by published state
-                $published = $this->getState('filter.state');
-                if (is_numeric($published)) {
-                    $query->where('a.state = '.(int) $published);
-                } else if ($published === '') {
-                    $query->where('(a.state IN (0, 1))');
-                }
+
+		// Filter by published state
+		$published = $this->getState('filter.state');
+		if (is_numeric($published)) {
+			$query->where('a.state = '.(int) $published);
+		} else if ($published === '') {
+			$query->where('(a.state IN (0, 1))');
+		}
                     
 
 		// Filter by search in title
@@ -136,7 +136,7 @@ class MymuseModelstores extends JModelList
 		$orderCol	= $this->state->get('list.ordering');
 		$orderDirn	= $this->state->get('list.direction');
         if ($orderCol && $orderDirn) {
-		    $query->order($db->getEscaped($orderCol.' '.$orderDirn));
+		    //$query->order($db->getEscaped('id DESC '));
         }
 
 		return $query;

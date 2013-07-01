@@ -177,6 +177,7 @@
 				<option value="title">JGLOBAL_TITLE</option>
 				<option value="author">JAUTHOR</option>
 				<option value="hits">JGLOBAL_HITS</option>
+				<option value="product_made_date">MYMUSE_PRODUCT_CREATED_LABEL</option>
 			</field>
 
 			<field name="show_headings" type="list"
@@ -194,7 +195,7 @@
 			>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
-				<option value="product_created_date">MYMUSE_PRODUCT_CREATED_DATE</option>
+				<option value="product_made_date">MYMUSE_PRODUCT_CREATED_LABEL</option>
 				<option value="created">MYMUSE_ENTRY_CREATED_DATE</option>
 				<option value="modified">JGLOBAL_MODIFIED</option>
 				<option value="published">JPUBLISHED</option>
@@ -289,6 +290,7 @@
 				<option value="created">JGLOBAL_CREATED</option>
 				<option value="modified">JGLOBAL_MODIFIED</option>
 				<option value="published">JPUBLISHED</option>
+				<option value="product_made_date">MYMUSE_PRODUCT_CREATED_LABEL</option>
 			</field>
 
 			<field name="show_pagination" type="list"

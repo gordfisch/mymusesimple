@@ -537,7 +537,7 @@ class MyMuseModelProducts extends JModelList
 	 */
 	public function getItems()
 	{
-
+		$params = MyMuseHelper::getParams();
 		$items	= parent::getItems();
 		
 		
@@ -550,8 +550,12 @@ class MyMuseModelProducts extends JModelList
 		$globalParams = JComponentHelper::getParams('com_mymuse', true);
 
 		// Convert the parameter fields into objects.
+		//check prices
 		foreach ($items as &$item)
 		{
+			if($params->get('my_add_taxes')){
+				$item->price = MyMuseCheckout::addTax($item->price);
+			}
 			$articleParams = new JRegistry;
 			$articleParams->loadString($item->attribs);
 

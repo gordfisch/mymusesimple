@@ -285,7 +285,7 @@ class MymuseModelproducts extends JModelList
 		$orderCol	= $this->state->get('list.ordering');
 		$orderDirn	= $this->state->get('list.direction');
         if ($orderCol && $orderDirn) {
-		    $query->order($db->getEscaped($orderCol.' '.$orderDirn));
+		    $query->order($orderCol.' '.$orderDirn);
         }
 
 		return $query;

@@ -10,6 +10,9 @@
 
 // no direct access
 defined('_JEXEC') or die;
+if(!defined('DS')){
+	define('DS',DIRECTORY_SEPARATOR);
+}
 
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 if(JRequest::getCmd('view','') == 'liveupdate') {
@@ -21,14 +24,15 @@ if(JRequest::getCmd('view','') == 'liveupdate') {
 if (!JFactory::getUser()->authorise('core.manage', 'com_mymuse')) {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
-
 	
 $document = JFactory::getDocument();
-
 $document->addStyleSheet(JURI::base() . 'components/com_mymuse/assets/css/mymuse.css');
+
 // require the helper
 require_once (JPATH_COMPONENT.DS.'helpers'.DS.'mymuse.php');
 require_once (JPATH_COMPONENT.DS.'helpers'.DS.'permission.php');
+
+print_pre($_POST);
 
 //initialize
 $params = MyMuseHelper::getParams();
@@ -36,7 +40,7 @@ $params = MyMuseHelper::getParams();
 // Include dependancies
 jimport('joomla.application.component.controller');
 
-$controller	= JController::getInstance('Mymuse');
+$controller	= JControllerLegacy::getInstance('Mymuse');
+$controller->execute(JFactory::getApplication()->input->get('task'));
 
-$controller->execute(JRequest::getCmd('task'));
 $controller->redirect();

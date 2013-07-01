@@ -237,6 +237,9 @@ class MyMuseModelProduct extends JModelItem
 				}
 
 				$data->price = $this->getPrice($data);
+				if($params->get('my_add_taxes')){
+					$data->price["product_price"] = MyMuseCheckout::addTax($data->price["product_price"]);
+				}
 				$this->_item[$pk] = $data;
 			}
 			catch (JException $e)
@@ -300,6 +303,9 @@ class MyMuseModelProduct extends JModelItem
 				$root = JPATH_ROOT.DS;
 				while (list($i,$track)= each( $tracks )){
 					$tracks[$i]->price = $this->getPrice($track);
+					if($params->get('my_add_taxes')){
+						$tracks[$i]->price["product_price"] = MyMuseCheckout::addTax($tracks[$i]->price["product_price"]);
+					}
 					
 					//get download file
 					if($params->get('my_encode_filenames')){
@@ -563,6 +569,9 @@ class MyMuseModelProduct extends JModelItem
 				}
 
 				$items[$i]->price = $this->getPrice($item);
+				if($params->get('my_add_taxes')){
+					$items[$i]->price["product_price"] = MyMuseCheckout::addTax($items[$i]->price["product_price"]);
+				}
 
 			}
 			

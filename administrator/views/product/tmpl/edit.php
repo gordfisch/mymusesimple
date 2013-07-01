@@ -11,10 +11,19 @@
 defined('_JEXEC') or die;
 
 // Load tooltips behavior
-JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.switcher');
-JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
+
+JHtml::_('behavior.tooltip');
+JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.keepalive');
+JHtml::_('formbehavior.chosen', 'select');
+
+// Create shortcut to parameters.
+$params = $this->state->get('params');
+$params = $params->toArray();
+
+
 
 $lists = $this->lists;
 $startOffset = 'details';
@@ -24,6 +33,11 @@ if($lists['subtype'] == "file"){
 if($lists['subtype'] == "item"){
 	$startOffset = 'items';
 }
+
+$app = JFactory::getApplication();
+$input = $app->input;
+
+$assoc = isset($app->item_associations) ? $app->item_associations : 0;
 
 ?>
 
@@ -63,90 +77,66 @@ if($lists['subtype'] == "item"){
 
 </script>
 
-<div id="submenu-box">
-	<div class="submenu-box">
-		<div class="submenu-pad">
-<ul id="submenu">
-	<li><a id="details_link" class="active" href="#" onclick="javascript:pageLoad('details');"><?php echo JText::_( 'MYMUSE_DETAILS' ); ?></a></li>
-	<li><a id="images_link" href="#" onclick="javascript:pageLoad('images');"><?php echo JText::_( 'MYMUSE_IMAGES' ); ?></a></li>
-	<li><a id="tracks_link" href="#" onclick="javascript:pageLoad('tracks');"><?php echo JText::_( 'MYMUSE_TRACKS' ); ?></a></li>
-	<li><a id="items_link" href="#" onclick="javascript:pageLoad('items');"><?php echo JText::_( 'MYMUSE_ITEMS' ); ?></a></li>
-</ul>
-			<div class="clr"></div>
-		</div>
-	</div>
-	<div class="clr"></div>
-</div>
-<div class="clr"></div>
+<form action="<?php echo JRoute::_('index.php?option=com_mymuse&layout=edit&id='.(int) $this->item->id); ?>"
+	id="product-form" method="post" name="adminForm" class="form-validate">
+	<div class="row-fluid">
+		<!-- Begin Content -->
+		<div class="span10 form-horizontal">
+			<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
 
-<form action="<?php echo JRoute::_('index.php?option=com_mymuse&layout=edit&id='.(int) $this->item->id); ?>" 
-id="product-form" method="post" name="adminForm" class="form-validate">
-
-	<div id="product-document">
-		<div id="details" class="tab">
-			<div class="noshow">
-				<div class="width-60 fltlft">
+				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('MYMUSE_DETAILS', true)); ?>
 					<?php echo $this->loadTemplate('details'); ?>
-				</div>
-				<div class="width-40 fltrt">
-					<?php echo $this->loadTemplate('metadata'); ?>
-				</div>
-			</div>
-		</div>
-		
-		<div id="images" class="tab">
-			<div class="noshow">
-				<div class="width-60 fltlft">
+				<?php echo JHtml::_('bootstrap.endTab'); ?>
+			
+				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'images', JText::_('MYMUSE_IMAGES', true)); ?>
 					<?php echo $this->loadTemplate('images'); ?>
-				</div>
+				<?php echo JHtml::_('bootstrap.endTab'); ?>
 
-			</div>
-		</div>
-<?php if(isset($this->item->alias) && $this->item->alias != ""){ ?>
-		<input type="hidden" name="old_alias" value="<?php echo $this->item->alias;?>" />
-<?php }?>
-<?php if(isset($this->item->catid) && $this->item->catid != ""){ ?>
-		<input type="hidden" name="old_catid" value="<?php echo $this->item->catid;?>" />
-<?php }?>
-		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="subtype" value="details" />
-		<input type="hidden" name="return" value="<?php echo JRequest::getCmd('return');?>" />
-		<?php echo JHtml::_('form.token'); ?>
+				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('MYMUSE_PUBLISHING', true)); ?>
+					<?php echo $this->loadTemplate('publishing'); ?>
+				<?php echo JHtml::_('bootstrap.endTab'); ?>
 
-		<div class="clr"></div>
-		</form>
-
-		<div id="tracks" class="tab" style="display:none;">
-			<div class="noshow">
-				<div class="width-100 fltlft">
-					<?php 
+				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'metadata', JText::_('MYMUSE_PARAMETERS_METADATA', true)); ?>
+					<?php echo $this->loadTemplate('metadata');  ?>
+					
+					<?php if(isset($this->item->alias) && $this->item->alias != ""){ ?>
+						<input type="hidden" name="old_alias" value="<?php echo $this->item->alias;?>" />
+					<?php }?>
+					<?php if(isset($this->item->catid) && $this->item->catid != ""){ ?>
+						<input type="hidden" name="old_catid"
+						value="<?php echo $this->item->catid;?>" />
+					<?php } ?>
+					<input type="hidden" name="task" value="" /> <input type="hidden"
+					name="subtype" value="details" /> <input type="hidden" name="return"
+					value="<?php echo JRequest::getCmd('return');?>" />
+					<?php echo JHtml::_('form.token'); ?>
+					</form>
+				<?php echo JHtml::_('bootstrap.endTab'); ?>
+				
+				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'tracks', JText::_('MYMUSE_TRACKS', true)); ?>
+				<?php 
 					if(!$this->item->id){
 						echo JText::_('MYMUSE_SAVE_THEN_ADD_TRACKS');
 					}else{
 						echo $this->loadTemplate('listtracks');
 					} ?>
-				</div>
-			</div>
-		</div>
-		<div class="clr"></div>
+				<?php echo JHtml::_('bootstrap.endTab'); ?>
 
-		<div id="items" class="tab" style="display:none;">
-			<div class="noshow">
-				<div class="width-100 fltlft">
+				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'items', JText::_('MYMUSE_ITEMS', true)); ?>
 					<?php 
 					if(!$this->item->id){
 						echo JText::_('MYMUSE_SAVE_THEN_ADD_ITEMS');
 					}else{
 						echo $this->loadTemplate('listitems');
-					}
-					 ?>
-				</div>
-			</div>
-		</div>
-		<div class="clr"></div>
+					} ?>
+				<?php echo JHtml::_('bootstrap.endTab'); ?>
 
-	</div>
+
+
+
+
+
 
 <script type="text/javascript">
-window.addEvent('domready', pageLoad('<?php echo $startOffset; ?>'));
+//window.addEvent('domready', pageLoad('<?php echo $startOffset; ?>'));
 </script>

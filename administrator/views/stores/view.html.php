@@ -15,7 +15,7 @@ jimport('joomla.application.component.view');
 /**
  * View class for a list of Mymuse.
  */
-class MymuseViewStores extends JView
+class MymuseViewStores extends JViewLegacy
 {
 	protected $items;
 	protected $pagination;
@@ -37,6 +37,7 @@ class MymuseViewStores extends JView
 		}
 
 		$this->addToolbar();
+		$this->sidebar = JHtmlSidebar::render();
 		parent::display($tpl);
 	}
 

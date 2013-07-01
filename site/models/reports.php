@@ -216,7 +216,7 @@ class myMuseModelReports extends JmodelList
     	$start_date = $this->getState('filter.start_date');
     	$end_date = $this->getState('filter.end_date');
     	$datenow =& JFactory::getDate();
-    	$now = $datenow->toFormat("%Y-%m-%d");
+    	$now = $datenow->format("%Y-%m-%d");
     
     	if($start_date== $now && $end_date == $now ){
     		$start_date = '';
@@ -252,7 +252,7 @@ class myMuseModelReports extends JmodelList
 		$order_status 	= $this->getState('filter.order_status');
 	
 		$datenow =& JFactory::getDate();
-		$now = $datenow->toFormat("%Y-%m-%d");
+		$now = $datenow->format("%Y-%m-%d");
 		if($start_date == $now && $end_date == $now ){
 			$start_date = '';
 			$end_date = '';

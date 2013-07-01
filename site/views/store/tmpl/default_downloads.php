@@ -73,7 +73,7 @@ function mydownload(url,item_id){
 				<?php 
 				if($item->end_date){
 					$date =& JFactory::getDate($item->end_date);
-					$mydate = $date->toFormat($params->get('my_date_format'));
+					$mydate = $date->format($params->get('my_date_format'));
 					echo $mydate;
 				}
 					?></td>

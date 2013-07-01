@@ -15,7 +15,7 @@ jimport('joomla.application.component.view');
 /**
  * View class for a list of Mymuse.
  */
-class MymuseViewOrders extends JView
+class MymuseViewOrders extends JViewLegacy
 {
 	protected $items;
 	protected $pagination;

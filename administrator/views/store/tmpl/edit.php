@@ -14,6 +14,14 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
+JHtml::_('formbehavior.chosen', 'select');
+// Create shortcut to parameters.
+$params = $this->state->get('params');
+$params = $params->toArray();
+$app = JFactory::getApplication();
+$input = $app->input;
+
+$assoc = isset($app->item_associations) ? $app->item_associations : 0;
 
 
 ?>
@@ -29,70 +37,112 @@ JHtml::_('behavior.keepalive');
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_mymuse&view=store&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="store-form" class="form-validate">
-	<div class="width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_MYMUSE_LEGEND_STORE'); ?></legend>
-			<ul class="adminformlist">
-
+<form action="<?php echo JRoute::_('index.php?option=com_mymuse&view=store&layout=edit&id='.(int) $this->item->id); ?>" 
+method="post" name="adminForm" id="store-form" class="form-validate">
+	<div class="row-fluid">
+		<!-- Begin Content -->
+		<div class="span12 form-horizontal">
+			<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'general')); ?>
+			
+			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'general', JText::_('COM_MYMUSE_LEGEND_STORE', true)); ?>
+		<div class="row-fluid">
+			<div class="span6">
+			
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('id'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('id'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('title'); ?>
+				</div>
+                <div class="controls">
+                    <?php echo $this->form->getInput('title'); ?>
+               </div>
+            </div>
+            <div class="control-group">
+            	<div class="control-label">
+            		<?php echo $this->form->getLabel('alias'); ?>
+            	</div>
+                <div class="controls">
+                	<?php echo $this->form->getInput('alias'); ?>
+                </div>
+            </div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('my_catid'); ?>
+				</div>
+                <div class="controls">
+                	<?php echo $this->form->getInput('my_catid'); ?>
+                </div>
+            </div>
+            <div class="control-group">
+            	<div class="control-label">
+            		<?php echo $this->form->getLabel('state'); ?>
+            	</div>
+                <div class="controls">
+                	<?php echo $this->form->getInput('state'); ?>
+                </div>
+            </div>
             
-			<li><?php echo $this->form->getLabel('id'); ?>
-			<?php echo $this->form->getInput('id'); ?></li>
-			<li><?php echo $this->form->getLabel('title'); ?>
-                    <?php echo $this->form->getInput('title'); ?></li>
-            <li><?php echo $this->form->getLabel('alias'); ?>
-                    <?php echo $this->form->getInput('alias'); ?></li>
-			<li><?php echo $this->form->getLabel('my_catid'); ?>
-                    <?php echo $this->form->getInput('my_catid'); ?></li>
-            <li><?php echo $this->form->getLabel('state'); ?>
-                    <?php echo $this->form->getInput('state'); ?></li>
-            <li><?php echo $this->form->getLabel('checked_out'); ?>
-                    <?php echo $this->form->getInput('checked_out'); ?></li>
-            <li><?php echo $this->form->getLabel('checked_out_time'); ?>
-                    <?php echo $this->form->getInput('checked_out_time'); ?></li>
-            </ul>
-		</fieldset>
+            </div>
+		</div>
+
 		<fieldset class="adminform">
 		<legend><?php echo $this->form->getLabel('description'); ?></legend>
-		<?php echo $this->form->getInput('description'); ?>
+			<?php echo $this->form->getInput('description'); ?>
 		</fieldset>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
+		
+		
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'css', JText::_('MYMUSE_EDIT_CSS', true)); ?>
 		<fieldset class="adminform">
-		<legend><?php echo JText::_('MYMUSE_EDIT_CSS'); ?></legend>
-		<textarea cols="220" rows="80" name="mymuse_css" id="mymuse_css" style="width:100%"><?php echo $this->css; ?></textarea>
+			<textarea cols="220" rows="80" name="mymuse_css" id="mymuse_css" style="width:100%"><?php echo $this->css; ?></textarea>
 		</fieldset>
-	</div>
-	<div class="width-40 fltrt">
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
+		
 
-	<?php echo JHtml::_('sliders.start','content-sliders-'.$this->item->id, array('useCookie'=>1)); ?>
+
 		<?php $fieldSets = $this->form->getFieldsets('params'); ?>
 			<?php foreach ($fieldSets as $name => $fieldSet) : ?>
-				<?php echo JHtml::_('sliders.panel',JText::_($fieldSet->label), $name.'-options'); ?>
+			
+			  <?php echo JHtml::_('bootstrap.addTab','myTab', $name, JText::_($fieldSet->label), true); ?>
 				<?php if (isset($fieldSet->description) && trim($fieldSet->description)) : ?>
 					<p class="tip"><?php echo $this->escape(JText::_($fieldSet->description));?></p>
 				<?php endif; ?>
-				<fieldset class="panelform">
-					<ul class="adminformlist">
+				
 					<?php foreach ($this->form->getFieldset($name) as $field) : ?>
-						<li><?php echo $field->label; ?>
-						<?php echo $field->input; ?></li>
-					<?php endforeach; ?>
-					</ul>
+										<div class="control-group">
+											<div class="control-label">
+												<?php echo $field->label; ?>
+											</div>
+											<div class="controls">
+												<?php echo $field->input; ?>
+											</div>
+										</div>
+									<?php endforeach; ?>
 					<?php if($name == "testing"){ 
 						$url = preg_replace("#administrator/#","",JURI::base())."components".DS."com_mymuse".DS."log.txt";
-					echo '<br /><a target="_blank" href="'.$url.'">'.JText::_("MYMUSE_VIEW_LOG").'</a>';
+						echo '<div><a target="_blank" href="'.$url.'">'.JText::_("MYMUSE_VIEW_LOG").'</a></div>';
 						
 					}?>
-				</fieldset>
+		
+			  <?php echo JHtml::_('bootstrap.endTab'); ?>
 			<?php endforeach; ?>
 
-			<?php echo JHtml::_('sliders.panel',JText::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'), 'meta-options'); ?>
-			<fieldset class="panelform">
+			<?php echo JHtml::_('bootstrap.addTab','myTab', 'metadata', JText::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'), true); ?>
 				<?php echo $this->loadTemplate('metadata'); ?>
-			</fieldset>
+			<?php echo JHtml::_('bootstrap.endTab'); ?>
 
-		<?php echo JHtml::_('sliders.end'); ?>
-	<input type="hidden" name="task" value="" />
-	<?php echo JHtml::_('form.token'); ?>
-	<div class="clr"></div>
+		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+		<input type="hidden" name="task" value="" />
+		<?php echo $this->form->getInput('checked_out'); ?>
+        <?php echo $this->form->getInput('checked_out_time'); ?>
+		<?php echo JHtml::_('form.token'); ?>
+	  </div>
 	</div>
 </form>

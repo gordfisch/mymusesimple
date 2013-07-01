@@ -70,61 +70,61 @@ class MyMuseHelper extends JObject
 	public static function addSubmenu($vName = '')
 	{
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_MYMUSE'),
 			'index.php?option=com_mymuse',
 			$vName == 'welcome'
 		);
 
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_MYMUSE_TITLE_STORE'),
 			'index.php?option=com_mymuse&view=store&task=store.edit&id=1',
 			$vName == 'stores'
 		);
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_MYMUSE_TITLE_CATEGORIES'),
 			'index.php?option=com_categories&extension=com_mymuse',
 			$vName == 'categories'
 		);
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_MYMUSE_TITLE_PRODUCTS'),
 			'index.php?option=com_mymuse&view=products',
 			$vName == 'products'
 		);
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_MYMUSE_TITLE_SHOPPERGROUPS'),
 			'index.php?option=com_mymuse&view=shoppergroups',
 			$vName == 'shoppergroups'
 		);
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_MYMUSE_TITLE_ORDERS'),
 			'index.php?option=com_mymuse&view=orders',
 			$vName == 'orders'
 		);
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_MYMUSE_TITLE_TAXRATES'),
 			'index.php?option=com_mymuse&view=taxrates',
 			$vName == 'taxrates'
 		);
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('COM_MYMUSE_TITLE_COUPONS'),
 			'index.php?option=com_mymuse&view=coupons',
 			$vName == 'coupons'
 		);
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('MYMUSE_MYMUSE_REPORTS'),
 			'index.php?option=com_mymuse&view=reports',
 			$vName == 'reports'
 		);
 		
-		JSubMenuHelper::addEntry(
+		JHtmlSidebar::addEntry(
 			JText::_('MYMUSE_PLUGINS'),
 			'index.php?option=com_plugins&view=plugins&filter_folder=mymuse',
 			$vName == 'plugins'
@@ -194,7 +194,7 @@ class MyMuseHelper extends JObject
 			}
 			
 
-			$params = new JParameter($store->params);
+			$params = new JRegistry($store->params);
 
 			if(!$params->get('currency')){
 
@@ -814,7 +814,7 @@ class MyMuseHelper extends JObject
 		$order 		= new MymuseTableorder($db);
 		$order->load( $id );
 		$order->order_status = $status;
-		$order->modified = $datenow->toMySQL();
+		$order->modified = $datenow->toSql();
 		if (!$order->store()) {
 			if($params->get('my_debug')){
         			MyMuseHelper::logMessage( "!!ERROR Order Status Update Failed!! id = $id status = $status");

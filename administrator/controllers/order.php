@@ -107,7 +107,7 @@ class MymuseControllerOrder extends JControllerForm
 		$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
 		$mailfrom = $params->get('contact_email');
 
-		JUtility::sendMail($mailfrom, $fromname, $user_email, $subject, $message, 1);
+		JMail::sendMail($mailfrom, $fromname, $user_email, $subject, $message, 1);
 		JRequest::setVar( 'layout', 'edit');
 		JRequest::setVar( 'task', 'save'  );
 		JRequest::setVar( 'email_sent', '1' );
@@ -115,7 +115,7 @@ class MymuseControllerOrder extends JControllerForm
 		// Send notification to webmaster
 		if($params->get('my_cc_webmaster')){
 			$webmaster_email = $params->get('my_webmaster');
-			JUtility::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message,1);
+			JMail::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message,1);
 		}
 
 	}

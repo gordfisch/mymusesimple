@@ -419,7 +419,7 @@ class MyMuseCart {
   		}
   		
   		$date =& JFactory::getDate();
-  		$now = $date->toFormat();
+  		$now = $date->format();
   		
   		//see if it is expired
   		$query = "SELECT id FROM #__mymuse_coupon WHERE code='$coupon_value'

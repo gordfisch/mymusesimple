@@ -15,7 +15,7 @@ jimport('joomla.application.component.view');
 /**
  * View class for a list of Mymuse.
  */
-class MymuseViewProducts extends JView
+class MymuseViewProducts extends JViewLegacy
 {
 	protected $items;
 	protected $pagination;
@@ -26,6 +26,8 @@ class MymuseViewProducts extends JView
 	 */
 	public function display($tpl = null)
 	{
+
+		
 		$this->state		= $this->get('State');
 		$this->items		= $this->get('Items');
 		$this->pagination	= $this->get('Pagination');
@@ -33,12 +35,32 @@ class MymuseViewProducts extends JView
 		$this->featured		= $this->get('Featured');
 		
 		// Check for errors.
-		if (count($errors = $this->get('Errors'))) {
+		if (count($errors = $this->get('Errors')))
+		{
 			JError::raiseError(500, implode("\n", $errors));
 			return false;
 		}
-
-		$this->addToolbar();
+		
+		// Levels filter.
+		$options	= array();
+		$options[]	= JHtml::_('select.option', '1', JText::_('J1'));
+		$options[]	= JHtml::_('select.option', '2', JText::_('J2'));
+		$options[]	= JHtml::_('select.option', '3', JText::_('J3'));
+		$options[]	= JHtml::_('select.option', '4', JText::_('J4'));
+		$options[]	= JHtml::_('select.option', '5', JText::_('J5'));
+		$options[]	= JHtml::_('select.option', '6', JText::_('J6'));
+		$options[]	= JHtml::_('select.option', '7', JText::_('J7'));
+		$options[]	= JHtml::_('select.option', '8', JText::_('J8'));
+		$options[]	= JHtml::_('select.option', '9', JText::_('J9'));
+		$options[]	= JHtml::_('select.option', '10', JText::_('J10'));
+		
+		$this->f_levels = $options;
+		// We don't need toolbar in the modal window.
+		if ($this->getLayout() !== 'modal')
+		{
+			$this->addToolbar();
+			$this->sidebar = JHtmlSidebar::render();
+		}
 		parent::display($tpl);
 	}
 
@@ -107,5 +129,77 @@ class MymuseViewProducts extends JView
 			JToolBarHelper::preferences('com_mymuse');
 		}
 		JToolBarHelper::help('', false, 'http://www.mymuse.ca/documentation/documentation-2-5/147-products-list?tmpl=component');
+	
+		//Sidebar stuff
+		JHtmlSidebar::setAction('index.php?option=com_mymuse&view=products');
+		
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_PUBLISHED'),
+			'filter_published',
+			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
+		);
+
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_CATEGORY'),
+			'filter_category_id',
+			JHtml::_('select.options', JHtml::_('category.options', 'com_content'), 'value', 'text', $this->state->get('filter.category_id'))
+		);
+
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_MAX_LEVELS'),
+			'filter_level',
+			JHtml::_('select.options', $this->f_levels, 'value', 'text', $this->state->get('filter.level'))
+		);
+
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_ACCESS'),
+			'filter_access',
+			JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'))
+		);
+
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_AUTHOR'),
+			'filter_author_id',
+			JHtml::_('select.options', $this->authors, 'value', 'text', $this->state->get('filter.author_id'))
+		);
+
+		JHtmlSidebar::addFilter(
+			JText::_('JOPTION_SELECT_LANGUAGE'),
+			'filter_language',
+			JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
+		);
+
+		JHtmlSidebar::addFilter(
+		'-' . JText::_('JSELECT') . ' ' . JText::_('JTAG') . '-',
+		'filter_tag',
+		JHtml::_('select.options', JHtml::_('tag.options', true, true), 'value', 'text', $this->state->get('filter.tag'))
+		);
+	
+	
+	
+	}
+	
+	
+	/**
+	 * Returns an array of fields the table can be sorted by
+	 *
+	 * @return  array  Array containing the field name to sort by as the key and display text as value
+	 *
+	 * @since   3.0
+	 */
+	protected function getSortFields()
+	{
+		return array(
+				'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+				'a.state' => JText::_('JSTATUS'),
+				'a.title' => JText::_('JGLOBAL_TITLE'),
+				'category_title' => JText::_('JCATEGORY'),
+				'access_level' => JText::_('JGRID_HEADING_ACCESS'),
+				'a.created_by' => JText::_('JAUTHOR'),
+				'language' => JText::_('JGRID_HEADING_LANGUAGE'),
+				'a.created' => JText::_('JDATE'),
+				'a.id' => JText::_('JGRID_HEADING_ID'),
+				'a.featured' => JText::_('JFEATURED')
+		);
 	}
 }

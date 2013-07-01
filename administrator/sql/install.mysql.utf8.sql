@@ -520,7 +520,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `fulltext` mediumtext NOT NULL,
   `state` tinyint(3) NOT NULL DEFAULT '0',
   `catid` int(11) NOT NULL,
-  `price` decimal(10,2) default NULL,
+  `price` decimal(10,4) default NULL,
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) unsigned NOT NULL DEFAULT '0',
   `created_by_alias` varchar(255) NOT NULL DEFAULT '',
@@ -550,6 +550,11 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `product_in_stock` int(11) NOT NULL DEFAULT '1',
   `product_special` char(1) DEFAULT NULL,
   `product_discount` float(4,2) DEFAULT '0.00',
+  `product_full_time` varchar(8) NOT NULL,
+  `product_country` char(2) NOT NULL,
+  `product_publisher` varchar(255) NOT NULL,
+  `product_producer` varchar(255) NOT NULL,
+  `product_studio` varchar(255) NOT NULL,
   `reservation_fee` float(10,2) NOT NULL DEFAULT '0.00',
   `product_package_ordering` smallint(2) NOT NULL DEFAULT '0',
   `product_package` tinyint(1) NOT NULL DEFAULT '0',
@@ -629,8 +634,12 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product_category_xref` (
 -- Dumping data for table `#__mymuse_product_category_xref`
 -- 
 
+
 -- --------------------------------------------------------
 
+--
+-- Table structure for table `#__mymuse_product_rating`
+--
 
 CREATE TABLE IF NOT EXISTS `#__mymuse_product_rating` (
   `product_id` int(11) NOT NULL DEFAULT '0',
@@ -640,44 +649,6 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product_rating` (
   PRIMARY KEY (`product_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
--- 
--- Table structure for table `#__mymuse_shopper`
--- 
-
-CREATE TABLE IF NOT EXISTS `#__mymuse_shopper` (
-  `id` int(11) NOT NULL auto_increment,
-  `user_id` varchar(32) NOT NULL default '',
-  `address_type` char(2) NOT NULL default 'bt',
-  `address_type_name` varchar(32) default NULL,
-  `shopper_group_id` tinyint(3) NOT NULL default '1',
-  `company` varchar(64) default NULL,
-  `title` varchar(32) default NULL,
-  `last_name` varchar(32) default NULL,
-  `first_name` varchar(32) default NULL,
-  `middle_name` varchar(32) default NULL,
-  `phone_1` varchar(32) default NULL,
-  `phone_2` varchar(32) default NULL,
-  `fax` varchar(32) default NULL,
-  `address_1` varchar(64) NOT NULL default '',
-  `address_2` varchar(64) default NULL,
-  `city` varchar(32) NOT NULL default '',
-  `state` varchar(32) NOT NULL default '',
-  `country` varchar(3) NOT NULL,
-  `zip` varchar(32) NOT NULL default '',
-  `terms_of_service` char(1) NOT NULL,
-  `comments` varchar(255) default NULL,
-  `perms` varchar(32) NOT NULL default 'shopper',
-  `created` datetime default '0000-00-00 00:00:00',
-  `modified` datetime default '0000-00-00 00:00:00',
-  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
-  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `ordering` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY  (`id`)
-) DEFAULT CHARSET=utf8 ;
-
--- 
--- Dumping data for table `#__mymuse_shopper`
--- 
 
 -- --------------------------------------------------------
 
