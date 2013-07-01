@@ -78,7 +78,7 @@ class MymuseTabletaxrate extends JTable
         	$db = JFactory::getDBO();
         	$query = "ALTER TABLE `#__mymuse_order` ADD `$name` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00'";
         	$db->setQuery($query);
-        	if(!$db->query()){
+        	if(!$db->execute()){
         		$this->setError("Error with saving tax : ".$db->getErrorMsg());
         		return false;
         	}
@@ -88,14 +88,14 @@ class MymuseTabletaxrate extends JTable
         	$name = preg_replace("/$regex/","_",$form['old_tax_name']);
         	$query = "ALTER TABLE `#__mymuse_order` DROP `".$name."` ";
         	$db->setQuery($query);
-        	if(!$db->query()){
+        	if(!$db->execute()){
         		$this->setError("Error removing old tax : ".$db->getErrorMsg());
         		return false;
         	}
         	$name = preg_replace("/$regex/","_",$form['tax_name']);
         	$query = "ALTER TABLE `#__mymuse_order` ADD `$name` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00'";
         	$db->setQuery($query);
-        	if(!$db->query()){
+        	if(!$db->execute()){
         		$this->setError("Error with saving tax : ".$db->getErrorMsg());
         		return false;
         	}
@@ -157,7 +157,7 @@ class MymuseTabletaxrate extends JTable
             ' WHERE ('.$where.')' .
             $checkin
         );
-        $this->_db->query();
+        $this->_db->execute();
 
         // Check for a database error.
         if ($this->_db->getErrorNum()) {

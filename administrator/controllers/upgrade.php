@@ -173,7 +173,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 				WHERE link='index.php?option=com_mymuse&view=category&layout=columns&id=".$oldcat->id."'
 				";
 				$db->setQuery($query);
-				if(!$db->query()){
+				if(!$db->execute()){
 					$this->setError("Could not fix menu $query: ".$db->getErrorMsg());
 					return false;
 				}
@@ -182,7 +182,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 				WHERE link='index.php?option=com_mymuse&view=category&layout=list&id=".$oldcat->id."'
 				";
 				$db->setQuery($query);
-				if(!$db->query()){
+				if(!$db->execute()){
 					$this->setError("Could not fix menu $query: ".$db->getErrorMsg());
 					return false;
 				}
@@ -211,7 +211,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 			$query = "UPDATE ".$dbprefix."_mymuse_categories SET newcatid='".$catx[$oldcat->id]."'
 			WHERE id='".$oldcat->id."'";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 		
 		$continue = JRequest::setVar('continue', 1);
@@ -270,7 +270,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 				WHERE link='index.php?option=com_mymuse&view=product&layout=product&id=".$oldprod->id."'
 				";
 				$db->setQuery($query);
-				if(!$db->query()){
+				if(!$db->execute()){
 					$this->setError("Could not fix menu $query: ".$db->getErrorMsg());
 					return false;
 				}
@@ -344,7 +344,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 			$query = "UPDATE ".$dbprefix."_mymuse_product SET newprodid='".$prodx[$oldprod->id]."'
 			WHERE id='".$oldprod->id."'";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 			
 			//$this->msg .= "$query <br />";
 			$query = "SELECT * from ".$dbprefix."_mymuse_product_category_xref WHERE product_id=".$oldprod->id;
@@ -354,7 +354,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 					$query = "INSERT INTO #__mymuse_product_category_xref (catid,product_id) VALUES 
 					(". $catx[$r->catid] .",". $prodx[$oldprod->id] .")";
 					$db->setQuery($query);
-					$db->query();
+					$db->execute();
 				}
 			}
 			$i++;
@@ -380,7 +380,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 		ADD `state` INT( 1 ) NOT NULL DEFAULT '1' AFTER `id`
 		";
 		$db->setQuery($query);
-		if(!$db->query()){
+		if(!$db->execute()){
 			$this->msg .= "$i. Problem altering $table <br />";
 			$this->msg .= $db->getErrorMsg();
 			//return false;
@@ -390,7 +390,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 		SELECT *
 		FROM `$table`";
 		$db->setQuery($query);
-		if($db->query()){
+		if($db->execute()){
 			$this->msg .= "$i. Copied $table to new DB <br />";
 		}else{
 			$this->msg .= "$i. Problem copying $table <br />";
@@ -404,7 +404,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 		foreach($tax_names as $t){
 			$query = "ALTER table #__mymuse_order ADD `".$t->tax_name."` DECIMAL(10,2) NOT NULL DEFAULT '0.00'";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 
 		return true;
@@ -420,37 +420,37 @@ class MymuseControllerUpgrade extends JControllerAdmin
 		
 		$query = "ALTER TABLE `$table` ADD `checked_out` INT( 11 ) NOT NULL ";
 		$db->setQuery($query);
-		if(!$db->query()){
+		if(!$db->execute()){
 			$this->msg .= "$i. Possible problem copying $table <br />";
 			$this->msg .= $db->getErrorMsg()."<br />";
 		}
 		$query = "ALTER TABLE `$table` ADD `checked_out_time` DATETIME NOT NULL DEFAULT '0000-00-00 00:00:00'";
 		$db->setQuery($query);
-		if(!$db->query()){
+		if(!$db->execute()){
 			$this->msg .= "$i. Possible problem copying $table <br />";
 			$this->msg .= $db->getErrorMsg()."<br />";
 		}
 		$query = "ALTER TABLE `$table` ADD `ordering` INT( 11 ) NOT NULL DEFAULT '0'";
 		$db->setQuery($query);
-		if(!$db->query()){
+		if(!$db->execute()){
 			$this->msg .= "$i. Possible problem copying $table <br />";
 			$this->msg .= $db->getErrorMsg()."<br />";
 		}
 		$query = "ALTER TABLE `$table` DROP `ReferenceNum`";
 		$db->setQuery($query);
-		if(!$db->query()){
+		if(!$db->execute()){
 			$this->msg .= "$i. Possible problem copying $table <br />";
 			$this->msg .= $db->getErrorMsg()."<br />";
 		}
 		$query = "ALTER TABLE `$table` DROP `TxnNumber`";
 		$db->setQuery($query);
-		if(!$db->query()){
+		if(!$db->execute()){
 			$this->msg .= "$i. Possible problem copying $table <br />";
 			$this->msg .= $db->getErrorMsg()."<br />";
 		}
 		$query = "ALTER TABLE `$table` DROP `ship_method_id`";
 		$db->setQuery($query);
-		if(!$db->query()){
+		if(!$db->execute()){
 			$this->msg .= "$i. Possible problem copying $table <br />";
 			$this->msg .= $db->getErrorMsg()."<br />";
 		}
@@ -460,7 +460,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 		SELECT *
 		FROM `$table`";
 		$db->setQuery($query);
-		if($db->query()){
+		if($db->execute()){
 			$this->msg .= "$i. Copied $table to new DB <br />";
 		}else{
 			$this->msg .= "$i. Problem copying $table <br />";
@@ -496,7 +496,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 		$table = $dbprefix."_mymuse_order_item";
 		$query = "alter table ".$dbprefix."_mymuse_order_item ADD `product_in_stock` int(1) DEFAULT NULL";
 		$db->setQuery($query);
-		if(!$db->query()){
+		if(!$db->execute()){
 			$this->msg .= "$i. Possible problem copying $table <br />";
 			$this->msg .= $db->getErrorMsg()."<br />";
 		}
@@ -505,7 +505,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 		SELECT *
 		FROM `$table`";
 		$db->setQuery($query);
-		if($db->query()){
+		if($db->execute()){
 			$this->msg .= "$i. Copied $table to new DB <br />";
 		}else{
 			$this->msg .= "$i. Problem copying $table <br />";
@@ -528,7 +528,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 			SET product_id ='". $prodx[$r->product_id]  ."' WHERE
 			id=".$r->id;
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 			$i++;
 		}
 		$i--;
@@ -547,13 +547,13 @@ class MymuseControllerUpgrade extends JControllerAdmin
 		ADD `ordering` INT( 11 ) NOT NULL DEFAULT '0'
 		";
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		
 		$query = "INSERT INTO `#__mymuse_order_payment`
 		SELECT *
 		FROM `$table`";
 		$db->setQuery($query);
-		if($db->query()){
+		if($db->execute()){
 			$this->msg .= "$i. Copied $table to new DB <br />";
 		}else{
 			$this->msg .= "$i. Problem copying $table <br />";
@@ -574,14 +574,14 @@ class MymuseControllerUpgrade extends JControllerAdmin
 		ADD `ordering` INT( 11 ) NOT NULL DEFAULT '0'
 		";
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 
 		
 		$query = "INSERT INTO `#__mymuse_order_shipping`
 		SELECT *
 		FROM `$table`";
 		$db->setQuery($query);
-		if($db->query()){
+		if($db->execute()){
 			$this->msg .= "$i. Copied $table to new DB <br />";
 		}else{
 			$this->msg .= "$i. Problem copying $table <br />";
@@ -610,7 +610,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 		SELECT *
 		FROM `$table`";
 		$db->setQuery($query);
-		if($db->query()){
+		if($db->execute()){
 			$this->msg .= "$i. Copied $table to new DB <br />";
 		}else{
 			$this->msg .= "$i. Problem copying $table <br />";
@@ -626,7 +626,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 			SET product_parent_id ='". $prodx[$r->product_parent_id]  ."' WHERE
 			id=".$r->id;
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 			$i++;
 		}
 		$i--;
@@ -651,7 +651,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 		SELECT *
 		FROM `$table`";
 		$db->setQuery($query);
-		if($db->query()){
+		if($db->execute()){
 			$this->msg .= "$i. Copied $table to new DB <br />";
 		}else{
 			$this->msg .= "$i. Problem copying $table <br />";
@@ -667,7 +667,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 			SET product_id ='". $prodx[$r->product_id]  ."' WHERE
 			id=".$r->id;
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 			$i++;
 		}
 		$i--;
@@ -776,7 +776,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 WHERE `id`='1'";
 
 		$db->setQuery($query);
-		if($db->query()){
+		if($db->execute()){
 			$this->msg .= "$i. Updated $table in new DB <br />";
 		}else{
 			$this->msg .= "$i. Problem updating $table <br />";
@@ -796,17 +796,17 @@ WHERE `id`='1'";
 		ADD `state` INT( 1 ) NOT NULL DEFAULT '1'
 		";
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		
 		$query = "DELETE FROM `#__mymuse_shopper_group` WHERE 1";
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		
 		$query = "INSERT INTO `#__mymuse_shopper_group`
 		SELECT *
 		FROM `$table`";
 		$db->setQuery($query);
-		if($db->query()){
+		if($db->execute()){
 			$this->msg .= "$i. Copied $table to new DB <br />";
 		}else{
 			$this->msg .= "$i. Problem copying $table <br />";
@@ -883,7 +883,7 @@ WHERE `id`='1'";
 					" AND profile_key LIKE '$profile_key.%'"
 			);
 			
-			if (!$db->query()) {
+			if (!$db->execute()) {
 				$this->setError("Could not delete old data: ".$db->getErrorMsg());
 				return false;
 			}
@@ -899,7 +899,7 @@ WHERE `id`='1'";
 			
 			$db->setQuery($query);
 			
-			if (!$db->query()) {
+			if (!$db->execute()) {
 				$this->setError("Could not insert data: ".$db->getErrorMsg());
 				return false;
 			}
@@ -967,7 +967,7 @@ WHERE `id`='1'";
 			'0')
 			";
 			$db->setQuery($query);
-			if($db->query()){
+			if($db->execute()){
 				$this->msg .= "$i. Made coupon ".$r->title." <br />";
 
 			}else{

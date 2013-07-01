@@ -122,7 +122,7 @@ class MymuseModelproductattributeskus extends JModelList
 			if (stripos($search, 'id:') === 0) {
 				$query->where('a.id = '.(int) substr($search, 3));
 			} else {
-				$search = $db->Quote('%'.$db->getEscaped($search, true).'%');
+				$search = $db->Quote('%'.$db->escaped($search, true).'%');
                 //$query->where('()');
 			}
 		}
@@ -131,10 +131,11 @@ class MymuseModelproductattributeskus extends JModelList
 		
 		
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction');
+		$orderCol	= $this->state->get('list.ordering','a.name');
+		$orderDirn	= $this->state->get('list.direction', 'asc');
         if ($orderCol && $orderDirn) {
-		    $query->order($db->getEscaped($orderCol.' '.$orderDirn));
+
+		    $query->order($db->escaped($orderCol.' '.$orderDirn));
         }
 
 		return $query;
@@ -177,11 +178,11 @@ class MymuseModelproductattributeskus extends JModelList
 		foreach($cid as $id){
 			$query = "DELETE from #__mymuse_product_attribute WHERE product_attribute_sku_id=$id";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 			
 			$query = "DELETE from #__mymuse_product_attribute_sku WHERE id=$id";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 	}
 	

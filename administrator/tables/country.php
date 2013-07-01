@@ -116,7 +116,7 @@ class MymuseTablecountry extends JTable
             ' WHERE ('.$where.')' .
             $checkin
         );
-        $this->_db->query();
+        $this->_db->execute();
 
         // Check for a database error.
         if ($this->_db->getErrorNum()) {

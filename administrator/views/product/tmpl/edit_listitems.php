@@ -152,11 +152,11 @@ $user = JFactory::getUser();
 <div id="items">
 <h2><?php echo JText::_( 'MYMUSE_ITEMS' ); ?></h2>
 
-		<div id="content-box">
+	<div id="content-box">
 		<div id="toolbar-box">
 			<div class="m">
 				<div class="toolbar-list" id="toolbar">
-	<ul>
+	<ul  style="list-style-type: none;">
 
 		<li class="button" id="toolbar-edit"><a href="#"
 			onclick="javascript: submitform4('list')" class="toolbar"> <span

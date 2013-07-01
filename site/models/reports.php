@@ -236,7 +236,7 @@ class myMuseModelReports extends JmodelList
     	$orderCol	= $this->state->get('list.ordering');
     	$orderDirn	= $this->state->get('list.direction');
     	if ($orderCol && $orderDirn) {
-    		$query->order($db->getEscaped($orderCol.' '.$orderDirn));
+    		$query->order($db->escaped($orderCol.' '.$orderDirn));
     	}
     	return $query;
     }

@@ -188,7 +188,7 @@ class MyMuseCheckout
         	coupon_uses = coupon_uses +1
         	WHERE id='".$order->coupon_id."' ";
         	$db->setQuery($query);
-        	$db->query();
+        	$db->execute();
         }
         
         
@@ -314,7 +314,7 @@ class MyMuseCheckout
         	$order->order_status = "C";
         	$query = "UPDATE #__mymuse_order set order_status='C' WHERE id='".$order->id."'";
         	$db->setQuery($query);
-        	if (!$db->query()) {
+        	if (!$db->execute()) {
 				JError::raiseError( 500, $db->stderr() );
 				return false;
 			}

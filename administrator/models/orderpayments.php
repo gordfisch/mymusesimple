@@ -127,7 +127,7 @@ class MymuseModelorderpayments extends JModelList
 			if (stripos($search, 'id:') === 0) {
 				$query->where('a.id = '.(int) substr($search, 3));
 			} else {
-				$search = $db->Quote('%'.$db->getEscaped($search, true).'%');
+				$search = $db->Quote('%'.$db->escaped($search, true).'%');
                 $query->where('()');
 			}
 		}
@@ -136,7 +136,7 @@ class MymuseModelorderpayments extends JModelList
 		$orderCol	= $this->state->get('list.ordering');
 		$orderDirn	= $this->state->get('list.direction');
         if ($orderCol && $orderDirn) {
-		    $query->order($db->getEscaped($orderCol.' '.$orderDirn));
+		    $query->order($db->escaped($orderCol.' '.$orderDirn));
         }
 
 		return $query;

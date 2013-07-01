@@ -758,7 +758,7 @@ class MymuseModelproduct extends JModelAdmin
 				' SET featured = '.(int) $value.
 				' WHERE id IN ('.implode(',', $pks).')'
 			);
-			if (!$db->query()) {
+			if (!$db->execute()) {
 				throw new Exception($db->getErrorMsg());
 			} 
 
@@ -886,7 +886,7 @@ class MymuseModelproduct extends JModelAdmin
 			WHERE product_id='".$itemid."'";
 		//echo $query;
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 
 		while(list($key,$val) = each($attribute_values)){
 
@@ -895,7 +895,7 @@ class MymuseModelproduct extends JModelAdmin
 				VALUES 
 				(".$itemid.",".$key.",'".$attribute_names[$key]."','".$val."')";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 
 		}
 		return true;

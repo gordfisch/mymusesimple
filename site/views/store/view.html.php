@@ -97,12 +97,12 @@ class myMuseViewStore extends Jview
         		if($item->downloads == 0){
         			$query = "UPDATE #__mymuse_product SET file_downloads = file_downloads +1 WHERE id=".$item->product_id;
         			$db->setQuery($query);
-        			$db->query();
+        			$db->execute();
         		}
         		
         		//$query = "UPDATE #__mymuse_order_item SET downloads = downloads +1 WHERE id=$item_id";
         		//$db->setQuery($query);
-        		//$db->query();
+        		//$db->execute();
         	}
 			
         	JRequest::setVar('layout','store');
@@ -322,7 +322,7 @@ class myMuseViewStore extends Jview
         			// update the database
         			$query = "UPDATE #__mymuse_order_item SET downloads = downloads +1 WHERE id=$item_id";
         			$db->setQuery($query);
-        			$db->query();
+        			$db->execute();
         		}
         	}
 

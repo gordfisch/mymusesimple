@@ -1111,7 +1111,7 @@ class MyMuseHelper extends JObject
      $db	= & JFactory::getDBO();
      $str = '';
      $q = "SELECT * from currency ORDER BY currency_name ASC";
-     $db->query($q);
+     $db->execute($q);
      $str .= "<SELECT class='input' name=$list_name>\n";
      $str .= "<option value=\"\"> - </option>\n";
      while ($db->next_record()) {

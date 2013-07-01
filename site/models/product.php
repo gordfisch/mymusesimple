@@ -651,7 +651,7 @@ class MyMuseModelProduct extends JModelItem
 			$db = JFactory::getDBO();
 			$query = "UPDATE #__mymuse_product set hits = hits+1 WHERE id=".(int) $this->getState('product.id');
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 			return true;
 		}
 		return false;
@@ -885,7 +885,7 @@ class MyMuseModelProduct extends JModelItem
   						' VALUES ( '.(int) $pk.', '.$db->Quote($userIP).', '.(int) $rate.', 1 )';
   				$db->setQuery($query);
 
-  				if (!$db->query()) {
+  				if (!$db->execute()) {
   					$this->setError($db->getErrorMsg());
   					return false;
   				}
@@ -898,7 +898,7 @@ class MyMuseModelProduct extends JModelItem
   							' SET rating_count = rating_count + 1, rating_sum = rating_sum + '.(int) $rate.', lastip = '.$db->Quote($userIP) .
   							' WHERE product_id = '.(int) $pk;
   					$db->setQuery($query);
-  					if (!$db->query()) {
+  					if (!$db->execute()) {
   						$this->setError($db->getErrorMsg());
   						return false;
   					}

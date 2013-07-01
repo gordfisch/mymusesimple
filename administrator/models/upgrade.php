@@ -99,12 +99,12 @@ class MymuseModelUpgrade extends JModelAdmin
 		$table = $dbprefix."_mymuse_categories";
 		$query = "ALTER TABLE `$table` ADD `newcatid` INT( 11 ) NOT NULL ";
 		$this->_db->setQuery($query);
-		$this->_db->query();
+		$this->_db->execute();
 		
 		$table = $dbprefix."_mymuse_product";
 		$query = "ALTER TABLE `$table` ADD `newprodid` INT( 11 ) NOT NULL ";
 		$this->_db->setQuery($query);
-		$this->_db->query();
+		$this->_db->execute();
 		
 		//fix menus get new and old extension id
 		$query = "SELECT id FROM #__extensions WHERE name='mymuse' AND type='component'";
@@ -118,7 +118,7 @@ class MymuseModelUpgrade extends JModelAdmin
 		$query = "UPDATE #__menu SET component_id='".$newid."' WHERE menutype='mainmenu'
 		AND `link` LIKE '%mymuse%'";
 		$this->_db->setQuery($query);
-		if(!$this->_db->query()){
+		if(!$this->_db->execute()){
 			$this->setError($this->_db->getErrorMsg());
 			return false;
 		}
