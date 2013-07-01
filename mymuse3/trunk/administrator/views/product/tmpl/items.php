@@ -212,7 +212,7 @@
 			<?php
 			$k = 0;
 			$config =& JFactory::getConfig();
-		    $tzoffset = $config->getValue('config.offset');
+		    $tzoffset = $config->get('config.offset');
 			$now =& JFactory::getDate();
 			for ($i=0, $n=count( $lists['items'] ); $i < $n; $i++)
 			{
@@ -225,8 +225,8 @@
 				$publish_up =& JFactory::getDate($item->publish_up);
 				$publish_down =& JFactory::getDate($item->publish_down);
 				
-				$publish_up->setOffset($tzoffset);
-				$publish_down->setOffset($tzoffset);
+				$publish_up->setTimezone($tzoffset);
+				$publish_down->setTimezone($tzoffset);
 				
 				if ( $now->toUnix() <= $publish_up->toUnix() && $item->state == 1 ) {
 					$img = 'publish_y.png';
@@ -249,14 +249,14 @@
 					if ($item->publish_up == $nullDate) {
 						$times .= JText::_( 'Start: Always' );
 					} else {
-						$times .= JText::_( 'Start' ) .": ". $publish_up->toFormat();
+						$times .= JText::_( 'Start' ) .": ". $publish_up->format();
 					}
 				}
 				if (isset($item->publish_down)) {
 					if ($item->publish_down == $nullDate) {
 						$times .= "<br />". JText::_( 'Finish: No Expiry' );
 					} else {
-						$times .= "<br />". JText::_( 'Finish' ) .": ". $publish_down->toFormat();
+						$times .= "<br />". JText::_( 'Finish' ) .": ". $publish_down->format();
 					}
 				}
 				?>

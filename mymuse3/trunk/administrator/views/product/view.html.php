@@ -15,7 +15,7 @@ require_once (JPATH_COMPONENT.DS.'models'.DS.'products.php');
 /**
  * View to edit
  */
-class MymuseViewProduct extends JView
+class MymuseViewProduct extends JViewLegacy
 {
 	protected $state;
 	protected $item;

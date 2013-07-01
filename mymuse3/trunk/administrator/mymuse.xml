@@ -168,6 +168,18 @@
 	 			<option value="1">MYMUSE_SHOW</option>
 	 		</field>
 	 		
+	<field type="spacer" name="spacerdownload2" label="MYMUSE_RECORDING_DETAILS" /> 
+	
+			<field 
+				name="show_recording_details" 
+				type="list" 
+				label="MYMUSE_SHOW_RECORDING_DETAILS_LABEL"
+				description="MYMUSE_SHOW_RECORDING_DETAILS_DESC"  
+			>
+          		<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+          	</field> 		
 	 		
 	<field type="spacer" name="spacerdownload" label="MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" />
 	
@@ -546,11 +558,17 @@
 	 			label="MYMUSE_PRODUCT_IMAGE_HEIGHT" 
 	 			description="MYMUSE_PRODUCT_IMAGE_HEIGHT">
 	 		</field>
-	 		<field name="category_show_intro_text" type="radio" default="1" 
+	 		<field name="category_show_intro_text" type="list" default="1" 
 	 		label="MYMUSE_SHOW_INTRO_TEXT" description="MYMUSE_SHOW_PRODUCT_INTRO_TEXT">
 	 			<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 	 		</field>
+	 		<field name="category_show_comment_total" type="list" default="0" 
+	 		label="MYMUSE_SHOW_COMMENT_TOTAL" description="MYMUSE_SHOW_COMMENT_TOTAL_DESC">
+	 			<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+	 		</field>
+	 		
 			
 	</fieldset>
 		<fieldset name="blog_default_parameters"
@@ -642,6 +660,7 @@
 				<option value="title">JGLOBAL_TITLE</option>
 				<option value="author">JAUTHOR</option>
 				<option value="hits">JGLOBAL_HITS</option>
+				<option value="product_made_date">MYMUSE_PRODUCT_CREATED_LABEL</option>
 		</field>
 
 		<field name="show_headings"
@@ -666,6 +685,7 @@
 				<option value="created">JGLOBAL_CREATED</option>
 				<option value="modified">JGLOBAL_MODIFIED</option>
 				<option value="published">JPUBLISHED</option>
+				<option value="product_made_date">MYMUSE_PRODUCT_CREATED_DATE</option>
 		</field>
 
 		<field name="date_format"
@@ -749,10 +769,10 @@
 				description="JGLOBAL_ORDERING_DATE_DESC"
 				label="JGLOBAL_ORDERING_DATE_LABEL"
 			>
-
 				<option value="created">JGLOBAL_CREATED</option>
 				<option value="modified">JGLOBAL_MODIFIED</option>
 				<option value="published">JPUBLISHED</option>
+				<option value="product_made_date">MYMUSE_PRODUCT_CREATED_LABEL</option>
 			</field>
 
 		<field name="show_pagination"

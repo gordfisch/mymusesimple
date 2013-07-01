@@ -15,7 +15,7 @@ jimport('joomla.application.component.view');
 /**
  * View class for a list of Mymuse.
  */
-class MymuseViewUpgrade extends JView
+class MymuseViewUpgrade extends JViewLegacy
 {
 
 

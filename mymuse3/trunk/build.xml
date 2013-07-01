@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="MyMuse1.6" basedir="." default="copy_to_test251">
- 		<property name="myversion" value="2.5.1" override="true" />
-        <property name="test" value="/var/www/html/mymusetest25" override="true" />
+<project name="MyMuse1.6" basedir="." default="copy_to_test351">
+ 		<property name="myversion" value="3.5.1" override="true" />
+        <property name="test" value="/var/www/html/mymusetest35" override="true" />
         <property name="testadmincomp"
-                value="/var/www/html/mymusetest25/administrator/components/com_mymuse"
+                value="/var/www/html/mymusetest35/administrator/components/com_mymuse"
                 override="true" />
         <property name="src" value="${project.basedir}" override="true" />
         <fileset dir="./site" id="site_files">
@@ -29,9 +29,11 @@
 	                <include name="**" />
 	    </fileset>
  
+	
+	
         <!-- Copy Target -->
-        <target name="copy_to_test251" description="copy target">
-                <echo>Copying files from MyMuse1.6 to mymusetest25...
+        <target name="copy_to_test351" description="copy target">
+                <echo>Copying files from MyMuse3.5 to mymusetest35...
                 </echo>
 				<!--  languages -->
 
@@ -52,7 +54,7 @@
                		<fileset refid="admin_files" />
                 </copy>
                 
-        		 
+      
                 <copy file="${src}/plugins/payment_moneybookers/languages/en-GB.plg_mymuse_payment_moneybookers.ini"
                         todir="${test}/administrator/language/en-GB" />    
         		<copy file="${src}/plugins/payment_moneybookers/languages/en-GB.plg_mymuse_payment_moneybookers.sys.ini"
@@ -107,22 +109,27 @@
                         todir="${test}/administrator/language/en-GB" />
         		<copy file="${src}/plugins/vidplayer_html5/languages/en-GB.plg_mymuse_vidplayer_html5.sys.ini"
         	             todir="${test}/administrator/language/en-GB" />
-        		<copy file="${src}/plugins/search/languages/en-GB.plg_search_searchmymuse.ini"
+        	
+        		<copy file="${src}/plugins/searchmymuse/languages/en-GB.plg_search_searchmymuse.ini"
         	        	todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/search/languages/en-GB.plg_search_searchmymuse.sys.ini"
+        	    <copy file="${src}/plugins/searchmymuse/languages/en-GB.plg_search_searchmymuse.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" />
+        	
                 <copy file="${src}/plugins/user_mymuse/languages/en-GB.plg_user_mymuse.ini"
                         todir="${test}/administrator/language/en-GB" />
                 <copy file="${src}/plugins/user_mymuse/languages/en-GB.plg_user_mymuse.sys.ini"
                         todir="${test}/administrator/language/en-GB" />
+        	
         		<copy file="${src}/plugins/vote/languages/en-GB.plg_mymuse_vote.ini"
         	            todir="${test}/administrator/language/en-GB" />
         	    <copy file="${src}/plugins/vote/languages/en-GB.plg_mymuse_vote.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />
+        	
         		<copy file="${src}/plugins/user_redirectonlogin/languages/en-GB.plg_user_redirectonlogin.ini"
         	        	todir="${test}/administrator/language/en-GB" />
         	    <copy file="${src}/plugins/user_redirectonlogin/languages/en-GB.plg_user_redirectonlogin.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" />
+        	
         		<copy file="${src}/plugins/user_mymusenoreg/languages/en-GB.plg_user_mymusenoreg.ini"
         	            todir="${test}/administrator/language/en-GB" />
         	    <copy file="${src}/plugins/user_mymusenoreg/languages/en-GB.plg_user_mymusenoreg.sys.ini"
@@ -139,13 +146,13 @@
         	             todir="${test}/language/en-GB" />
 				
 				<!--  plugins -->
-                <copy file="${src}/plugins/payfast/payment_payfast.php"
+                <copy file="${src}/plugins/payment_payfast/payment_payfast.php"
                         todir="${test}/plugins/mymuse/payment_payfast" />
-                <copy file="${src}/plugins/payfast/payment_payfast.xml"
+                <copy file="${src}/plugins/payment_payfast/payment_payfast.xml"
                         todir="${test}/plugins/mymuse/payment_payfast" />
-                <copy file="${src}/plugins/monsterpay/payment_monsterpay.php"
+                <copy file="${src}/plugins/payment_monsterpay/payment_monsterpay.php"
                         todir="${test}/plugins/mymuse/payment_monsterpay" />
-                <copy file="${src}/plugins/monsterpay/payment_monsterpay.xml"
+                <copy file="${src}/plugins/payment_monsterpay/payment_monsterpay.xml"
                         todir="${test}/plugins/mymuse/payment_monsterpay" /> 
                 <copy file="${src}/plugins/payment_moneybookers/payment_moneybookers.php"
                         todir="${test}/plugins/mymuse/payment_moneybookers" />
@@ -173,9 +180,9 @@
                 <copy file="${src}/plugins/preorder/preorder.xml"
                         todir="${test}/plugins/mymuse/preorder" />   
         	
-                <copy file="${src}/plugins/search/searchmymuse.php"
+                <copy file="${src}/plugins/searchmymuse/searchmymuse.php"
                         todir="${test}/plugins/search/searchmymuse" />
-                <copy file="${src}/plugins/search/searchmymuse.xml"
+                <copy file="${src}/plugins/searchmymuse/searchmymuse.xml"
                         todir="${test}/plugins/search/searchmymuse" />
         	
                 <copy file="${src}/plugins/shipping_price/shipping_price.php"

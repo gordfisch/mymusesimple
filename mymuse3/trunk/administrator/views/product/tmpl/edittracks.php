@@ -43,9 +43,10 @@ JHTML::_('behavior.tooltip');
 		//-->
 		</script>
 		<h2><?php echo $item->title; ?></h2>
-		<form action="index.php" method="post" name="adminForm" enctype="multipart/form-data">
+		<form action="index.php" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 <div class="edittracks">
-<div class="width-50 fltlft">
+<div class="pull-left">
+		
 		<fieldset class="adminform">
 
 			<legend><?php echo empty($this->item->id) ? JText::_('MYMUSE_NEW_TRACK') : JText::_('MYMUSE_EDIT_TRACK'); ?></legend>
@@ -129,7 +130,7 @@ JHTML::_('behavior.tooltip');
 			</ul>
 		</fieldset>
 </div>
-<div class="width-50 fltrt">
+<div class="pull-right">
 		<fieldset class="adminform">
 
 			<legend><?php echo JText::_( 'MYMUSE_PREVIEW_PATH_STORE' ); ?></legend>
@@ -205,7 +206,7 @@ JHTML::_('behavior.tooltip');
 		</fieldset>
 </div>
 </div>
-<div class="clr"></div>
+<div style="clear: both;"></div>
 
 		<input type="hidden" name="parentid" value="<?php echo $item->parentid ?>" />
 		<input type="hidden" name="jform[parentid]" value="<?php echo $item->parentid ?>" />

@@ -88,7 +88,7 @@ class MymuseTablestore extends JTable
     		$myFile = JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'assets'.DS.'css'.DS.'mymuse.css';
     		if(!JFILE::write($myFile, $mymuse_css)){
     			$app = JFactory::getApplication();
-    			$app->enqueueMessage(JText::_('MYMUSE_COULD_NOT_OPEN_CSS_FILE'), 'notice');
+    			$app->enqueueMessage(JText::_('MYMUSE_COULD_NOT_OPEN_CSS_FILE').' '.$myFile, 'notice');
     		}
     	}
     	

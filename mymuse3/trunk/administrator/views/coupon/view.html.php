@@ -15,7 +15,7 @@ jimport('joomla.application.component.view');
 /**
  * View to edit
  */
-class MymuseViewCoupon extends JView
+class MymuseViewCoupon extends JViewLegacy
 {
 	protected $state;
 	protected $item;

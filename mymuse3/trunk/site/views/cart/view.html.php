@@ -331,7 +331,7 @@ class myMuseViewCart extends JView
 		$MyMuseStore	=& MyMuse::getObject('store','models');
         $store = $MyMuseStore->_store;
         $store_params = new JRegistry;
-        $store_params->loadJSON($store->params);
+        $store_params->loadString($store->params);
   		
   		$fromname = $store_params->get('contact_first_name')." ".$store_params->get('contact_last_name');
      	$mailfrom = $store_params->get('contact_email');
@@ -352,10 +352,10 @@ class myMuseViewCart extends JView
 
             ".$result['error'];
             
-            JUtility::sendMail($mailfrom, $fromname, $mailfrom, $subject, $message);
+            JMail::sendMail($mailfrom, $fromname, $mailfrom, $subject, $message);
         	if($params->get('my_cc_webmaster')){
         		$webmaster_email = $params->get('my_webmaster');
-        		JUtility::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message);
+        		JMail::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message);
         	}
             
         }elseif(!$result['order_verified']){
@@ -368,10 +368,10 @@ class myMuseViewCart extends JView
             Plugin: ".$result['plugin']."
 
             ".$result['error'];
-            JUtility::sendMail($mailfrom, $fromname, $mailfrom, $subject, $message);
+            JMail::sendMail($mailfrom, $fromname, $mailfrom, $subject, $message);
         	if($params->get('my_cc_webmaster')){
         		$webmaster_email = $params->get('my_webmaster');
-        		JUtility::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message);
+        		JMail::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message);
         	}
             
         }elseif(!$result['order_found']){
@@ -384,10 +384,10 @@ class myMuseViewCart extends JView
             Plugin: ".$result['plugin']."
 
             ".$result['error'];
-            JUtility::sendMail($mailfrom, $fromname, $mailfrom, $subject, $message);
+            JMail::sendMail($mailfrom, $fromname, $mailfrom, $subject, $message);
         	if($params->get('my_cc_webmaster')){
         		$webmaster_email = $params->get('my_webmaster');
-        		JUtility::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message);
+        		JMail::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message);
         	}
             
         }elseif(!$result['order_completed']){
@@ -400,10 +400,10 @@ class myMuseViewCart extends JView
             Plugin: ".$result['plugin']."
 
             ".$result['error'];
-            JUtility::sendMail($mailfrom, $fromname, $mailfrom, $subject, $message);
+            JMail::sendMail($mailfrom, $fromname, $mailfrom, $subject, $message);
         	if($params->get('my_cc_webmaster')){
         		$webmaster_email = $params->get('my_webmaster');
-        		JUtility::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message);
+        		JMail::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message);
         	}
             
         }else{
@@ -472,10 +472,10 @@ class myMuseViewCart extends JView
         	$message = $header . $order->downloadlink . $contents . $footer;
         	
         	// email client $user_email, and cc store owner $mailfrom
-        	JUtility::sendMail($mailfrom, $fromname, $user_email, $subject, $message, 1, $mailfrom );
+        	JMail::sendMail($mailfrom, $fromname, $user_email, $subject, $message, 1, $mailfrom );
         	if($params->get('my_cc_webmaster')){
         		$webmaster_email = $params->get('my_webmaster');
-        		JUtility::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message, 1);
+        		JMail::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message, 1);
         	}
         	
             //$debug .= "user mail = $user_email\n\n";
@@ -511,10 +511,10 @@ class myMuseViewCart extends JView
         	$message .= "Order Number: ".$result['order_number']."\n";
         	$message .= "Payment Status returned by ".$result['plugin'].": ".$result['payment_status']."\n";
         	
-        	JUtility::sendMail($mailfrom, $fromname, $mailfrom, $subject, $message);
+        	JMail::sendMail($mailfrom, $fromname, $mailfrom, $subject, $message);
         	if($params->get('my_cc_webmaster')){
         		$webmaster_email = $params->get('my_webmaster');
-        		JUtility::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message);
+        		JMail::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message);
         	}
         	
         	// update stock

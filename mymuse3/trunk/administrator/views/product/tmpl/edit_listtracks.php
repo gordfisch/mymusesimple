@@ -14,6 +14,11 @@ $saveOrder	= $listOrder == 'a.ordering';
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
 
+
+
+
+
+
 //TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS
 
 		
@@ -141,24 +146,24 @@ $userId		= $user->get('id');
 		<div id="toolbar-box">
 			<div class="m">
 				<div class="toolbar-list" id="toolbar">
-	<ul>
+	<ul  style="list-style-type: none;">
 
-		<li class="button" id="toolbar-edit"><a href="#"
+		<li class="button" id="toolbar-edit"  style="display: inline;"><a href="#"
 			onclick="javascript: submitbutton2('product.edit')" class="toolbar"> <span
 			class="icon-32-edit"> </span> <?php echo JText::_( 'MYMUSE_EDIT_TRACK' ); ?> </a>
 		</li>
 
-		<li class="button" id="toolbar-new"><a href="#"
+		<li class="button" id="toolbar-new"  style="display: inline;"><a href="#"
 			onclick="javascript: submitbutton2('product.addfile')" class="toolbar"> <span
 			class="icon-32-new"> </span> <?php echo JText::_( 'MYMUSE_NEW_TRACK' ); ?> </a>
 		</li>
 <?php if(!$all_files){ ?>		
-		<li class="button" id="toolbar-all"><a href="#"
+		<li class="button" id="toolbar-all"  style="display: inline;"><a href="#"
 			onclick="javascript: submitbutton2('product.new_allfiles')" class="toolbar"> <span
 			class="icon-32-new"> </span> <?php echo JText::_( 'MYMUSE_ALL_TRACKS' ); ?> </a>
 		</li>
 <?php } ?>	
-		<li class="button" id="toolbar-new"><a href="#"
+		<li class="button" id="toolbar-new"  style="display: inline;"><a href="#"
 			onclick="javascript: submitbutton2('product.removefile')" class="toolbar"> <span
 			class="icon-32-delete"> </span> <?php echo JText::_( 'MYMUSE_DELETE_TRACKS' ); ?> </a>
 		</li>
@@ -169,7 +174,7 @@ $userId		= $user->get('id');
 	</div>
 
 <?php } ?>
-<div class="clr"></div>
+<div style="clear: both;"></div>
 <div class="tracks">
 <form action="index.php" method="post" name="adminForm2">
 	<input type="hidden" name="view" value="product" /> 
@@ -187,7 +192,7 @@ $userId		= $user->get('id');
 	if(count($this->tracks) > 0){ 
 
 		?>
-		<table class="adminlist" cellspacing="1">
+		<table class="adminlist">
 			<thead>
 				<tr>
 					<th width="5">
@@ -231,7 +236,7 @@ $userId		= $user->get('id');
 			<?php
 			$k = 0;
 			$config =& JFactory::getConfig();
-		    $tzoffset = $config->getValue('config.offset');
+		    $tzoffset = $config->get('config.offset');
 		    $now =& JFactory::getDate();
 			for ($i=0, $n=count( $this->tracks ); $i < $n; $i++)
 			{

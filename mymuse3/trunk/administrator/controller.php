@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 jimport('joomla.filesystem.file');
 jimport('joomla.application.component.controller');
 
-class MymuseController extends JController
+class MymuseController extends JControllerLegacy
 {
 	/*var error */
 	var $error = null;
@@ -33,8 +33,9 @@ class MymuseController extends JController
 
 		// Load the submenu.
 		$view = JRequest::getCmd('view', 'mymuse');
+		echo "In controller with view $view";
 		if($view != "product"){
-			MymuseHelper::addSubmenu(JRequest::getCmd('view', 'mymuse'));
+			MymuseHelper::addSubmenu($view);
 		}
 		$view		= JRequest::getCmd('view', 'mymuse');
         JRequest::setVar('view', $view);
@@ -112,7 +113,7 @@ class MymuseController extends JController
 		$fromname = $store->contact_first_name." ".$store->contact_last_name;
 		$mailfrom = $store->contact_email;
 	
-		JUtility::sendMail($mailfrom, $fromname, $user_email, $subject, $message, 1);
+		JMail::sendMail($mailfrom, $fromname, $user_email, $subject, $message, 1);
 		//redirect to edit edit
 		$this->msg = "Downloads Reset";
 		$this->setRedirect( 'index.php?option=com_mymuse&view=order&layout=edit&id='.$id, $this->msg);
@@ -131,6 +132,86 @@ class MymuseController extends JController
 		//redirect to product
 		$this->setRedirect( 'index.php?option=com_mymuse&view=products', $this->msg);
 	}
+	
+	/**
+	 * Method to add genres
+	 *
+	 * @access    public
+	 */
+	function addGenres()
+	{
+		require_once (JPATH_COMPONENT.DS.'helpers'.DS.'update.php');
+		$db = JFactory::getDBO();
+	
+		$query = "SELECT id from #__categories WHERE title='Genres'";
+		$db->setQuery($query);
+		$parent_id = $db->loadResult();
+	
+		if(!$parent_id){
+			$this->msg = JText::_("MYMUSE_CREATE_GENRES_CATEGORY");
+			$this->setRedirect( 'index.php?option=com_mymuse', $this->msg);
+			return false;
+		}
+	
+		$genres = array(
+				'Avant Garde',
+				'Blues',
+				'Classical',
+				'Country',
+				'Easy Listening',
+				'Electronic',
+				'Folk',
+				'Hip-Hop/Rap',
+				'Holiday',
+				'Jazz',
+				'Kids/Family',
+				'Latin',
+				'Metal/Punk',
+				'Moods',
+				'New Age',
+				'Pop',
+				'Raggae',
+				'Rock',
+				'Spiritual',
+				'Spoken Word',
+				'Urban/R&B',
+				'World'
+	
+		)
+		?>
+				<table width="700">
+				<tr>
+					<td valign="top" width="200"><img src="components/com_mymuse/assets/images/logo325.jpg"></td>
+					<td>
+					
+					<ul>
+				<?php
+	
+				$i = 0;
+				foreach($genres as $genre){
+					$i++;
+					echo "<li><strong>".JText::_("Creating genre: ")."$genre</strong><br />";
+					$res = MyMuseUpdateHelper::makeCategory($genre, $parent_id);
+					if(!$res){
+						echo JText::_("Problem with creating category: $genre ");
+					}else{
+						echo JText::_("Created Catalog Category '$genre'");
+						$catalog_cat_id = $db->insertid();
+					}
+					echo "<br />";
+					echo "</li>
+					";
+				}
+			
+		
+				echo "
+				</ul>
+				</td>
+				</tr>
+				</table>
+				";
+		    }
+		
 	
 
 }

@@ -20,29 +20,16 @@ $listDirn	= $this->state->get('list.direction');
 $canOrder	= $user->authorise('core.edit.state', 'com_mymuse');
 $saveOrder	= $listOrder == 'a.ordering';
 ?>
-
+	<div id="j-sidebar-container" class="span2">
+	<?php
+	echo $this->sidebar; 
+	?>
+	</div>
+	<div style="clear: both'"></div>
+	<div id="j-main-container" class="span10">
 <form action="<?php echo JRoute::_('index.php?option=com_mymuse&view=stores'); ?>" method="post" name="adminForm" id="adminForm">
-	<fieldset id="filter-bar">
-		<div class="filter-search fltlft">
-			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
-			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" title="<?php echo JText::_('Search'); ?>" />
-			<button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
-			<button type="button" onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
-		</div>
-		<div class="filter-select fltrt">
 
-            
-                <select name="filter_published" class="inputbox" onchange="this.form.submit()">
-                    <option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
-                    <?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), "value", "text", $this->state->get('filter.state'), true);?>
-                </select>
-                
-
-		</div>
-	</fieldset>
-	<div class="clr"> </div>
-
-	<table class="adminlist">
+	<table id="articleList" class="table table-striped">
 		<thead>
 			<tr>
 				<th width="1%">
@@ -97,8 +84,11 @@ $saveOrder	= $listOrder == 'a.ordering';
 
                 <?php if (isset($this->items[0]->state)) { ?>
 				    <td class="center">
-					    <?php echo JHtml::_('jgrid.published', $item->state, $i, 'stores.', $canChange, 'cb'); ?>
-				    </td>
+						<div class="btn-group">
+							<?php echo JHtml::_('jgrid.published', $item->state, $i, 'stores.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+							
+						</div>
+					</td>
                 <?php } ?>
                 <?php if (isset($this->items[0]->ordering)) { ?>
 				    <td class="order">
@@ -137,3 +127,4 @@ $saveOrder	= $listOrder == 'a.ordering';
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>
+</div>

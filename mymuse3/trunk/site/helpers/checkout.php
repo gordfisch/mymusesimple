@@ -157,7 +157,7 @@ class MyMuseCheckout
     	require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'orderpayment.php' );
         $order = new MymuseTableorder( $db );
         $config =& JFactory::getConfig();
-		$tzoffset = $config->getValue('config.offset');
+		$tzoffset = $config->get('config.offset');
         $date =& JFactory::getDate('now', $tzoffset);
         
         // We used to keep separate shopper,user id's
@@ -421,12 +421,12 @@ class MyMuseCheckout
 
      	$email = $shopper->email;
 
-     	JUtility::sendMail($mailfrom, $fromname, $email, $subject, $message,1);
+     	JMail::sendMail($mailfrom, $fromname, $email, $subject, $message,1);
 
      	// Send notification to webmaster
      	if($params->get('my_cc_webmaster')){
      		$webmaster_email = $params->get('my_webmaster');
-     		JUtility::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message,1);
+     		JMail::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message,1);
      	}	
      	
      	return true;
@@ -520,6 +520,36 @@ class MyMuseCheckout
         	}
         }
       	return($taxes);
+   	}
+   	
+   	/**
+   	 * addTax
+   	 *
+   	 * @param float price
+   	 * @return mixed float on success or false
+   	 */
+   	function addTax($price=0)
+   	{
+   		if(!$price){
+   			return false;
+   		}
+   		$new_price = $price;
+   		$db   = & JFactory::getDBO();
+   		$taxes = array();
+   		$q = "SELECT * FROM #__mymuse_tax_rate ORDER BY ordering";
+   		$db->setQuery($q);
+   		$regex = TAX_REGEX;
+   	
+   		if($tax_rates = $db->loadObjectList()){
+   			$temp_tax = 0;
+   			foreach($tax_rates as $rate){
+   				$temp_tax = $price * $rate->tax_rate;
+   				$new_price += $temp_tax;
+   			}
+   		}
+   		$new_price = round($new_price,2);
+   		return $new_price;
+   		 
    	}
 
      /**

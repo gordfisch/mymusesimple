@@ -362,6 +362,13 @@
 			</field>
 			
 			<field 
+				name="product_in_stock" 
+				type="text" 
+				label="MYMUSE_PRODUCT_IN_STOCK_LABEL"
+				description="MYMUSE_PRODUCT_IN_STOCK_DESC"
+			/>
+			
+			<field 
           		name="product_downloadable" 
           		type="list"
 				label="MYMUSE_PRODUCT_DOWNLOADABLE_LABEL"
@@ -394,14 +401,71 @@
 				<option value="video">MYMUSE_VIDEO</option>
 				<option value="other">MYMUSE_OTHER</option>
 			</field>
-	</fieldset>
+			
+			
+						<field 
+				name="product_created" 
+				type="calendar" 
+				label="MYMUSE_PRODUCT_CREATED_LABEL"
+				description="MYMUSE_PRODUCT_CREATED_DESC" 
+				class="inputbox" size="22"
+				format="%Y-%m-%d" 
+				filter="user_utc" 
+			/>
 		
-	<fields name="attribs">
-		<fieldset name="basic" label="MYMUSE_PARAMETERS_DETAILS">
-		  	<field name="product_in_stock" type="text" label="MYMUSE_PRODUCT_IN_STOCK_LABEL"
-			description="MYMUSE_PRODUCT_IN_STOCK_DESC"/>
-		</fieldset>
-	</fields>
+		  	<field
+                name="product_full_time"
+                type="text"
+                label="MYMUSE_PRODUCT_FULL_TIME_LABEL"
+                description="MYMUSE_PRODUCT_FULL_DESC"
+                class="inputbox"
+                size="20"
+                required="false"
+          	/>
+          	
+          	<field
+                name="product_country"
+                type="sql"
+                label="MYMUSE_PRODUCT_COUNTRY_LABEL"
+                description="MYMUSE_PRODUCT_COUNTRY_DESC"
+                class="inputbox"
+                query="SELECT country_2_code, country_name AS product_country FROM #__mymuse_country"
+                key_field="country_2_code"
+                default="CA"
+                size="1"
+          	/>
+          	
+          	<field
+                name="product_publisher"
+                type="text"
+                label="MYMUSE_PRODUCT_PUBLISHER_LABEL"
+                description="MYMUSE_PRODUCT_PUBLISHER_DESC"
+                class="inputbox"
+                size="35"
+                required="false"
+          	/>
+          	
+          	<field
+                name="product_producer"
+                type="text"
+                label="MYMUSE_PRODUCT_PRODUCER_LABEL"
+                description="MYMUSE_PRODUCT_PRODUCER_DESC"
+                class="inputbox"
+                size="35"
+                required="false"
+          	/>
+          	
+          	<field
+                name="product_studio"
+                type="text"
+                label="MYMUSE_PRODUCT_STUDIO_LABEL"
+                description="MYMUSE_PRODUCT_STUDIO_DESC"
+                class="inputbox"
+                size="35"
+                required="false"
+          	/>
+	</fieldset>
+	
 	
 	<fields name="metadata">
 		<fieldset name="metadata" label="MYMUSE_PARAMETERS_METADATA">

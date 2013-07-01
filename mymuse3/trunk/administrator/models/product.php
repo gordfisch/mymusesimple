@@ -11,6 +11,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modeladmin');
+JLoader::import('joomla.application.component.model');
 
 /**
  * Mymuse model.
@@ -351,8 +352,8 @@ class MymuseModelproduct extends JModelAdmin
     	$root = JPATH_ROOT;
   
     	if ($this->_tracks === null && $product = $this->getItem()) {
-
-    		$model = JModel::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
+    		JLoader::import( 'products', JPATH_ADMINISTRATOR . DS . 'components' . DS . 'com_mymuse' . DS . 'models' );
+    		$model = JModelLegacy::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
 
     		//$model->setState('filter.category_id', $category->id);
     		$model->setState('filter.published', $this->getState('filter.published'));
@@ -600,7 +601,7 @@ class MymuseModelproduct extends JModelAdmin
     
     	if ($this->_items === null && $product = $this->getItem()) {
     
-    		$model = JModel::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
+    		$model = JModelLegacy::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
     
     		//$model->setState('filter.category_id', $category->id);
     		$model->setState('filter.published', $this->getState('filter.published'));

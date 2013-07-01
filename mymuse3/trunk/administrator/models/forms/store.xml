@@ -487,6 +487,16 @@
         		label="MYMUSE_EMAIL_MSG_LABEL" 
         		description="MYMUSE_EMAIL_MSG_DESC" 
         />
+        <field
+                name="my_add_taxes"
+                type="list"
+                label="MYMUSE_ADD_TAXES_LABEL"
+                description="MYMUSE_ADD_TAXES_DESC"
+                class="inputbox"
+                default="0">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>>
+        </field>
 	</fieldset>
 	
 	<fieldset name="reports" label="MYMUSE_FRONT_END_SALES_REPORTS_LABEL">

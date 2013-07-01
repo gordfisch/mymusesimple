@@ -112,10 +112,10 @@ class MymuseTableproduct extends JTable
 			$this->fulltext = '';
 		}
 
-		if (trim($this->introtext) == '' && trim($this->fulltext) == '' && !$this->parentid) {
-			$this->setError(JText::_('JGLOBAL_ARTICLE_MUST_HAVE_TEXT'));
-			return false;
-		}
+		//if (trim($this->introtext) == '' && trim($this->fulltext) == '' && !$this->parentid) {
+		//	$this->setError(JText::_('JGLOBAL_ARTICLE_MUST_HAVE_TEXT'));
+		//	return false;
+		//}
 
 		// Check the publish down date is not earlier than publish up.
 		if ($this->publish_down > $this->_db->getNullDate() && $this->publish_down < $this->publish_up) {
@@ -199,16 +199,16 @@ class MymuseTableproduct extends JTable
 		$this->file_preview = isset($post['current_preview'])? $post['current_preview'] : $this->file_preview;
 		$this->file_preview_2 = isset($post['current_preview_2'])? $post['current_preview_2'] : $this->file_preview_2;
 		$this->file_preview_3 = isset($post['current_preview_3'])? $post['current_preview_3'] : $this->file_preview_3;
-		$this->version = $form['version'] +1;
+		$this->version = isset($form['version'])? $form['version'] +1 : 1;
 
 		if ($this->id) {
 			// Existing item
-			$this->modified		= $date->toMySQL();
+			$this->modified		= $date->toSQL();
 			$this->modified_by	= $user->get('id');
 		} else {
 			// New product.
 			if (!intval($this->created)) {
-				$this->created = $date->toMySQL();
+				$this->created = $date->toSQL();
 			}
 
 			if (empty($this->created_by)) {
