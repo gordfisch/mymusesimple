@@ -41,7 +41,7 @@ class MyMuseUpdateHelper extends JObject
 	
 		$query = "DELETE from #__categories WHERE title = '$title'";
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 	
 		$title = urlencode($title);
 		$description = urlencode($description);
@@ -109,7 +109,7 @@ class MyMuseUpdateHelper extends JObject
 		$token = JSession::getFormToken();
 		$query = "DELETE from #__mymuse_product WHERE product_sku = '".$p->product_sku."'";
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		$user = JFactory::getUser();
 		$userid = $user->get('id');
 	

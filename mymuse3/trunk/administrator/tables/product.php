@@ -238,14 +238,14 @@ class MymuseTableproduct extends JTable
         	// update product_category_xref
         	$query = "DELETE FROM #__mymuse_product_category_xref WHERE product_id=".$this->id;
         	$db->setQuery($query);
-        	$db->query();
+        	$db->execute();
 
         	foreach($catids as $catid){
         		$query = "INSERT INTO #__mymuse_product_category_xref
 					(catid,product_id) VALUES (".$catid.",".$this->id.")";
         		$db->setQuery($query);
      
-        		if(!$db->query()){
+        		if(!$db->execute()){
         			$this->setError(JText::_('MYMUSE_COULD_NOT_SAVE_PRODUCTCAT_XREF').$db->getErrorMsg());
         			return false;
         		}
@@ -656,7 +656,7 @@ class MymuseTableproduct extends JTable
         	// update product_category_xref
         	$query = "DELETE FROM #__mymuse_product_category_xref WHERE product_id=".$this->id;
         	$db->setQuery($query);
-        	$db->query();
+        	$db->execute();
 
         	if(isset($catids)){
         		foreach($catids as $catid){
@@ -667,7 +667,7 @@ class MymuseTableproduct extends JTable
         			$query = "INSERT INTO #__mymuse_product_category_xref
         			(catid,product_id) VALUES (".$catid.",".$this->id.")";
         			$db->setQuery($query);
-        			if(!$db->query()){
+        			if(!$db->execute()){
         				$this->setError(JText::_('MYMUSE_COULD_NOT_SAVE_PRODUCTCAT_XREF').$db->getErrorMsg());
         				return false;
         			}
@@ -754,7 +754,7 @@ class MymuseTableproduct extends JTable
             ' WHERE ('.$where.')' .
             $checkin
         );
-        $this->_db->query();
+        $this->_db->execute();
 
         // Check for a database error.
         if ($this->_db->getErrorNum()) {

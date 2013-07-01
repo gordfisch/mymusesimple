@@ -342,7 +342,7 @@ class MymuseModelorder extends JModelAdmin
 		$db = JFactory::getDBO();
 		$query = "UPDATE #__mymuse_order SET order_status='C'";
 		$db->setQuery($query);
-		if(!$db->query()){
+		if(!$db->execute()){
 			$this->setError("Could not update order");
 			return false;
 		}
@@ -352,7 +352,7 @@ class MymuseModelorder extends JModelAdmin
 		end_date='$enddate'
 		";
 		$db->setQuery($query);
-		if(!$db->query()){
+		if(!$db->execute()){
 			$this->setError("Could not update order items");
 			return false;
 		};

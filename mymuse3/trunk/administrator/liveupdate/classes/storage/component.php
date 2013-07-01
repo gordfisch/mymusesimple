@@ -87,6 +87,6 @@ class LiveUpdateStorageComponent extends LiveUpdateStorage
 			->where($db->qn('element').' = '.$db->q(self::$component));
 
 		$db->setQuery($sql);
-		$db->query();
+		$db->execute();
 	}
 }

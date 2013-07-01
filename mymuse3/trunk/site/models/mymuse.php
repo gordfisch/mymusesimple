@@ -47,7 +47,7 @@ class MymuseModelMymuse extends JModel
 				$query->where('a.id = ' . (int) $id);
 
 				$db->setQuery((string)$query);
-				if (!$db->query()) {
+				if (!$db->execute()) {
 					JError::raiseError(500, $db->getErrorMsg());
 				}
 

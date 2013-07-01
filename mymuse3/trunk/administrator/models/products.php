@@ -372,7 +372,7 @@ class MymuseModelproducts extends JModelList
             $query = "DELETE FROM #__mymuse_product_category_xref WHERE"
             . " product_id IN (". $cids  .")";
             $this->_db->setQuery($query);
-            if (!$this->_db->query())
+            if (!$this->_db->execute())
             {
             	$this->setError($this->_db->getErrorMsg());
             	return false;
@@ -383,7 +383,7 @@ class MymuseModelproducts extends JModelList
             $query = "DELETE FROM #__mymuse_product_attribute WHERE"
             . " product_id IN (". $cids  .")";
             $this->_db->setQuery($query);
-            if (!$this->_db->query())
+            if (!$this->_db->execute())
             {
             	$this->setError($this->_db->getErrorMsg());
             	return false;
@@ -437,7 +437,7 @@ class MymuseModelproducts extends JModelList
             $query = 'DELETE FROM #__mymuse_product'
             . ' WHERE id IN ( '.$cids.' )';
             $this->_db->setQuery( $query );
-            if(!$this->_db->query()) {
+            if(!$this->_db->execute()) {
                 $this->setError($this->_db->getErrorMsg());
             	return false;
             }

@@ -410,7 +410,7 @@ class plgUserMyMuse extends JPlugin
 					" AND profile_key LIKE '$profile_key.%'"
 				);
 
-				if (!$db->query()) {
+				if (!$db->execute()) {
 					throw new Exception($db->getErrorMsg());
 				}
 				
@@ -446,7 +446,7 @@ class plgUserMyMuse extends JPlugin
 
 				$db->setQuery('INSERT INTO #__user_profiles VALUES '.implode(', ', $tuples));
 
-				if (!$db->query()) {
+				if (!$db->execute()) {
 					throw new Exception($db->getErrorMsg());
 				}
 
@@ -495,7 +495,7 @@ class plgUserMyMuse extends JPlugin
 					" AND profile_key LIKE '$profile_key.%'"
 				);
 
-				if (!$db->query()) {
+				if (!$db->execute()) {
 					throw new Exception($db->getErrorMsg());
 				}
 			}

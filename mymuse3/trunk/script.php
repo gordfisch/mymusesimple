@@ -216,7 +216,7 @@ class com_mymuseInstallerScript
 			$db->setQuery($query);
 			$store_params = json_decode($db->loadResult(), TRUE);
 			if($store_params){
-				$store_params['my_download_dir'] = $db->getEscaped($download_dir);
+				$store_params['my_download_dir'] = $db->escaped($download_dir);
 				$registry = new JRegistry;
 				$registry->loadArray($store_params);
 				$new_params = (string)$registry;
@@ -227,7 +227,7 @@ class com_mymuseInstallerScript
 				";
 
 				$db->setQuery($query);
-				if(!$db->query()){
+				if(!$db->execute()){
 					$alt = JText::_( "MYMUSE_FAILED" );
 					$astatus = 0;
 					$message =  JText::_("MYMUSE_PROBLEM_UPDATING_STORE").$db->_errorMsg;
@@ -285,7 +285,7 @@ class com_mymuseInstallerScript
 			element='search_mymuse'
 			";
 			$db->setQuery($query);
-			if(!$db->query()){
+			if(!$db->execute()){
 				$alt = JText::_( "MYMUSE_FAILED" );
 				$astatus = 0;
 				$message =  JText::_("MYMUSE_ENABLE_PLUGINS_FAILED");
@@ -328,7 +328,7 @@ class com_mymuseInstallerScript
 			if(!$good){
 				$query = "ALTER TABLE `#__mymuse_product` ADD `file_time` varchar(32) NOT NULL AFTER `file_length`";
 				$db->setQuery($query);
-				if($db->query()){
+				if($db->execute()){
 					$alt = JText::_( "MYMUSE_INSTALLED" );;
 					$astatus = 1;
 					$message = JText::_("MYMUSE_DB_UPDATED_DESC");
@@ -339,7 +339,7 @@ class com_mymuseInstallerScript
 			$name = "Update Order Table";
 			$query = "ALTER TABLE `#__mymuse_order` CHANGE `coupon_discount` `coupon_discount` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00'";
 			$db->setQuery($query);
-			if($db->query()){
+			if($db->execute()){
 				$alt = JText::_( "MYMUSE_INSTALLED" );;
 				$astatus = 1;
 				$message = JText::_("Update coupon_discount");
