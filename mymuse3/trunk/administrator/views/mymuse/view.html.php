@@ -32,7 +32,7 @@ class MyMuseViewMyMuse extends JViewLegacy
         JToolBarHelper::title( JText::_( 'MyMuse' ), 'mymuse.png' );
         JToolBarHelper::preferences('com_mymuse');
         JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/documentation/documentation-2-5/169-mymuse-options?tmpl=component');
-        
+        $this->sidebar = JHtmlSidebar::render();
         parent::display($tpl);
     }
 }

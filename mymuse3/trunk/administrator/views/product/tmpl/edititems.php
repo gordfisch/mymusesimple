@@ -46,9 +46,11 @@ JHTML::_('behavior.tooltip');
 		}
 		//-->
 		</script>
+
 		<h3><?php echo $row->parent->title; ?></h3>
-		<form action="index.php" method="post" name="adminForm">
-<div class="width-60 fltlft">
+		<form action="index.php" method="post" name="adminForm" id="adminForm">
+<div id="j-main-container" class="span10">
+<div class="pull-left">
 	<fieldset class="adminform">
 
 			<legend><?php echo empty($this->item->id) ? JText::_('MYMUSE_NEW_ITEM') : JText::sprintf('MYMUSE_EDIT_ITEM', $this->item->id); ?></legend>
@@ -70,7 +72,7 @@ JHTML::_('behavior.tooltip');
 			</ul>
 	</fieldset>
 </div>
-<div class="width-40 fltrt">
+<div class="pull-right">
 	<fieldset class="adminform">
 			<legend><?php echo JText::_('MYMUSE_ITEM_ATTRIBUTES'); ?></legend>
 			<ul class="adminformlist">
@@ -81,7 +83,7 @@ JHTML::_('behavior.tooltip');
 				<input class="inputbox" type="text"
 					name="attribute_value[<?php echo $attribute_sku->id; ?>]"
 					id="attribute_value.<?php echo $attribute_sku->id; ?>" size="30"
-					maxlength="255" value="<?php echo $this->attributes[$attribute_sku->name]; ?>" /> 
+					maxlength="255" value="<?php echo @$this->attributes[$attribute_sku->name]; ?>" /> 
 					<input
 					type="hidden"
 					name="attribute_name[<?php echo $attribute_sku->id; ?>]"
@@ -107,3 +109,4 @@ JHTML::_('behavior.tooltip');
 		<input type="hidden" name="task" value="" />
 		<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
+</div>

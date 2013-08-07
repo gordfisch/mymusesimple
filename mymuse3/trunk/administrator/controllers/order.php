@@ -54,7 +54,8 @@ class MymuseControllerOrder extends JControllerForm
 	}
 	
 	function mail_client()
-	{        	// let's send mail about the change
+	{        	
+		// let's send mail about the change
 		$id = JRequest::getVar('id','');
 		$form = JRequest::getVar('jform',array(),'post');
 		$params = MyMuseHelper::getParams();
@@ -90,10 +91,6 @@ class MymuseControllerOrder extends JControllerForm
 		ob_end_clean();
 		$message  = $header.$message.$footer;
 
-
-		
-		$user_email 	= $order->user->email;
-
 		//if using no_reg
 		if($params->get('my_registration') == "no_reg"){
 			$registry = new JRegistry;
@@ -101,24 +98,35 @@ class MymuseControllerOrder extends JControllerForm
 		}
 
 		// SEND MAIL TO BUYER
-		$subject = Jtext::_('MYMUSE_ORDER_STATUS_CHANGED')." ".$store->title;
+     	$mailer = JFactory::getMailer();
+     	$mailer->isHTML(true);
+     	$mailer->Encoding = 'base64';
+     	// from
+     	$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
+     	$mailfrom = $params->get('contact_email');
+     	$sender = array(
+     			$mailfrom,
+     			$fromname );
+     	$mailer->setSender($sender);
+     	//recipient
+     	$recipient = $order->user->email;
+     	if($params->get('my_cc_webmaster')){
+     		$recipient = array($order->user->email, $params->get('my_webmaster'));
+     	}
+     	$mailer->addRecipient($recipient);
+     	//subject, body
+     	$subject = Jtext::_('MYMUSE_ORDER_STATUS_CHANGED')." ".$store->title;
 		$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
+     	$mailer->setSubject($subject);
+     	$mailer->setBody($message);
 
-		$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
-		$mailfrom = $params->get('contact_email');
-
-		JMail::sendMail($mailfrom, $fromname, $user_email, $subject, $message, 1);
+     	$send = $mailer->Send();
+     	if ( $send !== true ) {
+     		echo 'Error sending email: ' . $send->message;
+     		JFactory::getApplication()->enqueueMessage($send->message, 'error');
+     	}
 		JRequest::setVar( 'layout', 'edit');
 		JRequest::setVar( 'task', 'save'  );
 		JRequest::setVar( 'email_sent', '1' );
-		
-		// Send notification to webmaster
-		if($params->get('my_cc_webmaster')){
-			$webmaster_email = $params->get('my_webmaster');
-			JMail::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message,1);
-		}
-
 	}
-	
-
 }

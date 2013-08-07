@@ -173,8 +173,8 @@ class MyMuseCheckout
         $order->coupon_id 			= 0;
         $order->coupon_name 		= '';
         $order->coupon_discount 	= 0;
-        $order->created 			= $date->toMySQL(true);
-        $order->modified 			= $date->toMySQL(true);
+        $order->created 			= $date->toSql(true);
+        $order->modified 			= $date->toSql(true);
         $order->discount 			= $cart_order->discount;
         $order->notes 				= @$cart['notes'];
         
@@ -260,8 +260,8 @@ class MyMuseCheckout
 			
 			$order->items[$i]->product_sku = $cart[$i]['product']->product_sku;
 			$order->items[$i]->product_name = $cart[$i]['product']->title;
-			$order->items[$i]->created = $date->toMySQL();
-			$order->items[$i]->modified = $date->toMySQL();
+			$order->items[$i]->created = $date->toSql();
+			$order->items[$i]->modified = $date->toSql();
 
 			if( $params->get('my_downloads_enable') == "1" ) {
 				$order->items[$i]->file_name = stripslashes($cart[$i]['product']->file_name);
@@ -332,7 +332,7 @@ class MyMuseCheckout
    			$order_shipping->ship_method_name = $cart_order->order_shipping->ship_method_name;
    			$order_shipping->cost = $cart_order->order_shipping->cost;
    			$order_shipping->tracking_id = $cart_order->order_shipping->tracking_id;
-   			$order_shipping->created = $date->toMySQL();
+   			$order_shipping->created = $date->toSql();
        		if (!$order_shipping->store()) {
 				JError::raiseError( 500, $db->stderr() );
 				return false;
@@ -414,20 +414,35 @@ class MyMuseCheckout
      	$message = html_entity_decode($message, ENT_QUOTES,'UTF-8');
 
      	// Send email to user
+
+     	$mailer = JFactory::getMailer();
+     	$mailer->isHTML(true);
+     	$mailer->Encoding = 'base64';
+     	// from
+     	$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
+     	$mailfrom = $params->get('contact_email');
+     	$sender = array(
+     			$mailfrom,
+     			$fromname );
+     	$mailer->setSender($sender);
+     	//recipient
+     	$recipient = $shopper->email;
+     	if($params->get('my_cc_webmaster')){
+     		$recipient = array($shopper->email, $params->get('my_webmaster'));
+     	}
+     	$mailer->addRecipient($recipient);
+     	//subject, body
      	$subject = Jtext::_('MYMUSE_NEW_ORDER_FOR')." ".$store->title;
      	$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
-     	$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
-        $mailfrom = $params->get('contact_email');
-
-     	$email = $shopper->email;
-
-     	JMail::sendMail($mailfrom, $fromname, $email, $subject, $message,1);
-
-     	// Send notification to webmaster
-     	if($params->get('my_cc_webmaster')){
-     		$webmaster_email = $params->get('my_webmaster');
-     		JMail::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message,1);
-     	}	
+     	$mailer->setSubject($subject);
+     	$mailer->setBody($message);
+	
+     	$send = $mailer->Send();
+     	if ( $send instanceof Exception ) {
+     		
+     		//$msg =  'Error sending email: ' . $send->getError();
+     		//JFactory::getApplication()->enqueueMessage($msg, 'error');
+     	}
      	
      	return true;
    }

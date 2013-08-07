@@ -338,26 +338,30 @@ class MymuseModelorder extends JModelAdmin
 		$params = MyMuseHelper::getParams();
 	
 		$id = JRequest::getVar( 'id', '' );
-	
+		if(!$id){
+			$this->setError("MYMUSE_ORDER_ID_NOT_FOUND");
+			return false;
+		}
 		$db = JFactory::getDBO();
-		$query = "UPDATE #__mymuse_order SET order_status='C'";
+		$query = "UPDATE #__mymuse_order SET order_status='C' WHERE id=$id";
 		$db->setQuery($query);
-		if(!$db->execute()){
-			$this->setError("Could not update order");
+		if(!$db->query()){
+			$this->setError("MYMUSE_COULD_NOT_UPDATE_ORDER");
 			return false;
 		}
 		$enddate = time() + $params->get('my_download_expire');
 		$query = "UPDATE #__mymuse_order_item
 		SET downloads='0',
 		end_date='$enddate'
+		WHERE order_id=$id
 		";
 		$db->setQuery($query);
-		if(!$db->execute()){
-			$this->setError("Could not update order items");
+		if(!$db->query()){
+			$this->setError("MYMUSE_COULD_NOT_UPDATE_ORDER_ITEMS");
 			return false;
 		};
 	
-	return true;
+		return true;
 	
 	}
 

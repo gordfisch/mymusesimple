@@ -14,6 +14,10 @@ jimport('joomla.application.component.controller');
 
 
 // initialize
+if(!defined('DS')){
+	define('DS',DIRECTORY_SEPARATOR);
+}
+
 require_once( JPATH_COMPONENT.DS.'mymuse.class.php');
 ini_set('memory_limit',"128M");
 ini_set('max_execution_time',"60");
@@ -48,8 +52,8 @@ if($task == 'login'){
 $controller = JRequest::getWord('controller','');
 
 // Execute the task.
-$controller	= JController::getInstance('MyMuse');
-$controller->execute($task);
+$controller	= JControllerLegacy::getInstance('Mymuse');
+$controller->execute(JFactory::getApplication()->input->get('task'));
 
 //save the cart in the session
 $session = &JFactory::getSession();

@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.view' );
 
-class myMuseViewShopper extends Jview
+class myMuseViewShopper extends JViewLegacy
 {
 	function __construct()       {
     	parent::__construct();

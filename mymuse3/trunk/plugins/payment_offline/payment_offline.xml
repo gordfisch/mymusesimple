@@ -21,13 +21,16 @@
 	<config>
 	<fields  name="params">
 		<fieldset name="basic">
-        <field name="paymentoffline_msg" 
-        type="textarea"  
-        rows="2" 
+        <field type="spacer" />
+        <field name="email_msg" 
+        type="editor" 
+        filter="raw" 
+        width="200px"
+        rows="35" 
         cols="35" 
         default="" 
-        label="MYMUSE_PAYMENTOFFLINE_MSG_LABEL" 
-        description="MYMUSE_PAYMENTOFFLINE_MSG_DESC" />
+        label="MYMUSE_MSG_LABEL" 
+        description="MYMUSE_MSG_DESC" />
     </fieldset>
 	</fields>
 	</config>

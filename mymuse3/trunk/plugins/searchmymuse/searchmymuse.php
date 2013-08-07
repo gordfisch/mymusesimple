@@ -81,7 +81,7 @@ class plgSearchSearchMymuse extends JPlugin
     
         $nullDate   = $db->getNullDate();
         $date       =& JFactory::getDate();
-        $now        = $date->toMySQL();
+        $now        = $date->toSql();
 
     
         $text = trim( $text );
@@ -93,7 +93,7 @@ class plgSearchSearchMymuse extends JPlugin
         $wheres = array();
         switch ($phrase) {
             case 'exact':
-                $text		= $db->Quote( '%'.$db->escaped( $text, true ).'%', false );
+                $text		= $db->Quote( '%'.$db->escape( $text, true ).'%', false );
                 $wheres2 	= array();
                 $wheres2[] 	= 'a.title LIKE '.$text;
                 $wheres2[] 	= 'a.introtext LIKE '.$text;
@@ -111,7 +111,7 @@ class plgSearchSearchMymuse extends JPlugin
                 $words = explode( ' ', $text );
                 $wheres = array();
                 foreach ($words as $word) {
-                    $word		= $db->Quote( '%'.$db->escaped( $word, true ).'%', false );
+                    $word		= $db->Quote( '%'.$db->escape( $word, true ).'%', false );
                     $wheres2 	= array();
                     $wheres2[] 	= 'a.title LIKE '.$word;
                     $wheres2[] 	= 'a.introtext LIKE '.$word;

@@ -37,6 +37,7 @@ class MymuseViewShoppergroups extends JViewLegacy
 		}
 
 		$this->addToolbar();
+		$this->sidebar = JHtmlSidebar::render();
 		parent::display($tpl);
 	}
 
@@ -99,5 +100,22 @@ class MymuseViewShoppergroups extends JViewLegacy
 			JToolBarHelper::preferences('com_mymuse');
 		}
 		JToolBarHelper::help('', false, 'http://www.mymuse.ca/documentation/documentation-2-5/159-shoppergroups-list?tmpl=component');
+	}
+	
+	/**
+	 * Returns an array of fields the table can be sorted by
+	 *
+	 * @return  array  Array containing the field name to sort by as the key and display text as value
+	 *
+	 * @since   3.0
+	 */
+	protected function getSortFields()
+	{
+		return array(			
+				'a.state' => JText::_('JSTATUS'),
+				'a.shopper_group_name' => JText::_('MYMUSE_SHOPPER_GROUPS'),
+				'discount' => JText::_('MYMUSE_SHOPPER_GROUP_DISCOUNT_LABEL'),
+				'a.id' => JText::_('JGRID_HEADING_ID'),
+		);
 	}
 }

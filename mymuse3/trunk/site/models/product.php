@@ -105,7 +105,8 @@ class MyMuseModelProduct extends JModelItem
 					'a.list_image, a.detail_image, a.attribs, a.version, a.parentid, a.ordering, ' .
 					'a.metakey, a.metadesc, a.access, a.hits, a.metadata, a.featured, a.language, a.product_physical, ' .
 					'a.product_downloadable, a.product_sku, a.product_made_date, a.product_in_stock, a.product_discount, ' .
-					'a.urls, a.price, a.reservation_fee '
+					'a.urls, a.price, a.reservation_fee, ' .
+					'a.product_full_time, a.product_producer, a.product_publisher, a.product_studio'
 					)
 				);
 				$query->from('#__mymuse_product AS a');
@@ -113,7 +114,12 @@ class MyMuseModelProduct extends JModelItem
 				// Join on category table.
 				$query->select('c.title AS category_title, c.alias AS category_alias, c.access AS category_access');
 				$query->join('LEFT', '#__categories AS c on c.id = a.catid');
-
+				
+				// Join on country table.
+				$query->select('co.country_name AS product_country');
+				$query->join('LEFT', '#__mymuse_country AS co on co.country_2_code = a.product_country');
+				
+				
 				// Join on user table.
 				$query->select('u.name AS author');
 				$query->join('LEFT', '#__users AS u on u.id = a.created_by');
@@ -572,6 +578,7 @@ class MyMuseModelProduct extends JModelItem
 				if($params->get('my_add_taxes')){
 					$items[$i]->price["product_price"] = MyMuseCheckout::addTax($items[$i]->price["product_price"]);
 				}
+				
 
 			}
 			
@@ -651,7 +658,7 @@ class MyMuseModelProduct extends JModelItem
 			$db = JFactory::getDBO();
 			$query = "UPDATE #__mymuse_product set hits = hits+1 WHERE id=".(int) $this->getState('product.id');
 			$db->setQuery($query);
-			$db->execute();
+			$db->query();
 			return true;
 		}
 		return false;
@@ -811,7 +818,7 @@ class MyMuseModelProduct extends JModelItem
 				$price_info["product_discount"] = $discount;
 				$price_info["product_shopper_group_discount"] = $shopper_group_discount;
 				$price_info["product_shopper_group_discount_amount"] = sprintf("%.2f",$product_price*$shopper_group_discount/100);
-				$price_info["product_price"] = sprintf("%.2f",$price_info["product_price"]);
+				//$price_info["product_price"] = sprintf("%.2f",$price_info["product_price"]);
 				return $price_info;
 			}
 		}
@@ -827,7 +834,7 @@ class MyMuseModelProduct extends JModelItem
 				$price_info["product_discount"] = $discount;
 				$price_info["product_shopper_group_discount"] = $shopper_group_discount;
 				$price_info["product_shopper_group_discount_amount"] = sprintf("%.2f",$product_price*$shopper_group_discount/100);
-				$price_info["product_price"] = sprintf("%.2f",$price_info["product_price"]);
+				//$price_info["product_price"] = sprintf("%.2f",$price_info["product_price"]);
 				if($price_info["product_price"] == 0.00){
 					$price_info["product_price"] = 0;
 				}
@@ -844,7 +851,7 @@ class MyMuseModelProduct extends JModelItem
 			$price_info["product_discount"] = $discount;
 			$price_info["product_shopper_group_discount"] = $shopper_group_discount;
 			$price_info["product_shopper_group_discount_amount"] = sprintf("%.2f",$product_price*$shopper_group_discount/100);
-			$price_info["product_price"] = sprintf("%.2f",$price_info["product_price"]);
+			//$price_info["product_price"] = sprintf("%.2f",$price_info["product_price"]);
 			return $price_info;
 		}
 
@@ -857,7 +864,7 @@ class MyMuseModelProduct extends JModelItem
 		$price_info["product_discount"] = $discount;
 		$price_info["product_shopper_group_discount"] = $shopper_group_discount;
 		$price_info["product_shopper_group_discount_amount"] = sprintf("%.2f",$product_price*$shopper_group_discount/100);
-		$price_info["product_price"] = sprintf("%.2f",$price_info["product_price"]);
+		//$price_info["product_price"] = sprintf("%.2f",$price_info["product_price"]);
 		return $price_info;
 		
 		return False;
@@ -885,7 +892,7 @@ class MyMuseModelProduct extends JModelItem
   						' VALUES ( '.(int) $pk.', '.$db->Quote($userIP).', '.(int) $rate.', 1 )';
   				$db->setQuery($query);
 
-  				if (!$db->execute()) {
+  				if (!$db->query()) {
   					$this->setError($db->getErrorMsg());
   					return false;
   				}
@@ -898,7 +905,7 @@ class MyMuseModelProduct extends JModelItem
   							' SET rating_count = rating_count + 1, rating_sum = rating_sum + '.(int) $rate.', lastip = '.$db->Quote($userIP) .
   							' WHERE product_id = '.(int) $pk;
   					$db->setQuery($query);
-  					if (!$db->execute()) {
+  					if (!$db->query()) {
   						$this->setError($db->getErrorMsg());
   						return false;
   					}

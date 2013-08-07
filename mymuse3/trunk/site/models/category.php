@@ -212,7 +212,7 @@ class MyMuseModelCategory extends JModelList
 		$limit = $this->getState('list.limit');
 
 		if ($this->_products === null && $category = $this->getCategory()) {
-			$model = JModel::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
+			$model = JModelList::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
 			$model->setState('params', JFactory::getApplication()->getParams());
 			$model->setState('filter.category_id', $category->id);
 			$model->setState('filter.published', $this->getState('filter.published'));

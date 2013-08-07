@@ -16,7 +16,7 @@ jimport('joomla.application.component.view');
  * @subpackage	com_content
  * @since 1.5
  */
-class ContentViewCategory extends JView
+class ContentViewCategory extends JViewLegacy
 {
 	function display()
 	{

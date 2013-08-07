@@ -74,7 +74,7 @@ $task		= $this->task;
 		        
 		   <?php if($order->do_html && $order_item[$i]->quantity){ ?>
 		        <td> <input class="inputbox" type="text" size="4" maxlength="4" name="quantity[<?php echo $order_item[$i]->id ?>]"
-		        value="<?php echo $order_item[$i]->quantity;?>"/>&nbsp;</td>
+		        value="<?php echo $order_item[$i]->quantity;?>" style="width: 20%;"   />&nbsp;</td>
 		        
 		    <?php }else{ ?>
 		        <td align="center"><?php echo $order_item[$i]->quantity; ?></td>

@@ -30,6 +30,17 @@
 		<field name="my_moneybookers_secret" type="text" size="35" default="" label="MYMUSE_MONEYBOOKERS_SECRET_LABEL" description="MYMUSE_MONEYBOOKERS_SECRET_DESC"/>
 		<field name="my_moneybookers_status_url2" type="text" size="35" default="" label="MYMUSE_MONEYBOOKERS_EMAIL_RESULTS_LABEL" description="MYMUSE_MONEYBOOKERS_SECRET_DESC"/>
 		<field name="my_moneybookers_logo" type="text" size="35" default="" label="MYMUSE_MONEYBOOKERS_LOGO_LABEL" description="MYMUSE_MONEYBOOKERS_LOGO_DESC"/>
+        <field type="spacer" />
+        <field name="email_msg" 
+        type="editor" 
+        filter="raw" 
+        width="200px"
+        rows="35" 
+        cols="35" 
+        default="" 
+        label="MYMUSE_MSG_LABEL" 
+        description="MYMUSE_MSG_DESC" />
+
 	</fieldset>
 	</fields>
 	</config>

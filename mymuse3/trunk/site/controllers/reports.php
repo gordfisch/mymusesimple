@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport('joomla.application.component.controller');
 
-class myMuseControllerReports extends myMuseController
+class MymuseControllerReports extends MymuseuseController
 {
 
 

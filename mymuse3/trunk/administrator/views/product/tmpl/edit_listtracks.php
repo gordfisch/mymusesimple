@@ -195,8 +195,8 @@ $userId		= $user->get('id');
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<th width="5">
-						<?php echo JText::_( 'Num' ); ?>
+					<th width="1%" class="nowrap center hidden-phone">
+						<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
 					</th>
 					<th width="5">
 						<input type="checkbox" name="toggle" value="" onclick="checkAll2(<?php echo count($this->tracks ); ?>);" />
@@ -219,13 +219,6 @@ $userId		= $user->get('id');
 					<th width="1%" nowrap="nowrap">
 						<?php echo MyMuseHelper::sort2('Published', 'a.state', $listDirn, $listOrder ); ?>
 					</th>
-				<th width="10%">
-					<?php echo MyMuseHelper::sort2( 'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
-					<?php if ($saveOrder) :?>
-						<?php echo MyMuseHelper::order2($this->tracks, 'filesave.png', 'products.saveorder'); ?>
-					<?php endif; ?>
-				</th>
-
 					<th width="1%" class="title">ID
 					</th>
 				</tr>
@@ -263,8 +256,24 @@ $userId		= $user->get('id');
 				
 				
 				<tr class="<?php echo "row$k"; ?>">
-					<td>
-						<?php echo  $i+1; ?>
+					<td class="order nowrap center hidden-phone">
+					<?php if ($canChange) :
+						$disableClassName = '';
+						$disabledLabel	  = '';
+
+						if (!$saveOrder) :
+							$disabledLabel    = JText::_('JORDERINGDISABLED');
+							$disableClassName = 'inactive tip-top';
+						endif; ?>
+						<span class="sortable-handler hasTooltip <?php echo $disableClassName; ?>" title="<?php echo $disabledLabel; ?>">
+							<i class="icon-menu"></i>
+						</span>
+						<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $file->ordering; ?>" class="width-20 text-area-order " />
+					<?php else : ?>
+						<span class="sortable-handler inactive" >
+							<i class="icon-menu"></i>
+						</span>
+					<?php endif; ?>
 					</td>
 					<td align="center">
 						<?php echo $checked; ?>
@@ -296,25 +305,6 @@ $userId		= $user->get('id');
 					<td align="center">
 								<?php echo MGrid::published( $file->state, $i, 'products.', 1, 'cb', $file->publish_up, $file->publish_down, 2); ?>
 					</td>
-					
-				<td class="order">
-					<?php if ($canChange) : ?>
-						<?php if ($saveOrder) :?>
-							<?php if ($listDirn == 'asc') : ?>
-								<span><?php echo MyMuseHelper::orderUpIcon2($i, ($file->catid == @$this->tracks[$i-1]->catid), 'products.orderup', 'JLIB_HTML_MOVE_UP', $ordering,  'cb',$this->trackPagination->limitstart ); ?></span>
-								<span><?php echo MyMuseHelper::orderDownIcon2($i, $this->trackPagination->total, ($file->catid == @$this->tracks[$i+1]->catid), 'products.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering, 'cb',$this->trackPagination->limitstart, $this->trackPagination->total); ?></span>
-							<?php elseif ($listDirn == 'desc') : ?>
-								<span><?php echo MyMuseHelper::orderUpIcon2($i, ($file->catid == @$this->tracks[$i-1]->catid), 'products.orderdown', 'JLIB_HTML_MOVE_UP', $ordering,  'cb', $this->trackPagination->limitstart); ?></span>
-								<span><?php echo MyMuseHelper::orderDownIcon2($i, $this->trackPagination->total, ($file->catid == @$this->tracks[$i+1]->catid), 'products.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering, 'cb',$this->trackPagination->limitstart,$this->trackPagination->total); ?></span>
-							<?php endif; ?>
-						<?php endif; ?>
-						<?php $disabled = $saveOrder ?  '' : 'disabled="disabled"'; ?>
-						<input type="text" name="order[]" size="5" value="<?php echo $file->ordering;?>" <?php echo $disabled ?> class="text-area-order" />
-					<?php else : ?>
-						<?php echo $file->ordering; ?>
-					<?php endif; ?>
-				</td>
-					
 					<td>
 						<?php echo $file->id; ?>
 					</td>

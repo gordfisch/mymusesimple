@@ -106,19 +106,19 @@ class MymuseModelshoppergroups extends JModelList
 		$query->from('`#__mymuse_shopper_group` AS a');
 
 
-                // Join over the users for the checked out user.
-                $query->select('uc.name AS editor');
-                $query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
+        // Join over the users for the checked out user.
+        $query->select('uc.name AS editor');
+        $query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
             
 
 
-                // Filter by published state
-                $published = $this->getState('filter.state');
-                if (is_numeric($published)) {
-                    $query->where('a.state = '.(int) $published);
-                } else if ($published === '') {
-                    $query->where('(a.state IN (0, 1))');
-                }
+        // Filter by published state
+        $published = $this->getState('filter.state');
+        if (is_numeric($published)) {
+            $query->where('a.state = '.(int) $published);
+        } else if ($published === '') {
+            $query->where('(a.state IN (0, 1))');
+        }
                     
 
 		// Filter by search in title
@@ -127,8 +127,8 @@ class MymuseModelshoppergroups extends JModelList
 			if (stripos($search, 'id:') === 0) {
 				$query->where('a.id = '.(int) substr($search, 3));
 			} else {
-				$search = $db->Quote('%'.$db->escaped($search, true).'%');
-                $query->where('()');
+				$search = $db->Quote('%'.$db->escape($search, true).'%');
+                $query->where('(a.shopper_group_name LIKE '.$search.' OR a.shopper_group_description LIKE '.$search.')');
 			}
 		}
 
@@ -136,7 +136,7 @@ class MymuseModelshoppergroups extends JModelList
 		$orderCol	= $this->state->get('list.ordering');
 		$orderDirn	= $this->state->get('list.direction');
         if ($orderCol && $orderDirn) {
-		    $query->order($db->escaped($orderCol.' '.$orderDirn));
+		    $query->order($db->escape($orderCol.' '.$orderDirn));
         }
 
 		return $query;

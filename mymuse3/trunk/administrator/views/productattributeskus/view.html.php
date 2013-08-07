@@ -32,6 +32,7 @@ class MymuseViewProductattributeskus extends JViewLegacy
 		$this->pagination	= $this->get('Pagination');
 		$this->lists		= $this->get('Lists');
 		$this->parent 		= $this->get('Parent');
+		$this->sortfields 	= $this->getSortFields();
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
@@ -79,5 +80,23 @@ class MymuseViewProductattributeskus extends JViewLegacy
 
 		}
 		JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/documentation/documentation-2-5/153-product-items-list-attributes?tmpl=component');	
+	}
+	
+	/**
+	 * Returns an array of fields the table can be sorted by
+	 *
+	 * @return  array  Array containing the field name to sort by as the key and display text as value
+	 *
+	 * @since   3.0
+	 */
+	protected function getSortFields()
+	{
+		return array(
+				'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+				'a.product_parent_id' => JText::_('MYMUSE_PRODUCT'),
+				'a.name' => JText::_('JGLOBAL_TITLE'),
+				'a.id' => JText::_('JGRID_HEADING_ID')
+
+		);
 	}
 }

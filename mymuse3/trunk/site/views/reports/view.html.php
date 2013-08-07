@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.view' );
 
-class myMuseViewReports extends Jview
+class myMuseViewReports extends JViewLegacy
 {
 	protected $items;
 	protected $pagination;

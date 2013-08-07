@@ -21,7 +21,7 @@ jimport( 'joomla.application.component.view');
  * @subpackage MyMuse
  * @since 1.5
  */
-class myMuseViewProduct extends JView
+class myMuseViewProduct extends JViewLegacy
 {
 	protected $item;
 	protected $params;

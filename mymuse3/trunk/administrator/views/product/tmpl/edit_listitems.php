@@ -151,27 +151,26 @@ $user = JFactory::getUser();
 		</script>
 <div id="items">
 <h2><?php echo JText::_( 'MYMUSE_ITEMS' ); ?></h2>
-
 	<div id="content-box">
 		<div id="toolbar-box">
 			<div class="m">
 				<div class="toolbar-list" id="toolbar">
 	<ul  style="list-style-type: none;">
 
-		<li class="button" id="toolbar-edit"><a href="#"
+		<li class="button" id="toolbar-edit" style="display: inline;"><a href="#"
 			onclick="javascript: submitform4('list')" class="toolbar"> <span
 			class="icon-32-publish"> </span> <?php echo JText::_( 'MYMUSE_LIST_ATTRIBUTES' ); ?> </a>
 		</li>
 
-		<li class="button" id="toolbar-new"><a href="#"
+		<li class="button" id="toolbar-new" style="display: inline;"><a href="#"
 			onclick="javascript: submitform5('productattributesku.add')" class="toolbar"> <span
 			class="icon-32-new"> </span> <?php echo JText::_( 'MYMUSE_ADD_ATTRIBUTES' ); ?> </a>
 		</li>	
-		<li class="button" id="toolbar-all"><a href="#"
+		<li class="button" id="toolbar-all" style="display: inline;"><a href="#"
 			onclick="javascript: submitbutton3('product.additem')" class="toolbar"> <span
 			class="icon-32-new"> </span> <?php echo JText::_( 'MYMUSE_NEW_ITEM' ); ?> </a>
 		</li>
-		<li class="button" id="toolbar-new"><a href="#"
+		<li class="button" id="toolbar-new" style="display: inline;"><a href="#"
 			onclick="javascript: submitbutton3('product.removeitem')" class="toolbar"> <span
 			class="icon-32-delete"> </span> <?php echo JText::_( 'MYMUSE_DELETE_ITEM' ); ?> </a>
 		</li>
@@ -182,7 +181,7 @@ $user = JFactory::getUser();
 	</div>
 <?php } ?>	
 
-	<form action="index.php" method="post" name="adminForm3">
+	<form action="index.php" method="post" name="adminForm3" id="adminForm">
 	<input type="hidden" name="view" value="product" /> 
 	<input type="hidden" name="layout" value="edit" /> 
 	<input type="hidden" name="option" value="com_mymuse" /> 
@@ -195,12 +194,12 @@ $user = JFactory::getUser();
 	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 	<?php 
 	if(count($this->items) > 0){ 
-	?>...
+	?>
 		<table class="adminlist">
 			<thead>
 				<tr>
-					<th width="5">
-						<?php echo JText::_( 'Num' ); ?>
+					<th width="1%" class="nowrap center hidden-phone">
+						<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
 					</th>
 					<th width="5">
 						<input type="checkbox" name="toggle" value="" onclick="checkAll3(<?php echo count( $this->items ); ?>);" />
@@ -218,13 +217,7 @@ $user = JFactory::getUser();
 					<th width="1%" nowrap="nowrap">
 						<?php echo MyMuseHelper::sort3('Published', 'a.state', $listDirn, $listOrder ); ?>
 					</th>
-					<th width="10%" nowrap="nowrap">
 
-					<?php echo MyMuseHelper::sort3( 'JGRID_HEADING_ORDERING', 'a.ordering', $listDirn, $listOrder); ?>
-					<?php if ($saveOrder) :?>
-						<?php echo MyMuseHelper::order3($this->items, 'filesave.png', 'products.saveorder'); ?>
-					<?php endif; ?>
-					</th>
 					<th width="1%" class="title"><?php echo JText::_('MYMUSE_ID'); ?>
 					</th>
 				</tr>
@@ -254,8 +247,24 @@ $user = JFactory::getUser();
 				
 				?>
 				<tr class="<?php echo "row$k"; ?>">
-					<td>
-						<?php echo  $i; ?>
+					<td class="order nowrap center hidden-phone">
+					<?php if ($canChange) :
+						$disableClassName = '';
+						$disabledLabel	  = '';
+
+						if (!$saveOrder) :
+							$disabledLabel    = JText::_('JORDERINGDISABLED');
+							$disableClassName = 'inactive tip-top';
+						endif; ?>
+						<span class="sortable-handler hasTooltip <?php echo $disableClassName; ?>" title="<?php echo $disabledLabel; ?>">
+							<i class="icon-menu"></i>
+						</span>
+						<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order " />
+					<?php else : ?>
+						<span class="sortable-handler inactive" >
+							<i class="icon-menu"></i>
+						</span>
+					<?php endif; ?>
 					</td>
 					<td align="center">
 						<?php echo $checked; ?>
@@ -273,23 +282,7 @@ $user = JFactory::getUser();
 								
 								<?php echo MGrid::published( $item->state, $i, 'products.', 1, 'cb', $item->publish_up, $item->publish_down, 3); ?>
 					</td>
-				<td class="order">
-					<?php if ($canChange) : ?>
-						<?php if ($saveOrder) :?>
-							<?php if ($listDirn == 'asc') : ?>
-								<span><?php echo MyMuseHelper::orderUpIcon3($i, ($item->catid == @$this->items[$i-1]->catid), 'products.orderup', 'JLIB_HTML_MOVE_UP', $ordering,  'cb',$this->itemPagination->limitstart ); ?></span>
-								<span><?php echo MyMuseHelper::orderDownIcon3($i, $this->itemPagination->total, ($item->catid == @$this->items[$i+1]->catid), 'products.orderdown', 'JLIB_HTML_MOVE_DOWN', $ordering, 'cb',$this->itemPagination->limitstart, $this->itemPagination->total); ?></span>
-							<?php elseif ($listDirn == 'desc') : ?>
-								<span><?php echo MyMuseHelper::orderUpIcon3($i, ($item->catid == @$this->items[$i-1]->catid), 'products.orderdown', 'JLIB_HTML_MOVE_UP', $ordering,  'cb', $this->itemPagination->limitstart); ?></span>
-								<span><?php echo MyMuseHelper::orderDownIcon3($i, $this->itemPagination->total, ($item->catid == @$this->items[$i+1]->catid), 'products.orderup', 'JLIB_HTML_MOVE_DOWN', $ordering, 'cb',$this->itemPagination->limitstart,$this->itemPagination->total); ?></span>
-							<?php endif; ?>
-						<?php endif; ?>
-						<?php $disabled = $saveOrder ?  '' : 'disabled="disabled"'; ?>
-						<input type="text" name="order[]" size="5" value="<?php echo $item->ordering;?>" <?php echo $disabled ?> class="text-area-order" />
-					<?php else : ?>
-						<?php echo $item->ordering; ?>
-					<?php endif; ?>
-				</td>
+
 					<td>
 						<?php echo $item->id; ?>
 					</td>

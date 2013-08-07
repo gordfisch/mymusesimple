@@ -16,7 +16,7 @@ jimport('joomla.application.component.view');
  * @subpackage	com_content
  * @since 1.5
  */
-class mymuseViewCategories extends JView
+class mymuseViewCategories extends JViewLegacy
 {
 	protected $state = null;
 	protected $item = null;

@@ -1,6 +1,12 @@
 <?php defined('_JEXEC') or die('Restricted access'); 
 ?>
-
+	<div id="j-sidebar-container" class="span2">
+	<?php
+	echo $this->sidebar; 
+	?>
+	</div>
+	<div style="clear: both'"></div>
+	<div id="j-main-container" class="span10">
 		<fieldset class="adminform">
 				<legend><?php echo JText::_('MYMUSE_FOR_JOOMLA'); ?></legend>
 		<table>
@@ -20,17 +26,15 @@
 			<li><b><a href="index.php?option=com_mymuse&task=addSampleData"><?php echo JText::_("MYMUSE_ADD_SAMPLE_DATA"); ?></a></b> 
 
 			</li>
-			<li><b><a href="index.php?option=com_mymuse&view=upgrade"><?php echo JText::_("MYMUSE_UPGRADE_15_25"); ?></a><br />
-			<a href="http://www.mymuse.ca/faq/faq-s-2-5/144-upgrading"><?php echo JText::_("MYMUSE_UPGRADE_15_25_INSTR"); ?></a></b> 
-
-			</li>
 			<li><b><a href="index.php?option=com_mymuse&view=store&layout=edit&id=1"><?php echo JText::_("MYMUSE_STORE"); ?></a></b> 
 			<?php echo JText::_("MYMUSE_STORE_DESC"); ?>
 			</li>
-			<li><b><a href="index.php?option=com_plugins&view=plugins&filter_folder=mymuse"><?php echo JText::_("MYMUSE_PAYMENT"); ?></a></b> 
-			<?php echo JText::_("MYMUSE_PAYMENT_DESC"); ?><br />
-			<?php echo JText::_("MYMUSE_PAYPAL_DESC"); ?><br />
-			<?php echo JText::_("MYMUSE_STORE_PAYPAL_IPN"); ?>
+			<li><b><a href="index.php?option=com_plugins&view=plugins&filter_folder=mymuse"><?php echo JText::_("MYMUSE_PLUGINS"); ?></a></b> 
+			
+			<?php echo JText::_("MYMUSE_PLUGINS_DESC"); ?><br />
+
+			<b><a href="index.php?option=com_plugins&view=plugins&filter_folder=user"><?php echo JText::_("MYMUSE_PLUGINS_USER"); ?></a></b> 
+			<?php echo JText::_("MYMUSE_PLUGINS_USER_DESC"); ?><br />
 			</li>
 			
 			
@@ -48,9 +52,6 @@
 			<li><b><a href="index.php?option=com_mymuse&view=tax_rate"><?php echo JText::_("MYMUSE_TAXES"); ?></a></b> 
 			<?php echo JText::_("MYMUSE_TAXES_DESC"); ?></li>
 			
-			<li><b><a href="index.php?option=com_mymuse&view=order"><?php echo JText::_("MYMUSE_ORDERS"); ?></a></b> 
-			<?php echo JText::_("MYMUSE_ORDERS_DESC"); ?></li>
-			
 			<li><b><a href="index.php?option=com_menus&task=view"><?php echo JText::_("MYMUSE_MENUS"); ?></a></b> 
 			<?php echo JText::_("MYMUSE_MENUS_DESC"); ?></li>
 	
@@ -65,3 +66,4 @@
 
 		</table>
 		</fieldset>
+</div>

@@ -37,7 +37,16 @@
 		  <option value="on">JYES</option>
 		</field>
 		<field name="conversion_multiplier" type="text" size="5" default="0" label="MYMUSE_PAYFAST_CONVERSION_LABEL" description="MYMUSE_PAYFAST_CONVERSION_DESC"/>
-
+        <field type="spacer" />
+        <field name="email_msg" 
+        type="editor" 
+        filter="raw" 
+        width="200px"
+        rows="35" 
+        cols="35" 
+        default="" 
+        label="MYMUSE_MSG_LABEL" 
+        description="MYMUSE_MSG_DESC" />
 	</fieldset>
 	</fields>
 	</config>

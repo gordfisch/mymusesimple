@@ -64,7 +64,7 @@ function hasProduct(that, count){
 }
 
 </script>
-
+<!--  HEADING TITLE ICONS -->
 <div class="contentpaneopen mymuse">
 <div class="contentpane">
 <?php if ($this->params->get('show_page_heading', 1)) : ?>
@@ -120,6 +120,9 @@ endif; ?>
 
 <?php echo $this->item->event->beforeDisplayProduct; ?>
 
+<!--  END HEADING -->
+
+<!-- PRODUCT ATTRIBUTES -->
 <?php $useDefList = (($params->get('show_author')) or ($params->get('show_category')) or ($params->get('show_parent_category'))
 	or ($params->get('show_create_date')) or ($params->get('show_modify_date')) or ($params->get('show_publish_date'))
 	or ($params->get('show_hits'))); ?>
@@ -189,14 +192,70 @@ endif; ?>
 <?php if ($useDefList) : ?>
 	</dl>
 <?php endif; ?>
+<!-- END ATTRIBUTES -->
+
+<!-- RECORDING DETAILS -->
+<?php $useRecList = ($params->get('show_recording_details') && ($this->item->product_made_date or $this->item->product_full_time or $this->item->product_country
+	or $this->item->product_publisher or $this->item->product_producer or $this->item->product_studio)); ?>
+	
+<?php if ($useRecList) : ?>
+	<dl class="article-info">
+	<dt class="article-info-term"><?php  echo JText::_('MYMUSE_RECORDING_DETAILS'); ?></dt>
+<?php endif; ?>
+<?php if ($this->item->product_made_date) : ?>
+	<dd class="product_made_date">
+	<?php echo JText::_('MYMUSE_PRODUCT_CREATED_LABEL'); ?> :
+	<?php echo JHtml::_('date', $product->product_made_date, $this->escape(
+		$this->params->get('date_format', JText::_('DATE_FORMAT_LC3')))); ?>
+	</dd>
+<?php endif; ?>
+<?php if ($this->item->product_full_time) : ?>
+	<dd class="product_full_time">
+	<?php echo JText::_('MYMUSE_PRODUCT_FULL_TIME_LABEL'); ?> :
+	<?php echo $this->item->product_full_time; ?>
+	</dd>
+<?php endif; ?>
+<?php if ($this->item->product_country) : ?>
+	<dd class="product_country">
+	<?php echo JText::_('MYMUSE_PRODUCT_COUNTRY_LABEL'); ?> :
+	<?php echo $this->item->product_country; ?>
+	</dd>
+<?php endif; ?>
+<?php if ($this->item->product_publisher) : ?>
+	<dd class="product_publisher">
+	<?php echo JText::_('MYMUSE_PRODUCT_PUBLISHER_LABEL'); ?> :
+	<?php echo $this->item->product_publisher; ?>
+	</dd>
+<?php endif; ?>
+<?php if ($this->item->product_producer) : ?>
+	<dd class="product_producer">
+	<?php echo JText::_('MYMUSE_PRODUCT_PRODUCER_LABEL'); ?> :
+	<?php echo $this->item->product_producer; ?>
+	</dd>
+<?php endif; ?>
+<?php if ($this->item->product_studio) : ?>
+	<dd class="product_studio">
+	<?php echo JText::_('MYMUSE_PRODUCT_STUDIO_LABEL'); ?> :
+	<?php echo $this->item->product_studio; ?>
+	</dd>
+<?php endif; ?>
+
+
+
+<?php if ($useRecList) : ?>
+	</dl>
+<?php endif; ?>
+<div style="clear: both"></div>
+
+<!-- END ATTRIBUTES -->
+
+
 <form method="post" action="<?php echo JURI::base() ?>index.php?Itemid=<?php echo $Itemid; ?>" onsubmit="return hasProduct(this,<?php echo $count; ?>);" name="mymuseform">
 <input type="hidden" name="option" value="com_mymuse" />
 <input type="hidden" name="task" value="addtocart" />
 <input type="hidden" name="catid" value="<?php echo $product->catid; ?>" />
 
-
-
-
+<!-- IMAGE INTROTEXT -->
 <table class="mymusetable">
 <?php if( ($params->get('product_show_product_image') && $product->detail_image) || $params->get('show_intro')) :?>
 <tr>
@@ -234,11 +293,11 @@ endif; ?>
 	</td>
 </tr>	
 <?php endif; ?>
+<!-- END IMAGE INTROTEXT -->
 
-
+<!--  PRODUCT PHYSICAL -->
 <tr>
 	<td>
-
 		<?php if($product->product_physical){  ?>
 		<h3><?php echo JText::_('MYMUSE_PRODUCT'); ?></h3> 
 		<table class="mymuse_cart">
@@ -279,12 +338,11 @@ endif; ?>
 		</table>
 		<br />
 		<br />
-		
-		
-
-
 		<?php } ?>
+<!-- END PRODUCT PHYSICAL -->	
 		
+			
+<!-- ITEMS   ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS -->
 	<?php if(count($items) && !$items_select){  ?>
 		<h3><?php echo JText::_('MYMUSE_ITEMS'); ?></h3> 
 		<table class="mymuse_cart">
@@ -390,10 +448,11 @@ endif; ?>
 		<br />
 		<br />
 <?php } ?>
+<!--  END ITEMS -->
 
-	
-<?php if(count($tracks)){ 
-	?>
+
+<!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
+<?php if(count($tracks)){ ?>
 		<h3><?php echo JText::_('MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
 
 		<?php if($params->get('product_player_type') == "single"){ ?>
@@ -510,9 +569,12 @@ endif; ?>
 	</td>
 </tr>
 <?php } ?>
+<!-- END TRACKS -->
 <tr>
 	<td>&nbsp;</td>
 </tr>
+
+<!--  FULLTEXT -->
 <?php if($product->fulltext != ''){ ?>	
 <tr>
 	<td valign="top" colspan="2"><a name="readmore"></a>
@@ -521,7 +583,17 @@ endif; ?>
 <?php } ?>
 </table>
 </form>
+<!--END FULL TEXT -->
 
+<!-- COMMENTS -->
+<?php 
+$comments = JPATH_SITE . DS .'components' . DS . 'com_jcomments' . DS . 'jcomments.php';
+  if (file_exists($comments)) {
+    require_once($comments);
+    echo JComments::showComments($product->id, 'com_mymuse', $product->title);
+  }
+?>
+<!-- ENDCOMMENTS -->
 </div>
 </div>
 <?php echo $this->item->event->afterDisplayProduct; ?>

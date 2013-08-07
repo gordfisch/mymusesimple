@@ -19,7 +19,7 @@ class modMyMuseLatestHelper
 	{
 		$db = JFactory::getDBO();
 		$jnow			=& JFactory::getDate();
-		$now			= $jnow->toMySQL();
+		$now			= $jnow->toSql();
 		$nullDate		= $db->getNullDate();
 		$results 		= array();
 		$MyMuseStore	=& MyMuse::getObject('store','models');

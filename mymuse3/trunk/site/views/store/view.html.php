@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 
 jimport( 'joomla.application.component.view' );
 
-class myMuseViewStore extends Jview
+class myMuseViewStore extends JViewLegacy
 {
 	protected $state = null;
 	protected $item = null;

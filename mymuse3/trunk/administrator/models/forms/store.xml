@@ -67,6 +67,22 @@
 
            <field name="checked_out" type="hidden" filter="unset" />
            <field name="checked_out_time" type="hidden" filter="unset" />
+           
+           <field
+				name="metadesc"
+				type="textarea"
+				label="JFIELD_META_DESCRIPTION_LABEL"
+				description="JFIELD_META_DESCRIPTION_DESC"
+				rows="3"
+				cols="40"/>
+
+			<field
+				name="metakey"
+				type="textarea"
+				label="JFIELD_META_KEYWORDS_LABEL"
+				description="JFIELD_META_KEYWORDS_DESC"
+				rows="3"
+				cols="40"/>
 
 	</fieldset>
 	
@@ -205,7 +221,7 @@
 		  		type="radio" 
 		  		label="MYMUSE_DOWNLOADS_ENABLE_LABEL"
 				description="MYMUSE_DOWNLOADS_ENABLE_DESC" 
-				class="inputbox"
+				class="btn-group"
 				default="1">
 				<option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
@@ -265,7 +281,7 @@
                 type="radio"
                 label="MYMUSE_DOWNLOADS_ENCODE_LABEL"
                 description="MYMUSE_DOWNLOADS_ENCODE_DESC"
-                class="inputbox"
+                class="btn-group"
                 default="0">
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
@@ -275,7 +291,7 @@
                 type="radio"
                 label="MYMUSE_FREE_DOWNLOADS_LABEL"
                 description="MYMUSE_FREE_DOWNLOADS_DESC"
-                class="inputbox"
+                class="btn-group"
                 default="0">
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
@@ -286,7 +302,7 @@
                 type="radio"
                 label="MYMUSE_PLAY_DOWNLOADS_LABEL"
                 description="MYMUSE_PLAY_DOWNLOADS_DESC"
-                class="inputbox"
+                class="btn-group"
                 default="0">
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
@@ -300,7 +316,7 @@
                 type="radio"
                 label="MYMUSE_USE_SHIPPING_LABEL"
                 description="MYMUSE_USE_SHIPPING_DESC"
-                class="inputbox"
+                class="btn-group"
                 default="0">
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
@@ -310,7 +326,7 @@
                 type="radio"
                 label="MYMUSE_USE_STOCK_LABEL"
                 description="MYMUSE_USE_STOCK_DESC"
-                class="inputbox"
+                class="btn-group"
                 default="0">
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
@@ -320,7 +336,7 @@
                 type="radio"
                 label="MYMUSE_CHECK_STOCK_LABEL"
                 description="MYMUSE_CHECK_STOCK_DESC"
-                class="inputbox"
+                class="btn-group"
                 default="0">
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
@@ -330,7 +346,7 @@
                 type="radio"
                 label="MYMUSE_ADD_STOCK_ZERO_LABEL"
                 description="MYMUSE_ADD_STOCK_ZERO_DESC"
-                class="inputbox"
+                class="btn-group"
                 default="0">
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
@@ -354,7 +370,7 @@
                 type="radio"
                 label="MYMUSE_USE_COUPONS"
                 description="MYMUSE_USE_COUPONS_DESC"
-                class="inputbox"
+                class="btn-group"
                 default="0">
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>>
@@ -437,7 +453,7 @@
                 type="radio"
                 label="MYMUSE_CC_WEBMASTER_LABEL"
                 description="MYMUSE_CC_WEBMASTER_DESC"
-                class="inputbox"
+                class="btn-group"
                 default="0">
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>>
@@ -492,7 +508,7 @@
                 type="list"
                 label="MYMUSE_ADD_TAXES_LABEL"
                 description="MYMUSE_ADD_TAXES_DESC"
-                class="inputbox"
+                class="btn-group"
                 default="0">
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>>
@@ -524,7 +540,7 @@
                 type="radio"
                 label="MYMUSE_SHOP_TEST_LABEL"
                 description="MYMUSE_SHOP_TEST_DESC"
-                class="inputbox"
+                class="btn-group"
                 default="0">
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>>
@@ -534,7 +550,7 @@
                 type="radio"
                 label="MYMUSE_DEBUG_LABEL"
                 description="MYMUSE_DEBUG_DESC"
-                class="inputbox"
+                class="btn-group"
                 default="0">
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>>

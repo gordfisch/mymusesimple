@@ -310,7 +310,7 @@ class MymuseModelproduct extends JModelAdmin
 				foreach($lists['attribute_sku'] as $a_sku){
 					$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$item->id.'
 						AND product_attribute_sku_id='.$a_sku->id;
-					
+				
 					$this->_db->setQuery($query);
 					$item->attributes[$a_sku->name] = $this->_db->loadResult();
 				}
@@ -542,7 +542,7 @@ class MymuseModelproduct extends JModelAdmin
     							//audio
     							$stream  = '<!-- Begin Fulltrack Player -->';
     							$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track, 'each', 25, 100, $i, $count ));
-    							if(is_array($results) && $results[0] != ''){
+    							if(is_array($results) && isset($results[0]) && $results[0] != ''){
     								$stream  .= $results[0];
     							}
     							$stream  .= '<!-- End  Fulltrack Player -->';
@@ -820,17 +820,20 @@ class MymuseModelproduct extends JModelAdmin
 		if(!$this->_attribute_skus){
 			$this->getAttributeskus();
 		}
-		$id = JRequest::getVar('id');
-		foreach($this->_attribute_skus as $a_sku){
+		$id = JRequest::getVar('id',0);
+		if($id){
+			foreach($this->_attribute_skus as $a_sku){
 				$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$id.'
 				AND product_attribute_sku_id='.$a_sku->id;
 
 				$db->setQuery($query);
 				$this->_item->attributes[$a_sku->name] = $db->loadResult();
+			}
+		
+			return $this->_item->attributes;
 		}
-
-		return $this->_item->attributes;
-
+		
+		return array();
 		
 	}
 
