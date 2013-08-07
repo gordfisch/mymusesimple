@@ -561,6 +561,14 @@ if (!function_exists('wddx_deserialize')) {
       return wddx_deserialize($datanode[0]);
     }
   }
+  
+  function onAfterMyMusePayment()
+  {
+  
+  	$email_msg = "paymentpaypal:".preg_replace("/\\n/","<br />",$this->params->get('email_msg'));
+  	return $email_msg;
+  
+  }
 }
 
 

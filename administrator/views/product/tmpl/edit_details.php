@@ -1,53 +1,118 @@
 
-		<fieldset class="adminform">
+		<fieldset class="adminform form-horizontal">
 
 			<legend><?php echo empty($this->item->id) ? JText::_('MYMUSE_NEW_PRODUCT') : JText::sprintf('MYMUSE_EDIT_PRODUCT', $this->item->id); ?></legend>
-			<div class="pull-left">
-			<ul class="adminformlist">
-				<li><?php echo $this->form->getLabel('title'); ?>
-				<?php echo $this->form->getInput('title'); ?></li>
+			<div class="pull-left span5">
 
-				<li><?php echo $this->form->getLabel('alias'); ?>
-				<?php echo $this->form->getInput('alias'); ?></li>
-
-				<li><?php echo $this->form->getLabel('catid'); ?>
-				<?php echo $this->form->getInput('catid'); ?></li>
-				
-				<li><label id="jform_preview_list-lbl" for="jform_preview_list"  class="hasTip" title="<?php echo JText::_("MYMUSE_SELECT_OTHER_CATS")?>">
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('title'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('title'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('alias'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('alias'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('catid'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('catid'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<label id="jform_preview_list-lbl" for="jform_preview_list"  class="hasTip" title="<?php echo JText::_("MYMUSE_SELECT_OTHER_CATS")?>">
 				<?php echo JText::_( 'MYMUSE_SELECT_OTHER_CATS' ); ?></label>
-				<?php echo $this->form->getInput('othercats'); ?> </li>
-				
-				<li><?php echo $this->form->getLabel('product_sku'); ?>
-				<?php echo $this->form->getInput('product_sku'); ?></li>
-				
-				<li><?php echo $this->form->getLabel('product_physical'); ?>
-				<?php echo $this->form->getInput('product_physical'); ?></li>
-				
-				<li><?php echo $this->form->getLabel('product_in_stock'); ?>
-				<?php echo $this->form->getInput('product_in_stock'); ?></li>
-			</ul>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('othercats'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('product_sku'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('product_sku'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('product_physical'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('product_physical'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('product_in_stock'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('product_in_stock'); ?>
+				</div>
 			</div>
 
-			<div class="pull-right">
-			<ul class="adminformlist">
-				<li><?php echo $this->form->getLabel('price'); ?>
-				<?php echo $this->form->getInput('price'); ?></li>
+			</div>
 
-				<li><?php echo $this->form->getLabel('state'); ?>
-				<?php echo $this->form->getInput('state'); ?></li>
-
-				<li><?php echo $this->form->getLabel('access'); ?>
-				<?php echo $this->form->getInput('access'); ?></li>
-
-				<li><?php echo $this->form->getLabel('featured'); ?>
-				<?php echo $this->form->getInput('featured'); ?></li>
-
-				<li><?php echo $this->form->getLabel('language'); ?>
-				<?php echo $this->form->getInput('language'); ?></li>
-
-				<li><?php echo $this->form->getLabel('id'); ?>
-				<?php echo $this->form->getInput('id'); ?></li>
-			</ul>
+			<div class="pull-left span5">
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('price'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('price'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('state'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('state'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('access'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('access'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('featured'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('featured'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('language'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('language'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('id'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('id'); ?>
+				</div>
+			</div>
 			</div>
 			
 			

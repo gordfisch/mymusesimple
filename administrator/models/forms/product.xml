@@ -464,11 +464,29 @@
                 size="35"
                 required="false"
           	/>
+          	
+          	<field
+				name="metadesc"
+				type="textarea"
+				label="JFIELD_META_DESCRIPTION_LABEL"
+				description="JFIELD_META_DESCRIPTION_DESC"
+				rows="3"
+				cols="40"/>
+
+			<field
+				name="metakey"
+				type="textarea"
+				label="JFIELD_META_KEYWORDS_LABEL"
+				description="JFIELD_META_KEYWORDS_DESC"
+				rows="3"
+				cols="40"/>
+		
 	</fieldset>
 	
 	
 	<fields name="metadata">
 		<fieldset name="metadata" label="MYMUSE_PARAMETERS_METADATA">
+
 		<field name="robots"
 			type="list"
 			label="JFIELD_METADATA_ROBOTS_LABEL"

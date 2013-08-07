@@ -31,18 +31,6 @@ if($print){
 }
 ?>
 <script type="text/javascript">
-function pageLoad(page)
-{
-	 //hide all then show the good one
-	document.getElementById("details").style.display="none";
-	document.getElementById("payments").style.display="none";
-	document.getElementById("shipping").style.display="none";
-	document.getElementById("details_link").className = document.getElementById("details_link").className.replace( /(?:^|\s)active(?!\S)/ , '' );
-	document.getElementById("payments_link").className = document.getElementById("payments_link").className.replace( /(?:^|\s)active(?!\S)/ , '' );
-	document.getElementById("shipping_link").className = document.getElementById("shipping_link").className.replace( /(?:^|\s)active(?!\S)/ , '' );
-	document.getElementById(page).style.display="block";
-	document.getElementById(page+"_link").className += " active";  
-}
 
 	Joomla.submitbutton = function(task)
 	{
@@ -55,97 +43,145 @@ function pageLoad(page)
 	}
 </script>
 
-<div id="submenu-box">
-	<div class="submenu-box">
-		<div class="submenu-pad">
-<ul id="submenu">
-	<li><a id="details_link" class="active" href="#" onclick="javascript:pageLoad('details');"><?php echo JText::_( 'MYMUSE_DETAILS' ); ?></a></li>
-	<li><a id="payments_link" href="#" onclick="javascript:pageLoad('payments');"><?php echo JText::_( 'MYMUSE_PAYMENTS' ); ?></a></li>
-	<li><a id="shipping_link" href="#" onclick="javascript:pageLoad('shipping');"><?php echo JText::_( 'MYMUSE_SHIPPING' ); ?></a></li>
-</ul>
-			<div class="clr"></div>
+
+
+<form 
+action="<?php echo JRoute::_('index.php?option=com_mymuse&layout=edit&id='.(int) $this->item->id); ?>" 
+method="post" name="adminForm" id="order-form" class="form-validate">
+<div class="row-fluid">
+	<!-- Begin Content -->
+	<div class="span10 form-horizontal">
+		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+			
+			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('MYMUSE_DETAILS', true)); ?>	
+		<div class="span10"><h2><?php echo JText::_('MYMUSE_ORDER_SUMMARY'); ?></h2></div>
+		<div style="clear: both;"></div>
+		<div class="pull-left span5">
+			
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('id'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('id'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('order_number'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('order_number'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('order_subtotal'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('order_subtotal'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('order_shipping'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('order_shipping'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('order_total'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('order_total'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('order_currency'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('order_currency'); ?>
+				</div>
+			</div>
 		</div>
-	</div>
-	<div class="clr"></div>
-</div>
-<div class="clr"></div>
 
+		<div class="pull-left span5">
+		
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('coupon_name'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('coupon_name'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('coupon_discount'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('coupon_discount'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('discount'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('discount'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('created'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('created'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('modified'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('modified'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('order_status'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('order_status'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('notes'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('notes'); ?>
+				</div>
+			</div>
 
-<div id="details" class="tab">
-<form action="<?php echo JRoute::_('index.php?option=com_mymuse&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="order-form" class="form-validate">
-	<div class="width-50 fltlft">
-		<fieldset class="adminform">
-			<legend><?php echo JText::_('MYMUSE_ORDER_SUMMARY'); ?></legend>
-			<ul class="adminformlist">
-
-
-				<li><?php echo $this->form->getLabel('id'); ?>
-				<?php echo $this->form->getInput('id'); ?></li>
-
-				<li><?php echo $this->form->getLabel('order_number'); ?>
-				<?php echo $this->form->getInput('order_number'); ?></li>
-
-				<li><?php echo $this->form->getLabel('order_subtotal'); ?>
-				<?php echo $this->form->getInput('order_subtotal'); ?></li>
-				
-				<li><?php echo $this->form->getLabel('order_shipping'); ?>
-				<?php echo $this->form->getInput('order_shipping'); ?></li>
-				
-				<li><?php echo $this->form->getLabel('order_total'); ?>
-				<?php echo $this->form->getInput('order_total'); ?></li>
-				
-				<li><?php echo $this->form->getLabel('order_currency'); ?>
-				<?php echo $this->form->getInput('order_currency'); ?></li>
-				
-
-                    
-
-            </ul>
-		</fieldset>
-	</div>
-	<div class="width-50 fltrt">
-		<fieldset class="adminform">
-			<legend><?php echo JText::_('MYMUSE_ORDER_SUMMARY'); ?></legend>
-			<ul class="adminformlist">
-
-				
-				<li><?php echo $this->form->getLabel('coupon_name'); ?>
-				<?php echo $this->form->getInput('coupon_name'); ?></li>
-
-				<li><?php echo $this->form->getLabel('coupon_discount'); ?>
-				<?php echo $this->form->getInput('coupon_discount'); ?></li>
-
-				<li><?php echo $this->form->getLabel('discount'); ?>
-				<?php echo $this->form->getInput('discount'); ?></li>
-
-				<li><?php echo $this->form->getLabel('created'); ?>
-				<?php echo $this->form->getInput('created'); ?></li>
-				
-				<li><?php echo $this->form->getLabel('modified'); ?>
-				<?php echo $this->form->getInput('modified'); ?></li>
-
-				<li><?php echo $this->form->getLabel('order_status'); ?>
-				<?php echo $this->form->getInput('order_status'); ?></li>
-
-				<li><?php echo $this->form->getLabel('notes'); ?>
-				<?php echo $this->form->getInput('notes'); ?></li>
-                    
 <?php echo $this->form->getInput('checked_out'); ?>
 <?php echo $this->form->getInput('checked_out_time'); ?>
 
-            </ul>
-		</fieldset>
-	</div>
-	<input type="hidden" name="old_status" value="<?php echo $this->item->order_status; ?>"" />
-	<input type="hidden" name="task" value="" />
+            
+		</div>
+		<input type="hidden" name="old_status" value="<?php echo $this->item->order_status; ?>"" />
+		<input type="hidden" name="task" value="" />
 
 	    
 	    
 	<?php echo JHtml::_('form.token'); ?>
-	<div class="clr"></div>
+	<div style="clear: both;"></div>
 
 	<fieldset class="adminform">
-		<legend><?php echo JText::_('MYMUSE_CUSTOMER') ?></legend>
+		<h2><?php echo JText::_('MYMUSE_CUSTOMER') ?></h2>
 		<table class="admintable" width="100%">
 			<tr VALIGN=top>
 				<td width=50%><!-- Begin BillTo -->
@@ -280,7 +316,7 @@ function pageLoad(page)
 		
 		
 		<fieldset class="adminform">
-				<legend><?php echo JText::_('MYMUSE_ORDER_ITEMS') ?></legend>
+				<h2><?php echo JText::_('MYMUSE_ORDER_ITEMS') ?></h2>
 		<?php $string = '
         		<table class="adminlist" width="600">
 		<tr>
@@ -467,7 +503,7 @@ function pageLoad(page)
  		<tr>
             <td>
             <fieldset class="adminform">
-			  <legend><?php echo JText::_('MYMUSE_DOWNLOADS') ?></legend>
+			  <h2><?php echo JText::_('MYMUSE_DOWNLOADS') ?></h2>
 			  <table class="admintable">
 			    <tr>
 			    <td width="600" valign="top">
@@ -488,16 +524,20 @@ href="index.php?option=com_mymuse&view=order&layout=edit&task=resetDownloads&id=
  </table>
  
 </div>
-<div id="payments" class="tab" style="display:none;">
+
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
+		
+		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'payments', JText::_('MYMUSE_PAYMENTS', true)); ?>
+	
 		<?php 
-//ORDER PAYMENTS
+		//ORDER PAYMENTS
 		?>
 
         <table cellspacing="0" cellpadding="0" border="0" width="800">
         <tr>
             <td valign="top" width="600">
             <fieldset class="adminform">
-			  <legend><?php echo JText::_('MYMUSE_PAYMENTS') ?></legend>
+			  <h2><?php echo JText::_('MYMUSE_PAYMENTS') ?></h2>
 			  <table class="adminlist">
 			    <tr>
 			  		<th><?php echo JText::_('MYMUSE_ID') ?></th>
@@ -536,13 +576,8 @@ href="index.php?option=com_mymuse&view=order&layout=edit&task=resetDownloads&id=
 			  	<tr>
 			    <td valign="top"><?php echo JText::_('ADD') ?></td>
 			    <td valign="top" nowrap="nowrap">
-				
 				<?php echo $this->form->getLabel('payment_date'); ?>
-				<?php echo $this->form->getInput('payment_date'); ?></td>
-				
-				
-				
-				
+				<?php echo $this->form->getInput('payment_date'); ?>
 				</td>
 			    <td valign="top"><?php echo $this->lists['plugins']; ?><br />
 			    <?php echo JText::_('MYMUSE_OTHER'); ?><br />
@@ -566,49 +601,10 @@ href="index.php?option=com_mymuse&view=order&layout=edit&task=resetDownloads&id=
 	
     }
 	?>
-</div>
-<div id="shipping" class="tab" style="display:none;">
-	  <table cellspacing="0" cellpadding="0" border="0" width="800">
-        <tr>
-            <td valign="top" width="600">
-            <fieldset class="adminform">
-			  <legend><?php echo JText::_('MYMUSE_SHIPPING_SUMMARY') ?></legend>
-			  <table class="adminlist">
-			    <tr>
-			  		<th><?php echo JText::_('MYMUSE_ID') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_SHIPPING_TYPE') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_CARRIER_NAME') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_CARRIER_CODE') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_METHOD_NAME') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_METHOD_CODE') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_COST') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_TRACKING_ID') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_DATE') ?></th>
-			  	</tr>
-			  	<?php 
-			  	if(count($this->item->order_shipments)){
-			  		foreach($this->item->order_shipments as $shipment){ 
-			  	?>
-			    <tr>
-			    <td valign="top"><?php echo $shipment->id ?></td>
-			    <td valign="top"><?php echo $shipment->ship_type ?></td>
-			    <td valign="top"><?php echo $shipment->ship_carrier_name ?></td>
-			    <td valign="top"><?php echo $shipment->ship_carrier_code ?></td>
-			    <td valign="top"><?php echo $shipment->ship_method_name ?></td>
-			    <td valign="top"><?php echo $shipment->ship_method_code ?></td>
-			    <td valign="top"><?php echo $shipment->cost ?></td>
-			    <td valign="top"><?php echo $shipment->tracking_id ?></td>
-			    <td valign="top"><?php echo $shipment->created ?></td>
-        		</tr>
-        		<?php } 
-			  	} ?>
 
-        	  </table>
-        </fieldset>
-        </tr>
-    </table>
-</form>	
- </div>
- <script type="text/javascript">
-window.addEvent('domready', pageLoad('details'));
-</script>
+		<?php echo JHtml::_('bootstrap.endTab'); ?>
+		
+
+<?php echo JHtml::_('bootstrap.endTabSet'); ?>
+		</div>
+	</div>

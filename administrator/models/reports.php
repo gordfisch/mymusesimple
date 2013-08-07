@@ -10,9 +10,10 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 
+
 jimport('joomla.application.component.modellist');
 
-class myMuseModelReports extends JmodelList
+class MymuseModelReports extends JModelList
 {
 	function __construct(){
 		parent::__construct();
@@ -200,16 +201,13 @@ class myMuseModelReports extends JmodelList
     		$query->where("a.created <= '$end_date 00:00:00'");
     	}
     
-    
-    
-    
     	// Filter by search in title
     	$search = $this->getState('filter.search');
     	if (!empty($search)) {
     		if (stripos($search, 'id:') === 0) {
     			$query->where('a.id = '.(int) substr($search, 3));
     		} else {
-    			$search = $db->Quote('%'.$db->escaped($search, true).'%');
+    			$search = $db->Quote('%'.$db->escape($search, true).'%');
     			$query->where("u.name LIKE $search");
     		}
     	}
@@ -218,7 +216,7 @@ class myMuseModelReports extends JmodelList
     	$orderCol	= $this->state->get('list.ordering');
     	$orderDirn	= $this->state->get('list.direction');
     	if ($orderCol && $orderDirn) {
-    		$query->order($db->escaped($orderCol.' '.$orderDirn));
+    		$query->order($db->escape($orderCol.' '.$orderDirn));
     	}
    
     	return $query;
@@ -333,6 +331,9 @@ class myMuseModelReports extends JmodelList
 
   		$catid	= $this->getState('filter.catid');
   		$orders =& $this->getItems();
+  		if(!count($orders)){
+  			return null;
+  		}
  
   		$order_ids = "(";
   		foreach($orders as $order){

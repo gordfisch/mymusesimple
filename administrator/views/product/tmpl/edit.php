@@ -18,7 +18,7 @@ JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
-
+jimport ('joomla.html.html.bootstrap');
 // Create shortcut to parameters.
 $params = $this->state->get('params');
 $params = $params->toArray();
@@ -26,6 +26,7 @@ $params = $params->toArray();
 
 
 $lists = $this->lists;
+
 $startOffset = 'details';
 if($lists['subtype'] == "file"){
 	$startOffset = 'tracks';
@@ -33,7 +34,7 @@ if($lists['subtype'] == "file"){
 if($lists['subtype'] == "item"){
 	$startOffset = 'items';
 }
-
+echo "startOffset = $startOffset";
 $app = JFactory::getApplication();
 $input = $app->input;
 
@@ -43,25 +44,7 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 
 <script type="text/javascript">
 
-	function pageLoad(page)
-	{
-   	 //hide all then show the good one
-    	document.getElementById("details").style.display="none";
-    	document.getElementById("images").style.display="none";
-    	document.getElementById("tracks").style.display="none";
-    	document.getElementById("items").style.display="none";
-    	document.getElementById("details_link").className = document.getElementById("details_link").className.replace( /(?:^|\s)active(?!\S)/ , '' );
-    	document.getElementById("tracks_link").className = document.getElementById("tracks_link").className.replace( /(?:^|\s)active(?!\S)/ , '' );
-    	document.getElementById("items_link").className = document.getElementById("items_link").className.replace( /(?:^|\s)active(?!\S)/ , '' );
-    	document.getElementById("images_link").className = document.getElementById("images_link").className.replace( /(?:^|\s)active(?!\S)/ , '' );
-		document.adminForm.subtype.value="details";
-		if(page == "images"){
-			document.adminForm.subtype.value="images";
-		}
-    	
-    	document.getElementById(page).style.display="block";
-    	document.getElementById(page+"_link").className += " active";  
-	}
+
 
 
 	Joomla.submitbutton = function(task)
@@ -82,12 +65,12 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 	<div class="row-fluid">
 		<!-- Begin Content -->
 		<div class="span10 form-horizontal">
-			<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+			<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => $startOffset)); ?>
 
 				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('MYMUSE_DETAILS', true)); ?>
 					<?php echo $this->loadTemplate('details'); ?>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
-			
+		
 				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'images', JText::_('MYMUSE_IMAGES', true)); ?>
 					<?php echo $this->loadTemplate('images'); ?>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -106,9 +89,9 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 						<input type="hidden" name="old_catid"
 						value="<?php echo $this->item->catid;?>" />
 					<?php } ?>
-					<input type="hidden" name="task" value="" /> <input type="hidden"
-					name="subtype" value="details" /> <input type="hidden" name="return"
-					value="<?php echo JRequest::getCmd('return');?>" />
+					<input type="hidden" name="task" value="" /> 
+					<input type="hidden" name="subtype" value="details" /> 
+					<input type="hidden" name="return" value="<?php echo JRequest::getCmd('return');?>" />
 					<?php echo JHtml::_('form.token'); ?>
 					</form>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -130,13 +113,6 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 						echo $this->loadTemplate('listitems');
 					} ?>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
-
-
-
-
-
-
-
-<script type="text/javascript">
-//window.addEvent('domready', pageLoad('<?php echo $startOffset; ?>'));
-</script>
+			
+		</div>
+	</div>

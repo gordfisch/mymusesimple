@@ -14,7 +14,7 @@ defined('_JEXEC') or die( 'Restricted access' );
 
 jimport( 'joomla.application.component.view');
 
-class myMuseViewCart extends JView
+class myMuseViewCart extends JViewLegacy
 {
 	function __construct()       {
                 parent::__construct(); 
@@ -333,8 +333,23 @@ class myMuseViewCart extends JView
         $store_params = new JRegistry;
         $store_params->loadString($store->params);
   		
-  		$fromname = $store_params->get('contact_first_name')." ".$store_params->get('contact_last_name');
-     	$mailfrom = $store_params->get('contact_email');
+     	// get mailer object
+     	$mailer = JFactory::getMailer();
+     	$mailer->isHTML(false);
+     	$mailer->Encoding = 'base64';
+     	// from
+     	$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
+     	$mailfrom = $params->get('contact_email');
+     	$sender = array(
+     			$mailfrom,
+     			$fromname );
+     	$mailer->setSender($sender);
+     	//recipient
+     	$recipient = $mailfrom;
+     	if($params->get('my_cc_webmaster')){
+     		$recipient = array($mailfrom, $params->get('my_webmaster'));
+     	}
+     	$mailer->addRecipient($recipient);
 
 
         $debug = "$date Making response emails \n";
@@ -352,11 +367,12 @@ class myMuseViewCart extends JView
 
             ".$result['error'];
             
-            JMail::sendMail($mailfrom, $fromname, $mailfrom, $subject, $message);
-        	if($params->get('my_cc_webmaster')){
-        		$webmaster_email = $params->get('my_webmaster');
-        		JMail::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message);
-        	}
+
+            $subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
+            $mailer->setSubject($subject);
+            $mailer->setBody($message);
+            $send = $mailer->Send();
+
             
         }elseif(!$result['order_verified']){
 
@@ -368,11 +384,12 @@ class myMuseViewCart extends JView
             Plugin: ".$result['plugin']."
 
             ".$result['error'];
-            JMail::sendMail($mailfrom, $fromname, $mailfrom, $subject, $message);
-        	if($params->get('my_cc_webmaster')){
-        		$webmaster_email = $params->get('my_webmaster');
-        		JMail::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message);
-        	}
+            
+            $subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
+            $mailer->setSubject($subject);
+            $mailer->setBody($message);
+            $send = $mailer->Send();
+            
             
         }elseif(!$result['order_found']){
 
@@ -384,11 +401,11 @@ class myMuseViewCart extends JView
             Plugin: ".$result['plugin']."
 
             ".$result['error'];
-            JMail::sendMail($mailfrom, $fromname, $mailfrom, $subject, $message);
-        	if($params->get('my_cc_webmaster')){
-        		$webmaster_email = $params->get('my_webmaster');
-        		JMail::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message);
-        	}
+            
+        	$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
+            $mailer->setSubject($subject);
+            $mailer->setBody($message);
+            $send = $mailer->Send();
             
         }elseif(!$result['order_completed']){
 
@@ -400,11 +417,11 @@ class myMuseViewCart extends JView
             Plugin: ".$result['plugin']."
 
             ".$result['error'];
-            JMail::sendMail($mailfrom, $fromname, $mailfrom, $subject, $message);
-        	if($params->get('my_cc_webmaster')){
-        		$webmaster_email = $params->get('my_webmaster');
-        		JMail::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message);
-        	}
+        	
+            $subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
+            $mailer->setSubject($subject);
+            $mailer->setBody($message);
+            $send = $mailer->Send();
             
         }else{
         	//all is good!
@@ -472,11 +489,26 @@ class myMuseViewCart extends JView
         	$message = $header . $order->downloadlink . $contents . $footer;
         	
         	// email client $user_email, and cc store owner $mailfrom
-        	JMail::sendMail($mailfrom, $fromname, $user_email, $subject, $message, 1, $mailfrom );
+        	// get mailer object
+        	$mailer = JFactory::getMailer();
+        	$mailer->isHTML(true);
+        	$mailer->Encoding = 'base64';
+        	// from
+        	$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
+        	$mailfrom = $params->get('contact_email');
+        	$sender = array(
+        			$mailfrom,
+        			$fromname );
+        	$mailer->setSender($sender);
+        	//recipient
+        	$recipient = array($user_email, $mailfrom);
         	if($params->get('my_cc_webmaster')){
-        		$webmaster_email = $params->get('my_webmaster');
-        		JMail::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message, 1);
+        		$recipient = array($user_email, $mailfrom, $params->get('my_webmaster'));
         	}
+        	$mailer->addRecipient($recipient);
+        	$mailer->setSubject($subject);
+        	$mailer->setBody($message);
+        	$send = $mailer->Send();
         	
             //$debug .= "user mail = $user_email\n\n";
             //$debug .= $message."\n\n";
@@ -511,11 +543,26 @@ class myMuseViewCart extends JView
         	$message .= "Order Number: ".$result['order_number']."\n";
         	$message .= "Payment Status returned by ".$result['plugin'].": ".$result['payment_status']."\n";
         	
-        	JMail::sendMail($mailfrom, $fromname, $mailfrom, $subject, $message);
+        	$mailer = JFactory::getMailer();
+        	$mailer->isHTML(false);
+        	$mailer->Encoding = 'base64';
+        	// from
+        	$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
+        	$mailfrom = $params->get('contact_email');
+        	$sender = array(
+        			$mailfrom,
+        			$fromname );
+        	$mailer->setSender($sender);
+        	//recipient
+        	$recipient = $mailfrom;
         	if($params->get('my_cc_webmaster')){
-        		$webmaster_email = $params->get('my_webmaster');
-        		JMail::sendMail($mailfrom, $fromname, $webmaster_email, $subject, $message);
+        		$recipient = array($mailfrom, $params->get('my_webmaster'));
         	}
+        	$mailer->addRecipient($recipient);
+        	$mailer->setSubject($subject);
+        	$mailer->setBody($message);
+        	$send = $mailer->Send();
+        	
         	
         	// update stock
         	if ($params->get('my_use_stock')) {

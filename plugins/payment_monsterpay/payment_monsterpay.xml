@@ -44,7 +44,16 @@
 		  <option value="0">JNO</option>
 		  <option value="1">JYES</option>
 		</field>
-
+        <field type="spacer" />
+        <field name="email_msg" 
+        type="editor" 
+        filter="raw" 
+        width="200px"
+        rows="35" 
+        cols="35" 
+        default="" 
+        label="MYMUSE_MSG_LABEL" 
+        description="MYMUSE_MSG_DESC" />
 
 
 		</fieldset>

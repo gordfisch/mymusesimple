@@ -122,7 +122,7 @@ class MymuseModelproductattributeskus extends JModelList
 			if (stripos($search, 'id:') === 0) {
 				$query->where('a.id = '.(int) substr($search, 3));
 			} else {
-				$search = $db->Quote('%'.$db->escaped($search, true).'%');
+				$search = $db->Quote('%'.$db->escape($search, true).'%');
                 //$query->where('()');
 			}
 		}
@@ -135,7 +135,7 @@ class MymuseModelproductattributeskus extends JModelList
 		$orderDirn	= $this->state->get('list.direction', 'asc');
         if ($orderCol && $orderDirn) {
 
-		    $query->order($db->escaped($orderCol.' '.$orderDirn));
+		    $query->order($db->escape($orderCol.' '.$orderDirn));
         }
 
 		return $query;

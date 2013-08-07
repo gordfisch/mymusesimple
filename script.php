@@ -10,7 +10,7 @@
 defined('_JEXEC') or die('Restricted access');
  
 /**
- * Script file of HelloWorld component
+ * Script file of MyMuse component
  */
 class com_mymuseInstallerScript
 {
@@ -216,7 +216,7 @@ class com_mymuseInstallerScript
 			$db->setQuery($query);
 			$store_params = json_decode($db->loadResult(), TRUE);
 			if($store_params){
-				$store_params['my_download_dir'] = $db->escaped($download_dir);
+				$store_params['my_download_dir'] = $db->getEscaped($download_dir);
 				$registry = new JRegistry;
 				$registry->loadArray($store_params);
 				$new_params = (string)$registry;
@@ -227,7 +227,7 @@ class com_mymuseInstallerScript
 				";
 
 				$db->setQuery($query);
-				if(!$db->execute()){
+				if(!$db->query()){
 					$alt = JText::_( "MYMUSE_FAILED" );
 					$astatus = 0;
 					$message =  JText::_("MYMUSE_PROBLEM_UPDATING_STORE").$db->_errorMsg;
@@ -285,7 +285,7 @@ class com_mymuseInstallerScript
 			element='search_mymuse'
 			";
 			$db->setQuery($query);
-			if(!$db->execute()){
+			if(!$db->query()){
 				$alt = JText::_( "MYMUSE_FAILED" );
 				$astatus = 0;
 				$message =  JText::_("MYMUSE_ENABLE_PLUGINS_FAILED");
@@ -297,6 +297,7 @@ class com_mymuseInstallerScript
 			$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 			
 		}else{
+			//WAS ALREADY INSTALLED
 			//restore the css file
 			$name = JText::_("MYMUSE_SAVE_CSS");
 			$myFile = JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'assets'.DS.'css'.DS.'mymuse.css';
@@ -316,6 +317,7 @@ class com_mymuseInstallerScript
 			//see if we need to update the database
 			//ALTER TABLE `#__mymuse_product` ADD `file_time` varchar(32) NOT NULL AFTER `file_length`
 			$good = 0;
+			$good2 = 0;
 			$name = JText::_("MYMUSE_DB_UPDATED");
 			$query = "SHOW COLUMNS FROM `#__mymuse_product` ";
 			$db->setQuery($query);
@@ -324,22 +326,69 @@ class com_mymuseInstallerScript
 				if(preg_match("/file_time/",$val)){
 					$good = 1;
 				}
+				if(preg_match("/product_full_time/",$val)){
+					$good2 = 1;
+				}
 			}
 			if(!$good){
 				$query = "ALTER TABLE `#__mymuse_product` ADD `file_time` varchar(32) NOT NULL AFTER `file_length`";
 				$db->setQuery($query);
-				if($db->execute()){
+				if($db->query()){
 					$alt = JText::_( "MYMUSE_INSTALLED" );;
 					$astatus = 1;
 					$message = JText::_("MYMUSE_DB_UPDATED_DESC");
 					$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 				}
 			}
+			if(!$good2){
+							$good2 = 1;
+				$query = "ALTER TABLE `#__mymuse_product` ADD `product_publisher` varchar(255) NOT NULL AFTER `product_discount`;";
+				$db->setQuery($query);
+				if(!$db->query()){
+					$good2 = 0;
+				}
+				
+				$query = "ALTER TABLE `#__mymuse_product` ADD `product_studio` varchar(255) NOT NULL AFTER `product_discount`;";
+				$db->setQuery($query);
+				if(!$db->query()){
+					$good2 = 0;
+				}
+				$query = "ALTER TABLE `#__mymuse_product` ADD `product_producer` varchar(255) NOT NULL AFTER `product_discount`;";
+				$db->setQuery($query);
+				if(!$db->query()){
+					$good2 = 0;
+				}
+				$query = "ALTER TABLE `#__mymuse_product` ADD `product_country` char(2) NOT NULL AFTER `product_discount`;";
+				$db->setQuery($query);
+				if(!$db->query()){
+					$good2 = 0;
+				}
+				$query = "ALTER TABLE `#__mymuse_product` ADD `product_full_time` varchar(8) NOT NULL AFTER `product_discount`;";
+				$db->setQuery($query);
+				if(!$db->query()){
+					$good2 = 0;
+				}
+				
+				
 			
+				if($good2){
+					$alt = JText::_( "MYMUSE_INSTALLED" );;
+					$astatus = 1;
+					$message = JText::_("MYMUSE_DB_UPDATED_PRODUCT_FIELDS");
+					$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+				}else{
+					$alt = JText::_( "MYMUSE_FAILED" );;
+					$astatus = 0;
+					$message = JText::_("MYMUSE_DB_COULD_NOT_UPDATE_PRODUCT_FIELDS")." ".$db->errorMsg;
+					$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+				}
+			}
+			
+
 			$name = "Update Order Table";
 			$query = "ALTER TABLE `#__mymuse_order` CHANGE `coupon_discount` `coupon_discount` DECIMAL( 10, 2 ) NOT NULL DEFAULT '0.00'";
 			$db->setQuery($query);
-			if($db->execute()){
+			if($db->query()){
 				$alt = JText::_( "MYMUSE_INSTALLED" );;
 				$astatus = 1;
 				$message = JText::_("Update coupon_discount");

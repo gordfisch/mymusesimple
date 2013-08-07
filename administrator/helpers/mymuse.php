@@ -13,7 +13,9 @@ defined('_JEXEC') or die;
  * For debugging
  * 
  * @param $var
- * @return boolean
+ * @return booleanmGrid
+ * 
+ * 
  */
 function print_pre($var){
 	echo "<pre>";

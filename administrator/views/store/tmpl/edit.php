@@ -11,10 +11,14 @@
 defined('_JEXEC') or die;
 
 // Load the tooltip behavior.
+JHtml::_('behavior.switcher');
+JHtml::_('behavior.multiselect');
+
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
+
 // Create shortcut to parameters.
 $params = $this->state->get('params');
 $params = $params->toArray();

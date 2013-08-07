@@ -27,9 +27,6 @@ $assoc		= isset($app->item_associations) ? $app->item_associations : 0;
 
 require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 
-// Load the submenu.
-$view = JRequest::getCmd('view', 'mymuse');
-
 ?>
 <script type="text/javascript">
 	Joomla.orderTable = function()
@@ -95,7 +92,7 @@ $view = JRequest::getCmd('view', 'mymuse');
 			<tr>
 				<th width="1%" class="nowrap center hidden-phone">
 						<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
-					</th>
+				</th>
 				<th width="1%">
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
@@ -167,8 +164,8 @@ $view = JRequest::getCmd('view', 'mymuse');
 							<i class="icon-menu"></i>
 						</span>
 					<?php endif; ?>
-					</td>
-					<td class="center">
+				</td>
+				<td class="center">
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 				</td>
 				<td>

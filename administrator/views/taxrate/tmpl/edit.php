@@ -24,51 +24,97 @@ JHtml::_('behavior.formvalidation');
 		}
 	}
 </script>
+<h3><?php echo JText::_('COM_MYMUSE_LEGEND_TAXRATE'); ?></h3>
+<form action="<?php echo JRoute::_('index.php?option=com_mymuse&layout=edit&id='.(int) $this->item->id); ?>" 
+method="post" name="adminForm" id="taxrate-form" class="form-validate">
+<div class="row-fluid">
+	<div class="span10 form-horizontal">
+		<div class="span5 pull-left">
 
-<form action="<?php echo JRoute::_('index.php?option=com_mymuse&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="taxrate-form" class="form-validate">
-	<div class="width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_MYMUSE_LEGEND_TAXRATE'); ?></legend>
 			<?php if($this->form->getValue('tax_name') != ''){
 				?><input type="hidden" name="jform[old_tax_name]" value="<?php echo $this->form->getValue('tax_name'); ?>">
 			<?php } ?>
-				
-			<ul class="adminformlist">
-
-            
-			<li><?php echo $this->form->getLabel('id'); ?>
-			<?php echo $this->form->getInput('id'); ?></li>
-			<li><?php echo $this->form->getLabel('tax_name'); ?>
-			<?php echo $this->form->getInput('tax_name'); ?></li>
-			<li><?php echo $this->form->getLabel('tax_rate'); ?>
-			<?php echo $this->form->getInput('tax_rate'); ?></li>
-			<li><?php echo $this->form->getLabel('tax_applies_to'); ?>
-			<?php echo $this->form->getInput('tax_applies_to'); ?></li>
-			<li><?php echo $this->form->getLabel('country'); ?>
-			<?php echo $this->form->getInput('country'); ?></li>
-			<li><?php echo $this->form->getLabel('province'); ?>
-			<?php echo $this->form->getInput('province'); ?></li>
-			<li><?php echo $this->form->getLabel('compounded'); ?>
-			<?php echo $this->form->getInput('compounded'); ?></li>
-			<li><?php echo $this->form->getLabel('ordering'); ?>
-			<?php echo $this->form->getInput('ordering'); ?></li>
 			
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('id'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('id'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('tax_name'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('tax_name'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('tax_rate'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('tax_rate'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('tax_applies_to'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('tax_applies_to'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('country'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('country'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('province'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('province'); ?>
+				</div>
+			</div>
+		</div>
+		<div class="span5 pull-left">	
 
-         
-
-            <li><?php echo $this->form->getLabel('state'); ?>
-            <?php echo $this->form->getInput('state'); ?></li>
-            <li><?php echo $this->form->getLabel('checked_out'); ?>
-           <?php echo $this->form->getInput('checked_out'); ?></li>
-           <li><?php echo $this->form->getLabel('checked_out_time'); ?>
-           <?php echo $this->form->getInput('checked_out_time'); ?></li>
-
-            </ul>
-		</fieldset>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('compounded'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('compounded'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('ordering'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('ordering'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('state'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('state'); ?>
+				</div>
+			</div>
+		</div>
 	</div>
-
-
+</div>
+<?php echo $this->form->getInput('checked_out'); ?>
+<?php echo $this->form->getInput('checked_out_time'); ?>
 	<input type="hidden" name="task" value="" />
 	<?php echo JHtml::_('form.token'); ?>
-	<div class="clr"></div>
 </form>

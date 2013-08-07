@@ -24,61 +24,140 @@ JHtml::_('behavior.formvalidation');
 		}
 	}
 </script>
-
-<form action="<?php echo JRoute::_('index.php?option=com_mymuse&layout=edit&id='.(int) $this->item->id); ?>" method="post" name="adminForm" id="coupon-form" class="form-validate">
-	<div class="width-60 fltlft">
-		<fieldset class="adminform">
-			<legend><?php echo JText::_('COM_MYMUSE_LEGEND_COUPON'); ?></legend>
-			<ul class="adminformlist">
-
-            
-			<li><?php echo $this->form->getLabel('id'); ?>
-			<?php echo $this->form->getInput('id'); ?></li>
-			<li><?php echo $this->form->getLabel('title'); ?>
-			<?php echo $this->form->getInput('title'); ?></li>
-			<li><?php echo $this->form->getLabel('code'); ?>
-			<?php echo $this->form->getInput('code'); ?></li>
-			<li><?php echo $this->form->getLabel('coupon_type'); ?>
-			<?php echo $this->form->getInput('coupon_type'); ?></li>
-			<li><label id="jform_product_id-lbl" for="jform_product_id" 
+<h3><?php echo JText::_('COM_MYMUSE_LEGEND_COUPON'); ?></h3>
+<form action="<?php echo JRoute::_('index.php?option=com_mymuse&layout=edit&id='.(int) $this->item->id); ?>" method="post" 
+method="post" name="adminForm" id="coupon-form" class="form-validate">
+<div class="adminform form-horizontal">
+	<div class="span5 pull-left">
+		<div class="control-group">
+			<div class="control-label">
+				<?php echo $this->form->getLabel('id'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('id'); ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="control-label">
+				<?php echo $this->form->getLabel('title'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('title'); ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="control-label">
+				<?php echo $this->form->getLabel('code'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('code'); ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="control-label">
+				<?php echo $this->form->getLabel('coupon_type'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('coupon_type'); ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="control-label">
+				<label id="jform_product_id-lbl" for="jform_product_id" 
 			class="hasTip" 
 			title="<?php echo JText::_('MYMUSE_COUPON_PRODUCT').": ".JText::_('MYMUSE_COUPON_PRODUCT_TIP'); ?>">
-			<?php echo JText::_('MYMUSE_COUPON_PRODUCT'); ?></label>
-			<?php echo $this->lists['products']?>	
-			
-			<li><?php echo $this->form->getLabel('state'); ?>
-                    <?php echo $this->form->getInput('state'); ?></li><li><?php echo $this->form->getLabel('checked_out'); ?>
-                    <?php echo $this->form->getInput('checked_out'); ?></li><li><?php echo $this->form->getLabel('checked_out_time'); ?>
-                    <?php echo $this->form->getInput('checked_out_time'); ?></li>
-            <li><?php echo $this->form->getLabel('coupon_value'); ?>
-			<?php echo $this->form->getInput('coupon_value'); ?></li>
-			<li><label id="jform_currency_id-lbl" for="jform_currency_id" 
+			<?php echo JText::_('MYMUSE_COUPON_PRODUCT'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->lists['products']; ?>	
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="control-label">
+				<?php echo $this->form->getLabel('state'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('state'); ?>
+			</div>
+		</div>
+		
+
+	</div>
+	<div class="span5 pull-left"> 
+		<div class="control-group">
+			<div class="control-label">
+				<?php echo $this->form->getLabel('coupon_value'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('coupon_value'); ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="control-label">
+				<label id="jform_currency_id-lbl" for="jform_currency_id" 
 			class="hasTip" 
 			title="<?php echo JText::_('MYMUSE_COUPON_CURRENCY').": ".JText::_('MYMUSE_COUPON_CURRENCY_TIP'); ?>">
-			<?php echo JText::_('MYMUSE_COUPON_CURRENCY'); ?></label>
-			<?php echo $this->lists['currency']?>
-			
-			<li><?php echo $this->form->getLabel('coupon_value_type'); ?>
-			<?php echo $this->form->getInput('coupon_value_type'); ?></li>
-			<li><?php echo $this->form->getLabel('coupon_max_uses'); ?>
-			<?php echo $this->form->getInput('coupon_max_uses'); ?></li>
-			<li><?php echo $this->form->getLabel('coupon_max_uses_per_user'); ?>
-			<?php echo $this->form->getInput('coupon_max_uses_per_user'); ?></li>
-			<li><?php echo $this->form->getLabel('start_date'); ?>
-			<?php echo $this->form->getInput('start_date'); ?></li>
-			<li><?php echo $this->form->getLabel('expiration_date'); ?>
-			<?php echo $this->form->getInput('expiration_date'); ?></li>
-			<li><?php echo $this->form->getLabel('description'); ?>
-			<?php echo $this->form->getInput('description'); ?></li>
+			<?php echo JText::_('MYMUSE_COUPON_CURRENCY'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->lists['currency']; ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="control-label">
+				<?php echo $this->form->getLabel('coupon_value_type'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('coupon_value_type'); ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="control-label">
+				<?php echo $this->form->getLabel('coupon_max_uses'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('coupon_max_uses'); ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="control-label">
+				<?php echo $this->form->getLabel('coupon_max_uses_per_user'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('coupon_max_uses_per_user'); ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="control-label">
+				<?php echo $this->form->getLabel('start_date'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('start_date'); ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="control-label">
+				<?php echo $this->form->getLabel('expiration_date'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('expiration_date'); ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="control-label">
+				<?php echo $this->form->getLabel('descriptio'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('descriptio'); ?>
+			</div>
+		</div> 
 
-            
-
-            </ul>
-		</fieldset>
+			<?php echo $this->form->getInput('checked_out'); ?>
+            <?php echo $this->form->getInput('checked_out_time'); ?>
 	</div>
-
+</div>
 
 	<input type="hidden" name="task" value="" />
 	<?php echo JHtml::_('form.token'); ?>
-	<div class="clr"></div>
+
 </form>

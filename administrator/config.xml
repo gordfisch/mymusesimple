@@ -45,15 +45,13 @@
 	 			<option value="1">MYMUSE_SHOW</option>
 	 		</field>
 	 		
-	<field type="spacer" name="spacerdownload2" label="MYMUSE_RECORDING_DETAILS" /> 
-	
 			<field 
 				name="show_recording_details" 
 				type="list" 
+				default="0" 
 				label="MYMUSE_SHOW_RECORDING_DETAILS_LABEL"
 				description="MYMUSE_SHOW_RECORDING_DETAILS_DESC"  
 			>
-          		<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
           	</field>

@@ -12,7 +12,7 @@ defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controller');
 
-class MyMuseController extends JController
+class MyMuseController extends JControllerLegacy
 {
 		
 	/**

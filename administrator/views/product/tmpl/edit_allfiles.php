@@ -45,13 +45,10 @@ JHTML::_('behavior.tooltip');
 		//-->
 		</script>
 
-		<form action="index.php" method="post" name="adminForm">
-
+		<form action="index.php" method="post" name="adminForm" id="adminForm">
+<h2><?php echo $item->parent->title; ?>: <?php echo JText::_("MYMUSE_ALL_FILES"); ?></h2>
 <div class="edittracks">
-<div class="width-50 fltlft">
-		<fieldset class="adminform">
-
-			<legend><?php echo $item->parent->title; ?>: <?php echo JText::_("MYMUSE_ALL_FILES"); ?></legend>
+	<div class="width-50 pull-left">
 			<ul class="adminformlist">
 			
 				<li><?php echo $this->form->getLabel('title'); ?>
@@ -71,6 +68,10 @@ JHTML::_('behavior.tooltip');
 				
 				<li><?php echo $this->form->getLabel('price'); ?>
 				<?php echo $this->form->getInput('price'); ?></li>
+			</ul>
+	</div>			
+	<div class="width-50 pull-right">
+			<ul class="adminformlist">
 				
 				<li><?php echo $this->form->getLabel('state'); ?>
 				<?php echo $this->form->getInput('state'); ?></li>
@@ -87,8 +88,8 @@ JHTML::_('behavior.tooltip');
 				<li><?php echo $this->form->getLabel('id'); ?>
 				<?php echo $this->form->getInput('id'); ?></li>
 			</ul>
-		</fieldset>
-</div>
+
+	</div>
 </div>
 <div class="clr"></div>
 		<input type="hidden" name="product_allfiles" value="1">

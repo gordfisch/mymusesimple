@@ -29,7 +29,16 @@
 		</field>
 		<field name="my_pesapal_consumer_key" type="text" size="35" default="" label="MYMUSE_PESAPAL_MERCHANTID_LABEL" description="MYMUSE_PESAPAL_MERCHANTID_DESC"/>
 		<field name="my_pesapal_consumer_secret" type="text" size="35" default="" label="MYMUSE_PESAPAL_SECRET_LABEL" description="MYMUSE_PESAPAL_SECRET_DESC"/>
-
+        <field type="spacer" />
+        <field name="email_msg" 
+        type="editor" 
+        filter="raw" 
+        width="200px"
+        rows="35" 
+        cols="35" 
+        default="" 
+        label="MYMUSE_MSG_LABEL" 
+        description="MYMUSE_MSG_DESC" />
 	</fieldset>
 	</fields>
 	</config>

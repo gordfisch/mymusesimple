@@ -16,7 +16,7 @@ jimport('joomla.application.component.view');
  * HTML View class for the MyMuse component
  *
  */
-class MymuseViewCategory extends JView
+class MymuseViewCategory extends JViewLegacy
 {
 	protected $state;
 	protected $items;
