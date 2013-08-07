@@ -9,6 +9,10 @@
 // No direct access to this file
 defined('_JEXEC') or die('Restricted access');
  
+if(!defined('DS')){
+	define('DS',DIRECTORY_SEPARATOR);
+}
+
 /**
  * Script file of MyMuse component
  */
