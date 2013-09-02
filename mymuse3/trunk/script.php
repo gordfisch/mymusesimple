@@ -31,7 +31,7 @@ class com_mymuseInstallerScript
 	function install($parent) 
 	{
 		// $parent is the class calling this method
-		//$parent->getParent()->setRedirectURL('index.php?option=com_mymuse');
+		// $parent->getParent()->setRedirectURL('index.php?option=com_mymuse');
 		// first check if PHP5 is running
 		if (version_compare(PHP_VERSION, '5.0.0', '<')) {
 		
@@ -51,7 +51,8 @@ class com_mymuseInstallerScript
 		$session->set('mymuse.allplgpublish', false);
 		
 		// additional extensions
-		$add_array =& $this->manifest->xpath('additional');
+		
+		$add_array =& $parent->get('manifest')->xpath('additional');
 		
 		$add = NULL;
 		if(count($add_array)) $add = $add_array[0];
@@ -318,6 +319,7 @@ class com_mymuseInstallerScript
 			</tbody>
 		</table>
 		<?php 
+		return true;
 	}
  
 	/**
