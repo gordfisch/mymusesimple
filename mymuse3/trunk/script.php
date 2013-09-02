@@ -224,11 +224,7 @@ class com_mymuseInstallerScript
 		$db = JFactory::getDBO();
 		$actions = array();
 		if(!$this->already_installed && $type == "install"){
-			
-	
-						
 
-			
 			// update store download dir
 			$download_dir =  JPATH_ROOT.DS."images".DS."A_MyMuseDownloads";
 			$name = JText::_("MYMUSE_UPDATING_STORE");
@@ -355,10 +351,12 @@ class com_mymuseInstallerScript
 			if (is_a($add, 'SimpleXMLElement') && count($add->children())) {
 				$exts =& $add->children();
 				foreach ($exts as $ext) {
+					print_r($ext);
+					print_r($ext->attributes('folder'));
 					$extensions[] = array(
 							'name' => $ext->data(),
-							'type' => $ext->name(),
-							'folder' => $this->parent->getPath('source').'/'.$ext->getAttribute('folder'),
+							'type' => $ext->getName(),
+							'folder' => $this->parent->getPath('source').'/'.$ext->attributes('folder'),
 							'installer' => new JInstaller(),
 							'status' => false);
 				}
