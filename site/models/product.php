@@ -303,6 +303,7 @@ class MyMuseModelProduct extends JModelItem
 			$site_url = preg_replace("#administrator/#","",JURI::base());
 			
 			// set up flash previews and streams
+		
 			$this->_item[$pk]->flash = '';
 			$this->_item[$pk]->flash_type = '';
 			if(count($tracks)){

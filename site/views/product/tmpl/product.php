@@ -39,6 +39,7 @@ if(count($tracks)){
 	$count += count($tracks);
 }
 ?>
+
 <script type="text/javascript">
 function hasProduct(that, count){
 	<?php if($items_select && count($items)){ ?>
@@ -476,7 +477,7 @@ endif; ?>
 		>
 		<div style="clear: both"></div>
 <?php if($params->get('product_show_tracks',1)){ ?>
-		<table class="mymuse_cart">
+		<table class="mymuse_cart tracks jp-gui ui-widget ui-widget-content ui-corner-all">
 		    <tr class="sectiontableheader">
 		    <?php  if($params->get('product_show_select_column', 1)){?>
 		    	<td class="mymuse_cart_top" align="left" width="5%" ><?php echo JText::_('MYMUSE_SELECT'); ?></td>

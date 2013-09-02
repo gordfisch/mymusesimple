@@ -24,8 +24,9 @@
 
 // Check to ensure this file is included in Joomla!
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
-
+if(!defined('DS')){
+	define('DS',DIRECTORY_SEPARATOR);
+}
 $VERSION = $this->manifest->version;
 list($MAJOR, $MINOR,$RELEASE) = explode(".", $VERSION);
 

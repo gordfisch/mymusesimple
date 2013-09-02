@@ -13,7 +13,7 @@ $saveOrder	= $listOrder == 'a.ordering';
 
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
-
+$params = $this->state->get('params');
 
 
 
@@ -176,6 +176,12 @@ $userId		= $user->get('id');
 <?php } ?>
 <div style="clear: both;"></div>
 <div class="tracks">
+<div id="product_player" 
+			<?php if($params->get('product_player_height')){ ?>
+			style="height: <?php echo $params->get('product_player_height'); ?>px"
+			<?php } ?>
+			><?php echo $this->item->flash; ?>
+			</div><div id="playing_title"></div>
 <form action="index.php" method="post" name="adminForm2">
 	<input type="hidden" name="view" value="product" /> 
 	<input type="hidden" name="layout" value="edit" /> 

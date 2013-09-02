@@ -31,10 +31,12 @@ class MymuseViewProduct extends JViewLegacy
 		$this->item		= $this->get('Item');
 		$this->form		= $this->get('Form');
 		$this->lists 	= $this->get('Lists');
+
 		
 		$this->tracks 	= $this->get('Tracks');
 		$this->trackPagination = $this->get('TrackPagination');
-		
+		$this->item		= $this->get('Item');
+	
 		$this->items 	= $this->get('Items');
 		$this->itemPagination = $this->get('ItemPagination');
 		

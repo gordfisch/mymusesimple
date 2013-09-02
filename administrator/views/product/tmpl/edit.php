@@ -19,11 +19,6 @@ JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 jimport ('joomla.html.html.bootstrap');
-// Create shortcut to parameters.
-$params = $this->state->get('params');
-$params = $params->toArray();
-
-
 
 $lists = $this->lists;
 

@@ -70,13 +70,19 @@ class MymuseModelproduct extends JModelAdmin
 	protected $_parent = null;
 	
 	/**
+	 * @var		product(item) object
+	 * @since	1.6
+	 */
+	protected $_item = null;
+	
+	/**
 	 * @var		array of product(track) objects
 	 * @since	1.6
 	 */
 	protected $_tracks = null;
 	
 	/**
-	 * @var		array	of product(item) objects
+	 * @var		array of product(item) objects
 	 * @since	1.6
 	 */
 	protected $_items = null;
@@ -167,44 +173,45 @@ class MymuseModelproduct extends JModelAdmin
 	 */
 	public function getItem($pk = null)
 	{
-
-		$task = JRequest::getVar('task','');
-		$parentid= JRequest::getVar('parentid','');
-		$id = JRequest::getVar('id','');
-		if($task == "addfile" || $task == "additem"){
-			$pk = 0;
-		}
-		if ($item = parent::getItem($pk)) {
-			// Convert the params field to an array.
-			$registry = new JRegistry;
-			$registry->loadString($item->attribs);
-			$item->attribs = $registry->toArray();
-
-			// Convert the metadata field to an array.
-			$registry = new JRegistry;
-			$registry->loadString($item->metadata);
-			$item->metadata = $registry->toArray();
-
-			$item->articletext = trim($item->fulltext) != '' ? $item->introtext . "<hr id=\"system-readmore\" />" . $item->fulltext : $item->introtext;
-			
-			if($parentid && $parentid != $id){
-				$item->parentid = $parentid;
+		if(!$this->_item){
+			$task = JRequest::getVar('task','');
+			$parentid= JRequest::getVar('parentid','');
+			$id = JRequest::getVar('id','');
+			if($task == "addfile" || $task == "additem"){
+				$pk = 0;
 			}
-			
-			if($item->parentid){
-				$q = "SELECT * FROM #__mymuse_product WHERE id='".$item->parentid."'";
-				$this->_db->setQuery($q);
-				$this->_parent = $this->_db->loadObject();
-				$item->parent = $this->_parent;
-			}else{
-				//set the parent id for the tracks and items
-				$mainframe = JFactory::getApplication();
-				$parentid= $mainframe->getUserStateFromRequest( "com_mymuse.parentid", 'id', 0 );
+			if ($item = parent::getItem($pk)) {
+				// Convert the params field to an array.
+				$registry = new JRegistry;
+				$registry->loadString($item->attribs);
+				$item->attribs = $registry->toArray();
+
+				// Convert the metadata field to an array.
+				$registry = new JRegistry;
+				$registry->loadString($item->metadata);
+				$item->metadata = $registry->toArray();
+
+				$item->articletext = trim($item->fulltext) != '' ? $item->introtext . "<hr id=\"system-readmore\" />" . $item->fulltext : $item->introtext;
+					
+				if($parentid && $parentid != $id){
+					$item->parentid = $parentid;
+				}
+					
+				if($item->parentid){
+					$q = "SELECT * FROM #__mymuse_product WHERE id='".$item->parentid."'";
+					$this->_db->setQuery($q);
+					$this->_parent = $this->_db->loadObject();
+					$item->parent = $this->_parent;
+				}else{
+					//set the parent id for the tracks and items
+					$mainframe = JFactory::getApplication();
+					$parentid= $mainframe->getUserStateFromRequest( "com_mymuse.parentid", 'id', 0 );
+				}
+				$item->flash_type = '';
 			}
+			$this->_item = $item;
 		}
-		$this->_item = $item;
-		//print_pre($item); exit;
-		return $item;
+		return $this->_item;
 	}
 
 	/**
@@ -344,7 +351,6 @@ class MymuseModelproduct extends JModelAdmin
     	$params = MyMuseHelper::getParams();
 
     	$limit = $this->getState('list.limit');
-    	$player 		=  "player_mp3_mini.swf";
     	$id = JRequest::getVar('id');
     	$artist_alias = MyMuseHelper::getArtistAlias($this->_item->catid);
     	$album_alias = MyMuseHelper::getAlbumAlias($this->_item->id);
@@ -447,6 +453,26 @@ class MymuseModelproduct extends JModelAdmin
     				continue;
     			}
     			$flash = '';
+    			
+    			//Audio/Video or some horrid mix of both
+    				
+    			if($this->_item->flash_type != "mix"){
+    				if($this->_item->flash_type == "audio" && $track->file_type == "video"){
+    					//oh christ it's a mix
+    					$this->_item->flash_type = "mix";
+    					$track->flash_type = "mix";
+    				}elseif($this->_item->flash_type == "video" && $track->file_type == "audio"){
+    					//oh christ it's a mix
+    					$this->_item->flash_type = "mix";
+    					$track->flash_type = "mix";
+    				}else{
+    					$this->_item->flash_type = $track->file_type;
+    					$track->flash_type = $track->file_type;
+    				}
+    			}else{
+    				$track->flash_type = "mix";
+    			}
+    			
     				
     			//make flash for admin to listen to Preview
     			if($track->file_preview){
@@ -474,7 +500,7 @@ class MymuseModelproduct extends JModelAdmin
     						//video
     							
     						$flash = '<!-- Begin Flash Preview Player -->';
-    						$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track, 'each',192, 256, $i, $count));
+    						$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track, 'single',192, 256, $i, $count));
     						if(isset($results[0]) && $results[0] != ''){
     							$flash .= $results[0];
     						}
@@ -483,7 +509,7 @@ class MymuseModelproduct extends JModelAdmin
     					}elseif($track->file_type == "audio"){
     						//echo 'audio';
     						$flash = '<!-- Begin Flash Preview Player -->';
-    						$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track, 'each', 25, 200, $i, $count ) );
+    						$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track, 'single', 25, 200, $i, $count ) );
     						if(isset($results[0]) && $results[0] != ''){
     							$flash .= $results[0];
     						}
@@ -532,7 +558,7 @@ class MymuseModelproduct extends JModelAdmin
     							//video
 
     							$stream  = '<!-- Begin Fulltrack Player -->';
-    							$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track, 'each',192, 256, $i, $count));
+    							$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track, 'single',192, 256, $i, $count));
     							if(is_array($results) && $results[0] != ''){
     								$stream  .= $results[0];
     							}
@@ -541,7 +567,7 @@ class MymuseModelproduct extends JModelAdmin
     						}elseif($track->file_type == "audio"){
     							//audio
     							$stream  = '<!-- Begin Fulltrack Player -->';
-    							$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track, 'each', 25, 100, $i, $count ));
+    							$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track, 'single', 25, 100, $i, $count ));
     							if(is_array($results) && isset($results[0]) && $results[0] != ''){
     								$stream  .= $results[0];
     							}
@@ -562,9 +588,40 @@ class MymuseModelproduct extends JModelAdmin
     			$track->stream = $stream;
 
     		}
+    		
+    		// get main player, set to play first track
+    		reset($this->_tracks);
+    		$flash = '';
+    		$audio = 0;
+    		$video = 0;
+    		$track = $this->_tracks[0];
+    		if($track->file_preview){
+    			if($track->file_type == "video" && !$video){
+    				//movie
+    				$flash .= '<!-- Begin VIDEO Player -->';
+    				$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
+    				if(is_array($results) && $results[0] != ''){
+    					$flash .= $results[0];
+    				}
+    				$flash .= '<!-- End Player -->';
+    				$video = 1;
+
+    			}elseif($track->file_type == "audio" && !$audio){
+    				//audio
+    				$flash .= '<!-- Begin AUDIO Player -->';
+    				$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
+
+    				if(is_array($results) && isset($results[0]) && $results[0] != ''){
+    					$flash .= $results[0];
+    				}
+    				$flash .= '<!-- End Player -->';
+    				$audio = 1;
+    			}
+    			$this->_item->flash = $flash;
+    			$this->_item->flash_id = $track->id;
+    		}
     	}
 
-    
     	return $this->_tracks;
     }
     
