@@ -313,8 +313,6 @@ if ($error) {
 	}
 	$status->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 	
-
-	
 	$i = 0;
 	foreach ($status->actions as $ext) : ?>
 			<tr class="row<?php echo $i % 2; $i++; ?>">
@@ -328,5 +326,3 @@ if ($error) {
 
 	</tbody>
 </table>
-
-
