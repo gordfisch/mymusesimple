@@ -237,10 +237,10 @@ class com_mymuseInstallerScript
 			// additional extensions
 			
 			$add_array =& $parent->get('manifest')->xpath('additional');
-		echo "add_array "; print_r($add_array); exit;
+
 			$add = NULL;
 			if(count($add_array)) $add = $add_array[0];
-			if (is_a($add, 'JXMLElement') && count($add->children())) {
+			if (is_a($add, 'SimpleXMLElement') && count($add->children())) {
 				$exts =& $add->children();
 				foreach ($exts as $ext) {
 					$extensions[] = array(
@@ -251,7 +251,7 @@ class com_mymuseInstallerScript
 							'status' => false);
 				}
 			}
-			
+print_r($extensions); exit;			
 			// install additional extensions
 			for ($i = 0; $i < count($extensions); $i++) {
 				$extension =& $extensions[$i];
