@@ -65,6 +65,7 @@ $session->set('mymuse.allplgpublish', false);
 
 // additional extensions
 $add_array =& $this->manifest->xpath('additional');
+print_r($add_array); exit;
 $add = NULL;
 if(count($add_array)) $add = $add_array[0];
 if (is_a($add, 'JXMLElement') && count($add->children())) {
