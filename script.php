@@ -237,7 +237,7 @@ class com_mymuseInstallerScript
 			// additional extensions
 			
 			$add_array =& $parent->get('manifest')->xpath('additional');
-			
+		echo "add_array "; print_r($add_array); exit;
 			$add = NULL;
 			if(count($add_array)) $add = $add_array[0];
 			if (is_a($add, 'JXMLElement') && count($add->children())) {
@@ -359,7 +359,7 @@ class com_mymuseInstallerScript
 								$astatus = 1;
 								$message = JText::_("MYMUSE_DIR_EXISTS");
 							}
-							$status->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+							$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 							
 							// DEFAULT PREVIEW DIRECTORY
 							$name = JText::_("MYMUSE_MAKE_PREVIEW_DIR");
@@ -379,7 +379,7 @@ class com_mymuseInstallerScript
 								$astatus = 1;
 								$message = JText::_("MYMUSE_DIR_EXISTS");
 							}
-							$status->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+							$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 							
 					
 							//DIRECTORY FOR GRAPHICS
@@ -400,7 +400,7 @@ class com_mymuseInstallerScript
 								$astatus = 1;
 								$message = JText::_("MYMUSE_DIR_EXISTS");
 							}
-							$status->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+							$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 							
 							
 							// copy index.html to Download Dir
@@ -415,7 +415,7 @@ class com_mymuseInstallerScript
 								$astatus = 1;
 								$message = JText::_("MYMUSE_FILE_COPIED");
 							}
-							$status->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+							$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 					
 							// copy htaccess to Download Dir
 							if(stristr(PHP_OS, 'win')){
@@ -432,7 +432,7 @@ class com_mymuseInstallerScript
 									$astatus = 1;
 									$message = JText::_("MYMUSE_FILE_COPIED");
 								}
-								$status->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+								$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 							}
 							
 							
@@ -448,7 +448,7 @@ class com_mymuseInstallerScript
 								$astatus = 1;
 								$message = JText::_("MYMUSE_FILE_COPIED");
 							}
-							$status->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+							$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 							
 					
 							
@@ -464,7 +464,7 @@ class com_mymuseInstallerScript
 								$astatus = 1;
 								$message = JText::_("MYMUSE_FILE_COPIED");
 							}
-							$status->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+							$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 					
 						//MOVE LOGO
 						$name = JText::_("MYMUSE_COPY_LOGO")." /images/logo150sq.jpg";
@@ -485,7 +485,7 @@ class com_mymuseInstallerScript
 							$message =  JText::_("MYMUSE_COPY_LOGO_SUCCESS");
 						
 						}
-						$status->actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+						$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 						
 
 			
