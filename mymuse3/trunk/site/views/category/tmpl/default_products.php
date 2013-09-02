@@ -173,8 +173,6 @@ $height 	= $this->params->get('category_product_image_height',0);
 					</td>
 					<?php endif; ?>
 					
-					
-					
 					<?php if ($this->params->get('list_show_price', 0)) : ?>
 					<td class="list-price" valign="top">
 						<?php echo myMuseHelper::printMoney($product->price); ?>
