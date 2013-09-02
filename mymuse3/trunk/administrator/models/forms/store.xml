@@ -492,7 +492,7 @@
                 description="MYMUSE_DATE_FORMAT_DESC"
                 class="inputbox"
                 size="40"
-                default="%Y-%m-%d %H:%M:%S"
+                default="d F Y H:i"
         />
         <field 
         		name="my_email_msg" 

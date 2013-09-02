@@ -41,7 +41,7 @@ class plgMymuseAudio_html5 extends JPlugin
 		$document = JFactory::getDocument();
 		
 		if($this->params->get('my_include_jquery', 0)){
-			$js_path = "http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js";
+			$js_path = "http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js";
 			$document->addScript( $js_path );
 		}
         
@@ -49,17 +49,22 @@ class plgMymuseAudio_html5 extends JPlugin
         $css_path = $site_url.'plugins/mymuse/audio_html5/skin/jplayer.blue.monday.css';
         $document->addStyleSheet( $css_path );
         
+        
         if($this->params->get("my_player_errors")){
         	$js_path = $site_url.'plugins/mymuse/audio_html5/js/jquery.jplayer.inspector.js';
         	$document->addScript( $js_path );
         }
+        
+        // ui js and css
+        $document->addScript( 'http://code.jquery.com/ui/1.9.0/jquery-ui.js' );
+        $document->addStyleSheet('http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css');
 	}
 
 	/**
 	 * HTML5
 	 * onPrepareMyMuseMp3Player
 	 */
-	function onPrepareMyMuseMp3Player(&$track, $type='each', $height=0, $width=0, $index=0, $count=0)
+	function onPrepareMyMuseMp3Player(&$track, $type='single', $height=0, $width=0, $index=0, $count=0)
 	{
 		//load jquery.jplayer.min.js? Not if it has been added already
 		$document = JFactory::getDocument();
@@ -76,7 +81,7 @@ class plgMymuseAudio_html5 extends JPlugin
 			$document->addScript( $js_path );
 		}
 		
-		//echo "index = $index  count = $count<br />";
+	//echo "type = $type, index = $index  count = $count<br />";
 		$params 	= MyMuseHelper::getParams();
 
 		$swf_path = JURI::root() .'/plugins/mymuse/audio_html5/Jplayer.swf';
@@ -107,8 +112,8 @@ class plgMymuseAudio_html5 extends JPlugin
 
 		$site_url = preg_replace("#administrator/#","",JURI::base());
 
-		if($type == 'each' || $type == 'singleplayer'){
-
+		if($type == 'singleplayer'){
+				// player set to play the first track 
 				$supplied = array();
 				$trs[0]['src'] = $track->path;
 				$ext = MyMuseHelper::getExt($track->path);
@@ -151,12 +156,34 @@ class plgMymuseAudio_html5 extends JPlugin
 
 			$js = '';
 			$js .= '
-						
-	jQuery(document).ready(function($){
-
-      $("#jquery_jplayer_'.$id.'").jPlayer({
-        ready: function () {
-			$(this).jPlayer("setMedia", {
+	
+	
+	/*
+	 * jQuery UI ThemeRoller
+	 *
+	 * Includes code to hide GUI volume controls on mobile devices.
+	 * ie., Where volume controls have no effect. See noVolume option for more info.
+	 *
+	 * Includes fix for Flash solution with MP4 files.
+	 * ie., The timeupdates are ignored for 1000ms after changing the play-head.
+	 * Alternative solution would be to use the slider option: {animate:false}
+	 */
+	var myPlayer = $("#jquery_jplayer_'.$id.'"),
+		myPlayerData,
+		fixFlash_mp4, // Flag: The m4a and m4v Flash player gives some old currentTime values when changed.
+		fixFlash_mp4_id, // Timeout ID used with fixFlash_mp4
+		ignore_timeupdate, // Flag used with fixFlash_mp4
+		options = {
+			ready: function (event) {
+				// Hide the volume slider on mobile browsers. ie., They have no effect.
+				if(event.jPlayer.status.noVolume) {
+					// Add a class and then CSS rules deal with it.
+					$(".jp-gui").addClass("jp-no-volume");
+				}
+				// Determine if Flash is being used and the mp4 media type is supplied. BTW, Supplying both mp3 and mp4 is pointless.
+				fixFlash_mp4 = event.jPlayer.flash.used && /m4a|m4v/.test(event.jPlayer.options.supplied);
+				// Setup the player with media.
+				$(this).jPlayer("setMedia", {
           ';
 			foreach($trs as $source){
             	$js .= $source['ext'].': "'.$source['src'].'",'."\n";
@@ -164,28 +191,21 @@ class plgMymuseAudio_html5 extends JPlugin
             $js = preg_replace("/,\\n$/","",$js);
             
         $js .= '  });
-        },
+        	},
+        	timeupdate: function(event) {
+				if(!ignore_timeupdate) {
+					myControl.progress.slider("value", event.jPlayer.status.currentPercentAbsolute);
+				}
+			},
+			volumechange: function(event) {
+				if(event.jPlayer.options.muted) {
+					myControl.volume.slider("value", 0);
+				} else {
+					myControl.volume.slider("value", event.jPlayer.options.volume);
+				}
+			},
         ';
-       if($type == 'each'){
-		$js .= '
-		play: function() { // To avoid both jPlayers playing together.
-			$(this).jPlayer("pauseOthers");
-		},
-		repeat: function(event) { // Override the default jPlayer repeat event handler
-			if(event.jPlayer.options.loop) {
-				$(this).unbind(".jPlayerRepeat").unbind(".jPlayerNext");
-				$(this).bind($.jPlayer.event.ended + ".jPlayer.jPlayerRepeat", function() {
-					$(this).jPlayer("play");
-				});
-			} else {
-				$(this).unbind(".jPlayerRepeat").unbind(".jPlayerNext");
-				$(this).bind($.jPlayer.event.ended + ".jPlayer.jPlayerNext", function() {
-					$("#jquery_jplayer_'.$id.'").jPlayer("play", 0);
-				});
-			}
-		},
-		';
-       }
+
 		$js .= '
         swfPath: "'.$swf_path .'",
         ';
@@ -196,10 +216,67 @@ class plgMymuseAudio_html5 extends JPlugin
 		
 		$js .= 'supplied: "'.$supplied.'",
         cssSelectorAncestor: "#jp_container_'.$id.'",
-        wmode: "window"
-        
-      });
-      
+        wmode: "window",
+        keyEnabled: true
+      },
+      myControl = {
+			progress: $(options.cssSelectorAncestor + " .jp-progress-slider"),
+			volume: $(options.cssSelectorAncestor + " .jp-volume-slider")
+		};
+      	// Instance jPlayer
+	myPlayer.jPlayer(options);
+
+	// A pointer to the jPlayer data object
+	myPlayerData = myPlayer.data("jPlayer");
+
+	// Define hover states of the buttons
+	$(".jp-gui ul li").hover(
+		function() { $(this).addClass("ui-state-hover"); },
+		function() { $(this).removeClass("ui-state-hover"); }
+	);
+
+	// Create the progress slider control
+	myControl.progress.slider({
+		animate: "fast",
+		max: 100,
+		range: "min",
+		step: 0.1,
+		value : 0,
+		slide: function(event, ui) {
+			var sp = myPlayerData.status.seekPercent;
+			if(sp > 0) {
+				// Apply a fix to mp4 formats when the Flash is used.
+				if(fixFlash_mp4) {
+					ignore_timeupdate = true;
+					clearTimeout(fixFlash_mp4_id);
+					fixFlash_mp4_id = setTimeout(function() {
+						ignore_timeupdate = false;
+					},1000);
+				}
+				// Move the play-head to the value and factor in the seek percent.
+				myPlayer.jPlayer("playHead", ui.value * (100 / sp));
+			} else {
+				// Create a timeout to reset this slider to zero.
+				setTimeout(function() {
+					myControl.progress.slider("value", 0);
+				}, 0);
+			}
+		}
+	});
+
+	// Create the volume slider control
+	myControl.volume.slider({
+		animate: "fast",
+		max: 1,
+		range: "min",
+		step: 0.01,
+		value : $.jPlayer.prototype.options.volume,
+		slide: function(event, ui) {
+			myPlayer.jPlayer("option", "muted", false);
+			myPlayer.jPlayer("option", "volume", ui.value);
+		}
+	});
+		
     	';
         
         if(($count && ($index +1) == $count) || $count == 0){
@@ -218,58 +295,45 @@ class plgMymuseAudio_html5 extends JPlugin
         	';
         }
         
-        	$js .= '
-        });
-        	';
+        $js .= '
+});
+';
 
         
 
 			$document->addScriptDeclaration($js);
 			
 			$text = '
-		<div id="jquery_jplayer_'.$id.'" class="jp-jplayer"></div>
+		<section>
+		<div id="jquery_jplayer_1" class="jp-jplayer"></div>
 
-		<div id="jp_container_'.$id.'" class="jp-audio">
-			<div class="jp-type-single">
-				<div class="jp-gui jp-interface">
-					<ul class="jp-controls">
-						<li><a href="javascript:;" class="jp-play" tabindex="1">play</a></li>
-						<li><a href="javascript:;" class="jp-pause" tabindex="1">pause</a></li>
-						<li><a href="javascript:;" class="jp-stop" tabindex="1">stop</a></li>
-						<li><a href="javascript:;" class="jp-mute" tabindex="1" title="mute">mute</a></li>
-						<li><a href="javascript:;" class="jp-unmute" tabindex="1" title="unmute">unmute</a></li>
-						<li><a href="javascript:;" class="jp-volume-max" tabindex="1" title="max volume">max volume</a></li>
-					</ul>
-					<div class="jp-progress">
-						<div class="jp-seek-bar">
-							<div class="jp-play-bar"></div>
-						</div>
-					</div>
-					<div class="jp-volume-bar">
-						<div class="jp-volume-bar-value"></div>
-					</div>
-					<div class="jp-time-holder">
-						<div class="jp-current-time"></div>
-						<div class="jp-duration"></div>
-
-						<ul class="jp-toggles">
-							<li><a href="javascript:;" class="jp-repeat" tabindex="1" title="repeat">repeat</a></li>
-							<li><a href="javascript:;" class="jp-repeat-off" tabindex="1" title="repeat off">repeat off</a></li>
-						</ul>
-					</div>
-				</div>
-				<div class="jp-title">
-					<ul>
-						<li id="jp-title-li">'.$track->title.'</li>
-					</ul>
-				</div>
-				<div class="jp-no-solution">
-					<span>Update Required</span>
-					To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
-				</div>
+		<div id="jp_container_1">
+			<div class="jp-gui ui-widget ui-widget-content ui-corner-all">
+				<ul>
+					<li class="jp-play ui-state-default ui-corner-all"><a href="javascript:;" class="jp-play ui-icon ui-icon-play" tabindex="1" title="play">play</a></li>
+					<li class="jp-pause ui-state-default ui-corner-all"><a href="javascript:;" class="jp-pause ui-icon ui-icon-pause" tabindex="1" title="pause">pause</a></li>
+					<li class="jp-stop ui-state-default ui-corner-all"><a href="javascript:;" class="jp-stop ui-icon ui-icon-stop" tabindex="1" title="stop">stop</a></li>
+					<li class="jp-repeat ui-state-default ui-corner-all"><a href="javascript:;" class="jp-repeat ui-icon ui-icon-refresh" tabindex="1" title="repeat">repeat</a></li>
+					<li class="jp-repeat-off ui-state-default ui-state-active ui-corner-all"><a href="javascript:;" class="jp-repeat-off ui-icon ui-icon-refresh" tabindex="1" title="repeat off">repeat off</a></li>
+					<li class="jp-mute ui-state-default ui-corner-all"><a href="javascript:;" class="jp-mute ui-icon ui-icon-volume-off" tabindex="1" title="mute">mute</a></li>
+					<li class="jp-unmute ui-state-default ui-state-active ui-corner-all"><a href="javascript:;" class="jp-unmute ui-icon ui-icon-volume-off" tabindex="1" title="unmute">unmute</a></li>
+					<li class="jp-volume-max ui-state-default ui-corner-all"><a href="javascript:;" class="jp-volume-max ui-icon ui-icon-volume-on" tabindex="1" title="max volume">max volume</a></li>
+				</ul>
+				<div class="jp-progress-slider"></div>
+				<div class="jp-volume-slider"></div>
+				<div class="jp-current-time"></div>
+				<div class="jp-duration"></div>
+				<div class="jp-clearboth"></div>
+			</div>
+			<div class="jp-no-solution">
+				<span>Update Required</span>
+				To play the media you will need to either update your browser to a recent version or update your <a href="http://get.adobe.com/flashplayer/" target="_blank">Flash plugin</a>.
 			</div>
 		</div>
-			<div id="jplayer_inspector_'.$id.'"></div>
+
+
+			<div id="jplayer_inspector"></div>
+		</section>
 ';
 			
 			return $text;
@@ -288,7 +352,10 @@ class plgMymuseAudio_html5 extends JPlugin
 					$word = JText::_('MYMUSE_PLAY');
 				}
 			}
-			$text = '<a href="javascript:void(0);" id="track_'.$track->id.'">'. $word .'</a> ';
+			$text = '<ul>
+			<li id="track_play_li_'.$track->id.'" class="jp-play ui-state-default ui-corner-all"><a id="track_play_'.$track->id.'" href="javascript:;" class="jp-play ui-icon ui-icon-play" tabindex="1" title="play">play</a></li>
+			<li id="track_pause_li_'.$track->id.'" class="jp-pause ui-state-default ui-corner-all"><a id="track_pause_'.$track->id.'" href="javascript:;" class="jp-pause ui-icon ui-icon-pause" tabindex="1" title="pause">pause</a></li>
+			</ul>';
 			
 			$supplied = array();
 			$trs[0]['src'] = $track->path;
@@ -342,19 +409,39 @@ class plgMymuseAudio_html5 extends JPlugin
 			
 			$track->title = preg_replace("/\"/","",$track->title);
 			$js = '';
+
+			if($index == 0){
+				$js .= '
+jQuery(document).ready(function(){  ';
+			}
+
 			$js .= '
-jQuery(document).ready(function($){
-	
-	$(document).ready(function(){
-		$("#track_'.$track->id.'").click( function(e) {
+
+		$("#track_play_'.$track->id.'").click( function(e) {
 			var title = "'.$track->title.'";
 			$("#jp-title-li").html(title);
-			$("#jquery_jplayer_'.$id.'").jPlayer("setMedia",{ '.$media.' }).jPlayer("play");
-			
+
+            $("#track_play_'.$track->id.'").css("display","none");
+            $("#track_play_li_'.$track->id.'").css("display","none");
+            $("#track_pause_'.$track->id.'").css("display","block");
+            $("#track_pause_li_'.$track->id.'").css("display","block");
+            myPlayer.jPlayer("setMedia",{ '.$media.' });
+            myPlayer.jPlayer("play");
+
 			return false;
 		}); 
-	});
-} ) 
+		
+		$("#track_pause_'.$track->id.'").click( function(e) {
+
+			$("#track_play_'.$track->id.'").css("display","block");
+            $("#track_play_li_'.$track->id.'").css("display","block");
+            $("#track_pause_'.$track->id.'").css("display","none");
+            $("#track_pause_li_'.$track->id.'").css("display","none");
+            myPlayer.jPlayer("stop");
+			return false;
+		})
+
+
 ';
 			$document->addScriptDeclaration($js);
 			return $text;
