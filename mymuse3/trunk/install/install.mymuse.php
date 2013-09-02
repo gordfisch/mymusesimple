@@ -53,7 +53,7 @@ if (version_compare(PHP_VERSION, '5.0.0', '<')) {
 $error = false;
 $extensions = array();
 
-
+echo "in the old install.mymuse file!"; exit;
 
 // reseting post installation session variables
 $session  =& JFactory::getSession();
