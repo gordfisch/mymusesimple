@@ -66,8 +66,8 @@ function hasProduct(that, count){
 
 </script>
 <!--  HEADING TITLE ICONS -->
-<div class="contentpaneopen mymuse">
-<div class="contentpane">
+<div class="mymuse">
+
 <?php if ($this->params->get('show_page_heading', 1)) : ?>
 	<h1>
 	<?php echo $this->escape($this->params->get('page_heading')); ?>
@@ -457,7 +457,6 @@ endif; ?>
 		<h3><?php echo JText::_('MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
 
 		<?php if($params->get('product_player_type') == "single"){ ?>
-		
 			<div id="product_player" 
 			<?php if($params->get('product_player_height')){ ?>
 			style="height: <?php echo $params->get('product_player_height'); ?>px"
@@ -556,6 +555,7 @@ endif; ?>
       		<?php  } ?>
 		</table>
 		</div>
+	</div>
 	<?php } ?>
 		<?php if($params->get('product_show_cartadd')){ ?>
 		<table class="mymuse_cart">
@@ -595,6 +595,7 @@ $comments = JPATH_SITE . DS .'components' . DS . 'com_jcomments' . DS . 'jcommen
   }
 ?>
 <!-- ENDCOMMENTS -->
-</div>
-</div>
+
+
 <?php echo $this->item->event->afterDisplayProduct; ?>
+</div>
