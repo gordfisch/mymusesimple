@@ -343,20 +343,20 @@ class com_mymuseInstallerScript
 			$session->set('mymuse.allplgpublish', false);
 				
 			// additional extensions
-				
-			$add_array =& $parent->get('manifest')->xpath('additional');
-			
+			//first plug-ins
+			$add_array =& $parent->get('manifest')->xpath('plugins');
+			print_r($parent->get('manifest'));
 			$add = NULL;
 			if(count($add_array)) $add = $add_array[0];
 			if (is_a($add, 'SimpleXMLElement') && count($add->children())) {
-				$exts =& $add->children();
-				foreach ($exts as $ext) {
-					print_r($ext);
-					print_r($ext->attributes('folder'));
+				
+				foreach ($add_array  as $plugin) {
+					print_r($plugin);
+	
 					$extensions[] = array(
-							'name' => $ext->data(),
-							'type' => $ext->getName(),
-							'folder' => $this->parent->getPath('source').'/'.$ext->attributes('folder'),
+							'name' => $plugin[0],
+							'type' => $plugin['name'],
+							'folder' => $this->parent->getPath('source').'/'.$plugin['folder'],
 							'installer' => new JInstaller(),
 							'status' => false);
 				}
