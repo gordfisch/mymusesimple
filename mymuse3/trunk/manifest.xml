@@ -96,7 +96,7 @@
 	</languages>
 
 	<!-- Plugins -->
-	<additional>
+	<plugins>
 		<plugin name="audio_mp" folder="plugins/plug_audio_mp">MyMuse Audio Music Player jPlayer</plugin>
         <plugin name="audio_html5" folder="plugins/plug_audio_html5">MyMuse Audio HTML5 jPlayer</plugin>
         <plugin name="mp3player_dewplayer" folder="plugins/plug_mp3player_dewplayer">mp3player Dewplayer</plugin>
@@ -122,9 +122,11 @@
         <plugin name="mymuse" folder="plugins/plug_user_mymuse">MyMuse User Profile</plugin>
         <plugin name="mymusenoreg" folder="plugins/plug_user_mymusenoreg">MyMuse No Registration Profile</plugin>
         <plugin name="searchmymuse" folder="plugins/plug_search">Search</plugin>
+	</plugins>
+	<modules>
         <module name="mod_mymuse_latest" folder="modules/mod_mymuse_latest" client="site">Mod MyMuse Latest</module>
 		<module name="mod_mymuse_minicart" folder="modules/mod_mymuse_minicart" client="site">Mod MyMuse Minicart</module>
-	</additional>
+	</modules>
 
 <config>
 <fields  name="params">
