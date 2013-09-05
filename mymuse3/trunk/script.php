@@ -241,7 +241,7 @@ class com_mymuseInstallerScript
 			$add = NULL;
 			if(count($add_array)) $add = $add_array[0];
 			if (is_a($add, 'SimpleXMLElement') && count($add->children())) {
-				$super = $parent->parent->getParent();
+				$super = $parent->getParent();
 				foreach ($add  as $plugin) {
 					print_r($plugin);
 		
