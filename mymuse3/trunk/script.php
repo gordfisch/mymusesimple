@@ -241,14 +241,14 @@ class com_mymuseInstallerScript
 			$add = NULL;
 			if(count($add_array)) $add = $add_array[0];
 			if (is_a($add, 'SimpleXMLElement') && count($add->children())) {
-		
+				$super = $parent->parent->getParent();
 				foreach ($add  as $plugin) {
 					print_r($plugin);
 		
 					$extensions[] = array(
 							'name' => $plugin[0],
 							'type' => $plugin['name'],
-							'folder' => $parent->parent->getPath('source').'/'.$plugin['folder'],
+							'folder' => $super->getPath('source').'/'.$plugin['folder'],
 							'installer' => new JInstaller(),
 							'status' => false);
 				}
