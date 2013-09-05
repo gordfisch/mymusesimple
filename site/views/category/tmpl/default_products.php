@@ -20,7 +20,6 @@ $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $height 	= $this->params->get('category_product_image_height',0);
 ?>
-
 <?php if (empty($this->items)) : ?>
 
 	<?php if ($this->params->get('show_no_products', 1)) : ?>
