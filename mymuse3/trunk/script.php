@@ -236,19 +236,18 @@ class com_mymuseInstallerScript
 		
 			// additional extensions
 			//first plug-ins
-			$add_array =& $parent->get('manifest')->xpath('plugins');
+			$manifest =& $parent->get('manifest');
 
 			$add = NULL;
-			if(count($add_array)) $add = $add_array[0];
-			if (is_a($add, 'SimpleXMLElement') && count($add->children())) {
+			if(count($manifest->extension->plugins)){
+			
 				$super = $parent->getParent();
-				foreach ($add  as $plugin) {
+				foreach ($manifest->extension->plugins[0]->plugin as $plugin) {
 					print_r($plugin);
-		
 					$extensions[] = array(
-							'name' => $plugin[0],
-							'type' => $plugin->name,
-							'folder' => $super->getPath('source').'/'.$plugin->folder,
+							'name' => (string) $plugin,
+							'type' => (string) $plugin['name'],
+							'folder' => $super->getPath('source').'/'.(string) $plugin['folder'],
 							'installer' => new JInstaller(),
 							'status' => false);
 				}
