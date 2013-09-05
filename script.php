@@ -237,7 +237,7 @@ class com_mymuseInstallerScript
 			// additional extensions
 			//first plug-ins
 			$add_array =& $parent->get('manifest')->xpath('plugins');
-print_r($parent);
+
 			$add = NULL;
 			if(count($add_array)) $add = $add_array[0];
 			if (is_a($add, 'SimpleXMLElement') && count($add->children())) {
@@ -253,7 +253,7 @@ print_r($parent);
 							'status' => false);
 				}
 			}
-			print_r($extensions); exit;
+	print_r($extensions); exit;
 			// install additional extensions
 			for ($i = 0; $i < count($extensions); $i++) {
 				$extension =& $extensions[$i];
