@@ -247,8 +247,8 @@ class com_mymuseInstallerScript
 		
 					$extensions[] = array(
 							'name' => $plugin[0],
-							'type' => $plugin['name'],
-							'folder' => $super->getPath('source').'/'.$plugin['folder'],
+							'type' => $plugin->name,
+							'folder' => $super->getPath('source').'/'.$plugin->folder,
 							'installer' => new JInstaller(),
 							'status' => false);
 				}
