@@ -237,9 +237,9 @@ class com_mymuseInstallerScript
 			// additional extensions
 			//first plug-ins
 			$manifest =& $parent->get('manifest');
-
+print_r($manifest->extension->plugins[0]);
 			$add = NULL;
-			if(count($manifest->extension->plugins)){
+			if(count($manifest->extension->plugins[0])){
 			
 				$super = $parent->getParent();
 				foreach ($manifest->extension->plugins[0]->plugin as $plugin) {
