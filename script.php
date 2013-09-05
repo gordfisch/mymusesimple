@@ -236,8 +236,9 @@ class com_mymuseInstallerScript
 		
 			// additional extensions
 			//first plug-ins
-			$manifest =& $parent->get('manifest');
-print_r($manifest->extension->plugins[0]);
+			$xmlstr = $parent->get('manifest');
+			$manifest = new SimpleXMLElement($xmlstr);
+print_r($manifest->extension->plugins[0]); exit;
 			$add = NULL;
 			if(count($manifest->extension->plugins[0])){
 			
