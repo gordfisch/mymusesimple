@@ -238,7 +238,7 @@ class com_mymuseInstallerScript
 			//first plug-ins
 			//$xmlstr = 
 			$manifest = $parent->get('manifest');
-print_r($manifest->extension->plugins[0]); exit;
+print_r($manifest); exit;
 			$add = NULL;
 			if(count($manifest->extension->plugins[0])){
 			
