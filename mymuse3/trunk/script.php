@@ -238,18 +238,18 @@ class com_mymuseInstallerScript
 			//first plug-ins
 			//$xmlstr = 
 			$manifest = $parent->get('manifest');
-
+			$super = $parent->getParent();
 			$add = NULL;
 			if(count($manifest->plugins->plugin)){
 			
-				$super = $parent->getParent();
+				
 				foreach ($manifest->plugins->plugin as $plugin) {
 			
 					$extensions[] = array(
 							'name' => (string) $plugin,
 							'type' => (string) $plugin['name'],
 							'folder' => $super->getPath('source').'/'.(string) $plugin['folder'],
-							'installer' => new JInstaller(),
+							'installer' => new JInstallerAdapterPlugin(),
 							'status' => false);
 				}
 			}
@@ -257,8 +257,9 @@ class com_mymuseInstallerScript
 			// install additional extensions
 			for ($i = 0; $i < count($extensions); $i++) {
 				$extension =& $extensions[$i];
-				$extension['installer']->setOverwrite(true);
-				if ($extension['installer']->install($extension['folder'])) {
+				$installerParent = $extension['installer']->getParent();	
+				$installerParent->setOverwrite(true);
+				if ($extension['installer']->$type($extension['folder'])) {
 					$extension['status'] = true;
 				} else {
 					echo $extension['name']. "threw an error, possibly already installed"; exit;
@@ -277,7 +278,8 @@ class com_mymuseInstallerScript
 				}
 			}
 			
-			//now try modules
+			
+			//now try MODULES
 			$add = NULL;
 			if(count($manifest->modules->module)){
 					
@@ -288,7 +290,7 @@ class com_mymuseInstallerScript
 							'name' => (string) $module,
 							'type' => (string) $module['name'],
 							'folder' => $super->getPath('source').'/'.(string) $module['folder'],
-							'installer' => new JInstaller(),
+							'installer' => new JInstallerAdapterModule(),
 							'status' => false);
 				}
 			}
@@ -297,7 +299,7 @@ class com_mymuseInstallerScript
 			for ($i = 0; $i < count($extensions); $i++) {
 				$extension =& $extensions[$i];
 				$extension['installer']->setOverwrite(true);
-				if ($extension['installer']->install($extension['folder'])) {
+				if ($extension['installer']->$type($extension['folder'])) {
 					$extension['status'] = true;
 				} else {
 					echo $extension['name']. "threw an error, possibly already installed"; exit;
