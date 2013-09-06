@@ -25,9 +25,6 @@
                 <include name="**" />
         </fileset>
 	
-		<fileset dir="./plugins/audio_mp/plugin" id="plg_mp_files">
-	                <include name="**" />
-	    </fileset>
  
         <!-- Copy Target -->
         <target name="copy_to_test351" description="copy target">
@@ -80,10 +77,7 @@
         	        	todir="${test}/administrator/language/en-GB" /> 
         		<copy file="${src}/plugins/audio_html5/languages/en-GB.plg_mymuse_audio_html5.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" /> 
-        		<copy file="${src}/plugins/audio_mp/languages/en-GB.plg_mymuse_audio_mp.ini"
-        	        	todir="${test}/administrator/language/en-GB" /> 
-        		<copy file="${src}/plugins/audio_mp/languages/en-GB.plg_mymuse_audio_mp.sys.ini"
-        	        	todir="${test}/administrator/language/en-GB" /> 
+
                 <copy file="${src}/plugins/mp3player_dewplayer/languages/en-GB.plg_mymuse_mp3player_dewplayer.ini"
                         todir="${test}/administrator/language/en-GB" />
         		<copy file="${src}/plugins/mp3player_dewplayer/languages/en-GB.plg_mymuse_mp3player_dewplayer.sys.ini"
@@ -241,14 +235,7 @@
         		<copy file="${src}/plugins/audio_html5/skin/jplayer.blue.monday.video.play.png"
         		        todir="${test}/plugins/mymuse/audio_html5/skin" />
         	
-        		<copy file="${src}/plugins/audio_mp/audio_mp.php"
-        	        	            todir="${test}/plugins/mymuse/audio_mp" /> 
-        	    <copy file="${src}/plugins/audio_mp/audio_mp.xml"
-        	        	        	todir="${test}/plugins/mymuse/audio_mp" /> 
-        	
-        		<copy todir="${test}/plugins/mymuse/audio_mp/plugin">
-        	               		<fileset refid="plg_mp_files" />
-        	    </copy>
+    
         	
         	
                 <copy file="${src}/plugins/mp3player_flowplayer/mp3player_flowplayer.php"

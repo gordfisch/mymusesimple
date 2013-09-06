@@ -97,7 +97,6 @@
 
 	<!-- Plugins -->
 	<plugins>
-		<plugin name="audio_mp" folder="plugins/plug_audio_mp">MyMuse Audio Music Player jPlayer</plugin>
         <plugin name="audio_html5" folder="plugins/plug_audio_html5">MyMuse Audio HTML5 jPlayer</plugin>
         <plugin name="mp3player_dewplayer" folder="plugins/plug_mp3player_dewplayer">mp3player Dewplayer</plugin>
         <plugin name="mp3player_flowplayer" folder="plugins/plug_mp3player_flowplayer">mp3player Flowplayer</plugin>
