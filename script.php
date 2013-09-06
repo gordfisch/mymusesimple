@@ -238,12 +238,12 @@ class com_mymuseInstallerScript
 			//first plug-ins
 			//$xmlstr = 
 			$manifest = $parent->get('manifest');
-print_r($manifest->plugins); exit;
+print_r($manifest->plugins);
 			$add = NULL;
-			if(count($manifest->extension->plugins[0])){
+			if(count($manifest->plugins->plugin)){
 			
 				$super = $parent->getParent();
-				foreach ($manifest->extension->plugins[0]->plugin as $plugin) {
+				foreach ($manifest->plugins->plugin as $plugin) {
 					print_r($plugin);
 					$extensions[] = array(
 							'name' => (string) $plugin,
