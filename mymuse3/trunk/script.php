@@ -235,21 +235,20 @@ class com_mymuseInstallerScript
 			$session->set('mymuse.allplgpublish', false);
 		
 			// additional extensions
-			//first plug-ins
-			//$xmlstr = 
+			//first PLUG-INS PLUG-INS
+
 			$manifest = $parent->get('manifest');
 			$super = $parent->getParent();
 			$add = NULL;
 			if(count($manifest->plugins->plugin)){
-			
-				
+
 				foreach ($manifest->plugins->plugin as $plugin) {
-			
+					$a = new JAdapter;
 					$extensions[] = array(
 							'name' => (string) $plugin,
 							'type' => (string) $plugin['name'],
 							'folder' => $super->getPath('source').'/'.(string) $plugin['folder'],
-							'installer' => new JInstallerAdapterPlugin(),
+							'installer' => new JInstallerAdapterPlugin($A),
 							'status' => false);
 				}
 			}
@@ -285,7 +284,7 @@ class com_mymuseInstallerScript
 					
 				$super = $parent->getParent();
 				foreach ($manifest->modules->module as $module) {
-						
+					
 					$extensions[] = array(
 							'name' => (string) $module,
 							'type' => (string) $module['name'],
