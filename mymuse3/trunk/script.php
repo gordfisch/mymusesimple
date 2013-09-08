@@ -264,7 +264,7 @@ class com_mymuseInstallerScript
 				if ($extension['installer']->install($extension['folder'])) {
 					$extension['status'] = true;
 				} else {
-					echo $extension['name']. "threw an error, possibly already installed"; exit;
+					echo $extension['name']. "threw an error, possibly already installed"; 
 					break;
 				}
 			}
@@ -299,12 +299,13 @@ class com_mymuseInstallerScript
 			
 			// install additional extensions
 			for ($i = 0; $i < count($extensions); $i++) {
-				$extension =& $extensions[$i];
+			$extension =& $extensions[$i];
+
 				$extension['installer']->setOverwrite(true);
-				if ($extension['installer']->$type($extension['folder'])) {
+				if ($extension['installer']->install($extension['folder'])) {
 					$extension['status'] = true;
 				} else {
-					echo $extension['name']. "threw an error, possibly already installed"; exit;
+					echo $extension['name']. "threw an error, possibly already installed"; 
 					break;
 				}
 			}
