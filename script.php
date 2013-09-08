@@ -252,6 +252,7 @@ class com_mymuseInstallerScript
 							'folder' => $super->getPath('source').'/'.(string) $plugin['folder'],
 							'installer' => new JInstaller,
 							'status' => false);
+					echo $super->getPath('source').'/'.(string) $plugin['folder']."<br />";
 				}
 			}
 			//print_r($extensions);
