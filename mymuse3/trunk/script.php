@@ -292,7 +292,7 @@ class com_mymuseInstallerScript
 							'name' => (string) $module,
 							'type' => (string) $module['name'],
 							'folder' => $super->getPath('source').'/'.(string) $module['folder'],
-							'installer' => new JInstallerAdapterModule(),
+							'installer' => new JInstaller,
 							'status' => false);
 				}
 			}
