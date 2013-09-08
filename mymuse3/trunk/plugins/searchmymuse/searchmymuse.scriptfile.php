@@ -25,7 +25,7 @@ class plgSearchSearchmymuseInstallerScript
      $columnEnabled   = $db->nameQuote("enabled");
      
      // Enable plugin
-     $db->setQuery("UPDATE $tableExtensions SET $columnEnabled=1 WHERE $columnElement='searchmymuse' AND $columnType='plugin'");
+     $db->setQuery("UPDATE #__extensions SET enabled=1 WHERE element='searchmymuse' AND type='plugin'");
      $db->execute();
      
      echo '<p>'. JText::_('MYMUSE_PLUGIN_ENABLED') .'</p>';    
