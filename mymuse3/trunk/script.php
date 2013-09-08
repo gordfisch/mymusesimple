@@ -254,13 +254,13 @@ class com_mymuseInstallerScript
 							'status' => false);
 				}
 			}
-			print_r($extensions);
+			//print_r($extensions);
 
 			// install additional extensions
 			for ($i = 0; $i < count($extensions); $i++) {
 				$extension =& $extensions[$i];
-				$installerParent = $extension['installer']->getParent();	
-				$installerParent->setOverwrite(true);
+
+				$extension['installer']->setOverwrite(true);
 				if ($extension['installer']->$type($extension['folder'])) {
 					$extension['status'] = true;
 				} else {
