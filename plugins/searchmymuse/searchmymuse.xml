@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5"  type="plugin" group="search">
+<extension version="3.0"  type="plugin" group="search">
 	<name>plg_search_mymuse</name>
 	<author>Arboreta</author>
-	<creationDate>Oct 2012</creationDate>
-	<copyright>Copyright (C) 2012 Arboreta Internet Services. All rights reserved.</copyright>
+	<creationDate>Sept 2013</creationDate>
+	<copyright>Copyright (C) 2013 Arboreta Internet Services. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@arboreta.ca</authorEmail>
 	<authorUrl>www.arboreta.ca</authorUrl>
-	<version>2.5.2</version>
+	<version>3.0.0</version>
 	<description>PLG_SEARCH_MYMUSE</description>
 	
 	<files>
