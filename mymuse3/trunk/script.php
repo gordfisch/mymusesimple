@@ -252,10 +252,9 @@ class com_mymuseInstallerScript
 							'folder' => $super->getPath('source').'/'.(string) $plugin['folder'],
 							'installer' => new JInstaller,
 							'status' => false);
-					echo $super->getPath('source').'/'.(string) $plugin['folder']."<br />";
+
 				}
 			}
-			//print_r($extensions);
 
 			// install additional extensions
 			for ($i = 0; $i < count($extensions); $i++) {
@@ -264,9 +263,6 @@ class com_mymuseInstallerScript
 				$extension['installer']->setOverwrite(true);
 				if ($extension['installer']->install($extension['folder'])) {
 					$extension['status'] = true;
-				} else {
-					echo $extension['name']. "threw an error, possibly already installed"; 
-					break;
 				}
 			}
 	
