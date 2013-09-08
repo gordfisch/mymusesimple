@@ -12,6 +12,8 @@ defined('_JEXEC') or die('Restricted access');
 if(!defined('DS')){
 	define('DS',DIRECTORY_SEPARATOR);
 }
+JLoader::import('joomla.filesystem.folder');
+JLoader::import('joomla.filesystem.file');
 
 /**
  * Script file of MyMuse component
@@ -243,15 +245,16 @@ class com_mymuseInstallerScript
 			if(count($manifest->plugins->plugin)){
 
 				foreach ($manifest->plugins->plugin as $plugin) {
-					$a = new JAdapter;
+					
 					$extensions[] = array(
 							'name' => (string) $plugin,
 							'type' => (string) $plugin['name'],
 							'folder' => $super->getPath('source').'/'.(string) $plugin['folder'],
-							'installer' => new JInstallerAdapterPlugin($A),
+							'installer' => new JInstaller,
 							'status' => false);
 				}
 			}
+			print_r($extensions);
 
 			// install additional extensions
 			for ($i = 0; $i < count($extensions); $i++) {
