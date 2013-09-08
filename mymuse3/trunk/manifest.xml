@@ -104,23 +104,23 @@
         <plugin name="vidplayer_flowplayer" folder="plugins/vidplayer_flowplayer">Vidplayer Flowplayer</plugin>
 		<plugin name="vidplayer_html5" folder="plugins/vidplayer_html5">Vidplayer HTML5</plugin>
 		
-		<plugin name="payment_moneybookers" folder="plugins/moneybookers">Moneybookers</plugin>
-		<plugin name="payment_monsterpay" folder="plugins/monsterpay">Monsterpay</plugin>
-		<plugin name="payment_payfast" folder="plugins/payfast">Payfast</plugin>
-        <plugin name="paymentoffline" folder="plugins/paymentoffline">Payment Offline</plugin>
-        <plugin name="paymentpaypal" folder="plugins/paypal">Paypal</plugin>
+		<plugin name="payment_moneybookers" folder="plugins/payment_moneybookers">Moneybookers</plugin>
+		<plugin name="payment_monsterpay" folder="plugins/payment_monsterpay">Monsterpay</plugin>
+		<plugin name="payment_payfast" folder="plugins/payment_payfast">Payfast</plugin>
+        <plugin name="paymentoffline" folder="plugins/payment_paymentoffline">Payment Offline</plugin>
+        <plugin name="paymentpaypal" folder="plugins/payment_paypal">Paypal</plugin>
 
         <plugin name="preorder" folder="plugins/preorder">Preorder</plugin>
         <plugin name="shipping_price" folder="plugins/shipping_price">Shipping Price</plugin>
         <plugin name="shipping_standard" folder="plugins/shipping_standard">Shipping Standard</plugin>
-        <plugin name="shoppergroupview" folder="plugins/shoppergroup">Shopper group</plugin>
+        <plugin name="shoppergroupview" folder="plugins/shoppergroupview">Shopper group</plugin>
 		<plugin name="vote" folder="plugins/vote">Vote</plugin>
 		
 		
 		<plugin name="redirectonlogin" folder="plugins/user_redirectonlogin">MyMuse Redirect on Log In</plugin>
         <plugin name="mymuse" folder="plugins/user_mymuse">MyMuse User Profile</plugin>
         <plugin name="mymusenoreg" folder="plugins/user_mymusenoreg">MyMuse No Registration Profile</plugin>
-        <plugin name="searchmymuse" folder="plugins/search">Search</plugin>
+        <plugin name="searchmymuse" folder="plugins/searchmymuse">Search</plugin>
 	</plugins>
 	<modules>
         <module name="mod_mymuse_latest" folder="modules/mod_mymuse_latest" client="site">Mod MyMuse Latest</module>
