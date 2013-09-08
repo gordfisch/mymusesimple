@@ -269,7 +269,7 @@ class com_mymuseInstallerScript
 					break;
 				}
 			}
-		
+		exit;
 			// rollback on installation errors
 			if ($error) {
 				$this->parent->abort(JText::_('Component').' '.JText::_('Install').': '.JText::_('Error'), 'component');
