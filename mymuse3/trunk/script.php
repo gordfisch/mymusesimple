@@ -261,7 +261,7 @@ class com_mymuseInstallerScript
 				$extension =& $extensions[$i];
 
 				$extension['installer']->setOverwrite(true);
-				if ($extension['installer']->$type($extension['folder'])) {
+				if ($extension['installer']->install($extension['folder'])) {
 					$extension['status'] = true;
 				} else {
 					echo $extension['name']. "threw an error, possibly already installed"; exit;
