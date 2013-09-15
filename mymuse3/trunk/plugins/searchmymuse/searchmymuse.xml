@@ -58,6 +58,6 @@
 	</config>
 <updateservers>
     <server type="extension" priority="1"
-        name="Plug Search MyMuse">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=15</server>
+        name="Plug Search MyMuse">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=45</server>
 </updateservers>
 </extension>

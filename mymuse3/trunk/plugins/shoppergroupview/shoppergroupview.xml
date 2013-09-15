@@ -30,6 +30,6 @@
 	</config>
 <updateservers>
     <server type="extension" priority="1"
-        name="Plug MyMuse Shopper Group View">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=18</server>
+        name="Plug MyMuse Shopper Group View">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=48</server>
 </updateservers>
 </extension>

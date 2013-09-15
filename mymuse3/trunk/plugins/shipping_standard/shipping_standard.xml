@@ -110,6 +110,6 @@
 	</config>
 <updateservers>
     <server type="extension" priority="1"
-        name="Plug MyMuse Shipping Standard">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=17</server>
+        name="Plug MyMuse Shipping Standard">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=47</server>
 </updateservers>
 </extension>

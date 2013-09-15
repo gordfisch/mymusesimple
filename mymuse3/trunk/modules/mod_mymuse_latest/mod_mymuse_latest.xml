@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="module" client="site">
+<extension version="3.0" type="module" client="site">
 	<name>mod_mymuse_latest</name>
 	<author>Arboreta</author>
 	<creationDate>Feb 2012</creationDate>
@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@arboreta.ca</authorEmail>
 	<authorUrl>www.arboreta.ca</authorUrl>
-	<version>2.5.2</version>
+	<version>3.0.0</version>
 	<description>MYMUSE_MOD_LATEST_DESC</description>
 	<files>
 		<filename module="mod_mymuse_latest">mod_mymuse_latest.php</filename>

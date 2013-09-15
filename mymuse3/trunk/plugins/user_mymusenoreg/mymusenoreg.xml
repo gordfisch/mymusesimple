@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" group="user">
+<extension version="3.0" type="plugin" group="user">
 	<name>plg_user_mymusenoreg</name>
 	<author>Arboreta</author>
 	<creationDate>Jan 2013</creationDate>
@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@arboreta.ca</authorEmail>
 	<authorUrl>www.arboreta.ca</authorUrl>
-	<version>2.5.0</version>
+	<version>3.0.0</version>
 	<description>MYMUSE_USER_NOREG_PROFILE_DESC</description>
 
 	<files>
@@ -185,5 +185,8 @@
 
 		</fields>
 	</config>
-
+<updateservers>
+    <server type="extension" priority="1"
+        name="Plug MyMuse Audio HTML5">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=50&amp;dummy=extension.xml</server>
+</updateservers>
 </extension>

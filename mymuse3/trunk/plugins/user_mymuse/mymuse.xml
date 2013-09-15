@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5" type="plugin" group="user">
+<extension version="3.0" type="plugin" group="user">
 	<name>plg_user_mymuse</name>
 	<author>Arboreta</author>
 	<creationDate>June 2012</creationDate>
@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@arboreta.ca</authorEmail>
 	<authorUrl>www.arboreta.ca</authorUrl>
-	<version>2.5.2</version>
+	<version>3.0.0</version>
 	<description>MYMUSE_USER_PROFILE_DESC</description>
 
 	<files>
@@ -318,6 +318,6 @@
 	</config>
 	<updateservers>
     <server type="extension" priority="1"
-        name="Plug MyMuse User Profile">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=19</server>
+        name="Plug MyMuse User Profile">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=49</server>
 </updateservers>
 </extension>
