@@ -23,12 +23,12 @@ $task		= $this->task;
 		<?php if($order->do_html){ ?>
 			<form action="index.php?Itemid=<?php echo $Itemid; ?>" method="post" name="adminForm">
 		<?php } ?>
-<div >
+<div>
 		<!-- start of basket -->
 
 		<h2><?php echo JText::_('MYMUSE_SHOPPING_CART'); ?></h2>
 		<?php if($params->get("my_use_coupons") && (preg_match("/addtocart|updatecart|cartdelete|showcart/",$task) || $task == '') && !isset($order->coupon->id) ){ ?>
-		    <div class="coupon"><a class="titles" href="index.php?option=com_mymuse&task=coupon&Itemid=<?php echo $Itemid ?>"><b><?php echo JText::_('MYMUSE_ENTER_A_COUPON'); ?></b></a></div>
+		    <div class="coupon"><a class="titles" href="index.php?option=com_mymuse&task=coupon&Itemid=<?php echo $Itemid ?>"><b><?php echo JText::_('MYMUSE_ENTER_A_COUPON'); ?></b></a>
 		    </div>
 		<?php } ?>
 		<table class="mymuse_cart">

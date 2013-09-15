@@ -13,7 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin');
-JPlugin::loadLanguage( 'plg_mymuse_paymentpaypal', JPATH_ADMINISTRATOR );
+JPlugin::loadLanguage( 'plg_mymuse_payment_paypal', JPATH_ADMINISTRATOR );
 
 /**
 * MyMuse PaymnetPaypal plugin
