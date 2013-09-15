@@ -37,6 +37,6 @@
 	</config>
 <updateservers>
     <server type="extension" priority="1"
-        name="Plug MyMuse Audio Music Player">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=22</server>
+        name="Plug MyMuse Audio Music Player">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=54</server>
 </updateservers>
 </extension>
