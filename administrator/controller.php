@@ -33,7 +33,7 @@ class MymuseController extends JControllerLegacy
 
 		// Load the submenu.
 		$view = JRequest::getCmd('view', 'mymuse');
-		echo "In controller with view $view";
+
 		if($view != "product"){
 			MymuseHelper::addSubmenu($view);
 		}

@@ -10,9 +10,6 @@
 // No direct access.
 defined('_JEXEC') or die;
 
-jimport('joomla.application.component.modeladmin');
-JLoader::import('joomla.application.component.model');
-
 /**
  * Mymuse model.
  */

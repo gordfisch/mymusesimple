@@ -95,17 +95,19 @@ class MyMuseUpdateHelper extends JObject
 	}
 	
 	/**
-	 * makeProduct
+	 * upgradeProduct
 	 *
 	 * @param object $p the old product object
 	 *
 	 * @return mixed productid on success, false on failure
 	 */
 	
-	function makeProduct($p)
+	function upgradeProduct($p)
 	{
-		$db = JFactory::getDBO();
+		
 		//Add a main product
+		$db = JFactory::getDBO();
+		$app = JFactory::getApplication();
 		$token = JSession::getFormToken();
 		$query = "DELETE from #__mymuse_product WHERE product_sku = '".$p->product_sku."'";
 		$db->setQuery($query);
@@ -133,7 +135,7 @@ class MyMuseUpdateHelper extends JObject
 	
 		$model = $controller->getModel('product', 'MymuseModel',
 				array('table_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/tables"));
-		$_POST = Array(
+		$data = Array(
 				'jform' => Array
 				(
 						'id' => '0',
@@ -200,22 +202,120 @@ class MyMuseUpdateHelper extends JObject
 				'upgrade' => 1
 	
 		);
-		$jform = $_POST['jform'];
-	
-		JRequest::setVar('jform',$jform);
-		if(!$controller->execute('save')){
-			$this->error = $controller->getError();
-			return false;
-		}
-	
+		//$jform = $_POST['jform'];
+
+		$str = http_build_query($data);
+		$url = JURI::base()."index.php";
+		$cookie = session_name()."=".session_id();
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL,            $url );
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+		curl_setopt($ch, CURLOPT_COOKIE, 		$cookie );
+		curl_setopt($ch, CURLOPT_POST,           1 );
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $str);
+		
+		curl_setopt($ch, CURLOPT_HEADER, true);    // return headers
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);     // follow redirects
+		curl_setopt($ch, CURLOPT_ENCODING,"");       // handle all encodings
+		curl_setopt($ch, CURLOPT_USERAGENT, "spider"); // who am i
+		curl_setopt($ch, CURLOPT_AUTOREFERER, true);     // set referer on redirect
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);      // timeout on connect
+		curl_setopt($ch, CURLOPT_TIMEOUT, 120);      // timeout on response
+		curl_setopt($ch, CURLOPT_MAXREDIRS , 10);       // stop after 10 redirects
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array( 'Expect:' ) );
+		// return web page
+		$result=curl_exec ($ch);
+		curl_close($ch);
+		
+		//see if it worked
 		$query = "SELECT id from #__mymuse_product WHERE title = ".$db->quote($p->title);
+		//echo "<br />$query<br />";
 		$db->setQuery($query);
-		if($id = $db->loadResult()){
-			return $id;
+		
+		if($res = $db->loadResult()){
+			return $res;
 		}else{
-			$this->error =  "Could not make product ".print_pre($_POST,true);
+			echo $result; exit;
+			$this->error = "Could not create product. ".$result;
 			return false;
 		}
+		
+
+	}
+	
+	/**
+	 * makeProduct
+	 *
+	 * @param array $p the product form input
+	 *
+	 * @return mixed productid on success, false on failure
+	 */
+	
+	function makeProduct($data)
+	{
+	
+		//Add a main product
+		$db = JFactory::getDBO();
+		$app = JFactory::getApplication();
+		$token = JSession::getFormToken();
+		$query = "DELETE from #__mymuse_product WHERE product_sku = '".$data['jform']['product_sku']."'";
+		$db->setQuery($query);
+		$db->execute();
+		$user = JFactory::getUser();
+		$userid = $user->get('id');
+	
+	
+		require_once (JPATH_COMPONENT.DS.'controllers'.DS.'product.php');
+	
+		$controller	= new MymuseControllerProduct(array(
+				'base_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/",
+				'model_prefix' => 'MymuseModel',
+				'model_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/models",
+				'table_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/tables"
+				)
+		);
+	
+
+	
+		$str = http_build_query($data);
+		$url = JURI::base()."index.php";
+		$cookie = session_name()."=".session_id();
+	
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL,            $url );
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+		curl_setopt($ch, CURLOPT_COOKIE, 		$cookie );
+		curl_setopt($ch, CURLOPT_POST,           1 );
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $str);
+	
+		curl_setopt($ch, CURLOPT_HEADER, true);    // return headers
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);     // follow redirects
+		curl_setopt($ch, CURLOPT_ENCODING,"");       // handle all encodings
+		curl_setopt($ch, CURLOPT_USERAGENT, "spider"); // who am i
+		curl_setopt($ch, CURLOPT_AUTOREFERER, true);     // set referer on redirect
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);      // timeout on connect
+		curl_setopt($ch, CURLOPT_TIMEOUT, 120);      // timeout on response
+		curl_setopt($ch, CURLOPT_MAXREDIRS , 10);       // stop after 10 redirects
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array( 'Expect:' ) );
+		// return web page
+		$result=curl_exec ($ch);
+		curl_close($ch);
+	
+		//see if it worked
+		$query = "SELECT id from #__mymuse_product WHERE title = ".$db->quote($p->title);
+		//echo "<br />$query<br />";
+		$db->setQuery($query);
+	
+		if($res = $db->loadResult()){
+			return $res;
+		}else{
+			echo $result; exit;
+			$this->error = "Could not create product. ".$result;
+			return false;
+		}
+	
+	
 	}
 	
 	function get_data($url, $file)
@@ -311,20 +411,7 @@ class MyMuseUpdateHelper extends JObject
 	
 	
 		//Add a main product
-	
-		require_once (JPATH_COMPONENT.DS.'controllers'.DS.'product.php');
-	
-		$controller	= new MymuseControllerProduct(array(
-				'base_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/",
-				'model_prefix' => 'MymuseModel',
-				'model_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/models",
-				'table_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/tables"
-		)
-		);
-	
-		$model = $controller->getModel('product', 'MymuseModel',
-				array('table_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/tables"));
-		$_POST = Array(
+		$data = Array(
 				'jform' => Array
 				(
 						'title' => 'Are You My Sister',
@@ -374,22 +461,14 @@ class MyMuseUpdateHelper extends JObject
 				'option' => 'com_mymuse',
 	
 		);
-		$jform = $_POST['jform'];
-		JRequest::setVar('jform',$jform);
-		$controller->execute('apply');
-	
-		$query = "SELECT id from #__mymuse_product WHERE title = 'Are You My Sister'";
-		$db->setQuery($query);
-	
-		if($res = $db->loadResult()){
-			echo "Created a product 'Are You My Sister'. Productid = $res.<br />";
-			$parentid = $res;
+		
+		if($parentid = $this->makeProducts($data)){
+			echo "Created product 'Are You My Sister'<br />";
 		}else{
-			$this->error = "Could not create a sample product.";
+			echo $this->error;
 			return false;
 		}
-	
-	
+		
 		$artist_alias = "iron-brew";
 		$album_alias = "are-you-my-sister";
 	
@@ -399,42 +478,42 @@ class MyMuseUpdateHelper extends JObject
 		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."mymuse.jpg";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
-			exit;
+			return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/worldbeat.jpg";
 		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."worldbeat.jpg";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
-			exit;
+			return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/ironbrew.jpg";
 		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."ironbrew.jpg";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
-			exit;
+			return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/sister.jpg";
 		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."sister.jpg";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
-			exit;
+			return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/artists.png";
 		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."artists.png";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
-			exit;
+			return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/genres.png";
 		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."genres.png";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
-			exit;
+			return false;
 		}
 		echo "Downloaded some graphics to /images/A_MyMuseImages<br />";
 	
@@ -444,21 +523,21 @@ class MyMuseUpdateHelper extends JObject
 		$to = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS."Are_You_My_Sister.mp3";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
-			exit;
+			return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/sister-preview.mp3";
 		$to = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."sister-preview.mp3";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
-			exit;
+			return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/sister-preview.ogg";
 		$to = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."sister-preview.ogg";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
-			exit;
+			return false;
 		}
 		echo "Downloaded 'Are You My Sister' track and previews<br />";
 	
@@ -473,19 +552,19 @@ class MyMuseUpdateHelper extends JObject
 		$to = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."foggy-preview.mp3";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
-			exit;
+			return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/foggy-preview.ogg";
 		$to = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."foggy-preview.ogg";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
-			exit;
+			return false;
 		}
 		echo "Downloaded 'Foggy Dew' track and previews<br />";
 	
 		//make a track for Are You My Sister
-		$_POST = Array(
+		$data = Array(
 	
 			'jform' => Array
 			(
@@ -515,76 +594,66 @@ class MyMuseUpdateHelper extends JObject
 	
 			'select_file' => 'Are_You_My_Sister.mp3',
 			'download_dir' => $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias,
-					'preview_dir' => JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias,
-					'file_preview' => 'sister-preview.mp3',
-					'file_preview_2' => 'sister-preview.ogg',
-					'file_preview_3' => '',
-					'parentid' => "$parentid",
-					'current_preview' => '',
-					'current_preview_2' => '',
-					'current_preview_3' => '',
-					'current_title_alias' => '',
-					'view' => 'product',
-					'id' => '',
-					'subtype' => 'file',
-					'option' => 'com_mymuse',
-					'task' => 'product.applyfile',
-					'3cf575dadd0f6749cd544085c08f4848' => '1'
-					);
-					$jform = $_POST['jform'];
+				'preview_dir' => JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias,
+				'file_preview' => 'sister-preview.mp3',
+				'file_preview_2' => 'sister-preview.ogg',
+				'file_preview_3' => '',
+				'parentid' => "$parentid",
+				'current_preview' => '',
+				'current_preview_2' => '',
+				'current_preview_3' => '',
+				'current_title_alias' => '',
+				'view' => 'product',
+				'id' => '',
+				'subtype' => 'file',
+				'option' => 'com_mymuse',
+				'task' => 'product.applyfile',
+				'3cf575dadd0f6749cd544085c08f4848' => '1'
+			);
+		if($track1id = $this->makeProducts($data)){
+			echo "Created a track 'Are You My Sister'<br />Trackid = $track1id.<br />";
+		}else{
+			echo "Could not create a sample track. ";
+			echo $this->error;
+			return false;
+		}
 	
-					JRequest::setVar('jform',$jform);
-					$controller->execute('apply');
-	
-	
-					$query = "SELECT id from #__mymuse_product WHERE product_sku = 'ayms-t1'";
-					$db->setQuery($query);
-	
-					if($res = $db->loadResult()){
-					echo "Created a track 'Are You My Sister'<br />Trackid = $res.<br />";
-	}else{
-		echo "Could not create a sample track.";
-		return false;
-	}
-	
-	
-	
-	// make a track for Foggy Dew
-	$_POST = Array(
-	
-	'jform' => Array
-	(
-	'title' => 'The Foggy Dew',
-	'file_type' =>'audio',
-	'title_alias' => 'The_Foggy_Dew.mp3',
-	'product_sku' => 'ayms-t2',
-	'ordering' => '0',
-	'file_name' => 'The_Foggy_Dew.mp3',
-	'file_length' => '',
-	'file_downloads' => '',
-	'price' => '2.00',
-	'state' => '1',
-	'access' => '1',
-	'featured' => '0',
-	'language' => '*',
-	'id' => '0',
-	'file_preview' => '',
-	'file_preview_2' => '',
-	'file_preview_3' => '',
-	'articletext' => '
-	
-	This file is mp3 for download with two previews, one in mp3 and one in ogg
-	',
-	'parentid' => "$parentid",
-	'catid' => "$ironbrewid",
-	'version' => '',
-	'product_downloadable' => '1',
-	),
-	
-	'select_file' => 'The_Foggy_Dew.mp3',
-	'download_dir' => $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias,
-	'preview_dir' => JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias,
-			'file_preview' => 'foggy-preview.mp3',
+		// make a track for Foggy Dew
+		$data = Array(
+
+				'jform' => Array
+				(
+						'title' => 'The Foggy Dew',
+						'file_type' =>'audio',
+						'title_alias' => 'The_Foggy_Dew.mp3',
+						'product_sku' => 'ayms-t2',
+						'ordering' => '0',
+						'file_name' => 'The_Foggy_Dew.mp3',
+						'file_length' => '',
+						'file_downloads' => '',
+						'price' => '2.00',
+						'state' => '1',
+						'access' => '1',
+						'featured' => '0',
+						'language' => '*',
+						'id' => '0',
+						'file_preview' => '',
+						'file_preview_2' => '',
+						'file_preview_3' => '',
+						'articletext' => '
+
+						This file is mp3 for download with two previews, one in mp3 and one in ogg
+						',
+						'parentid' => "$parentid",
+						'catid' => "$ironbrewid",
+						'version' => '',
+						'product_downloadable' => '1',
+				),
+
+				'select_file' => 'The_Foggy_Dew.mp3',
+				'download_dir' => $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias,
+				'preview_dir' => JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias,
+				'file_preview' => 'foggy-preview.mp3',
 			'file_preview_2' => 'foggy-preview.ogg',
 			'file_preview_3' => '',
 			'parentid' => "$parentid",
@@ -598,31 +667,23 @@ class MyMuseUpdateHelper extends JObject
 			'option' => 'com_mymuse',
 			'task' => 'product.applyfile',
 			'3cf575dadd0f6749cd544085c08f4848' => '1'
-	);
-	$jform = $_POST['jform'];
+		);
+
 	
-	JRequest::setVar('jform',$jform);
-	$controller->execute('apply');
+		if($track2id = $this->makeProducts($data)){
+			echo "Created a track 'Foggy Dew'<br />Trackid = $track2id.<br />";
+		}else{
+			echo "Could not create a sample track. ";
+			echo $this->error;
+			return false;
+		}
 	
-	$query = "SELECT id from #__mymuse_product WHERE product_sku = 'ayms-t2'";
-	$db->setQuery($query);
+		//checkin
+		$query = "UPDATE #__mymuse_product set checked_out=0, checked_out_time='0000-00-00 00:00:00 '";
+		$db->setQuery($query);
+		$db->query();
 	
-			//checkin
-			$url = JURI::base()."index.php?option=com_checkin";
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_URL,            $url );
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
-			curl_setopt($ch, CURLOPT_COOKIE, 		$cookie );
-			$result=curl_exec ($ch);
-	curl_close($ch);
-	
-	if($res = $db->loadResult()){
-		echo "Created a track 'The Foggy Dew'<br />Trackid = $res.<br />";
-		$catid = $res;
-	}else{
-		echo "Could not create a sample track.";
-		return false;
-	}
+
 		echo '<a href="index.php?option=com_mymuse&view=products">Return</a> to Product View';
 	
 		return true;

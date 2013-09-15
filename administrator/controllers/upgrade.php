@@ -335,7 +335,7 @@ class MymuseControllerUpgrade extends JControllerAdmin
 			}
 		
 			//call the func already
-			if(!$prodx[$oldprod->id] = $helper->makeProduct($oldprod)){
+			if(!$prodx[$oldprod->id] = $helper->upgradeProduct($oldprod)){
 				echo "Could not make product: " .$oldprod->title." ".$this->getError();
 				return false;
 			}else{
