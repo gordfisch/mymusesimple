@@ -107,8 +107,8 @@
 		<plugin name="payment_moneybookers" folder="plugins/payment_moneybookers">Moneybookers</plugin>
 		<plugin name="payment_monsterpay" folder="plugins/payment_monsterpay">Monsterpay</plugin>
 		<plugin name="payment_payfast" folder="plugins/payment_payfast">Payfast</plugin>
-        <plugin name="paymentoffline" folder="plugins/payment_offline">Payment Offline</plugin>
-        <plugin name="paymentpaypal" folder="plugins/payment_paypal">Paypal</plugin>
+        <plugin name="payment_offline" folder="plugins/payment_offline">Payment Offline</plugin>
+        <plugin name="payment_paypal" folder="plugins/payment_paypal">Paypal</plugin>
 
         <plugin name="preorder" folder="plugins/preorder">Preorder</plugin>
         <plugin name="shipping_price" folder="plugins/shipping_price">Shipping Price</plugin>
@@ -117,9 +117,9 @@
 		<plugin name="vote" folder="plugins/vote">Vote</plugin>
 		
 		
-		<plugin name="redirectonlogin" folder="plugins/user_redirectonlogin">MyMuse Redirect on Log In</plugin>
-        <plugin name="mymuse" folder="plugins/user_mymuse">MyMuse User Profile</plugin>
-        <plugin name="mymusenoreg" folder="plugins/user_mymusenoreg">MyMuse No Registration Profile</plugin>
+		<plugin name="user_redirectonlogin" folder="plugins/user_redirectonlogin">MyMuse Redirect on Log In</plugin>
+        <plugin name="user_mymuse" folder="plugins/user_mymuse">MyMuse User Profile</plugin>
+        <plugin name="user_mymusenoreg" folder="plugins/user_mymusenoreg">MyMuse No Registration Profile</plugin>
         <plugin name="searchmymuse" folder="plugins/searchmymuse">Search</plugin>
 	</plugins>
 	<modules>

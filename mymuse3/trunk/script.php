@@ -326,13 +326,14 @@ class com_mymuseInstallerScript
 					height="325" width="190" alt="MyMuse Logo" align="left" />
 				</td>
 				<td valign="top" width="100%"><strong>MyMuse</strong><br /> <span>MyMuse
-						for Joomla! 3.5</span><br /> <font class="small">by <a
+						for Joomla! 3</span><br /> <font class="small">by <a
 						href="http://www.arboreta.ca" target="_blank">Arboreta.ca</a>
 				</font><br /> To get started
 					<ol>
-						<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE_STORE');?></li>
 						<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE');?> <a
-							href="index.php?option=com_plugins&view=plugins&filter_folder=mymuse">Plugins</a>
+						href="index.php?option=com_mymuse&view=store&layout=edit&id=1"><?php echo JText::_('STORE'); ?></a></li>
+						<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE');?> <a
+							href="index.php?option=com_plugins&view=plugins&filter_folder=mymuse"><?php echo JText::_('COM_MYMUSE_PLUGINS'); ?></a>
 						</li>
 						<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE_CREATE_CATEGORY');?>
 						</li>

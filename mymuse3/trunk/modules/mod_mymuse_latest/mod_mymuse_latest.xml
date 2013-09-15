@@ -121,5 +121,8 @@
 	</fieldset>
 	</fields>
 	</config>
-
+<updateservers>
+    <server type="extension" priority="1"
+        name="Plug MyMuse Audio HTML5">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=32&amp;dummy=extension.xml</server>
+</updateservers>
 </extension>

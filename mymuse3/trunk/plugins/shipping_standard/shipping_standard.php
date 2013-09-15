@@ -60,18 +60,19 @@ class plgMymuseShipping_Standard extends JPlugin
 	{
 		// loading plugin parameters
         $this->_plugin = JPluginHelper::getPlugin('mymuse', 'shipping_standard');
-        $this->params = new JParameter($this->_plugin->params);
+        
         $result = array();
         $j = 0;
 		for($i=1;$i<4;$i++){
             $param = "ship_".$i."_active";
             if($this->params->get($param)){
-                $result[$j] = new JObject;
+                $result[$j] 	= new JObject;
                 $result[$j]->id = $i;
-                $carrier    = "ship_carrier_".$i;
-                $method       = "ship_method_".$i;
-                $handling   = "ship_handling_".$i;
-                $additional = "ship_additional_".$i;
+                $carrier    	= "ship_carrier_".$i;
+                $method     	= "ship_method_".$i;
+                $handling   	= "ship_handling_".$i;
+                $additional 	= "ship_additional_".$i;
+                
                 $result[$j]->ship_carrier_name          = $this->params->get($carrier);
                 $result[$j]->ship_method_name           = $this->params->get($method);
                 $result[$j]->ship_handling_charge       = $this->params->get($handling);
@@ -93,7 +94,7 @@ class plgMymuseShipping_Standard extends JPlugin
      {
         // loading plugin parameters
         $this->_plugin = JPluginHelper::getPlugin('mymuse', 'shipping_standard');
-        $this->params = new JParameter($this->_plugin->params);
+
         $cost = 0.00;
 
         $result = new JObject;

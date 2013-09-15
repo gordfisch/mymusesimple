@@ -46,5 +46,9 @@
 			</fieldset>
 		</fields>
 	</config>
+<updateservers>
+    <server type="extension" priority="1"
+        name="Mod MyMuse Minicart 3">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=4&amp;dummy=extension.xml</server>
+</updateservers>
 </extension>
 
