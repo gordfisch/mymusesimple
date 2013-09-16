@@ -21,6 +21,7 @@ $canOrder	= $user->authorise('core.edit.state', 'com_mymuse');
 $saveOrder	= $listOrder == 'a.ordering';
 $sortFields = $this->getSortFields();
 ?>
+
 <script type="text/javascript">
 	Joomla.orderTable = function()
 	{
@@ -38,15 +39,15 @@ $sortFields = $this->getSortFields();
 		Joomla.tableOrdering(order, dirn, '');
 	}
 </script>
+<form action="<?php echo JRoute::_('index.php?option=com_mymuse&view=shoppergroups'); ?>" method="post" name="adminForm" id="adminForm">
 
 	<div id="j-sidebar-container" class="span2">
 	<?php
 	echo $this->sidebar; 
 	?>
 	</div>
-	<div style="clear: both'"></div>
 	<div id="j-main-container" class="span10">
-<form action="<?php echo JRoute::_('index.php?option=com_mymuse&view=shoppergroups'); ?>" method="post" name="adminForm" id="adminForm">
+	<div class="clearfix"> </div>
 		<div id="filter-bar" class="btn-toolbar">
 			<div class="filter-search btn-group pull-left">
 				<label for="filter_search" class="element-invisible"><?php echo JText::_('MYMUSE_FILTER'); ?></label>
@@ -186,4 +187,6 @@ $sortFields = $this->getSortFields();
 		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
-</form>
+	</form>
+
+</div>

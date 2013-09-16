@@ -303,7 +303,7 @@ class MyMuseUpdateHelper extends JObject
 		curl_close($ch);
 	
 		//see if it worked
-		$query = "SELECT id from #__mymuse_product WHERE title = ".$db->quote($p->title);
+		$query = "SELECT id from #__mymuse_product WHERE title = ".$db->quote($data['jform']['title']);
 		//echo "<br />$query<br />";
 		$db->setQuery($query);
 	
@@ -365,6 +365,7 @@ class MyMuseUpdateHelper extends JObject
 			echo $this->error;
 			return false;
 		}
+		echo "Created category MyMuse<br />";
 	
 	
 		// add an artist category
@@ -376,7 +377,7 @@ class MyMuseUpdateHelper extends JObject
 			echo $this->error;
 			return false;
 		}
-	
+		echo "Created category Artists<br />";
 	
 		// add a genre category
 		$title = 'Genres';
@@ -387,6 +388,7 @@ class MyMuseUpdateHelper extends JObject
 			echo $this->error;
 			return false;
 		}
+		echo "Created category Genres<br />";
 	
 		// add an artist category called Iron Brew
 		$title = 'Iron Brew';
@@ -397,6 +399,7 @@ class MyMuseUpdateHelper extends JObject
 			echo $this->error;
 			return false;
 		}
+		echo "Created category Artists->Iron Brew<br />";
 	
 		// add a genre category called World Beat
 		$title = 'World Beat';
@@ -407,6 +410,7 @@ class MyMuseUpdateHelper extends JObject
 			echo $this->error;
 			return false;
 		}
+		echo "Created category Genres->World Beat<br />";
 	
 	
 	
@@ -462,7 +466,7 @@ class MyMuseUpdateHelper extends JObject
 	
 		);
 		
-		if($parentid = $this->makeProducts($data)){
+		if($parentid = $this->makeProduct($data)){
 			echo "Created product 'Are You My Sister'<br />";
 		}else{
 			echo $this->error;
@@ -608,10 +612,10 @@ class MyMuseUpdateHelper extends JObject
 				'subtype' => 'file',
 				'option' => 'com_mymuse',
 				'task' => 'product.applyfile',
-				'3cf575dadd0f6749cd544085c08f4848' => '1'
+				$token => '1'
 			);
-		if($track1id = $this->makeProducts($data)){
-			echo "Created a track 'Are You My Sister'<br />Trackid = $track1id.<br />";
+		if($track1id = $this->makeProduct($data)){
+			echo "Created a track 'Are You My Sister' :: Trackid = $track1id.<br />";
 		}else{
 			echo "Could not create a sample track. ";
 			echo $this->error;
@@ -666,12 +670,12 @@ class MyMuseUpdateHelper extends JObject
 			'subtype' => 'file',
 			'option' => 'com_mymuse',
 			'task' => 'product.applyfile',
-			'3cf575dadd0f6749cd544085c08f4848' => '1'
+			$token => '1'
 		);
 
 	
-		if($track2id = $this->makeProducts($data)){
-			echo "Created a track 'Foggy Dew'<br />Trackid = $track2id.<br />";
+		if($track2id = $this->makeProduct($data)){
+			echo "Created a track 'Foggy Dew' :: Trackid = $track2id.<br />";
 		}else{
 			echo "Could not create a sample track. ";
 			echo $this->error;

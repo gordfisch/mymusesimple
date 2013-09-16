@@ -20,15 +20,17 @@ $listDirn	= $this->state->get('list.direction');
 $canOrder	= $user->authorise('core.edit.state', 'com_mymuse');
 $saveOrder	= $listOrder == 'a.ordering';
 ?>
+
+​<form action="<?php echo JRoute::_('index.php?option=com_mymuse&view=stores'); ?>" method="post" name="adminForm" id="adminForm">
+​
 	<div id="j-sidebar-container" class="span2">
 	<?php
 	echo $this->sidebar; 
 	?>
 	</div>
-	<div style="clear: both'"></div>
-	<div id="j-main-container" class="span10">
-<form action="<?php echo JRoute::_('index.php?option=com_mymuse&view=stores'); ?>" method="post" name="adminForm" id="adminForm">
 
+	<div id="j-main-container" class="span10">
+<div class="clearfix"> </div>
 	<table id="articleList" class="table table-striped">
 		<thead>
 			<tr>
@@ -128,3 +130,4 @@ $saveOrder	= $listOrder == 'a.ordering';
 	</div>
 </form>
 </div>
+

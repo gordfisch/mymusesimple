@@ -321,11 +321,11 @@ class com_mymuseInstallerScript
 		<table cellpadding="4" cellspacing="0" border="0" width="100%"
 			class="adminlist">
 			<tr>
-				<td valign="top"><img
+				<td valign="top" width="40%"><img
 					src="<?php echo 'components/com_mymuse/assets/images/logo325.jpg'; ?>"
 					height="325" width="190" alt="MyMuse Logo" align="left" />
 				</td>
-				<td valign="top" width="100%"><strong>MyMuse</strong><br /> <span>MyMuse
+				<td valign="top" width="60%"><strong>MyMuse</strong><br /> <span>MyMuse
 						for Joomla! 3</span><br /> <font class="small">by <a
 						href="http://www.arboreta.ca" target="_blank">Arboreta.ca</a>
 				</font><br /> To get started

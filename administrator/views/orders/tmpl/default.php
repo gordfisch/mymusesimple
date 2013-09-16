@@ -94,7 +94,7 @@ window.addEvent('domready', function() {Calendar.setup({
 				alt="calendar" id="enddate_img"/ >
 			</div>
 	<div style="clear:both"> </div>
-	<table class="adminlist">
+	<table class="table table-striped" id="ordersList">
 		<thead>
 			<tr>
 				<th width="1%">
