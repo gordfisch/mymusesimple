@@ -61,19 +61,7 @@ class com_mymuseInstallerScript
 		$params =& MyMuseHelper::getParams();
 		$extensions = array();
 		
-		//uninstall dirs
-		function recursiveDelete($str){
-			if(is_file($str)){
-				return JFile::delete($str);
-			}
-			elseif(is_dir($str)){
-				$scan = glob(rtrim($str,'/').'/*');
-				foreach($scan as $index=>$path){
-					recursiveDelete($path);
-				}
-				return JFile::delete($str);
-			}
-		}
+
 		$i = 0;
 		$dir =  $params->get('my_download_dir');
 		
