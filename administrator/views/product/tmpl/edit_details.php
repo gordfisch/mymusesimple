@@ -64,7 +64,7 @@
 
 			</div>
 
-			<div class="pull-left span5">
+			<div class="pull-right span5">
 			<div class="control-group">
 				<div class="control-label">
 					<?php echo $this->form->getLabel('price'); ?>

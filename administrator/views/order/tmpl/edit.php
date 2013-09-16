@@ -108,7 +108,7 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 			</div>
 		</div>
 
-		<div class="pull-left span5">
+		<div class="pull-right span5">
 		
 			<div class="control-group">
 				<div class="control-label">
