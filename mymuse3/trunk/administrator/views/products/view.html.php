@@ -30,6 +30,7 @@ class MymuseViewProducts extends JViewLegacy
 		
 		$this->state		= $this->get('State');
 		$this->items		= $this->get('Items');
+
 		$this->pagination	= $this->get('Pagination');
 		$this->authors		= $this->get('Authors');
 		$this->featured		= $this->get('Featured');

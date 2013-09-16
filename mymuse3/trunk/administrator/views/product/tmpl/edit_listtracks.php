@@ -180,7 +180,7 @@ $params = $this->state->get('params');
 			<?php if($params->get('product_player_height')){ ?>
 			style="height: <?php echo $params->get('product_player_height'); ?>px"
 			<?php } ?>
-			><?php echo $this->item->flash; ?>
+			><?php if(isset($this->item->flash)){ echo $this->item->flash; }?>
 			</div><div id="playing_title"></div>
 <form action="index.php" method="post" name="adminForm2">
 	<input type="hidden" name="view" value="product" /> 
@@ -198,7 +198,7 @@ $params = $this->state->get('params');
 	if(count($this->tracks) > 0){ 
 
 		?>
-		<table class="adminlist">
+		<table class="table table-striped" id="categoryList">
 			<thead>
 				<tr>
 					<th width="1%" class="nowrap center hidden-phone">
@@ -261,7 +261,7 @@ $params = $this->state->get('params');
 				?>
 				
 				
-				<tr class="<?php echo "row$k"; ?>">
+				<tr class="<?php echo $i % 2; ?>">
 					<td class="order nowrap center hidden-phone">
 					<?php if ($canChange) :
 						$disableClassName = '';

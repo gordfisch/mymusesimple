@@ -1,17 +1,21 @@
 <?php defined('_JEXEC') or die('Restricted access'); 
 ?>
+<form action="<?php echo JRoute::_('index.php?option=com_categories&view=categories'); ?>" method="post" name="adminForm" id="adminForm">
+
 	<div id="j-sidebar-container" class="span2">
 	<?php
 	echo $this->sidebar; 
 	?>
 	</div>
-	<div style="clear: both'"></div>
+
+
 	<div id="j-main-container" class="span10">
+	<div class="clearfix"></div>
 		<fieldset class="adminform">
 				<legend><?php echo JText::_('MYMUSE_FOR_JOOMLA'); ?></legend>
 		<table>
 		<tr>
-			<td align="left" width="10%"><h2><?php echo JText::_("MYMUSE_WELCOME"); ?> 
+			<td align="left" width="100%"><h2><?php echo JText::_("MYMUSE_WELCOME"); ?> 
 			<?php echo JText::_("MYMUSE_VERSION"); ?> <?php echo $this->params->get('my_version'); ?></h2>
 			<br />
 			<?php echo JText::_("MYMUSE_TAGLINE"); ?></td>
@@ -66,4 +70,5 @@
 
 		</table>
 		</fieldset>
-</div>
+	</div>
+</form>

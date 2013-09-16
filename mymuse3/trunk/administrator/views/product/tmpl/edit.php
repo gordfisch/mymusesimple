@@ -29,7 +29,7 @@ if($lists['subtype'] == "file"){
 if($lists['subtype'] == "item"){
 	$startOffset = 'items';
 }
-echo "startOffset = $startOffset";
+
 $app = JFactory::getApplication();
 $input = $app->input;
 

@@ -39,15 +39,17 @@ window.addEvent('domready', function() {Calendar.setup({
 // "Tl" = Top Left, "Br" = Bottom Right, "Bl" = Botton Left)
         singleClick    :    true
     });});
-</script>	
+</script>
+<form action="index.php" method="post" name="adminForm" id="adminForm">	
 	<div id="j-sidebar-container" class="span2">
 	<?php
 	echo $this->sidebar; 
 	?>
 	</div>
-	<div style="clear: both'"></div>
+
 	<div id="j-main-container" class="span10">	
-		<form action="index.php" method="post" name="adminForm" >
+	<div class="clearfix"> </div>
+		
 		<h2><?php echo JText::_('Filter'); ?></h2>
 		<table class="admintable">
 		<tr>
