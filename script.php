@@ -367,7 +367,7 @@ class com_mymuseInstallerScript
 		
 		
 		
-				<?php
+		<?php
 		
 				// DEFAULT DOWNLOAD DIRECTORY
 				$name = JText::_("MYMUSE_MAKE_DOWNLOAD_DIR");
@@ -532,7 +532,7 @@ class com_mymuseInstallerScript
 				$registry->loadArray($store_params);
 				$new_params = (string)$registry;
 				
-
+print_r($new_params);
 				$query = "UPDATE #__mymuse_store set ";
 				$query .= "params='$new_params' WHERE id=1
 				";

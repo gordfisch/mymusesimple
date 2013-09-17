@@ -60,7 +60,7 @@ $mymuseplugins = array(
 		"mod_mymuse_latest"		=> ""
 );
 // additional extensions
-$add_array =& $this->manifest->xpath('additional');
+$add_array =& $this->manifest->xpath('plugins');
 $add = NULL;
 if(count($add_array)) $add = $add_array[0];
 if (is_a($add, 'JXMLElement') && count($add->children())) {
