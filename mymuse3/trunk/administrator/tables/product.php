@@ -577,7 +577,7 @@ class MymuseTableproduct extends JTable
         	$artist_alias = MyMuseHelper::getArtistAlias($this->catid);
         	$artistdir = $params->get('my_download_dir').DS.$artist_alias;
         	$albumdir = $params->get('my_download_dir').DS.$artist_alias.DS.$this->alias;
-        	
+       	
         	//what if they have changed?
         	$changed = 0;
         	$old_alias = JRequest::getVar('old_alias', '');
@@ -603,9 +603,7 @@ class MymuseTableproduct extends JTable
         		}
         	}
         	
-        	
-        	
-        	
+        
         	
         	//create new dirs if needed 
         	if(!file_exists($artistdir)){
