@@ -527,7 +527,7 @@ class com_mymuseInstallerScript
 			$db->setQuery($query);
 			$store_params = json_decode($db->loadResult(), TRUE);
 			if($store_params){
-				$store_params['my_download_dir'] = $db->getEscaped($download_dir);
+				$store_params['my_download_dir'] = $download_dir;
 				$registry = new JRegistry;
 				$registry->loadArray($store_params);
 				$new_params = (string)$registry;
