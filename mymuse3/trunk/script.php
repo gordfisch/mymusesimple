@@ -125,7 +125,34 @@ class com_mymuseInstallerScript
 		}
 		$i++;
 		
+		// additional extensions
+		//first PLUG-INS PLUG-INS
 		
+		$manifest = $parent->get('manifest');
+		$super = $parent->getParent();
+		$add = NULL;
+		if(count($manifest->plugins->plugin)){
+		
+			foreach ($manifest->plugins->plugin as $plugin) {
+				$extensions[] = array(
+						'name' => (string) $plugin,
+						'type' => (string) $plugin['name'],
+						'folder' => $super->getPath('source').'/'.(string) $plugin['folder'],
+						'installer' => new JInstaller,
+						'status' => false);
+
+			}
+		}
+				
+		// install additional extensions
+		for ($i = 0; $i < count($extensions); $i++) {
+			$extension =& $extensions[$i];
+
+			if ($extension['installer']->uninstall('plugin', $extension['type'])) {
+				$extension['status'] = true;
+			}
+		}
+				
 		?>
 		<h3><?php echo JText::_('Remove Directories'); ?></h3>
 		<table class="adminlist">
@@ -532,7 +559,6 @@ class com_mymuseInstallerScript
 				$registry->loadArray($store_params);
 				$new_params = (string)$registry;
 				
-print_r($new_params);
 				$query = "UPDATE #__mymuse_store set ";
 				$query .= "params='$new_params' WHERE id=1
 				";
