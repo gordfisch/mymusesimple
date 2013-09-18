@@ -168,6 +168,7 @@ class com_mymuseInstallerScript
 			$query = "SELECT extension_id FROM #__extensions 
 			WHERE name ='".$plugins[$i]['type']."'";
 			$db->setQuery($query);
+			echo $query."<br />";exut;
 			$res = $db->loadResult();
 			echo $res."<br />";
 			if ($plugins[$i]['installer']->uninstall('plugin', $res)) {
