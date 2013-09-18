@@ -14,7 +14,7 @@ if(!defined('DS')){
 }
 JLoader::import('joomla.filesystem.folder');
 JLoader::import('joomla.filesystem.file');
-
+require_once (JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS.'helpers'.DS.'mymuse.php');
 /**
  * Script file of MyMuse component
  */
@@ -24,6 +24,23 @@ class com_mymuseInstallerScript
 	var $already_installed = 0;
 	var $old_version = 0;
 	var $css = '';
+	var $mymuse_params = '';
+	
+	
+	/**
+	 * Constructor
+	 *
+	 */
+	public function __construct()
+	{
+	
+		$this->mymuse_params = MyMuseHelper::getParams();
+	
+	
+	
+	}
+	
+
 	
 	/**
 	 * method to install the component
@@ -57,11 +74,13 @@ class com_mymuseInstallerScript
 	{
 		// $parent is the class calling this method
 		//initialize
-		require_once (JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS.'helpers'.DS.'mymuse.php');
-		$params =& MyMuseHelper::getParams();
-		$extensions = array();
 		
-
+		$params =& $this->mymuse_params;
+		$extensions = array();
+		$plugins = array();
+		$modules = array();
+		$db = JFactory::getDBO();
+		
 		$i = 0;
 		$dir =  $params->get('my_download_dir');
 		
@@ -80,7 +99,6 @@ class com_mymuseInstallerScript
 			
 			$i++;
 		}
-		
 		
 		$extensions[$i]['name'] = "Remove Previews";
 		$extensions[$i]['type'] = "Directory";
@@ -134,7 +152,7 @@ class com_mymuseInstallerScript
 		if(count($manifest->plugins->plugin)){
 		
 			foreach ($manifest->plugins->plugin as $plugin) {
-				$extensions[] = array(
+				$plugins[] = array(
 						'name' => (string) $plugin,
 						'type' => (string) $plugin['name'],
 						'folder' => $super->getPath('source').'/'.(string) $plugin['folder'],
@@ -144,12 +162,16 @@ class com_mymuseInstallerScript
 			}
 		}
 				
-		// install additional extensions
-		for ($i = 0; $i < count($extensions); $i++) {
-			$extension =& $extensions[$i];
-
-			if ($extension['installer']->uninstall('plugin', $extension['type'])) {
-				$extension['status'] = true;
+		// install additional plugins
+		for ($i = 0; $i < count($plugins); $i++) {
+			$plugin =& $plugins[$i];
+			$query = "SELECT extension_id FROM #__extensions 
+			WHERE name ='".$plugins[$i]['type']."'";
+			$db->setQuery($query);
+			$res = $db->loadResult();
+			echo $res."<br />";
+			if ($plugins[$i]['installer']->uninstall('plugin', $res)) {
+				$plugins[$i]['status'] = true;
 			}
 		}
 				
@@ -207,7 +229,8 @@ class com_mymuseInstallerScript
 	{
 		// $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
-		//echo '<p>' . JText::_('PREFLIGHT_' . $type . '_TEXT') . '</p>';
+		echo '<p>' . JText::_('PREFLIGHT_' . $type . '_TEXT') . '</p>'; exit;
+		
 		$db = JFactory::getDBO();
 		$query = "SELECT * from #__extensions WHERE name = 'mymuse' ";
 		
@@ -546,7 +569,7 @@ class com_mymuseInstallerScript
 			}
 				
 		if(!$this->already_installed && $type == "install"){
-
+			echo "type = $type"; exit;
 			// update store download dir
 			$download_dir =  JPATH_ROOT.DS."images".DS."A_MyMuseDownloads";
 			$name = JText::_("MYMUSE_UPDATING_STORE");
