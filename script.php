@@ -558,7 +558,7 @@ class com_mymuseInstallerScript
 			}
 				
 		if(!$this->already_installed && $type == "install"){
-			echo "type = $type"; exit;
+	
 			// update store download dir
 			$download_dir =  JPATH_ROOT.DS."images".DS."A_MyMuseDownloads";
 			$name = JText::_("MYMUSE_UPDATING_STORE");
