@@ -218,7 +218,7 @@ class com_mymuseInstallerScript
 	{
 		// $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
-		echo '<p>' . JText::_('PREFLIGHT_' . $type . '_TEXT') . '</p>'; exit;
+		//echo '<p>' . JText::_('PREFLIGHT_' . $type . '_TEXT') . '</p>'; exit;
 		
 		$db = JFactory::getDBO();
 		$query = "SELECT * from #__extensions WHERE name = 'mymuse' ";
