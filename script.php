@@ -14,7 +14,7 @@ if(!defined('DS')){
 }
 JLoader::import('joomla.filesystem.folder');
 JLoader::import('joomla.filesystem.file');
-require_once (JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS.'helpers'.DS.'mymuse.php');
+
 /**
  * Script file of MyMuse component
  */
@@ -26,21 +26,6 @@ class com_mymuseInstallerScript
 	var $css = '';
 	var $mymuse_params = '';
 	
-	
-	/**
-	 * Constructor
-	 *
-	 */
-	public function __construct()
-	{
-	
-		$this->mymuse_params = MyMuseHelper::getParams();
-	
-	
-	
-	}
-	
-
 	
 	/**
 	 * method to install the component
@@ -74,8 +59,8 @@ class com_mymuseInstallerScript
 	{
 		// $parent is the class calling this method
 		//initialize
-		
-		$params =& $this->mymuse_params;
+		require_once (JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS.'helpers'.DS.'mymuse.php');
+		$params =& MyMuseHelper::getParams();
 		$extensions = array();
 		$plugins = array();
 		$modules = array();
@@ -143,6 +128,8 @@ class com_mymuseInstallerScript
 		}
 		$i++;
 		
+		
+		/**
 		// additional extensions
 		//first PLUG-INS PLUG-INS
 		
@@ -168,13 +155,14 @@ class com_mymuseInstallerScript
 			$query = "SELECT extension_id FROM #__extensions 
 			WHERE name ='".$plugins[$i]['type']."'";
 			$db->setQuery($query);
-			echo $query."<br />";exut;
+			echo $query."<br />";exit;
 			$res = $db->loadResult();
 			echo $res."<br />";
 			if ($plugins[$i]['installer']->uninstall('plugin', $res)) {
 				$plugins[$i]['status'] = true;
 			}
 		}
+		*/
 				
 		?>
 		<h3><?php echo JText::_('Remove Directories'); ?></h3>
