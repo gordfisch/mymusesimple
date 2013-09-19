@@ -69,6 +69,9 @@ JHTML::_('behavior.tooltip');
 
 				<li><?php echo $this->form->getLabel('id'); ?>
 				<?php echo $this->form->getInput('id'); ?></li>
+				
+				<li><?php echo $this->form->getLabel('product_discount'); ?>
+				<?php echo $this->form->getInput('product_discount'); ?></li>
 			</ul>
 	</fieldset>
 </div>
