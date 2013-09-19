@@ -75,6 +75,14 @@
 			</div>
 			<div class="control-group">
 				<div class="control-label">
+					<?php echo $this->form->getLabel('product_discount'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('product_discount'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
 					<?php echo $this->form->getLabel('state'); ?>
 				</div>
 				<div class="controls">

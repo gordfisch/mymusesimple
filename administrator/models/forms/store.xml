@@ -504,6 +504,16 @@
         		description="MYMUSE_EMAIL_MSG_DESC" 
         />
         <field
+                name="my_show_original_price"
+                type="radio"
+                label="MYMUSE_SHOW_ORIGINAL_PRICE"
+                description="MYMUSE_SHOW_ORIGINAL_PRICE_DESC"
+                class="inputbox"
+                default="0">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>>
+        </field>
+        <field
                 name="my_add_taxes"
                 type="list"
                 label="MYMUSE_ADD_TAXES_LABEL"

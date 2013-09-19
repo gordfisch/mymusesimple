@@ -68,6 +68,9 @@ JHTML::_('behavior.tooltip');
 				
 				<li><?php echo $this->form->getLabel('price'); ?>
 				<?php echo $this->form->getInput('price'); ?></li>
+				
+				<li><?php echo $this->form->getLabel('product_discount'); ?>
+				<?php echo $this->form->getInput('product_discount'); ?></li>
 			</ul>
 	</div>			
 	<div class="width-50 pull-right">
