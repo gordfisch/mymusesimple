@@ -70,6 +70,10 @@
                         todir="${test}/administrator/language/en-GB" />
                 <copy file="${src}/plugins/payment_pesapal/languages/en-GB.plg_mymuse_payment_pesapal.ini"
                         todir="${test}/administrator/language/en-GB" />
+        		<copy file="${src}/plugins/payment_virtualmerchant/languages/en-GB.plg_mymuse_payment_virtualmerchant.ini"
+        	        	todir="${test}/administrator/language/en-GB" />
+        	    <copy file="${src}/plugins/payment_virtualmerchant/languages/en-GB.plg_mymuse_payment_virtualmerchant.sys.ini"
+        	        	todir="${test}/administrator/language/en-GB" />
         	
                 <copy file="${src}/plugins/shipping_standard/languages/en-GB.plg_mymuse_shipping_standard.ini"
                         todir="${test}/administrator/language/en-GB" />
@@ -168,7 +172,11 @@
                 <copy file="${src}/plugins/payment_pesapal/payment_pesapal.xml"
                         todir="${test}/plugins/mymuse/payment_pesapal" />
                 <copy file="${src}/plugins/payment_pesapal/OAuth.php"
-                        todir="${test}/plugins/mymuse/payment_pesapal" />        
+                        todir="${test}/plugins/mymuse/payment_pesapal" /> 
+        		<copy file="${src}/plugins/payment_virtualmerchant/payment_virtualmerchant.php"
+        	        	todir="${test}/plugins/mymuse/payment_virtualmerchant" />
+        	    <copy file="${src}/plugins/payment_virtualmerchant/payment_virtualmerchant.xml"
+        	        	todir="${test}/plugins/mymuse/payment_virtualmerchant" />
                         
                         
                 <copy file="${src}/plugins/preorder/preorder.php"
