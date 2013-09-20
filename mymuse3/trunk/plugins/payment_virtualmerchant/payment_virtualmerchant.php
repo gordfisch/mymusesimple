@@ -140,7 +140,7 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
 		<input type="hidden" name="ssl_amount" 			
 			value="'.sprintf("%.2f", $total).'" />
 		<input type="hidden" name="ssl_invoice_number"  	
-			value="'.$order->order_number.'" />
+			value="'.$order->id.'" />
 		<input type="hidden" name="ssl_show_form"  		
 			value="true" />	
 		<input type="hidden" name="ssl_first_name"       value="'. $shopper->first_name.'" />
@@ -162,15 +162,11 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
 			value="'. @$shopper->profile['phone'].'" />	
 		<input type="hidden" name="ssl_email"  value="'. $shopper_email.'" />
 			
-		<input type="hidden" name="ssl_export_script"      	
-			value="'. JURI::base().'index.php?option=com_mymuse&task=notify" />
-			
-			
 		<input type="hidden" name="ssl_receipt_decl_method"        value="REDG" />
 		<input type="hidden" name="ssl_receipt_decl_get_url"      	
 			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&Itemid='.$Itemid.'" />
 		<input type="hidden" name="ssl_receipt_apprvl_method"        value="REDG" />
-		<input type="hidden" name="ssl_receipt_decl_get_url"      	
+		<input type="hidden" name="ssl_receipt_apprvl_get_url"      	
 			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&Itemid='.$Itemid.'" />	
 		<input type="hidden" name="ssl_error_url"      	
 			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&Itemid='.$Itemid.'" />	
@@ -223,7 +219,7 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
 		$result['error']				= '';
 
 		
-		if(!isset($_POST['ssl_result_message'])){
+		if(!isset($_REQUEST['ssl_result_message'])){
 			//wasn't virtualmerchant
 			$debug .= "Was not Virtualmerchant. \n";
 			$debug .= "-------END-------";
@@ -232,10 +228,10 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
   			}
   			return $result;
 		}elseif($params->get('my_debug')){
-				$debug .= "RECIEVED THIS POST\n";
-				$debug .= print_r($_POST, true);
+				$debug .= "RECIEVED THIS REQUEST\n";
+				$debug .= print_r($_REQUEST, true);
         		MyMuseHelper::logMessage( $debug  );
-  			}
+  		}
 		$result['myorder'] = 1;
 		$result['message_sent'] 		= 1; //must be >0 or tiggers error
 		$result['message_received'] 	= 1; //must be >0 or tiggers error
@@ -251,24 +247,24 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
 			'-2' => 'Failed',
 			'-3' => 'Chargeback'
 		);
-		$status = $status_array[$_POST['ssl_result']];
+		$status = $status_array[$_REQUEST['ssl_result']];
 		
-		if(isset($_POST['errorCode']) && $_POST['errorCode'] > 0){
-			$result['error'] = $_POST['errorCode']." : ".$_POST['errorMessage'];
+		if(isset($_REQUEST['errorCode']) && $_REQUEST['errorCode'] > 0){
+			$result['error'] = $_REQUEST['errorCode']." : ".$_REQUEST['errorMessage'];
 		}
 		
 
-		$result['order_number'] 		= $_POST['ssl_invoice_number'];
-		//$result['payer_email'] 			= $_POST['pay_from_email'];
+		$result['order_number'] 		= $_REQUEST['ssl_invoice_number'];
+		$result['payer_email'] 			= $_REQUEST['ssl_email'];
   		$result['payment_status'] 		= $status;
-  		$result['txn_id'] 				= $_POST['ssl_txn_id'];
-		$result['amountin'] 			= $_POST['ssl_amount'];
+  		$result['txn_id'] 				= $_REQUEST['ssl_txn_id'];
+		$result['amountin'] 			= $_REQUEST['ssl_amount'];
         $result['currency'] 			= $params->get('my_currency');
         $result['rate'] 				= '';
         $result['fees'] 				= '';
-        $result['transaction_id'] 		= $_POST['ssl_txn_id'];
+        $result['transaction_id'] 		= $_REQUEST['ssl_txn_id'];
         $result['transaction_status'] 	= $status;
-        $result['description'] 			= @$_POST['note'];
+        $result['description'] 			= @$_REQUEST['note'];
 		
 
         $date = date('Y-m-d h:i:s');
@@ -279,7 +275,7 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
        // Get the Order Details from the database
         if($result['order_number']){
         	$query = "SELECT * FROM `#__mymuse_order`
-                    WHERE `order_number`='".$result['order_number']."'";
+                    WHERE `id`='".$result['order_number']."'";
         	$date = date('Y-m-d h:i:s');
         	$debug .= "$date  4.1 $query \n\n";
         	$db	= & JFactory::getDBO();
@@ -354,7 +350,7 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
         	if($params->get('my_debug')){
         		MyMuseHelper::logMessage( $debug  );
   			}
-  			$result['error'] = "$date 4.3 Order FAILED at Virtualmerchant. Code: ".$_POST['failed_reason_code'] ."\n\n";
+  			$result['error'] = "$date 4.3 Order FAILED at Virtualmerchant. Code: ".$_REQUEST['failed_reason_code'] ."\n\n";
   			return $result;
         }
 

@@ -109,7 +109,8 @@
 		<plugin name="payment_payfast" folder="plugins/payment_payfast">Payfast</plugin>
         <plugin name="payment_offline" folder="plugins/payment_offline">Payment Offline</plugin>
         <plugin name="payment_paypal" folder="plugins/payment_paypal">Paypal</plugin>
-
+		<plugin name="payment_virtualmerchant" folder="plugins/payment_virtualmerchant">Virtual Payment</plugin>
+		
         <plugin name="preorder" folder="plugins/preorder">Preorder</plugin>
         <plugin name="shipping_price" folder="plugins/shipping_price">Shipping Price</plugin>
         <plugin name="shipping_standard" folder="plugins/shipping_standard">Shipping Standard</plugin>
