@@ -98,16 +98,17 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
 		$merchant_email = $this->params->get('my_virtualmerchant_email');
 
 		//Shopper Email
-		$shopper_email = $shopper->email;
+		$shopper_email 			= $shopper->email;
 		$shopper->address1 		= isset($shopper->profile['address1'])? $shopper->profile['address1'] : '';
 		$shopper->address2 		= isset($shopper->profile['address2'])? $shopper->profile['address2'] : '';
 		$shopper->city 			= isset($shopper->profile['city'])? $shopper->profile['city'] : '';
 		$shopper->region 		= isset($shopper->profile['region_name'])? $shopper->profile['region_name'] : '';
 		$shopper->postal_code 	= isset($shopper->profile['postal_code'])? $shopper->profile['postal_code'] : '';
 		$shopper->first_name 	= isset($shopper->profile['first_name'])? $shopper->profile['first_name'] : '';
-		$shopper->last_name 		= isset($shopper->profile['last_name'])? $shopper->profile['last_name'] : '';
+		$shopper->last_name 	= isset($shopper->profile['last_name'])? $shopper->profile['last_name'] : '';
+		
 		if(!$shopper->first_name){
-			@list($shopper->first_name,$shopper->lastname) = explode(" ",$shopper->name);
+			@list($shopper->first_name,$shopper->last_name) = explode(" ",$shopper->name);
 			if($shopper->last_name == ""){
 				$shopper->last_name = $shopper->first_name;
 			}

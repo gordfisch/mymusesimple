@@ -71,7 +71,6 @@ class plgUserMyMuse extends JPlugin
 				' WHERE user_id = '.(int) $userId." AND profile_key LIKE '$profile_key.%'" .
 				' ORDER BY ordering';
 		$db->setQuery( $query);
-
 		$results = $db->loadRowList();
 
 		// Check for a database error.

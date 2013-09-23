@@ -190,7 +190,7 @@
 	 				
 	 		<field name="product_player_type" 
 	 		type="list" 
-	 		default="each" 
+	 		default="single" 
 	 		label="MYMUSE_PRODUCT_PLAYERTYPE_LABEL" 
 	 		description="MYMUSE_PRODUCT_PLAYERTYPE_DESC">
 	 			<option value="single">MYMUSE_SINGLE</option>

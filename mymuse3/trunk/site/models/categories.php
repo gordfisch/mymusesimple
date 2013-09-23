@@ -18,7 +18,7 @@ require_once( MYMUSE_PATH.DS.'helpers'.DS.'category.php' );
  * @subpackage	com_content
  * @since		1.6
  */
-class mymuseModelCategories extends JModel
+class mymuseModelCategories extends JModelList
 {
 	/**
 	 * Model context string.
