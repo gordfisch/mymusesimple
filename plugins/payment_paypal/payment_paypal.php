@@ -77,7 +77,7 @@ class plgMymusePaymentPaypal extends JPlugin
 		$shopper->first_name 	= isset($shopper->profile['first_name'])? $shopper->profile['first_name'] : '';
 		$shopper->last_name 		= isset($shopper->profile['last_name'])? $shopper->profile['last_name'] : '';
 		if(!$shopper->first_name){
-			@list($shopper->first_name,$shopper->lastname) = explode(" ",$shopper->name);
+			@list($shopper->first_name,$shopper->last_name) = explode(" ",$shopper->name);
 			if($shopper->last_name = ""){
 				$shopper->last_name = $shopper->first_name;
 			}

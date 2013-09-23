@@ -488,10 +488,11 @@ class MyMuseModelTracks extends JModelList
 
             }//end for each track
         }
-        
+        echo $params->get('product_player_type');
         
         if($params->get('product_player_type') == "single"){
             //get the player itself
+            
             reset($tracks);
             $flash = '';
             $audio = 0;
@@ -529,7 +530,7 @@ class MyMuseModelTracks extends JModelList
                 }
             }
         }
-        
+ 
         if($params->get('product_player_type') == "playlist"){
             //get the main flash for the product
     

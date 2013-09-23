@@ -760,4 +760,54 @@ echo "Got to notify";
 		exit;
 	
 	}
+	
+	/**
+	 * ajaxtogglecart
+	 *
+	 * Given  product id, add it to cart, unless it is there already, then delete from cart
+	 * return json encoded string with message, cat idx
+	 *
+	 * return string
+	 */
+	function ajaxtogglecart()
+	{
+		$productid  = JRequest::getVar('productid', '');
+		if(!$productid ){
+			$data = array();
+		}else{
+			$incart = 0;
+			for ($i=0;$i<$this->MyMuseCart->cart["idx"];$i++) {
+				if($this->MyMuseCart->cart[$i]["product_id"] == $productid){
+					$incart = 1;
+				}
+			}
+	
+			if($incart){
+				// let us remove it
+				$this->MyMuseCart->delete($productid );
+				$msg = "deleted";
+			}else{
+				//let us add it
+				$this->MyMuseCart->addToCart();
+				$msg = "added";
+			}
+			$data = array('msg'=>$msg, 'idx' => $this->MyMuseCart->cart['idx']);
+		}
+	
+		//save the cart in the session
+		$session = &JFactory::getSession();
+		$session->set("cart",$this->MyMuseCart->cart);
+	
+		$rand = JUserHelper::genRandomPassword(8);
+		$document =& JFactory::getDocument();
+		$document->setMimeEncoding('application/json');
+		JResponse::setHeader("Expires","Sun, 19 Nov 1978 05:00:00 GMT");
+		JResponse::setHeader("Last-Modified", gmdate("D, d M Y H:i:s") . " GMT");
+		JResponse::setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+		JResponse::setHeader("Cache-Control", "post-check=0, pre-check=0", false);
+		JResponse::setHeader("Pragma", "no-cache");
+		JResponse::setHeader('Content-Disposition','attachment;filename="coupon_'.$rand .'.json"');
+		echo json_encode($data);
+		exit;
+	}
 }

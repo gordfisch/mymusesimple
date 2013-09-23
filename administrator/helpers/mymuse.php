@@ -219,6 +219,16 @@ class MyMuseHelper extends JObject
 			$cparams = JComponentHelper::getParams( 'com_mymuse' );
 
 			$params->merge( $cparams );
+			
+			$app            = JFactory::getApplication();
+			if(!$app->isAdmin()){
+				$app_params      = $app->getParams();
+				$params->merge( $app_params );
+			}
+			
+			
+			
+			
 			$params->set('my_currency',$params->get('currency'));
 
 			$currency = MyMuseHelper::getCurrency($params->get('currency'));
