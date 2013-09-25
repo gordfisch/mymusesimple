@@ -107,6 +107,12 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
 		$shopper->first_name 	= isset($shopper->profile['first_name'])? $shopper->profile['first_name'] : '';
 		$shopper->last_name 	= isset($shopper->profile['last_name'])? $shopper->profile['last_name'] : '';
 		
+		if($shopper->region){
+			$query = "SELECT state_2_code FROM #__mymuse_state WHERE id='".$shopper->region ."'";
+			$db->setQuery($query);
+			$shopper->region = $db->loadResult();
+		}
+		
 		if(!$shopper->first_name){
 			@list($shopper->first_name,$shopper->last_name) = explode(" ",$shopper->name);
 			if($shopper->last_name == ""){
@@ -156,20 +162,23 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
 		<input type="hidden" name="ssl_avs_zip"  		
 			value="'. @$shopper->profile['postal_code'].'" />		
 		<input type="hidden" name="ssl_state"  		
-			value="'. @$shopper->profile['region'].'" />	
+			value="'. @$shopper->profile['region_name'].'" />	
 		<input type="hidden" name="ssl_country"  		
 			value="'. @$shopper->profile['country'].'" />	
 		<input type="hidden" name="ssl_phone"  		
 			value="'. @$shopper->profile['phone'].'" />	
 		<input type="hidden" name="ssl_email"  value="'. $shopper_email.'" />
 			
-		<input type="hidden" name="ssl_receipt_decl_method"        value="REDG" />
-		<input type="hidden" name="ssl_receipt_decl_get_url"      	
-			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&Itemid='.$Itemid.'" />
+		
 		<input type="hidden" name="ssl_receipt_apprvl_method"        value="REDG" />
 		<input type="hidden" name="ssl_receipt_apprvl_get_url"      	
-			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&Itemid='.$Itemid.'" />	
+			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&Itemid='.$Itemid.'" />
+				
 		<input type="hidden" name="ssl_error_url"      	
+			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&Itemid='.$Itemid.'" />
+			
+		<input type="hidden" name="ssl_receipt_decl_method"        value="REDG" />
+		<input type="hidden" name="ssl_receipt_decl_get_url"      	
 			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&Itemid='.$Itemid.'" />	
 			
 		';
@@ -220,7 +229,7 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
 		$result['error']				= '';
 
 		
-		if(!isset($_REQUEST['ssl_result_message'])){
+		if(!isset($_REQUEST['ssl_transaction_type'])){
 			//wasn't virtualmerchant
 			$debug .= "Was not Virtualmerchant. \n";
 			$debug .= "-------END-------";
