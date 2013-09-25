@@ -417,6 +417,14 @@ class MyMuseController extends JControllerLegacy
 
 	function thankyou()
 	{
+		$errorName = JRequest::getVar('errorName', 0);
+		if($errorName){
+			$errorMsg = JRequest::getVar('errorMsg', '');
+			$msg = $errorName." : ".$errorMsg;
+			$this->setRedirect("index.php", $msg);
+		}
+		
+		
 		$params = MyMuseHelper::getParams();
 		//get order
 		$db 			=& JFactory::getDBO();
