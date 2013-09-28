@@ -21,10 +21,10 @@ JPlugin::loadLanguage( 'plg_mymuse_payment_paypal', JPATH_ADMINISTRATOR );
 * @package 		MyMuse
 * @subpackage	mymuse
 */
-class plgMymusePaymentPaypal extends JPlugin
+class plgMymusePayment_Paypal extends JPlugin
 {
 	/**
-	 * Constructor
+	 * Constructorcd plugins
 	 *
 	 * For php4 compatability we must not use the __constructor as a constructor for plugins
 	 * because func_get_args ( void ) returns a copy of all passed arguments NOT references.
@@ -34,7 +34,7 @@ class plgMymusePaymentPaypal extends JPlugin
 	  * @param 	array  		$config  An array that holds the plugin configuration
 	 * @since	1.0
 	 */
-	function plgMyMusePaymentPaypal(&$subject, $config)  {
+	function plgMyMusePayment_Paypal(&$subject, $config)  {
 		parent::__construct($subject, $config);
 		
 

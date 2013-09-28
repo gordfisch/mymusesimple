@@ -21,7 +21,7 @@ JPlugin::loadLanguage( 'plg_mymuse_payment_offline', JPATH_ADMINISTRATOR );
 * @package 		MyMuse
 * @subpackage	mymuse
 */
-class plgMymusePaymentOffline extends JPlugin
+class plgMymusePayment_Offline extends JPlugin
 {
 	
 
@@ -46,7 +46,7 @@ class plgMymusePaymentOffline extends JPlugin
 	 */
 	function onBeforeMyMusePayment($shopper, $store, $order, $params, $Itemid )
 	{
-echo "here"; exit;
+
 		$string = '';
 		
 		$string .= '

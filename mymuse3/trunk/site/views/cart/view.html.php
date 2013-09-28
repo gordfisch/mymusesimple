@@ -269,7 +269,7 @@ class myMuseViewCart extends JViewLegacy
 				
 				$results = $dispatcher->trigger('onBeforeMyMusePayment', 
 				array($this->shopper, $this->store, $this->order, $params, $this->Itemid) );
-				print_pre($results);
+			
 				$this->assignRef('results', $results);
 				parent::display("payment_form");
 
