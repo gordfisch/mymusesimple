@@ -661,7 +661,7 @@ class MyMuseCheckout
 			$this->error = JText::_('MYMUSE_NO_ORDER_ID');
 			return false;
 		}
-  		
+  	
      	$MyMuseShopper  =&MyMuse::getObject('shopper','models');
 		$shopper =& $MyMuseShopper->getShopper();
 		$MyMuseStore  =&MyMuse::getObject('store','models');
@@ -669,13 +669,13 @@ class MyMuseCheckout
 		$MyMuseCart  =&MyMuse::getObject('cart','helpers');
 		$cart = $MyMuseCart->cart;
 		$downloadable = 0;
-		
+
 		// get the main order
   		$db =& JFactory::getDBO();
   		$query = "SELECT * from #__mymuse_order WHERE id='$id'";
   		$db->setQuery($query);
   		$order = $db->loadObject();
-		
+  
   		//get the taxes
 		$order->tax_array = array();
 		$order->tax_total = 0.00;

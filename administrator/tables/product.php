@@ -257,7 +257,7 @@ class MymuseTableproduct extends JTable
 		$new = 0;
 
 		if(isset($_FILES['product_file']['name']) && $_FILES['product_file']['name'] != ""){
-			if($_FILES['product_file']['error'])
+			if(isset($_FILES['product_file']['error']))
 			{
 				JError::raiseError( 500, Jtext::_($this->_upload_errors[$_FILES['product_file']['error']]) );
 				return false;

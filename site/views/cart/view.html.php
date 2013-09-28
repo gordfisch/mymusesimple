@@ -31,7 +31,7 @@ class myMuseViewCart extends JViewLegacy
 			$this->notify();
 			exit;
 		}
-		
+	
 		
 		if($task == "coupon"){
 			parent::display("coupon");
@@ -66,6 +66,7 @@ class myMuseViewCart extends JViewLegacy
 		$footer 			= '';
 		$edit 				= true;
 		$currency 			= MyMuseHelper::getCurrency($MyMuseStore->_store->currency);
+		
 
 
 		// set the heading for the top of page
@@ -74,7 +75,7 @@ class myMuseViewCart extends JViewLegacy
 		{
 				
 			case "checkout":
-				$order 		= $MyMuseCart->buildOrder( $edit );
+				$this->order = $order 		= $MyMuseCart->buildOrder( $edit );
 				$heading 	= Jtext::_('MYMUSE_CHECKOUT');
 				$message 	= Jtext::_('MYMUSE_MAKE_ANY_FINAL_CHANGES');
 				$order->show_checkout = 0;
@@ -82,7 +83,7 @@ class myMuseViewCart extends JViewLegacy
 				break;
 				
 			case "shipping":
-				$order 		= $MyMuseCart->buildOrder( $edit );
+				$this->order = $order 		= $MyMuseCart->buildOrder( $edit );
 			
 				if(isset($order->need_shipping) && $order->need_shipping){
 					$heading 	= Jtext::_('MYMUSE_SHIPPING');
@@ -100,19 +101,16 @@ class myMuseViewCart extends JViewLegacy
 
 				$edit 		= false;
 				if($params->get('my_saveorder') != "after" && isset($MyMuseShopper->order->id)){
-					$order 		= $MyMuseCheckout->getOrder($MyMuseShopper->order->id);
-					if(isset($MyMuseShopper->order->id) && $order->order_total == 0.00){
-						$order 		= $MyMuseCheckout->getOrder($MyMuseShopper->order->id);
+					$this->order = $order 		= $MyMuseCheckout->getOrder($MyMuseShopper->order->id);
+					if($order->order_total == 0.00){
 						$heading 	= Jtext::_('MYMUSE_CONFIRM');
 						$message 	= Jtext::_('MYMUSE_ACCEPT_ORDER');
 						$order->show_checkout = 0;
 						$order->show_summary  = 0;
 						$free = 1;
-					}elseif(isset($MyMuseShopper->order->id)){
-						
+					}else{
 						$heading 	= Jtext::_('MYMUSE_CONFIRM');
 						$message 	= Jtext::_('MYMUSE_CHOOSE_PAYMENT_METHOD');
-							
 						$order->show_checkout = 0;
 						$order->show_summary  = 0;
 					}
@@ -120,7 +118,7 @@ class myMuseViewCart extends JViewLegacy
 					// this is the after payment option
 					$heading 	= Jtext::_('MYMUSE_CONFIRM');
 					$message 	= Jtext::_('MYMUSE_CHOOSE_PAYMENT_METHOD');
-					$order 		= $MyMuseCart->buildOrder( 0 );
+					$this->order = $order 		= $MyMuseCart->buildOrder( 0 );
 					$order->order_number 		= session_id();
 					//save the faux order number in the session
 					$session = &JFactory::getSession();
@@ -132,7 +130,7 @@ class myMuseViewCart extends JViewLegacy
 				break;
 				
 			case "makepayment":
-				$order 		= $MyMuseShopper->order;
+				$this->order = $order 		= $MyMuseShopper->order;
 				$currency 	= $order->order_currency;
 				$edit 		= false;
 				$heading 	= Jtext::_('MYMUSE_THANK_YOU');
@@ -143,7 +141,7 @@ class myMuseViewCart extends JViewLegacy
 				
 			case "vieworder":
 				$st 		= JRequest::getVar('st', '');
-				$order 		= $MyMuseShopper->order;
+				$this->order = $order 		= $MyMuseShopper->order;
 				$order->waited = 0;
 
 				if($st === "Completed" && $order->order_status != "C"){
@@ -172,7 +170,7 @@ class myMuseViewCart extends JViewLegacy
 				
 			case "paycancel":
 				$edit 		= false;
-				$order 		= $MyMuseCheckout->getOrder($MyMuseShopper->order->id);
+				$this->order = $order 		= $MyMuseCheckout->getOrder($MyMuseShopper->order->id);
 				$heading 	= Jtext::_('MYMUSE_CONFIRM');
 				$message 	= Jtext::_('MYMUSE_PAY_CANCEL');
 				$order->show_checkout = 0;
@@ -180,7 +178,7 @@ class myMuseViewCart extends JViewLegacy
 				break;
 				
 			default:
-				$order 		= $MyMuseCart->buildOrder( $edit );
+				$this->order = $order 		= $MyMuseCart->buildOrder( $edit );
 				$order->show_checkout = 1;
 				break;
 		}
@@ -262,13 +260,16 @@ class myMuseViewCart extends JViewLegacy
 			
 			else{
 				
-				 /* payment plugins *///save the order number in the session
+				 /* payment plugins */
+				//save the order number in the session
 				$session = &JFactory::getSession();
-				$session->set("order_number",$this->order->order_number);
+				$session->set("order_number",$order->order_number);
 
 				JPluginHelper::importPlugin('mymuse');
+				
 				$results = $dispatcher->trigger('onBeforeMyMusePayment', 
 				array($this->shopper, $this->store, $this->order, $params, $this->Itemid) );
+				print_pre($results);
 				$this->assignRef('results', $results);
 				parent::display("payment_form");
 

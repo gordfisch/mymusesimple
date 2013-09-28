@@ -105,7 +105,7 @@ class mymuseModelShopper extends JModelForm
         	}
         	
         	
-			$my_profile_key = $params->get('my_profile_key','');
+			$my_profile_key = $params->get('my_profile_key','mymuse');
 			if($user->get('id') > 0)
 			{
 				
@@ -143,9 +143,9 @@ class mymuseModelShopper extends JModelForm
     								(!isset($profile[$field]) || $profile[$field] == "")
     						) {
     							//this guy needs to update profile
-    							print_pre($user);
-    							echo $field."<BR />";
-    							echo $profile_params->get('register-require_' . $field, 1);
+    							//print_pre($user);
+    							//echo $field."<BR />";
+    							//echo $profile_params->get('register-require_' . $field, 1);
     							$this->_shopper->perms = 0;
     						}
     					}
