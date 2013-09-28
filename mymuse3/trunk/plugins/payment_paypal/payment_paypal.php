@@ -57,9 +57,8 @@ class plgMymusePaymentPaypal extends JPlugin
 	 */
 	function onBeforeMyMusePayment($shopper, $store, $order, $params, $Itemid=1 )
 	{
-		
+
 		$mainframe =& JFactory::getApplication();
-		//print_pre($order);
 		$db		=& JFactory::getDBO();
 		if(isset($shopper->profile['country'])){
 			// Paypal wants the country_2_code
@@ -156,7 +155,7 @@ class plgMymusePaymentPaypal extends JPlugin
 		
 		';
 		
-		//send individual items, uless we have a coupon
+		//send individual items, unless we have a coupon
 		if(!isset($order->coupon_discount)){
 			for ($i=0;$i<$order->idx;$i++) {
 				$j = $i+1;

@@ -19,8 +19,8 @@ if(!defined('DS')){
 }
 
 require_once( JPATH_COMPONENT.DS.'mymuse.class.php');
-ini_set('memory_limit',"128M");
-ini_set('max_execution_time',"60");
+ini_set('memory_limit',"256M");
+ini_set('max_execution_time',"120");
 
 //load com_user language for logins and registration
 $lang =& JFactory::getLanguage();
@@ -29,6 +29,11 @@ $base_dir = JPATH_SITE;
 $language_tag = 'en-GB';
 $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
+
+
+//print_pre($_POST);
+//$user = JFactory::getUser();
+//print_pre($user);
 
 // add css and javascript
 $Doc =& JFactory::getDocument();

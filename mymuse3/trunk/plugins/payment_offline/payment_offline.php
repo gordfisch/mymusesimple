@@ -46,7 +46,7 @@ class plgMymusePaymentOffline extends JPlugin
 	 */
 	function onBeforeMyMusePayment($shopper, $store, $order, $params, $Itemid )
 	{
-
+echo "here"; exit;
 		$string = '';
 		
 		$string .= '

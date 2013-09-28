@@ -519,6 +519,7 @@ class MyMuseCart {
 			}
 
 			$order->items[$i] = $this->getProduct($this->cart[$i]['product_id']);
+	
 			$order->items[$i]->product_id = $order->items[$i]->id;
 			$order->items[$i]->order_item_total = 0.00;
 			$order->items[$i]->not_in_total = 0;
@@ -693,24 +694,27 @@ class MyMuseCart {
 	{
 		$mainframe 	=& JFactory::getApplication();
     	$params 	=& MyMuseHelper::getParams();;
-		
-		$MyMuseShopper  =&MyMuse::getObject('shopper','models');
+    	
+		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
 		$shopper 		=& $MyMuseShopper->getShopper();
+		
 		$MyMuseProduct 	=& MyMuse::getObject('product','models');
 		
 		if(!$id){
 			$this->error = JText::_("MYMUSE_NO_PRODUCT_ID");
 			return false;
 		}
+	
 		$db	= & JFactory::getDBO();
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'product.php');
 		
 		$row = new MymuseTableproduct($db);
+
 		if(!$row->load($id)){
-			//echo "Error: ".$db->ErrorMsg();
+			echo "Error: ".$db->ErrorMsg(); exit;
 			return false;
 		}
-		
+
 		// take out the file_contents
 		$row->file_contents = null;
 		
@@ -720,8 +724,6 @@ class MyMuseCart {
 			$shopper_group_id = $params->get("my_default_shopper_group_id");
 		}
 
-
-		
 		// get parent object
 		if($row->parentid){
 			$parent = new MymuseTableproduct($db);

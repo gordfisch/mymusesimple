@@ -546,14 +546,9 @@ class MyMuseHelper extends JObject
 	 * @return string
 	 */
 	static function getExt($filename) { 
-
-		$filename = strtolower($filename); 
-		$exts = preg_split("/\./", $filename); 
-		$n = count($exts)-1; 
-		$exts = $exts[$n]; 
-		
-		return $exts; 
-	} 
+		$ext = pathinfo($filename, PATHINFO_EXTENSION);
+		return $ext; 
+	}
 	
 	/**
 	 * Get status name from one letter code

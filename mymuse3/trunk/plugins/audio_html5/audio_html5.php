@@ -120,6 +120,9 @@ class plgMymuseAudio_html5 extends JPlugin
 				if($ext == "ogg"){
 					$ext = "oga";
 				}
+				if(!isset($extarray[$ext])){
+					return '';
+				}
 				$trs[0]['type'] = $extarray[$ext];
 				$trs[0]['ext'] = $ext;
 				
@@ -363,7 +366,9 @@ class plgMymuseAudio_html5 extends JPlugin
 			if($ext == "ogg"){
 				$ext = "oga";
 			}
-
+			if(!isset($extarray[$ext])){
+				return '';
+			}
 			$trs[0]['type'] = @$extarray[$ext];
 			$trs[0]['ext'] = $ext;
 			
@@ -467,6 +472,9 @@ jQuery(document).ready(function(){  ';
 					$ext = MyMuseHelper::getExt($preview_file);
 					if($ext == 'ogg'){
 						$ext = 'oga';
+					}
+					if(!isset($extarray[$ext])){
+						return '';
 					}
 					if(!in_array($ext,$supplied)){
 						$supplied[] = $ext;
