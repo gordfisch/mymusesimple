@@ -75,15 +75,19 @@ class mymuseViewtracks extends JViewLegacy
         $IN = $state->get('list.prods','');
  
         foreach($alphabet as $letter){
-        	
             $query = "SELECT count(*) as total
             FROM #__mymuse_product as a
             LEFT JOIN #__mymuse_product as p ON a.parentid = p.id
             LEFT JOIN #__categories as c ON a.catid = c.id
+            LEFT JOIN #__mymuse_product_rating AS v ON a.id = v.product_id
             WHERE a.product_downloadable = 1
             AND a.state=1
             AND c.title LIKE '$letter%'
-            AND a.parentid IN $IN
+            AND (a.catid = ".$category->id." OR a.catid IN ( 
+			SELECT sub.id FROM #__categories as sub 
+			INNER JOIN #__categories as this ON sub.lft > this.lft 
+			AND sub.rgt < this.rgt WHERE this.id = 16) 
+			OR a.id IN (0)) 
             ";
 
             $db->setQuery($query);

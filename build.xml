@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="MyMuse1.6" basedir="." default="copy_to_test351">
+<project name="MyMuse3.5" basedir="." default="copy_to_test351">
  		<property name="myversion" value="3.5.1" override="true" />
         <property name="test" value="/var/www/html/mymusetest35" override="true" />
         <property name="testadmincomp"
@@ -18,6 +18,7 @@
                 <include name="site/*" />
                 <include name="mymuse.xml" />
         </fileset>
+	
         <fileset dir="./modules/mod_mymuse_minicart" id="mod_minicart_files">
                 <include name="**" />
         </fileset>
@@ -30,6 +31,13 @@
         <target name="copy_to_test351" description="copy target">
                 <echo>Copying files from MyMuse3.5 to mymusetest35...
                 </echo>
+        	
+        		<copy todir="${test}/components/com_mymuse">
+        	          <fileset refid="site_files" />
+        	    </copy>
+        	    <copy todir="${test}/administrator/components/com_mymuse">
+        	           <fileset refid="admin_files" />
+        	    </copy>
         	
         		<copy file="${src}/manifest.xml"
         	            todir="${test}/administrator/components/com_mymuse" />
@@ -46,14 +54,8 @@
                 <copy file="${src}/site/language/en-GB/en-GB.com_mymuse.ini"
                         todir="${test}/language/en-GB" />
 
-                <copy todir="${test}/components/com_mymuse">
-               		<fileset refid="site_files" />
-                </copy>
-                <copy todir="${test}/administrator/components/com_mymuse">
-               		<fileset refid="admin_files" />
-                </copy>
                 
-      
+        	
                 <copy file="${src}/plugins/payment_moneybookers/languages/en-GB.plg_mymuse_payment_moneybookers.ini"
                         todir="${test}/administrator/language/en-GB" />    
         		<copy file="${src}/plugins/payment_moneybookers/languages/en-GB.plg_mymuse_payment_moneybookers.sys.ini"
