@@ -10,7 +10,6 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.model');
 require_once( MYMUSE_PATH.DS.'helpers'.DS.'category.php' );
 
-
 /**
  * This models supports retrieving lists of product categories.
  *
@@ -20,6 +19,7 @@ require_once( MYMUSE_PATH.DS.'helpers'.DS.'category.php' );
  */
 class mymuseModelCategories extends JModelList
 {
+	
 	/**
 	 * Model context string.
 	 *

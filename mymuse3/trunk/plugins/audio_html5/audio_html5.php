@@ -56,8 +56,8 @@ class plgMymuseAudio_html5 extends JPlugin
         }
         
         // ui js and css
-        $document->addScript( 'http://code.jquery.com/ui/1.9.0/jquery-ui.js' );
-        $document->addStyleSheet('http://code.jquery.com/ui/1.9.0/themes/base/jquery-ui.css');
+        $document->addScript( 'http://code.jquery.com/ui/1.10.3/jquery-ui.min.js' );
+        $document->addStyleSheet('http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
 	}
 
 	/**
