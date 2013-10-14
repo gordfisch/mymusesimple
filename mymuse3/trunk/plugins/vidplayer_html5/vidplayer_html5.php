@@ -41,7 +41,7 @@ class plgMymuseVidplayer_html5 extends JPlugin
 		$document = &JFactory::getDocument();
 		
         if($this->params->get('my_include_jquery', 0)){
-			$js_path = "http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.min.js";
+			$js_path = "http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js";
 			$document->addScript( $js_path );
         }
 
