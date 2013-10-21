@@ -161,7 +161,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 							); ?>
 
 						<?php else :?>
-							<?php echo JText::sprintf('MYMUSE_WRITTEN_BY', $author); ?>
+							<?php echo $author; ?>
 						<?php endif; ?>
 					</td>
 					<?php endif; ?>

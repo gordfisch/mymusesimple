@@ -86,7 +86,7 @@ class mymuseViewtracks extends JViewLegacy
             AND (a.catid = ".$category->id." OR a.catid IN ( 
 			SELECT sub.id FROM #__categories as sub 
 			INNER JOIN #__categories as this ON sub.lft > this.lft 
-			AND sub.rgt < this.rgt WHERE this.id = 16) 
+			AND sub.rgt < this.rgt WHERE this.id = ".$category->id.") 
 			OR a.id IN (0)) 
             ";
 

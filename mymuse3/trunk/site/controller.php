@@ -685,7 +685,7 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function notify()
 	{
-echo "Got to notify"; 
+		//echo "Got to notify"; 
 		JRequest::setVar('view', 'cart');
 		JRequest::setVar('layout', 'cart');
 		$this->display();
