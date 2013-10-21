@@ -203,7 +203,7 @@ endif; ?>
 	<dl class="article-info">
 	<dt class="article-info-term"><?php  echo JText::_('MYMUSE_RECORDING_DETAILS'); ?></dt>
 <?php endif; ?>
-<?php if ($this->item->product_made_date) : ?>
+<?php if ($this->item->product_made_date && $this->item->product_made_date > 0) : ?>
 	<dd class="product_made_date">
 	<?php echo JText::_('MYMUSE_PRODUCT_CREATED_LABEL'); ?> :
 	<?php echo JHtml::_('date', $product->product_made_date, $this->escape(
@@ -264,7 +264,7 @@ endif; ?>
 	<table class="mymusetable">
 	  <tr>
    <?php if ($params->get('product_show_product_image') && $product->detail_image) : ?>
-		<td 
+		<td width="20%"
 		<?php if($height) : ?>
 		 height="<?php echo $height; ?>"
 		<?php endif; ?> 
@@ -281,7 +281,7 @@ endif; ?>
 		</td>
 	<?php endif; ?>
 	
-		<td width="100%" height="10%" valign="top">
+		<td width="80%" height="10%" valign="top">
 		<?php  if ($params->get('show_intro')) : ?>
 			<?php echo $product->introtext ?>
 		<?php endif ?>
@@ -462,7 +462,7 @@ endif; ?>
 			style="height: <?php echo $params->get('product_player_height'); ?>px"
 			<?php } ?>
 			><?php echo $product->flash; ?>
-			</div><div id="playing_title"></div>
+			</div><div id="jp-title-li"></div>
 		<?php } ?>
 		<?php if($params->get('product_player_type') == "playlist"){ ?>
 			<div id="product_player" ><?php echo $product->flash; ?>
