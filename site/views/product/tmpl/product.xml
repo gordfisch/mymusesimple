@@ -69,7 +69,7 @@
 	 			<option value="0">MYMUSE_NO</option>
 	 			<option value="1">MYMUSE_YES</option>
 	 		</field>
-	 		
+	
 	 		<field 
 				name="show_recording_details" 
 				type="list" 

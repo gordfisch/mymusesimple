@@ -44,6 +44,8 @@ class plgUserMyMuse extends JPlugin
 	{
 		parent::__construct($subject, $config);
 		JFormHelper::addFieldPath(__DIR__ . '/fields');
+		$lang = JFactory::getLanguage();
+		$lang->load('plg_user_mymuse', JPATH_ADMINISTRATOR);
 	}
 	
 	/**
