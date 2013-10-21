@@ -160,7 +160,7 @@ class plgMymuseAudio_html5 extends JPlugin
 			$js = '';
 			$js .= '
 	
-	
+
 	/*
 	 * jQuery UI ThemeRoller
 	 *
@@ -171,6 +171,7 @@ class plgMymuseAudio_html5 extends JPlugin
 	 * ie., The timeupdates are ignored for 1000ms after changing the play-head.
 	 * Alternative solution would be to use the slider option: {animate:false}
 	 */
+	
 	var myPlayer = $("#jquery_jplayer_'.$id.'"),
 		myPlayerData,
 		fixFlash_mp4, // Flag: The m4a and m4v Flash player gives some old currentTime values when changed.
@@ -279,7 +280,7 @@ class plgMymuseAudio_html5 extends JPlugin
 			myPlayer.jPlayer("option", "volume", ui.value);
 		}
 	});
-		
+
     	';
         
         if(($count && ($index +1) == $count) || $count == 0){
@@ -300,6 +301,9 @@ class plgMymuseAudio_html5 extends JPlugin
         
         $js .= '
 });
+jQuery(document).ready(function(){
+		$("#jp-title-li").html("'.addslashes($track->title).'");
+	});
 ';
 
         

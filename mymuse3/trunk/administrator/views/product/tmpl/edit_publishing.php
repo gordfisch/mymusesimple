@@ -1,5 +1,4 @@
 	<div class="pull-left span5">
-
 		<div class="control-group">
 			<div class="control-label">
 				<?php echo $this->form->getLabel('created_by'); ?>
@@ -7,7 +6,8 @@
 			<div class="controls">
 				<?php echo $this->form->getInput('created_by'); ?>
 			</div>
-		</div><div class="control-group">
+		</div>
+		<div class="control-group">
 			<div class="control-label">
 				<?php echo $this->form->getLabel('created_by_alias'); ?>
 			</div>

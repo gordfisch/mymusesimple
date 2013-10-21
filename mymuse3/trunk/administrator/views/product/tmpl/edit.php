@@ -69,6 +69,11 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'images', JText::_('MYMUSE_IMAGES', true)); ?>
 					<?php echo $this->loadTemplate('images'); ?>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
+				
+				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'recording', JText::_('MYMUSE_RECORDING_DETAILS', true)); ?>
+					<?php echo $this->loadTemplate('recording'); ?>
+				<?php echo JHtml::_('bootstrap.endTab'); ?>
+				
 
 				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'publishing', JText::_('MYMUSE_PUBLISHING', true)); ?>
 					<?php echo $this->loadTemplate('publishing'); ?>
