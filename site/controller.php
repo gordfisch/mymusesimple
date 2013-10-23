@@ -264,7 +264,7 @@ class MyMuseController extends JControllerLegacy
         	$return = base64_encode($url);
 			
 			$rpage = strtolower($params->get('my_registration_redirect'));
-			$msg = JText::_("MYMUSE_PLEASE_LOGIN_OR_REGISTER")." ".$rpage;
+			$msg = JText::_("MYMUSE_PLEASE_LOGIN_OR_REGISTER");
         	$this->setRedirect( 'index.php?option=com_users&view='.$rpage.'&return='.$return."&Itemid=$Itemid", $msg );
             return false;
 		}
