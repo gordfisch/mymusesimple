@@ -48,7 +48,7 @@ JHTML::_('behavior.tooltip');
 		<form action="index.php" method="post" name="adminForm" id="adminForm">
 <h2><?php echo $item->parent->title; ?>: <?php echo JText::_("MYMUSE_ALL_FILES"); ?></h2>
 <div class="edittracks">
-	<div class="width-50 pull-left">
+	<div class="pull-left span5">
 			<ul class="adminformlist">
 			
 				<li><?php echo $this->form->getLabel('title'); ?>
@@ -73,7 +73,7 @@ JHTML::_('behavior.tooltip');
 				<?php echo $this->form->getInput('product_discount'); ?></li>
 			</ul>
 	</div>			
-	<div class="width-50 pull-right">
+	<div class="pull-right span5">
 			<ul class="adminformlist">
 				
 				<li><?php echo $this->form->getLabel('state'); ?>

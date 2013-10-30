@@ -13,6 +13,11 @@ defined('_JEXEC') or die;
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
 JHtml::_('behavior.switcher');
+JHtml::_('behavior.multiselect');
+JHtml::_('behavior.keepalive');
+JHtml::_('formbehavior.chosen', 'select');
+jimport ('joomla.html.html.bootstrap');
+
 //print_pre($this->item);
 $print = JRequest::getVar('print',0);
 if($print){
@@ -46,14 +51,14 @@ if($print){
 
 
 <form 
-action="<?php echo JRoute::_('index.php?option=com_mymuse&layout=edit&id='.(int) $this->item->id); ?>" 
+action="<?php echo JRoute::_('index.php?option=com_mymuse&view=order&layout=edit&id='.(int) $this->item->id); ?>" 
 method="post" name="adminForm" id="order-form" class="form-validate">
 <div class="row-fluid">
 	<!-- Begin Content -->
 	<div class="span10 form-horizontal">
-		<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+		<?php echo JHtml::_('bootstrap.startTabSet', 'myTabs', array('active' => 'details')); ?>
 			
-			<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('MYMUSE_DETAILS', true)); ?>	
+		<?php echo JHtml::_('bootstrap.addTab', 'myTabs', 'details', JText::_('MYMUSE_DETAILS', true)); ?>	
 		<div class="span10"><h2><?php echo JText::_('MYMUSE_ORDER_SUMMARY'); ?></h2></div>
 		<div style="clear: both;"></div>
 		<div class="pull-left span5">
@@ -174,12 +179,14 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 		</div>
 		<input type="hidden" name="old_status" value="<?php echo $this->item->order_status; ?>"" />
 		<input type="hidden" name="task" value="" />
-
+		<div style="clear: both;"></div>
 	    
 	    
 	<?php echo JHtml::_('form.token'); ?>
-	<div style="clear: both;"></div>
+	
 
+				
+				
 	<fieldset class="adminform">
 		<h2><?php echo JText::_('MYMUSE_CUSTOMER') ?></h2>
 		<table class="admintable" width="100%">
@@ -500,6 +507,7 @@ method="post" name="adminForm" id="order-form" class="form-validate">
         	</fieldset>
 
         	<?php if($this->item->downloadlink){ ?>
+		<table>
  		<tr>
             <td>
             <fieldset class="adminform">
@@ -519,83 +527,148 @@ href="index.php?option=com_mymuse&view=order&layout=edit&task=resetDownloads&id=
         		</tr>
         	  </table>
         </fieldset>
+        </td>
         </tr>
 <?php }?>
  </table>
- 
-</div>
 
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
 		
-		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'payments', JText::_('MYMUSE_PAYMENTS', true)); ?>
+		<?php echo JHtml::_('bootstrap.addTab', 'myTabs', 'payments', JText::_('MYMUSE_PAYMENTS', true)); ?>
 	
-		<?php 
-		//ORDER PAYMENTS
-		?>
+<fieldset class="adminform">
 
-        <table cellspacing="0" cellpadding="0" border="0" width="800">
-        <tr>
-            <td valign="top" width="600">
-            <fieldset class="adminform">
-			  <h2><?php echo JText::_('MYMUSE_PAYMENTS') ?></h2>
-			  <table class="adminlist">
-			    <tr>
-			  		<th><?php echo JText::_('MYMUSE_ID') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_DATE') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_METHOD') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_AMOUNT') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_CURRENCY') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_RATE') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_FEES') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_TRANS_ID') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_STATUS') ?></th>
-			  		<th><?php echo JText::_('MYMUSE_DESCRIPTION') ?></th>
-			  	</tr>
-			  	<?php 
-			  	if(count($this->item->order_payments)){
-			  		foreach($this->item->order_payments as $payment){ 
-			  	?>
-			    <tr>
-			    <td valign="top"><?php echo $payment->id ?></td>
-			    <td valign="top"><?php echo $payment->date ?></td>
-			    <td valign="top"><?php echo $payment->plugin ?> <?php echo $payment->institution ?></td>
-			    <td valign="top"><?php echo $payment->amountin ?></td>
-			    <td valign="top"><?php echo $payment->currency ?></td>
-			    <td valign="top"><?php echo $payment->rate ?></td>
-			    <td valign="top"><?php echo $payment->fees ?></td>
-			    <td valign="top"><?php echo $payment->transaction_id ?></td>
-			    <td valign="top"><?php echo $payment->transaction_status ?></td>
-			    <td valign="top"><?php echo $payment->description ?></td>
-        		</tr>
-        		<?php } 
-			  	} 
+	<legend><?php echo JText::_('MYMUSE_PAYMENTS') ?></legend>
+		<?php 
+			  		$row1 = '	
+			  		<tr>
+			  			<td valign="top">'.JText::_('MYMUSE_ID').'</td>';
+			  		$row2 = '	
+			  		<tr>
+			  			<td valign="top">'.JText::_('MYMUSE_DATE').'</td>';
+			  		$row3 = '	
+			  		<tr>
+			  			<td valign="top">'.JText::_('MYMUSE_METHOD').'</td>';
+			  		$row4 = '	
+			  		<tr>
+			  			<td valign="top">'.JText::_('MYMUSE_AMOUNT').'</td>';
+			  		$row5 = '	
+			  		<tr>
+			  			<td valign="top">'.JText::_('MYMUSE_CURRENCY').'</td>';
+			  		$row6 = '	
+			  		<tr>
+			  			<td valign="top">'.JText::_('MYMUSE_RATE').'</td>';
+			  		$row7 = '	
+			  		<tr>
+			  			<td valign="top">'.JText::_('MYMUSE_FEES').'</td>';
+			  		$row8 = '	
+			  		<tr>
+			  			<td valign="top">'.JText::_('MYMUSE_TRANS_ID').'</td>';
+			  		$row9 = '	
+			  		<tr>
+			  			<td valign="top">'.JText::_('MYMUSE_STATUS').'</td>';
+			  		$row10 = '	
+			  		<tr>
+			  			<td valign="top">'.JText::_('MYMUSE_DESCRIPTION').'</td>';
+		
+	
+		if(count($this->item->order_payments)){
+			  foreach($this->item->order_payments as $payment){ 
+
+			    $row1 .= '	
+			  			<td>'.$payment->id.'</td>';
+			    $row2 .= '	
+			  			<td>'.$payment->date.'</td>';
+			    $row3 .= '	
+			  			<td>'.$payment->plugin .' '.$payment->institution.'</td>';
+			    $row4 .= '	
+				  		<td>'.$payment->amountin .'</td>';
+			    $row5 .= '	
+				  		<td>'.$payment->currency .'</td>';
+			    $row6 .= '	
+			  			<td>'.$payment->rate.'</td>';
+			    $row7 .= '	
+			  			<td>'.$payment->fees .'</td>';
+			    $row8 .= '	
+			  			<td>'.$payment->transaction_id.'</td>';
+			    $row9 .= '	
+			  			<td>'.$payment->transaction_status.'</td>';
+			    $row10 .= '	
+			  			<td>'.$payment->description.'</td>';
+
+			  }
+		}	
+			  		
+
+		if(!$print){
 			  	
-			  	if(!$print){
-			  	
-			  	?>
-			  	<tr>
-			    <td valign="top"><?php echo JText::_('ADD') ?></td>
-			    <td valign="top" nowrap="nowrap">
-				<?php echo $this->form->getLabel('payment_date'); ?>
-				<?php echo $this->form->getInput('payment_date'); ?>
-				</td>
-			    <td valign="top"><?php echo $this->lists['plugins']; ?><br />
-			    <?php echo JText::_('MYMUSE_OTHER'); ?><br />
-			    <input type="text" name="payment_institution" value="" size="10" />
-			    </td>
-			    <td valign="top"><input type="text" name="payment_amountin" value="" size="6" /></td>
-			    <td valign="top"><?php echo $this->lists['currencies']; ?></td>
-			    <td valign="top"><input type="text" name="payment_rate" value="1.00000" size="5" /></td>
-			    <td valign="top"><input type="text" name="payment_fees" value="0.00" size="5" /></td>
-			    <td valign="top"><input type="text" name="payment_transaction_id" value="" /></td>
-			    <td valign="top"><input type="text" name="payment_transaction_status" value="" size="5" /></td>
-			    <td valign="top"><textarea name="payment_description" rows="3" cols="30" style="width:200px"></textarea></td>
-        		</tr>
-        		<?php } ?>
-        	  </table>
-        </fieldset>
-        </tr>
-    </table>
+			    $row1 .= '	
+			  			<td>'.JText::_('ADD').'</td>';
+			    $row2 .= '	
+			  			<td valign="top" nowrap="nowrap">'.$this->form->getInput('payment_date').'</td>';
+			    $row3 .= '	
+			  			<td>'.$this->lists['plugins'].'<br />'.JText::_('MYMUSE_OTHER').'<br />
+			    	<input type="text" name="payment_institution" value="" size="10" /></td>';
+			    $row4 .= '	
+			  			<td><input type="text" name="payment_amountin" value="" size="6" /></td>';
+			    $row5 .= '	
+			  			<td>'.$this->lists['currencies'].'</td>';
+			    $row6 .= '	
+			  			<td><input type="text" name="payment_rate" value="1.00000" size="5" /></td>';
+			    $row7 .= '	
+			  			<td><input type="text" name="payment_fees" value="0.00" size="5" /></td>';
+			    $row8 .= '	
+			  			<td><input type="text" name="payment_transaction_id" value="" /></td>';
+			    $row9 .= '	
+			  			<td><input type="text" name="payment_transaction_status" value="" size="5" /></td>';
+			    $row10 .= '	
+			  			<td><textarea name="payment_description" rows="3" cols="30" style="width:200px"></textarea></td>';
+
+		}
+		
+		//finsih off the row
+		$row1 .= '
+		</tr>';
+		$row2 .= '
+		</tr>';
+		$row3 .= '
+		</tr>';
+		$row4 .= '
+		</tr>';
+		$row5 .= '
+		</tr>';
+		$row6 .= '
+		</tr>';
+		$row7 .= '
+		</tr>';
+		$row8 .= '
+		</tr>';
+		$row8 .= '
+		</tr>';
+		$row10 .= '
+		</tr>';
+
+	
+		?>
+			  			
+		<table class="admintable">
+			<?php echo $row1; ?>
+			<?php echo $row2; ?>
+			<?php echo $row3; ?>
+			<?php echo $row4; ?>
+			<?php echo $row5; ?>
+			<?php echo $row6; ?>
+			<?php echo $row7; ?>
+			<?php echo $row8; ?>
+			<?php echo $row9; ?>
+			<?php echo $row10; ?>
+
+		</table>
+		
+		
+</form>	
+        		
+    </fieldset>
     <?php 
     if(!$print){
 	

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.0" type="plugin" group="mymuse">
-	<name>plg_mymuse_paymentpaypal</name>
+	<name>plg_mymuse_payment_paypal</name>
 	<author>Arboreta</author>
 	<creationDate>June 2013</creationDate>
 	<copyright>Copyright (C) 2013 Arboreta Internet Services. All rights reserved.</copyright>

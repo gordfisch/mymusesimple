@@ -300,7 +300,7 @@ class plgMymuseAudio_html5 extends JPlugin
         }
         
         $js .= '
-});
+
 jQuery(document).ready(function(){
 		$("#jp-title-li").html("'.addslashes($track->title).'");
 	});

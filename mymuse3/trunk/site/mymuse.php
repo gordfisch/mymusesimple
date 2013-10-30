@@ -18,6 +18,7 @@ if(!defined('DS')){
 	define('DS',DIRECTORY_SEPARATOR);
 }
 
+
 require_once( JPATH_COMPONENT.DS.'mymuse.class.php');
 ini_set('memory_limit',"256M");
 ini_set('max_execution_time',"120");

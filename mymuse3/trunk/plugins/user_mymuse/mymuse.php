@@ -15,6 +15,7 @@ if(!defined('DS')){
 	define('DS',DIRECTORY_SEPARATOR);
 }
 
+
 if(!defined('MYMUSE_ADMIN_PATH')){
 	define('MYMUSE_ADMIN_PATH',JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_mymuse'.DS);
 }
