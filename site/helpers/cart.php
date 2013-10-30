@@ -191,7 +191,7 @@ class MyMuseCart {
             $fixed[$j]["quantity"] = $this->cart[$i]["quantity"];
             $fixed[$j]["product_id"] = $this->cart[$i]["product_id"];
             $fixed[$j]["catid"] = $this->cart[$i]["catid"];
-            $fixed[$j]["product_physical"] = $this->cart[$i]["product_physical"];
+            $fixed[$j]["product_physical"] = @$this->cart[$i]["product_physical"];
             $j++;
             $fixed['idx']++;
     }

@@ -247,10 +247,14 @@ class MymuseModelorder extends JModelAdmin
         $lists['currencies'] = JHTML::_('select.genericlist',  $options, 'currency', 'class="inputbox"', 'value', 'text', $value, JText::_( 'MYMUSE_CURRENCY' ));   
 
 		//payment plugins
-		$query = "SELECT element as value, REPLACE (name, 'MyMuse Payments - ', '') as text
-		FROM #__extensions where folder='mymuse' and enabled='1' and name LIKE '%Payment%'";
+        JPluginHelper::importPlugin('mymuse');
+		$query = "SELECT element as value, name as text
+		FROM #__extensions where folder='mymuse' and enabled='1' and element LIKE '%payment%'";
 		$this->_db->setQuery($query);
         $options = $this->_db->loadObjectList();
+        for($i=0; $i< count($options); $i++){
+        	$options[$i]->text = JText::_($options[$i]->text);
+        }
         array_unshift($options, JHTML::_('select.option', '0', '- '.JText::_('MYMUSE_PLUGIN').' -', 'value', 'text'));
 	    $value = '';
         $lists['plugins'] = JHTML::_('select.genericlist',  $options, 'payment_plugin', 'class="inputbox"', 'value', 'text', $value, JText::_( 'MYMUSE_PLUGIN' ));   
@@ -294,7 +298,7 @@ class MymuseModelorder extends JModelAdmin
         	$payment['transaction_id'] 		= JRequest::getVar('payment_transaction_id');
         	$payment['transaction_status'] 	= JRequest::getVar('payment_transaction_status');
         	$payment['description'] 		= JRequest::getVar('payment_description');
-
+print_pre($payment); exit;
         	$MyMuseHelper = new MyMuseHelper;
         	if(!$MyMuseHelper->logPayment($payment)){
         		$this->setError($MyMuseHelper->gerError());

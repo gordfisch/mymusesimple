@@ -49,7 +49,7 @@ class MymuseControllerOrder extends JControllerForm
 			
 		}else{
 			$this->msg = JText::_( 'MYMUSE_ERROR_SAVING_ORDER' ).$model->getError();
-        	$this->setRedirect( 'index.php?option=com_mymuse&view=order&task=prder.edit&id='.$id, $this->msg );
+        	$this->setRedirect( 'index.php?option=com_mymuse&view=order&task=order.edit&id='.$id, $this->msg );
 		}
 	}
 	
@@ -123,7 +123,6 @@ class MymuseControllerOrder extends JControllerForm
      	$send = $mailer->Send();
      	if ( $send !== true ) {
      		echo 'Error sending email: ' . $send->message;
-     		JFactory::getApplication()->enqueueMessage($send->message, 'error');
      	}
 		JRequest::setVar( 'layout', 'edit');
 		JRequest::setVar( 'task', 'save'  );
