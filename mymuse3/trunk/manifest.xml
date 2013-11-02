@@ -638,7 +638,9 @@
 		>
 
 		<field name="show_pagination_limit"
-			type="radio" default="1"
+			type="radio" 
+			class="btn-group"
+			default="1"
 			label="JGLOBAL_DISPLAY_SELECT_LABEL"
 			description="JGLOBAL_DISPLAY_SELECT_DESC">
 				<option value="0">JHIDE</option>
@@ -658,6 +660,7 @@
 
 		<field name="show_headings"
 			type="radio"
+			class="btn-group"
 			default="1"
 			label="JGLOBAL_SHOW_HEADINGS_LABEL"
 			description="JGLOBAL_SHOW_HEADINGS_DESC">
@@ -671,6 +674,7 @@
 
 		<field name="list_show_date"
 			type="list"
+			class="btn-group"
 			default="0"
 			label="MYMUSE_SHOW_DATE_LABEL"
 			description="MYMUSE_SHOW_DATE_DESC">
@@ -683,27 +687,35 @@
 		<field name="date_format"
 			type="text"
 			size="15"
+			default="Y-m-d"
 			label="JGLOBAL_DATE_FORMAT_LABEL"
 			description="JGLOBAL_DATE_FORMAT_DESC" />
 
 		<field name="list_show_hits"
-			type="radio" default="1"
+			type="radio"
+			class="btn-group" 
+			default="1"
 			label="JGLOBAL_LIST_HITS_LABEL"
 			description="JGLOBAL_LIST_HITS_DESC">
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 		</field>
 		
-		<field name="list_show_price" type="list"
-				description="MYMUSE_LIST_PRICE_DESC"
-				label="MYMUSE_LIST_PRICE_LABEL"
+		<field name="list_show_price" 
+			type="radio"
+			class="btn-group"
+			default="1"
+			description="MYMUSE_LIST_PRICE_DESC"
+			label="MYMUSE_LIST_PRICE_LABEL"
 			>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 
 		<field name="list_show_author"
-			type="radio" default="1"
+			type="radio"
+			class="btn-group"
+			default="1"
 			label="MYMUSE_LIST_AUTHOR_LABEL"
 			description="MYMUSE_LIST_AUTHOR_DESC">
 				<option value="0">JHIDE</option>

@@ -27,7 +27,10 @@
 <fields name="params">
 <fieldset name="basic" label="JGLOBAL_CATEGORIES_OPTIONS">
 
-			<field name="show_base_description" type="list"
+			<field 
+				name="show_base_description" 
+				type="radio"
+				class="btn-group"
 				label="JGLOBAL_FIELD_SHOW_BASE_DESCRIPTION_LABEL"
 				description="JGLOBAL_FIELD_SHOW_BASE_DESCRIPTION_DESC"
 			>
