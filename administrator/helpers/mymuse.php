@@ -39,8 +39,6 @@ function recursiveDelete($str){
 	}
 }
 
-
-
 abstract class JHtmlContentAdministrator
 {
 	/**
