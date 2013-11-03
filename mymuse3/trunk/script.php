@@ -15,6 +15,22 @@ if(!defined('DS')){
 JLoader::import('joomla.filesystem.folder');
 JLoader::import('joomla.filesystem.file');
 
+//uninstall dirs
+if(!function_exists('recursiveDelete')){
+	function recursiveDelete($str){
+		if(is_file($str)){
+			return JFile::delete($str);
+		}
+		elseif(is_dir($str)){
+			$scan = glob(rtrim($str,'/').'/*');
+			foreach($scan as $index=>$path){
+				recursiveDelete($path);
+			}
+			return JFile::delete($str);
+		}
+	}
+}
+
 /**
  * Script file of MyMuse component
  */
@@ -26,6 +42,18 @@ class com_mymuseInstallerScript
 	var $css = '';
 	var $mymuse_params = '';
 	
+	
+	public function __construct()
+	{
+		
+		
+		$helper_path = JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS.'helpers'.DS.'mymuse.php';
+		if(file_exists($helper_path)){
+			require_once (JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS.'helpers'.DS.'mymuse.php');
+			$this->mymuse_params = MyMuseHelper::getParams();
+			
+		}
+	}
 	
 	/**
 	 * method to install the component
@@ -59,8 +87,8 @@ class com_mymuseInstallerScript
 	{
 		// $parent is the class calling this method
 		//initialize
-		require_once (JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS.'helpers'.DS.'mymuse.php');
-		$params =& MyMuseHelper::getParams();
+		$params = $this->mymuse_params;
+
 		$extensions = array();
 		$plugins = array();
 		$modules = array();
@@ -128,11 +156,8 @@ class com_mymuseInstallerScript
 		}
 		$i++;
 		
-		
-		/**
 		// additional extensions
 		//first PLUG-INS PLUG-INS
-		
 		$manifest = $parent->get('manifest');
 		$super = $parent->getParent();
 		$add = NULL;
@@ -149,21 +174,51 @@ class com_mymuseInstallerScript
 			}
 		}
 				
-		// install additional plugins
+		// uninstall plugins
 		for ($i = 0; $i < count($plugins); $i++) {
 			$plugin =& $plugins[$i];
 			$query = "SELECT extension_id FROM #__extensions 
-			WHERE name ='".$plugins[$i]['type']."'";
+			WHERE element ='".$plugins[$i]['type']."'";
 			$db->setQuery($query);
-			echo $query."<br />";exit;
+			echo $query."<br />";
 			$res = $db->loadResult();
 			echo $res."<br />";
 			if ($plugins[$i]['installer']->uninstall('plugin', $res)) {
 				$plugins[$i]['status'] = true;
 			}
 		}
-		*/
-				
+
+		//second MODULES
+		$manifest = $parent->get('manifest');
+		$super = $parent->getParent();
+		$add = NULL;
+		if(count($manifest->modules->module)){
+		
+			foreach ($manifest->modules->module as $module) {
+				$modules[] = array(
+						'name' => (string) $module,
+						'type' => (string) $module['name'],
+						'installer' => new JInstaller,
+						'status' => false);
+		
+			}
+		}
+		
+		// uninstall Modules
+		for ($i = 0; $i < count($modules); $i++) {
+			$module =& $modules[$i];
+			$query = "SELECT extension_id FROM #__extensions
+			WHERE element ='".$modules[$i]['type']."'";
+			$db->setQuery($query);
+			echo $query."<br />";
+			$res = $db->loadResult();
+			echo $res."<br />";
+			if ($modules[$i]['installer']->uninstall('module', $res)) {
+				$modules[$i]['status'] = true;
+			}
+		}		
+		
+		
 		?>
 		<h3><?php echo JText::_('Remove Directories'); ?></h3>
 		<table class="adminlist">
@@ -236,7 +291,7 @@ class com_mymuseInstallerScript
 		$parent->old_version = $this->old_version;
 		//echo "this->already_installed = ".$this->already_installed."<br />";
 		//echo "this->old_version = ".$this->old_version."<br />";
-		
+
 	}
  
 	/**

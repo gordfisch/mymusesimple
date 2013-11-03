@@ -25,19 +25,9 @@ function print_pre($var){
 }
 define('TAX_REGEX',"[\'-\/\s\\\]");
 
-//uninstall dirs
-function recursiveDelete($str){
-	if(is_file($str)){
-		return JFile::delete($str);
-	}
-	elseif(is_dir($str)){
-		$scan = glob(rtrim($str,'/').'/*');
-		foreach($scan as $index=>$path){
-			recursiveDelete($path);
-		}
-		return JFile::delete($str);
-	}
-}
+
+
+
 
 abstract class JHtmlContentAdministrator
 {
