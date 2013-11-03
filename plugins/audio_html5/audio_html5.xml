@@ -13,8 +13,8 @@
 	<files>
 		<filename plugin="audio_html5">audio_html5.php</filename>
 		<filename plugin="audio_html5">Jplayer.swf</filename>
-		<folder plugin="audio_html5">js</folder>
-		<folder plugin="audio_html5">skin</folder>
+		<folder>js</folder>
+		<folder>skin</folder>
 	</files>
 
 	<languages folder="languages">
