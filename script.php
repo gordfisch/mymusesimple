@@ -86,14 +86,78 @@ class com_mymuseInstallerScript
 	function uninstall($parent) 
 	{
 		// $parent is the class calling this method
-		//initialize
-		$params = $this->mymuse_params;
 
-		$extensions = array();
 		$plugins = array();
 		$modules = array();
 		$db = JFactory::getDBO();
 		
+		//first PLUG-INS PLUG-INS
+		$manifest = $parent->get('manifest');
+		$super = $parent->getParent();
+		$add = NULL;
+		if(count($manifest->plugins->plugin)){
+		
+			foreach ($manifest->plugins->plugin as $plugin) {
+				$plugins[] = array(
+						'name' => (string) $plugin,
+						'type' => (string) $plugin['name'],
+						'folder' => $super->getPath('source').'/'.(string) $plugin['folder'],
+						'installer' => new JInstaller,
+						'status' => false);
+		
+			}
+		}
+		
+		// uninstall plugins
+		for ($i = 0; $i < count($plugins); $i++) {
+			$plugin =& $plugins[$i];
+			$query = "SELECT extension_id FROM #__extensions
+			WHERE element ='".$plugins[$i]['type']."'";
+			$db->setQuery($query);
+			//echo $query."<br />";
+			$res = $db->loadResult();
+			echo $res."<br />";
+			if ($plugins[$i]['installer']->uninstall('plugin', $res)) {
+				$plugins[$i]['status'] = true;
+			}
+		}
+		
+		//second MODULES
+		$manifest = $parent->get('manifest');
+		$super = $parent->getParent();
+		$add = NULL;
+		if(count($manifest->modules->module)){
+		
+			foreach ($manifest->modules->module as $module) {
+				$modules[] = array(
+						'name' => (string) $module,
+						'type' => (string) $module['name'],
+						'installer' => new JInstaller,
+						'status' => false);
+		
+			}
+		}
+		
+		// uninstall Modules
+		for ($i = 0; $i < count($modules); $i++) {
+			$module =& $modules[$i];
+			$query = "SELECT extension_id FROM #__extensions
+			WHERE element ='".$modules[$i]['type']."'";
+			$db->setQuery($query);
+			//echo $query."<br />";
+			$res = $db->loadResult();
+			echo $res."<br />";
+			if ($modules[$i]['installer']->uninstall('module', $res)) {
+				$modules[$i]['status'] = true;
+			}
+		}
+		
+		$params = $this->mymuse_params;
+
+		$extensions = array();
+		
+		//directories
+		/**
 		$i = 0;
 		$dir =  $params->get('my_download_dir');
 		
@@ -155,71 +219,11 @@ class com_mymuseInstallerScript
 			$extensions[$i]['msg'] = " $dir";
 		}
 		$i++;
-		
-		// additional extensions
-		//first PLUG-INS PLUG-INS
-		$manifest = $parent->get('manifest');
-		$super = $parent->getParent();
-		$add = NULL;
-		if(count($manifest->plugins->plugin)){
-		
-			foreach ($manifest->plugins->plugin as $plugin) {
-				$plugins[] = array(
-						'name' => (string) $plugin,
-						'type' => (string) $plugin['name'],
-						'folder' => $super->getPath('source').'/'.(string) $plugin['folder'],
-						'installer' => new JInstaller,
-						'status' => false);
-
-			}
-		}
-				
-		// uninstall plugins
-		for ($i = 0; $i < count($plugins); $i++) {
-			$plugin =& $plugins[$i];
-			$query = "SELECT extension_id FROM #__extensions 
-			WHERE element ='".$plugins[$i]['type']."'";
-			$db->setQuery($query);
-			echo $query."<br />";
-			$res = $db->loadResult();
-			echo $res."<br />";
-			if ($plugins[$i]['installer']->uninstall('plugin', $res)) {
-				$plugins[$i]['status'] = true;
-			}
-		}
-
-		//second MODULES
-		$manifest = $parent->get('manifest');
-		$super = $parent->getParent();
-		$add = NULL;
-		if(count($manifest->modules->module)){
-		
-			foreach ($manifest->modules->module as $module) {
-				$modules[] = array(
-						'name' => (string) $module,
-						'type' => (string) $module['name'],
-						'installer' => new JInstaller,
-						'status' => false);
-		
-			}
-		}
-		
-		// uninstall Modules
-		for ($i = 0; $i < count($modules); $i++) {
-			$module =& $modules[$i];
-			$query = "SELECT extension_id FROM #__extensions
-			WHERE element ='".$modules[$i]['type']."'";
-			$db->setQuery($query);
-			echo $query."<br />";
-			$res = $db->loadResult();
-			echo $res."<br />";
-			if ($modules[$i]['installer']->uninstall('module', $res)) {
-				$modules[$i]['status'] = true;
-			}
-		}		
+		*/
 		
 		
 		?>
+		<!--  
 		<h3><?php echo JText::_('Remove Directories'); ?></h3>
 		<table class="adminlist">
 			<thead>
@@ -246,6 +250,7 @@ class com_mymuseInstallerScript
 				<?php endforeach; ?>
 			</tbody>
 		</table>
+		-->
 		<?php 
 
 	}
