@@ -26,9 +26,6 @@ function print_pre($var){
 define('TAX_REGEX',"[\'-\/\s\\\]");
 
 
-
-
-
 abstract class JHtmlContentAdministrator
 {
 	/**
