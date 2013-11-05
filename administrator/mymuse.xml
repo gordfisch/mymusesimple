@@ -717,6 +717,16 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 		</field>
+		
+		<field name="list_show_sales" 
+			type="list"
+			default="0"
+			description="MYMUSE_SHOW_SALES_DESC"
+			label="MYMUSE_SHOW_SALES_LABEL"
+			>	
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+		</field>
 
 	</fieldset>
 
