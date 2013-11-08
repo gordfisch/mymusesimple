@@ -8,22 +8,45 @@
 
 // no direct access
 defined('_JEXEC') or die;
-$class = ' class="first"';
+$class = ' class="subcats first"';
 ?>
+<style>
+ ul.subcats {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    
+    column-count:3;
+column-gap:40px;
 
+/* Firefox */
+-moz-column-count:3;
+-moz-column-gap:40px;
+
+/* Safari and Chrome */
+-webkit-column-count:3;
+-webkit-column-gap:40px;
+    
+}
+ul.subcats li {
+    display: inline;
+}
+
+
+</style>
 <?php if (count($this->children[$this->category->id]) > 0) : ?>
-	<ul>
+	<ul class="subcats">
 	<?php foreach($this->children[$this->category->id] as $id => $child) : ?>
 		<?php
 
 		if ($this->params->get('show_empty_categories') || $child->getNumItems(true) || count($child->getChildren())) :
 			if (!isset($this->children[$this->category->id][$id + 1])) :
-				$class = ' class="last"';
+				$class = ' class="subcats last"';
 			endif;
 		?>
 
 		<li <?php echo $class; ?>>
-			<?php $class = ''; ?>
+			<?php $class = ' class="subcats "'; ?>
 			<span class="item-title"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($child->id));?>">
 				<?php echo $this->escape($child->title); ?></a>
 			</span>
