@@ -42,8 +42,9 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 		<?php if ($this->params->get('show_description') && $this->category->description) : ?>
 			<?php echo JHtml::_('content.prepare', $this->category->description, '', 'com_content.category'); ?>
 		<?php endif; ?>
-		<div class="clr"></div>
+		
 	</div>
+	<div class="clr"></div>
 	<?php endif; ?>
 	
 	<?php if (!empty($this->children[$this->category->id])&& $this->maxLevel != 0) : ?>
@@ -61,6 +62,3 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 		<?php echo $this->loadTemplate('products'); ?>
 	</div>
 
-
-
-</div>

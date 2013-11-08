@@ -49,12 +49,6 @@ class plgMymuseAudio_html5 extends JPlugin
         $css_path = $site_url.'plugins/mymuse/audio_html5/skin/jplayer.blue.monday.css';
         $document->addStyleSheet( $css_path );
         
-        
-        if($this->params->get("my_player_errors")){
-        	$js_path = $site_url.'plugins/mymuse/audio_html5/js/jquery.jplayer.inspector.js';
-        	$document->addScript( $js_path );
-        }
-        
         // ui js and css
         $document->addScript( 'http://code.jquery.com/ui/1.10.3/jquery-ui.min.js' );
         $document->addStyleSheet('http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
@@ -78,6 +72,11 @@ class plgMymuseAudio_html5 extends JPlugin
 		}
 		if(!$match){
 			$js_path = $site_url.'plugins/mymuse/audio_html5/js/jquery.jplayer.min.js';
+			$document->addScript( $js_path );
+		}
+		
+		if($this->params->get("my_player_errors")){
+			$js_path = $site_url.'plugins/mymuse/audio_html5/js/jquery.jplayer.inspector.js';
 			$document->addScript( $js_path );
 		}
 		
@@ -127,6 +126,7 @@ class plgMymuseAudio_html5 extends JPlugin
 				$trs[0]['ext'] = $ext;
 				
 				$supplied[] = $ext;
+				$media = $ext.': "'.$track->path.'"';
 
 					
 				if(isset($track->file_preview_2) && $track->file_preview_2 != ''){
@@ -141,6 +141,8 @@ class plgMymuseAudio_html5 extends JPlugin
 					if(!in_array($ext,$supplied)){
 						$supplied[] = $ext;
 					}
+					$media = $media.",
+					".$ext.': "'.$track->path_2.'"';;
 				}
 				if(isset($track->file_preview_3) && $track->file_preview_3 != ''){
 					$trs[2]['src'] = $track->path_3;
@@ -154,12 +156,13 @@ class plgMymuseAudio_html5 extends JPlugin
 					if(!in_array($ext,$supplied)){
 						$supplied[] = $ext;
 					}
+					$media = $media.",
+					".$ext.': "'.$track->path_3.'"';
 				}
 				$supplied = implode(", ",$supplied);
 
 			$js = '';
 			$js .= '
-	
 
 	/*
 	 * jQuery UI ThemeRoller
@@ -188,13 +191,9 @@ class plgMymuseAudio_html5 extends JPlugin
 				fixFlash_mp4 = event.jPlayer.flash.used && /m4a|m4v/.test(event.jPlayer.options.supplied);
 				// Setup the player with media.
 				$(this).jPlayer("setMedia", {
-          ';
-			foreach($trs as $source){
-            	$js .= $source['ext'].': "'.$source['src'].'",'."\n";
-            }
-            $js = preg_replace("/,\\n$/","",$js);
-            
-        $js .= '  });
+          			'.$media.'
+          		});
+          			
         	},
         	timeupdate: function(event) {
 				if(!ignore_timeupdate) {
@@ -295,15 +294,22 @@ class plgMymuseAudio_html5 extends JPlugin
         }
     
         if($count == 0 && $this->params->get("my_player_errors")){
-        	$js .= '$("#jplayer_inspector_'.$id.'").jPlayerInspector({jPlayer:$("#jquery_jplayer_'.$id.'")});
+        	$js .= '$("#jplayer_inspector_'.$id.'").jPlayerInspector({
+        	 jPlayer:$("#jquery_jplayer_'.$id.'")
+        });
         	';
         }
         
+
         $js .= '
-});
-jQuery(document).ready(function(){
+
+//]]>
+
+
 		$("#jp-title-li").html("'.addslashes($track->title).'");
-	});
+
+});
+	
 ';
 
         
@@ -339,7 +345,7 @@ jQuery(document).ready(function(){
 		</div>
 
 
-			<div id="jplayer_inspector"></div>
+			<div id="jplayer_inspector_'.$id.'"></div>
 		</section>
 ';
 			
@@ -421,7 +427,9 @@ jQuery(document).ready(function(){
 
 			if($index == 0){
 				$js .= '
-jQuery(document).ready(function(){  ';
+				//<![CDATA[
+jQuery(document).ready(function(){  
+				';
 			}
 
 			$js .= '

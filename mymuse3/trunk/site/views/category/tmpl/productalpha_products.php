@@ -16,7 +16,6 @@ $class = ' class="first"';
 if (count($this->items) > 0) : 
 $count = count($this->items);
 
-//$alpha = array_merge(range(0,9),range('A','Z'));
 $alpha = explode(":",JText::_('MYMUSE_ALPHABET'));
 $alphaarr = array();
 foreach($alpha as $letter){
@@ -37,6 +36,7 @@ $i = 0;
 $total_shown = 0;
 $column = 1;
 ?>
+<h3><?php echo JText::_('MYMUSE_PRODUCTS'); ?></h3>
 <div class="cols-<?php echo $this->params->get('num_columns'); ?>">
 	<?php foreach($alphaarr as $letter => $children) : 
 	
