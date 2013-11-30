@@ -34,8 +34,9 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 			<?php  endif; ?>
 		<?php  endif; ?>
 	<?php endif; ?>
-
+<div class="cat-items">
 <?php
 echo $this->loadTemplate('items');
 ?>
+</div>
 </div>

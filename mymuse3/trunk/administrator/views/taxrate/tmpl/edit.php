@@ -84,7 +84,7 @@ method="post" name="adminForm" id="taxrate-form" class="form-validate">
 				</div>
 			</div>
 		</div>
-		<div class="span5 pull-left">	
+		<div class="span5 pull-right">	
 
 			<div class="control-group">
 				<div class="control-label">

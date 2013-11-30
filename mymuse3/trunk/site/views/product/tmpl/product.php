@@ -264,24 +264,23 @@ endif; ?>
 	<table class="mymusetable">
 	  <tr>
    <?php if ($params->get('product_show_product_image') && $product->detail_image) : ?>
-		<td width="20%"
+		<td 
 		<?php if($height) : ?>
 		 height="<?php echo $height; ?>"
 		<?php endif; ?> 
-		rowspan="2" valign="top">
+		valign="top">
 			<div><img
 			<?php if($height) : ?>
 			height="<?php echo $height; ?>"
 			<?php endif; ?>
 			src="<?php echo $product->detail_image;?>"
-			hspace="10" 
 			alt="<?php echo $product->title;?>" 
 			title="<?php echo $product->title;?>" 
 			/></div>
 		</td>
 	<?php endif; ?>
 	
-		<td width="80%" height="10%" valign="top">
+		<td   valign="top">
 		<?php  if ($params->get('show_intro')) : ?>
 			<?php echo $product->introtext ?>
 		<?php endif ?>

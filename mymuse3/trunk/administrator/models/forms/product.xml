@@ -403,8 +403,19 @@
 			</field>
 			
 			
-						<field 
+			<field 
 				name="product_created" 
+				type="calendar" 
+				label="MYMUSE_PRODUCT_CREATED_LABEL"
+				description="MYMUSE_PRODUCT_CREATED_DESC" 
+				class="inputbox" 
+				size="22"
+				format="%Y-%m-%d" 
+				filter="user_utc" 
+			/>
+			
+			<field 
+				name="product_made_date" 
 				type="calendar" 
 				label="MYMUSE_PRODUCT_CREATED_LABEL"
 				description="MYMUSE_PRODUCT_CREATED_DESC" 

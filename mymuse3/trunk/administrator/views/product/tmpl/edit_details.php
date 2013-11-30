@@ -34,7 +34,13 @@
 				<?php echo JText::_( 'MYMUSE_SELECT_OTHER_CATS' ); ?></label>
 				</div>
 				<div class="controls">
-					<?php echo $this->form->getInput('othercats'); ?>
+				<?php 
+				if(!$this->item->id){
+					echo JText::_( 'MYMUSE_SAVE_THEN_ADD_CATS' );
+				}else{
+					echo $this->form->getInput('othercats'); 
+				}	
+				?>
 				</div>
 			</div>
 			<div class="control-group">

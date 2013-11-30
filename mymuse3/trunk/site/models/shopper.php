@@ -143,9 +143,7 @@ class mymuseModelShopper extends JModelForm
     								(!isset($profile[$field]) || $profile[$field] == "")
     						) {
     							//this guy needs to update profile
-    							//print_pre($user);
-    							//echo $field."<BR />";
-    							//echo $profile_params->get('register-require_' . $field, 1);
+
     							$this->_shopper->perms = 0;
     						}
     					}
@@ -224,12 +222,12 @@ class mymuseModelShopper extends JModelForm
 				
 				}
 				
-				if(!isset($profile['shopper_group_id']) || $profile['shopper_group_id'] < 1){
-						$profile['shopper_group_id'] = 1;
+				if(!isset($profile['shopper_group']) || $profile['shopper_group'] < 1){
+						$profile['shopper_group'] = 1;
 				}
 				$query = 'SELECT *'
 				. ' FROM #__mymuse_shopper_group'
-				. ' WHERE id = '.$profile['shopper_group_id']
+				. ' WHERE id = '.$profile['shopper_group']
 				;
 
 				$db->setQuery( $query );
@@ -241,7 +239,9 @@ class mymuseModelShopper extends JModelForm
 			}else{
 				$this->_shopper = new stdClass;
 				$this->_shopper->id = 0;
-				$this->_shopper->shopper_group_id = 0;
+				$this->_shopper->shopper_group = new stdClass;
+				$this->_shopper->shopper_group->discount = 0;
+				$this->_shopper->shopper_group->id = $params->get("my_default_shopper_group_id");
 				$this->_shopper->state = null;
 				$this->_shopper->country = null;
 				$this->_shopper->perms = null;

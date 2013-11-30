@@ -447,6 +447,16 @@
                 size="15"
                 default="mymuse"
         />
+        <field
+                name="my_plugin_email"
+                type="radio"
+                label="MYMUSE_PLUGIN_EMAIL_LABEL"
+                description="MYMUSE_PLUGIN_EMAIL_DESC"
+                class="inputbox"
+                default="0">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>>
+        </field>
 
         <field
                 name="my_cc_webmaster"
@@ -523,6 +533,16 @@
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>>
         </field>
+        
+        <field
+                name="my_default_shopper_group_id"
+                type="text"
+                label="MYMUSE_DEFAULT_SHOPPER_GROUP_LABEL"
+                description="MYMUSE_DEFAULT_SHOPPER_GROUP_DESC"
+                class="inputbox"
+                size="5"
+                default="1"
+        />
 	</fieldset>
 	
 	<fieldset name="reports" label="MYMUSE_FRONT_END_SALES_REPORTS_LABEL">

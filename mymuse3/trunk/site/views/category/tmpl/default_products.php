@@ -49,54 +49,53 @@ $height 	= $this->params->get('category_product_image_height',0);
 		</div>
 		<?php endif; ?>
 
-	<!-- @TODO add hidden inputs -->
 		<input type="hidden" name="filter_order" value="" />
 		<input type="hidden" name="filter_order_Dir" value="" />
 		<input type="hidden" name="limitstart" value="" />
 	</fieldset>
 	<?php endif; ?>
 
-	<table class="category">
+	<table class="mymuse_cart">
 		<?php if ($this->params->get('show_headings')) :?>
 		<thead>
 			<tr>
 			<?php if ($this->params->get('category_show_product_image')): ?>
-				<th class="list-image"><?php echo JText::_('MYMUSE_IMAGE'); ?></th>
+				<td class="list-image mymuse_cart_top"><?php echo JText::_('MYMUSE_IMAGE'); ?></th>
 			<?php endif; ?>
-				<th class="list-title" id="tableOrdering">
+				<td class="list-title mymuse_cart_top" id="tableOrdering">
 					<?php  echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder) ; ?>
-				</th>
+				</td>
 
 				<?php if ($date = $this->params->get('list_show_date')) : ?>
-				<th class="list-date" id="tableOrdering2">
+				<td class="list-date mymuse_cart_top" id="tableOrdering2">
 					<?php if ($date == "created") : ?>
 						<?php echo JHtml::_('grid.sort', 'MYMUSE_'.$date.'_DATE', 'a.created', $listDirn, $listOrder); ?>
 					<?php elseif ($date == "modified") : ?>
 						<?php echo JHtml::_('grid.sort', 'MYMUSE_'.$date.'_DATE', 'a.modified', $listDirn, $listOrder); ?>
 					<?php elseif ($date == "published") : ?>
 						<?php echo JHtml::_('grid.sort', 'MYMUSE_'.$date.'_DATE', 'a.publish_up', $listDirn, $listOrder); ?>
-					<?php elseif ($date == "product_created_date") : ?>
-						<?php echo JHtml::_('grid.sort', 'MYMUSE_'.$date.'_DATE', 'a.product_created_date', $listDirn, $listOrder); ?>
+					<?php elseif ($date == "product_made_date") : ?>
+						<?php echo JHtml::_('grid.sort', 'MYMUSE_'.$date.'_DATE', 'a.product_made_date', $listDirn, $listOrder); ?>
 					<?php endif; ?>
-				</th>
+				</td>
 				<?php endif; ?>
 
 				<?php if ($this->params->get('list_show_author', 1)) : ?>
-				<th class="list-author" id="tableOrdering3">
+				<td class="list-author mymuse_cart_top" id="tableOrdering3">
 					<?php echo JHtml::_('grid.sort', 'JAUTHOR', 'author', $listDirn, $listOrder); ?>
-				</th>
+				</td>
 				<?php endif; ?>
 
 				<?php if ($this->params->get('list_show_hits', 1)) : ?>
-				<th class="list-hits" id="tableOrdering4">
+				<td class="list-hits mymuse_cart_top" id="tableOrdering4">
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
-				</th>
+				</td>
 				<?php endif; ?>
 				
 				<?php if ($this->params->get('list_show_price', 0)) : ?>
-				<th class="list-price" id="tableOrdering4">
+				<td class="list-price mymuse_cart_top" id="tableOrdering4">
 					<?php echo JHtml::_('grid.sort', 'MYMUSE_CART_PRICE', 'a.price', $listDirn, $listOrder); ?>
-				</th>
+				</td>
 				<?php endif; ?>
 			</tr>
 		</thead>
@@ -112,7 +111,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 			<?php endif; ?>
 				<?php if (in_array($product->access, $this->user->getAuthorisedViewLevels())) : ?>
 					<?php if ($this->params->get('category_show_product_image')): ?>
-					<td>
+					<td class="list-image mymuse_cart">
 					<?php if ($product->list_image): ?>
 					<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($product->id, $product->catid)); ?>">
 					<img 
@@ -126,7 +125,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 					<?php endif; ?>
 					</td>
 					<?php endif; ?>
-					<td class="list-title" valign="top">
+					<td class="list-title mymuse_cart" valign="top">
 						<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($product->id, $product->catid)); ?>">
 							<?php echo $this->escape($product->title); ?></a>
 
@@ -142,14 +141,18 @@ $height 	= $this->params->get('category_product_image_height',0);
 					</td>
 
 					<?php if ($this->params->get('list_show_date')) : ?>
-					<td class="list-date" valign="top">
-						<?php echo JHtml::_('date', $product->displayDate, $this->escape(
-						$this->params->get('date_format', JText::_('DATE_FORMAT_LC3')))); ?>
+					<td class="list-date mymuse_cart" valign="top">
+						<?php 
+						if($product->displayDate != '0000-00-00'){
+							echo JHtml::_('date', $product->displayDate, $this->escape(
+							$this->params->get('date_format', JText::_('DATE_FORMAT_LC3')))); 
+						}
+							?>
 					</td>
 					<?php endif; ?>
 
 					<?php if ($this->params->get('list_show_author', 1) && !empty($product->author )) : ?>
-					<td class="list-author" valign="top">
+					<td class="list-author mymuse_cart" valign="top">
 						<?php $author =  $product->author ?>
 						<?php $author = ($product->created_by_alias ? $product->created_by_alias : $author);?>
 
@@ -167,13 +170,13 @@ $height 	= $this->params->get('category_product_image_height',0);
 					<?php endif; ?>
 
 					<?php if ($this->params->get('list_show_hits', 1)) : ?>
-					<td class="list-hits" valign="top">
+					<td class="list-hits mymuse_cart" valign="top">
 						<?php echo $product->hits; ?>
 					</td>
 					<?php endif; ?>
 					
 					<?php if ($this->params->get('list_show_price', 0)) : ?>
-					<td class="list-price" valign="top">
+					<td class="list-price mymuse_cart" valign="top">
 						<?php echo myMuseHelper::printMoney($product->price); ?>
 					</td>
 					<?php endif; ?>

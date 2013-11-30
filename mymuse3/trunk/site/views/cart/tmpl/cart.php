@@ -57,14 +57,14 @@ $task		= $this->task;
 		
 		    <tr class="<?php echo $class ?>">
 		        <td align="left">
-		        <?php if(isset($order_item[$i]->category_name) && isset($order_item[$i]->cat_url)){ ?>
-		        	 <a href="<?php echo JURI::base().$order_item[$i]->cat_url; ?>"><?php echo $order_item[$i]->category_name; ?></a> :
+		        <?php if(isset($order_item[$i]->category_name)){ ?>
+		        	 <?php echo $order_item[$i]->category_name; ?> :
 		        <?php } ?>
 		        
 		        <?php if(isset($order_item[$i]->parent->title)){ ?>
-		        	 <a href="<?php echo JURI::base().$order_item[$i]->url; ?>"><?php echo $order_item[$i]->parent->title; ?></a> :
+		        	 <?php echo $order_item[$i]->parent->title; ?> :
 		        <?php } ?>
-		        <a href="<?php echo JURI::base().$order_item[$i]->url; ?>"><?php echo $order_item[$i]->title; ?></a>
+		        <?php echo $order_item[$i]->title; ?>
 		        
 		        </td>
 		    <?php if($params->get("my_show_sku")){ ?>

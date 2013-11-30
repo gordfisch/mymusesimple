@@ -75,7 +75,7 @@ class myMuseViewStore extends JViewLegacy
         	$MyMuseShopper 	=& MyMuse::getObject('shopper','models');
 			$shopper = $MyMuseShopper->getShopper();
         	if($row->user_id != $MyMuseShopper->_shopper->user_id){
-        		echo $MyMuseShopper->_shopper->user_id." + "; echo $row->user_id; exit;
+        		//echo $MyMuseShopper->_shopper->user_id." + "; echo $row->user_id; exit;
         		$message = JText::_('MYMUSE_USER_ORDER_OWNER_MISMATCH');
         		if($params->get('my_debug')){
         				$message .= $row->user_id.' : '.$MyMuseShopper->_shopper->user_id;
@@ -217,8 +217,7 @@ class myMuseViewStore extends JViewLegacy
 
         
         	$filename = stripslashes($order_item->file_name);
-        	
-        	
+
         	// check number of downloads
         	if($params->get('my_download_max') && intval($order_item->downloads) >= $params->get('my_download_max')){
         		$message = JText::_('MYMUSE_MAX_NUMBER_OF_DOWNLOADS_REACHED');
@@ -273,7 +272,7 @@ class myMuseViewStore extends JViewLegacy
         	}else{
         		//download a physical file
         		if(!$filename){
-        			$message = JText::_('MYMUSE_NO_FILENAME_FOUND');
+        			$message = JText::_('MYMUSE_NO_FILENAME_FOUND'). " ".$filename;
         			if($params->get('my_debug')){
         				$message .= $filename;
         			}
@@ -292,6 +291,7 @@ class myMuseViewStore extends JViewLegacy
        
         		$full_filename = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
         		$full_filename1 = $full_filename;
+        		//echo $full_filename;
         		if(!file_exists($full_filename)){
         			//try with the root
         			$full_filename = JPATH_ROOT.DS.$params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;

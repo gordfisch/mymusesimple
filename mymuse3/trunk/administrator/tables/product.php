@@ -226,32 +226,7 @@ class MymuseTableproduct extends JTable
         	$album_alias = $this->alias;
         }
 
-        // other categories
-        if(isset($this->catid)){
-        	$form['othercats'][] = $this->catid;
-        }else{
-        	$form['othercats'][] = $form['catid'];
-        }
-        if(isset($form['othercats'])  && !$this->parentid && $this->id){
-  		
-        	$catids	= $form['othercats'];
-        	// update product_category_xref
-        	$query = "DELETE FROM #__mymuse_product_category_xref WHERE product_id=".$this->id;
-        	$db->setQuery($query);
-        	$db->execute();
 
-        	foreach($catids as $catid){
-        		$query = "INSERT INTO #__mymuse_product_category_xref
-					(catid,product_id) VALUES (".$catid.",".$this->id.")";
-        		$db->setQuery($query);
-     
-        		if(!$db->execute()){
-        			$this->setError(JText::_('MYMUSE_COULD_NOT_SAVE_PRODUCTCAT_XREF').$db->getErrorMsg());
-        			return false;
-        		}
-
-        	}
-        }
  
 		// Uploaded product file
 		$new = 0;
@@ -651,36 +626,77 @@ class MymuseTableproduct extends JTable
         			$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").' '.$preview_dir);
         		}
         	}
-        
-        	// update product_category_xref
-        	$query = "DELETE FROM #__mymuse_product_category_xref WHERE product_id=".$this->id;
-        	$db->setQuery($query);
-        	$db->execute();
 
-        	if(isset($catids)){
-        		foreach($catids as $catid){
-        			if($catid == $this->catid ){
-        			
-        				continue;
-        			}
+        	
+        	// other categories
+        	
+        	if(isset($form['othercats'])  && !$this->parentid && $this->id){
+        		// clear product_category_xref
+        		$query = "DELETE FROM #__mymuse_product_category_xref WHERE product_id=".$this->id;
+        		$db->setQuery($query);
+        		$db->execute();
+        		if(!in_array($form['catid'], $form['othercats'])){
+        			$form['othercats'][] = $form['catid'];
+        		}
+        		foreach($form['othercats'] as $catid){
         			$query = "INSERT INTO #__mymuse_product_category_xref
         			(catid,product_id) VALUES (".$catid.",".$this->id.")";
         			$db->setQuery($query);
+        			 
         			if(!$db->execute()){
         				$this->setError(JText::_('MYMUSE_COULD_NOT_SAVE_PRODUCTCAT_XREF').$db->getErrorMsg());
         				return false;
         			}
-
+        	
         		}
         	}
-        	if($old_catid != '' && $old_catid != $this->catid){
+        	
+        	
+                	if($old_catid != '' && $old_catid != $this->catid){
         		//now we are not sure what to move
         		$old_artist_alias = MyMuseHelper::getArtistAlias($old_catid);
+        		$src = $params->get('my_download_dir').DS.$old_artist_alias.DS.$old_alias;
+        		$dest = $params->get('my_download_dir').DS.$artist_alias.DS.$this->alias;
         	
-        		$msg = "<br />Old dir: ".$params->get('my_download_dir').DS.$old_artist_alias.DS.$old_alias;
-        		$msg .= " <br />New: ".$params->get('my_download_dir').DS.$artist_alias.DS.$this->alias;
-        		$this->setError(JText::sprintf("MYMUSE_PRODUCT_CHANGED_CATEGORY", $msg));
+        		$msg = "<br />Old dir: ".$src;
+        		$msg .= " <br />New: ".$dest;
+        		
+        		//main files
+        		if(!JFOLDER::move($src,$dest)){
+        			$this->setError(JText::sprintf("MYMUSE_PRODUCT_CHANGED_CATEGORY", $msg));
+        		}else{
+        			//Now we read all old files and put them in an array.
+        			$old_files = JFolder::files($src);
+        			
+        			//Now we need some stuff from the JFile:: class to move all files into the new folder
+        			foreach ($old_files as $file) {
+        				JFile::move($src . DS . $file, $dest . DS . $file);
+        			}
+        			$this->setError(JText::sprintf("MYMUSE_PRODUCT_CHANGED_CATEGORY_SUCCESS", $msg));
+        		}
+        		//preview files
+        		$src = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$old_artist_alias.DS.$old_alias;
+        		$dest = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$this->alias;
+        		$msg .= "<br />Old dir: ".$src;
+        		$msg .= " <br />New: ".$dest;
+        		if(!JFOLDER::move($src,$dest)){
+        			$this->setError(JText::sprintf("MYMUSE_PRODUCT_CHANGED_CATEGORY", $msg));
+        		}else{
+        			//Now we read all old files and put them in an array.
+        			$old_files = JFolder::files($src);
+        			 
+        			//Now we need some stuff from the JFile:: class to move all files into the new folder
+        			foreach ($old_files as $file) {
+        				JFile::move($src . DS . $file, $dest . DS . $file);
+        			}
+        			$this->setError(JText::sprintf("MYMUSE_PRODUCT_CHANGED_CATEGORY_SUCCESS", $msg));
+        		}
+        		
+        		
         		$this->checkin();
+        		if($this->parentid){
+        			$this->checkin($this->parentid);
+        		}
         		parent::store($updateNulls);
         		return false;
         		
@@ -780,7 +796,79 @@ class MymuseTableproduct extends JTable
         return true;
     }
 
-
+    /**
+     * Override delete
+     * If there is no asset, silently pass that by
+     * Deletes this row in database (or if provided, the row of key $pk)
+     *
+     * @param   mixed  $pk  An optional primary key value to delete.  If not set the instance property value is used.
+     *
+     * @return  boolean  True on success.
+     *
+     * @link    http://docs.joomla.org/JTable/delete
+     * @since   11.1
+     * @throws  UnexpectedValueException
+     */
+    public function delete($pk = null)
+    {
+    	$k = $this->_tbl_key;
+    
+    	// Implement JObservableInterface: Pre-processing by observers
+    	$this->_observers->update('onBeforeDelete', array($pk, $k));
+    
+    	$pk = (is_null($pk)) ? $this->$k : $pk;
+    
+    	// If no primary key is given, return false.
+    	if ($pk === null)
+    	{
+    		throw new UnexpectedValueException('Null primary key not allowed.');
+    	}
+    
+    	// If tracking assets, remove the asset first.
+    	if ($this->_trackAssets)
+    	{
+    
+    		// Get and the asset name.
+    		$savedK = $this->$k;
+    
+    		$this->$k = $pk;
+    		$name = $this->_getAssetName();
+    		$asset = self::getInstance('Asset');
+    
+    		if ($asset->loadByName($name))
+    		{
+    
+    			if (!$asset->delete())
+    			{
+    					
+    				$this->setError($asset->getError());
+    				return false;
+    			}
+    		}
+    		else
+    		{
+    			$this->setError($asset->getError());
+    			//no assset? let it go
+    			//return false;
+    		}
+    
+    		$this->$k = $savedK;
+    	}
+    
+    	// Delete the row by primary key.
+    	$query = $this->_db->getQuery(true)
+    	->delete($this->_tbl)
+    	->where($this->_tbl_key . ' = ' . $this->_db->quote($pk));
+    	$this->_db->setQuery($query);
+    
+    	// Check for a database error.
+    	$this->_db->execute();
+    
+    	// Implement JObservableInterface: Post-processing by observers
+    	$this->_observers->update('onAfterDelete', array($pk));
+    
+    	return true;
+    }
 
 
 }

@@ -78,7 +78,7 @@ class ProductHelperQuery
 				break;
 
 			case 'alpha' :
-				$orderby = 'a.title';
+				$orderby = 'a.title ASC';
 				break;
 
 			case 'ralpha' :
@@ -103,6 +103,14 @@ class ProductHelperQuery
 
 			case 'rauthor' :
 				$orderby = 'author DESC';
+				break;
+				
+			case 'front' :
+				$orderby = 'a.featured DESC';
+				break;
+			
+			case 'sales' :
+				$orderby = 's.sales DESC';
 				break;
 
 			default :
@@ -132,6 +140,10 @@ class ProductHelperQuery
 			// use created if publish_up is not set
 			case 'published' :
 				$queryDate = ' CASE WHEN a.publish_up = 0 THEN a.created ELSE a.publish_up END ';
+				break;
+				
+			case 'product_made_date' :
+				$queryDate = ' CASE WHEN a.product_made_date = 0 THEN a.created ELSE a.product_made_date END ';
 				break;
 
 			case 'created' :

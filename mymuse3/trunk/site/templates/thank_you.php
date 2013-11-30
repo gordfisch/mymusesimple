@@ -30,6 +30,22 @@ defined('_JEXEC') or die('Restricted access');
             <td><?php echo JText::_('MYMUSE_'.strtoupper($order->status_name)) ?></td>
         </tr>
 	</table>
+	
+	<?php if(isset($my_email_msg)){ ?>
+        <table class="mymuse_cart_email">
+        <tr>
+            <td class="mymuse_cart_top" colspan="2"><b><?php echo $my_email_msg; ?></b></td>
+        </tr>
+        </table>
+    <?php } ?>
+    
+    <?php if(isset($params->my_email_msg)){ ?>
+        <table class="mymuse_cart_email">
+        <tr>
+            <td class="mymuse_cart_top" colspan="2"><b><?php echo $params->my_email_msg; ?></b></td>
+        </tr>
+        </table>
+    <?php } ?>
         
 
 		<!-- start of basket -->
@@ -59,8 +75,8 @@ defined('_JEXEC') or die('Restricted access');
 		
 		    <tr class="<?php echo $class ?>">
 		        <td align="left"> 
-		        <a href="<?php echo JURI::base().$order->items[$i]->url; ?>"><?php echo $order->items[$i]->title; ?></a> :
-				<a href="<?php echo JURI::base().$order->items[$i]->cat_url; ?>"><?php echo $order->items[$i]->category_name; ?></a> </td>
+		        <?php echo $order->items[$i]->title; ?> :
+				<?php echo $order->items[$i]->category_name; ?> </td>
 		        <?php if($params->get("my_show_sku")){ ?>
 		        <td align="right"><?php echo $order->items[$i]->product_sku; ?></td>
 		        <?php } ?>
@@ -167,6 +183,10 @@ defined('_JEXEC') or die('Restricted access');
            		foreach ($shopper->profile as $label=>$value){ 
            			if($value == ''){ continue;} 
            			if($label == 'shopper_group'){continue;}
+           			
+           			if($label == 'category_owner'){
+           				continue;
+           			}
            			if($label == 'region'){continue;}
            			if($label == 'region'){
            				continue;

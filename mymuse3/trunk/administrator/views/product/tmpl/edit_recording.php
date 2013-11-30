@@ -1,6 +1,6 @@
 <div class="pull-left span5">
-<div class="control-group">
-<div class="control-label">
+		<div class="control-group">
+			<div class="control-label">
 				<?php echo $this->form->getLabel('product_made_date'); ?>
 			</div>
 			<div class="controls">

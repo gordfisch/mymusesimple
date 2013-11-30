@@ -13,7 +13,7 @@
 defined('_JEXEC') or die('Restricted access');
 $results = $this->results;
 ?>
-<table width="90%">
+<table class="mymuse_cart">
 	<tr>
 	<?php foreach($results as $r){ ?>
 		<td valign="top"><?php echo $r; ?></td>

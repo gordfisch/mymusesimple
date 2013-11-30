@@ -116,20 +116,17 @@ class MyMuseModelCategory extends JModelList
 		$this->setState('category.id', $pk);
 
 		// Load the parameters. Merge Global and Menu Item params into new object
-		$app_params = $app->getParams();
 		$params 	= MyMuseHelper::getParams();
-		$params->merge($app_params);
-		
 		$menuParams = new JRegistry;
 
 		if ($menu = $app->getMenu()->getActive()) {
 			$menuParams->loadString($menu->params);
 		}
 
-		$mergedParams = clone $menuParams;
-		$mergedParams->merge($params);
+		$params = clone $params;
+		$params->merge($menuParams);
 
-		$this->setState('params', $mergedParams);
+		$this->setState('params', $params);
 		$user		= JFactory::getUser();
 		// Create a new query object.
 		$db		= $this->getDbo();
@@ -210,7 +207,6 @@ class MyMuseModelCategory extends JModelList
 	{
 		$params = $this->getState()->get('params');
 		$limit = $this->getState('list.limit');
-
 		if ($this->_products === null && $category = $this->getCategory()) {
 			$model = JModelList::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
 			$model->setState('params', JFactory::getApplication()->getParams());
@@ -219,12 +215,9 @@ class MyMuseModelCategory extends JModelList
 			$model->setState('filter.access', $this->getState('filter.access'));
 			$model->setState('filter.language', $this->getState('filter.language'));
 			$ordering = $this->getState('list.ordering');
-
-			if($ordering != ''){
-				$model->setState('list.ordering',$ordering);
-			}else{
-				$model->setState('list.ordering', ProductHelperQuery::orderbySecondary($params->get('orderby_sec', 'rdate'), $params->get('order_date')));
-			}
+					
+			$model->setState('list.ordering', ProductHelperQuery::orderbySecondary($params->get('orderby_sec', 'rdate'), $params->get('order_date')));
+			
 			$model->setState('list.start', $this->getState('list.start'));
 			$model->setState('list.limit', $limit);
 			$model->setState('list.direction', $this->getState('list.direction'));
@@ -413,6 +406,7 @@ class MyMuseModelCategory extends JModelList
 		if (!is_object($this->_item)) {
 			$this->getCategory();
 		}
+		$db = JFactory::getDBO();
 
 		// Order subcategories
 		if (sizeof($this->_children)) {
@@ -421,6 +415,26 @@ class MyMuseModelCategory extends JModelList
 				jimport('joomla.utilities.arrayhelper');
 				JArrayHelper::sortObjects($this->_children, 'title', ($params->get('orderby_pri') == 'alpha') ? 1 : -1);
 			}
+			
+			$nullDate	= $db->Quote($db->getNullDate());
+			$nowDate	= $db->Quote(JFactory::getDate()->toSql());
+			foreach($this->_children as $child){
+				$query = "SELECT count(*) as total from #__mymuse_product as p 
+				LEFT JOIN #__mymuse_product_category_xref as x
+				ON p.id=x.product_id 
+				WHERE 
+				x.catid=".$child->id." AND
+				(p.publish_up = ".$nullDate." OR p.publish_up <= ".$nowDate.")
+				AND (p.publish_down = ".$nullDate." OR p.publish_down >= ".$nowDate.")
+				AND p.parentid=0 
+				";
+			//echo $query."<br />";
+				$db->setQuery($query);
+				$total = $db->loadResult();
+				$child->product_total = $total;
+			
+			}
+			
 		}
 		
 		return $this->_children;

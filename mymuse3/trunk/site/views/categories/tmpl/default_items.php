@@ -28,14 +28,17 @@ $item_params->loadString($item->params);
 	<li<?php echo $class; ?>>
 	<?php $class = ''; ?>
 		<span class="item-title"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($item->id));?>">
-			<?php echo $this->escape($item->title); ?></a>
+			<?php echo $this->escape($item->title); ?></a> 
+			<?php if ($this->params->get('show_cat_num_articles_cat') == 1) :?>
+			(<?php echo $this->_getProductCount($item); ?>)
+		<?php endif; ?>
 		</span>
 		<?php if ($this->params->get('show_description_image') && $item_params->get('image')): ?>
 <div class="list_image">
 <a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($item->id)); ?>"
 ><img src="<?php echo  $item_params->get('image'); ?>" 
 		<?php if ($this->params->get('category_image_height')) : ?>
-			height="<?php echo $this->params->get('category_image_height'); ?>"
+style="height: <?php echo $this->params->get('category_image_height'); ?>px"
 		<?php endif; ?>
 alt="<?php echo htmlspecialchars($item_params->get('image')); ?>" border="0" /></a></div>
 <?php endif; ?>
@@ -46,12 +49,7 @@ alt="<?php echo htmlspecialchars($item_params->get('image')); ?>" border="0" /><
 			</div>
 		<?php endif; ?>
         <?php endif; ?>
-		<?php if ($this->params->get('show_cat_num_articles_cat') == 1) :?>
-			<dl><dt>
-				<?php echo JText::_('MYMUSE_NUM_ITEMS'); ?></dt>
-				<dd><?php echo $item->numitems; ?></dd>
-			</dl>
-		<?php endif; ?>
+		
 
 		<?php if (count($item->getChildren()) > 0) :
 			$this->items[$item->id] = $item->getChildren();

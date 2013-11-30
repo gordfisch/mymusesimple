@@ -1,9 +1,10 @@
 <?php
 /**
- * @package		Joomla.Site
- * @subpackage	com_content
- * @copyright	Copyright (C) 2005 - 2012 Open Source Matters, Inc. All rights reserved.
- * @license		GNU General Public License version 2 or later; see LICENSE.txt
+ * @version     $Id$
+ * @package     com_mymuse2.5
+ * @copyright   Copyright (C) 2011. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @author      Gord Fisch info@mymuse.ca
  */
 
 // no direct access
@@ -21,16 +22,8 @@ JHtmlBehavior::framework();
 <?php if ($this->item->state == 0) : ?>
 <div class="system-unpublished">
 <?php endif; ?>
-<?php if ($params->get('show_title')) : ?>
-	<div class="title">
-		<?php if ($params->get('category_product_link_titles') && $params->get('access-view')) : ?>
-			<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid)); ?>">
-			<?php echo $this->escape($this->item->title); ?></a>
-		<?php else : ?>
-			<?php echo $this->escape($this->item->title); ?>
-		<?php endif; ?>
-	</div>
-<?php endif; ?>
+
+
 
 <?php if ($params->get('show_print_icon') || $params->get('show_email_icon') || $canEdit) : ?>
 	<ul class="actions">
@@ -60,13 +53,21 @@ JHtmlBehavior::framework();
 ><img src="<?php echo $this->item->list_image; ?>" 
 alt="<?php echo htmlspecialchars($this->item->list_image); ?>" border="0" 
 <?php if ($params->get('category_product_image_height')) : ?>
-height="<?php echo $params->get('category_product_image_height'); ?>"
+style="height: <?php echo $params->get('category_product_image_height'); ?>px"
 <?php endif; ?>
 /></a></div>
-<?php endif; 
+<?php endif; ?>
 
-?>
-
+<?php if ($params->get('show_title')) : ?>
+	<div class="title">
+		<?php if ($params->get('category_product_link_titles') && $params->get('access-view')) : ?>
+			<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid)); ?>">
+			<?php echo $this->escape($this->item->title); ?></a>
+		<?php else : ?>
+			<?php echo $this->escape($this->item->title); ?>
+		<?php endif; ?>
+	</div>
+<?php endif; ?>
 
 <?php if (!$params->get('show_intro')) : ?>
 	<?php echo $this->item->event->afterDisplayTitle; ?>
@@ -103,21 +104,24 @@ height="<?php echo $params->get('category_product_image_height'); ?>"
 			<?php endif; ?>
 		</dd>
 <?php endif; ?>
-<?php if ($params->get('show_create_date')) : ?>
+<?php if ($params->get('show_create_date')) : 
+?>
 		<dd class="create">
-		<?php echo JText::sprintf('MYMUSE_CREATED_DATE_ON', JHtml::_('date', $this->item->created, JText::_('DATE_FORMAT_LC2'))); ?>
+		<?php echo JText::sprintf('MYMUSE_CREATED_DATE_ON', JHtml::_('date', $this->item->created, $this->params->get('my_date_format',JText::_('DATE_FORMAT_LC3')))); 
+		 ?>
 		</dd>
 <?php endif; ?>
 <?php if ($params->get('show_modify_date')) : ?>
 		<dd class="modified">
-		<?php echo JText::sprintf('MYMUSE_LAST_UPDATED', JHtml::_('date', $this->item->modified, JText::_('DATE_FORMAT_LC2'))); ?>
+		<?php echo JText::sprintf('MYMUSE_LAST_UPDATED', JHtml::_('date', $this->item->modified, $this->params->get('my_date_format',JText::_('DATE_FORMAT_LC3')))); ?>
 		</dd>
 <?php endif; ?>
 <?php if ($params->get('show_publish_date')) : ?>
 		<dd class="published">
-		<?php echo JText::sprintf('MYMUSE_PUBLISHED_DATE_ON', JHtml::_('date', $this->item->publish_up, JText::_('DATE_FORMAT_LC2'))); ?>
+		<?php echo JText::sprintf('MYMUSE_PUBLISHED_DATE_ON', JHtml::_('date', $this->item->publish_up, $this->params->get('my_date_format',JText::_('DATE_FORMAT_LC3')))); ?>
 		</dd>
 <?php endif; ?>
+
 <?php if ($params->get('show_author') && !empty($this->item->author )) : ?>
 	<dd class="createdby">
 		<?php $author =  $this->item->author; ?>
@@ -134,12 +138,15 @@ height="<?php echo $params->get('category_product_image_height'); ?>"
 <?php endif; ?>
 <?php if ($params->get('show_hits')) : ?>
 		<dd class="hits">
-		<?php echo JText::sprintf('MYMUSE_HITS', $this->item->hits); ?>
+		<?php 
+		echo JText::sprintf('MYMUSE_HITS', $this->item->hits); ?>
 		</dd>
 <?php endif; ?>
 <?php if (($params->get('show_author')) or ($params->get('show_category')) or ($params->get('show_create_date')) or ($params->get('show_modify_date')) or ($params->get('show_publish_date')) or ($params->get('show_parent_category')) or ($params->get('show_hits'))) :?>
  	</dl>
 <?php endif; ?>
+
+
 <?php  if (isset($images->image_intro) and !empty($images->image_intro)) : ?>
 	<?php $imgfloat = (empty($images->float_intro)) ? $params->get('float_intro') : $images->float_intro; ?>
 	<div class="img-intro-<?php echo htmlspecialchars($imgfloat); ?>">
@@ -153,7 +160,9 @@ height="<?php echo $params->get('category_product_image_height'); ?>"
 
 <?php if($params->get('category_show_intro_text')) :?>
 <?php echo $this->item->introtext; ?>
-<?php endif; ?>
+<?php endif;
+
+?>
 
 <?php if ($params->get('show_readmore') && $this->item->readmore) :
 	if ($params->get('access-view')) :

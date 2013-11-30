@@ -287,13 +287,18 @@ if($this->cart['idx']){
                         </td>
       						
 						<td valign="middle"><?php echo $track->title; ?> <br />
-							(T) (<?php echo $track->product_made_date; ?>)
-						
-							<?php if($track->file_length){echo "(".MyMuseHelper::ByteSize($track->file_length).")";} ?>
-      						<?php  if($track->product_allfiles == "1"){ 
-								echo JText::_("MYMUSE_ALL_TRACKS");
-					 		} ?>
-      						</td>
+						<?php if($params->get('list_show_date') && $track->{$params->get('list_show_date')} != '0000-00-00'){?>
+							(<?php
+							echo JHtml::_('date', $track->{$params->get('list_show_date')}, $this->escape(
+							$this->params->get('date_format', JText::_('DATE_FORMAT_LC3')))); ?>)
+						<?php }?>
+						<?php if($params->get('list_show_file_length') && $track->file_length){
+							echo "(".MyMuseHelper::ByteSize($track->file_length).")";} 
+						?>
+      					<?php  if($track->product_allfiles == "1"){ 
+							echo JText::_("MYMUSE_ALL_TRACKS");
+					 	} ?>
+      					</td>
 
         				
         				<td align="center" valign="middle">
@@ -355,6 +360,7 @@ if($this->cart['idx']){
 
 <input type="hidden" name="option" value="com_mymuse" />
 <input type="hidden" name="view" value="tracks" />
+<input type="hidden" name="task" value="view" />
 <input type="hidden" name="layout" value="alphatunes" />
 <input type="hidden" name="Itemid" value="<?php echo $this->Itemid; ?>" />
 <input type="hidden" name="id" value="<?php echo $this->category->id; ?>" />

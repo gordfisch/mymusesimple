@@ -9,22 +9,43 @@
 // no direct access
 defined('_JEXEC') or die;
 $class = ' class="first"';
+$count = count($this->children[$this->category->id]);
+$break =  round($count / $this->params->get('subcat_columns', 1));
+$r = $count  %  $this->params->get('subcat_columns', 1);
+if($r){
+	$break++;
+}
+$total_shown = 0;
+$column = 1;
+$i=0;
+//echo "count = $count break = $break";
 ?>
 
-<?php if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) : ?>
+<div class="cols-<?php echo $this->params->get('subcat_columns', 1); ?>">
+
+<?php if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) : 
+if(!$total_shown){
+	//top of first column
+	?><div class="column-<?php echo $column; $column++;?>">
+				<?php
+}
+?>
 	<ul>
-	<?php foreach($this->children[$this->category->id] as $id => $child) : ?>
-		<?php
+	<?php foreach($this->children[$this->category->id] as $id => $child) : 
+	
 		if ($this->params->get('show_empty_categories') || $child->numitems || count($child->getChildren())) :
 			if (!isset($this->children[$this->category->id][$id + 1])) :
 				$class = ' class="last"';
 			endif;
 		?>
 		<li<?php echo $class; ?>>
-			<?php $class = ''; ?>
+			<?php $class = ''; 
+			$total_shown++;
+			$i++;
+			?>
 			
-			<?php if ($this->params->get('show_subcat_image') == 1) :?>
-			<span class="item-title"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($child->id));?>">
+			<?php if ($this->params->get('show_subcat_image') == 1 && $child->getParams()->get('image')) :?>
+			<span class="item-picture"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($child->id));?>">
 				<img src="<?php echo $child->getParams()->get('image'); ?>"
 				<?php if ($this->params->get('category_image_height')) : ?>
 					height="<?php echo $this->params->get('category_image_height'); ?>"
@@ -37,6 +58,12 @@ $class = ' class="first"';
 			<span class="item-title"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($child->id));?>">
 				<?php echo $this->escape($child->title); ?></a>
 			</span>
+			<br />
+			<?php if ( $this->params->get('show_cat_num_articles', 1)) : ?>
+			<span class="item_products">
+					<?php echo JText::_('MYMUSE_NUM_ITEMS') ; ?> <?php echo $child->getNumItems(true); ?>
+			</span>
+			<?php endif ; ?>
 
 			<?php if ($this->params->get('show_subcat_desc') == 1) :?>
 			<?php if ($child->description) : ?>
@@ -46,17 +73,7 @@ $class = ' class="first"';
 			<?php endif; ?>
             <?php endif; ?>
 
-			<?php if ( $this->params->get('show_cat_num_articles', 1)) : ?>
-			<dl>
-				<dt>
-					<?php echo JText::_('MYMUSE_NUM_ITEMS') ; ?>
-				</dt>
-				<dd>
-					<?php //print_pre($child); exit; 
-					echo $child->getNumItems(true); ?>
-				</dd>
-			</dl>
-			<?php endif ; ?>
+			
 
 			<?php if (count($child->getChildren()) > 0):
 				$this->children[$child->id] = $child->getChildren();
@@ -70,6 +87,23 @@ $class = ' class="first"';
 			endif; ?>
 		</li>
 		<?php endif; ?>
+<?php 
+			
+			if($i == $break){
+				echo '</ul>
+				</div>
+				<div class="column-'.$column.'">
+				<ul>
+				';
+				$column++;
+				$i=0;
+			}
+		?>		
+		
+		
+		
+		
 	<?php endforeach; ?>
 	</ul>
-<?php endif;
+	</div>
+<?php endif; ?>

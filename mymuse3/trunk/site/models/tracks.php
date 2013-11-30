@@ -488,7 +488,7 @@ class MyMuseModelTracks extends JModelList
 
             }//end for each track
         }
-        echo $params->get('product_player_type');
+
         
         if($params->get('product_player_type') == "single"){
             //get the player itself
@@ -632,13 +632,28 @@ class MyMuseModelTracks extends JModelList
         $page->setAdditionalUrlParam('view', 'tracks');
         $page->setAdditionalUrlParam('layout', 'alphatunes');
         $page->setAdditionalUrlParam('id', $this->getState('category.id'));
-        if($this->getState('filter_alpha','')){
-            $page->setAdditionalUrlParam('filter_alpha', 'blue');
+	    if($this->getState('list.alpha','')){
+            $page->setAdditionalUrlParam('filter_alpha', $this->getState('list.alpha'));
+        }
+        
+        if($this->getState('list.ordering','')){
+        	$page->setAdditionalUrlParam('filter_order', $this->getState('list.ordering'));
+        }
+        if($this->getState('list.direction','')){
+        	$page->setAdditionalUrlParam('filter_order_Dir', $this->getState('list.direction'));
+        }
+
+        
+        
+        
+        if($this->getState('list.searchword','')){
+        	$page->setAdditionalUrlParam('searchword', $this->getState('list.searchword'));
         }
         $Itemid           = JRequest::getVar('Itemid');
         if($Itemid){
-            $page->setAdditionalUrlParam('Itemid',$Itemid);
+        	$page->setAdditionalUrlParam('Itemid',$Itemid);
         }
+        $Itemid           = JRequest::getVar('Itemid');
         if($this->getState('list.limit')){
             $page->setAdditionalUrlParam('limit', $this->getState('list.limit'));
         }

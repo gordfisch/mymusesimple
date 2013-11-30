@@ -544,25 +544,32 @@ class myMuseViewCart extends JViewLegacy
         	$message .= "Order Number: ".$result['order_number']."\n";
         	$message .= "Payment Status returned by ".$result['plugin'].": ".$result['payment_status']."\n";
         	
-        	$mailer = JFactory::getMailer();
-        	$mailer->isHTML(false);
-        	$mailer->Encoding = 'base64';
-        	// from
-        	$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
-        	$mailfrom = $params->get('contact_email');
-        	$sender = array(
-        			$mailfrom,
-        			$fromname );
-        	$mailer->setSender($sender);
-        	//recipient
-        	$recipient = $mailfrom;
-        	if($params->get('my_cc_webmaster')){
-        		$recipient = array($mailfrom, $params->get('my_webmaster'));
+        	
+        	
+        	if($params->get('my_plugin_email')){
+        		$mailer = JFactory::getMailer();
+        		$mailer->isHTML(false);
+        		$mailer->Encoding = 'base64';
+        		// from
+        		$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
+        		$mailfrom = $params->get('contact_email');
+        		$sender = array(
+        				$mailfrom,
+        				$fromname );
+        		$mailer->setSender($sender);
+        		//recipient
+        		$recipient = $mailfrom;
+        		$mailer->addRecipient($recipient);
+        		if($params->get('my_cc_webmaster')){
+        			$recipient = array($mailfrom, $params->get('my_webmaster'));
+        			$mailer->addRecipient($recipient);
+        		}
+        		
+        		$mailer->setSubject($subject);
+        		$mailer->setBody($message);
+        		$send = $mailer->Send();
         	}
-        	$mailer->addRecipient($recipient);
-        	$mailer->setSubject($subject);
-        	$mailer->setBody($message);
-        	$send = $mailer->Send();
+        	
         	
         	
         	// update stock

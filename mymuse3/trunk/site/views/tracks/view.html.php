@@ -45,6 +45,8 @@ class mymuseViewtracks extends JViewLegacy
         $this->sortColumn       = $state->get('list.ordering');
         $this->Itemid           = JRequest::getVar('Itemid');
         $filter_alpha           = JRequest::getString('filter_alpha', '');
+        $this->task             = JRequest::getString('task', 'view');
+
 		
 		// Check for layout override only if this is not the active menu item
 		// If it is the active menu item, then the view and category id will match
