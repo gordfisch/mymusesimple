@@ -166,7 +166,7 @@ class MyMuseModelProducts extends JModelList
 				'list.select',
 				'a.id, a.title, a.alias, a.title_alias, a.introtext, ' .
 				'a.checked_out, a.checked_out_time, a.list_image, a.detail_image, a.price,' .
-				'a.catid, a.created, a.created_by, a.created_by_alias, ' .
+				'a.catid, a.created, a.created_by, a.created_by_alias, a.product_made_date,' .
 				// use created if modified is 0
 				'CASE WHEN a.modified = 0 THEN a.created ELSE a.modified END as modified, ' .
 					'a.modified_by, uam.name as modified_by_name,' .
@@ -258,10 +258,17 @@ class MyMuseModelProducts extends JModelList
 			$query->where('a.access IN ('.$groups.')');
 		}
 		
-		//$query->join('LEFT','#__mymuse_product_category_xref AS x ON x.product_id=a.id');
-		//$query->join('LEFT','#__categories AS c ON c.id=x.catid');
-		
-		//a.id IN (group_concat)
+		// add sales figures
+
+		$query->select('s.sales');
+
+		$query->join('LEFT', "(SELECT sum(quantity) as sales, x.product_name, x.product_id FROM 
+(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
+i.product_name, CASE WHEN parentid > 0 THEN parentid ELSE product_id END as all_id
+FROM #__mymuse_order_item as i
+LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
+GROUP BY i.product_id ) 
+as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 
 		// Filter by published state
 		$published = $this->getState('filter.published');
@@ -523,7 +530,7 @@ class MyMuseModelProducts extends JModelList
 		c.title, c.path, c.access, c.alias, uam.id, ua.name, ua.email, contact.id, parent.title, 
 		parent.id, parent.path, parent.alias, v.rating_sum, v.rating_count, c.published, c.lft, 
 		a.ordering, parent.lft,  c.id, a.urls');
-echo $query;
+//echo $query;
 		return $query;
 	}
 
@@ -610,6 +617,10 @@ echo $query;
 
 				case 'published':
 					$item->displayDate = ($item->publish_up == 0) ? $item->created : $item->publish_up;
+					break;
+					
+				case 'product_made_date':
+					$item->displayDate = $item->product_made_date;
 					break;
 
 				default:

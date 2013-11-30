@@ -25,8 +25,10 @@ class myMuseViewReports extends JViewLegacy
 
 		$user   = JFactory::getUser();
         $userid = $user->get('id');
+        $this->Itemid = JRequest::getVar('Itemid');
         $profile = $user->get('profile');
 		$catid = $profile['category_owner'];
+		
 
         if(!$catid){
         	JRequest::setVar('not_auth','1');
@@ -58,14 +60,17 @@ class myMuseViewReports extends JViewLegacy
 				$this->params = MyMuseHelper::getParams();
 				
 				// Get data from the model
-				$this->state		= $this->get('State');
-				$this->items		= $this->get('Items');
-			
+				$this->state		    = $this->get('State');
+                // get all possible order id filtered by dates and status
+				$this->items		    = $this->get('Items');
+                //get just our orders containing products with our catids
+                $this->orders		    = $this->get('Orders');
+                
 				$this->pagination		= $this->get('Pagination');
-				$this->orders_total 	= count($this->items);
-				$this->lists  			=& $this->get( 'Lists');
-				$this->orders_summary 	=& $this->get( 'OrderSummary');
-				$this->items_summary  	=& $this->get( 'ItemsSummary');
+				$this->orders_total 	= count($this->orders);
+				$this->lists  			= $this->get( 'Lists');
+				$this->orders_summary 	= $this->get( 'OrderSummary');
+				$this->items_summary  	= $this->get( 'ItemsSummary');
 				$this->catid			= $mainframe->getUserStateFromRequest( 'filter.catid','catid',$catid,'int' );
 			
 				// Check for errors.
@@ -81,4 +86,4 @@ class myMuseViewReports extends JViewLegacy
 	}
 
 }
-?>
+ 

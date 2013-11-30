@@ -106,7 +106,9 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
 		$shopper->postal_code 	= isset($shopper->profile['postal_code'])? $shopper->profile['postal_code'] : '';
 		$shopper->first_name 	= isset($shopper->profile['first_name'])? $shopper->profile['first_name'] : '';
 		$shopper->last_name 	= isset($shopper->profile['last_name'])? $shopper->profile['last_name'] : '';
-		
+		$shopper->country		= isset($shopper->profile['country'])? $shopper->profile['country'] : '';
+		$shopper->phone		= isset($shopper->profile['phone'])? $shopper->profile['phone'] : '';
+	
 		if($shopper->region){
 			$query = "SELECT state_2_code FROM #__mymuse_state WHERE id='".$shopper->region ."'";
 			$db->setQuery($query);
@@ -154,19 +156,19 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
 		<input type="hidden" name="ssl_last_name"        value="'. $shopper->last_name.'" />
 		
 		<input type="hidden" name="ssl_avs_address"  		
-			value="'. $shopper->profile['address1'].'" />	
+			value="'. $shopper->address1.'" />	
 		<input type="hidden" name="ssl_address2"  		
-			value="'. $shopper->profile['address2'].'" />	
+			value="'. $shopper->address2.'" />	
 		<input type="hidden" name="ssl_city"  		
-			value="'. @$shopper->profile['city'].'" />		
+			value="'. @$shopper->city.'" />		
 		<input type="hidden" name="ssl_avs_zip"  		
-			value="'. @$shopper->profile['postal_code'].'" />		
+			value="'. @$shopper->postal_code.'" />		
 		<input type="hidden" name="ssl_state"  		
-			value="'. @$shopper->profile['region_name'].'" />	
+			value="'. @$shopper->region.'" />	
 		<input type="hidden" name="ssl_country"  		
-			value="'. @$shopper->profile['country'].'" />	
+			value="'. @$shopper->country.'" />	
 		<input type="hidden" name="ssl_phone"  		
-			value="'. @$shopper->profile['phone'].'" />	
+			value="'. @$shopper->phone.'" />	
 		<input type="hidden" name="ssl_email"  value="'. $shopper_email.'" />
 			
 		

@@ -66,6 +66,26 @@ class MyMuseHelper extends JObject
 	public static $_params = null;
 	
 	/**
+	 * extarray extentions to mime type
+	 *
+	 * @var		array
+	 */
+	public $extarray = array(
+			'mp3' => 'audio/mpeg',
+			'm4a' => 'audio/mp4',
+			'ogg' => 'application/ogg',
+			'oga' => 'application/ogg',
+			'webma' => 'audio/webm',
+			'wav' => 'audio/wav',
+			'm4v' => 'video/m4v',
+			'ogv' => 'video/ogv',
+			'webm' => 'video/webmv',
+			'webmv' => 'video/webmv',
+			'wmv' => 'video/webmv'
+	
+	);
+	
+	/**
 	 * Configure the Linkbar.
 	 */
 	public static function addSubmenu($vName = '')
@@ -194,26 +214,20 @@ class MyMuseHelper extends JObject
 				$store = $db->loadObject();
 			}
 			
-
+			//store params
 			$params = new JRegistry($store->params);
 
-			if(!$params->get('currency')){
-
-			}
-
-			$cparams = JComponentHelper::getParams( 'com_mymuse' );
-
-			$params->merge( $cparams );
-			
+			//merge app params
 			$app            = JFactory::getApplication();
 			if(!$app->isAdmin()){
 				$app_params      = $app->getParams();
 				$params->merge( $app_params );
 			}
 			
-			
-			
-			
+			//merge component params
+			$cparams = JComponentHelper::getParams( 'com_mymuse' );
+			$params->merge( $cparams );
+
 			$params->set('my_currency',$params->get('currency'));
 
 			$currency = MyMuseHelper::getCurrency($params->get('currency'));
@@ -228,7 +242,7 @@ class MyMuseHelper extends JObject
 				$manifest = json_decode( $res, true );
 				$params->set('my_version',$manifest['version']);
 			}
-
+	
 			self::$_params = $params;
 		}
 		return self::$_params;

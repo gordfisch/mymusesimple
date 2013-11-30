@@ -57,9 +57,9 @@
 				<option value="4">J4</option>
 				<option value="5">J5</option>
 			</field>
-
-			<field name="show_empty_categories_cat" type="list"
-
+		
+			<field name="show_empty_categories_cat" 
+				type="list"
 				label="JGLOBAL_SHOW_EMPTY_CATEGORIES_LABEL"
 				description="MYMUSE_SHOW_EMPTY_CATEGORIES_DESC"
 			>
@@ -68,10 +68,10 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field name="show_subcat_desc_cat" type="list"
-
-			label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
-			description="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_DESC"
+			<field name="show_subcat_desc_cat" 
+				type="list"
+				label="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_LABEL"
+				description="JGLOBAL_SHOW_SUBCATEGORIES_DESCRIPTION_DESC"
 
 			>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
@@ -90,7 +90,7 @@
 
 </fieldset>
 
-<fieldset name="basic" label="JGLOBAL_CATEGORY_OPTIONS">
+<fieldset name="category" label="JGLOBAL_CATEGORY_OPTIONS">
 
 			<field name="show_category_title" type="list"
 				label="JGLOBAL_SHOW_CATEGORY_TITLE"
@@ -123,6 +123,7 @@
 	 			label="MYMUSE_CATEGORY_IMAGE_HEIGHT" 
 	 			description="MYMUSE_CATEGORY_IMAGE_HEIGHT_DESC">
 	 		</field>
+	 			 
 
 			<field name="maxLevel" type="list"
 				description="JGLOBAL_MAXLEVEL_DESC"
@@ -136,6 +137,18 @@
 				<option value="3">J3</option>
 				<option value="4">J4</option>
 				<option value="5">J5</option>
+			</field>
+			
+			<field name="subcat_columns" 
+				type="list"
+				description="MYMUSE_CATEGORY_NUMBER_OF_COLUMNS_DESC"
+				label="MYMUSE_CATEGORY_NUMBER_OF_COLUMNS_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="1">J1</option>
+				<option value="2">J2</option>
+				<option value="3">J3</option>
+				<option value="4">J4</option>
 			</field>
 
 			<field name="show_empty_categories" type="list"

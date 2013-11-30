@@ -84,7 +84,7 @@ class MyMuseModelStore extends MyMuseModelProducts
 	}
 
 	/**
-	 * Method to get a list of articles.
+	 * Method to get a list of products.
 	 *
 	 * @return	mixed	An array of objects on success, false on failure.
 	 */

@@ -42,44 +42,55 @@ window.addEvent('domready', function() {Calendar.setup({
     });});
 </script>		
 		<form action="index.php" method="post" name="adminForm" >
-		<h2><?php echo JText::_('Filter'); ?></h2>
+		<h2><?php echo JText::_('JGLOBAL_FILTER_BUTTON'); ?></h2>
 		<table class="mymuse_cart"">
 		<tr>
-			<td width="200"><?php echo JText::_( 'MYMUSE_ORDER_STATUS' ); ?>:</td>
+			<td width="200"><?php echo JText::_( 'MYMUSE_ORDER_STATUS' ); ?> :</td>
 			<td width="100"> <select name="filter_order_status" class="inputbox" onchange="this.form.submit()">
                     <option value=""><?php echo JText::_('MYMUSE_ORDER_STATUS');?></option>
                     <?php echo JHtml::_('select.options', MGrid::orderStatusOptions(), "value", "text", $this->state->get('filter.order_status'), true);?>
                 </select></td>
-			<td ><label class="filter-search-lbl" for="startdate_img"><?php echo JText::_('MYMUSE_START_DATE'); ?></label></td>
+			
+		</tr>
+		<tr>
+
+			<td width="200"><?php echo JText::sprintf( 'MYMUSE_CATEGORY','' ); ?>:</td>
+			<td width="100"><?php echo $lists['catid']; ?></td>
+		</tr>
+		<tr>
+				<td ><label class="filter-search-lbl" for="startdate_img"><?php echo JText::_('MYMUSE_START_DATE'); ?></label></td>
+			
 			<td><input name="filter_start_date" id="startdate" type="text" value="<?php echo $this->state->get('filter.start_date')?>" /> 
 				<img class="calendar" 
 				src="media/system/images/calendar.png" 
 				alt="calendar" id="startdate_img" / ></td>
-			<td rowspan="2" valign="top">
-			<button onclick="this.form.submit();"><?php echo JText::_( 'MYMUSE_CREATE_REPORT' ); ?></button>
-			</td>
+			
 		</tr>
 		<tr>
-			<td width="200"><?php echo JText::_( 'MYMUSE_CATEGORY' ); ?>:</td>
-			<td width="100"><?php echo $lists['catid']; ?></td>
 			<td><label class="filter-search-lbl" for="enddate_img"><?php echo JText::_('MYMUSE_END_DATE'); ?></label></td>
 			<td><input name="filter_end_date" id="enddate" type="text" value="<?php echo $this->state->get('filter.end_date')?>" /> 
 				<img class="calendar" 
 				src="media/system/images/calendar.png" 
 				alt="calendar" id="enddate_img" / ></td>
 		</tr>
+		<tr>
+			<td colspan="2" valign="top">
+			<button onclick="this.form.submit();"><?php echo JText::_( 'MYMUSE_CREATE_REPORT' ); ?></button>
+			</td>
 		</table>
 		<input type="hidden" name="option" value="com_mymuse" />
 		<input type="hidden" name="view" value="reports" />
 		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="Itemid" value="<?php echo $this->Itemid; ?>" />
 		<input type="hidden" name="boxchecked" value="0" />
 
 		<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
 		
 		
-<?php if($orders_total >0 && !$this->catid){ ?>
-		<h2>Order Summary</h2>
+<?php 
+if($orders_total >0 && count( $rows )){ ?>
+		<h2><?php echo JText::_('MYMUSE_ORDER_SUMMARY'); ?></h2>
 		<table class="mymuse_cart">
 		<tr>
 			<td width="200"><?php echo JText::_( 'MYMUSE_TOTAL_NO_ORDERS' ); ?>:</td>

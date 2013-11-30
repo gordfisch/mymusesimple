@@ -29,7 +29,7 @@ column-gap:40px;
     
 }
 ul.subcats li {
-    display: inline;
+    
 }
 
 
@@ -49,7 +49,13 @@ ul.subcats li {
 			<?php $class = ' class="subcats "'; ?>
 			<span class="item-title"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($child->id));?>">
 				<?php echo $this->escape($child->title); ?></a>
+				
+				<?php if ( $this->params->get('show_cat_num_articles', 1)) : ?>
+				
+					<?php //echo JText::_('MYMUSE_NUM_ITEMS') ; ?> (<?php echo $child->product_total; ?>)
+				<?php endif ; ?>
 			</span>
+			
              
             
             <?php if ($this->params->get('show_subcat_image') && $child->getParams()->get('image')) : ?>
@@ -66,16 +72,7 @@ ul.subcats li {
 				</div>
 			<?php endif; ?>
 			<?php endif; ?>
-			<?php if ( $this->params->get('show_cat_num_articles', 1)) : ?>
-			<dl>
-				<dt>
-					<?php echo JText::_('MYMUSE_NUM_ITEMS') ; ?>
-				</dt>
-				<dd>
-					<?php echo $child->getNumItems(true); ?>
-				</dd>
-			</dl>
-			<?php endif ; ?>
+			
 
 			<?php if (count($child->getChildren()) > 0 ) :
 				$this->children[$child->id] = $child->getChildren();
@@ -88,6 +85,7 @@ ul.subcats li {
 				$this->maxLevel++;
 			endif; ?>
 			</li>
+			
 		<?php endif; ?>
 	<?php endforeach; ?>
 	</ul>

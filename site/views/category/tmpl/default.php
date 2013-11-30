@@ -35,7 +35,7 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 		<?php if ($this->params->get('show_description_image') && $this->category->getParams()->get('image')) : ?>
 			<img src="<?php echo $this->category->getParams()->get('image'); ?>"
 			<?php if ($this->params->get('category_image_height')) : ?>
-				height="<?php echo $this->params->get('category_image_height'); ?>"
+				style="height: <?php echo $this->params->get('category_image_height'); ?>px; "
 			<?php endif; ?>
 		/>
 		<?php endif; ?>

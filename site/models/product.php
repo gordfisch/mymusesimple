@@ -754,11 +754,11 @@ class MyMuseModelProduct extends JModelItem
      */
 	function getPrice(&$product) {
 
-		$params 	=& MyMuseHelper::getParams();
+		$params 		=& MyMuseHelper::getParams();
 
 		$MyMuseShopper 	=& MyMuse::getObject('shopper','models');
-		$shopper 			=&  $MyMuseShopper->getShopper();
-		
+		$shopper 		=  $MyMuseShopper->getShopper();
+
 		$db	= & JFactory::getDBO();
 		
 		$shopper_group_discount = 0;
@@ -776,11 +776,18 @@ class MyMuseModelProduct extends JModelItem
 		// see if this product has a discount
 		$discount = $product->product_discount;
 
+		
 		// Get the shopper group id for this shopper
-		$shopper_group_id = @$shopper->shopper_group_id;
+		$shopper_group_id = @$shopper->shopper_group->id;
 		if($shopper_group_id == ""){
 			$shopper_group_id = $default_shopper_group_id;
+			$q = "SELECT * FROM #__mymuse_shopper_group WHERE  \n";
+			$q .= "id='";
+			$q .= $shopper_group_id . "'";
+			$db->setQuery($q);
+			$shopper->shopper_group = $db->loadObject();
 		}
+		$shopper_group_discount = $shopper->shopper_group->discount;
 
 		// Get the product_parent_id for this product/item
 		$product_parent_id = 0;
@@ -789,14 +796,6 @@ class MyMuseModelProduct extends JModelItem
 			if($product_parent_id > 0){
 				$price_info["item"]=true;
 			}
-		}
-		// Get the shopper group discount
-		if(@$shopper_group_id){
-			$q = "SELECT discount FROM #__mymuse_shopper_group WHERE  \n";
-			$q .= "id='";
-			$q .= $shopper_group_id . "'";
-			$db->setQuery($q);
-			$shopper_group_discount  = $db->loadResult();
 		}
 
 		// DEBUG

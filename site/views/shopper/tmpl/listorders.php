@@ -27,7 +27,7 @@ $params 	= $this->params;
 	<tr>
 		<td><a href="<?php echo $order->url; ?>"><?php echo $order->id; ?></a></td>
 		<td><?php echo $order->created; ?></td>
-		<td><?php echo MyMuseHelper::getStatusName($order->order_status); ?></td>
+		<td><?php echo JText::_('MYMUSE_'.strtoupper(MyMuseHelper::getStatusName($order->order_status))) ?></td>
 		<td align="right"><?php echo MyMuseHelper::printMoney($order->order_total); ?></td>
 		
 	</tr>

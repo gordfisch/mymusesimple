@@ -30,7 +30,7 @@ $params 	= $this->params;
         </tr>
         <tr>
             <td><?php echo JText::_('MYMUSE_ORDER_STATUS') ?>:</td>
-            <td><?php echo JText::_($order->status_name) ?></td>
+            <td><?php echo JText::_('MYMUSE_'.strtoupper($order->status_name)) ?></td>
         </tr>
         <tr>
             <td><?php echo JText::_('MYMUSE_ORDER_TOTAL') ?>:</td>
@@ -51,6 +51,12 @@ $params 	= $this->params;
             <td><?php echo MyMuseHelper::printMoney($order->pay_now)." ".$order->order_currency['currency_code'] ?></td>
         </tr>
     	<?php } ?>
+    <?php } ?>
+    <?php if(isset($this->plugin) && $this->plugin != ''){ ?>
+        <tr>
+            <td><?php echo JText::_('MYMUSE_PAID') ?>:</td>
+            <td><?php echo $this->plugin?></td>
+        </tr>
     <?php } ?>
 	</table>
 	<br />

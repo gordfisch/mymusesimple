@@ -28,8 +28,7 @@ class MymuseControllerProduct extends JControllerForm
     	}
     	
     	parent::__construct();
-    	
-    	
+
    	 	$this->registerTask( 'additem', 'edititem' );
         $this->registerTask( 'applyitem', 'saveitem' );
         $this->registerTask( 'save2newitem', 'saveitem' );

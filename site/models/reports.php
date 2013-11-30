@@ -16,19 +16,56 @@ jimport('joomla.application.component.modellist');
 
 class myMuseModelReports extends JmodelList
 {
+
+    
+    /**
+	 * orderids: (1,2,3))
+	 *
+	 * string
+	 */
+	var $orderids = null;
+    
+    /**
+	 * rrealorderids: (1,3,5))
+	 *
+	 * string
+	 */
+    var $realorderids =  null;
+    
+    /**
+	 * prodids: (1,2,3))
+	 *
+	 * string
+	 */
+	var $_prodids = null;
+    
 	/**
-	 * catid
+	 * catid: the top level catid
 	 *
 	 * int
 	 */
 	var $_catid = null;
-	 
+    
+    /**
+	 * subid: a legal sub catid
+	 *
+	 * int
+	 */
+	var $_subid = null;
+
 	/**
-	 * catids
+	 * catids: the sublevel catids
 	 *
 	 * array
 	 */
 	var $_catids = array();
+    
+    /**
+	 * catidsIN: the sublevel catids
+	 *
+	 * string
+	 */
+	var $_catidsIN = '';
 	 
 	/**
 	 * Store data array
@@ -73,17 +110,89 @@ class myMuseModelReports extends JmodelList
 		$user   = JFactory::getUser();
         $profile = $user->get('profile');
 		$catid = @$profile['category_owner'];
-		
+        $this->_catid = (int)$catid;
+        
+        //what if they want a sub-cat of the parent
+        $subid = JRequest::getVar('catid',0);
+        if($subid && $subid != $catid){
+
+            //this really is not the profile catid
+            //is it legal? a subcat of the parent
+            $categories = JCategories::getInstance('MyMuse');
+            $cat = $categories->get($catid);
+            $children = $cat->getChildren();
+            $good = 0;
+            foreach($children as $child){
+                if($child->id == $subid){
+                    $good = 1;
+                }
+            }
+            if($good){
+                $this->_subid = $subid;
+                //for the scope of this function
+                $catid = $subid;
+            }
+
+        }
+        //load any subcats
 		if($catid){
-    		$this->_catid = (int)$catid;
     		$this->getCats(true);
-  
 		}
+        //make sql bit for catids
+        $catids = '(';
+  		if($catid){
+  			$catids .= "$catid,";
+  		}
+  		if(is_array($this->_catids)){
+  			foreach($this->_catids as $cat){
+  				$catids .= $cat->id.",";
+  			}
+  		}
+  		$catids = preg_replace("/,$/","",$catids);
+  		$catids .= ")";
+        
+        
+        //make sql bit for orderids
+  		$orders =& $this->getItems();
+  		$orderids = "(";
+  		foreach($orders as $order){
+  		    $orderids .= $order->id.",";
+  		}
+  		$orderids = preg_replace("/,$/","",$orderids);
+  		$orderids .= ")";
+
+        //get products that fall under categories
+        $query = "SELECT product_id from #__mymuse_product_category_xref 
+        WHERE catid IN $catids";
+        $this->_db->setQuery( $query );
+        $prodres = $this->_db->loadObjectList();
+        
+        $query = "SELECT id as product_id from #__mymuse_product
+        WHERE catid IN $catids";
+        $this->_db->setQuery( $query );
+        $prodres2 = $this->_db->loadObjectList();
+        
+        $prodres = array_merge($prodres,$prodres2);
+
+        //make sql bit for catids
+        $_prodids = "(";
+        foreach($prodres as $id){
+  		    $_prodids .= $id->product_id.",";
+  		}
+  		$_prodids = preg_replace("/,$/","",$_prodids);
+  		$_prodids .= ")";
+        
+        $this->_catidsIN = $catids; 
+        $this->_prodids = $_prodids;
+        $this->_orderids = $orderids;
+      
+        //print_pre($this->_catidsIN);
+        //print_pre($this->_prodids);
 
 	}
 	
 	/**
-	 * Redefine the function an add some properties to make the styling more easy
+	 * getCats: fill $this->_catids with the main cat id and all subcat ids
 	 *
 	 * @param	bool	$recursive	True if you want to return children recursively.
 	 *
@@ -102,15 +211,19 @@ class myMuseModelReports extends JmodelList
 			if ($active) {
 				$params->loadString($active->params);
 			}
-	
+            $catid	= $this->_catid;
+            if($this->_subid){
+                 $catid	= $this->_subid;
+            }
 			$options = array();
 			//$options['countItems'] = $params->get('show_cat_num_articles_cat', 1) || !$params->get('show_empty_categories_cat', 0);
 			$categories = JCategories::getInstance('MyMuse', $options);
 	
 	
-			$catid	= $this->_catid;
+			
+
 			$this->_parent = $categories->get($catid, $recursive);
-	
+
 			if (is_object($this->_parent)) {
 				$this->_catids = $this->_parent->getChildren($recursive);
 			}
@@ -185,7 +298,7 @@ class myMuseModelReports extends JmodelList
     protected function getListQuery()
     {
     	// gets all the orders within time frame/matching order status
-    	// Create a new query object.
+
     	$db		= $this->getDbo();
     	$query	= $db->getQuery(true);
     
@@ -238,6 +351,7 @@ class myMuseModelReports extends JmodelList
     	if ($orderCol && $orderDirn) {
     		$query->order($db->escape($orderCol.' '.$orderDirn));
     	}
+ 
     	return $query;
     }
 
@@ -268,8 +382,9 @@ class myMuseModelReports extends JmodelList
 		if ( $order_status  ) {
 			$where[] = "c.order_status = '$order_status '";
 		}
-
-
+        if(isset($this->realorderids)){
+            $where[] = "c.id IN ".$this->realorderids;
+        }
 		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
 
     	return $where;
@@ -305,8 +420,7 @@ class myMuseModelReports extends JmodelList
         	$query .= ", SUM(c.$name) as $name ";
         	$tax_array[] = $name;
         }
-        
-        
+
 		$query .= ' FROM #__mymuse_order AS c'
         . $where;
             
@@ -320,7 +434,44 @@ class myMuseModelReports extends JmodelList
   	
   	}
   	
-  	
+  	/**
+  	* Method to get orders that match
+  	*
+  	* @access public
+  	* @return object
+  	*/
+  	function getOrders()
+  	{ 
+        $orderids  = $this->_orderids;
+        $_prodids   = $this->_prodids;
+
+  		$query = "SELECT o.id 
+  		FROM #__mymuse_order as o
+        LEFT JOIN #__mymuse_order_item as i ON i.order_id=o.id
+        LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
+  		WHERE i.order_id IN $orderids 
+        AND (p.id IN $_prodids
+        OR p.parentid IN $_prodids)
+        GROUP BY o.id";
+
+        
+        $this->_db->setQuery( $query );
+        $orders = $this->_db->loadObjectList();
+        
+        $orderids = "(";
+  		foreach($orders as $order){
+  		    $orderids .= $order->id.",";
+  		}
+  		$orderids = preg_replace("/,$/","",$orderids);
+  		$orderids .= ")";
+        
+        $this->realorderids = $orderids;
+        
+        return $orders;
+        
+    }
+    
+    
   	/**
   	* Method to get summary of order items for a period, status, matching categories
   	*
@@ -330,43 +481,24 @@ class myMuseModelReports extends JmodelList
   	function getItemsSummary()
   	{ 	
 
-  		$catid	= $this->getState('filter.catid');
-  		$orders =& $this->getItems();
- 
-  		$order_ids = "(";
-  		foreach($orders as $order){
-  		    $order_ids .= $order->id.",";
-  		}
-  		$order_ids = preg_replace("/,$/","",$order_ids);
-  		$order_ids .= ")";
   		
+        $orderids  = $this->_orderids;
+        $_prodids   = $this->_prodids;
+
   		$query = "SELECT sum(product_quantity) as quantity, sum(product_quantity * product_item_price) 
   		as total, i.product_name, a.title as artist_name, p.id as product_id
   		FROM #__mymuse_order_item as i
-  		LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
-  		LEFT JOIN #__categories as a ON p.catid=a.id 
-  		WHERE i.order_id IN $order_ids 
+        LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
+        LEFT JOIN #__categories as a ON p.catid=a.id
+  		WHERE i.order_id IN $orderids 
+        AND (p.id IN $_prodids
+        OR p.parentid IN $_prodids)
   		";
-  		
-  		$in = '';
-  		if($catid){
-  			$in = "$catid,";
-  		}
-  		if($catid == $this->_catid){
-  			foreach($this->_catids as $cat){
-  				$in .= $cat->id.",";
-  			}
-  		}
-  		$in = preg_replace("/,$/","",$in);
-  		if($in){
-  			$query .= " AND p.catid IN ($in) ";
-  		}
-  		
-  		$query .= "GROUP BY product_name ORDER BY total DESC";
+        $query .= "GROUP BY product_name ORDER BY total DESC";
 
   		$this->_db->setQuery( $query );
         $res = $this->_db->loadObjectList();
-       
+    //echo $query; exit;   
         for($i=0;$i<count($res);$i++){
         	if($res[$i]->artist_name == ""){
         		$query = "SELECT a.title as artist_name FROM #__categories as a, #__mymuse_product as p 
@@ -413,12 +545,16 @@ class myMuseModelReports extends JmodelList
 		$app = JFactory::getApplication();
     	// categories
     	$lists['catid'] = '';
-    	$chosen_cat	= $this->_catid;
-    	$catid	= $app->getUserStateFromRequest( $this->context.'catid','catid',$this->_catid,'int' );
+    	$top_cat	= $this->_catid;
+    	$request_catid	= $app->getUserStateFromRequest( $this->context.'catid','catid',$this->_catid,'int' );
     	
-    	$in = $chosen_cat.",";
-		if($this->_catids){
-			foreach($this->_catids as $cat){
+    	$in = $top_cat.",";
+        $categories = JCategories::getInstance('MyMuse');
+        $cat = $categories->get($top_cat);
+        $children = $cat->getChildren();
+
+		if($children){
+			foreach($children as $cat){
 				$in .= $cat->id.",";
 			}
 			$in = preg_replace("/,$/","",$in);
@@ -426,7 +562,6 @@ class myMuseModelReports extends JmodelList
 					' FROM #__categories' .
 					" WHERE extension ='com_mymuse' AND id IN($in) " .
 					'ORDER BY title';
-			
 	
 			$this->_db->setQuery($query);
 			$res = $this->_db->loadObjectList();
@@ -435,11 +570,11 @@ class myMuseModelReports extends JmodelList
 			for($i=0;$i<count($res);$i++){
 				$category[] = $res[$i];
 			}
-			$lists['catid'] = JHTML::_('select.genericlist',  $category, 'catid', 'class="inputbox"', 'id', 'title', $catid);
+			$lists['catid'] = JHTML::_('select.genericlist',  $category, 'catid', 'class="inputbox"', 'id', 'title', $request_catid);
 		}else{
 			$query = 'SELECT title ' .
 					' FROM #__categories' .
-					" WHERE extension ='com_mymuse' AND id =$chosen_cat";
+					" WHERE extension ='com_mymuse' AND id =$top_cat";
 			$this->_db->setQuery($query);
 			$lists['catid'] = $this->_db->loadResult();
 		}
@@ -452,4 +587,3 @@ class myMuseModelReports extends JmodelList
 
 
 }
-?>

@@ -45,7 +45,7 @@
 				id="country"
 				description="MYMUSE_USER_PROFILE_FIELD_COUNTRY_DESC"
 				filter="string"
-				default=""
+				default="CAN"
 				onchange="changeDynaList2(jform_profile_region, jform_profile_country, countrystates,0,0);"
 				label="MYMUSE_USER_PROFILE_FIELD_COUNTRY_LABEL"
 				message="MYMUSE_USER_PROFILE_FIELD_COUNTRY_MESSAGE"
@@ -59,7 +59,7 @@
 				id="region"
 				description="MYMUSE_USER_PROFILE_FIELD_REGION_DESC"
 				filter="string"
-				default=""
+				default="62"
 				label="MYMUSE_USER_PROFILE_FIELD_REGION_LABEL"
 				message="MYMUSE_USER_PROFILE_FIELD_REGION_MESSAGE"
 				query="SELECT id as value, state_name as region FROM #__mymuse_state 

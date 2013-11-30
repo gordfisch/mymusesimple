@@ -114,4 +114,25 @@ class mymuseViewCategories extends JViewLegacy
 			$this->document->setMetadata('robots', $this->params->get('robots'));
 		}
 	}
+	
+	function _getProductCount($item){
+		$db = JFactory::getDBO();
+		$nullDate	= $db->Quote($db->getNullDate());
+		$nowDate	= $db->Quote(JFactory::getDate()->toSql());
+		
+		$query = "SELECT count(*) as total from #__mymuse_product as p
+		LEFT JOIN #__mymuse_product_category_xref as x
+		ON p.id=x.product_id
+		WHERE
+		x.catid=".$item->id." AND
+		(p.publish_up = ".$nullDate." OR p.publish_up <= ".$nowDate.")
+		AND (p.publish_down = ".$nullDate." OR p.publish_down >= ".$nowDate.")
+		AND p.parentid=0
+		";
+	
+		$db->setQuery($query);
+		$total = $db->loadResult();
+		return $total;
+		
+	}
 }

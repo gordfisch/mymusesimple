@@ -15,7 +15,7 @@ $class = ' class="first"';
 
 if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) :
 $count = count($this->children[$this->category->id]) ;
-$alpha = range('A','Z');
+$alpha = explode(":",JText::_('MYMUSE_ALPHABET'));
 $alphaarr = array();
 foreach($alpha as $letter){
 	$n = 0;
@@ -24,13 +24,14 @@ foreach($alpha as $letter){
 		if(substr_compare($letter, $child->title,0,1,TRUE) === 0){
 			$alphaarr[$letter][$n] = $child;
 			if ( $this->params->get('show_cat_num_articles', 1)) :
-				$alphaarr[$letter][$n]->title .= ' ('.$child->getNumItems(true).')';
+				$alphaarr[$letter][$n]->title .= ' ('.$child->product_total.')';
 			endif;
 			$n++;
 		}
 	}
 }
-$break = round(count($this->children[$this->category->id]) / $this->params->get('cat_num_columns'));
+$count = count($this->children[$this->category->id]) + count($alphaarr);
+$break =  round($count / $this->params->get('cat_num_columns'),0,PHP_ROUND_HALF_DOWN);
 $r = $count  %  $this->params->get('cat_num_columns');
 if($r){
 	$break++;
@@ -41,6 +42,7 @@ $total_shown = 0;
 $column = 1;
 
 ?>
+
 <div class="cols-<?php echo $this->params->get('cat_num_columns'); ?>">
 	<?php foreach($alphaarr as $letter => $children) : 
 	
@@ -49,9 +51,35 @@ $column = 1;
 		?><div class="column-<?php echo $column; $column++;?>">
 		<?php
 	}
-	
+	$total_shown++;
+	$i++;
+	if($i >= $break){
+		if ($total_shown == $count){
+			$ulend = 1;
+			echo '<!-- 1 -->
+			</ul>
+			</div>
+			';
+		}else{
+			$ulend = 1;
+			echo '<!-- 2 -->
+			</ul>
+			</div>
+			<div class="column-'.$column.'" >
+			';
+			$column++;
+			if($lettercount != $l){
+				echo '<ul>';
+			}
+				
+		}
+		$i = 0;
+	}
 	?>
-	<span class="alphabet"><?php echo $letter; ?></span>
+	<span class="alphabet"><?php 
+	echo $letter; 
+	
+	?></span>
 		<ul>
 		<?php
 		$lettercount = count($children );
@@ -75,28 +103,7 @@ $column = 1;
 
 			<?php 
 			
-			if($i == $break){
-				if ($total_shown == $count){
-					$ulend = 1;
-					echo '<!-- 1 -->
-		</ul>
-	</div>
-';
-				}else{
-					$ulend = 1;
-					echo '<!-- 2 -->
-		</ul>
-	</div>
-	<div class="column-'.$column.'" >
-';
-					$column++;
-					if($lettercount != $l){
-						echo '<ul>';
-					}
-					
-				}
-				$i = 0;
-			}
+
 			
 			if($total_shown == $count && $i != $break && !$ulend){
 				//very end

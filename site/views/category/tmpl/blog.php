@@ -37,41 +37,29 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 	<?php if ($this->params->get('show_description_image') && $this->category->getParams()->get('image')) : ?>
 		<img src="<?php echo $this->category->getParams()->get('image'); ?>"
 		<?php if ($this->params->get('category_image_height')) : ?>
-			height="<?php echo $this->params->get('category_image_height'); ?>"
+			style="height: <?php echo $this->params->get('category_image_height'); ?>px; "
 		<?php endif; ?>
 		/>
 	<?php endif; ?>
 	<?php if ($this->params->get('show_description') && $this->category->description) : ?>
 		<?php echo JHtml::_('content.prepare', $this->category->description, '', 'com_content.category'); ?>
 	<?php endif; ?>
-	<div class="clr"></div>
+	<div class="clearfix"></div>
 	</div>
 <?php endif; ?>
 
 
 
 <?php if (!empty($this->children[$this->category->id])&& $this->maxLevel != 0) : ?>
-		<div class="cat-children">
+		<div class="cat-children cat-items">
 		<h3><?php echo JTEXT::_('JGLOBAL_SUBCATEGORIES'); ?></h3>
 			<?php echo $this->loadTemplate('children'); ?>
 		</div>
 <?php endif; ?>
 
+<div class="clearfix"></div>
 
-
-<?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
-		<div class="pagination">
-						<?php  if ($this->params->def('show_pagination_results', 1)) : ?>
-						<p class="counter">
-								<?php echo $this->pagination->getPagesCounter(); ?>
-						</p>
-
-				<?php endif; ?>
-				<?php echo $this->pagination->getPagesLinks(); ?>
-		</div>
-<?php  endif; ?>
-
-<div class="clr"></div>
+<?php if($this->params->get('category_show_all_products')) : ?>
 <div class="cat-items">
 <h3><?php echo JText::_("MYMUSE_PRODUCTS"); ?></h3>
 
@@ -91,6 +79,8 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 	<?php endforeach; ?>
 </div>
 <?php endif; ?>
+
+
 <?php
 	$introcount=(count($this->intro_items));
 	$counter=0;
@@ -102,7 +92,7 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 		$key= ($key-$leadingcount)+1;
 		$rowcount=( ((int)$key-1) %	(int) $this->columns) +1;
 		$row = $counter / $this->columns ;
-
+		$this->key = $key;
 		if ($rowcount==1) : ?>
 	<div class="items-row cols-<?php echo (int) $this->columns;?> <?php echo 'row-'.$row ; ?>">
 	<?php endif; ?>
@@ -128,8 +118,18 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 	<?php echo $this->loadTemplate('links'); ?>
 
 <?php endif; ?>
+<?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
+		<div class="pagination">
+						<?php  if ($this->params->def('show_pagination_results', 1)) : ?>
+						<p class="counter">
+								<?php echo $this->pagination->getPagesCounter(); ?>
+						</p>
+
+				<?php endif; ?>
+				<?php echo $this->pagination->getPagesLinks(); ?>
+		</div>
+<?php  endif; ?>
+
 </div>
-
-
-
+<?php  endif; ?>
 </div>

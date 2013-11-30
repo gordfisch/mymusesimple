@@ -55,6 +55,7 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 
 		<?php echo $this->loadTemplate('children'); ?>
 	</div>
+	<div class="clr"></div>
 	<?php endif; ?>
 	
 

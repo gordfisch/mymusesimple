@@ -125,6 +125,8 @@ class mymuseModelCategories extends JModelList
 			else {
 				$this->_items = false;
 			}
+				
+			
 		}
 
 		return $this->_items;

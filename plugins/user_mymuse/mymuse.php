@@ -171,14 +171,16 @@ class plgUserMyMuse extends JPlugin
 				}
 			}
 
+/*
 			if(isset($data->profile['region']) && !is_numeric($data->profile['region'])){
 				//find the id number of teh region
 				$query = "SELECT id FROM #__mymuse_state WHERE state_name='".$data->profile['region']."'";
 				$db->setQuery($query);
 				if($regid = $db->loadResult()){
-					$data->profile['region'] = $regid;
+					//$data->profile['region'] = $regid;
 				}
 			}
+*/
 			if (!JHtml::isRegistered('users.url')) {
 				JHtml::register('users.url', array(__CLASS__, 'url'));
 			}
