@@ -38,6 +38,11 @@ $params->def('type_shown', 'tracks');
 $params->def('module_number', 1);
 $list	= modMyMuseLatestHelper::getResults($params);
 
+// ui js and css
+$document = JFactory::getDocument();
+$document->addScript( 'http://code.jquery.com/ui/1.10.3/jquery-ui.min.js' );
+$document->addStyleSheet('http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
+
 if($params->get('type_shown') == "tracks" && $params->get('show_track_preview')){
 	
 	$site_url = preg_replace("#administrator/#","",JURI::base());
