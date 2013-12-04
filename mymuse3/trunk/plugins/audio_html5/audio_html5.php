@@ -41,12 +41,21 @@ class plgMymuseAudio_html5 extends JPlugin
 		$document = JFactory::getDocument();
 		JHtml::_('jquery.framework');
 		if($this->params->get('my_include_jquery', 0)){
-			$js_path = "http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js";
+			//load same jquery as Joomla, 1.8.3
+			$js_path = "http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js";
 			$document->addScript( $js_path );
 		}
         
         $site_url = preg_replace("#administrator/#","",JURI::base());
-        $css_path = $site_url.'plugins/mymuse/audio_html5/skin/jplayer.blue.monday.css';
+  
+		$this->language = $document->language;
+		$this->direction = $document->direction;
+		
+        if($this->direction == "rtl"){
+        	$css_path = $site_url.'plugins/mymuse/audio_html5/skin/jplayer.blue.monday.rtl.css';
+        }else{
+        	$css_path = $site_url.'plugins/mymuse/audio_html5/skin/jplayer.blue.monday.css';
+        }
         $document->addStyleSheet( $css_path );
         
         

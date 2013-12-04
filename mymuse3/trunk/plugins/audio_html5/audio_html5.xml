@@ -24,7 +24,9 @@
 	<config>
 	<fields  name="params">
 		<fieldset name="basic">
-		<field name="my_include_jquery" type="radio" default="1" label="MYMUSE_AUDIO5_INCLUDE_JQUERY_LABEL" 
+		<field name="my_include_jquery" 
+		type="radio" 
+		default="0" label="MYMUSE_AUDIO5_INCLUDE_JQUERY_LABEL" 
 		description="MYMUSE_AUDIO5_INCLUDE_JQUERY_DESC">
 		  <option value="0">JNO</option>
 		  <option value="1">JYES</option>

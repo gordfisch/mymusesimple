@@ -243,6 +243,8 @@
         	        	todir="${test}/plugins/mymuse/audio_html5/js" /> 
         		<copy file="${src}/plugins/audio_html5/skin/jplayer.blue.monday.css"
         	        	todir="${test}/plugins/mymuse/audio_html5/skin" />
+        		<copy file="${src}/plugins/audio_html5/skin/jplayer.blue.monday.rtl.css"
+        	        	todir="${test}/plugins/mymuse/audio_html5/skin" />
         		<copy file="${src}/plugins/audio_html5/skin/jplayer.blue.monday.jpg"
         	        	todir="${test}/plugins/mymuse/audio_html5/skin" />
         		<copy file="${src}/plugins/audio_html5/skin/jplayer.blue.monday.seeking.gif"
