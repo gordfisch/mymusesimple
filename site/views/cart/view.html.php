@@ -502,7 +502,15 @@ class myMuseViewCart extends JViewLegacy
         			$fromname );
         	$mailer->setSender($sender);
         	//recipient
-        	$recipient = array($user_email, $mailfrom);
+        	
+        	if($params->get('my_plugin_email')){
+        		//cc admin
+        		$recipient = array($user_email, $mailfrom);
+        	}else{
+        		//don't cc admin
+        		$recipient = array($user_email);
+        	}
+
         	if($params->get('my_cc_webmaster')){
         		$recipient = array($user_email, $mailfrom, $params->get('my_webmaster'));
         	}
