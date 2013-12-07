@@ -218,7 +218,42 @@ class MymuseControllerProduct extends JControllerForm
         $this->setRedirect( 'index.php?option=com_mymuse&view=product&task=edit&id='.$parentid.'&subtype='.$subtype,$this->msg  );
     }
 	
-
+    /**
+     * Method to save the submitted ordering values for records via AJAX.
+     * brought in by arboreta from libraries/legacy/controller/admin.php
+     * for saving tracks
+     *
+     * @return  void
+     *
+     * @since   3.0
+     */
+    public function saveOrderAjax()
+    {
+    	MyMuseHelper::logMessage("here ware Ajax\n");
+    	// Get the input
+    	$pks = $this->input->post->get('cid', array(), 'array');
+    	$order = $this->input->post->get('order', array(), 'array');
     
+    	// Sanitize the input
+    	JArrayHelper::toInteger($pks);
+    	JArrayHelper::toInteger($order);
+    
+    	// Get the model
+    	$model = $this->getModel();
+    	//$model = $this->getModel('Products', 'MyMuseModel', array('ignore_request' => true));;
+    
+    	// Save the ordering
+    	$return = $model->saveorder($pks, $order);
+    
+    	if ($return)
+    	{
+    		echo "1";
+    	}
+    
+    	// Close the application
+    	JFactory::getApplication()->close();
+    }
+    
+
 
 }

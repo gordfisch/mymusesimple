@@ -19,6 +19,7 @@ $n			= count($this->items);
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $height 	= $this->params->get('category_product_image_height',0);
+
 ?>
 <?php if (empty($this->items)) : ?>
 
@@ -29,7 +30,11 @@ $height 	= $this->params->get('category_product_image_height',0);
 <?php else : ?>
 
 <form action="<?php echo htmlspecialchars(JFactory::getURI()->toString()); ?>" method="post" name="adminForm" id="adminForm">
-	<?php if ($this->params->get('show_headings') || $this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit')) :?>
+<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
+<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+<input type="hidden" name="task" value="" />
+<input type="hidden" name="limitstart" value="" />
+<?php if ($this->params->get('show_headings') || $this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit')) :?>
 	<fieldset class="filters">
 		<?php if ($this->params->get('filter_field') != 'hide') :?>
 		<legend class="hidelabeltxt">
@@ -48,10 +53,6 @@ $height 	= $this->params->get('category_product_image_height',0);
 			<?php echo $this->pagination->getLimitBox(); ?>
 		</div>
 		<?php endif; ?>
-
-		<input type="hidden" name="filter_order" value="" />
-		<input type="hidden" name="filter_order_Dir" value="" />
-		<input type="hidden" name="limitstart" value="" />
 	</fieldset>
 	<?php endif; ?>
 

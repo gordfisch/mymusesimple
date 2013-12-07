@@ -446,7 +446,6 @@ class MymuseModelproducts extends JModelList
 	}
 	
 
-	
 
     
 }

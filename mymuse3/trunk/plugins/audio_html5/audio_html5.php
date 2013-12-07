@@ -39,6 +39,7 @@ class plgMymuseAudio_html5 extends JPlugin
 		parent::__construct($subject, $config);
 		
 		$document = JFactory::getDocument();
+		$app = JFactory::getApplication('site');
 		JHtml::_('jquery.framework');
 		if($this->params->get('my_include_jquery', 0)){
 			//load same jquery as Joomla, 1.8.3
@@ -65,7 +66,9 @@ class plgMymuseAudio_html5 extends JPlugin
         }
         
         // ui js and css
-        $document->addScript( 'http://code.jquery.com/ui/1.10.3/jquery-ui.min.js' );
+        //if (!$app->isAdmin()) {
+        	$document->addScript( 'http://code.jquery.com/ui/1.8.23/jquery-ui.min.js' );
+        //}
         $document->addStyleSheet('http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
         
 	}

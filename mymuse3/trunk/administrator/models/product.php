@@ -254,10 +254,14 @@ class MymuseModelproduct extends JModelAdmin
 		$filter_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
 		$filter_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
 
-		
+		$filter_item_order 		= $app->getUserStateFromRequest( $option.'filter_item_order', 'filter_item_order', 'a.ordering', 'cmd' );
+		$filter_item_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_item_order_Dir', 'filter_item_order_Dir', 'asc', 'word' );
 		
 		$this->setState('file.ordering', $filter_order);
 		$this->setState('file.direction', $filter_order_Dir);
+		
+		$this->setState('item.ordering', $filter_item_order);
+		$this->setState('item.direction', $filter_item_order_Dir);
 		
 		$lists['order'] = $filter_order;
 		$lists['order_Dir'] = $filter_order_Dir;
@@ -282,7 +286,6 @@ class MymuseModelproduct extends JModelAdmin
 		
 		
 		// Items, Attributes, Files
-		$lists['items'] 		= array();
 		$lists['attributes'] 	= array();
 		$lists['attribute_sku'] = array();
 		$lists['items'] 		= array();
@@ -305,9 +308,9 @@ class MymuseModelproduct extends JModelAdmin
 
 		// items
 		$query = "SELECT a.* from #__mymuse_product as a WHERE parentid=".$pid."
-			AND product_downloadable=0 ORDER BY $filter_order $filter_order_Dir";
+			AND product_downloadable=0 ORDER BY $filter_item_order $filter_item_order_Dir";
 		$this->_db->setQuery($query);
- 
+
 		if($lists['items'] = $this->_db->loadObjectList()){
 
 			foreach($lists['items'] as $item){
@@ -642,11 +645,7 @@ class MymuseModelproduct extends JModelAdmin
     	
     	$app = JFactory::getApplication();
     	$option = JRequest::getVar('option','com_mymuse');
-    	$filter_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
-    	$filter_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
-    	$this->setState('item.ordering', $filter_order);
-    	$this->setState('item.direction', $filter_order_Dir);
-    
+
     	$params = $this->getState()->get('params');
     	$limit = $this->getState('list.limit');
     	$id = JRequest::getVar('id');
@@ -661,10 +660,10 @@ class MymuseModelproduct extends JModelAdmin
     		$model->setState('filter.published', $this->getState('filter.published'));
     		$model->setState('filter.access', $this->getState('filter.access'));
     		$model->setState('filter.language', $this->getState('filter.language'));
-    		$model->setState('list.ordering', $this->getState('file.ordering'));
+    		$model->setState('list.ordering', $this->getState('item.ordering'));
     		$model->setState('list.start', $this->getState('list.start'));
     		$model->setState('list.limit', $limit);
-    		$model->setState('list.direction', $this->getState('file.direction'));
+    		$model->setState('list.direction', $this->getState('item.direction'));
     		$model->setState('list.filter', $this->getState('list.filter'));
     		// filter.subcategories indicates whether to include articles from subcategories in the list or blog
     		$model->setState('filter.subcategories', $this->getState('filter.subcategories'));
@@ -969,18 +968,7 @@ class MymuseModelproduct extends JModelAdmin
 	
 		if($subtype && $parentid){
 			$w = ($subtype == "item") ? "product_physical=1" : "product_downloadable=1";
-			//find the delta to the next item or track
-			$overunder =  ($delta == "-1") ? '<' : '>';
-			$dir =  ($delta == "-1") ? 'DESC' : 'ASC';
-			$current_ordering = $table->ordering;
-			$query = "SELECT ordering from #__mymuse_product WHERE parentid=".$parentid."
-			AND $w AND ordering $overunder $current_ordering ORDER BY ordering $dir";
-			$db->setQuery($query);
-			if($r = $db->loadResult()){
-				$newdelta =  $r - $current_ordering + $delta;
-			}
-			//$app->enqueueMessage("$query olddelta = $delta, current = $current_ordering, next = $r, delta = $newdelta");
-	
+
 			$where = " parentid=$parentid AND $w ";
 		}
 	
@@ -988,4 +976,78 @@ class MymuseModelproduct extends JModelAdmin
 	
 	}
 
+	/**
+	 * Saves the manually set order of records.
+	 *
+	 * @param   array    $pks    An array of primary key ids.
+	 * @param   integer  $order  +1 or -1
+	 *
+	 * @return  mixed
+	 *
+	 * @since   12.2
+	 */
+	public function saveorder($pks = null, $order = null)
+	{
+	
+		MyMuseHelper::logMessage("here in model product\n");
+		$table = $this->getTable('product','MymuseTable');
+		$conditions = array();
+	
+		if (empty($pks))
+		{
+			return JError::raiseWarning(500, JText::_($this->text_prefix . '_ERROR_NO_ITEMS_SELECTED'));
+		}
+	
+		// Update ordering values
+		foreach ($pks as $i => $pk)
+		{
+			$table->load((int) $pk);
+	
+			// Access checks.
+			if (!$this->canEditState($table))
+			{
+				// Prune items that you can't change.
+				unset($pks[$i]);
+				JLog::add(JText::_('JLIB_APPLICATION_ERROR_EDITSTATE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+			}
+			elseif ($table->ordering != $order[$i])
+			{
+				$table->ordering = $order[$i];
+	
+	
+				if (!$table->store())
+				{
+					$this->setError($table->getError());
+					return false;
+				}
+	
+				// Remember to reorder within position and client_id
+				$condition = $this->getReorderConditions($table);
+				$found = false;
+				MyMuseHelper::logMessage("$condition\n");
+	
+				foreach ($conditions as $cond)
+				{
+					if ($cond[1] == $condition)
+					{
+						$found = true;
+						break;
+					}
+				}
+	
+				if (!$found)
+				{
+					$key = $table->getKeyName();
+					$conditions[] = array($table->$key, $condition);
+				}
+			}
+		}
+	
+	
+		// Clear the component's cache
+		$this->cleanCache();
+	
+		return true;
+	}
+	
 }
