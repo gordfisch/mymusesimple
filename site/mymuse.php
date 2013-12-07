@@ -32,7 +32,7 @@ $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
 
 
-//print_pre($_POST);
+//print_pre($_REQUEST);
 //$user = JFactory::getUser();
 //print_pre($user);
 

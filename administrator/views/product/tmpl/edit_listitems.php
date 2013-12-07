@@ -3,8 +3,18 @@
 $lists 		= $this->lists;
 $listOrder	= $this->escape($this->state->get('item.ordering'));
 $listDirn	= $this->escape($this->state->get('item.direction'));
+
 $saveOrder	= $listOrder == 'a.ordering';
 $user = JFactory::getUser();
+$app		= JFactory::getApplication();
+if ($saveOrder)
+{
+	$saveOrderingUrl = 'index.php?option=com_mymuse&task=product.saveOrderAjax&tmpl=component';
+	JHtml::_('sortablelist.sortable', 'articleList2', 'adminForm2', strtolower($listDirn), $saveOrderingUrl);
+}
+$sortFields = $this->getSortFields2();
+$assoc		= isset($app->item_associations) ? $app->item_associations : 0;
+
 
 
 		if(isset($lists['isNew'])){
@@ -16,21 +26,22 @@ $user = JFactory::getUser();
 		/**
 		* Submit the item form
 		*/
-		function submitform3(pressbutton){
+		function submitform2(pressbutton){
 			if (pressbutton) {
-				document.adminForm3.task.value=pressbutton;
+				document.adminForm2.task.value=pressbutton;
 			}
-			if (typeof document.adminForm3.onsubmit == "function") {
-				document.adminForm3.onsubmit();
+			if (typeof document.adminForm2.onsubmit == "function") {
+				document.adminForm2.onsubmit();
 			}
-			document.adminForm3.submit();
+			document.adminForm2.submit();
 		}
-		function submitbutton3(pressbutton)
+		
+		function submitbutton2(pressbutton)
 		{
-			var form = document.adminForm3;
+			var form = document.adminForm2;
 
 			if (pressbutton == 'cancel') {
-				submitform3( pressbutton );
+				submitform2( pressbutton );
 				return;
 			}
 
@@ -40,86 +51,17 @@ $user = JFactory::getUser();
 
 			} else {
 
-				submitform3( pressbutton );
+				submitform2( pressbutton );
 			}
 		}
 
-		// needed for Table Column ordering
-		function tableOrdering3( order, dir, task ) {
-			var form = document.adminForm3;
 
-			form.filter_order.value 	= order;
-			form.filter_order_Dir.value	= dir;
-			submitform3( task );
-		}
 
-		function saveorder3( n,  task ) {
-			checkAll_button3( n, task );
-		}
 
-		//needed by saveorder3 function
-		function checkAll_button3( n, task ) {
 
-		    if (!task ) {
-				task = 'saveorder';
-			}
-	
-			for ( var j = 0; j <= n; j++ ) {
-				box = eval( "document.adminForm3.cb" + j );
-				if ( box ) {
-					if ( box.checked == false ) {
-						box.checked = true;
-					}
-				} else {
-					alert("You cannot change the order of items, as an item in the list is `Checked Out`");
-					return;
-				}
-			}
-			submitform3(task);
-		}
-		//items orderup and orderdown
-		function listItemTask3( id, task ) {
-		    var f = document.adminForm3;
-		    cb = eval( 'f.' + id );
-		    if (cb) {
-		        for (i = 0; true; i++) {
-		            cbx = eval('f.cb'+i);
-		            if (!cbx) break;
-		            cbx.checked = false;
-		        } // for
-		        cb.checked = true;
-		        f.boxchecked.value = 1;
-		        submitbutton3(task);
-		    }
-		    return false;
-		}
-		/**
-		* Toggles the check state of a group of boxes
-		*
-		* Checkboxes must have an id attribute in the form cb0, cb1...
-		* @param The number of box to 'check'
-		* @param An alternative field name
-		*/
-		function checkAll3( n, fldName ) {
-		  if (!fldName) {
-		     fldName = 'cb';
-		  }
-			var f = document.adminForm3;
-			var c = f.toggle.checked;
-			var n2 = 0;
-			for (i=0; i < n; i++) {
-				cb = eval( 'f.' + fldName + '' + i );
-				if (cb) {
-					cb.checked = c;
-					n2++;
-				}
-			}
-			if (c) {
-				document.adminForm3.boxchecked.value = n2;
-			} else {
-				document.adminForm3.boxchecked.value = 0;
-			}
-		}
+
+
+
 		/**
 		* Submit the attribute list
 		*/
@@ -146,8 +88,38 @@ $user = JFactory::getUser();
 			document.adminForm5.submit();
 		}
 		
-		Joomla.tableOrdering3=function(a,b,c,d){if("undefined"===typeof d&&(d=document.getElementById("adminForm3"),!d))d=document.adminForm3;d.filter_order.value=a;d.filter_order_Dir.value=b;d.id.value=<?php echo $this->item->id; ?>;Joomla.submitform(c,d)};
-		
+		Joomla.tableOrdering2=function(a,b,c,d){
+			if("undefined"===typeof d&&(d=document.getElementById("adminForm2"),!d))d=document.adminForm2;
+			d.filter_item_order.value=a;
+			d.filter_item_order_Dir.value=b;
+			d.id.value=<?php echo $this->item->id; ?>;
+			Joomla.submitform(c,d)
+		}
+
+
+
+		Joomla.orderTable2 = function()
+		{
+			
+			table = document.getElementById("sortTable2");
+			direction = document.getElementById("directionTable2");
+			order = table.options[table.selectedIndex].value;
+			form = document.getElementById("adminForm2");
+			if (order != '<?php echo $listOrder; ?>')
+			{
+				dirn = 'asc';
+			}
+			else
+			{
+				dirn = direction.options[direction.selectedIndex].value;
+			}
+			alert(order+" "+dirn);
+			Joomla.tableOrdering2(order, dirn, '', form);
+		}
+
+
+
+
 		</script>
 <div id="items">
 <h2><?php echo JText::_( 'MYMUSE_ITEMS' ); ?></h2>
@@ -167,11 +139,11 @@ $user = JFactory::getUser();
 			class="icon-32-new"> </span> <?php echo JText::_( 'MYMUSE_ADD_ATTRIBUTES' ); ?> </a>
 		</li>	
 		<li class="button" id="toolbar-all" style="display: inline;"><a href="#"
-			onclick="javascript: submitbutton3('product.additem')" class="toolbar"> <span
+			onclick="javascript: submitbutton2('product.additem')" class="toolbar"> <span
 			class="icon-32-new"> </span> <?php echo JText::_( 'MYMUSE_NEW_ITEM' ); ?> </a>
 		</li>
 		<li class="button" id="toolbar-new" style="display: inline;"><a href="#"
-			onclick="javascript: submitbutton3('product.removeitem')" class="toolbar"> <span
+			onclick="javascript: submitbutton2('product.removeitem')" class="toolbar"> <span
 			class="icon-32-delete"> </span> <?php echo JText::_( 'MYMUSE_DELETE_ITEM' ); ?> </a>
 		</li>
 	</ul>
@@ -181,44 +153,84 @@ $user = JFactory::getUser();
 	</div>
 <?php } ?>	
 
-	<form action="index.php" method="post" name="adminForm3" id="adminForm">
+	<form action="index.php" method="post" name="adminForm2" id="adminForm2">
 	<input type="hidden" name="view" value="product" /> 
 	<input type="hidden" name="layout" value="edit" /> 
 	<input type="hidden" name="option" value="com_mymuse" /> 
-	<input type="hidden" name="id" value="" /> 
+	<input type="hidden" name="id" value="<?php echo $this->item->id; ?>" /> 
 	<input type="hidden" name="task" value="" /> 
 	<input type="hidden" name="subtype" value="item" /> 
 	<input type="hidden" name="boxchecked" value="" /> 
 	<input type="hidden" name="parentid" value="<?php echo $this->item->id; ?>" /> 
-	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
+	<input type="hidden" name="filter_item_order" value="<?php echo $listOrder; ?>" />
+	<input type="hidden" name="filter_item_order_Dir" value="<?php echo $listDirn; ?>" />
+	
+<?php if (!empty( $this->sidebar)) : ?>
+	<div id="j-sidebar-container" class="span2">
+		<?php echo $this->sidebar; ?>
+	</div>
+	<div id="j-main-container" class="span10">
+<?php else : ?>
+	<div id="j-main-container">
+<?php endif;?>
+		<div id="filter-bar" class="btn-toolbar">
+			<div class="filter-search btn-group pull-left">
+				<label for="filter_search" class="element-invisible"><?php echo JText::_('JSEARCH'); ?></label>
+				<input type="text" name="filter_search" id="filter_search" placeholder="<?php echo JText::_('JSEARCH_FILTER'); ?>" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" class="hasTooltip" title="<?php echo JHtml::tooltipText('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
+			</div>
+			<div class="btn-group pull-left hidden-phone">
+				<button type="submit" class="btn hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
+				<button type="button" class="btn hasTooltip" title="<?php echo JHtml::tooltipText('JSEARCH_FILTER_CLEAR'); ?>" onclick="document.id('filter_search').value='';this.form.submit();"><i class="icon-remove"></i></button>
+			</div>
+
+			<div class="btn-group pull-right hidden-phone">
+				<label for="directionTable2" class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></label>
+				<select name="directionTable2" id="directionTable2" class="input-medium" onchange="Joomla.orderTable2()">
+					<option value=""><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></option>
+					<option value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING'); ?></option>
+					<option value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING');  ?></option>
+				</select>
+			</div>
+			<div class="btn-group pull-right">
+				<label for="sortTable2" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY'); ?></label>
+				<select name="sortTable2" id="sortTable2" class="input-medium" onchange="Joomla.orderTable2()">
+					<option value=""><?php echo JText::_('JGLOBAL_SORT_BY');?></option>
+					<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder); ?>
+				</select>
+			</div>
+		</div>
+		<div class="clearfix"> </div>
 	<?php 
 	if(count($this->items) > 0){ 
 	?>
-		<table class="adminlist">
+		<table class="adminlist table-striped"  id="articleList2">
 			<thead>
 				<tr>
 					<th width="1%" class="nowrap center hidden-phone">
-						<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
+						<?php echo MyMuseHelper::sort2('<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
 					</th>
-					<th width="5">
-						<input type="checkbox" name="toggle" value="" onclick="checkAll3(<?php echo count( $this->items ); ?>);" />
+					<th width="1%" class="hidden-phone">
+						<?php echo JHtml::_('grid.checkall'); ?>
 					</th>
-					<th class="title" width="300">
-					<?php echo MyMuseHelper::sort3('Title', 'a.title', $listDirn, $listOrder ); ?>
+					<th width="1%" style="min-width:55px" class="nowrap center">
+						<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 					</th>
-					<th class="title" width="30"><?php echo JText::_('MYMUSE_PRICE'); ?></th>
-					<th class="title" width="30"><?php echo JText::_('MYMUSE_DISCOUNT'); ?></th>
+					<th width="25%">
+						<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+					</th>
+					<th class="title" width="10%">
+						<?php echo JHtml::_('grid.sort', 'MYMUSE_PRICE', 'a.price', $listDirn, $listOrder); ?>
+					</th>
+					<th class="title" width="10%">
+						<?php echo JHtml::_('grid.sort', 'MYMUSE_DISCOUNT', 'a.discount', $listDirn, $listOrder); ?>
+					</th>
 		
 					<?php foreach($lists['attribute_sku'] as $a_sku){ ?>
 						<th><?php echo $a_sku->name; ?>
 						</th>
 					<?php } ?>
-					<th width="1%" nowrap="nowrap">
-						<?php echo MyMuseHelper::sort3('Published', 'a.state', $listDirn, $listOrder ); ?>
-					</th>
-
-					<th width="1%" class="title"><?php echo JText::_('MYMUSE_ID'); ?>
+					<th width="1%" class="title">
+						<?php echo JHtml::_('grid.sort', 'MYMUSE_ID', 'a.id', $listDirn, $listOrder); ?>
 					</th>
 				</tr>
 			</thead>
@@ -238,6 +250,9 @@ $user = JFactory::getUser();
 				$link 	= 'index.php?option=com_mymuse&task=product.edit&type=item&id='. $item->id;
 				$checked 	= JHTML::_('grid.checkedout',  $item, $i );
 				$alt = "p";
+				
+				$checked 	= JHTML::_('grid.checkedout',  $item, $i );
+				
 				$canCreate	= $user->authorise('core.create',		'com_mymuse.category.'.$item->catid);
 				$canEdit	= $user->authorise('core.edit',			'com_mymuse.product.'.$item->id);
 				$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $file->checked_out == 0;
@@ -246,28 +261,34 @@ $user = JFactory::getUser();
 				
 				
 				?>
-				<tr class="<?php echo "row$k"; ?>">
+				<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid; ?>">
 					<td class="order nowrap center hidden-phone">
-					<?php if ($canChange) :
-						$disableClassName = '';
-						$disabledLabel	  = '';
-
-						if (!$saveOrder) :
-							$disabledLabel    = JText::_('JORDERINGDISABLED');
-							$disableClassName = 'inactive tip-top';
-						endif; ?>
-						<span class="sortable-handler hasTooltip <?php echo $disableClassName; ?>" title="<?php echo $disabledLabel; ?>">
+						<?php
+						$iconClass = '';
+						if (!$canChange)
+						{
+							$iconClass = ' inactive';
+						}
+						elseif (!$saveOrder)
+						{
+							$iconClass = ' inactive tip-top hasTooltip" title="' . JHtml::tooltipText('JORDERINGDISABLED');
+						}
+						?>
+						<span class="sortable-handler<?php echo $iconClass ?>">
 							<i class="icon-menu"></i>
 						</span>
-						<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order " />
-					<?php else : ?>
-						<span class="sortable-handler inactive" >
-							<i class="icon-menu"></i>
-						</span>
-					<?php endif; ?>
+						<?php if ($canChange && $saveOrder) : ?>
+							<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order " />
+						<?php endif; ?>
 					</td>
-					<td align="center">
-						<?php echo $checked; ?>
+					<td class="center hidden-phone">
+						<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+					</td>
+					<td class="center">
+						<div class="btn-group">
+							<?php echo JHtml::_('jgrid.published', $item->state, $i, 'products.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+							<?php //echo JHtml::_('contentadministrator.featured', $file->featured, $i, $canChange); ?>
+						</div>
 					</td>
 					<td>
 					<a href="<?php echo $link ?>"><?php echo htmlspecialchars($item->title, ENT_QUOTES); ?></a>
@@ -275,14 +296,9 @@ $user = JFactory::getUser();
 					<td align="right"><?php echo $item->price; ?></td>
 					<td align="right"><?php echo $item->product_discount; ?></td>
 					<?php foreach($lists['attribute_sku'] as $a_sku){?>
-						<th><?php echo $item->attributes[$a_sku->name]; ?>
-						</th>
+						<td align="center"><?php echo $item->attributes[$a_sku->name]; ?>
+						</td>
 					<?php } ?>
-					<td align="center">
-								
-								<?php echo MGrid::published( $item->state, $i, 'products.', 1, 'cb', $item->publish_up, $item->publish_down, 3); ?>
-					</td>
-
 					<td>
 						<?php echo $item->id; ?>
 					</td>
@@ -319,3 +335,4 @@ $user = JFactory::getUser();
 	</form>
     
     </div>
+</div>

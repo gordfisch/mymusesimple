@@ -207,6 +207,10 @@ class MyMuseModelCategory extends JModelList
 	{
 		$params = $this->getState()->get('params');
 		$limit = $this->getState('list.limit');
+		$app	= JFactory::getApplication('site');
+		$app	= JFactory::getApplication('site');
+		$itemid = JRequest::getInt('id', 0) . ':' . JRequest::getInt('Itemid', 0);
+		
 		if ($this->_products === null && $category = $this->getCategory()) {
 			$model = JModelList::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
 			$model->setState('params', JFactory::getApplication()->getParams());
@@ -215,8 +219,16 @@ class MyMuseModelCategory extends JModelList
 			$model->setState('filter.access', $this->getState('filter.access'));
 			$model->setState('filter.language', $this->getState('filter.language'));
 			$ordering = $this->getState('list.ordering');
-					
-			$model->setState('list.ordering', ProductHelperQuery::orderbySecondary($params->get('orderby_sec', 'rdate'), $params->get('order_date')));
+			
+			$orderCol = $app->getUserStateFromRequest('com_mymuse.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
+			if (!in_array($orderCol, $this->filter_fields)) {
+				$model->setState('list.ordering', ProductHelperQuery::orderbySecondary($params->get('orderby_sec', 'rdate'), $params->get('order_date')));
+			}else{
+				$model->setState('list.ordering',$orderCol);
+				
+			}
+			
+			
 			
 			$model->setState('list.start', $this->getState('list.start'));
 			$model->setState('list.limit', $limit);

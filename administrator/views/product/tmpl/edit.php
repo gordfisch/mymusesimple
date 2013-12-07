@@ -62,6 +62,9 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 		<div class="span10 form-horizontal">
 			<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => $startOffset)); ?>
 
+			
+				
+				
 				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('MYMUSE_DETAILS', true)); ?>
 					<?php echo $this->loadTemplate('details'); ?>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -96,15 +99,6 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 					</form>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
 				
-				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'tracks', JText::_('MYMUSE_TRACKS', true)); ?>
-				<?php 
-					if(!$this->item->id){
-						echo JText::_('MYMUSE_SAVE_THEN_ADD_TRACKS');
-					}else{
-						echo $this->loadTemplate('listtracks');
-					} ?>
-				<?php echo JHtml::_('bootstrap.endTab'); ?>
-
 				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'items', JText::_('MYMUSE_ITEMS', true)); ?>
 					<?php 
 					if(!$this->item->id){
@@ -113,6 +107,17 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 						echo $this->loadTemplate('listitems');
 					} ?>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
+				
+				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'tracks', '<b>'.strtoupper(JText::_('MYMUSE_TRACKS', true))).'</b>'; ?>
+				<?php 
+					if(!$this->item->id){
+						echo JText::_('MYMUSE_SAVE_THEN_ADD_TRACKS');
+					}else{
+						echo $this->loadTemplate('listtracks');
+					} ?>
+				<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+				
 			
 		</div>
 	</div>

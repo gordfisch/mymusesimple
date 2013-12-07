@@ -42,6 +42,7 @@ class MymuseViewCategory extends JViewLegacy
 		$children	= $this->get('Children');
 		$parent		= $this->get('Parent');
 		$pagination = $this->get('Pagination');
+		$task = JRequest::getVar('task', 'notask');
 		
 		$this->total = count($items);
 		$this->limit = $params->get('display_num', 10);
@@ -121,6 +122,7 @@ class MymuseViewCategory extends JViewLegacy
 		elseif (isset($active->query['layout'])) {
 			// We need to set the layout from the query in case this is an alternative menu item (with an alternative layout)
 			$this->setLayout($active->query['layout']);
+
 		}
 
 		// For blog layouts, preprocess the breakdown of leading, intro and linked articles.

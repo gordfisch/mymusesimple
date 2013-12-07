@@ -171,6 +171,8 @@ class MymuseControllerProducts extends JControllerAdmin
 		}
 	}
 	
+	
+	
 	/**
 	 * Method to save the submitted ordering values for records.
 	 *
@@ -191,8 +193,8 @@ class MymuseControllerProducts extends JControllerAdmin
 		}
 	
 		// Get the input
-		$pks = JRequest::getVar('cid', null, 'post', 'array');
-		$order = JRequest::getVar('order', null, 'post', 'array');
+		$pks = $this->input->post->get('cid', array(), 'array');
+		$order = $this->input->post->get('order', array(), 'array');
 	
 		// Sanitize the input
 		JArrayHelper::toInteger($pks);
@@ -302,4 +304,6 @@ class MymuseControllerProducts extends JControllerAdmin
 			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $extensionURL, false));
 		}
 	}
+	
+
 }

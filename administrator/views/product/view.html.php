@@ -35,7 +35,6 @@ class MymuseViewProduct extends JViewLegacy
 		
 		$this->tracks 	= $this->get('Tracks');
 		$this->trackPagination = $this->get('TrackPagination');
-		$this->item		= $this->get('Item');
 	
 		$this->items 	= $this->get('Items');
 		$this->itemPagination = $this->get('ItemPagination');
@@ -209,5 +208,46 @@ class MymuseViewProduct extends JViewLegacy
 			JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/documentation/documentation-2-5/148-product-new-edit?tmpl=component');
 		}
 		
+	}
+	
+	/**
+	 * Returns an array of fields the table can be sorted by
+	 *
+	 * @return  array  Array containing the field name to sort by as the key and display text as value
+	 *
+	 * @since   3.0
+	 */
+	protected function getSortFields()
+	{
+		return array(
+				'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+				'a.state' => JText::_('JSTATUS'),
+				'a.title' => JText::_('JGLOBAL_TITLE'),
+				'access_level' => JText::_('JGRID_HEADING_ACCESS'),
+				'a.created_by' => JText::_('JAUTHOR'),
+				'language' => JText::_('JGRID_HEADING_LANGUAGE'),
+				'a.created' => JText::_('JDATE'),
+				'a.id' => JText::_('JGRID_HEADING_ID'),
+				'a.featured' => JText::_('JFEATURED')
+		);
+	}
+	
+	/**
+	 * Returns an array of fields the table can be sorted by
+	 *
+	 * @return  array  Array containing the field name to sort by as the key and display text as value
+	 *
+	 * @since   3.0
+	 */
+	protected function getSortFields2()
+	{
+		return array(
+				'a.ordering' => JText::_('JGRID_HEADING_ORDERING'),
+				'a.state' => JText::_('JSTATUS'),
+				'a.title' => JText::_('JGLOBAL_TITLE'),
+				'a.id' => JText::_('JGRID_HEADING_ID'),
+				'a.price' => JText::_('MYMUSE_PRICE'),
+				'a.product_discount' => JText::_('MYMUSE_DISCOUNT')
+		);
 	}
 }
