@@ -1,1 +1,0 @@
-site/models/category.php:echo "param->orderby_sec = ".$params->get('orderby_sec')." ";
