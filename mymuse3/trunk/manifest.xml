@@ -133,7 +133,7 @@
     <server type="collection" priority="1" name="Mymuse Updates"
     >http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=all&amp;format=xml&amp;dummy=extension.xml</server>
 	</updateservers>
-
+<config>
 	<fieldset name="product"
 		label="MYMUSE_PRODUCT_PAGES_LABEL"
 		description="MYMUSE_PRODUCT_PAGES_DESC"
