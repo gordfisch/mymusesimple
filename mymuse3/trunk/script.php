@@ -311,10 +311,11 @@ if(!function_exists('recursiveDelete')){
 		// $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
 
-		//update store table
+		
 		$db = JFactory::getDBO();
 		$actions = array();
 		
+		// add params
 		if ($type == 'install') {
 			$query = $db->getQuery(true);
 			$query->update($db->quoteName('#__extensions'));
@@ -323,8 +324,10 @@ if(!function_exists('recursiveDelete')){
 			$query->where($db->quoteName('name') . ' = ' . $db->quote('com_mymuse')); // com_XXX is your component
 			$db->setQuery($query);
 			$db->query();
+			echo $query;
 		}
 		
+		//update store table
 		if($type == "install" || $type == "update"){
 			// init vars
 			$error = false;
