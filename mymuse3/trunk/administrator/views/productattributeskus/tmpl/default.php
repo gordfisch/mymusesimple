@@ -21,7 +21,7 @@ $canOrder	= $user->authorise('core.edit.state', 'com_mymuse');
 $saveOrder	= $listOrder == 'a.ordering';
 
 ?>
-<h2><a href="index.php?option=com_mymuse&view=product&layout=edit&subtype=item&id=<?php echo $this->parent->id; ?>"><?php echo JText::_('MYMUSE_RETURN_TO_PRODUCT'); ?></a></h2>
+<h2><a href="index.php?option=com_mymuse&view=product&layout=listitems&subtype=item&id=<?php echo $this->parent->id; ?>"><?php echo JText::_('MYMUSE_RETURN_TO_PRODUCT'); ?></a></h2>
 <form action="<?php echo JRoute::_('index.php?option=com_mymuse&view=productattributeskus'); ?>" method="post" name="adminForm" id="adminForm">
 	<div id="j-main-container" class="span10">
 			<div class="filter-search btn-group pull-left">

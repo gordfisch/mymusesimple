@@ -79,6 +79,7 @@ class MymuseControllerProduct extends JControllerForm
 		$db = JFactory::getDBO();
 
 		$subtype = $post['subtype'];
+		$layout = $post['layout'];
 		$model =& $this->getModel();
         $table =& $model->getTable();
 
@@ -110,24 +111,24 @@ class MymuseControllerProduct extends JControllerForm
 				{
 				case 'apply_allfiles':
 					$this->msg = JText::_( 'MYMUSE_CHANGES_TO_ALL_FILE_SAVED' );
-					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit&id='. $this->id.'&subtype='.$post['subtype'], $this->msg );
+					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.addfile&id='. $this->id.'&subtype='.$post['subtype'], $this->msg );
 					break;
 				case 'save_allfiles':
 					$this->msg = JText::_( 'MYMUSE_ALL_FILE_SAVED' );
-					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit&id='. $this->parentid.'&subtype=files', $this->msg );
+					$this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=listtracks&id='. $this->parentid.'&subtype=files', $this->msg );
 					break;
 				case 'save2newfile':
 					$this->msg = JText::_( 'MYMUSE_CHANGES_TO_FILE_SAVED' );
-					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.product.addfile&subtype='.$post['subtype'].'&parentid='.$this->parentid, $this->msg );
+					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.addfile&subtype='.$post['subtype'].'&parentid='.$this->parentid, $this->msg );
 					break;
 				case 'applyfile':
 					$this->msg = JText::_( 'MYMUSE_CHANGES_TO_FILE_SAVED' );
-					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit&id='. $this->id.'&subtype='.$post['subtype'], $this->msg );
+					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.addfile&id='. $this->id.'&subtype='.$post['subtype'], $this->msg );
 					break;
 				case 'savefile':
 				default:
 					$this->msg = JText::_( 'MYMUSE_FILE_SAVED' );;
-					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit&id='. $this->parentid.'&subtype='.$post['subtype'], $this->msg );
+					$this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=listtracks&id='. $this->parentid.'&subtype='.$post['subtype'], $this->msg );
 					break;
 				}
 			}else {
@@ -172,7 +173,7 @@ class MymuseControllerProduct extends JControllerForm
 				case 'saveitem':
 				default:
 					$this->msg = JText::_( 'MYMUSE_ITEM_SAVED' );
-					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit&id='. $this->parentid."&subtype=item", $this->msg );
+					$this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=listitems&id='. $this->parentid."&subtype=item", $this->msg );
 					break;
 				}
 
@@ -193,7 +194,7 @@ class MymuseControllerProduct extends JControllerForm
         $parentid = JRequest::getVar( 'parentid', '', 'post', 'int' );
         $subtype = JRequest::getVar( 'subtype', '' );
         $this->msg = JText::_( 'MYMUSE_ITEM_CANCELLED' );
-        $this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit&id='.$parentid.'&subtype='.$subtype,$this->msg );
+        $this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit&id='.$parentid,$this->msg );
     }
 	
 
@@ -208,6 +209,7 @@ class MymuseControllerProduct extends JControllerForm
         }
 		$parentid = JRequest::getVar( 'parentid', '', 'post', 'int' );
 		$subtype = JRequest::getVar( 'subtype', '', 'post' );
+		$layout = JRequest::getVar( 'layout', '', 'post' );
         $model = $this->getModel('product');
 
         if(!$model->delete($cid)) {
@@ -215,7 +217,11 @@ class MymuseControllerProduct extends JControllerForm
             ";
             }
         $this->msg = JText::_( 'MYMUSE_ITEM_DELETED' );
-        $this->setRedirect( 'index.php?option=com_mymuse&view=product&task=edit&id='.$parentid.'&subtype='.$subtype,$this->msg  );
+        $url = 'index.php?option=com_mymuse&view=product&task=edit&id='.$parentid;
+        if($layout){
+        	$url .= "&layout=$layout";
+        }
+        $this->setRedirect( $url,$this->msg  );
     }
 	
     /**

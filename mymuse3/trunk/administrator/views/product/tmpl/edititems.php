@@ -47,7 +47,7 @@ JHTML::_('behavior.tooltip');
 		//-->
 		</script>
 
-		<h3><?php echo $row->parent->title; ?></h3>
+		<h3><?php echo isset($row->parent->title)? $row->parent->title : ''; ?></h3>
 		<form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="j-main-container" class="span10">
 <div class="pull-left">
