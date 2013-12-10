@@ -178,6 +178,7 @@ class MymuseModelproduct extends JModelAdmin
 				$pk = 0;
 			}
 			if ($item = parent::getItem($pk)) {
+				
 				// Convert the params field to an array.
 				$registry = new JRegistry;
 				$registry->loadString($item->attribs);
@@ -207,6 +208,7 @@ class MymuseModelproduct extends JModelAdmin
 				$item->flash_type = '';
 			}
 			$this->_item = $item;
+	
 		}
 		return $this->_item;
 	}
@@ -731,7 +733,7 @@ class MymuseModelproduct extends JModelAdmin
     	$params =& MyMuseHelper::getParams();
 
  		// file lists for albums
- 		
+ 	
  		$artist_alias = MyMuseHelper::getArtistAlias($this->_parent->id,'1');
 		$album_alias = MyMuseHelper::getAlbumAlias($this->_parent->id);
 
@@ -1049,5 +1051,87 @@ class MymuseModelproduct extends JModelAdmin
 	
 		return true;
 	}
+	
+	/**
+	 * Method to delete one or more records.
+	 *
+	 * @param   array  &$pks  An array of record primary keys.
+	 *
+	 * @return  boolean  True if successful, false if an error occurs.
+	 *
+	 * @since   12.2
+	 */
+	public function delete(&$pks)
+	{
+		$dispatcher = JEventDispatcher::getInstance();
+		$pks = (array) $pks;
+		$table = $this->getTable();
+	
+		// Include the content plugins for the on delete events.
+		JPluginHelper::importPlugin('content');
+	
+		// Iterate the items to delete each one.
+		foreach ($pks as $i => $pk)
+		{
+	
+			if ($table->load($pk))
+			{
+	
+				if ($this->canDelete($table))
+				{
+	
+					$context = $this->option . '.' . $this->name;
+	
+					// Trigger the onContentBeforeDelete event.
+					$result = $dispatcher->trigger($this->event_before_delete, array($context, $table));
+	
+					if (in_array(false, $result, true))
+					{
+						$this->setError($table->getError());
+						return false;
+					}
+	
+					if (!$table->delete($pk))
+					{
+						$this->setError($table->getError());
+						return false;
+					}
+	
+					// Trigger the onContentAfterDelete event.
+					$dispatcher->trigger($this->event_after_delete, array($context, $table));
+	
+				}
+				else
+				{
+	
+					// Prune items that you can't change.
+					unset($pks[$i]);
+					$error = $this->getError();
+					if ($error)
+					{
+						JLog::add($error, JLog::WARNING, 'jerror');
+						return false;
+					}
+					else
+					{
+						JLog::add(JText::_('JLIB_APPLICATION_ERROR_DELETE_NOT_PERMITTED'), JLog::WARNING, 'jerror');
+						return false;
+					}
+				}
+	
+			}
+			else
+			{
+				$this->setError($table->getError());
+				return false;
+			}
+		}
+	
+		// Clear the component's cache
+		$this->cleanCache();
+	
+		return true;
+	}
+	
 	
 }

@@ -133,7 +133,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		
 		<input type="hidden" name="cmd"             value="_cart" />
 		<input type="hidden" name="business"        value="'. $merchant_email.'" />
-		<input type="hidden" name="custom"          value="'. $order->order_number.'" />
+		<input type="hidden" name="custom"          value="'. $order->order_number.'XXXXXXXXXX'.$shopper_email.'" />
 		<input type="hidden" name="upload"          value="1" />
 		<input type="hidden" name="currency_code"   value="'. $store->currency.'" />
 		<input type="hidden" name="item_name"       value="'. $store->title.'" />
@@ -257,8 +257,19 @@ class plgMymusePayment_Paypal extends JPlugin
         header("HTTP/1.0 200 OK");
         
 		JPluginHelper::importPlugin('mymuse');
-		$result['order_number'] 		= $_POST['custom'];
+		
+		$custom = explode ('XXXXXXXXXX', urldecode($_POST['custom']));
+		$result['order_number'] 		= $custom[0];
 		$result['payer_email'] 			= urldecode($_POST['payer_email']);
+		$result['user_email'] 			= $custom[1];
+		/**
+		 ?>
+		 <script type="text/javascript">
+		 alert("The email address <?php echo $result['user_email']. "order: ".$result['order_number']; ?>");
+		 history.back();
+		 </script>
+		 <?php
+		 */
   		$result['payment_status'] 		= $_POST['payment_status'];
   		$result['txn_id'] 				= trim(stripslashes($_POST['txn_id']));
 		$result['amountin'] 			= $_POST['mc_gross'];
@@ -344,11 +355,12 @@ class plgMymusePayment_Paypal extends JPlugin
 					
 					$q = "SELECT u.id from #__users as u
 					WHERE 
-					u.email='".$_POST['payer_email']."'";
+					u.email='".$result['user_email']."'";
 					$db->setQuery($q);
 					$user_id = $db->loadResult();
 					if(!$user_id){
-						$debug = "4.0.1 We do not have a user id! Must exit. Email was ".$_POST['payer_email']."\n";
+						$debug = "4.0.1 We do not have a user id! Must exit. Emails were
+						payer ".$_POST['payer_email']." user ".$_POST['user_email']."\n";
 						if($params->get('my_debug')){
         					MyMuseHelper::logMessage( $debug  );
   						}

@@ -48,16 +48,20 @@ class MymuseViewProduct extends JViewLegacy
 		
 
         $isNew  		= ($this->item->id < 1);
-
 		$lists['isNew'] = $isNew;
 		
 		
 		
-		///default layout
-		$this->setLayout('edit');
+		//setlayout
+		$jinput = JFactory::getApplication()->input;
+		$layout = $jinput->get('layout', 'edit');
+		
+		$this->setLayout($layout);
+		
 		
 		//new file || edit file
 		if($task == "addfile" || ($this->item->parentid && !$this->item->product_allfiles)){
+			$layout = 'edittracks';
         	$this->setLayout('edittracks');
         	$filelists = $this->get('FileLists');
         	$this->lists = array_merge($this->lists,$filelists);
@@ -66,10 +70,12 @@ class MymuseViewProduct extends JViewLegacy
         	}
         	JRequest::setVar('subtype','file');
         	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'file');
-  
+  		
         }
+        
         // allfiles
         if($task == "new_allfiles" || ($this->item->parentid && $this->item->product_allfiles)){
+        	$layout = 'new_allfiles';
         	$this->setLayout('edit_allfiles');
 			if(!$this->item->parentid){
         		$this->item->parentid= JRequest::getVar('parentid', 0);
@@ -79,7 +85,9 @@ class MymuseViewProduct extends JViewLegacy
   
         }
         //item
-        if($task == "additem" || ($this->item->parentid && $this->item->product_physical)){
+        if($task == "additem" || (isset($this->item->parentid) && $this->item->parentid > 0 && $this->item->product_physical)){
+
+        	$layout = 'edititems';
         	$this->setLayout('edititems');
         	$this->attribute_skus = $this->get('Attributeskus');
         	$this->attributes = $this->get('Attributes');
@@ -87,9 +95,8 @@ class MymuseViewProduct extends JViewLegacy
         	$this->lists['isNew'] = $isNew;
         	JRequest::setVar('subtype','item');
         	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'item');
-
         }
-		
+
         //It's the parent, set the user state
         if($this->item->id && $this->item->parentid == 0){
         	$app = JFactory::getApplication();
@@ -107,7 +114,6 @@ class MymuseViewProduct extends JViewLegacy
 			return false;
 		}
 		$this->addToolbar($subtype,$this->item->parentid);
-		$layout			= JRequest::getVar('layout');
 
 		parent::display($tpl);
 	}
@@ -121,6 +127,8 @@ class MymuseViewProduct extends JViewLegacy
 
 		$user		= JFactory::getUser();
 		$isNew		= ($this->item->id == 0);
+		$layout 	= $this->getLayout();
+		
         if (isset($this->item->checked_out)) {
 		    $checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
         } else {
@@ -136,7 +144,10 @@ class MymuseViewProduct extends JViewLegacy
 		}
 		JToolBarHelper::title(JText::_('COM_MYMUSE').' : '. $title, 'mymuse.png');
 	
-		if($subtype == "file" && $parentid){
+		if($layout == "listtracks" || $layout == "listitems"){
+			JToolBarHelper::apply('product.cancelitem', 'MYMUSE_RETURN_TO_PRODUCT');
+
+		}elseif($subtype == "file" && $parentid){
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
 			{
@@ -154,6 +165,7 @@ class MymuseViewProduct extends JViewLegacy
 				JToolBarHelper::cancel('product.cancelfile', 'JTOOLBAR_CLOSE');
 			}
 			JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/documentation/documentation-2-5/151-product-tracks-new-edit?tmpl=component');			
+		
 		}elseif($subtype == "allfiles" && $parentid){
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
@@ -169,6 +181,7 @@ class MymuseViewProduct extends JViewLegacy
 				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CLOSE');
 			}
 			JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/documentation/documentation-2-5/170-product-all-files?tmpl=component');		
+		
 		}elseif($subtype == "item" && $parentid){
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))

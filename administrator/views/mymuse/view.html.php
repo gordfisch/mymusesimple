@@ -28,7 +28,6 @@ class MyMuseViewMyMuse extends JViewLegacy
     {
 		$this->params = myMuseHelper::getParams();
 
-
         JToolBarHelper::title( JText::_( 'MyMuse' ), 'mymuse.png' );
         JToolBarHelper::preferences('com_mymuse');
         JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/documentation/documentation-2-5/169-mymuse-options?tmpl=component');

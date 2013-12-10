@@ -8,7 +8,6 @@
 	?>
 	</div>
 
-
 	<div id="j-main-container" class="span10">
 	<div class="clearfix"></div>
 		<fieldset class="adminform">
