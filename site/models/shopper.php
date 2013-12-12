@@ -275,7 +275,7 @@ class mymuseModelShopper extends JModelForm
 			$myparams = MyMuseHelper::getParams();
 			$profile_key = $myparams->get('my_profile_key', 'mymuse');
 			$db = JFactory::getDbo();
-			if($params->get('my_registration') == "full" && $my_profile_key != ''){
+			if($params->get('my_registration') == "full" && $profile_key != ''){
 				$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
 						' WHERE user_id = '.(int) $userid." AND profile_key LIKE '$profile_key.%'" .
 						' ORDER BY ordering';

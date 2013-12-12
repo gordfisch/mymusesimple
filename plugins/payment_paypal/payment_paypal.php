@@ -431,7 +431,7 @@ class plgMymusePayment_Paypal extends JPlugin
   						return $result;
             		}
             		$result['order_number'] = $order->order_number;
-            		$debug = "4.0.4 Order saved:  ".print_r($order,true)."\n\n";
+            		$debug = "4.0.4 Order saved:  ".$order->order_number."\n\n";
             		if($params->get('my_debug')){
         				MyMuseHelper::logMessage( $debug  );
   					}

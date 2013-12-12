@@ -25,6 +25,7 @@ JHTML::_('behavior.tooltip');
 
 		function submitbutton(pressbutton)
 		{
+
 			var form = document.adminForm;
 
 			if (pressbutton == 'cancelitem') {
@@ -223,6 +224,7 @@ JHTML::_('behavior.tooltip');
 		<input type="hidden" name="jform[version]" value="<?php echo $item->version; ?>" />
 		<input type="hidden" name="jform[product_downloadable]" value="1" />
 		<input type="hidden" name="subtype" value="file" />
+		<input type="hidden" name="layout" value="listtracks" />
 		<input type="hidden" name="option" value="com_mymuse" />
 		<input type="hidden" name="task" value="" />
 

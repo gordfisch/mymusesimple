@@ -755,12 +755,10 @@ class MyMuseModelProduct extends JModelItem
 	function getPrice(&$product) {
 
 		$params 		=& MyMuseHelper::getParams();
-
 		$MyMuseShopper 	=& MyMuse::getObject('shopper','models');
 		$shopper 		=  $MyMuseShopper->getShopper();
 
 		$db	= & JFactory::getDBO();
-		
 		$shopper_group_discount = 0;
 		$discount = 0;
 		$price_info = array();
@@ -769,10 +767,13 @@ class MyMuseModelProduct extends JModelItem
 		$default_shopper_group_id = $params->get("my_default_shopper_group_id");
 		$product_id = $product->id;
 		if(is_array($product->price)){
-			$product_price = $product->price['product_price'];
+			// we've been here already
+			return $product->price;
 		}else{
 			$product_price = $product->price;
 		}
+		
+			
 		// see if this product has a discount
 		$discount = $product->product_discount;
 
@@ -814,11 +815,15 @@ class MyMuseModelProduct extends JModelItem
 			if ($product_price && $product_price > 0) {
 				$price_info["special_shopper_group"] = True;
 				$price_info["product_original_price"] = $product_price;
-				$price_info["product_price"]=$product_price - ($product_price*$shopper_group_discount/100)-$discount;
+				$price_info["product_price"] = $product_price - ($product_price*$shopper_group_discount/100)-$discount;
+				$price_info["product_price"] = round($price_info["product_price"],2);
 				$price_info["product_discount"] = $discount;
 				$price_info["product_shopper_group_discount"] = $shopper_group_discount;
-				$price_info["product_shopper_group_discount_amount"] = sprintf("%.2f",$product_price*$shopper_group_discount/100);
-				//$price_info["product_price"] = sprintf("%.2f",$price_info["product_price"]);
+				$price_info["product_shopper_group_discount_amount"] = $product_price*$shopper_group_discount/100;
+				
+				$price_info["product_price"] = round($price_info["product_price"],2);
+				$price_info["product_shopper_group_discount_amount"] = round($price_info["product_shopper_group_discount_amount"],2);
+				
 				return $price_info;
 			}
 		}
@@ -838,6 +843,9 @@ class MyMuseModelProduct extends JModelItem
 				if($price_info["product_price"] == 0.00){
 					$price_info["product_price"] = 0;
 				}
+				$price_info["product_price"] = round($price_info["product_price"],2);
+				$price_info["product_shopper_group_discount_amount"] = round($price_info["product_shopper_group_discount_amount"],2);
+				
 				return $price_info;
 			}
 		}
@@ -851,7 +859,10 @@ class MyMuseModelProduct extends JModelItem
 			$price_info["product_discount"] = $discount;
 			$price_info["product_shopper_group_discount"] = $shopper_group_discount;
 			$price_info["product_shopper_group_discount_amount"] = sprintf("%.2f",$product_price*$shopper_group_discount/100);
-			//$price_info["product_price"] = sprintf("%.2f",$price_info["product_price"]);
+			
+			$price_info["product_price"] = round($price_info["product_price"],2);
+			$price_info["product_shopper_group_discount_amount"] = round($price_info["product_shopper_group_discount_amount"],2);
+			
 			return $price_info;
 		}
 
@@ -864,7 +875,10 @@ class MyMuseModelProduct extends JModelItem
 		$price_info["product_discount"] = $discount;
 		$price_info["product_shopper_group_discount"] = $shopper_group_discount;
 		$price_info["product_shopper_group_discount_amount"] = sprintf("%.2f",$product_price*$shopper_group_discount/100);
-		//$price_info["product_price"] = sprintf("%.2f",$price_info["product_price"]);
+		
+		$price_info["product_price"] = round($price_info["product_price"],2);
+		$price_info["product_shopper_group_discount_amount"] = round($price_info["product_shopper_group_discount_amount"],2);
+		
 		return $price_info;
 		
 		return False;

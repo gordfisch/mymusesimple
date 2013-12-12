@@ -117,7 +117,7 @@
                 name="detail_image"
                 type="media"
                 label="MYMUSE_DETAIL_IMAGE"
-                description="DETAIL_IMAGE_DESC"
+                description="MYMUSE_DETAIL_IMAGE_DESC"
                 directory=""
 
         />
@@ -271,6 +271,7 @@
                 label="MYMUSE_FILE_NAME"
                 description="MYMUSE_FILE_NAME"
                 class="readonly"
+                readonly="1"
                 size="20"
                 required="false"
           />
@@ -280,6 +281,7 @@
                 label="MYMUSE_FILE_NAME"
                 description="MYMUSE_FILE_NAME"
                 class="readonly"
+                readonly="1"
                 size="80"
                 required="false"
           />
@@ -299,6 +301,7 @@
                 label="MYMUSE_FILE_NAME"
                 description="MYMUSE_FILE_NAME"
                 class="readonly"
+                readonly="1"
                 size="80"
                 required="false"
           />
@@ -308,6 +311,7 @@
                 label="MYMUSE_FILE_NAME"
                 description="MYMUSE_FILE_NAME"
                 class="readonly"
+                readonly="1"
                 size="80"
                 required="false"
           />
@@ -317,6 +321,7 @@
                 label="MYMUSE_FILE_NAME"
                 description="MYMUSE_FILE_NAME"
                 class="readonly"
+                readonly="1"
                 size="20"
                 required="false"
           />
@@ -326,6 +331,7 @@
                 label="MYMUSE_FILE_LENGTH"
                 description="MYMUSE_FILE_LENGTH_DESC"
                 class="readonly"
+                readonly="1"
                 size="20"
                 required="false"
           />
