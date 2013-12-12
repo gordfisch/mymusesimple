@@ -324,7 +324,6 @@ if(!function_exists('recursiveDelete')){
 			$query->where($db->quoteName('name') . ' = ' . $db->quote('mymuse')); // com_XXX is your component
 			$db->setQuery($query);
 			$db->query();
-			echo $query;
 		}
 		
 		//update store table

@@ -79,7 +79,7 @@ class MymuseControllerProduct extends JControllerForm
 		$db = JFactory::getDBO();
 
 		$subtype = $post['subtype'];
-		$layout = $post['layout'];
+		$layout = @$post['layout'];
 		$model =& $this->getModel();
         $table =& $model->getTable();
 

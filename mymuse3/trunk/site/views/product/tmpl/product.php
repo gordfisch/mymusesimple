@@ -475,6 +475,7 @@ endif; ?>
 		<?php } ?>
 		>
 		<div style="clear: both"></div>
+		
 <?php if($params->get('product_show_tracks',1)){ ?>
 		<table class="mymuse_cart tracks jp-gui ui-widget ui-widget-content ui-corner-all">
 		    <tr class="sectiontableheader">
@@ -486,6 +487,10 @@ endif; ?>
        		
        		<?php  if($params->get('product_show_filetime', 0)){?>
        			<td class="mymuse_cart_top" align="center" width="10%"><?php echo JText::_('MYMUSE_TIME'); ?></td>
+       		<?php } ?>
+       		
+       		<?php  if($params->get('product_show_filesize', 0)){?>
+       			<td class="mymuse_cart_top" align="center" width="10%"><?php echo JText::_('MYMUSE_FILE_SIZE'); ?></td>
        		<?php } ?>
        		
        		<?php  if($params->get('product_show_cost_column', 1)){?>
@@ -512,21 +517,23 @@ endif; ?>
       					
       				<!--  TITLE COLUMN -->	
 						<td valign="top"><?php echo $track->title; ?> 
-						<?php  if($params->get('product_show_filesize', 1) && !$track->product_allfiles){?>
-							<?php echo "(".MyMuseHelper::ByteSize($track->file_length).")"; ?>
-						<?php } ?>
-						
       						<?php  if($track->product_allfiles == "1"){ 
 								echo "(".JText::_("MYMUSE_ALL_TRACKS").")";
 					 		} ?>
 					 		<?php if($track->introtext){ 
-					 			//echo $track->introtext;
+					 			echo "<br />".$track->introtext;
 							}?>
       					</td>
       				<!--  TIME COLUMN -->
         			<?php  if($params->get('product_show_filetime', 0)){?>	
         				<td align="center" valign="top">
         				<?php echo $track->file_time ?>
+        				</td>
+        			<?php } ?>
+        			<!--  FILE SIZE COLUMN -->
+        			<?php  if($params->get('product_show_filesize', 1) && !$track->product_allfiles){?>	
+        				<td align="center" valign="top">
+        				<?php echo "(".MyMuseHelper::ByteSize($track->file_length).")"; ?>
         				</td>
         			<?php } ?>
 					<!--  COST COLUMN -->

@@ -180,6 +180,7 @@ class MymuseTableproduct extends JTable
 	public function store($updateNulls = false)
 	{
 		$params = MyMuseHelper::getParams();
+		require_once (JPATH_COMPONENT.DS.'helpers'.DS.'mp3file.php');
 	
 		$post 			= JRequest::get('post');
 		$form 			= JRequest::getVar('jform', array());
@@ -245,6 +246,7 @@ class MymuseTableproduct extends JTable
 			$this->file_name = JFilterOutput::stringURLSafe($_FILES['product_file']['name']).'.'.$ext;
 			$tmpName  = $_FILES['product_file']['tmp_name'];
 			$this->file_length = $_FILES['product_file']['size'];
+			$new_file = $tmpName;
 
 			// do we save it to the database?
 			if($params->get('my_use_database')){
@@ -274,7 +276,7 @@ class MymuseTableproduct extends JTable
 				}
 				
 			}
-
+			
 		}
 		if(isset($post['upgrade']) && $form['title_alias']){
 			$this->title_alias = $form['title_alias'];
@@ -310,6 +312,15 @@ class MymuseTableproduct extends JTable
 					$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old_file);
 					return false;
 				}
+			}
+		}
+		
+		if(isset($new_file) && is_file($new_file) 
+				&& strtolower(pathinfo($new_file, PATHINFO_EXTENSION)) == "mp3"){
+			$m = new mp3file($new_file);
+			$a = $m->get_metadata();
+			if ($a['Encoding']=='VBR' || $a['Encoding']=='CBR'){
+				$this->file_time = $a["Length mm:ss"];
 			}
 		}
 
