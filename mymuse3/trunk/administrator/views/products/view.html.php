@@ -62,6 +62,7 @@ class MymuseViewProducts extends JViewLegacy
 			$this->addToolbar();
 			$this->sidebar = JHtmlSidebar::render();
 		}
+		$this->getSubCats($this->items);
 		parent::display($tpl);
 	}
 
@@ -202,5 +203,31 @@ class MymuseViewProducts extends JViewLegacy
 				'a.id' => JText::_('JGRID_HEADING_ID'),
 				'a.featured' => JText::_('JFEATURED')
 		);
+	}
+	
+	/*
+	 * getSubCats
+	* find cross referenced categories for each product
+	* object $items
+	*
+	* return objects $items
+	*/
+	function getSubCats(&$items)
+	{
+		$db = JFactory::getDBO();
+		for($i=0; $i < count($items); $i++){
+			$query = "SELECT c.title FROM #__mymuse_product_category_xref as x
+			LEFT JOIN #__categories as c on x.catid=c.id
+			WHERE x.product_id=".$items[$i]->id;
+			$items[$i]->subcats = "";
+			$db->setQuery($query);
+			if($res = $db->loadObjectList()){
+				foreach($res as $r){
+					$items[$i]->subcats .= $r->title.",";
+				}
+			}
+			$items[$i]->subcats = preg_replace("/,$/","",$items[$i]->subcats);
+		}
+		 
 	}
 }

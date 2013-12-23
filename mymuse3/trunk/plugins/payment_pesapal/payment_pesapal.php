@@ -38,8 +38,10 @@ class plgMymusePaymentPesapal extends JPlugin
 	 */
 	function plgMymusePaymentPesapal(&$subject, $config)  {
 		parent::__construct($subject, $config);
-        
-		$OAuthPath = JPATH_ROOT.DS.'plugins'.DS.'mymuse'.DS.'OAuth.php';
+		if(!defined('DS')){
+			define('DS',DIRECTORY_SEPARATOR);
+		}
+		$OAuthPath = JPATH_ROOT.DS.'plugins'.DS.'mymuse'.DS.'payment_pesapal'.DS.'OAuth.php';
 		require($OAuthPath);
 
 

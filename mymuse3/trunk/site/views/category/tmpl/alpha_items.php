@@ -31,8 +31,8 @@ foreach($alpha as $letter){
 	}
 }
 $count = count($this->children[$this->category->id]) + count($alphaarr);
-$break =  round($count / $this->params->get('cat_num_columns'),0,PHP_ROUND_HALF_DOWN);
-$r = $count  %  $this->params->get('cat_num_columns');
+$break =  round($count / $this->params->get('cat_num_columns',2),0,PHP_ROUND_HALF_DOWN);
+$r = $count  %  $this->params->get('cat_num_columns',2);
 if($r){
 	$break++;
 }
@@ -43,7 +43,7 @@ $column = 1;
 
 ?>
 
-<div class="cols-<?php echo $this->params->get('cat_num_columns'); ?>">
+<div class="cols-<?php echo $this->params->get('cat_num_columns',2); ?>">
 	<?php foreach($alphaarr as $letter => $children) : 
 	
 	if(!$total_shown){

@@ -14,6 +14,7 @@
 		<filename plugin="mymusenoreg">mymusenoreg.php</filename>
 		<filename>index.html</filename>
 		<folder>profiles</folder>
+		<folder>fields</folder>
 	</files>
 	<languages folder="languages">
 		<language tag="en-GB">en-GB.plg_user_mymusenoreg.ini</language>
