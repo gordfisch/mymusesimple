@@ -195,7 +195,10 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 					<?php echo JHtml::_('mymuseadministrator.featured', $item->featured, $i, $canChange); ?>
 				</td>
 				<td class="center">
-					<?php echo $this->escape($item->category_title); ?>
+					<?php echo $this->escape($item->category_title); 
+					if($item->subcats){
+						echo "<br />(".$item->subcats.")";
+					} ?>
 				</td>
 
 				<td class="center">

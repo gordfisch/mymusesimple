@@ -315,6 +315,43 @@ class mymuseModelShopper extends JModelForm
 	{
 		$user	=& JFactory::getUser();
 		$fields = MyMuseHelper::getNoRegFields();
+		
+		
+		// Initialise variables.
+		$app	= JFactory::getApplication();
+		
+		// Get the user data.
+		$requestData = JRequest::getVar('jform', array(), 'post', 'array');
+		
+		// Validate the posted data.
+		$form	= $this->getForm();
+		if (!$form) {
+			JError::raiseError(500, $model->getError());
+			return false;
+		}
+		
+		$data	= $this->validate($form, $requestData);
+		
+		// Check for validation errors.
+		if ($data === false) {
+			// Get the validation messages.
+			$errors	= $this->getErrors();
+		
+			// Push up to three validation messages out to the user.
+			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++) {
+				if ($errors[$i] instanceof Exception) {
+					$app->enqueueMessage($errors[$i]->getMessage(), 'warning');
+				} else {
+					$app->enqueueMessage($errors[$i], 'warning');
+				}
+			}
+		
+			// Save the data in the session.
+			$app->setUserState('com_mymuse.noreg.data', $requestData);
+		
+				
+			return false;
+		}
 
 		$post = JRequest::get('post');
 		if(isset($post['jform']['profile']['region']) && !isset($post['jform']['profile']['region_name']) ){

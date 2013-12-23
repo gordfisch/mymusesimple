@@ -205,6 +205,9 @@ class MyMuseController extends JControllerLegacy
 			JRequest::setVar('task','checkout');
 			$this->checkout();
 			return true;
+		}else{
+			// Redirect back to the registration screen.
+			$this->setRedirect(JRoute::_('index.php?option=com_mymuse&view=shopper&layout=register', false));
 		}
 	}
 	

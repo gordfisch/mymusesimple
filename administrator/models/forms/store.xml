@@ -247,6 +247,8 @@
 				<option value="259200">J3</option>
 				<option value="345600">J4</option>
 				<option value="432000">J5</option>
+				<option value="1296000">J15</option>
+				<option value="2592000">J30</option>
 				<option value="-">MYMUSE_NEVER</option>
            </field>
            <field

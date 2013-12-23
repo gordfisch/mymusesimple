@@ -228,7 +228,9 @@ class myMuseViewStore extends JViewLegacy
         	}
         			
         	// check expiry date
-        	if($order_item->end_date && $order_item->end_date <= time()){
+        	if($order_item->end_date 
+        			&& $order_item->end_date <= time() 
+        			&& $prarams->get('my_download_expire') != "-"){
         		$message = JText::_('MYMUSE_DOWNLOAD_EXPIRED');
         		$this->assignRef( 'message', $message );
         		$tpl = "message";
