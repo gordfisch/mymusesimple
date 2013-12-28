@@ -520,7 +520,7 @@ endif; ?>
       						<?php  if($track->product_allfiles == "1"){ 
 								echo "(".JText::_("MYMUSE_ALL_TRACKS").")";
 					 		} ?>
-					 		<?php if($track->introtext){ 
+					 		<?php if($track->introtext && $track->introtext != $track->title){ 
 					 			echo "<br />".$track->introtext;
 							}?>
       					</td>
