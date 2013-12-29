@@ -115,7 +115,7 @@
         <plugin name="shipping_price" folder="plugins/shipping_price">Shipping Price</plugin>
         <plugin name="shipping_standard" folder="plugins/shipping_standard">Shipping Standard</plugin>
         <plugin name="shoppergroupview" folder="plugins/shoppergroupview">Shopper group</plugin>
-		<plugin name="vote" folder="plugins/vote">Vote</plugin>
+		<plugin name="mymuse_vote" folder="plugins/mymuse_vote">MyMuse Vote</plugin>
 		
 		
 		<plugin name="redirectonlogin" folder="plugins/user_redirectonlogin">MyMuse Redirect on Log In</plugin>
