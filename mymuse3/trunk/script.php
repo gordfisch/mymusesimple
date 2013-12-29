@@ -419,8 +419,7 @@ if(!function_exists('recursiveDelete')){
 				}
 			}		
 			?>
-		<table cellpadding="4" cellspacing="0" border="0" width="100%"
-			class="adminlist">
+		<table cellpadding="4" cellspacing="0" border="0" width="800">
 			<tr>
 				<td valign="top" width="40%"><img
 					src="<?php echo 'components/com_mymuse/assets/images/logo325.jpg'; ?>"
