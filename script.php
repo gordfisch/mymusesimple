@@ -100,9 +100,8 @@ class com_mymuseInstallerScript
 			$query = "SELECT extension_id FROM #__extensions
 			WHERE element ='".$plugins[$i]['type']."'";
 			$db->setQuery($query);
-			//echo $query."<br />";
 			$res = $db->loadResult();
-			echo $res."<br />";
+			echo $res." ".$plugins[$i]['type']."<br />";
 			if ($plugins[$i]['installer']->uninstall('plugin', $res)) {
 				$plugins[$i]['status'] = true;
 			}
@@ -120,7 +119,6 @@ class com_mymuseInstallerScript
 						'type' => (string) $module['name'],
 						'installer' => new JInstaller,
 						'status' => false);
-		
 			}
 		}
 		
@@ -130,9 +128,8 @@ class com_mymuseInstallerScript
 			$query = "SELECT extension_id FROM #__extensions
 			WHERE element ='".$modules[$i]['type']."'";
 			$db->setQuery($query);
-			//echo $query."<br />";
 			$res = $db->loadResult();
-			echo $res."<br />";
+			echo $res." ".$modules[$i]['type']."<br />";
 			if ($modules[$i]['installer']->uninstall('module', $res)) {
 				$modules[$i]['status'] = true;
 			}
