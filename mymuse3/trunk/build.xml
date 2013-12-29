@@ -122,9 +122,9 @@
                 <copy file="${src}/plugins/user_mymuse/languages/en-GB.plg_user_mymuse.sys.ini"
                         todir="${test}/administrator/language/en-GB" />
         	
-        		<copy file="${src}/plugins/vote/languages/en-GB.plg_mymuse_vote.ini"
+        		<copy file="${src}/plugins/mymuse_vote/languages/en-GB.plg_mymuse_vote.ini"
         	            todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/vote/languages/en-GB.plg_mymuse_vote.sys.ini"
+        	    <copy file="${src}/plugins/mymuse_vote/languages/en-GB.plg_mymuse_vote.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />
         	
         		<copy file="${src}/plugins/user_redirectonlogin/languages/en-GB.plg_user_redirectonlogin.ini"
@@ -206,10 +206,10 @@
                 <copy file="${src}/plugins/shoppergroupview/shoppergroupview.xml"
                         todir="${test}/plugins/mymuse/shoppergroupview" />
         	
-        		<copy file="${src}/plugins/vote/vote.php"
-        	            todir="${test}/plugins/mymuse/vote" />
-        	    <copy file="${src}/plugins/vote/vote.xml"
-        	            todir="${test}/plugins/mymuse/vote" />
+        		<copy file="${src}/plugins/mymuse_vote/mymuse_vote.php"
+        	            todir="${test}/plugins/mymuse/mymuse_vote" />
+        	    <copy file="${src}/plugins/mymuse_vote/mymuse_vote.xml"
+        	            todir="${test}/plugins/mymuse/mymuse_vote" />
         	
         		<copy file="${src}/plugins/mp3player_dewplayer/mp3player_dewplayer.php"
         	            todir="${test}/plugins/mymuse/mp3player_dewplayer" />
