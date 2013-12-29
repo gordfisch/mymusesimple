@@ -764,7 +764,7 @@ class MyMuseModelProduct extends JModelItem
 		$discount = 0;
 		$price_info = array();
 		$price_info["item"]=false;
-
+//print_pre($params);
 		$default_shopper_group_id = $params->get("my_default_shopper_group_id");
 		$product_id = $product->id;
 		if(is_array($product->price)){
@@ -786,6 +786,7 @@ class MyMuseModelProduct extends JModelItem
 			$q = "SELECT * FROM #__mymuse_shopper_group WHERE  \n";
 			$q .= "id='";
 			$q .= $shopper_group_id . "'";
+			//echo $q;
 			$db->setQuery($q);
 			$shopper->shopper_group = $db->loadObject();
 		}
