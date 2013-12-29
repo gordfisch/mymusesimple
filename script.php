@@ -462,7 +462,7 @@ if(!function_exists('recursiveDelete')){
 				<?php foreach ($extensions as $i => $ext) : ?>
 				<tr class="row<?php echo $i % 2; ?>">
 					<td class="key"><?php echo $ext['name']; ?> (<?php echo JText::_($ext['type']); ?>)</td>
-					<td><?php $style = $ext['status'] ? 'font-weight: bold; color: green;' : 'font-weight: bold; color: red;'; ?>
+					<td align="center"><?php $style = $ext['status'] ? 'font-weight: bold; color: green;' : 'font-weight: bold; color: red;'; ?>
 						<span style="<?php echo $style; ?>"><?php echo $ext['status'] ? JText::_('Installed successfully') : JText::_('NOT Installed'); ?>
 					</span>
 					</td>
@@ -746,7 +746,7 @@ if(!function_exists('recursiveDelete')){
 			<thead>
 				<tr>
 					<th class="title"><?php echo JText::_('Post Install Actions'); ?></th>
-					<th width="60%"><?php echo JText::_('Status'); ?></th>
+					<th class="title"><?php echo JText::_('Status'); ?></th>
 				</tr>
 			</thead>
 			<tfoot>
@@ -760,7 +760,7 @@ if(!function_exists('recursiveDelete')){
 			foreach ($actions as $ext) : ?>
 				<tr class="row<?php echo $i % 2; $i++; ?>">
 					<td class="key"><?php echo $ext['name']; ?> (<?php echo JText::_($ext['message']); ?>)</td>
-					<td><?php $style = $ext['status'] ? 'font-weight: bold; color: green;' : 'font-weight: bold; color: red;'; ?>
+					<td align="center"><?php $style = $ext['status'] ? 'font-weight: bold; color: green;' : 'font-weight: bold; color: red;'; ?>
 						<span style="<?php echo $style; ?>"><?php echo $ext['status'] ? JText::_('Success') : JText::_('NOT Successful'); ?>
 					</span>
 					</td>
