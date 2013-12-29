@@ -14,8 +14,8 @@
 		<filename>index.html</filename>
 	</files>
 	<languages  folder="languages">
-		<language tag="en-GB">en-GB.plg_mymuse_vote.ini</language>
-		<language tag="en-GB">en-GB.plg_mymuse_vote.sys.ini</language>
+		<language tag="en-GB">en-GB.plg_mymuse_mymuse_vote.ini</language>
+		<language tag="en-GB">en-GB.plg_mymuse_mymuse_vote.sys.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
