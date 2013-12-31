@@ -13,4 +13,8 @@ $url= "index.php?option=com_mymuse&view=product&layout=listtracks&id=".$this->it
 </div>
 </div>
 </div>
-<h2><a href="<?php echo $url;?>"><?php echo JText::_('MYMUSE_SAVE_THEN_ADD_TRACKS')?></a></h2>
+<h3><?php echo JText::_('MYMUSE_SAVE_THEN_ADD_TRACKS')?></h3>
+<h2><a href="<?php echo $url;?>"><?php echo JText::_('MYMUSE_SHOW_TRACKS_LABEL')?></a></h2>
+
+
+

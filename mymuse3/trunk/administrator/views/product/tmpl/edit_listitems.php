@@ -13,4 +13,5 @@ $url= "index.php?option=com_mymuse&view=product&layout=listitems&id=".$this->ite
 </div>
 </div>
 </div>
-<h2><a href="<?php echo $url;?>"><?php echo JText::_('MYMUSE_SAVE_THEN_ADD_ITEMS')?></a></h2>
+<h3><?php echo JText::_('MYMUSE_SAVE_THEN_ADD_ITEMS')?></h3>
+<h2><a href="<?php echo $url;?>"><?php echo JText::_('MYMUSE_ITEMS')?></a></h2>

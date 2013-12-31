@@ -218,7 +218,7 @@ class MymuseViewProduct extends JViewLegacy
 			else {
 				JToolBarHelper::cancel('product.cancel', 'JTOOLBAR_CLOSE');
 			}
-			JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/documentation/documentation-2-5/148-product-new-edit?tmpl=component');
+			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/238-product-new-edit?tmpl=component');
 		}
 		
 	}

@@ -317,7 +317,7 @@ class MyMuseHelper extends JObject
 			$query = "SELECT * from #__mymuse_store WHERE id='1'";
 			$db->setQuery($query);
 			$store = $db->loadObject();
-			$params = new JParameter($store->params);
+			$params = new JRegistry($store->params);
 			$code = $params->get('currency');
 
 		}
