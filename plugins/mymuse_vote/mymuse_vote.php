@@ -13,7 +13,7 @@
 defined('_JEXEC') or die;
 
 jimport( 'joomla.plugin.plugin');
-JPlugin::loadLanguage( 'plg_mymuse_vote', JPATH_ADMINISTRATOR );
+
 
 /**
  * Vote plugin.
