@@ -56,7 +56,7 @@ class myMuseViewReports extends JViewLegacy
 		JToolBarHelper::title(JText::_('COM_MYMUSE').' : '. JText::_( 'MYMUSE_MYMUSE_REPORTS' ), 'mymuse.png');
 
 
-		JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/documentation/documentation-2-5/167-reports?tmpl=component');
+		JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/240-reports?tmpl=component');
 		
 
 
