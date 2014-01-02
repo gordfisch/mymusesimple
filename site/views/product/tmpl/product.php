@@ -202,7 +202,7 @@ endif; ?>
 <?php if ($useRecList) : ?>
 	<dl class="article-info">
 	<dt class="article-info-term"><?php  echo JText::_('MYMUSE_RECORDING_DETAILS'); ?></dt>
-<?php endif; ?>
+
 <?php if ($this->item->product_made_date && $this->item->product_made_date > 0) : ?>
 	<dd class="product_made_date">
 	<?php echo JText::_('MYMUSE_PRODUCT_CREATED_LABEL'); ?> :
@@ -240,15 +240,11 @@ endif; ?>
 	<?php echo $this->item->product_studio; ?>
 	</dd>
 <?php endif; ?>
-
-
-
-<?php if ($useRecList) : ?>
 	</dl>
 <?php endif; ?>
 <div style="clear: both"></div>
 
-<!-- END ATTRIBUTES -->
+<!-- RECORDING DETAILS -->
 
 
 <form method="post" action="<?php echo JURI::base() ?>index.php?Itemid=<?php echo $Itemid; ?>" onsubmit="return hasProduct(this,<?php echo $count; ?>);" name="mymuseform">

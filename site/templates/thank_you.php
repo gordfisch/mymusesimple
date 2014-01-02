@@ -182,12 +182,15 @@ defined('_JEXEC') or die('Restricted access');
            if(isset($shopper->profile)){
            		foreach ($shopper->profile as $label=>$value){ 
            			if($value == ''){ continue;} 
-           			if($label == 'shopper_group'){continue;}
-           			
+           			if($label == 'shopper_group'){
+           				continue;
+           			}
+           			if($label == 'tos'){
+           				continue;
+           			}
            			if($label == 'category_owner'){
            				continue;
            			}
-           			if($label == 'region'){continue;}
            			if($label == 'region'){
            				continue;
            			}

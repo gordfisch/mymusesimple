@@ -99,6 +99,6 @@ class MymuseViewCoupons extends JViewLegacy
 			    JToolBarHelper::divider();
 		    }
         }
-        JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/documentation/documentation-2-5/165-coupons-list?tmpl=component');
+        JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/228-coupons-list?tmpl=component');
 	}
 }
