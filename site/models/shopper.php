@@ -104,7 +104,7 @@ class mymuseModelShopper extends JModelForm
         		return $this->_shopper;
         	}
         	
-        	
+        	// regular user
 			$my_profile_key = $params->get('my_profile_key','mymuse');
 			if($user->get('id') > 0)
 			{
@@ -120,6 +120,9 @@ class mymuseModelShopper extends JModelForm
 						echo "loaded profile";
 					}
 				}
+				if(!isset($profile['shopper_group'])){
+					$profile['shopper_group'] = 1;
+				}
 				
 				//is there a profile to fill in?
 				if($params->get('my_registration') == "full" && $my_profile_key != ''){
@@ -133,7 +136,7 @@ class mymuseModelShopper extends JModelForm
     					$profile_params->loadString($plugin->params);
 
     					$fields = array_keys(json_decode($plugin->params, true));
-    					//print_pre($profile_params);
+    					//print_pre($fields);
     						
     					foreach ($fields as $f) {
     						$field = preg_replace("/register-require_/",'',$f);
@@ -147,6 +150,7 @@ class mymuseModelShopper extends JModelForm
     						}
     					}
     				}
+
 
 				}elseif($params->get('my_registration') == "jomsocial"){
 					$this->_shopper->perms = 1;
