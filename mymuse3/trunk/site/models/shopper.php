@@ -114,36 +114,35 @@ class mymuseModelShopper extends JModelForm
 				$this->_shopper->user_id = $user->get('id');
 				$this->_shopper->perms = 1;
 				$profile = $user->get('profile');
+				if(!$profile){
+					//try to load their profile
+					if($this->loadProfile($user)){
+						echo "loaded profile";
+					}
+				}
 				
 				//is there a profile to fill in?
 				if($params->get('my_registration') == "full" && $my_profile_key != ''){
 					
 					//I want to see if any fields that are required have not been filled in
 					$profile = $user->get('profile');
+					//print_pre($user); 
 					$plugin = JPluginHelper::getPlugin('user', $my_profile_key);
     				$profile_params = new JRegistry();
     				if($plugin->params){
     					$profile_params->loadString($plugin->params);
 
-    					$fields = array(
-    							'address1',
-    							'address2',
-    							'city',
-    							'region',
-    							'country',
-    							'postal_code',
-    							'phone',
-    							'mobile',
-    							'tos'
-    					);
+    					$fields = array_keys(json_decode($plugin->params, true));
+    					//print_pre($profile_params);
     						
-    					foreach ($fields as $field) {
+    					foreach ($fields as $f) {
+    						$field = preg_replace("/register-require_/",'',$f);
     						if (
     								$profile_params->get('register-require_' . $field, 1) == 2 &&
     								(!isset($profile[$field]) || $profile[$field] == "")
     						) {
     							//this guy needs to update profile
-
+								$this->setError("Missing :".$field);
     							$this->_shopper->perms = 0;
     						}
     					}
@@ -307,6 +306,59 @@ class mymuseModelShopper extends JModelForm
 		return $this->_shopper;
 
 	}
+	
+	/**
+	 * This method should load profile data into the user object
+	 *
+	 * @param	array	$user		Holds the user data
+	 * @param	array	$options	Array holding options (remember, autoregister, group)
+	 *
+	 * @return	boolean	True on success
+	 */
+	public function loadProfile($user, $options = array())
+	{
+	
+	
+		// Load the profile data from the database.
+		$app = JFactory::getApplication();
+		$myparams = MyMuseHelper::getParams();
+		$profile_key = $myparams->get('my_profile_key', 'mymuse');
+		$userId = $user->get('id');
+		$db = JFactory::getDbo();
+		$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
+				' WHERE user_id = '.(int) $userId." AND profile_key LIKE '$profile_key.%'" .
+				' ORDER BY ordering';
+		$db->setQuery( $query);
+		$results = $db->loadRowList();
+	
+		// Check for a database error.
+		if ($db->getErrorNum())
+		{
+			$this->_subject->setError($db->getErrorMsg());
+			return false;
+		}
+	
+		// Merge the profile data.
+		$user->profile = array();
+	
+		foreach ($results as $v)
+		{
+			$k = str_replace($profile_key.'.', '', $v[0]);
+			$user->profile[$k] = json_decode($v[1], true);
+			if ($user->profile[$k] === null)
+			{
+				$user->profile[$k] = $v[1];
+			}
+			if($k == "region"){
+	
+	
+	
+			}
+		}
+		$session = JFactory::getSession();
+		$session->set('user', $user);
+	}
+	
 	
 	/*
 	 * Put post variables from form into session

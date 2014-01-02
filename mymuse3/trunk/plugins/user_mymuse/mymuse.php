@@ -101,8 +101,6 @@ class plgUserMyMuse extends JPlugin
 		}
 		$session = JFactory::getSession();
 		$session->set('user', $instance);
-
-	
 	}
 
 	/**

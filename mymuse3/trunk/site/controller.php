@@ -256,7 +256,7 @@ class MyMuseController extends JControllerLegacy
         	$url = JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$Itemid";
         	$return = base64_encode($url);
 
-            $msg = JText::_("MYMUSE_PLEASE_FILL_IN_MISSING_ITEMS");
+            $msg = JText::_("MYMUSE_PLEASE_FILL_IN_MISSING_ITEMS").": ".$this->MyMuseShopper->getError();
         	$this->setRedirect( 'index.php?option=com_users&view=profile&layout=edit&return='.$return."&Itemid=$Itemid", $msg );
             return false;
         }

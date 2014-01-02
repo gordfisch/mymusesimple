@@ -144,10 +144,19 @@ class MymuseViewProduct extends JViewLegacy
 		}
 		JToolBarHelper::title(JText::_('COM_MYMUSE').' : '. $title, 'mymuse.png');
 	
-		if($layout == "listtracks" || $layout == "listitems"){
+		if($layout == "listtracks"){
+			// LIST TRACKS
 			JToolBarHelper::apply('product.cancelitem', 'MYMUSE_RETURN_TO_PRODUCT');
-
+			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-tracks?tmpl=component');
+			
+		}elseif($layout == "listitems"){
+			// LIST ITEMS
+			JToolBarHelper::apply('product.cancelitem', 'MYMUSE_RETURN_TO_PRODUCT');
+			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-items?tmpl=component');
+			
+			
 		}elseif($subtype == "file" && $parentid){
+			//TRACK
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
 			{
@@ -164,9 +173,10 @@ class MymuseViewProduct extends JViewLegacy
 			else {
 				JToolBarHelper::cancel('product.cancelfile', 'JTOOLBAR_CLOSE');
 			}
-			JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/documentation/documentation-2-5/151-product-tracks-new-edit?tmpl=component');			
+			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-tracks?tmpl=component#new-edit-track');			
 		
 		}elseif($subtype == "allfiles" && $parentid){
+			// ALLFILES
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
 			{
@@ -180,9 +190,10 @@ class MymuseViewProduct extends JViewLegacy
 			else {
 				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CLOSE');
 			}
-			JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/documentation/documentation-2-5/170-product-all-files?tmpl=component');		
+			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-tracks?tmpl=component#tracks-all-tracks');		
 		
 		}elseif($subtype == "item" && $parentid){
+			// ITEMS
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
 			{
@@ -199,7 +210,7 @@ class MymuseViewProduct extends JViewLegacy
 			else {
 				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CLOSE');
 			}
-			JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/documentation/documentation-2-5/155-product-item-new-edit?tmpl=component');
+			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/248-product-items?tmpl=component');
 				
 		}else{
 			// If not checked out, can save the item.

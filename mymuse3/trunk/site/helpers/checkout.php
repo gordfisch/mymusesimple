@@ -496,9 +496,12 @@ class MyMuseCheckout
        
         $user_state = isset($shopper->profile['region'])? $shopper->profile['region'] : 'unknown';
         $user_country = isset($shopper->profile['country'])? $shopper->profile['country'] : "unkown"; 
-  
+
         $taxes = array();
-        $q = "SELECT * FROM #__mymuse_tax_rate ORDER BY ordering";
+        $q = "SELECT t.*, c.country_name, s.state_name FROM #__mymuse_tax_rate as t
+        LEFT JOIN #__mymuse_country as c ON t.country = c.country_3_code
+        LEFT JOIN #__mymuse_state as s ON s.id = t.province
+        ORDER BY ordering";
         $db->setQuery($q);
         $regex = TAX_REGEX;
         
@@ -509,19 +512,21 @@ class MyMuseCheckout
         		$taxes[$name] = 0;
 
         		// APPLIES TO ALL
-        		if($rate->tax_applies_to == "C" && $user_country == $rate->country ){
+        		if($rate->tax_applies_to == "C" && 
+        				($user_country == $rate->country || strtolower($user_country) == strtolower($rate->country_name))){
         			$temp_tax = $order_subtotal * $rate->tax_rate;
         			$taxes[$name] += $temp_tax;
         		}
-
-        		if($rate->tax_applies_to == "S" && $user_state == $rate->province ){
+				
+        		// APPLIES TO A STATE/REGION		
+        		if($rate->tax_applies_to == "S" && 
+        				($user_state == $rate->province || strtolower($user_state) == strtolower($rate->state_name)) ){
         			if($rate->compounded == "1"){
         				$order_subtotal += $temp_tax;
         			}
         			$temp_tax = $order_subtotal * $rate->tax_rate;
         			$taxes[$name] += $temp_tax;
         		}
-
         	}
         	
         	reset($tax_rates);
