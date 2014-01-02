@@ -217,15 +217,15 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 					<?php }?>
 					<?php if(isset($this->item->user->profile['region']) || isset($this->item->user->profile['region_name'])){ 
 							if(!isset($this->item->user->profile['region_name'])){
-								if(!is_numeric($data['profile']['region'])){
+								if(!is_numeric($this->item->user->profile['region'])){
 									$this->item->user->profile['region_name'] = $this->item->user->profile['region'];
 								}else{
 									$db = JFactory::getDBO();
-									$query = "SELECT * FROM #__mymuse_state WHERE id='".$data['profile']['region']."'";
+									$query = "SELECT * FROM #__mymuse_state WHERE id='".$this->item->user->profile['region']."'";
 									$db->setQuery($query);
 									if($row = $db->loadObject()){
-										$data['profile']['region'] = $row->id;
-										$data['profile']['region_name'] = $row->state_name;
+										$this->item->user->profile['region'] = $row->id;
+										$this->item->user->profile['region_name'] = $row->state_name;
 									}
 								}
 							}
