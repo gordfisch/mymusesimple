@@ -126,7 +126,7 @@ class mymuseModelShopper extends JModelForm
 					
 					//I want to see if any fields that are required have not been filled in
 					$profile = $user->get('profile');
-					//print_pre($user); 
+					//print_pre($profile); 
 					$plugin = JPluginHelper::getPlugin('user', $my_profile_key);
     				$profile_params = new JRegistry();
     				if($plugin->params){
@@ -354,6 +354,9 @@ class mymuseModelShopper extends JModelForm
 	
 	
 			}
+		}
+		if(!isset($user->profile['shopper_group'])){
+			$user->profile['shopper_group'] = 1;
 		}
 		$session = JFactory::getSession();
 		$session->set('user', $user);
