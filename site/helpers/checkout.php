@@ -122,7 +122,7 @@ class MyMuseCheckout
 				$db->setQuery($q);
 				$product_in_stock = $db->loadResult();
 				if ($cart[$i]['quantity'] > $product_in_stock) {
-					$this->error = JText::_('MYMUSE_THIS_ORDER_EXEEDS_OUR_STOCK_FOR')." ". $cart[$i]['product']->title;
+					$this->error = JText::_('MYMUSE_THIS_ORDER_EXEEDS_OUR_STOCK_FOR')." ". $cart[$i]['product']->title." : ";
 					$this->error .= JText::_('MYMUSE_CURRENT_IN_STOCK')." ".$product_in_stock;
 					return False;
 				}
@@ -131,21 +131,6 @@ class MyMuseCheckout
 
 		/**
 		 // update stock moved to notify function
-		 if ($params->get('my_use_stock')) {
-		 for($i = 0; $i < $cart["idx"]; $i++) {
-		 if(@$cart[$i]["coupon_id"]){ continue; }
-		  
-		 if($cart[$i]['product']->product_physical){
-		 $cart[$i]['product']->product_in_stock = $cart[$i]['product']->product_in_stock -$cart[$i]['quantity'];
-		 unset($cart[$i]['product']->category_name);
-
-		 if (!$cart[$i]['product']->store()) {
-		 JError::raiseError( 500, $db->stderr() );
-		 return false;
-		 }
-		 }
-		 }
-		 }
 		 */
 		// TODO: SHOULD EMAIL STORE IF STOCK LESS THAN ZERO
 

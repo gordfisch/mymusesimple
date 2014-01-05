@@ -287,7 +287,8 @@ class myMuseViewCart extends JViewLegacy
 	
 	/**
 	 * notify
-	 * catch the post from whatever payment processor, return required responses, update orders and do mailouts
+	 * catch the post from whatever payment processor, return required responses, 
+	 * update orders and do mailouts
 	 * 
 	 */
 	function notify()

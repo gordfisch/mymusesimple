@@ -418,6 +418,9 @@ class MyMuseModelProduct extends JModelItem
 				
 				
 				if($params->get('product_player_type') == "single"){
+					// make a controller for the play/pause buttons
+					
+					$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$tracks) );
 					//get the player itself
 					reset($tracks);
 					$flash = '';

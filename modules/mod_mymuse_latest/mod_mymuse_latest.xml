@@ -7,7 +7,7 @@
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@arboreta.ca</authorEmail>
 	<authorUrl>www.arboreta.ca</authorUrl>
-	<version>3.0.0</version>
+	<version>3.1.0</version>
 	<description>MYMUSE_MOD_LATEST_DESC</description>
 	<files>
 		<filename module="mod_mymuse_latest">mod_mymuse_latest.php</filename>
@@ -124,6 +124,6 @@
 	</config>
 <updateservers>
     <server type="extension" priority="1"
-        name="Plug MyMuse Audio HTML5">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=32&amp;dummy=extension.xml</server>
+        name="Mod MyMuse Latest">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=32&amp;dummy=extension.xml</server>
 </updateservers>
 </extension>
