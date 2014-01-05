@@ -2,7 +2,7 @@
 <extension version="3.0" type="module" client="site">
 	<name>mod_mymuse_latest</name>
 	<author>Arboreta</author>
-	<creationDate>Feb 2012</creationDate>
+	<creationDate>Jan 2013</creationDate>
 	<copyright>Copyright (C) 2011 Arboreta Internet Services. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@arboreta.ca</authorEmail>
