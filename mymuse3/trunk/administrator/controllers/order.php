@@ -122,7 +122,7 @@ class MymuseControllerOrder extends JControllerForm
 
      	$send = $mailer->Send();
      	if ( $send !== true ) {
-     		echo 'Error sending email: ' . $send->message;
+     		echo 'Error sending email: ' . $send->getError();
      	}
 		JRequest::setVar( 'layout', 'edit');
 		JRequest::setVar( 'task', 'save'  );

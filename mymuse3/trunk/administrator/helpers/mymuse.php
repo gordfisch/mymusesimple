@@ -590,6 +590,31 @@ class MyMuseHelper extends JObject
 		
 		return $fields;
 	}
+	
+	/**
+	 * Method to update stock
+	 * 
+	 * @param int $id product id
+	 * @param int $quantity the amount of stock just sold
+	 * @return boolean
+	 */
+	function updateStock($id, $quantity=0)
+	{
+		if(!$quantity){
+			return false;
+		}
+		if(!$id){
+			return false;
+		}
+		$db = JFactory::getDBO();
+		$q = "UPDATE #__mymuse_product SET product_in_stock = product_in_stock - $quantity
+		WHERE id=$id";
+		$db->setQuery($q);
+		if(!$db->query()){
+			return false;
+		}
+		return true;
+	}
 
 	/**
 	 * Method to sort a column in a grid

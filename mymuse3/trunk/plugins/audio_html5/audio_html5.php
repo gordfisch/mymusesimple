@@ -439,6 +439,7 @@ jQuery(document).ready(function(){  ';
 			$js .= '
 
 		jQuery("#track_play_'.$track->id.'").click( function(e) {
+			pauseAll();
 			var title = "'.$track->title.'";
 			jQuery("#jp-title-li").html(title);
 
@@ -731,5 +732,26 @@ jQuery(document).ready(function(jQuery){
 			return $text;
 			}
 		
+	}
+	
+	function onPrepareMyMuseMp3PlayerControl(&$tracks)
+	{
+		$document = JFactory::getDocument();
+		$js = 'function pauseAll(){  
+		';
+		
+		foreach ($tracks as $track){
+			$js .= '
+			jQuery("#track_play_'.$track->id.'").css("display","block");
+            jQuery("#track_play_li_'.$track->id.'").css("display","block");
+            jQuery("#track_pause_'.$track->id.'").css("display","none");
+            jQuery("#track_pause_li_'.$track->id.'").css("display","none");
+            ';
+		}
+		$js .= '
+		}
+		';
+		$document->addScriptDeclaration($js);
+		return "made a func";
 	}
 }

@@ -270,7 +270,8 @@ class MymuseModelorder extends JModelAdmin
 	protected function prepareTable(&$table)
 	{
 		jimport('joomla.filter.output');
-		
+		$jinput = JFactory::getApplication()->input;
+		$post = $jinput->getArray($_POST);
 		$params = MyMuseHelper::getParams();
 
 		if (empty($table->id)) {
@@ -298,7 +299,7 @@ class MymuseModelorder extends JModelAdmin
         	$payment['transaction_id'] 		= JRequest::getVar('payment_transaction_id');
         	$payment['transaction_status'] 	= JRequest::getVar('payment_transaction_status');
         	$payment['description'] 		= JRequest::getVar('payment_description');
-print_pre($payment); exit;
+
         	$MyMuseHelper = new MyMuseHelper;
         	if(!$MyMuseHelper->logPayment($payment)){
         		$this->setError($MyMuseHelper->gerError());
@@ -310,7 +311,7 @@ print_pre($payment); exit;
         	$debug = '';
         	$order = $this->getItem();
 
-        	if ($params->get('my_use_stock') && $post['order_status'] == "C") {
+        	if ($params->get('my_use_stock') && $form['order_status'] == "C") {
 
         		for($i = 0; $i < count($order->items); $i++) {
 

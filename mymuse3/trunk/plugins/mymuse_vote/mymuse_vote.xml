@@ -23,6 +23,6 @@
 	</config>
 <updateservers>
     <server type="extension" priority="1"
-        name="Plug MyMuse Vote">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=55</server>
+        name="Plug MyMuse Vote">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=67</server>
 </updateservers>
 </extension>

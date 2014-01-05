@@ -150,7 +150,7 @@ class MyMuseCart {
                     if($params->get('my_add_stock_zero',0)) {
                         $quant = 0;
                     }else{
-                        $this->error = JText::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK');
+                        $this->error = JText::_('MYMUSE_EXCEEDS_AVAILABLE_STOCK')." ";
                         $this->error .= JText::_('MYMUSE_AVAILABLE_STOCK')." ".$res->product_in_stock;
                         return False;
                     }
