@@ -74,7 +74,10 @@ class plgMymusePayment_Paypal extends JPlugin
 		$shopper->region 		= isset($shopper->profile['region_name'])? $shopper->profile['region_name'] : '';
 		$shopper->postal_code 	= isset($shopper->profile['postal_code'])? $shopper->profile['postal_code'] : '';
 		$shopper->first_name 	= isset($shopper->profile['first_name'])? $shopper->profile['first_name'] : '';
-		$shopper->last_name 		= isset($shopper->profile['last_name'])? $shopper->profile['last_name'] : '';
+		$shopper->last_name 	= isset($shopper->profile['last_name'])? $shopper->profile['last_name'] : '';
+
+	
+		
 		if(!$shopper->first_name){
 			@list($shopper->first_name,$shopper->last_name) = explode(" ",$shopper->name);
 			if($shopper->last_name = ""){
@@ -113,6 +116,17 @@ class plgMymusePayment_Paypal extends JPlugin
 			$shopper_email = $shopper->email;
 		}
 		
+		//custom field
+		$custom = '';
+		if($params->get('my_registration') == "no_reg"){
+			foreach($shopper->profile as $key=>$val){
+				$custom .= $key.'='.$val.'&';
+			}
+			$custom = preg_replace("/&$/","",$custom);
+		}else{
+			$custom = 'order_number='.$order->order_number.'&email='.$shopper_email;
+		}
+		
 		//does this order have reservation fees? How much is the "Pay_now" field?
 		if($order->pay_now > 0 && $order->pay_now < $order->order_subtotal){
 			$order->idx = 1;
@@ -133,7 +147,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		
 		<input type="hidden" name="cmd"             value="_cart" />
 		<input type="hidden" name="business"        value="'. $merchant_email.'" />
-		<input type="hidden" name="custom"          value="'. $order->order_number.'XXXXXXXXXX'.$shopper_email.'" />
+		<input type="hidden" name="custom"          value=\''. $custom.'\' />
 		<input type="hidden" name="upload"          value="1" />
 		<input type="hidden" name="currency_code"   value="'. $store->currency.'" />
 		<input type="hidden" name="item_name"       value="'. $store->title.'" />
@@ -258,10 +272,16 @@ class plgMymusePayment_Paypal extends JPlugin
         
 		JPluginHelper::importPlugin('mymuse');
 		
-		$custom = explode ('XXXXXXXXXX', urldecode($_POST['custom']));
-		$result['order_number'] 		= $custom[0];
+		$c = explode('&',$_POST['custom']);
+		foreach($c as $pair){
+			if($pair){
+				list($key,$val) = explode('=',$pair);
+				$custom[$key] = $val;
+			}
+		}
+		$result['order_number'] 		= $custom['order_number'];
 		$result['payer_email'] 			= urldecode($_POST['payer_email']);
-		$result['user_email'] 			= $custom[1];
+		$result['user_email'] 			= $custom['email'];
 		/**
 		 ?>
 		 <script type="text/javascript">
@@ -353,9 +373,16 @@ class plgMymusePayment_Paypal extends JPlugin
         				MyMuseHelper::logMessage( $debug  );
   					}
 					
-					$q = "SELECT u.id from #__users as u
-					WHERE 
-					u.email='".$result['user_email']."'";
+            		if($params->get('my_registration') == "no_reg"){
+  						//it's the guest user
+  						$q = "SELECT u.id FROM #__users as u 
+  						WHERE 
+  						u.username='buyer'";
+  					}else{
+  						$q = "SELECT u.id from #__users as u
+  						WHERE
+  						u.email='".$_POST['user_email']."'";
+  					}
 					$db->setQuery($q);
 					$user_id = $db->loadResult();
 					if(!$user_id){
@@ -409,8 +436,22 @@ class plgMymusePayment_Paypal extends JPlugin
             		$session->set("cart",$MyMuseCart->cart);
             		
             		// Load the profile data from the database.
-            		
+            		$user = JFactory::getUser($user_id);
             		$shopper = $MyMuseShopper->getShopperByUser($user_id);
+            		if($params->get('my_registration') == "no_reg"){
+          				$shopper->profile = $custom;
+          				foreach($custom as $field => $val){
+          					$debug = "Assign $val to $field";
+          					MyMuseHelper::logMessage( $debug  );
+          					if(!$shopper->set($field,$val)){
+          						$debug = $shopper->getError();
+          						MyMuseHelper::logMessage( $debug  );
+          					}
+          				}
+          				if(isset($custom['first_name']) || isset($custom['last_name']) ){
+          					$shopper->set('name',@$custom['first_name']." ".@$custom['last_name']);
+          				}	
+            		}
 					$debug = "4.0.1 We have created a shopper: $user_id  ".print_r($shopper,true)."\n\n";
             		if($params->get('my_debug')){
         				MyMuseHelper::logMessage( $debug  );
