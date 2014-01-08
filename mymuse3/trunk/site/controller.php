@@ -200,10 +200,17 @@ class MyMuseController extends JControllerLegacy
 	
 	function savenoreg()
 	{
+			if(!$this->MyMuseShopper->make_no_register()){
+			$err = $this->MyMuseShopper->getError();
+				$msg = JText::_("MYMUSE_COULD_NOT_LOG_YOU_IN").' '.$err;
+				$this->setRedirect( "index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$Itemid", $msg);
+				return false;
+		}
 		$params = MyMuseHelper::getParams();
 		if($this->MyMuseShopper->savenoreg()){
-			JRequest::setVar('task','checkout');
-			$this->checkout();
+			$this->setRedirect( "index.php?option=com_mymuse&task=checkout", $msg);
+			//JRequest::setVar('task','checkout');
+			//$this->checkout();
 			return true;
 		}else{
 			// Redirect back to the registration screen.
@@ -219,22 +226,14 @@ class MyMuseController extends JControllerLegacy
 		$user = &JFactory::getUser();
         $Itemid = JRequest::getVar('Itemid','');
         
-        //no_reg and not logged in
+		//no_reg and not logged in
         if(!$user->get('id') && $params->get('my_registration') == "no_reg"){
         	$url = JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$Itemid";
         	$return = base64_encode($url);
-        	//try to log them in
-        	if($this->MyMuseShopper->make_no_register()){
-        		$msg = JText::_("MYMUSE_PLEASE_COMPLETE_THE_FORM");
-        		$this->setRedirect( "index.php?option=com_mymuse&view=shopper&layout=register&Itemid=$Itemid", $msg );
-        		return true;
-        		
-        	}else{
-        		$err = $this->MyMuseShopper->getError();
-        		$msg = JText::_("MYMUSE_COULD_NOT_LOG_YOU_IN").' '.$err;
-        		$this->setRedirect( "index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$Itemid", $msg);
-        		return false;
-        	}
+
+        	$msg = JText::_("MYMUSE_PLEASE_COMPLETE_THE_FORM");
+        	$this->setRedirect( "index.php?option=com_mymuse&view=shopper&layout=register&Itemid=$Itemid", $msg );
+        	return true;
         }
         //no_reg, logged in but no form yet
         if($user->get('id') && $params->get('my_registration') == "no_reg" && !$this->shopper->perms){
