@@ -333,7 +333,7 @@ class plgMymusePayment_Paypal extends JPlugin
         }else{
         	$date = date('Y-m-d h:i:s');
         	$debug .= "$date 2. Connection successful. Now posting to ".PAYPAL_HOST."$paypalpath \n\n";
-        	$result['message_sent'] = 1;
+        	
 
         	fwrite($fp, $header . $sendToPayPal);
         	$res = '';
@@ -341,7 +341,7 @@ class plgMymusePayment_Paypal extends JPlugin
         		$res .= fgets ($fp, 1024);
         	}
         	fclose ($fp);
-        	
+        	$result['message_sent'] = 1;
         	$date = date('Y-m-d h:i:s');
         	$debug .= "$date 3. Response from ".PAYPAL_HOST.": \n";
         	$debug .= $res."\n\n";
@@ -411,8 +411,7 @@ class plgMymusePayment_Paypal extends JPlugin
             		}
             		//coupon discount
             		if($_POST['discount']){
-            			list($discount_type,$coupon_id) = explode(":",$_POST['custom']);
-            			$cart[$i]['coupon_id']= $coupon_id;
+            			$cart[$i]['coupon_id']= $custom['coupon_id'];
             			$cart['idx']++;
             		}
             		$cart['ship_method_id'] = $_POST['invoice'];

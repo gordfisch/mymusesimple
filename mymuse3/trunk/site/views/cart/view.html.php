@@ -427,12 +427,16 @@ class myMuseViewCart extends JViewLegacy
             
         }else{
         	//all is good!
-
-        	$debug .= "$date Making cust emails, logging payment \n\n";
+        	// first check if order has already been captured
+        	//$result['transaction_id']
+        	
+        	
+        	
+        	
+        	$debug .= "$date Making customer emails, logging payment \n\n";
         	if($params->get('my_debug')){
         		MyMuseHelper::logMessage( $debug  );
         	}
-
         	//make the email and send to customer
         	$db	= & JFactory::getDBO();
         	$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
@@ -448,7 +452,7 @@ class myMuseViewCart extends JViewLegacy
         	$message 		= Jtext::_('MYMUSE_HERE_IS_YOUR_ORDER');
             
             if($order->notes && $params->get('my_registration') == "no_reg" ){
-                $accparams = new JParameter( $order->notes);
+                $accparams = new JRegistry( $order->notes);
                 $user->set('email',$accparams->get('email'));
                 $user->set('name',$accparams->get('first_name')." ".$accparams->get('last_name'));
                 $shopper->email         = $accparams->get('email');
@@ -539,6 +543,13 @@ class myMuseViewCart extends JViewLegacy
         	$MyMuseHelper = new MyMuseHelper;
         	if(!$MyMuseHelper->logPayment($payment)){
         		$debug .= "!!Log Payment Error: ".$MyMuseHelper->getError()."\n\n";
+        		MyMuseHelper::logMessage( $debug  );
+        		$debug = '';
+        	}
+        	if($params->get('my_debug')){
+        		$debug .= "Payment logged\n";
+        		MyMuseHelper::logMessage( $debug  );
+        		$debug = '';
         	}
         	
         	
