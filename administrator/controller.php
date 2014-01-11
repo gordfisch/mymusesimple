@@ -83,7 +83,7 @@ class MymuseController extends JControllerLegacy
 		include_once( JPATH_SITE.DS.'components'.DS.'com_mymuse'.DS.'mymuse.class.php' );
 		$MyMuseStore	=& MyMuse::getObject('store','models');
 		$store			= $MyMuseStore->getStore();
-		$params = new JParameter( $store->params );
+		$params = new JRegistry( $store->params );
 	
 		$language =& JFactory::getLanguage();
 		$extension = 'com_mymuse';

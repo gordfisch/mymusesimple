@@ -330,7 +330,6 @@ class MyMuseModelTracks extends JModelList
 	/**
 	 * Method to get a list of tracks.
 	 *
-	 * Overriden to inject convert the attribs field into a JParameter object.
 	 *
 	 * @return	mixed	An array of objects on success, false on failure.
 	 * @since	1.6

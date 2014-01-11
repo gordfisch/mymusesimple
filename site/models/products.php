@@ -537,7 +537,6 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 	/**
 	 * Method to get a list of products.
 	 *
-	 * Overriden to inject convert the attribs field into a JParameter object.
 	 *
 	 * @return	mixed	An array of objects on success, false on failure.
 	 * @since	1.6

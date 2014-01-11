@@ -13,8 +13,6 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin');
-JPlugin::loadLanguage( 'plg_mymuse_shoppergroupview', JPATH_ADMINISTRATOR );
-
 
 /**
 * MyMuse ShopperGroupView plugin
@@ -51,7 +49,6 @@ class plgMymuseShopperGroupView extends JPlugin
 	{
 		// loading plugin parameters
         $this->_plugin = JPluginHelper::getPlugin('mymuse', 'shoppergroupview');
-        $this->params = new JParameter($this->_plugin->params);
         
 		$layout = "product";
 		if(isset($shopper->shopper_group_id) && $shopper->shopper_group_id){

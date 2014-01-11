@@ -686,7 +686,7 @@ class MyMuseModelProduct extends JModelItem
 		$params = clone($mainframe->getParams('com_mymuse'));
 
 		// Merge product parameters into the page configuration
-		$aparams = new JParameter($this->_item[$pk]->attribs);
+		$aparams = new JRegistry($this->_item[$pk]->attribs);
 		$params->merge($aparams);
 
 		// Set the popup configuration option based on the request

@@ -13,7 +13,6 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin');
-JPlugin::loadLanguage( 'plg_mymuse_paymentoffline', JPATH_ADMINISTRATOR );
 
 /**
 * MyMuse PreOrder plugin

@@ -47,7 +47,7 @@ JHTML::_('behavior.tooltip');
 		<form action="index.php" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 <div class="edittracks">
 <div class="pull-left">
-		
+
 		<fieldset class="adminform">
 
 			<legend><?php echo empty($this->item->id) ? JText::_('MYMUSE_NEW_TRACK') : JText::_('MYMUSE_EDIT_TRACK'); ?></legend>

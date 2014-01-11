@@ -245,6 +245,7 @@ class mymuseModelShopper extends JModelForm
 				$this->_shopper->shopper_group = new stdClass;
 				$this->_shopper->shopper_group->discount = 0;
 				$this->_shopper->shopper_group->id = $params->get("my_default_shopper_group_id");
+				$this->_shopper->shopper_group_name = 'default';
 				$this->_shopper->state = null;
 				$this->_shopper->country = null;
 				$this->_shopper->perms = null;

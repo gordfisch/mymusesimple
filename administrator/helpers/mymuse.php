@@ -198,7 +198,7 @@ class MyMuseHelper extends JObject
 	 * 
 	 * @param object  The Store Object
 	 * 
-	 * @return mixed JParameter object or false
+	 * @return mixed JRegistry object or false
 	 */
 	public static function getParams($store=0)
 	{

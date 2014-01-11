@@ -13,7 +13,6 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin');
-JPlugin::loadLanguage( 'plg_mymuse_payment_moneybookers', JPATH_ADMINISTRATOR );
 
 /**
 * MyMuse PaymentMoneybookers plugin

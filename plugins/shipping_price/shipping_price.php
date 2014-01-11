@@ -13,7 +13,6 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin');
-JPlugin::loadLanguage( 'plg_mymuse_shipping_price', JPATH_ADMINISTRATOR );
 
 /**
 * MyMuse Shipping Price plugin
