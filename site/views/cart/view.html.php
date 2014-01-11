@@ -261,7 +261,7 @@ class myMuseViewCart extends JViewLegacy
 				
 				 /* payment plugins */
 				//save the order number in the session
-				$session = &JFactory::getSession();
+				$session = JFactory::getSession();
 				$session->set("order_number",$order->order_number);
 
 				JPluginHelper::importPlugin('mymuse');
@@ -437,7 +437,7 @@ class myMuseViewCart extends JViewLegacy
         		MyMuseHelper::logMessage( $debug  );
         	}
         	//make the email and send to customer
-        	$db	= & JFactory::getDBO();
+        	$db	= JFactory::getDBO();
         	$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
         	$MyMuseShopper  =& MyMuse::getObject('shopper','models');
 			$query = "SELECT user_id FROM `#__mymuse_order` WHERE `order_number`='".$result['order_number']."'";

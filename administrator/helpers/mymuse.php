@@ -268,7 +268,7 @@ class MyMuseHelper extends JObject
 	 * @param $message
 	 * @return boolean
 	 */
-	static function logMessage($message){
+	function logMessage($message){
 		jimport('joomla.filesystem.file');
 		if(!$this->_fh){
 			$this->_fh = fopen(JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'log.txt', "a");
