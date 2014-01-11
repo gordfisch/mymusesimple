@@ -228,7 +228,7 @@ class plgMymusePayment_Paypal extends JPlugin
 	{
 		global $mainframe;
 
-		$db	= & JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$date = date('Y-m-d h:i:s');
 		$debug = "#####################\nPayPal notify PLUGIN\n";
 
@@ -275,7 +275,7 @@ class plgMymusePayment_Paypal extends JPlugin
 				$custom[$key] = $val;
 			}
 		}
-		$result['order_number'] 		= $custom['order_number'];
+		$result['order_number'] 		= isset($custom['order_number'])? $custom['order_number'] : '';
 		$result['payer_email'] 			= urldecode($_POST['payer_email']);
 		$result['user_email'] 			= $custom['email'];
 		/**
@@ -344,6 +344,7 @@ class plgMymusePayment_Paypal extends JPlugin
         	$result['message_received'] = 1;
         	if($params->get('my_debug')){
         		MyMuseHelper::logMessage( $debug  );
+        		$debug = '';
   			}
   					
         	
@@ -364,7 +365,8 @@ class plgMymusePayment_Paypal extends JPlugin
             		$MyMuseCart		=& MyMuse::getObject('cart','helpers');
 					$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
 					$MyMuseShopper 	=& MyMuse::getObject('shopper','models');
-            		$debug = "4.0.0 We have a post: $q  ".print_r($_POST,true)."\n\n";
+            		$debug = "4.0.0 We have a post:".print_r($_POST,true)."\n\n";
+            		$debug .= "We have custom:".print_r($custom,true)."\n\n";
             		if($params->get('my_debug')){
         				MyMuseHelper::logMessage( $debug  );
   					}
@@ -414,7 +416,7 @@ class plgMymusePayment_Paypal extends JPlugin
   					if (isset($_POST['invoice'])){
   						$cart_order = $MyMuseCart->buildOrder( 0 );
   						$cart['ship_method_id'] = $_POST['invoice'];
-  						$dispatcher		=& JDispatcher::getInstance();
+  						$dispatcher	= JDispatcher::getInstance();
   						$res = $dispatcher->trigger('onCaclulateMyMuseShipping', array($cart_order, $cart['ship_method_id'] ));
   						$MyMuseCart->cart['shipping'] = $res[0];
   					}

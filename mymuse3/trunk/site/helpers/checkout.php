@@ -56,9 +56,9 @@ class MyMuseCheckout
 		$MyMuseCart  	=& MyMuse::getObject('cart','helpers');
 
 		$shopper 		=& $MyMuseShopper->getShopper();
-		$store 			=& $MyMuseStore->getStore();
-		$cart 			=& $MyMuseCart->cart;
-		$cart_order 	=& $MyMuseCart->buildOrder();
+		$store 			= $MyMuseStore->getStore();
+		$cart 			= $MyMuseCart->cart;
+		$cart_order 	= $MyMuseCart->buildOrder();
 		$d 				= JRequest::get('post');
 
 		// TODO stop repeat orders on reload
@@ -140,21 +140,20 @@ class MyMuseCheckout
 		 // update stock moved to notify function
 		 */
 		// TODO: SHOULD EMAIL STORE IF STOCK LESS THAN ZERO
-
-
 		// TODO: add option for shipping different from billing
+		
 		if(!@$d["ship_info_id"]){
 			$d["ship_info_id"] = $shopper->id;
 		}
-
+		
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'order.php' );
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'orderitem.php' );
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'ordershipping.php' );
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'orderpayment.php' );
-		$order = new MymuseTableorder( $this->_db );
-		$config = JFactory::getConfig();
-		$tzoffset = $config->get('config.offset');
-		$date = JFactory::getDate('now', $tzoffset);
+		$order 		= new MymuseTableorder( $this->_db );
+		$config 	= JFactory::getConfig();
+		$tzoffset 	= $config->get('config.offset');
+		$date 		= JFactory::getDate('now', $tzoffset);
 
 		// We used to keep separate shopper,user id's
 		$order->user_id 			= $shopper->id;
@@ -186,7 +185,9 @@ class MyMuseCheckout
 			$this->_db->setQuery($query);
 			$this->_db->execute();
 		}
-
+		if($params->get('my_debug')){
+			MyMuseHelper::logMessage( "Order::save: Update coupon" . $query);
+		}
 
 		if($params->get('my_registration') == "no_reg"){
 			$fields = array(
