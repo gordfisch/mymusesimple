@@ -120,7 +120,7 @@ class myMuseViewCart extends JViewLegacy
 					$this->order = $order 		= $MyMuseCart->buildOrder( 0 );
 					$order->order_number 		= session_id();
 					//save the faux order number in the session
-					$session = &JFactory::getSession();
+					$session = JFactory::getSession();
 					$session->set("order_number",$order->order_number);
 					
 					$order->show_checkout = 0;
@@ -129,7 +129,7 @@ class myMuseViewCart extends JViewLegacy
 				break;
 				
 			case "makepayment":
-				$this->order = $order 		= $MyMuseShopper->order;
+				$this->order = $order 	= $MyMuseShopper->order;
 				$currency 	= $order->order_currency;
 				$edit 		= false;
 				$heading 	= Jtext::_('MYMUSE_THANK_YOU');
