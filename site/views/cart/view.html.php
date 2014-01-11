@@ -39,12 +39,11 @@ class myMuseViewCart extends JViewLegacy
 		
 		$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
 		$MyMuseCart 	=& MyMuse::getObject('cart','helpers');
-		$cart 			=& $MyMuseCart->cart;
-print_pre($cart);
+		$cart 			= $MyMuseCart->cart;
 		$MyMuseStore	=& MyMuse::getObject('store','models');
 		
 		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
-		$shopper 		=& $MyMuseShopper->getShopper();
+		$shopper 		= $MyMuseShopper->getShopper();
 
 		$user			= JFactory::getUser();
 		$document		= JFactory::getDocument();
@@ -307,7 +306,7 @@ print_pre($cart);
 	
 		// see if any plugins wants to deal with notification
 		// plugin should run MyMuseHelper::orderStatusUpdate
-		$dispatcher		=& JDispatcher::getInstance();
+		$dispatcher		= JDispatcher::getInstance();
      	$results 		= $dispatcher->trigger('onMyMuseNotify', array($params) );
      	foreach($results as $r){
             if($params->get('my_debug')){
@@ -446,7 +445,7 @@ print_pre($cart);
         	$user_id = $db->loadResult();
         	$order 			= $MyMuseCheckout->getOrder($result['order_id']);
         	$shopper 		=& $MyMuseShopper->getShopperByUser($user_id );
-        	$user 			=& JFactory::getUser($user_id);
+        	$user 			= JFactory::getUser($user_id);
         	$currency 		= $order->order_currency;
         	$heading 		= Jtext::_('MYMUSE_THANK_YOU');
         	$message 		= Jtext::_('MYMUSE_HERE_IS_YOUR_ORDER');
