@@ -229,7 +229,6 @@ class plgMymusePayment_Paypal extends JPlugin
 		global $mainframe;
 
 		$db	= JFactory::getDBO();
-		$MyMuseHelper = new MyMuseHelper;
 		$date = date('Y-m-d h:i:s');
 		$debug = "#####################\nPayPal notify PLUGIN\n";
 
@@ -254,12 +253,12 @@ class plgMymusePayment_Paypal extends JPlugin
 			$debug .= "Was not PayPal. \n";
 			$debug .= "-------END-------";
 			if($params->get('my_debug')){
-        		$MyMuseHelper->logMessage( $debug  );
+        		MyMuseHelper::logMessage( $debug  );
   			}
   			return $result;
 		}else{
 			if($params->get('my_debug')){
-        		$MyMuseHelper->logMessage( $debug  );
+        		MyMuseHelper::logMessage( $debug  );
   			}
 		}
 		$result['myorder'] = 1;
@@ -323,7 +322,7 @@ class plgMymusePayment_Paypal extends JPlugin
             $debug .= "2. Status: FAILED TO OPEN SOCKET\n $errstr ($errno)\n\n";
             $debug .= "-------END-------";
         	if($params->get('my_debug')){
-        		$MyMuseHelper->logMessage( $debug  );
+        		MyMuseHelper::logMessage( $debug  );
   			}
   			$result['error'] = $debug;
   			return $result;
@@ -344,7 +343,7 @@ class plgMymusePayment_Paypal extends JPlugin
         	$debug .= $res."\n\n";
         	$result['message_received'] = 1;
         	if($params->get('my_debug')){
-        		$MyMuseHelper->logMessage( $debug  );
+        		MyMuseHelper::logMessage( $debug  );
         		$debug = '';
   			}
   					
@@ -355,7 +354,7 @@ class plgMymusePayment_Paypal extends JPlugin
             	$debug = "$date  4. order VERIFIED at PayPal\n\n";
             	$result['order_verified'] = 1;
         		if($params->get('my_debug')){
-        			$MyMuseHelper->logMessage( $debug  );
+        			MyMuseHelper::logMessage( $debug  );
   				}
             	
             	
@@ -369,7 +368,7 @@ class plgMymusePayment_Paypal extends JPlugin
             		$debug = "4.0.0 We have a post:".print_r($_POST,true)."\n\n";
             		$debug .= "We have custom:".print_r($custom,true)."\n\n";
             		if($params->get('my_debug')){
-        				$MyMuseHelper->logMessage( $debug  );
+        				MyMuseHelper::logMessage( $debug  );
   					}
 					
             		if($params->get('my_registration') == "no_reg"){
@@ -388,7 +387,7 @@ class plgMymusePayment_Paypal extends JPlugin
 						$debug = "4.0.1 We do not have a user id! Must exit. Emails were
 						payer ".$_POST['payer_email']." user ".$_POST['user_email']."\n";
 						if($params->get('my_debug')){
-        					$MyMuseHelper->logMessage( $debug  );
+        					MyMuseHelper::logMessage( $debug  );
   						}
   						$result['error'] = $debug;
   						return $result;
@@ -430,7 +429,7 @@ class plgMymusePayment_Paypal extends JPlugin
             		
             		if($params->get('my_debug')){
             			$debug = "4.0.2 We have created a cart: $q  ".print_r($MyMuseCart->cart,true)."\n\n";
-        				$MyMuseHelper->logMessage( $debug  );
+        				MyMuseHelper::logMessage( $debug  );
         				$debug = '';
   					}
   					
@@ -442,11 +441,11 @@ class plgMymusePayment_Paypal extends JPlugin
           				foreach($custom as $field => $val){
           					$debug = "Assign $val to $field";
           					if($params->get('my_debug')){
-          						$MyMuseHelper->logMessage( $debug  );
+          						MyMuseHelper::logMessage( $debug  );
           					}
           					if(!$shopper->set($field,$val)){
           						$debug = $shopper->getError();
-          						$MyMuseHelper->logMessage( $debug  );
+          						MyMuseHelper::logMessage( $debug  );
           					}
           				}
           				if(isset($custom['first_name']) || isset($custom['last_name']) ){
@@ -457,7 +456,7 @@ class plgMymusePayment_Paypal extends JPlugin
             		$session->set("user",$shopper);
             		$debug = "4.0.1 We have created a shopper in the session: $user_id  ".print_r($shopper,true)."\n\n";
             		if($params->get('my_debug')){
-            			$MyMuseHelper->logMessage( $debug  );
+            			MyMuseHelper::logMessage( $debug  );
             		}
   					
             		//let's save the order at checkout
@@ -466,7 +465,7 @@ class plgMymusePayment_Paypal extends JPlugin
             			$debug = "4.0.3 !!!!Could not save order after: ".$msg."\n\n";
         				$debug .= "-------END-------";
         				if($params->get('my_debug')){
-        					$MyMuseHelper->logMessage( $debug  );
+        					MyMuseHelper::logMessage( $debug  );
   						}
   						$result['error'] = $debug;
   						return $result;
@@ -474,7 +473,7 @@ class plgMymusePayment_Paypal extends JPlugin
             		$result['order_number'] = $order->order_number;
             		$debug = "4.0.4 Order saved:  ".$order->order_number."\n\n";
             		if($params->get('my_debug')){
-        				$MyMuseHelper->logMessage( $debug  );
+        				MyMuseHelper::logMessage( $debug  );
   					}
             		
             		
@@ -492,7 +491,7 @@ class plgMymusePayment_Paypal extends JPlugin
         			$debug = "5. !!!!Error no order object: ".$db->_errorMsg."\n\n";
         			$debug .= "-------END-------";
         			if($params->get('my_debug')){
-        				$MyMuseHelper->logMessage( $debug  );
+        				MyMuseHelper::logMessage( $debug  );
   					}
   					$result['error'] = $debug;
   					return $result;
@@ -517,7 +516,7 @@ class plgMymusePayment_Paypal extends JPlugin
         		$debug .= "$date 4. Not VERIFIED at PayPal\n\n";
         		$debug .= "-------END PLUGIN-------";
         		if($params->get('my_debug')){
-        			$MyMuseHelper->logMessage( $debug  );
+        			MyMuseHelper::logMessage( $debug  );
   				}
   				$result['error'] = $debug;
   				return $result;
@@ -527,7 +526,7 @@ class plgMymusePayment_Paypal extends JPlugin
         $debug .= "$date Finished talking to PayPal \n\n";
 		$debug .= "-------END PLUGIN-------";
   		if($params->get('my_debug')){
-        	$MyMuseHelper->logMessage( $debug  );
+        	MyMuseHelper::logMessage( $debug  );
   		}
         return $result;
 

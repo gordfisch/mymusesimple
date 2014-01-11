@@ -296,6 +296,7 @@ class myMuseViewCart extends JViewLegacy
 		ini_set('error_log', JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'php_error' );
 		
 		$params = MyMuseHelper::getParams();
+		
 
 		$date = date('Y-m-d h:i:s');
         if($params->get('my_debug')){
