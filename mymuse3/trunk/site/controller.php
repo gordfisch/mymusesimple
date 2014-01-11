@@ -75,20 +75,20 @@ class MyMuseController extends JControllerLegacy
     	$params 	= MyMuseHelper::getParams();
 		parent::__construct();
 
-		$this->MyMuseStore	=& MyMuse::getObject('store','models');
-		$this->store		= $this->MyMuseStore->getStore();
-		$this->params= $params;
+		$this->MyMuseStore		=& MyMuse::getObject('store','models');
+		$this->store			= $this->MyMuseStore->getStore();
+		$this->params			= $params;
 		$this->MyMuseCart		=& MyMuse::getObject('cart','helpers');
 		$this->MyMuseCheckout 	=& MyMuse::getObject('checkout','helpers');
 		$this->MyMuseShopper 	=& MyMuse::getObject('shopper','models');
-		$this->shopper 			=&  $this->MyMuseShopper->getShopper();
+		$this->shopper 			=  $this->MyMuseShopper->getShopper();
 
 		$myview = JRequest::getVar('view', 'store');
 		if($myview == "product"){
 			JRequest::setVar('layout','product');
 		}
         if($myview == 'store'){
-            $view =& $this->getView( 'store', 'html' );
+            $view = $this->getView( 'store', 'html' );
             $view->setModel( $this->getModel( 'category', 'MyMuseModel' ), false );
         }
 	}
@@ -345,7 +345,7 @@ class MyMuseController extends JControllerLegacy
 			}else{
                 $order 		= $this->MyMuseCart->buildOrder( 0 );
                 $this->MyMuseCart->cart['shipmethodid'] = $shipmethodid;
-                $dispatcher		=& JDispatcher::getInstance();
+                $dispatcher		= JDispatcher::getInstance();
                 JPluginHelper::importPlugin('mymuse');
                 $results = $dispatcher->trigger('onCaclulateMyMuseShipping', array($order, $shipmethodid ));
 
@@ -429,11 +429,11 @@ class MyMuseController extends JControllerLegacy
 		
 		$params = MyMuseHelper::getParams();
 		//get order
-		$db 			=& JFactory::getDBO();
-		$user			=& JFactory::getUser();
+		$db 			= JFactory::getDBO();
+		$user			= JFactory::getUser();
 		$user_id 		= $user->get('id');
 		$orderid 		= JRequest::getVar('orderid', 0);
-		$session 		=& JFactory::getSession();
+		$session 		= JFactory::getSession();
 		$order_number 	= $session->get("order_number",0);
 
 		$st 			= JRequest::getVar('st', 0);
@@ -496,7 +496,7 @@ class MyMuseController extends JControllerLegacy
 		
 		if($this->MyMuseShopper->order->order_status == "C"){
 			//already confirmed 
-			$dispatcher		=& JDispatcher::getInstance();
+			$dispatcher		= JDispatcher::getInstance();
 
 			$results = $dispatcher->trigger('onAfterMyMuseConfirm', 
 				array(&$this->shopper, &$this->store, &$params, &$Itemid) );
@@ -527,11 +527,11 @@ class MyMuseController extends JControllerLegacy
 	function vieworder()
 	{
 		//get order
-		$db 		=& JFactory::getDBO();
-		$user		=& JFactory::getUser();
+		$db 		= JFactory::getDBO();
+		$user		= JFactory::getUser();
 		$user_id 	= $user->get('id');
 		$orderid 	= JRequest::getVar('orderid', 0);
-		$session 	= &JFactory::getSession();
+		$session 	= JFactory::getSession();
 		$order_number = $session->get("order_number",0);
 		$st 		= JRequest::getVar('st', 0);
 		$params 	= MyMuseHelper::getParams();
@@ -580,11 +580,11 @@ class MyMuseController extends JControllerLegacy
 	function paycancel()
 	{
 		//get order
-		$db 		=& JFactory::getDBO();
-		$user		=& JFactory::getUser();
+		$db 		= JFactory::getDBO();
+		$user		= JFactory::getUser();
 		$user_id 	= $user->get('id');
 		$id 		= JRequest::getVar('id', 0);
-		$session 	= &JFactory::getSession();
+		$session 	= JFactory::getSession();
 		$order_number = $session->get("order_number",0);
 
 		if($order_number){
@@ -647,7 +647,7 @@ class MyMuseController extends JControllerLegacy
 	function downloadfile()
 	{
 		$params = MyMuseHelper::getParams();
-		$shopper =&  $this->MyMuseShopper->getShopper();
+		$shopper =  $this->MyMuseShopper->getShopper();
 		if(!isset($shopper->perms)){
 			$url = JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart";
 			$return = base64_encode($url);
@@ -665,7 +665,7 @@ class MyMuseController extends JControllerLegacy
 	function downloadarchive()
 	{
 		$params = MyMuseHelper::getParams();
-		$shopper =&  $this->MyMuseShopper->getShopper();
+		$shopper =  $this->MyMuseShopper->getShopper();
 		if(!isset($shopper->perms)){
 			$url = JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart";
 			$return = base64_encode($url);
@@ -758,7 +758,7 @@ class MyMuseController extends JControllerLegacy
 		}
 	
 	
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setMimeEncoding('text/html');
 		JResponse::setHeader("Expires", "Sun, 19 Nov 1978 05:00:00 GMT");
 		JResponse::setHeader("Last-Modified",  gmdate("D, d M Y H:i:s") . " GMT");
@@ -809,7 +809,7 @@ class MyMuseController extends JControllerLegacy
 		$session->set("cart",$this->MyMuseCart->cart);
 	
 		$rand = JUserHelper::genRandomPassword(8);
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->setMimeEncoding('application/json');
 		JResponse::setHeader("Expires","Sun, 19 Nov 1978 05:00:00 GMT");
 		JResponse::setHeader("Last-Modified", gmdate("D, d M Y H:i:s") . " GMT");

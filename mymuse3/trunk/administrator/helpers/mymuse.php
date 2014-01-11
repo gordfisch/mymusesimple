@@ -86,6 +86,18 @@ class MyMuseHelper extends JObject
 	);
 	
 	/**
+	 * filehande to error log
+	 *
+	 * @var		file_handle
+	 */
+	private $fh = null;
+	
+	function __construct()
+	{
+		$this->_fh = fopen(JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'log.txt', "a");
+	}
+	
+	/**
 	 * Configure the Linkbar.
 	 */
 	public static function addSubmenu($vName = '')
@@ -258,10 +270,12 @@ class MyMuseHelper extends JObject
 	 */
 	static function logMessage($message){
 		jimport('joomla.filesystem.file');
-		if($fh = fopen(JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'log.txt', "a")){
-			fwrite($fh,$message."\n");
-			fclose($fh);
+		if(!$this->_fh){
+			$this->_fh = fopen(JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'log.txt', "a");
 		}
+		fwrite($this->_fh,$message."\n");
+		fclose($this->_fh);
+
 		return true;
 	}
 

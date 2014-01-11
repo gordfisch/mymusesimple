@@ -423,7 +423,7 @@ class plgMymusePayment_Paypal extends JPlugin
   					
   					//save the cart in the session
   					$MyMuseCart->cart = $cart;
-  					$session = &JFactory::getSession();
+  					$session = JFactory::getSession();
   					$session->set("cart",$MyMuseCart->cart);
             		
             		

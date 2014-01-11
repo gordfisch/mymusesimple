@@ -25,9 +25,9 @@ class MyMuseCheckout
 	var $error = '';
 	
 	/**
-	 * dbo
+	 * db object
 	 *
-	 * @var _dbo
+	 * @var object
 	 */
 	var $_db = null;
 
@@ -175,6 +175,9 @@ class MyMuseCheckout
 
 		//check coupons
 		if($params->get('my_use_coupons') && $coupon_id){
+			if(!$this->_db){
+				MyMuseHelper::logMessage( "Order::save: cart_order->coupon" . $print_r($cart_order->coupon, true));
+			}
 			$order->coupon_id			= $cart_order->coupon->id;
 			$order->coupon_name 		= $cart_order->coupon->title;
 			$order->coupon_discount		= $cart_order->coupon->discount;
@@ -182,6 +185,7 @@ class MyMuseCheckout
 			$query = "UPDATE #__mymuse_coupons SET
 			coupon_uses = coupon_uses +1
 			WHERE id='".$order->coupon_id."' ";
+			
 			$this->_db->setQuery($query);
 			$this->_db->execute();
 		}
