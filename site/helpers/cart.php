@@ -218,8 +218,8 @@ class MyMuseCart {
      */ 
   	function updateCart( ) 
   	{
-		$mainframe 	=& JFactory::getApplication();
-    	$params 	=& MyMuseHelper::getParams();
+		$mainframe 	= JFactory::getApplication();
+    	$params 	= MyMuseHelper::getParams();
     
     	$catid = JRequest::getVar('catid',  0, '', 'int');
     	$parentid = JRequest::getVar('parentid',  0, '', 'int');
@@ -228,7 +228,7 @@ class MyMuseCart {
     	$Itemid = JRequest::getVar('Itemid',  0, '', 'int');
 
  
-    	$db  = & JFactory::getDBO();;
+    	$db  = JFactory::getDBO();;
         if(!@$productid){
             $this->error = JText::_('MYMUSE_CANT_UPDATE_CART');
             return false;
@@ -388,8 +388,8 @@ class MyMuseCart {
 
   	
   	function couponadd() {
-  		$db			= & JFactory::getDBO();
-  		$user 		= & JFactory::getUser();
+  		$db			=  JFactory::getDBO();
+  		$user 		=  JFactory::getUser();
   		$user_id 	= $user->get('id');
   		
   		$coupon_value = JRequest::getVar('coupon', '');
@@ -403,7 +403,7 @@ class MyMuseCart {
   		}
 
   		//see if it has maxed out uses
-  		if($coupon->coupon_max_uses > 0 && $coupon->uses >= $coupon->coupon_max_uses){
+  		if($coupon->coupon_max_uses > 0 && $coupon->coupon_uses >= $coupon->coupon_max_uses){
   			$this->error = JText::_("MYMUSE_COUPON_USE_EXCEEDS_MAX_USE");
   			return false;
   		}
@@ -418,7 +418,7 @@ class MyMuseCart {
   			return false;
   		}
   		
-  		$date =& JFactory::getDate();
+  		$date = JFactory::getDate();
   		$now = $date->toSQL();
 
   		//see if it is expired
@@ -442,7 +442,7 @@ class MyMuseCart {
   		
   		
   		// See if it is for a product in the cart
-  		if($coupon->type == 1 && $coupon->product_id > 0){
+  		if($coupon->coupon_type == 1 && $coupon->product_id > 0){
   			$good = 0;
   			for ($i=0;$i<$this->cart["idx"];$i++) {
                 if ($this->cart[$i]["product_id"] == $coupon->product_id) {
@@ -470,7 +470,7 @@ class MyMuseCart {
 		
 		$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
 		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
-		$shopper 		=& $MyMuseShopper->getShopper(); 
+		$shopper 		= $MyMuseShopper->getShopper(); 
 		$MyMuseStore  	=& MyMuse::getObject('store','models');
 		$store 			= $MyMuseStore->getStore(); 
 		$MyMuseProduct 	=& MyMuse::getObject('product','models');
@@ -699,7 +699,7 @@ class MyMuseCart {
     	$params 	= MyMuseHelper::getParams();;
     	
 		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
-		$shopper 		=& $MyMuseShopper->getShopper();
+		$shopper 		= $MyMuseShopper->getShopper();
 		
 		$MyMuseProduct 	=& MyMuse::getObject('product','models');
 		

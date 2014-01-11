@@ -373,7 +373,7 @@ class mymuseModelShopper extends JModelForm
 	 */
 	function savenoreg()
 	{
-		$user	=& JFactory::getUser();
+		$user	= JFactory::getUser();
 		$fields = MyMuseHelper::getNoRegFields();
 		
 		
@@ -453,9 +453,9 @@ class mymuseModelShopper extends JModelForm
 	function getOrders()
 	{
 		
-		$user		=& JFactory::getUser();
+		$user		= JFactory::getUser();
 		$user_id 	= $user->get('id');
-		$db			= & JFactory::getDBO();
+		$db			= JFactory::getDBO();
 		$query = "SELECT * from #__mymuse_order WHERE user_id=$user_id ORDER BY created DESC";
 		$db->setQuery($query);
 		$orders = $db->loadObjectList();
@@ -525,7 +525,7 @@ class mymuseModelShopper extends JModelForm
 		if($user->get('id')){
 			return true;
 		}
-		$db	= & JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$query = "SELECT * FROM #__users WHERE username='buyer'";
 		$db->setQuery($query);
 		$guest = $db->loadObject();

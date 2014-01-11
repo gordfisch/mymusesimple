@@ -200,15 +200,15 @@ class MyMuseController extends JControllerLegacy
 	
 	function savenoreg()
 	{
-			if(!$this->MyMuseShopper->make_no_register()){
+		if(!$this->MyMuseShopper->make_no_register()){
 			$err = $this->MyMuseShopper->getError();
-				$msg = JText::_("MYMUSE_COULD_NOT_LOG_YOU_IN").' '.$err;
-				$this->setRedirect( "index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$Itemid", $msg);
-				return false;
+			$msg = JText::_("MYMUSE_COULD_NOT_LOG_YOU_IN").' '.$err;
+			$this->setRedirect( "index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$Itemid", $msg);
+			return false;
 		}
 		$params = MyMuseHelper::getParams();
 		if($this->MyMuseShopper->savenoreg()){
-			$this->setRedirect( "index.php?option=com_mymuse&task=checkout", $msg);
+			$this->setRedirect( "index.php?option=com_mymuse&task=checkout");
 			//JRequest::setVar('task','checkout');
 			//$this->checkout();
 			return true;
