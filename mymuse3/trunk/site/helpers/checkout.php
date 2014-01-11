@@ -347,7 +347,10 @@ class MyMuseCheckout
 		// All done with inserting ORDER!!
 		// attach the current order to the shopper
 		$MyMuseShopper->order = $order;
-
+		$debug = "checkout order saved Order saved:  ".$order->order_number."\n\n";
+		if($params->get('my_debug')){
+			MyMuseHelper::logMessage( $debug  );
+		}
 		// SEND EMAIL CONFIRMATION MESSAGES IF STATUS IS CONFIRMED
 		// or if payment offline is enabled
 		jimport( 'joomla.plugin.helper' );

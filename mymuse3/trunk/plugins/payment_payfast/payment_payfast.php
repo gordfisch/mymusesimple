@@ -13,7 +13,7 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin');
-JPlugin::loadLanguage( 'plg_mymuse_payment_payfast', JPATH_ADMINISTRATOR );
+
 
 /**
 * MyMuse Payment Payfast plugin

@@ -13,7 +13,6 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin');
-JPlugin::loadLanguage( 'plg_mymuse_mp3player_flowplayer', JPATH_ADMINISTRATOR );
 
 /**
 * MyMuse Player Dewplayer plugin

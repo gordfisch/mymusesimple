@@ -40,7 +40,7 @@ class myMuseViewCart extends JViewLegacy
 		$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
 		$MyMuseCart 	=& MyMuse::getObject('cart','helpers');
 		$cart 			=& $MyMuseCart->cart;
-
+print_pre($cart);
 		$MyMuseStore	=& MyMuse::getObject('store','models');
 		
 		$MyMuseShopper  =& MyMuse::getObject('shopper','models');

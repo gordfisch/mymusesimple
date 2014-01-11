@@ -13,7 +13,6 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin');
-JPlugin::loadLanguage( 'plg_mymuse_payment_paypal', JPATH_ADMINISTRATOR );
 
 /**
 * MyMuse PaymnetPaypal plugin
@@ -76,7 +75,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		$shopper->first_name 	= isset($shopper->profile['first_name'])? $shopper->profile['first_name'] : '';
 		$shopper->last_name 	= isset($shopper->profile['last_name'])? $shopper->profile['last_name'] : '';
 
-	
+
 		
 		if(!$shopper->first_name){
 			@list($shopper->first_name,$shopper->last_name) = explode(" ",$shopper->name);
@@ -147,7 +146,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		
 		<input type="hidden" name="cmd"             value="_cart" />
 		<input type="hidden" name="business"        value="'. $merchant_email.'" />
-		<input type="hidden" name="custom"          value=\''. $custom.'\' />
+		
 		<input type="hidden" name="upload"          value="1" />
 		<input type="hidden" name="currency_code"   value="'. $store->currency.'" />
 		<input type="hidden" name="item_name"       value="'. $store->title.'" />
@@ -169,10 +168,10 @@ class plgMymusePayment_Paypal extends JPlugin
 		
 		';
 		
-		//send individual items, unless we have a coupon
-		if(!isset($order->coupon_discount)){
-			for ($i=0;$i<$order->idx;$i++) {
-				$j = $i+1;
+		//send individual items
+		$j = 1;
+		for ($i=0;$i<$order->idx;$i++) {
+			if(isset($order->items[$i]->title) && $order->items[$i]->title != ''){
 				$string .= '
 				<input type="hidden" name="item_name_'. $j .'"
 				value="'. $order->items[$i]->title;
@@ -185,25 +184,19 @@ class plgMymusePayment_Paypal extends JPlugin
 				<input type="hidden" name="amount_'. $j .'"
 				value="'. $order->items[$i]->product_item_price.'" />
 				';
+				$j++;
 			}
-		}else{
-			//one item
-			$title = '';
-			for ($i=0;$i<$order->idx;$i++) {
-				$title .= $order->items[$i]->title.":\n";
-			}
+		}
+		if(isset($order->coupon_discount)){
+			$custom .= "&coupon_id=".$order->coupon_id;
 			$string .= '
-			<input type="hidden" name="item_name_1"
-			value="'. $title;
-
-			$string .= '" />
-			<input type="hidden" name="quantity_1"
-			value="1" />
-			<input type="hidden" name="amount_1"
-			value="'. sprintf("%.2f", $order->order_subtotal).'" />
+			<input type="hidden" name="discount_amount_cart"
+			value="'. sprintf("%.2f", $order->coupon_discount).'" />
 			';
 			
 		}
+		$string .= '<input type="hidden" name="custom"          value=\''. $custom.'\' />
+		';
 
 		
 
@@ -219,7 +212,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		</div>
 		</form>
 		';
-		
+
 		return $string;
 	}
 
@@ -410,7 +403,7 @@ class plgMymusePayment_Paypal extends JPlugin
             			$cart[$i]['product_physical']= $p->product_physical;
             		}
             		//coupon discount
-            		if($_POST['discount']){
+            		if(isset($custom['coupon_id'])){
             			$cart[$i]['coupon_id']= $custom['coupon_id'];
             			$cart['idx']++;
             		}
@@ -451,13 +444,13 @@ class plgMymusePayment_Paypal extends JPlugin
           					$shopper->set('name',@$custom['first_name']." ".@$custom['last_name']);
           				}	
             		}
-					$debug = "4.0.1 We have created a shopper: $user_id  ".print_r($shopper,true)."\n\n";
-            		if($params->get('my_debug')){
-        				MyMuseHelper::logMessage( $debug  );
-  					}
+					
             		$session = JFactory::getSession();
             		$session->set("user",$shopper);
-
+            		$debug = "4.0.1 We have created a shopper in the session: $user_id  ".print_r($shopper,true)."\n\n";
+            		if($params->get('my_debug')){
+            			MyMuseHelper::logMessage( $debug  );
+            		}
   					
             		//let's save the order at checkout
             		if(!$order = $MyMuseCheckout->save( )){

@@ -419,8 +419,8 @@ class MyMuseCart {
   		}
   		
   		$date =& JFactory::getDate();
-  		$now = $date->format();
-  		
+  		$now = $date->toSQL();
+
   		//see if it is expired
   		$query = "SELECT id FROM #__mymuse_coupon WHERE code='$coupon_value'
   		AND expiration_date >= '$now' OR expiration_date ='0000-00-00 00:00:00'";
@@ -612,13 +612,16 @@ class MyMuseCart {
 
 		//COUPONS
 		if($params->get('my_use_coupons') && @$coupon_id){
-			$order->coupon->discount = 0;
+			
 			$query = "SELECT * from #__mymuse_coupon where id='".$coupon_id."'";
 			$db->setQuery($query);
 			if($order->coupon = $db->loadObject()){
 				//this function sets the $order->coupon->discount
+				$order->coupon->discount = 0;
 				MyMuseHelper::getCouponDiscount($order);
 				$order->order_subtotal = $order->order_subtotal - $order->coupon->discount;
+				$order->coupon_discount = $order->coupon->discount;
+				$order->coupon_id = $coupon_id;
 				if(!count($order->reservation_fees)){
 					$order->must_pay_now = $order->order_subtotal;
 				}
@@ -743,7 +746,6 @@ class MyMuseCart {
 			$artistid = $row->catid;
 		}
 		$row->price = MyMuseModelProduct::getPrice($row);
-		
 		
 		// get the artist object
 		require_once( 'administrator'.DS.'components'.DS.'com_categories'.DS.'tables'.DS.'category.php');

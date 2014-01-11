@@ -14,8 +14,6 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin');
 jimport( 'joomla.html.parameter' );
-JPlugin::loadLanguage( 'plg_mymuse_vidplayer_html5', JPATH_ADMINISTRATOR );
-
 
 /**
 * MyMuse Player html5 plugin
