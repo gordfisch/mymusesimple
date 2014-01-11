@@ -53,7 +53,7 @@ class myMuse
 	 * @return	MyMuse	The MyMuse object.
 	 * @since	1.5
 	 */
-	function &getObject($client, $type='helpers', $config = array(), $prefix = 'MyMuse', $renew = '')
+	static function &getObject($client, $type='helpers', $config = array(), $prefix = 'MyMuse', $renew = '')
 	{
 		static $instances;
 

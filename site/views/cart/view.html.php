@@ -46,9 +46,9 @@ print_pre($cart);
 		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
 		$shopper 		=& $MyMuseShopper->getShopper();
 
-		$user			=& JFactory::getUser();
-		$document		=& JFactory::getDocument();
-		$dispatcher		=& JDispatcher::getInstance();
+		$user			= JFactory::getUser();
+		$document		= JFactory::getDocument();
+		$dispatcher		= JDispatcher::getInstance();
 
 		
 		$document->setTitle( JText::_('MYMUSE_SHOPPING_CART') );

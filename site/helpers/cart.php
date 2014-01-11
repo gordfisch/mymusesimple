@@ -20,7 +20,7 @@ class MyMuseCart {
 	function __construct()
 	{
 		// Register the cart
-		$session = &JFactory::getSession();
+		$session = JFactory::getSession();
 		if (!$session->get("cart",0)) {
 			$this->cart = array();
 			$this->cart["idx"] = 0;
@@ -61,12 +61,12 @@ class MyMuseCart {
   function addToCart() {
 
     // Process the cart preparation plugins
-    $dispatcher	=& JDispatcher::getInstance();
+    $dispatcher	= JDispatcher::getInstance();
 	JPluginHelper::importPlugin('system');
 	$results = $dispatcher->trigger('onBeforeAddToCart', array (&$_POST, &$this->cart ));
 
-	$mainframe 	=& JFactory::getApplication();
-    $params 	=& MyMuseHelper::getParams();
+	$mainframe 	= JFactory::getApplication();
+    $params 	= MyMuseHelper::getParams();
 
     $catid = JRequest::getVar('catid',  0, '', 'int');
     $parentid = JRequest::getVar('parentid',  0, '', 'int');
@@ -75,7 +75,7 @@ class MyMuseCart {
     $item_quantity = JRequest::getVar('item_quantity',  0, '', 'array');
    // $Itemid = JRequest::getVar('Itemid',  0, '', 'int');
 
-    $db	= & JFactory::getDBO();   
+    $db	= JFactory::getDBO();   
 
     if(!@$productid){
         $this->error = JText::_("MYMUSE_PLEASE_SELECT_PRODUCT");
@@ -465,8 +465,8 @@ class MyMuseCart {
   	
   	function buildOrder($edit=true )
   	{
-		$mainframe 	=& JFactory::getApplication();
-    	$params 	=& MyMuseHelper::getParams();
+		$mainframe 	= JFactory::getApplication();
+    	$params 	= MyMuseHelper::getParams();
 		
 		$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
 		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
@@ -474,11 +474,11 @@ class MyMuseCart {
 		$MyMuseStore  	=& MyMuse::getObject('store','models');
 		$store 			= $MyMuseStore->getStore(); 
 		$MyMuseProduct 	=& MyMuse::getObject('product','models');
-		$user 			= &JFactory::getUser();
+		$user 			= JFactory::getUser();
 		
 
 		$Itemid		= JRequest::getVar('Itemid', '');
-		$db	= & JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'product.php');
 
 		// just check that there is an order_item
@@ -675,7 +675,7 @@ class MyMuseCart {
 			$order->colspan2 = 1;
 		}
 
-		$dispatcher	=& JDispatcher::getInstance();
+		$dispatcher	= JDispatcher::getInstance();
 		$result = $dispatcher->trigger('onAfterBuildOrder', array(&$order, &$this->cart));
 		if(count($result)){
 			$order = $result[0];
@@ -695,8 +695,8 @@ class MyMuseCart {
 	 */
 	function getProduct($id=null)
 	{
-		$mainframe 	=& JFactory::getApplication();
-    	$params 	=& MyMuseHelper::getParams();;
+		$mainframe 	= JFactory::getApplication();
+    	$params 	= MyMuseHelper::getParams();;
     	
 		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
 		$shopper 		=& $MyMuseShopper->getShopper();
@@ -708,7 +708,7 @@ class MyMuseCart {
 			return false;
 		}
 	
-		$db	= & JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'product.php');
 		
 		$row = new MymuseTableproduct($db);

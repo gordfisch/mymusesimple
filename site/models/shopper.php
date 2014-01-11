@@ -48,7 +48,7 @@ class mymuseModelShopper extends JModelForm
 	function __construct( )
 	{
 		parent::__construct();
-		$user	= & JFactory::getUser();
+		$user	= JFactory::getUser();
 		$this->getShopper();
 	}
 	
@@ -67,7 +67,7 @@ class mymuseModelShopper extends JModelForm
         if (empty( $this->_shopper ))
         {
         	$params = MyMuseHelper::getParams();
-        	$user	= & JFactory::getUser();
+        	$user	= JFactory::getUser();
         	$task = JRequest::getVar('task');
         	$db = JFactory::getDBO();
         	

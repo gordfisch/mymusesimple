@@ -38,7 +38,7 @@ class myMuseViewShopper extends JViewLegacy
 		$store 			= $MyMuseStore->_store;
 		$MyMuseCart  	= MyMuse::getObject('cart','helpers');
 		$return 		= JRequest::getVar('return','');
-		$user			=& JFactory::getUser();
+		$user			= JFactory::getUser();
 		if(!$shopper->id && $user->get('id')){
 			// not a shopper but already user
 			// try to make first and last names
@@ -48,9 +48,9 @@ class myMuseViewShopper extends JViewLegacy
 		
 		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
 		
-		$document		=& JFactory::getDocument();
-		$dispatcher		=& JDispatcher::getInstance();
-		$pathway		=& $mainframe->getPathway();
+		$document		= JFactory::getDocument();
+		$dispatcher		= JDispatcher::getInstance();
+		$pathway		= $mainframe->getPathway();
 		$Itemid			= JRequest::getVar('Itemid', 0, '', 'int');
 		
     	$this->assignRef('Itemid', $Itemid);
