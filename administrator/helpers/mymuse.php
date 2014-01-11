@@ -85,12 +85,6 @@ class MyMuseHelper extends JObject
 	
 	);
 	
-	/**
-	 * filehande to error log
-	 *
-	 * @var		file_handle
-	 */
-	private $fh = null;
 	
 	function __construct()
 	{
@@ -268,14 +262,12 @@ class MyMuseHelper extends JObject
 	 * @param $message
 	 * @return boolean
 	 */
-	function logMessage($message){
+	static function logMessage($message){
 		jimport('joomla.filesystem.file');
-		if(!$this->_fh){
-			$this->_fh = fopen(JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'log.txt', "a");
+		if($fh = fopen(JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'log.txt', "a")){
+			fwrite($fh,$message."\n");
+			fclose($fh);
 		}
-		fwrite($this->_fh,$message."\n");
-		fclose($this->_fh);
-
 		return true;
 	}
 

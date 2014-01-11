@@ -50,7 +50,6 @@ class MyMuseCheckout
 	function save( ) {
 		$mainframe = JFactory::getApplication();
 		$params = MyMuseHelper::getParams();
-		$MyMuseHelper = new MyMuseHelper;
 
 		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
 		$MyMuseStore  	=& MyMuse::getObject('store','models');
@@ -64,7 +63,7 @@ class MyMuseCheckout
 
 		// TODO stop repeat orders on reload
 		if($params->get('my_debug')){
-			$MyMuseHelper->logMessage( "Order::save: Have a cart ". print_r($cart,true)  );
+			MyMuseHelper::logMessage( "Order::save: Have a cart ". print_r($cart,true)  );
 		}
 		$coupon_id 			= 0;
 		$coupon_discount 	= 0;
@@ -177,7 +176,7 @@ class MyMuseCheckout
 		//check coupons
 		if($params->get('my_use_coupons') && $coupon_id){
 			if(!$this->_db){
-				$MyMuseHelper->logMessage( "Order::save: cart_order->coupon" . $print_r($cart_order->coupon, true));
+				MyMuseHelper::logMessage( "Order::save: cart_order->coupon" . $print_r($cart_order->coupon, true));
 			}
 			$order->coupon_id			= $cart_order->coupon->id;
 			$order->coupon_name 		= $cart_order->coupon->title;
@@ -191,7 +190,7 @@ class MyMuseCheckout
 			$this->_db->execute();
 		}
 		if($params->get('my_debug')){
-			$MyMuseHelper->logMessage( "Order::save: Update coupon" . $query);
+			MyMuseHelper::logMessage( "Order::save: Update coupon" . $query);
 		}
 
 		if($params->get('my_registration') == "no_reg"){
@@ -362,7 +361,7 @@ class MyMuseCheckout
 		$MyMuseShopper->order = $order;
 		$debug = "checkout order saved Order saved:  ".$order->order_number."\n\n";
 		if($params->get('my_debug')){
-			$MyMuseHelper->logMessage( $debug  );
+			MyMuseHelper::logMessage( $debug  );
 		}
 		// SEND EMAIL CONFIRMATION MESSAGES IF STATUS IS CONFIRMED
 		// or if payment offline is enabled
