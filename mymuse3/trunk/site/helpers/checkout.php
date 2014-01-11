@@ -112,8 +112,6 @@ class MyMuseCheckout
 			}
 		}
 
-
-
 		// Loop over cart if 'my_check_stock' is on
 		if ($params->get('my_check_stock')) {
 			for($i = 0; $i < $cart["idx"]; $i++) {
@@ -145,7 +143,9 @@ class MyMuseCheckout
 		if(!@$d["ship_info_id"]){
 			$d["ship_info_id"] = $shopper->id;
 		}
-		
+		if(!$this->_db){
+			MyMuseHelper::logMessage( "Order::save: NO DB");
+		}
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'order.php' );
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'orderitem.php' );
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'ordershipping.php' );
@@ -175,9 +175,7 @@ class MyMuseCheckout
 
 		//check coupons
 		if($params->get('my_use_coupons') && $coupon_id){
-			if(!$this->_db){
-				MyMuseHelper::logMessage( "Order::save: cart_order->coupon" . $print_r($cart_order->coupon, true));
-			}
+			
 			$order->coupon_id			= $cart_order->coupon->id;
 			$order->coupon_name 		= $cart_order->coupon->title;
 			$order->coupon_discount		= $cart_order->coupon->discount;
