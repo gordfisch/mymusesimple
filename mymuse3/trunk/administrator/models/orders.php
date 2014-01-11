@@ -136,7 +136,7 @@ class MymuseModelorders extends JModelList
 		//filter by date
 		$start_date = $this->getState('filter.start_date');
 		$end_date = $this->getState('filter.end_date');
-		$datenow =& JFactory::getDate();
+		$datenow = JFactory::getDate();
 		$now = $datenow->format("%Y-%m-%d");
 		
 		if($start_date== $now && $end_date == $now ){

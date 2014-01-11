@@ -629,7 +629,7 @@ class MyMuseCart {
 		}
 		
 		//SHOPPER GROUP DISCOUNTS
-		$order->shopper_group_name = $shopper->shopper_group_name;
+		$order->shopper_group_name = isset($shopper->shopper_group_name)? $shopper->shopper_group_name : 'default';
 		if(isset($shopper->discount) && $shopper->discount > 0){
 			$order->shopper_group_discount = $shopper->discount;
 		}

@@ -256,7 +256,7 @@ class MyMuseHelper extends JObject
 	 * @param $message
 	 * @return boolean
 	 */
-	function logMessage($message){
+	static function logMessage($message){
 		jimport('joomla.filesystem.file');
 		if($fh = fopen(JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'log.txt', "a")){
 			fwrite($fh,$message."\n");
@@ -471,7 +471,7 @@ class MyMuseHelper extends JObject
 	function getArtistId($id,$parent=0){
 
 		
-		$db	= & JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		if($parent){
 			$query = "SELECT catid from #__mymuse_product
 			WHERE id ='$id'";
@@ -570,7 +570,7 @@ class MyMuseHelper extends JObject
 	 * 
 	 * @return array
 	 */
-	function getNoRegFields()
+	static function getNoRegFields()
 	{
 		$fields = array(
 				'first_name',

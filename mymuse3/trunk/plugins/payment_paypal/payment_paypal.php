@@ -410,34 +410,37 @@ class plgMymusePayment_Paypal extends JPlugin
             			$cart[$i]['coupon_id']= $custom['coupon_id'];
             			$cart['idx']++;
             		}
-            		$cart['ship_method_id'] = $_POST['invoice'];
-            		
-            		
-            		$MyMuseCart->cart = $cart;
-            		//save the cart in the session
-					$session = &JFactory::getSession();
-					$session->set("cart",$MyMuseCart->cart);
-            		$cart_order = $MyMuseCart->buildOrder( 0 );
-  					
-  					
-            		$dispatcher		=& JDispatcher::getInstance();
-                	$res = $dispatcher->trigger('onCaclulateMyMuseShipping', array($cart_order, $cart['ship_method_id'] ));
-
-					$MyMuseCart->cart['shipping'] = $res[0];
-            		$debug = "4.0.2 We have created a cart: $q  ".print_r($MyMuseCart->cart,true)."\n\n";
-            		if($params->get('my_debug')){
-        				MyMuseHelper::logMessage( $debug  );
+  					//shipping?
+  					if (isset($_POST['invoice'])){
+  						$cart_order = $MyMuseCart->buildOrder( 0 );
+  						$cart['ship_method_id'] = $_POST['invoice'];
+  						$dispatcher		=& JDispatcher::getInstance();
+  						$res = $dispatcher->trigger('onCaclulateMyMuseShipping', array($cart_order, $cart['ship_method_id'] ));
+  						$MyMuseCart->cart['shipping'] = $res[0];
   					}
-            		$session->set("cart",$MyMuseCart->cart);
+  					
+  					//save the cart in the session
+  					$MyMuseCart->cart = $cart;
+  					$session = &JFactory::getSession();
+  					$session->set("cart",$MyMuseCart->cart);
             		
-            		// Load the profile data from the database.
+            		
+            		if($params->get('my_debug')){
+            			$debug = "4.0.2 We have created a cart: $q  ".print_r($MyMuseCart->cart,true)."\n\n";
+        				MyMuseHelper::logMessage( $debug  );
+        				$debug = '';
+  					}
+  					
+            		// Shopper
             		$user = JFactory::getUser($user_id);
             		$shopper = $MyMuseShopper->getShopperByUser($user_id);
             		if($params->get('my_registration') == "no_reg"){
           				$shopper->profile = $custom;
           				foreach($custom as $field => $val){
           					$debug = "Assign $val to $field";
-          					MyMuseHelper::logMessage( $debug  );
+          					if($params->get('my_debug')){
+          						MyMuseHelper::logMessage( $debug  );
+          					}
           					if(!$shopper->set($field,$val)){
           						$debug = $shopper->getError();
           						MyMuseHelper::logMessage( $debug  );
@@ -448,7 +451,6 @@ class plgMymusePayment_Paypal extends JPlugin
           				}	
             		}
 					
-            		$session = JFactory::getSession();
             		$session->set("user",$shopper);
             		$debug = "4.0.1 We have created a shopper in the session: $user_id  ".print_r($shopper,true)."\n\n";
             		if($params->get('my_debug')){
