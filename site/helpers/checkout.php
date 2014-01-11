@@ -62,7 +62,9 @@ class MyMuseCheckout
 		$d 				= JRequest::get('post');
 
 		// TODO stop repeat orders on reload
-
+		if($params->get('my_debug')){
+			MyMuseHelper::logMessage( "Order::save: Have a cart ". print_r($cart,true)  );
+		}
 		$coupon_id 			= 0;
 		$coupon_discount 	= 0;
 		$ship_method_id 	= 0;
@@ -150,9 +152,9 @@ class MyMuseCheckout
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'ordershipping.php' );
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'orderpayment.php' );
 		$order = new MymuseTableorder( $this->_db );
-		$config =& JFactory::getConfig();
+		$config = JFactory::getConfig();
 		$tzoffset = $config->get('config.offset');
-		$date =& JFactory::getDate('now', $tzoffset);
+		$date = JFactory::getDate('now', $tzoffset);
 
 		// We used to keep separate shopper,user id's
 		$order->user_id 			= $shopper->id;
@@ -481,9 +483,9 @@ class MyMuseCheckout
 	 */
 	function calc_order_tax($order_subtotal) {
 		 
-		$MyMuseShopper  =&MyMuse::getObject('shopper','models');
-		$shopper =& $MyMuseShopper->getShopper();
-		$params = MyMuseHelper::getParams();
+		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
+		$shopper 		=& $MyMuseShopper->getShopper();
+		$params 		= MyMuseHelper::getParams();
 
 		$taxes = array();
 
@@ -668,13 +670,13 @@ class MyMuseCheckout
 			return false;
 		}
 		 
-		$MyMuseShopper  =&MyMuse::getObject('shopper','models');
-		$shopper =& $MyMuseShopper->getShopper();
+		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
+		$shopper 		=& $MyMuseShopper->getShopper();
 		
-		$MyMuseStore  =&MyMuse::getObject('store','models');
-		$store = $MyMuseStore->getStore();
-		$MyMuseCart  =&MyMuse::getObject('cart','helpers');
-		$cart = $MyMuseCart->cart;
+		$MyMuseStore  	=& MyMuse::getObject('store','models');
+		$store 			= $MyMuseStore->getStore();
+		$MyMuseCart  	=& MyMuse::getObject('cart','helpers');
+		$cart 			= $MyMuseCart->cart;
 		$downloadable = 0;
 
 		// get the main order
