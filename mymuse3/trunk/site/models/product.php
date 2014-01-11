@@ -350,7 +350,7 @@ class MyMuseModelProduct extends JModelItem
 					}
 				}
 
-				$dispatcher		=& JDispatcher::getInstance();
+				$dispatcher	= JDispatcher::getInstance();
 				if($params->get('product_player_type') == "each" || 
 					$params->get('product_player_type') == "single"){
 					reset($tracks);
@@ -756,18 +756,18 @@ class MyMuseModelProduct extends JModelItem
      * @param object $product
      * @return mixed Array or false: array [product_price] [special_shopper_group] [product_discount] [product_shopper_group_discount]
      */
-	function getPrice(&$product) {
+	static function getPrice(&$product) {
 
-		$params 		=& MyMuseHelper::getParams();
-		$MyMuseShopper 	=& MyMuse::getObject('shopper','models');
-		$shopper 		=  $MyMuseShopper->getShopper();
+		$params 		= MyMuseHelper::getParams();
+		$MyMuseShopper 	= MyMuse::getObject('shopper','models');
+		$shopper 		= $MyMuseShopper->getShopper();
 
-		$db	= & JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$shopper_group_discount = 0;
 		$discount = 0;
 		$price_info = array();
 		$price_info["item"]=false;
-//print_pre($params);
+
 		$default_shopper_group_id = $params->get("my_default_shopper_group_id");
 		$product_id = $product->id;
 		if(is_array($product->price)){
@@ -886,7 +886,6 @@ class MyMuseModelProduct extends JModelItem
 		
 		return $price_info;
 		
-		return False;
   	}
   	
   	

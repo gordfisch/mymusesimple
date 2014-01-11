@@ -268,7 +268,7 @@ class MyMuseHelper extends JObject
 	/**
 	 * returnURL. build a return URL
 	 */
-	function returnURL()
+	static function returnURL()
 	{
 			$url = JURI::base(true);
 			$option         = JRequest::getVar( 'option', '' );
@@ -343,8 +343,8 @@ class MyMuseHelper extends JObject
  	 * @param float amount
  	 * @return string
  	 */
-	function printMoney($amount){
-		$params 	=& MyMuseHelper::getParams();
+	static function printMoney($amount){
+		$params = MyMuseHelper::getParams();
 
 		if(!is_numeric($amount)){
 			return $amount;
@@ -380,8 +380,8 @@ class MyMuseHelper extends JObject
  	 * @param array price
  	 * @return string
  	 */
-	function printMoneyPublic($price=array()){
-		$params 	=& MyMuseHelper::getParams();
+	static function printMoneyPublic($price=array()){
+		$params = MyMuseHelper::getParams();
 		$string = '';
 		/**
 		 * $price[item] = 0/1
@@ -879,7 +879,7 @@ class MyMuseHelper extends JObject
      * @param int $bytes
      * @return string
      */
-	function ByteSize($bytes) 
+	static function ByteSize($bytes) 
     {
     	$size = $bytes / 1024;
     	if($size < 1024)
@@ -1198,9 +1198,12 @@ class MyMuseHelper extends JObject
     }
     
     /**
+     * getCouponDiscount
      * 
+     * param object $order
+     * return boolean
      */
-	function getCouponDiscount(&$order){
+	static function getCouponDiscount(&$order){
 
 		if(!isset($order->coupon->id)){
 			return ;

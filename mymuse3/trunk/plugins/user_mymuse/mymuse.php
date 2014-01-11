@@ -22,24 +22,21 @@ if(!defined('MYMUSE_ADMIN_PATH')){
 
 require_once( MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php' );
 
-
-
-/**
- * An example custom profile plugin.
- *
- * @package		Joomla.Plugin
- * @subpackage	User.profile
- * @version		1.6
- */
 class plgUserMyMuse extends JPlugin
 {
 	/**
+	 * Load the language file on instantiation.
+	 *
+	 * @var    boolean
+	 * @since  3.1
+	 */
+	protected $autoloadLanguage = true;
+	
+	/**
 	 * Constructor
 	 *
-	 * @access      protected
-	 * @param       object  $subject The object to observe
-	 * @param       array   $config  An array that holds the plugin configuration
-	 * @since       1.5
+	 * @param   object  $subject  The object to observe
+	 * @param   array   $config   An array that holds the plugin configuration
 	 */
 	public function __construct(& $subject, $config)
 	{

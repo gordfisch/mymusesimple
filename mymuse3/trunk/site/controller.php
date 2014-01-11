@@ -71,8 +71,8 @@ class MyMuseController extends JControllerLegacy
 	function __construct()
 	{
 
-		$mainframe 	=& JFactory::getApplication();
-    	$params 	=& MyMuseHelper::getParams();
+		$mainframe 	= JFactory::getApplication();
+    	$params 	= MyMuseHelper::getParams();
 		parent::__construct();
 
 		$this->MyMuseStore	=& MyMuse::getObject('store','models');
@@ -99,7 +99,7 @@ class MyMuseController extends JControllerLegacy
 	 *
 	 * @access	public
 	 */
-	function display()
+	function display($cachable = false, $urlparams = false)
 	{
 
 
@@ -108,7 +108,7 @@ class MyMuseController extends JControllerLegacy
 			JRequest::setVar('view', 'store');
 		}
 		// View caching logic -- simple... are we logged in?
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
 
 		if ($user->get('id')) {
 			parent::display(false);
@@ -223,7 +223,7 @@ class MyMuseController extends JControllerLegacy
 		
 		$mainframe = JFactory::getApplication();
 		$params = MyMuseHelper::getParams();
-		$user = &JFactory::getUser();
+		$user = JFactory::getUser();
         $Itemid = JRequest::getVar('Itemid','');
         
 		//no_reg and not logged in
@@ -282,9 +282,9 @@ class MyMuseController extends JControllerLegacy
 		}
 		
 		// see if any plugins want to check the order
-		$Itemid = JRequest::getVar('Itemid', 0);
-		$dispatcher		=& JDispatcher::getInstance();
-     	$results = $dispatcher->trigger('onBeforeMyMuseCheckout', 
+		$Itemid		= JRequest::getVar('Itemid', 0);
+		$dispatcher	= JDispatcher::getInstance();
+     	$results 	= $dispatcher->trigger('onBeforeMyMuseCheckout', 
 				array(&$this->shopper, &$this->store, &$this->MyMuseCart->cart, &$params, &$Itemid) );
 				
 		if(is_array($results)){

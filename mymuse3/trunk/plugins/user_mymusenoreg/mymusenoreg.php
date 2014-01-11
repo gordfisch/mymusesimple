@@ -33,12 +33,18 @@ require_once( MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php' );
 class plgUserMyMusenoreg extends JPlugin
 {
 	/**
+	 * Load the language file on instantiation.
+	 *
+	 * @var    boolean
+	 * @since  3.1
+	 */
+	protected $autoloadLanguage = true;
+	
+	/**
 	 * Constructor
 	 *
-	 * @access      protected
-	 * @param       object  $subject The object to observe
-	 * @param       array   $config  An array that holds the plugin configuration
-	 * @since       1.5
+	 * @param   object  $subject  The object to observe
+	 * @param   array   $config   An array that holds the plugin configuration
 	 */
 	public function __construct(& $subject, $config)
 	{
@@ -302,7 +308,7 @@ class plgUserMyMusenoreg extends JPlugin
 			}
 		}
 		
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($javascript);
 		
 		$js = "/**
@@ -384,7 +390,7 @@ class plgUserMyMusenoreg extends JPlugin
      */
    function listCountryState($country_select='', $state_select='', $store_country='') {
 
-		$db	= & JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		//echo "country = $country_select state = $state_select"; exit;
 		$javascript = "onchange=\"changeDynaList( 'state', countrystates, document.adminForm.country.options[document.adminForm.country.selectedIndex].value, 0, 0);\"";
 		

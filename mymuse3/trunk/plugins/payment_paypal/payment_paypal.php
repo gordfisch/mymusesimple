@@ -23,15 +23,18 @@ jimport( 'joomla.plugin.plugin');
 class plgMymusePayment_Paypal extends JPlugin
 {
 	/**
-	 * Constructorcd plugins
+	 * Load the language file on instantiation.
 	 *
-	 * For php4 compatability we must not use the __constructor as a constructor for plugins
-	 * because func_get_args ( void ) returns a copy of all passed arguments NOT references.
-	 * This causes problems with cross-referencing necessary for the observer design pattern.
+	 * @var    boolean
+	 * @since  3.1
+	 */
+	protected $autoloadLanguage = true;
+	
+	/**
+	 * Constructor
 	 *
-	 * @param	object		$subject The object to observe
-	  * @param 	array  		$config  An array that holds the plugin configuration
-	 * @since	1.0
+	 * @param   object  $subject  The object to observe
+	 * @param   array   $config   An array that holds the plugin configuration
 	 */
 	function plgMyMusePayment_Paypal(&$subject, $config)  {
 		parent::__construct($subject, $config);
@@ -57,8 +60,8 @@ class plgMymusePayment_Paypal extends JPlugin
 	function onBeforeMyMusePayment($shopper, $store, $order, $params, $Itemid=1 )
 	{
 
-		$mainframe =& JFactory::getApplication();
-		$db		=& JFactory::getDBO();
+		$mainframe 	= JFactory::getApplication();
+		$db			= JFactory::getDBO();
 		if(isset($shopper->profile['country'])){
 			// Paypal wants the country_2_code
 			$query = "SELECT country_2_code from #__mymuse_country WHERE country_3_code='".$shopper->profile['country']."'";
@@ -127,7 +130,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		}
 		
 		//does this order have reservation fees? How much is the "Pay_now" field?
-		if($order->pay_now > 0 && $order->pay_now < $order->order_subtotal){
+		if(isset($order->pay_now) && $order->pay_now > 0 && $order->pay_now < $order->order_subtotal){
 			$order->idx = 1;
 			$order->order_subtotal = $order->pay_now;
 			$order->items[0]->product_item_price = sprintf("%.2f", $order->pay_now);

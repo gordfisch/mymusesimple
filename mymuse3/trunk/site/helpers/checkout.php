@@ -15,6 +15,7 @@ require_once( JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_mymuse'.DS.'
 
 class MyMuseCheckout
 {
+	
 
 	/**
 	 * error string
@@ -22,12 +23,18 @@ class MyMuseCheckout
 	 * @var string
 	 */
 	var $error = '';
+	
+	/**
+	 * dbo
+	 *
+	 * @var _dbo
+	 */
+	var $_db = null;
 
 
 	function __construct()
 	{
-
-
+		$this->_db 	= JFactory::getDBO();
 	}
 
 	/**
@@ -44,8 +51,6 @@ class MyMuseCheckout
 		$mainframe = JFactory::getApplication();
 		$params = MyMuseHelper::getParams();
 
-
-		$db 			=& JFactory::getDBO();
 		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
 		$MyMuseStore  	=& MyMuse::getObject('store','models');
 		$MyMuseCart  	=& MyMuse::getObject('cart','helpers');
@@ -88,8 +93,8 @@ class MyMuseCheckout
 			if($cart[$i]['product']->product_allfiles){
 				$query = "SELECT id from #__mymuse_product WHERE parentid='".$cart[$i]['product']->parentid."'
 				AND product_downloadable='1' AND product_allfiles !='1' ORDER BY ordering ";
-				$db->setQuery($query);
-				$rows = $db->loadObjectList();
+				$this->_db->setQuery($query);
+				$rows = $this->_db->loadObjectList();
 				foreach($rows as $row){
 					if($cart[$i]["product_id"] == $row->id){
 						continue;
@@ -119,8 +124,8 @@ class MyMuseCheckout
 				$q = "SELECT product_in_stock ";
 				$q .= "FROM #__mymuse_product where id=";
 				$q .= $cart[$i]['product_id'];
-				$db->setQuery($q);
-				$product_in_stock = $db->loadResult();
+				$this->_db->setQuery($q);
+				$product_in_stock = $this->_db->loadResult();
 				if ($cart[$i]['quantity'] > $product_in_stock) {
 					$this->error = JText::_('MYMUSE_THIS_ORDER_EXEEDS_OUR_STOCK_FOR')." ". $cart[$i]['product']->title." : ";
 					$this->error .= JText::_('MYMUSE_CURRENT_IN_STOCK')." ".$product_in_stock;
@@ -144,7 +149,7 @@ class MyMuseCheckout
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'orderitem.php' );
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'ordershipping.php' );
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'orderpayment.php' );
-		$order = new MymuseTableorder( $db );
+		$order = new MymuseTableorder( $this->_db );
 		$config =& JFactory::getConfig();
 		$tzoffset = $config->get('config.offset');
 		$date =& JFactory::getDate('now', $tzoffset);
@@ -176,8 +181,8 @@ class MyMuseCheckout
 			$query = "UPDATE #__mymuse_coupons SET
 			coupon_uses = coupon_uses +1
 			WHERE id='".$order->coupon_id."' ";
-			$db->setQuery($query);
-			$db->execute();
+			$this->_db->setQuery($query);
+			$this->_db->execute();
 		}
 
 
@@ -223,7 +228,7 @@ class MyMuseCheckout
 
 		// Store the order to the database
 		if (!$order->store()) {
-			JError::raiseError( 500, $db->stderr() );
+			JError::raiseError( 500, $this->_db->stderr() );
 			return false;
 		}
 
@@ -239,12 +244,12 @@ class MyMuseCheckout
 			}
 
 			$query = "SELECT * FROM #__mymuse_product WHERE id='".$cart[$i]["product_id"]."'";
-			$db->setQuery($query);
-			$prod = $db->loadObject();
+			$this->_db->setQuery($query);
+			$prod = $this->_db->loadObject();
 			$parentid = $prod->parentid;
 				
 				
-			$order->items[$i] = new MymuseTableorderitem( $db );
+			$order->items[$i] = new MymuseTableorderitem( $this->_db );
 			$order->idx++;
 			$order->items[$i]->order_id = $order->id;
 			$order->items[$i]->product_id = $cart[$i]["product_id"];
@@ -272,7 +277,7 @@ class MyMuseCheckout
 			}
 			// Store the item to the database
 			if (!$order->items[$i]->store()) {
-				JError::raiseError( 500, $db->stderr() );
+				JError::raiseError( 500, $this->_db->stderr() );
 				return false;
 			}
 			// more fields for printing
@@ -284,8 +289,8 @@ class MyMuseCheckout
 			// Build URLs
 			if(isset($cart[$i]['catid']) && $cart[$i]['catid'] != ''){
 				$query = "SELECT * FROM #__categories WHERE id='".$cart[$i]['catid']."'";
-				$db->setQuery($query);
-				if($cat = $db->loadObject()){
+				$this->_db->setQuery($query);
+				if($cat = $this->_db->loadObject()){
 					$order->items[$i]->category_name = $cat->title;
 				}
 				if ($parentid){
@@ -306,9 +311,9 @@ class MyMuseCheckout
 		if($order->order_total == 0.00 || $order->order_total < 0.00){
 			$order->order_status = "C";
 			$query = "UPDATE #__mymuse_order set order_status='C' WHERE id='".$order->id."'";
-			$db->setQuery($query);
-			if (!$db->execute()) {
-				JError::raiseError( 500, $db->stderr() );
+			$this->_db->setQuery($query);
+			if (!$this->_db->execute()) {
+				JError::raiseError( 500, $this->_db->stderr() );
 				return false;
 			}
 		}
@@ -316,7 +321,7 @@ class MyMuseCheckout
 		//Shipping
 		if ($params->get('my_use_shipping') && $cart_order->need_shipping
 				&& isset($cart_order->order_shipping)) {
-			$order_shipping = new MymuseTableordershipping( $db );
+			$order_shipping = new MymuseTableordershipping( $this->_db );
 			$order_shipping->order_id = $order->id;
 			$order_shipping->ship_type = $cart_order->order_shipping->ship_type;
 			$order_shipping->ship_carrier_code = $cart_order->order_shipping->ship_carrier_code;
@@ -327,7 +332,7 @@ class MyMuseCheckout
 			$order_shipping->tracking_id = $cart_order->order_shipping->tracking_id;
 			$order_shipping->created = $date->toSql();
 			if (!$order_shipping->store()) {
-				JError::raiseError( 500, $db->stderr() );
+				JError::raiseError( 500, $this->_db->stderr() );
 				return false;
 			}
 		}
@@ -451,8 +456,6 @@ class MyMuseCheckout
 	 */
 	function calc_order_subtotal(&$cart) {
 
-		$db	= & JFactory::getDBO();
-
 		$subtotal = 0.00;
 		for($i = 0; $i < $cart["idx"]; $i++) {
 			if(@$cart[$i]["coupon_id"]){
@@ -482,7 +485,6 @@ class MyMuseCheckout
 		$shopper =& $MyMuseShopper->getShopper();
 		$params = MyMuseHelper::getParams();
 
-		$db   = & JFactory::getDBO();
 		$taxes = array();
 
 		// GET STORE STATE,COUNTRY
@@ -502,10 +504,10 @@ class MyMuseCheckout
 		LEFT JOIN #__mymuse_country as c ON t.country = c.country_3_code
 		LEFT JOIN #__mymuse_state as s ON s.id = t.province
 		ORDER BY ordering";
-		$db->setQuery($q);
+		$this->_db->setQuery($q);
 		$regex = TAX_REGEX;
 
-		if($tax_rates = $db->loadObjectList()){
+		if($tax_rates = $this->_db->loadObjectList()){
 			$temp_tax = 0;
 			foreach($tax_rates as $rate){
 				$name = preg_replace("/$regex/","_",$rate->tax_name);
@@ -554,13 +556,12 @@ class MyMuseCheckout
 			return false;
 		}
 		$new_price = $price;
-		$db   = & JFactory::getDBO();
 		$taxes = array();
 		$q = "SELECT * FROM #__mymuse_tax_rate ORDER BY ordering";
-		$db->setQuery($q);
+		$this->_db->setQuery($q);
 		$regex = TAX_REGEX;
 
-		if($tax_rates = $db->loadObjectList()){
+		if($tax_rates = $this->_db->loadObjectList()){
 			$temp_tax = 0;
 			foreach($tax_rates as $rate){
 				$temp_tax = $price * $rate->tax_rate;
@@ -677,10 +678,9 @@ class MyMuseCheckout
 		$downloadable = 0;
 
 		// get the main order
-		$db =& JFactory::getDBO();
 		$query = "SELECT * from #__mymuse_order WHERE id='$id'";
-		$db->setQuery($query);
-		$order = $db->loadObject();
+		$this->_db->setQuery($query);
+		$order = $this->_db->loadObject();
 		$order->shopper_group_name = @$shopper->shopper_group_name;
 		$order->shopper_group_discount = @$shopper->discount;
 
@@ -688,8 +688,8 @@ class MyMuseCheckout
 		$order->tax_array = array();
 		$order->tax_total = 0.00;
 		$q = "SELECT * FROM #__mymuse_tax_rate ORDER BY ordering";
-		$db->setQuery($q);
-		$tax_rates = $db->loadObjectList();
+		$this->_db->setQuery($q);
+		$tax_rates = $this->_db->loadObjectList();
 		$regex = TAX_REGEX;
 
 		foreach($tax_rates as $rate){
@@ -701,8 +701,8 @@ class MyMuseCheckout
 
 		//build up the items
 		$query = "SELECT * from #__mymuse_order_item WHERE order_id=$id ORDER BY id";
-		$db->setQuery($query);
-		$order->items = $db->loadObjectList();
+		$this->_db->setQuery($query);
+		$order->items = $this->_db->loadObjectList();
 
 		for($i = 0; $i < count($order->items); $i++){
 			$order->items[$i]->product = $MyMuseCart->getProduct($order->items[$i]->product_id);
@@ -729,8 +729,8 @@ class MyMuseCheckout
 			//echo "catid = $catid, secid = $secid <br />"; print_pre($params); exit;
 			$order->items[$i]->cat_url = myMuseHelperRoute::getCategoryRoute($catid);
 			$query = "SELECT * FROM #__categories WHERE id='".$catid."'";
-			$db->setQuery($query);
-			$cat = $db->loadObject();
+			$this->_db->setQuery($query);
+			$cat = $this->_db->loadObject();
 				
 			$order->items[$i]->category_name = $cat->title;
 			if( $params->get('my_downloads_enable') == "1" ) {
@@ -759,13 +759,13 @@ class MyMuseCheckout
 
 		//add payments
 		$query = "SELECT * from #__mymuse_order_payment WHERE order_id=$id ORDER BY id";
-		$db->setQuery($query);
-		$order->payments = $db->loadObjectList();
+		$this->_db->setQuery($query);
+		$order->payments = $this->_db->loadObjectList();
 
 		//add shipments
 		$query = "SELECT * from #__mymuse_order_shipping WHERE order_id=$id ORDER BY id";
-		$db->setQuery($query);
-		if($order->shipments = $db->loadObjectList()){
+		$this->_db->setQuery($query);
+		if($order->shipments = $this->_db->loadObjectList()){
 			$order->order_shipping = $order->shipments[0];
 		}else{
 			$order->order_shipping = new JObject;

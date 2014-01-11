@@ -62,7 +62,7 @@ $controller	= JControllerLegacy::getInstance('Mymuse');
 $controller->execute(JFactory::getApplication()->input->get('task'));
 
 //save the cart in the session
-$session = &JFactory::getSession();
+$session = JFactory::getSession();
 $MyMuseCart = MyMuse::getObject('cart','helpers');
 $session->set("cart",$MyMuseCart->cart);
 
