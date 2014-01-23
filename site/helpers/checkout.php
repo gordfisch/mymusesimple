@@ -154,7 +154,7 @@ class MyMuseCheckout
 		$config 	= JFactory::getConfig();
 		$tzoffset 	= $config->get('config.offset');
 		$date 		= JFactory::getDate('now', $tzoffset);
-
+		
 		// We used to keep separate shopper,user id's
 		$order->user_id 			= $shopper->id;
 		$order->order_number 		= md5(time().mt_rand());
@@ -175,15 +175,15 @@ class MyMuseCheckout
 
 		//check coupons
 		if($params->get('my_use_coupons') && $coupon_id){
-			
+			MyMuseHelper::logMessage( "Order::save: coupon");
 			$order->coupon_id			= $cart_order->coupon->id;
 			$order->coupon_name 		= $cart_order->coupon->title;
 			$order->coupon_discount		= $cart_order->coupon->discount;
 			// update hit on this coupon
-			$query = "UPDATE #__mymuse_coupons SET
+			$query = "UPDATE #__mymuse_coupon SET
 			coupon_uses = coupon_uses +1
 			WHERE id='".$order->coupon_id."' ";
-			
+
 			$this->_db->setQuery($query);
 			$this->_db->execute();
 		}

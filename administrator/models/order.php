@@ -182,7 +182,8 @@ class MymuseModelorder extends JModelAdmin
 			$item->user->profile = array();
 			foreach ($results as $v) {
 				$k = str_replace("$profile_key.", '', $v[0]);
-				$item->user->profile[$k] = trim($v[1],'"');
+				$item->user->profile[$k] = trim(json_decode($v[1], true),'"');
+				
 			}
 			
 			//if we are using no_reg

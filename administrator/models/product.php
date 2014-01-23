@@ -218,7 +218,7 @@ class MymuseModelproduct extends JModelAdmin
 	 *
 	 * @since	1.6
 	 */
-	protected function prepareTable(&$table)
+	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
 
@@ -730,7 +730,7 @@ class MymuseModelproduct extends JModelAdmin
      */
     function getFileLists()
     {
-    	$params =& MyMuseHelper::getParams();
+    	$params = MyMuseHelper::getParams();
 
  		// file lists for albums
  	
@@ -961,7 +961,7 @@ class MymuseModelproduct extends JModelAdmin
 	}
 	
 
-	function getReorderConditions(){
+	function getReorderConditions($table){
 		$subtype = JRequest::getVar('subtype','');
 		$parentid = JRequest::getVar('parentid','');
 		$db = JFactory::getDBO();

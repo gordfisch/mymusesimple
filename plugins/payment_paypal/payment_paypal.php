@@ -128,6 +128,9 @@ class plgMymusePayment_Paypal extends JPlugin
 		}else{
 			$custom = 'order_number='.$order->order_number.'&email='.$shopper_email;
 		}
+		if($params->get('my_use_shipping') && isset($order->order_shipping->id)){
+			$custom .= '&order_shipping_id='.$order->order_shipping->id;
+		}
 		
 		//does this order have reservation fees? How much is the "Pay_now" field?
 		if(isset($order->pay_now) && $order->pay_now > 0 && $order->pay_now < $order->order_subtotal){
@@ -198,15 +201,11 @@ class plgMymusePayment_Paypal extends JPlugin
 			';
 			
 		}
-		$string .= '<input type="hidden" name="custom"          value=\''. $custom.'\' />
+		$string .= '<input type="hidden" name="custom" value=\''. $custom.'\' />
 		';
-
-		
 
 		if($params->get('my_use_shipping') && isset($order->order_shipping->cost) && $order->order_shipping->cost > 0){
 			$string .= '<input type="hidden" name="shipping_1" value="'. $order->order_shipping->cost.'" />
-			';
-			$string .= '<input type="hidden" name="invoice" value="'. $order->order_shipping->id.'" />
 			';
 		}
 		$string .= '
@@ -413,9 +412,9 @@ class plgMymusePayment_Paypal extends JPlugin
             			$cart['idx']++;
             		}
   					//shipping?
-  					if (isset($_POST['invoice'])){
+  					if (isset($custom['order_shipping_id'])){
   						$cart_order = $MyMuseCart->buildOrder( 0 );
-  						$cart['ship_method_id'] = $_POST['invoice'];
+  						$cart['ship_method_id'] = $custom['order_shipping_id'];
   						$dispatcher	= JDispatcher::getInstance();
   						$res = $dispatcher->trigger('onCaclulateMyMuseShipping', array($cart_order, $cart['ship_method_id'] ));
   						$MyMuseCart->cart['shipping'] = $res[0];

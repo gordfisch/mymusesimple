@@ -72,7 +72,7 @@ function mydownload(url,item_id){
 				<td align="center"><?php if($item->end_date < time()){ ?><span style="color : #c30;">*</span> <?php } ?>
 				<?php 
 				if($item->end_date){
-					$date =& JFactory::getDate($item->end_date);
+					$date = JFactory::getDate($item->end_date);
 					$mydate = $date->format($params->get('my_date_format'));
 					echo $mydate;
 				}

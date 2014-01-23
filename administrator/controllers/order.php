@@ -71,12 +71,6 @@ class MymuseControllerOrder extends JControllerForm
 		JRequest::setVar( 'task', 'mailcustomer'  );
 
 
-		$language =& JFactory::getLanguage();
-
-		$extension = 'com_mymuse';
-		$base_dir = JPATH_SITE;
-		$language_tag = $language->get('lang');
-		$language->load($extension, $base_dir, $language_tag, true);
 		
 		include_once( JPATH_SITE.DS.'components'.DS.'com_mymuse'.DS.'mymuse.class.php' );
 		$MyMuseStore  	=& MyMuse::getObject('store','models');
@@ -84,6 +78,18 @@ class MymuseControllerOrder extends JControllerForm
 		$model 			= $this->getModel();
 		$order			= $model->getItem();
 
+		$language = JFactory::getLanguage();
+		$uparams = $order->user->getParameters();
+		$language_tag = $uparams->get('language');
+		if(!$language_tag){
+			$language_tag = $language->get('lang');
+		}
+		$extension = 'com_mymuse';
+		$base_dir = JPATH_SITE;
+		
+		$language->load($extension, $base_dir, $language_tag, true);
+		
+	
 		include_once( JPATH_SITE.DS.'components'.DS.'com_mymuse'.DS.'templates'.DS.'mail_html_header.php' );
 		ob_start();
 		$this->display();

@@ -254,7 +254,9 @@ endif; ?>
 
 <!-- IMAGE INTROTEXT -->
 <table class="mymusetable">
-<?php if( ($params->get('product_show_product_image') && $product->detail_image) || $params->get('show_intro')) :?>
+<?php 
+
+if( ($params->get('product_show_product_image') && $product->detail_image) || $params->get('show_intro')) :?>
 <tr>
 	<td>
 	<table class="mymusetable">

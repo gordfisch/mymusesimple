@@ -184,9 +184,6 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 	    
 	<?php echo JHtml::_('form.token'); ?>
 	
-
-				
-				
 	<fieldset class="adminform">
 		<h2><?php echo JText::_('MYMUSE_CUSTOMER') ?></h2>
 		<table class="admintable" width="100%">
