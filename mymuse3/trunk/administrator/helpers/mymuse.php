@@ -417,7 +417,7 @@ class MyMuseHelper extends JObject
 	 */
 	
 	function logPayment($payment){
-		$db		= & JFactory::getDBO();
+		$db		= JFactory::getDBO();
 		include_once(JPATH_ADMINISTRATOR.DS."components".DS."com_mymuse".DS."tables".DS."orderpayment.php");
 		$table = new MymuseTableorderpayment($db);
 		
@@ -560,9 +560,9 @@ class MyMuseHelper extends JObject
 	 * 
 	 * @param string $code
 	 */
-	function getStatusName($code){
+	static function getStatusName($code){
 		
-		$db	= & JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$q = "SELECT name FROM #__mymuse_order_status WHERE ";
 		$q .= "code = '".$code."' ";
 		$db->setQuery($q);
@@ -859,9 +859,9 @@ class MyMuseHelper extends JObject
 		$mainframe = JFactory::getApplication();
 		
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'order.php' );
-		$datenow 	=& JFactory::getDate();
-		$params		=& MyMuseHelper::getParams();
-		$db			= & JFactory::getDBO();
+		$datenow 	= JFactory::getDate();
+		$params		= MyMuseHelper::getParams();
+		$db			=  JFactory::getDBO();
 		$order 		= new MymuseTableorder($db);
 		$order->load( $id );
 		$order->order_status = $status;
@@ -1036,7 +1036,7 @@ class MyMuseHelper extends JObject
 		// Filter settings
 		jimport( 'joomla.application.component.helper' );
 		$config	= JComponentHelper::getParams( 'com_mymuse' );
-		$user	= &JFactory::getUser();
+		$user	= JFactory::getUser();
 		$gid	= $user->get( 'gid' );
 
 		$filterGroups	=  $config->get( 'filter_groups' );
@@ -1073,7 +1073,7 @@ class MyMuseHelper extends JObject
 	function filterCategory($query, $active = NULL)
 	{
 		// Initialize variables
-		$db	= & JFactory::getDBO();
+		$db	= JFactory::getDBO();
 
 		$categories[] = JHTML::_('select.option', '0', '- '.JText::_('Select Category').' -');
 		$db->setQuery($query);
@@ -1087,7 +1087,7 @@ class MyMuseHelper extends JObject
 	function filterContent($query, $active = NULL)
 	{
 		// Initialize variables
-		$db	= & JFactory::getDBO();
+		$db	= JFactory::getDBO();
 
 		$contents[] = JHTML::_('select.option', '0', '- '.JText::_('Select Review').' -');
 		$db->setQuery($query);
@@ -1159,7 +1159,7 @@ class MyMuseHelper extends JObject
      * @return bool
      */
    function list_currency($list_name, $value="") {
-     $db	= & JFactory::getDBO();
+     $db	= JFactory::getDBO();
      $str = '';
      $q = "SELECT * from currency ORDER BY currency_name ASC";
      $db->execute($q);
@@ -1544,7 +1544,7 @@ abstract class MGrid
 	 */
 	public static function orderStatusOptions()
 	{
-		$db =& JFactory::getDBO();
+		$db = JFactory::getDBO();
 		
 		$query = "SELECT * FROM #__mymuse_order_status ORDER BY `ordering`";
 		$db->setQuery($query);

@@ -403,6 +403,17 @@
 	 			<option value="0">MYMUSE_NO</option>
 	 			<option value="1">MYMUSE_YES</option>
 	 		</field>
+	 		<field 
+				name="show_recording_details" 
+				type="list" 
+				default="0" 
+				label="MYMUSE_SHOW_RECORDING_DETAILS_LABEL"
+				description="MYMUSE_SHOW_RECORDING_DETAILS_DESC"  
+				>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+          	</field>
 	<field type="spacer" name="spacerdownload" label="MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" /> 		
 			
 			<field name="product_show_tracks" type="radio" default="1" label="MYMUSE_SHOW_TRACKS_LABEL" description="MYMUSE_SHOW_TRACKS_DESC">

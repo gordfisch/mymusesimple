@@ -768,7 +768,7 @@ class MyMuseModelProduct extends JModelItem
 		$price_info = array();
 		$price_info["item"]=false;
 
-		$default_shopper_group_id = $params->get("my_default_shopper_group_id");
+		$default_shopper_group_id = $params->get("my_default_shopper_group_id",1);
 		$product_id = $product->id;
 		if(is_array($product->price)){
 			// we've been here already

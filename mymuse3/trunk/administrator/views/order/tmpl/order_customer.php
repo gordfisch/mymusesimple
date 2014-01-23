@@ -157,13 +157,7 @@ if($downloads && $order->order_status == "C"){
                 <td><?php echo $shopper->city ?></td>
                 </tr>
                 <?php }?>
-                <?php if($shopper->region ){?>
-                <tr>
-                <td><?php echo JText::_('MYMUSE_STATE') ?>:</td>
-                <td><?php echo $shopper->region ?></td>
-                </tr>
-                <?php }?>
-                
+               
                 <?php if(isset($shopper->region)){ 
 							if(!isset($shopper->region_name)){
 								if(!is_numeric($shopper->region)){

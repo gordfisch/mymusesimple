@@ -57,7 +57,7 @@ class myMuseViewStore extends JViewLegacy
         		return false;
         	}
 
-        	$db	= & JFactory::getDBO();
+        	$db	= JFactory::getDBO();
         	$query = "SELECT * FROM #__mymuse_order WHERE order_number = '$id'";
         	$db->setQuery($query);
         	$row = $db->loadObject();
@@ -124,7 +124,7 @@ class myMuseViewStore extends JViewLegacy
         		}
         	}
         	
-        	$uri = &JFactory::getURI();
+        	$uri = JFactory::getURI();
         	if($params->get('my_registration') == "no_reg"){
         		$current =  $uri->current()."?option=com_mymuse&task=accdownloads&id=".$id."&item_id=";
         	}else{

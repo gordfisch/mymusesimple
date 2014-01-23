@@ -117,12 +117,13 @@ class mymuseModelShopper extends JModelForm
 				if(!$profile){
 					//try to load their profile
 					if($this->loadProfile($user)){
-						echo "loaded profile";
+						//echo "loaded profile";
 					}
 				}
 				if(!isset($profile['shopper_group'])){
 					$profile['shopper_group'] = 1;
 				}
+				
 				
 				//is there a profile to fill in?
 				if($params->get('my_registration') == "full" && $my_profile_key != ''){
@@ -145,7 +146,7 @@ class mymuseModelShopper extends JModelForm
     								(!isset($profile[$field]) || $profile[$field] == "")
     						) {
     							//this guy needs to update profile
-								$this->setError("Missing :".$field);
+								$this->setError(JText::_('MYMUSE_MISSING').$field);
     							$this->_shopper->perms = 0;
     						}
     					}
@@ -354,11 +355,9 @@ class mymuseModelShopper extends JModelForm
 			{
 				$user->profile[$k] = $v[1];
 			}
-			if($k == "region"){
-	
-	
-	
-			}
+		}
+		if($user->profile['region'] && !isset($user->profile['region_name']) && $profile_key != 'mymuse'){
+			$user->profile['region_name'] = $user->profile['region'];
 		}
 		if(!isset($user->profile['shopper_group'])){
 			$user->profile['shopper_group'] = 1;
