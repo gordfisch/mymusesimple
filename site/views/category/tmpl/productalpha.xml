@@ -533,8 +533,8 @@
 	 		</field>
 	 		<field 
 				name="show_recording_details" 
-				type="list" 
-				default="0" 
+				type="radio"
+				class="btn-group" 
 				label="MYMUSE_SHOW_RECORDING_DETAILS_LABEL"
 				description="MYMUSE_SHOW_RECORDING_DETAILS_DESC"  
 				>
