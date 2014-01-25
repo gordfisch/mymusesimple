@@ -125,8 +125,9 @@ class plgMymusePayment_Paypal extends JPlugin
 				$custom .= $key.'='.$val.'&';
 			}
 			$custom = preg_replace("/&$/","",$custom);
-		}else{
-			$custom = 'order_number='.$order->order_number.'&email='.$shopper_email;
+		}
+		if(isset($order->order_number)){
+			$custom = 'order_number='.$order->order_number.'&email='.$shopper->email;
 		}
 		if($params->get('my_use_shipping') && isset($order->order_shipping->id)){
 			$custom .= '&order_shipping_id='.$order->order_shipping->id;
