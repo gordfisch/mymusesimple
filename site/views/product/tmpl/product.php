@@ -308,7 +308,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
       	    <?php endif; ?>
       		</tr>
 			<tr>
-				<td align="center"><span class="checkbox"><input type="checkbox" name="productid[]" 
+				<td align="center"><span class="mycheckbox"><input type="checkbox" name="productid[]" 
 				value="<?php echo $product->id; ?>" id="box<?php echo $check; $check++; ?>" 
 				<?php if($count == 1){ ?>
 				CHECKED="CHECKED"
@@ -362,7 +362,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 			foreach($items as $item){  
 				?>
 			  		<tr>
-        				<td align="center"><span class="checkbox"><input type="checkbox" name="productid[]" 
+        				<td align="center"><span class="mycheckbox"><input type="checkbox" name="productid[]" 
         				value="<?php echo $item->id; ?>" id="box<?php echo $check; $check++; ?>" /></span></td>
         				<td><?php echo $item->title; ?></td>
         			<?php foreach($product->attribute_sku as $a_sku){ ?>
@@ -506,7 +506,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 			  		<?php  if($params->get('product_show_select_column', 1)){?>
         				<td align="center" valign="top">
         				<?php if($track->file_name || $track->product_allfiles) :?>
-        				<span class="checkbox"><input type="checkbox" name="productid[]" 
+        				<span class="mycheckbox"><input type="checkbox" name="productid[]" 
         				value="<?php echo $track->id; ?>" id="box<?php echo $check; $check++; ?>" />
       						</span>
       					<?php  endif; ?>

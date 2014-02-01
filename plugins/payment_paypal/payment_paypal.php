@@ -353,9 +353,12 @@ class plgMymusePayment_Paypal extends JPlugin
             	$date = date('Y-m-d h:i:s');
             	$debug = "$date  4. order VERIFIED at PayPal\n\n";
             	$result['order_verified'] = 1;
+            	
         		if($params->get('my_debug')){
         			MyMuseHelper::logMessage( $debug  );
   				}
+  				
+  				$result['payment_status'] = "Completed";
             	
             	
   				// SAVE ORDER AFTER
