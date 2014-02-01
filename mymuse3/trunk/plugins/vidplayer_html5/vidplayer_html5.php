@@ -359,7 +359,7 @@ jQuery(document).ready(function(){
 		</div>
 
 
-			<div id="jplayer_inspector"></div>
+			<div id="jplayer_inspector_'.$id.'"></div>
 		</section>
 ';
 			
