@@ -368,34 +368,56 @@ class mymuseModelShopper extends JModelForm
 	
 	
 	/*
+	 * Validate form
 	 * Put post variables from form into session
-	 */
+	 * log them in
+	*/
 	function savenoreg()
 	{
-		$user	= JFactory::getUser();
-		$fields = MyMuseHelper::getNoRegFields();
-		
-		
 		// Initialise variables.
 		$app	= JFactory::getApplication();
+		$user	=& JFactory::getUser();
+		$fields = MyMuseHelper::getNoRegFields();
 		
+		if($user->get('id')){
+			return true;
+		}
+		$db	= & JFactory::getDBO();
+		$query = "SELECT * FROM #__users WHERE username='buyer'";
+		$db->setQuery($query);
+		$guest = $db->loadObject();
+		if(!$guest){
+			if(!$this->createGuestUser()){
+				return false;
+			}
+			$db->setQuery($query);
+			$guest = $db->loadObject();
+		}
+		if(!$guest){
+			$this->setError(JText::_("MYMUSE_COULD_NOT_FIND_GUEST"));
+			return false;
+		}
+		
+
 		// Get the user data.
 		$requestData = JRequest::getVar('jform', array(), 'post', 'array');
-		
+
 		// Validate the posted data.
 		$form	= $this->getForm();
 		if (!$form) {
 			JError::raiseError(500, $model->getError());
 			return false;
 		}
+		// Save the data in the session.
+		$app->setUserState('com_users.registration.data', $requestData);
 		
 		$data	= $this->validate($form, $requestData);
-		
+
 		// Check for validation errors.
 		if ($data === false) {
 			// Get the validation messages.
 			$errors	= $this->getErrors();
-		
+
 			// Push up to three validation messages out to the user.
 			for ($i = 0, $n = count($errors); $i < $n && $i < 3; $i++) {
 				if ($errors[$i] instanceof Exception) {
@@ -404,14 +426,25 @@ class mymuseModelShopper extends JModelForm
 					$app->enqueueMessage($errors[$i], 'warning');
 				}
 			}
-		
-			// Save the data in the session.
-			$app->setUserState('com_mymuse.noreg.data', $requestData);
-		
-				
 			return false;
 		}
 
+		//perform the login action
+		$credentials = array();
+		$credentials['username'] = 'buyer';
+		$credentials['password'] = 'buyer';
+		$options = array();
+		$error = $app->login($credentials, $options);
+		
+		if(!JError::isError($error)){
+		
+		}else{
+			$this->setError(JText::_($error->code));
+			return false;
+		}
+		$user	= JFactory::getUser('buyer');
+		
+		//put values into user
 		$post = JRequest::get('post');
 		if(isset($post['jform']['profile']['region']) && !isset($post['jform']['profile']['region_name']) ){
 			$db = JFactory::getDBO();
@@ -434,13 +467,13 @@ class mymuseModelShopper extends JModelForm
 				$user->set('name',@$post['jform']['profile']['first_name']." ".@$post['jform']['profile']['last_name']);
 			}
 		}
-		$this->_shopper = &$user;
-		$this->_id = $user->get('id');
-		$this->_shopper->user_id = $user->get('id');
-		$this->_shopper->perms = 1;
-
+		
+		$session = JFactory::getSession();
+		$session->set('user', $user);
+		
 		return true;
 	}
+	
 	
 	function cancel()
 	{
@@ -517,6 +550,13 @@ class mymuseModelShopper extends JModelForm
 		
 	}
 	
+	/*
+	 * make_no_register
+	*
+	* Get guest user and log them in, creating user if need be
+	*
+	* return boolen
+	*/
 	function make_no_register()
 	{
 		$mainframe = JFactory::getApplication();

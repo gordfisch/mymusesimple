@@ -390,6 +390,24 @@ class MyMuseCheckout
 		$order->colspan		= 3;
 		$order->colspan2 	= 1;
 		$link_message = '';
+		
+		//see if there is a message
+		$dispatcher		=& JDispatcher::getInstance();
+		$pp = JRequest::getVar('pp', '');
+		$my_email_msg = $params->get('my_email_msg');
+		if($pp){
+			JPluginHelper::importPlugin('mymuse',$pp);
+			$results = $dispatcher->trigger('onAfterMyMusePayment',
+					array() );
+			foreach($results as $res){
+				if(preg_match("/$pp/", $res)){
+					$arr = explode(":",$res);
+					array_shift($arr);
+					$my_email_msg = implode(":",$arr);
+				}
+			}
+			 
+		}
 
 		ob_start();
 		include_once( JPATH_COMPONENT.DS.'templates'.DS.'thank_you.php' );
@@ -413,6 +431,14 @@ class MyMuseCheckout
 			$link_message .= $link;
 			$contents .= $link_message;
 			include_once( JPATH_COMPONENT.DS.'templates'.DS.'mail_downloads.php' );
+			$order->downloadlink = $link_message;
+		}
+		if($order->downloadable  && $order->order_status == "P"){
+			$link = JURI::base()."index.php?option=com_mymuse&task=vieworder&orderid=".$order->id;
+			$link_message .= JText::_('MYMUSE_PURCHASE_ORDER')." <br />\n";
+			$link_message .= '<a href="'.$link.'">'.$link.'</a><br /><br />'."\n";
+			 
+			$download_header .= $link_message;
 			$order->downloadlink = $link_message;
 		}
 

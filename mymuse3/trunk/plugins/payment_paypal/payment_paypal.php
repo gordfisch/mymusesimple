@@ -113,21 +113,20 @@ class plgMymusePayment_Paypal extends JPlugin
 		
 		//Shopper Email
 		if($this->params->get('my_paypal_sandbox') && $this->params->get('my_paypal_sandbox_customer_email')){
-			$shopper_email = $this->params->get('my_paypal_sandbox_customer_email');
+			$payer_email = $this->params->get('my_paypal_sandbox_customer_email');
 		}else{
-			$shopper_email = $shopper->email;
+			$payer_email = $shopper->email;
 		}
 		
 		//custom field
-		$custom = '';
+		$custom = 'custom=1';
 		if($params->get('my_registration') == "no_reg"){
 			foreach($shopper->profile as $key=>$val){
-				$custom .= $key.'='.$val.'&';
+				$custom .= '&'.$key.'='.$val;
 			}
-			$custom = preg_replace("/&$/","",$custom);
 		}
 		if(isset($order->order_number)){
-			$custom = 'order_number='.$order->order_number.'&email='.$shopper->email;
+			$custom = '&order_number='.$order->order_number.'&email='.$shopper->email;
 		}
 		if($params->get('my_use_shipping') && isset($order->order_shipping->id)){
 			$custom .= '&order_shipping_id='.$order->order_shipping->id;
@@ -147,7 +146,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		<form action="'.PAYPAL_URL.'" method="post" name="adminFormPayPal" >
 	    <input type="hidden" name="amount" value="'.sprintf("%.2f", $order->order_subtotal).'" />
 		<input type="hidden" name="tax_cart"        value="'. $order->tax_total.'" />
-		<input type="hidden" name="return"          value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&Itemid='.$Itemid.'" />
+		<input type="hidden" name="return"          value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&pp=paypal&Itemid='.$Itemid.'" />
 		<input type="hidden" name="cancel_return"   value="'. JURI::base().'index.php?option=com_mymuse&task=paycancel&Itemid='.$Itemid.'" />
 		<input type="hidden" name="notify_url"      value="'. JURI::base().'index.php?option=com_mymuse&task=notify" />
 		
@@ -171,7 +170,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		<input type="hidden" name="state"   		value="'. $shopper->region.'" />
 		<input type="hidden" name="country" 		value="'. $shopper->country.'" />
 		<input type="hidden" name="zip"     		value="'. $shopper->postal_code.'" />
-		<input type="hidden" name="payer_email"     value="'. $shopper_email.'" />
+		<input type="hidden" name="payer_email"     value="'. $payer_email.'" />
 		
 		';
 		
@@ -233,7 +232,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		$debug = "#####################\nPayPal notify PLUGIN\n";
 
 		$result = array();
-		$result['plugin'] 				= "PayPal";
+		$result['plugin'] 				= "payment_paypal";
 		$result['myorder'] 				= 0; //must be >0 to trigger that it was this plugin
 		$result['message_sent'] 		= 0; //must be >0 or tiggers error
 		$result['message_received'] 	= 0; //must be >0 or tiggers error
@@ -329,7 +328,7 @@ class plgMymusePayment_Paypal extends JPlugin
         }else{
         	$date = date('Y-m-d h:i:s');
         	$debug .= "$date 2. Connection successful. Now posting to ".PAYPAL_HOST."$paypalpath \n\n";
-        	
+        	$result['message_sent'] = 1;
 
         	fwrite($fp, $header . $sendToPayPal);
         	$res = '';
@@ -337,7 +336,7 @@ class plgMymusePayment_Paypal extends JPlugin
         		$res .= fgets ($fp, 1024);
         	}
         	fclose ($fp);
-        	$result['message_sent'] = 1;
+        	
         	$date = date('Y-m-d h:i:s');
         	$debug .= "$date 3. Response from ".PAYPAL_HOST.": \n";
         	$debug .= $res."\n\n";
@@ -382,13 +381,13 @@ class plgMymusePayment_Paypal extends JPlugin
   					}else{
   						$q = "SELECT u.id from #__users as u
   						WHERE
-  						u.email='".$_POST['user_email']."'";
+  						u.email='".$result['user_email']."'";
   					}
 					$db->setQuery($q);
 					$user_id = $db->loadResult();
 					if(!$user_id){
 						$debug = "4.0.1 We do not have a user id! Must exit. Emails were
-						payer ".$_POST['payer_email']." user ".$_POST['user_email']."\n";
+						payer ".$_POST['payer_email']." user ".$result['user_email']."\n";
 						if($params->get('my_debug')){
         					MyMuseHelper::logMessage( $debug  );
   						}
@@ -491,7 +490,7 @@ class plgMymusePayment_Paypal extends JPlugin
         		
         		$db->setQuery($query);
         		if(!$this_order = $db->loadObject()){
-        			$debug = "5. !!!!Error no order object: ".$db->_errorMsg."\n\n";
+        			$debug .= "5. !!!!Error no order object: ".$db->_errorMsg."\n\n";
         			$debug .= "-------END-------";
         			if($params->get('my_debug')){
         				MyMuseHelper::logMessage( $debug  );
@@ -537,8 +536,11 @@ class plgMymusePayment_Paypal extends JPlugin
 	
 	function onAfterMyMusePayment()
 	{
-	
-		$email_msg = "paymentpaypal:".preg_replace("/\\n/","<br />",$this->params->get('email_msg'));
+		$email_msg = '';
+		if($this->params->get('email_msg')){
+			$email_msg = "payment_paypal:".preg_replace("/\\n/","<br />",$this->params->get('email_msg'));
+			
+		}
 		return $email_msg;
 	
 	}
