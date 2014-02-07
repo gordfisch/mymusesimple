@@ -199,22 +199,18 @@ class MyMuseController extends JControllerLegacy
 	}
 	
 	function savenoreg()
-	{
-		if(!$this->MyMuseShopper->make_no_register()){
-			$err = $this->MyMuseShopper->getError();
-			$msg = JText::_("MYMUSE_COULD_NOT_LOG_YOU_IN").' '.$err;
-			$this->setRedirect( "index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$Itemid", $msg);
-			return false;
-		}
-		$params = MyMuseHelper::getParams();
+	{	
+		$Itemid = JRequest::getVar('Itemid','');
 		if($this->MyMuseShopper->savenoreg()){
-			$this->setRedirect( "index.php?option=com_mymuse&task=checkout");
+			$this->setRedirect( "index.php?option=com_mymuse&task=checkout&Itemid=$Itemid");
 			//JRequest::setVar('task','checkout');
-			//$this->checkout();
 			return true;
 		}else{
 			// Redirect back to the registration screen.
-			$this->setRedirect(JRoute::_('index.php?option=com_mymuse&view=shopper&layout=register', false));
+			$err = $this->MyMuseShopper->getError();
+			$msg = '';
+			$this->setRedirect("index.php?option=com_mymuse&view=shopper&layout=register&Itemid=$Itemid", $msg);
+			return false;
 		}
 	}
 	
@@ -439,6 +435,13 @@ class MyMuseController extends JControllerLegacy
 		$st 			= JRequest::getVar('st', 0);
 		$after			= JRequest::getVar('after', 0);
 		$tx 			= JRequest::getVar('tx', 0);
+		
+		$pesapal_merchant_reference= JRequest::getVar('pesapal_merchant_reference', 0);
+		$pp 			= JRequest::getVar('pp', 0);
+		
+		if($pesapal_merchant_reference){
+			$order_number = $pesapal_merchant_reference;
+		}
 
 		if($after || $params->get('my_saveorder') == "after"){
 			// See if there is a transaction value
@@ -450,9 +453,10 @@ class MyMuseController extends JControllerLegacy
 				$id = $db->loadResult();
 			}
 			
-			if(!$orderid){
+			if(!$orderid && $pp != 'paymentoffline'){
 				//get the last orderid
-				$q1 = "SELECT id from #__mymuse_order WHERE user_id='$user_id' ORDER BY id DESC LIMIT 0,1";
+				$q1 = "SELECT id from #__mymuse_order WHERE 
+				notes LIKE '%". $user->get('email')  ."%' ORDER BY id DESC LIMIT 0,1";
 				$db->setQuery($q1);
 				$orderid = $db->loadResult();
 			}
@@ -819,5 +823,36 @@ class MyMuseController extends JControllerLegacy
 		JResponse::setHeader('Content-Disposition','attachment;filename="coupon_'.$rand .'.json"');
 		echo json_encode($data);
 		exit;
+	}
+	
+	/*
+	 * send_ipn
+	*
+	* For testing pesapal, url must have pesapal_merchant_reference
+	*/
+	function send_ipn()
+	{
+		$pesapalNotification="CHANGE";
+		$pesapalTrackingId=md5(time());
+		$pesapal_merchant_reference=$_GET['pesapal_merchant_reference'];
+		$url = 'index.php?option=com_mymuse&task=notify';
+		$url .= "&pesapal_notification_type=$pesapalNotification";
+		$url .= "&pesapal_merchant_reference=$pesapal_merchant_reference";
+		$url .= "&pesapal_transaction_tracking_id=$pesapalTrackingId";
+		$this->setRedirect( $url);
+		return false;
+	}
+	
+	/*
+	 * send_status
+	*
+	* For testing pesapal
+	*/
+	
+	function send_status()
+	{
+		echo "STATUS=CONFIRMED";
+		exit;
+	
 	}
 }

@@ -75,7 +75,11 @@ class plgMymusePayment_Offline extends JPlugin
 	function onAfterMyMusePayment()
 	{
 	
-		$email_msg = "paymentpaypal:".preg_replace("/\\n/","<br />",$this->params->get('email_msg'));
+		$email_msg = '';
+		if($this->params->get('email_msg')){
+			$email_msg = "payment_offline:".preg_replace("/\\n/","<br />",$this->params->get('email_msg'));
+		
+		}
 		return $email_msg;
 	
 	}

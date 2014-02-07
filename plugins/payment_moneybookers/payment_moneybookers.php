@@ -341,10 +341,12 @@ class plgMymusePayment_Moneybookers extends JPlugin
 	
 	function onAfterMyMusePayment()
 	{
-	
-		$email_msg = "paymentpaypal:".preg_replace("/\\n/","<br />",$this->params->get('email_msg'));
+		$email_msg = '';
+		if($this->params->get('email_msg')){
+			$email_msg = "payment_moneybookers:".preg_replace("/\\n/","<br />",$this->params->get('email_msg'));
+				
+		}
 		return $email_msg;
-	
 	}
 
 }

@@ -355,6 +355,18 @@ class myMuseViewCart extends JViewLegacy
 
 
         $debug = "$date Making response emails \n";
+        
+        //special for pesapal
+        if($result['plugin'] == "PesaPal"){
+        	$pesapalNotification=$_GET['pesapal_notification_type'];
+        	$pesapalTrackingId=$_GET['pesapal_transaction_tracking_id'];
+        	$pesapal_merchant_reference=$_GET['pesapal_merchant_reference'];
+        	$resp="pesapal_notification_type=$pesapalNotification&pesapal_transaction_tracking_id=$pesapalTrackingId&pesapal_merchant_reference=$pesapal_merchant_reference";
+        	ob_start();
+        	echo $resp;
+        	ob_flush();
+        	$debug .= "Sent to Pesapal: $resp \n";
+        }
         	
         //Make message
         if(!$result['message_sent'] || !$result['message_received']){
@@ -477,8 +489,26 @@ class myMuseViewCart extends JViewLegacy
         	$subject = Jtext::_('MYMUSE_ORDER')." ".$result['payment_status']." ".$store->title;
         	$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
         	$download_header = '';
-
-        	$debug .= "Downloadable = ".$order->downloadable."\n";
+        	$debug .= "$date Downloadable = ".$order->downloadable."\n";
+        	$contents  = '';
+        	
+        	//see if there is a message
+        	$my_email_msg = '';
+        	$dispatcher		=& JDispatcher::getInstance();
+        	$pp = JRequest::getVar('pp', 0);
+        	
+        	if($result['plugin']){
+        		JPluginHelper::importPlugin('mymuse',$result['plugin']);
+        		$results = $dispatcher->trigger('onAfterMyMusePayment', array() );
+        		$pp = $result['plugin'];
+        		foreach($results as $res){
+        			if(preg_match("/$pp/", $res)){
+        				$arr = explode(":",$res);
+        				$my_email_msg = $arr[1];
+        			}
+        		}
+        	}
+        	$debug .= "$date Email message: $my_email_msg \n\n";
 
         	include_once( JPATH_COMPONENT.DS.'templates'.DS.'mail_html_header.php' );
 
@@ -506,8 +536,8 @@ class myMuseViewCart extends JViewLegacy
         			$mailfrom,
         			$fromname );
         	$mailer->setSender($sender);
-        	//recipient
         	
+        	//recipient
         	if($params->get('my_plugin_email')){
         		//cc admin
         		$recipient = array($user_email, $mailfrom);
