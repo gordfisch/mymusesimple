@@ -118,10 +118,13 @@ class myMuseViewCart extends JViewLegacy
 					$heading 	= Jtext::_('MYMUSE_CONFIRM');
 					$message 	= Jtext::_('MYMUSE_CHOOSE_PAYMENT_METHOD');
 					$this->order = $order 		= $MyMuseCart->buildOrder( 0 );
+					
+					/**
 					$order->order_number 		= session_id();
 					//save the faux order number in the session
 					$session = JFactory::getSession();
 					$session->set("order_number",$order->order_number);
+					*/
 					
 					$order->show_checkout = 0;
 					$order->show_summary  = 0;

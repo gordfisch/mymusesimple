@@ -125,7 +125,7 @@ div.cat-items div.items-row{
 /* end list items */
 
 .mymusetable {
-	width: 100%;
+	width: auto;
 }
 .mymusetable td {
 	padding: 5px;
@@ -142,7 +142,7 @@ table.mymuse_cart {
 	padding: 0px;
 	border: 1px solid #CCCCCC;
 	border-spacing: 0px;
-    width: 100%;
+    width: auto;
 }
 
 table.mymuse_cart_inner {
@@ -151,7 +151,7 @@ table.mymuse_cart_inner {
 	padding: 0px;
 	border: 1px solid #CCCCCC;
 	border-spacing: 0px;    
-	width: 100%;
+	width: auto;
 
 }
 
