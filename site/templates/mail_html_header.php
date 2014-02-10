@@ -10,7 +10,7 @@
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-$my_email_msg = preg_replace("/\\n/","<br />",$params->get('my_email_msg'));
+$my_email_msg = preg_replace("/\\n/","<br />",$my_email_msg);
 	$header =  '
 <!DOCTYPE HTML>
 <html lang="en-gb" dir="ltr">
@@ -27,7 +27,7 @@ $my_email_msg = preg_replace("/\\n/","<br />",$params->get('my_email_msg'));
 </head>
     <body bgcolor="#FFFFFF" text="#000000" leftmargin="0" topmargin="0" >    
 
-    <table width=800  border=0 cellspacing=0 cellpadding=2>
+    <table width="90%"  border=0 cellspacing=0 cellpadding=2>
       <tr>
         <td valign="top><a href="'.JURI::root().'"><img align="left" src="'.JURI::root().$params->get('store_thumb_image').'" border="0"></a></td>
         <td>
@@ -36,11 +36,9 @@ $my_email_msg = preg_replace("/\\n/","<br />",$params->get('my_email_msg'));
         <tr><td>'.$params->get('address_1').' '.$params->get('address_2').'</td></tr>
         <tr><td>'.$params->get('city').', '.$params->get('state').'</td></tr>
         <tr><td>'.$params->get('country').', '.$params->get('zip').'</td></tr>
-        <tr><td>Phone: '.$params->get('phone').' <br />
-        Email: <a href="mailto: '.$params->get('contact_email').'">'.$params->get('contact_email').'</a><br />
-        Web: <a href="'.JURI::root().'">'.JURI::root().'</a><br />
-        
-        </td></tr>
+        <tr><td>Phone: '.$params->get('phone').' </td></tr>
+        <tr><td>Email: <a href="mailto: '.$params->get('contact_email').'">'.$params->get('contact_email').'</a></td></tr>
+        <tr><td>Web: <a href="'.JURI::root().'">'.JURI::root().'</a></td></tr>
         </table>
       </td>
       </tr>

@@ -386,8 +386,10 @@ class plgMymusePayment_Paypal extends JPlugin
 					$db->setQuery($q);
 					$user_id = $db->loadResult();
 					if(!$user_id){
-						$debug = "4.0.1 We do not have a user id! Must exit. Emails were
-						payer ".$_POST['payer_email']." user ".$result['user_email']."\n";
+						$debug = "4.0.1 We do not have a user id! Must exit. ";
+						$result['error'] = $debug;
+						$debug .= "\n $q \nEmails were \npayer ".$_POST['payer_email']." user ".$result['user_email']."\n";
+						$debug .= "-------END-------";
 						if($params->get('my_debug')){
         					MyMuseHelper::logMessage( $debug  );
   						}
@@ -539,7 +541,6 @@ class plgMymusePayment_Paypal extends JPlugin
 		$email_msg = '';
 		if($this->params->get('email_msg')){
 			$email_msg = "payment_paypal:".preg_replace("/\\n/","<br />",$this->params->get('email_msg'));
-			
 		}
 		return $email_msg;
 	

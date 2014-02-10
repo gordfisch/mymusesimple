@@ -175,14 +175,14 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
 		
 		<input type="hidden" name="ssl_receipt_apprvl_method"        value="REDG" />
 		<input type="hidden" name="ssl_receipt_apprvl_get_url"      	
-			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&Itemid='.$Itemid.'" />
+			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&pp=virtualmerchant&Itemid='.$Itemid.'" />
 				
 		<input type="hidden" name="ssl_error_url"      	
-			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&Itemid='.$Itemid.'" />
+			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&pp=virtualmerchant&Itemid='.$Itemid.'" />
 			
 		<input type="hidden" name="ssl_receipt_decl_method"        value="REDG" />
 		<input type="hidden" name="ssl_receipt_decl_get_url"      	
-			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&Itemid='.$Itemid.'" />	
+			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&pp=virtualmerchant&Itemid='.$Itemid.'" />	
 			
 		';
 

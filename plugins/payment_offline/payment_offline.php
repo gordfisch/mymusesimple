@@ -60,7 +60,8 @@ class plgMymusePayment_Offline extends JPlugin
 		<input type="hidden" name="task" value="thankyou">
 		<input type="hidden" name="notifyCustomer" value="1">
 		<input type="hidden" name="id" value="'.$order->id.'">
-		<div id="paypal_form">
+		<input type="hidden" name="pp" value="payoffline">
+		<div id="payoffline_form">
 		<input type="submit" class="button" name="paymentoffline" value="'.JText::_('MYMUSE_I_WILL_PAY_OFFLINE').'" />
 		</div>
 		</form>

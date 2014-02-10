@@ -63,7 +63,10 @@ class MyMuseCheckout
 
 		// TODO stop repeat orders on reload
 		if($params->get('my_debug')){
-			MyMuseHelper::logMessage( "Order::save: Have a cart ". print_r($cart,true)  );
+			$date = date('Y-m-d h:i:s');
+			$debug = "################### \nCHECKOUT SAVE FUNCTION\n".
+			$debug .= "$date  Have a cart ". print_r($cart,true) ;
+			MyMuseHelper::logMessage( $debug );
 		}
 		$coupon_id 			= 0;
 		$coupon_discount 	= 0;
@@ -188,7 +191,7 @@ class MyMuseCheckout
 			$this->_db->execute();
 		}
 		if($params->get('my_debug')){
-			MyMuseHelper::logMessage( "Order::save: Update coupon" . $query);
+			MyMuseHelper::logMessage( "$date Update coupon" . $query);
 		}
 
 		if($params->get('my_registration') == "no_reg"){
@@ -357,14 +360,15 @@ class MyMuseCheckout
 		// All done with inserting ORDER!!
 		// attach the current order to the shopper
 		$MyMuseShopper->order = $order;
-		$debug = "checkout order saved Order saved:  ".$order->order_number."\n\n";
+		
 		if($params->get('my_debug')){
+			$debug = "$date Order saved:  ".$order->order_number."\n\n";
 			MyMuseHelper::logMessage( $debug  );
 		}
 		// SEND EMAIL CONFIRMATION MESSAGES IF STATUS IS CONFIRMED
 		// or if payment offline is enabled
 		jimport( 'joomla.plugin.helper' );
-		if($order->order_status == "C" || JPluginHelper::isEnabled('mymuse','paymentoffline')){
+		if($order->order_status == "C" || JPluginHelper::isEnabled('mymuse','payment_offline')){
 			$this->mailOrder($MyMuseShopper,$MyMuseStore);
 		}
 		 
@@ -403,7 +407,7 @@ class MyMuseCheckout
 				if(preg_match("/$pp/", $res)){
 					$arr = explode(":",$res);
 					array_shift($arr);
-					$my_email_msg = implode(":",$arr);
+					$my_email_msg .= implode(":",$arr);
 				}
 			}
 			 
@@ -691,8 +695,9 @@ class MyMuseCheckout
 	}
 
 	function getOrder($id=0){
-		$mainframe = JFactory::getApplication();
-		$params = MyMuseHelper::getParams();
+		$mainframe 	= JFactory::getApplication();
+		$params 	= MyMuseHelper::getParams();
+		$db			= & JFactory::getDBO();
 
 		if(!$id){
 			$this->error = JText::_('MYMUSE_NO_ORDER_ID');
@@ -710,8 +715,8 @@ class MyMuseCheckout
 
 		// get the main order
 		$query = "SELECT * from #__mymuse_order WHERE id='$id'";
-		$this->_db->setQuery($query);
-		$order = $this->_db->loadObject();
+		$db->setQuery($query);
+		$order = $db->loadObject();
 		$order->shopper_group_name = @$shopper->shopper_group_name;
 		$order->shopper_group_discount = @$shopper->discount;
 
@@ -719,8 +724,8 @@ class MyMuseCheckout
 		$order->tax_array = array();
 		$order->tax_total = 0.00;
 		$q = "SELECT * FROM #__mymuse_tax_rate ORDER BY ordering";
-		$this->_db->setQuery($q);
-		$tax_rates = $this->_db->loadObjectList();
+		$db->setQuery($q);
+		$tax_rates = $db->loadObjectList();
 		$regex = TAX_REGEX;
 
 		foreach($tax_rates as $rate){
@@ -732,8 +737,8 @@ class MyMuseCheckout
 
 		//build up the items
 		$query = "SELECT * from #__mymuse_order_item WHERE order_id=$id ORDER BY id";
-		$this->_db->setQuery($query);
-		$order->items = $this->_db->loadObjectList();
+		$db->setQuery($query);
+		$order->items = $db->loadObjectList();
 
 		for($i = 0; $i < count($order->items); $i++){
 			$order->items[$i]->product = $MyMuseCart->getProduct($order->items[$i]->product_id);
@@ -760,8 +765,8 @@ class MyMuseCheckout
 			//echo "catid = $catid, secid = $secid <br />"; print_pre($params); exit;
 			$order->items[$i]->cat_url = myMuseHelperRoute::getCategoryRoute($catid);
 			$query = "SELECT * FROM #__categories WHERE id='".$catid."'";
-			$this->_db->setQuery($query);
-			$cat = $this->_db->loadObject();
+			$db->setQuery($query);
+			$cat = $db->loadObject();
 				
 			$order->items[$i]->category_name = $cat->title;
 			if( $params->get('my_downloads_enable') == "1" ) {
@@ -790,13 +795,13 @@ class MyMuseCheckout
 
 		//add payments
 		$query = "SELECT * from #__mymuse_order_payment WHERE order_id=$id ORDER BY id";
-		$this->_db->setQuery($query);
-		$order->payments = $this->_db->loadObjectList();
+		$db->setQuery($query);
+		$order->payments = $db->loadObjectList();
 
 		//add shipments
 		$query = "SELECT * from #__mymuse_order_shipping WHERE order_id=$id ORDER BY id";
-		$this->_db->setQuery($query);
-		if($order->shipments = $this->_db->loadObjectList()){
+		$db->setQuery($query);
+		if($order->shipments = $db->loadObjectList()){
 			$order->order_shipping = $order->shipments[0];
 		}else{
 			$order->order_shipping = new JObject;

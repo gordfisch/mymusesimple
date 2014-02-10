@@ -311,8 +311,7 @@ class myMuseViewCart extends JViewLegacy
      	$results 		= $dispatcher->trigger('onMyMuseNotify', array($params) );
      	foreach($results as $r){
             if($params->get('my_debug')){
-     			$debug .= print_r( $r, true );
-     			$debug .= "\n\n";
+     			$debug = "Result from Plugin\n" . print_r( $r, true ). "\n\n";
         		MyMuseHelper::logMessage( $debug  );
   			}
      		if($r['myorder']){
@@ -323,7 +322,7 @@ class myMuseViewCart extends JViewLegacy
      	if(!count($result)){
      		
      		if($params->get('my_debug')){
-     			$debug .= "$date Did not get a result!\n";
+     			$debug = "$date Did not get a result!\n";
      			$debug .= "-------END-------\n";
         		MyMuseHelper::logMessage( $debug  );
   			}
@@ -353,11 +352,13 @@ class myMuseViewCart extends JViewLegacy
      	}
      	$mailer->addRecipient($recipient);
 
-
-        $debug = "$date Making response emails \n";
+        if($params->get('my_debug')){
+        	$debug = "$date Making response emails \n";
+        	MyMuseHelper::logMessage( $debug  );
+        }
         
         //special for pesapal
-        if($result['plugin'] == "PesaPal"){
+        if($result['plugin'] == "payment_pesapal"){
         	$pesapalNotification=$_GET['pesapal_notification_type'];
         	$pesapalTrackingId=$_GET['pesapal_transaction_tracking_id'];
         	$pesapal_merchant_reference=$_GET['pesapal_merchant_reference'];
@@ -369,9 +370,16 @@ class myMuseViewCart extends JViewLegacy
         }
         	
         //Make message
-        if(!$result['message_sent'] || !$result['message_received']){
-
-        	$debug .= $result['plugin'].": Notify Fatal Error\n\n";
+        if($result['order_completed'] == "ALREADY_COMPLETED"){
+  			if($params->get('my_debug')){
+  				$debug = "$date ".$result['plugin'].": Order was already completed: ".$result['payment_status']." \n\n";
+  				MyMuseHelper::logMessage( $debug  );
+  			}
+        }elseif(!$result['message_sent'] || !$result['message_received']){
+        	if($params->get('my_debug')){
+        		$debug = $result['plugin'].": Notify Fatal Error\n\n";
+        		MyMuseHelper::logMessage( $debug  );
+        	}
         	
         	$subject = $result['plugin'].": Notify Fatal Error";
             $message = "Hello,
@@ -389,8 +397,10 @@ class myMuseViewCart extends JViewLegacy
 
             
         }elseif(!$result['order_verified']){
-
-        	$debug .= "$date ".$result['plugin'].": Order was not VERIFIED \n\n";
+        	if($params->get('my_debug')){
+        		$debug = "$date ".$result['plugin'].": Order was not VERIFIED \n\n";
+        		MyMuseHelper::logMessage( $debug  );
+        	}
         	$subject = $result['plugin'].": Order was not VERIFIED";
             $message = "Hello,
             Received a response but it was not VERIFIED.
@@ -406,8 +416,10 @@ class myMuseViewCart extends JViewLegacy
             
             
         }elseif(!$result['order_found']){
-
-        	$debug .= "$date ".$result['plugin'].": Order was not found \n\n";
+        	if($params->get('my_debug')){
+        		$debug = "$date ".$result['plugin'].": Order was not found \n\n";
+        		MyMuseHelper::logMessage( $debug  );
+        	}
         	$subject = $result['plugin'].": Order was not found";
             $message = "Hello,
             Received a response but we could not find the order.
@@ -423,7 +435,11 @@ class myMuseViewCart extends JViewLegacy
             
         }elseif(!$result['order_completed']){
 
-        	$debug .= "$date ".$result['plugin'].": Order was not completed: ".$result['payment_status']." \n\n";
+        	
+        	if($params->get('my_debug')){
+        		$debug = "$date ".$result['plugin'].": Order was not completed: ".$result['payment_status']." \n\n";
+        		MyMuseHelper::logMessage( $debug  );
+        	}
         	$subject = $result['plugin'].": Order was not completed: ".$result['payment_status'];
             $message = "Hello,
             Received a response but if was not marked completed: ".$result['payment_status']."
@@ -439,14 +455,9 @@ class myMuseViewCart extends JViewLegacy
             
         }else{
         	//all is good!
-        	// first check if order has already been captured
-        	//$result['transaction_id']
-        	
-        	
-        	
-        	
-        	$debug .= "$date Making customer emails, logging payment \n\n";
+
         	if($params->get('my_debug')){
+        		$debug = "$date All is good \n";
         		MyMuseHelper::logMessage( $debug  );
         	}
         	//make the email and send to customer
@@ -474,7 +485,7 @@ class myMuseViewCart extends JViewLegacy
                 $shopper->state         = $accparams->get('state');
             }
             $user_email 	= $user->email;
-
+			$task = JRequest::getVar('task','');
         	$this->assignRef('user'  , $user);
         	$this->assignRef('params', $params);
         	$this->assignRef('task', $task);
@@ -486,17 +497,19 @@ class myMuseViewCart extends JViewLegacy
         	$this->assignRef('message', $message);
 
 
-        	$subject = Jtext::_('MYMUSE_ORDER')." ".$result['payment_status']." ".$store->title;
+        	$subject = $shopper->first_name." ".$shopper->last_name." ".Jtext::_('MYMUSE_ORDER')." ".$result['payment_status']." ".$store->title;
         	$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
         	$download_header = '';
-        	$debug .= "$date Downloadable = ".$order->downloadable."\n";
+        	
+        	if($params->get('my_debug')){
+        		$debug = "$date Downloadable = ".$order->downloadable."\n";
+        		MyMuseHelper::logMessage( $debug  );
+        	}
         	$contents  = '';
         	
         	//see if there is a message
-        	$my_email_msg = '';
+        	$my_email_msg = $params->get('my_email_msg');
         	$dispatcher		=& JDispatcher::getInstance();
-        	$pp = JRequest::getVar('pp', 0);
-        	
         	if($result['plugin']){
         		JPluginHelper::importPlugin('mymuse',$result['plugin']);
         		$results = $dispatcher->trigger('onAfterMyMusePayment', array() );
@@ -504,13 +517,18 @@ class myMuseViewCart extends JViewLegacy
         		foreach($results as $res){
         			if(preg_match("/$pp/", $res)){
         				$arr = explode(":",$res);
-        				$my_email_msg = $arr[1];
+        				$my_email_msg .= $arr[1];
         			}
         		}
         	}
-        	$debug .= "$date Email message: $my_email_msg \n\n";
+        	
+        	if($params->get('my_debug')){
+        		$debug = "$date Email message: $my_email_msg \n\n";
+        		MyMuseHelper::logMessage( $debug  );
+        	}
 
         	include_once( JPATH_COMPONENT.DS.'templates'.DS.'mail_html_header.php' );
+        	
 
         	$contents  = '';
         	
@@ -572,14 +590,12 @@ class myMuseViewCart extends JViewLegacy
         	 
         	$MyMuseHelper = new MyMuseHelper;
         	if(!$MyMuseHelper->logPayment($payment)){
-        		$debug .= "!!Log Payment Error: ".$MyMuseHelper->getError()."\n\n";
+        		$debug = "$date !!Log Payment Error: ".$MyMuseHelper->getError()."\n\n";
         		MyMuseHelper::logMessage( $debug  );
-        		$debug = '';
         	}
         	if($params->get('my_debug')){
-        		$debug .= "Payment logged\n";
+        		$debug = "$date Payment logged\n";
         		MyMuseHelper::logMessage( $debug  );
-        		$debug = '';
         	}
         	
         	
@@ -623,6 +639,7 @@ class myMuseViewCart extends JViewLegacy
         	
         	
         	// update stock
+        	$debug = '';
         	if ($params->get('my_use_stock')) {
         		for($i = 0; $i < count($order->items); $i++) {
         			if(@$order->items[$i]->coupon_id){ continue; }
@@ -630,26 +647,18 @@ class myMuseViewCart extends JViewLegacy
         			if($order->items[$i]->product->product_physical){
         				if (!MyMuseHelper::updateStock($order->items[$i]->product->id, $order->items[$i]->quantity)) {
         					$db= JFactory::getDBO();
-        					
-        					
-        					$debug .= "Could not update stock\n".$db->getErrorMsg()."\n";
+        					$debug .= "$date Could not update stock\n".$db->getErrorMsg()."\n";
         				}
-        				$debug .= " Subtracted ".$order->items[$i]->quantity. " From ".$order->items[$i]->product->title."\n";
+        				$debug .= "$date Subtracted ".$order->items[$i]->quantity. " From ".$order->items[$i]->product->title."\n";
         			}
         		}
         	}else{
-        		$debug .= "params->get('my_use_stock') was ".$params->get('my_use_stock')."\n";
+        		$debug .= "$date use_stock was ".$params->get('my_use_stock')."\n";
         	}
-     	
-     	
         }
 	   
-        
-
-	    
-
   		if($params->get('my_debug')){
-            $debug .= "-------END-------";
+            $debug .= "-------END NOTIFY FUNCTION-------";
         	MyMuseHelper::logMessage( $debug  );
   		}
         if(isset($result['redirect']) && $result['redirect'] != ""){
