@@ -19,7 +19,7 @@ $params 	= $this->params;
 
 		<table class="mymuse_cart">
         <tr VALIGN=top>
-            <td width=50%> <!-- Begin BillTo -->
+            <td> <!-- Begin BillTo -->
 
             <table class="mymuse_cart" >
                 <tr class="mymuse_cart_top">
@@ -83,7 +83,7 @@ $params 	= $this->params;
             </table>
             <!-- End BillTo --> </td>
         
-            <td width=50%>
+            <td>
         <?php 
         if($params->get('my_use_shipping') && isset($shopper->shipto)){
         ?>

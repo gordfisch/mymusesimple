@@ -20,7 +20,7 @@ $params 	= $this->params;
 
 <?php if($this->order->need_shipping){ ?>
 
-<table class="mymuse_cart" width="90%">
+<table class="mymuse_cart">
 	<tr class="mymuse_cart_top">
 		<td class="mymuse_cart_top" width="50"><b><?php echo JText::_('MYMUSE_CHOOSE'); ?></b></td>
 		<td class="mymuse_cart_top"><b><?php echo JText::_('MYMUSE_SHIP_METHOD'); ?></b></td>

@@ -1,4 +1,0 @@
-[07-Feb-2014 22:01:07 America/New_York] PHP Fatal error:  Cannot access protected property mymuseModelShopper::$_db in /home/joomlamy/public_html/test/components/com_mymuse/helpers/checkout.php on line 717
-[08-Feb-2014 23:19:41 America/New_York] PHP Warning:  Creating default object from empty value in /home/joomlamy/public_html/test/components/com_mymuse/views/cart/view.html.php on line 181
-[09-Feb-2014 17:32:48 America/New_York] PHP Warning:  Creating default object from empty value in /home/joomlamy/public_html/test/components/com_mymuse/views/cart/view.html.php on line 181
-[09-Feb-2014 22:09:11 America/New_York] PHP Warning:  Creating default object from empty value in /home/joomlamy/public_html/test/components/com_mymuse/views/cart/view.html.php on line 181

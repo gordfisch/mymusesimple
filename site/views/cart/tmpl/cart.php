@@ -37,9 +37,9 @@ $task		= $this->task;
 	<?php if($params->get("my_show_sku")){ ?>
 		<td class="mymuse_cart_top"><b><?php echo JText::_('MYMUSE_CART_SKU'); ?></b></td>
 	<?php } ?>
-		<td class="mymuse_cart_top" align="right" width="80"><b><?php echo JText::_('MYMUSE_CART_PRICE'); ?></b></td>
+		<td class="mymuse_cart_top" align="right"><b><?php echo JText::_('MYMUSE_CART_PRICE'); ?></b></td>
 		<td class="mymuse_cart_top"><b><?php echo JText::_('MYMUSE_CART_QUANTITY'); ?></b></td>
-		<td class="mymuse_cart_top" width="80" align="right"><b><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?></b></td>
+		<td class="mymuse_cart_top"  align="right"><b><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?></b></td>
 		<?php if(@$order->do_html){ ?>
 		    <td align="center" class="mymuse_cart_top"><b><?php echo JText::_('MYMUSE_CART_ACTION'); ?></b>&nbsp;<?php echo $order->update_form; ?></td>		    
 		<?php } ?>
@@ -232,7 +232,7 @@ $task		= $this->task;
 
 		<table class="mymuse_cart">
 			<tr>
-				<td align="center" width="50%"><form>
+				<td align="center"><form>
 				<input type="button" class="button" 
 				onclick="location.href='index.php?option=com_mymuse&task=checkout&Itemid=<?php echo $Itemid; ?>'"
 				value="<?php echo JText::_('MYMUSE_CHECKOUT'); ?>"
