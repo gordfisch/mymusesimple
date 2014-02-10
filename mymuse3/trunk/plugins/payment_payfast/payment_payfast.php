@@ -90,7 +90,7 @@ class plgMymusePayment_Payfast extends JPlugin
 		    }
 		    
 		// Create URLs
-		$returnUrl = JURI::Base() .'index.php?option=com_mymuse&task=thankyou&Itemid='.$Itemid;
+		$returnUrl = JURI::Base() .'index.php?option=com_mymuse&task=thankyou&pp=payfast&Itemid='.$Itemid;
 		$cancelUrl = JURI::Base() .'index.php?option=com_mymuse&task=paycancel&Itemid='.$Itemid;
 		$notifyUrl = JURI::Base() .'index.php?option=com_mymuse&task=notify&order_number='.$order->order_number;
 

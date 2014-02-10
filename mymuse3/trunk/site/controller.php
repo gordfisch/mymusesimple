@@ -101,8 +101,6 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function display($cachable = false, $urlparams = false)
 	{
-
-
 		// Set a default view if none exists
 		if ( !JRequest::getCmd( 'view' ) ) {
 			JRequest::setVar('view', 'store');
@@ -453,7 +451,7 @@ class MyMuseController extends JControllerLegacy
 				$id = $db->loadResult();
 			}
 			
-			if(!$orderid && $pp != 'paymentoffline'){
+			if(!$orderid && $pp != 'paymentoffline' && $params->get('my_registration') == "no_reg"){
 				//get the last orderid
 				$q1 = "SELECT id from #__mymuse_order WHERE 
 				notes LIKE '%". $user->get('email')  ."%' ORDER BY id DESC LIMIT 0,1";
@@ -471,6 +469,17 @@ class MyMuseController extends JControllerLegacy
 			$db->setQuery($q);
 			$orderid = $db->loadResult();
 		}
+		
+		if(!$orderid && $params->get('my_saveorder') == "after"){
+			// no id
+			
+			$msg = JText::_("MYMUSE_NO_ORDER_WAITING");
+			$this->setRedirect("index.php?option=com_mymuse&view=shopper&layout=waiting", $msg);
+			return false;
+		}
+		
+		
+		
 		if(!$orderid){
 			// no id
 			$msg = JText::_("MYMUSE_NO_ORDER_ID");
@@ -691,7 +700,6 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function notify()
 	{
-		//echo "Got to notify"; 
 		JRequest::setVar('view', 'cart');
 		JRequest::setVar('layout', 'cart');
 		$this->display();
