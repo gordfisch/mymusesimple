@@ -14,7 +14,7 @@ $shopper 	= $this->shopper;
 $order 		= $this->order;
 $params 	= $this->params;
 ?>
-     <table class="mymuse_cart" width="90%">
+     <table class="mymuse_cart">
  
         <!-- Begin Order Summary -->
         <tr>
