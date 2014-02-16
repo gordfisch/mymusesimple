@@ -55,16 +55,22 @@ class MyMuseModelTracks extends JModelList
 				'catid', 'a.catid', 'category_title',
 				'state', 'a.state',
 				'access', 'a.access', 'access_level',
-				'created', 'a.created',
-				'created_by', 'a.created_by',
+				'created', 'p.created',
+				'created_by', 'p.created_by',
 				'ordering', 'a.ordering',
 				'featured', 'a.featured',
 				'language', 'a.language',
 				'hits', 'a.hits',
 				'price','a.price',
+				'product_discount','a.product_discount',
 				'publish_up', 'a.publish_up',
 				'publish_down', 'a.publish_down',
-                'category_name', 'c.title'
+                'category_name', 'c.title',
+				'sales', 's.sales',
+				'created','p.created',
+				'modified','p.modified',
+				'product_made_date', 'p.product_made_date',
+				'c.lft'
 			);
 		}
 
@@ -82,12 +88,14 @@ class MyMuseModelTracks extends JModelList
 	protected function populateState($ordering = 'category_name', $direction = 'ASC')
 	{
 		$app = JFactory::getApplication();
+		$params 	= MyMuseHelper::getParams();
 
 		// List state information
         $pk		= JRequest::getInt('id');
         $this->setState('category.id', $pk);
         $this->setState('list.alpha', JRequest::getString('filter_alpha', ''));
         $this->setState('list.prods', JRequest::getString('products', ''));
+        $this->setState('list.searchword', JRequest::getString('searchword',''));
         
 		//$value = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
 		$value = JRequest::getUInt('limit', $app->getCfg('list_limit', 0));
@@ -96,20 +104,50 @@ class MyMuseModelTracks extends JModelList
 		//$value = $app->getUserStateFromRequest($this->context.'.limitstart', 'limitstart', 0);
 		$value = JRequest::getUInt('limitstart', 0);
 		$this->setState('list.start', $value);
-
-		$orderCol	= JRequest::getCmd('filter_order', 'category_name');
-		if (!in_array($orderCol, $this->filter_fields)) {
-			$orderCol = 'category_name';
-		}
-		$this->setState('list.ordering', $orderCol);
-
+		
+		//listOrder
+		$this->setState('list.ordering', '');
+		$this->setState('list.secondaryOrder','');
+		
+		//direction
 		$listOrder	=  JRequest::getCmd('filter_order_Dir', 'ASC');
 		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))) {
 			$listOrder = 'ASC';
 		}
 		$this->setState('list.direction', $listOrder);
+		
+		//primary ordering
+		if($params->get('orderby_pri') != 'none'){
+			$orderCol = ProductHelperQuery::orderbyPrimary($params->get('orderby_pri'));
+			$this->setState('list.ordering', $orderCol);
+		}
 
-		$params = $app->getParams();
+		//over ride primary if we have filter request
+		$filter_order	= JRequest::getCmd('filter_order', '');
+		if ($filter_order){
+			if(!in_array($filter_order, $this->filter_fields)) {
+				$filter_order = 'category_name';
+			}
+			$this->setState('list.ordering', $filter_order);
+		}
+		
+		//secondary ordering
+		if(!$filter_order){
+			$secondaryOrder = ProductHelperQuery::orderbyProduct($params->get('orderby_sec','alpha'),$params->get('order_date',''));
+			$this->setState('list.secondaryOrder',$secondaryOrder);
+		}
+		
+		//if order by track, override ordering
+		$orderby_track = $params->get('orderby_track','');
+		
+		if(!$filter_order && $orderby_track){
+			$primaryOrder = ProductHelperQuery::orderbySecondary($orderby_track,$params->get('order_date',''));
+			$this->setState('list.secondaryOrder','');
+			$this->setState('list.direction', '');
+			$this->setState('list.ordering', $primaryOrder );
+				
+		}
+
 		$this->setState('params', $params);
 		$user		= JFactory::getUser();
 
@@ -185,27 +223,43 @@ class MyMuseModelTracks extends JModelList
 		$db = $this->getDbo();
 
         $alpha = $this->getState('list.alpha','');
+        $searchword = $this->getState('list.searchword','');
         $IN = $this->getState('list.prods','');
-        $ordering 	= $this->getState('list.ordering', 'category_name');
         $listDirn	= $this->getState('list.direction', 'ASC');
-        if($ordering == 'category_name'){
-        	//$ordering = 'category_name, a.title';
+        $ordering 	= $this->getState('list.ordering', 'category_name');
+        if(preg_match("/ASC|DESC/",strtoupper($ordering)) || !$ordering){
+        	$listDirn	= '';
         }
         
-        // TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS 
+        $secondaryOrder = $this->getState('list.secondaryOrder', '');
+
+       // TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS 
         // get child tracks with prices
         $query = "SELECT a.id, a.title, a.title_alias,a.alias, a.introtext, a.fulltext, a.parentid, a.product_physical, 
-        a.product_downloadable, a.product_allfiles, a.product_sku,
-        a.product_made_date, a.price, a.featured, a.product_discount, a.product_package_ordering, a.product_package,
+        a.product_downloadable, a.product_allfiles, a.product_sku, a.hits,
+        a.price, a.featured, a.product_discount, a.product_package_ordering, 
+        a.product_package,
         a.file_length,a.file_time,
         a.file_name,a.file_preview,a.file_preview_2, a.file_preview_3,a.file_type, a.detail_image,
-        p.title as product_title, p.alias as parent_alias, p.catid as artistid, p.product_made_date,
-        c.title as category_name,
-        ROUND(v.rating_sum / v.rating_count, 0) AS rating, v.rating_count as rating_count
+        p.id as parentid, p.title as product_title, p.alias as parent_alias, p.catid as artistid, 
+        p.product_made_date as product_made_date,
+        p.created as created, p.publish_up as publish_up, p.modified as modified,
+        c.title as category_name, s.sales,
+        ROUND(v.rating_sum / v.rating_count, 0) AS rating, v.rating_count as rating_count,
+        CASE WHEN p.created_by_alias > ' ' THEN p.created_by_alias ELSE ua.name END AS author
         FROM #__mymuse_product as a
         LEFT JOIN #__mymuse_product as p ON a.parentid = p.id
         LEFT JOIN #__categories as c ON a.catid = c.id
         LEFT JOIN #__mymuse_product_rating AS v ON a.id = v.product_id
+        LEFT JOIN (SELECT sum(quantity) as sales, x.product_name, x.product_id FROM
+        		(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
+        		i.product_name, product_id as all_id
+        		FROM #__mymuse_order_item as i
+        		LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
+        		GROUP BY i.product_id )
+        		as x GROUP BY x.all_id) as s ON s.product_id = a.id
+        LEFT JOIN #__users AS ua ON ua.id = p.created_by
+        LEFT JOIN #__users AS uam ON uam.id = p.modified_by
         WHERE a.parentid IN ".$IN ."
         AND a.product_downloadable = 1
         AND a.state=1
@@ -213,9 +267,22 @@ class MyMuseModelTracks extends JModelList
         if($alpha != ''){
             $query .= "AND c.title LIKE '$alpha%' ";
         }
-        $query .= "ORDER BY $ordering $listDirn
+        if($searchword != ''){
+        	$query .= "AND (
+        	a.title LIKE ".$db->quote('%'.$searchword.'%')."
+        	OR a.file_name LIKE ".$db->quote('%'.$searchword.'%')."
+        	OR p.title LIKE ".$db->quote('%'.$searchword.'%')."
+        	OR c.title LIKE ".$db->quote('%'.$searchword.'%')."
+        	)";
+        }
+        $orderby = "ORDER BY $ordering $listDirn
         ";
-        //echo $query;
+        if($secondaryOrder){
+        	$orderby .= " $secondaryOrder ";
+        }
+        $query .= $orderby;
+        //echo "$query <br />";
+        print_pre($_REQUEST);
 		return $query;
 	}
 
@@ -315,7 +382,6 @@ class MyMuseModelTracks extends JModelList
 			$id = $this->getState('category.id', 'root');
             $query = "SELECT * FROM #__categories WHERE id=$id";
             $this->_db->setQuery($query);
-            
             $this->_category = $this->_db->loadObject();
             $registry = new JRegistry;
             $registry->loadObject(json_decode($this->_category->params));
@@ -367,9 +433,29 @@ class MyMuseModelTracks extends JModelList
         	}
         }
         
-		//check prices add flash
+		//check date, prices add flash
 		while (list($i,$track)= each( $tracks))
 		{
+			// get display date
+			switch ($params->get('order_date'))
+			{
+				case 'product_made_date':
+					$tracks[$i]->displayDate = $tracks[$i]->product_made_date;
+					break;
+			
+				case 'modified':
+					$tracks[$i]->displayDate = $tracks[$i]->modified;
+					break;
+						
+				case 'published':
+					$tracks[$i]->displayDate = ($tracks[$i]->publish_up == 0) ? $tracks[$i]->created : $tracks[$i]->publish_up;
+					break;
+						
+				default:
+				case 'created':
+					$tracks[$i]->displayDate = $tracks[$i]->created;
+					break;
+			}
             $tracks[$i]->flash = '';
 			$tracks[$i]->flash_type = '';
             $product_model = JModelLegacy::getInstance('Product', 'MyMuseModel', array('ignore_request' => true));
@@ -490,6 +576,8 @@ class MyMuseModelTracks extends JModelList
 
         
         if($params->get('product_player_type') == "single"){
+        	// make a controller for the play/pause buttons
+        	$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$tracks) );
             //get the player itself
             
             reset($tracks);
@@ -642,9 +730,6 @@ class MyMuseModelTracks extends JModelList
         	$page->setAdditionalUrlParam('filter_order_Dir', $this->getState('list.direction'));
         }
 
-        
-        
-        
         if($this->getState('list.searchword','')){
         	$page->setAdditionalUrlParam('searchword', $this->getState('list.searchword'));
         }

@@ -135,6 +135,12 @@ div.cat-items div.items-row{
 	
 }
 
+.mymuse_cart ul{
+	list-style-type:none;
+	margin:0;
+	padding:0;
+}
+
 /* cart */
 table.mymuse_cart {
 	background-color: #FFFFFF;
@@ -142,7 +148,7 @@ table.mymuse_cart {
 	padding: 0px;
 	border: 1px solid #CCCCCC;
 	border-spacing: 0px;
-    width: auto;
+    width: 100%;
 }
 
 table.mymuse_cart_inner {

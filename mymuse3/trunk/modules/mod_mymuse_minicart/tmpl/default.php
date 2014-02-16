@@ -4,7 +4,7 @@ defined('_JEXEC') or die('Restricted access');
 if(isset($order->items) && count($order->items)){
 $i = 0;
 ?>
-<table width="100%" class="mymuse_minicart">
+<table class="mymuse_cart">
 <tr class="sectiontableheader mymuse_cart_top">
 	<th class="sectiontableheader mymuse_cart_top"><?php echo JText::_('MYMUSE_ITEM') ?></th>
 	<th class="sectiontableheader mymuse_cart_top"><?php echo JText::_('MYMUSE_CART_QUANTITY') ?></th>

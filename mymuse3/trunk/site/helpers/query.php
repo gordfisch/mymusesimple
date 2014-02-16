@@ -35,7 +35,7 @@ class ProductHelperQuery
 		switch ($orderby)
 		{
 			case 'alpha' :
-				$orderby = 'c.path, ';
+				$orderby = 'c.path ASC, ';
 				break;
 
 			case 'ralpha' :
@@ -43,7 +43,7 @@ class ProductHelperQuery
 				break;
 
 			case 'order' :
-				$orderby = 'c.lft, ';
+				$orderby = 'c.lft ASC, ';
 				break;
 
 			default :
@@ -112,12 +112,87 @@ class ProductHelperQuery
 			case 'sales' :
 				$orderby = 's.sales DESC';
 				break;
+				
+			case 'discount' :
+				$orderby = 'a.product_discount DESC';
+				break;
+				
+			case 'rdiscount' :
+				$orderby = 'a.product_discount';
+				break;
 
 			default :
 				$orderby = 'a.ordering';
 				break;
 		}
 
+		return $orderby;
+	}
+	
+	/**
+	 * Translate an order code to a field for product ordering.
+	 *
+	 * @param	string	$orderby	The ordering code.
+	 * @param	string	$orderDate	The ordering code for the date.
+	 *
+	 * @return	string	The SQL field(s) to order by.
+	 * @since	1.5
+	 */
+	public static function orderbyProduct($orderby, $orderDate = 'created')
+	{
+		$queryDate = self::getQueryDate($orderDate, "p");
+
+		switch ($orderby)
+		{
+			case 'date' :
+				$orderby = $queryDate;
+				break;
+	
+			case 'rdate' :
+				$orderby = $queryDate . ' DESC ';
+				break;
+	
+			case 'alpha' :
+				$orderby = 'p.title';
+				break;
+	
+			case 'ralpha' :
+				$orderby = 'p.title DESC';
+				break;
+	
+			case 'hits' :
+				$orderby = 'p.hits DESC';
+				break;
+	
+			case 'rhits' :
+				$orderby = 'p.hits';
+				break;
+	
+			case 'order' :
+				$orderby = 'p.ordering';
+				break;
+	
+			case 'author' :
+				$orderby = 'p.author';
+				break;
+	
+			case 'rauthor' :
+				$orderby = 'p.author DESC';
+				break;
+	
+			case 'sales' :
+				$orderby = 's.sales DESC';
+				break;
+	
+			case 'discount' :
+				$orderby = 'a.product_discount DESC';
+				break;
+	
+			default :
+				$orderby = 'a.ordering';
+				break;
+		}
+	
 		return $orderby;
 	}
 
@@ -129,26 +204,26 @@ class ProductHelperQuery
 	 * @return	string	The SQL field(s) to order by.
 	 * @since	1.6
 	 */
-	public static function getQueryDate($orderDate) {
+	public static function getQueryDate($orderDate, $t = 'a') {
 
 		switch ($orderDate)
 		{
 			case 'modified' :
-				$queryDate = ' CASE WHEN a.modified = 0 THEN a.created ELSE a.modified END';
+				$queryDate = " CASE WHEN $t.modified = 0 THEN $t.created ELSE $t.modified END";
 				break;
 
 			// use created if publish_up is not set
 			case 'published' :
-				$queryDate = ' CASE WHEN a.publish_up = 0 THEN a.created ELSE a.publish_up END ';
+				$queryDate = " CASE WHEN $t.publish_up = 0 THEN $t.created ELSE $t.publish_up END ";
 				break;
 				
 			case 'product_made_date' :
-				$queryDate = ' CASE WHEN a.product_made_date = 0 THEN a.created ELSE a.product_made_date END ';
+				$queryDate = " CASE WHEN $t.product_made_date = 0 THEN $t.created ELSE $t.product_made_date END ";
 				break;
 
 			case 'created' :
 			default :
-				$queryDate = ' a.created ';
+				$queryDate = " $t.created ";
 				break;
 		}
 

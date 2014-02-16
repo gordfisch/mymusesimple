@@ -385,16 +385,14 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field name="list_show_date" type="list"
+			<field name="list_show_date" 
+				type="list"
 				description="MYMUSE_SHOW_DATE_DESC"
 				label="MYMUSE_SHOW_DATE_LABEL"
 			>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="0">JHIDE</option>
-				<option value="product_created_date">MYMUSE_PRODUCT_CREATED_DATE</option>
-				<option value="created">MYMUSE_ENTRY_CREATED_DATE</option>
-				<option value="modified">JGLOBAL_MODIFIED</option>
-				<option value="published">JPUBLISHED</option>
+				<option value="1">JSHOW</option>
 			</field>
 
 			<field name="date_format" type="text"

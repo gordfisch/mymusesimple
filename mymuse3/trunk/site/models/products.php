@@ -48,6 +48,7 @@ class MyMuseModelProducts extends JModelList
 				'language', 'a.language',
 				'hits', 'a.hits',
 				'price','a.price',
+				'product_discount', 'a.product_discount',
 				'publish_up', 'a.publish_up',
 				'publish_down', 'a.publish_down',
 				'images', 'a.images',
@@ -166,13 +167,14 @@ class MyMuseModelProducts extends JModelList
 				'list.select',
 				'a.id, a.title, a.alias, a.title_alias, a.introtext, ' .
 				'a.checked_out, a.checked_out_time, a.list_image, a.detail_image, a.price,' .
-				'a.catid, a.created, a.created_by, a.created_by_alias, a.product_made_date,' .
+				'a.product_discount, a.catid, a.created, a.created_by, a.created_by_alias, ' .
 				// use created if modified is 0
 				'CASE WHEN a.modified = 0 THEN a.created ELSE a.modified END as modified, ' .
 					'a.modified_by, uam.name as modified_by_name,' .
 				// use created if publish_up is 0
 				'CASE WHEN a.publish_up = 0 THEN a.created ELSE a.publish_up END as publish_up,' .
 					'a.publish_down, a.urls, a.attribs, a.metadata, a.metakey, a.metadesc, a.access, ' .
+					'a.product_made_date, ' .
 					'a.hits, a.featured,'.' '.$query->length('a.fulltext').' AS readmore'
 			)
 		);
@@ -462,6 +464,8 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 		$query->where('(a.publish_up = '.$nullDate.' OR a.publish_up <= '.$nowDate.')');
 		$query->where('(a.publish_down = '.$nullDate.' OR a.publish_down >= '.$nowDate.')');
 		$query->where('a.parentid = 0');
+		
+		
 		// Filter by Date Range or Relative Date
 		$dateFiltering = $this->getState('filter.date_filtering', 'off');
 		$dateField = $this->getState('filter.date_field', 'a.created');
@@ -503,6 +507,10 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 						' THEN a.created_by_alias ELSE ua.name END ) LIKE '.$filter.' '
 					);
 					break;
+					
+				case 'product_made_date':
+					$query->where('YEAR(a.product_made_date) = '.$hitsFilter.' ');
+					break;
 
 				case 'hits':
 					$query->where('a.hits >= '.$hitsFilter.' ');
@@ -522,7 +530,13 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 		}
 
 		// Add the list ordering clause.
-		$query->order($this->getState('list.ordering', 'a.ordering').' '.$this->getState('list.direction', 'ASC'));
+		$ordering = $this->getState('list.ordering', 'a.title');
+		
+		if(!preg_match("/ASC|DESC/",$ordering)){
+			$ordering .= " ".$this->getState('list.direction', 'ASC');
+		}
+		$query->order($ordering);
+	
 		$query->group('a.id, a.title, a.alias, a.title_alias, a.introtext, a.checked_out, 
 		a.checked_out_time, a.catid, a.created, a.created_by, a.created_by_alias, a.created, 
 		a.modified, a.modified_by, uam.name, a.publish_up, a.attribs, a.metadata, a.metakey, 

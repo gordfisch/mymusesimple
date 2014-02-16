@@ -23,7 +23,7 @@ $task		= $this->task;
 		<?php if($order->do_html){ ?>
 			<form action="index.php?Itemid=<?php echo $Itemid; ?>" method="post" name="adminForm">
 		<?php } ?>
-<div>
+
 		<!-- start of basket -->
 
 		<h2><?php echo JText::_('MYMUSE_SHOPPING_CART'); ?></h2>
@@ -31,7 +31,7 @@ $task		= $this->task;
 		    <div class="coupon"><a class="titles" href="index.php?option=com_mymuse&task=coupon&Itemid=<?php echo $Itemid ?>"><b><?php echo JText::_('MYMUSE_ENTER_A_COUPON'); ?></b></a>
 		    </div>
 		<?php } ?>
-		<table class="mymuse_cart">
+	<table class="mymuse_cart">
 		<tr class="mymuse_cart_top">
 		<td class="mymuse_cart_top"><b><?php echo JText::_('MYMUSE_TITLE'); ?></b></td>
 	<?php if($params->get("my_show_sku")){ ?>
@@ -218,17 +218,13 @@ $task		= $this->task;
 			<?php } ?>
 		
 		<?php } ?>
-		
-		</table>
-
 		</form>
-		<br />
+	</table>
+
 		<?php 
-	
 		if(isset($order->show_checkout) && $order->show_checkout){ 
 		    // add the checkout link
 		?> 
-		
 
 		<table class="mymuse_cart">
 			<tr>
@@ -240,19 +236,17 @@ $task		= $this->task;
 				
 				</td>
 				
-				<td align="center"><form>
+				<td align="right"><form>
 				<input type="button" class="button" 
 				onclick="location.href='<?php echo $params->get('my_continue_shopping'); ?>'"
 				value="<?php echo JText::_('MYMUSE_CONTINUE_SHOPPING'); ?>"
 				/></form>
-		
 				</td>
 			</tr>
 		</table>
-
+	
 		<?php } 
 		if(isset($order->waited)){
 			echo "<!-- waited:".$order->waited." -->";
 		}
 		?>
-</div>
