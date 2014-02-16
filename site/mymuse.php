@@ -49,6 +49,7 @@ if(!$return){
 	$return = MyMuseHelper::returnURL();
 	JRequest::setVar('return',$return);
 }
+$active	= JFactory::getApplication()->getMenu()->getActive();
 
 //task and controller
 $task 		= JRequest::getVar('task', null, 'default', 'cmd');

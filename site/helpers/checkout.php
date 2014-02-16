@@ -64,7 +64,7 @@ class MyMuseCheckout
 		// TODO stop repeat orders on reload
 		if($params->get('my_debug')){
 			$date = date('Y-m-d h:i:s');
-			$debug = "################### \nCHECKOUT SAVE FUNCTION\n".
+			$debug = "################### \nCHECKOUT SAVE FUNCTION\n";
 			$debug .= "$date  Have a cart ". print_r($cart,true) ;
 			MyMuseHelper::logMessage( $debug );
 		}
@@ -189,10 +189,11 @@ class MyMuseCheckout
 
 			$this->_db->setQuery($query);
 			$this->_db->execute();
+			if($params->get('my_debug')){
+				MyMuseHelper::logMessage( "$date Update coupon" . $query);
+			}
 		}
-		if($params->get('my_debug')){
-			MyMuseHelper::logMessage( "$date Update coupon" . $query);
-		}
+		
 
 		if($params->get('my_registration') == "no_reg"){
 			$fields = array(

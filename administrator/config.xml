@@ -851,19 +851,16 @@
 
 
 
-		<field 
-			name="list_show_date"
-			type="list"
-			default="0"
-			label="MYMUSE_SHOW_DATE_LABEL"
-			description="MYMUSE_SHOW_DATE_DESC"
-		>
+		<field name="list_show_date" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_SHOW_DATE_DESC"
+				label="MYMUSE_SHOW_DATE_LABEL"
+				default="0"
+			>
 				<option value="0">JHIDE</option>
-				<option value="created">JGLOBAL_CREATED</option>
-				<option value="modified">JGLOBAL_MODIFIED</option>
-				<option value="published">JPUBLISHED</option>
-				<option value="product_made_date">MYMUSE_PRODUCT_CREATED_LABEL</option>
-		</field>
+				<option value="1">JSHOW</option>
+			</field>
 
 		<field 
 			name="date_format"
@@ -918,6 +915,48 @@
 			>	
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
+		</field>
+		<field name="list_show_discount" type="list"
+			default="0"
+			description="MYMUSE_LIST_DISCOUNT_DESC"
+			label="MYMUSE_LIST_DISCOUNT_LABEL"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+		</field>
+		
+		<field type="spacer" name="spacerheadings" label="MYMUSE_TRACKS" /> 
+		<field name="show_alphabet" type="list"
+			description="MYMUSE_SHOW_ALPHABET_DESC"
+			label="MYMUSE_SHOW_ALPHABET_LABEL"
+			default="0"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			
+		<field name="show_minicart" type="list"
+			default="0"
+			description="MYMUSE_SHOW_MINICART_DESC"
+			label="MYMUSE_SHOW_MINICART_LABEL"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			
+		<field name="orderby_track"
+			type="list"
+			default=""
+			label="MYMUSE_TRACK_ORDER_LABEL"
+			description="MYMUSE_TRACK_ORDER_DESC">
+			<option value="">JGLOBAL_NO_ORDER</option>
+			<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
+			<option value="date">JGLOBAL_OLDEST_FIRST</option>
+			<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
+			<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
+			<option value="discount">MYMUSE_MOST_DISCOUNT</option>
+			<option value="rdiscount">MYMUSE_LEAST_DISCOUNT</option>
+			<option value="order">JGLOBAL_ARTICLE_MANAGER_ORDER</option>
 		</field>
 
 	</fieldset>

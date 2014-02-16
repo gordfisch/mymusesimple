@@ -222,17 +222,17 @@ class MyMuseHelper extends JObject
 			
 			//store params
 			$params = new JRegistry($store->params);
+			
+			//get component params
+			$cparams = JComponentHelper::getParams( 'com_mymuse' );
+			$params->merge( $cparams );
 
-			//merge app params
+			//merge app params includes menu
 			$app            = JFactory::getApplication();
 			if(!$app->isAdmin()){
 				$app_params      = $app->getParams();
 				$params->merge( $app_params );
 			}
-			
-			//merge component params
-			$cparams = JComponentHelper::getParams( 'com_mymuse' );
-			$params->merge( $cparams );
 
 			$params->set('my_currency',$params->get('currency'));
 
