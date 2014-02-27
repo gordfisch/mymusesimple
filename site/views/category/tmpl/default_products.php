@@ -67,7 +67,9 @@ $height 	= $this->params->get('category_product_image_height',0);
 					<?php  echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder) ; ?>
 				</td>
 
-				<?php if ($date = $this->params->get('list_show_date')) : ?>
+				<?php if ($this->params->get('list_show_date') && $this->params->get('order_date')) : 
+                		$date = $this->params->get('order_date');
+                ?>
 				<td class="list-date mymuse_cart_top" id="tableOrdering2">
 					<?php if ($date == "created") : ?>
 						<?php echo JHtml::_('grid.sort', 'MYMUSE_'.$date.'_DATE', 'a.created', $listDirn, $listOrder); ?>
@@ -100,19 +102,19 @@ $height 	= $this->params->get('category_product_image_height',0);
 				<?php endif; ?>
 				
 				<?php if ($this->params->get('list_show_discount', 0)) : ?>
-				<td class="list-discount" id="tableOrdering6">
+				<td class="list-discount mymuse_cart_top" id="tableOrdering6">
 					<?php echo JHtml::_('grid.sort', 'MYMUSE_DISCOUNT', 'a.product_discount', $listDirn, $listOrder); ?>
 				</td>
 				<?php endif; ?>
 				
 				<?php if ($this->params->get('list_show_sales', 0)) : ?>
-				<td class="list-sales" id="tableOrdering7">
+				<td class="list-sales mymuse_cart_top" id="tableOrdering7">
 					<?php echo JHtml::_('grid.sort', 'MYMUSE_SALES', 's.sales', $listDirn, $listOrder); ?>
 				</td>
 				<?php endif; ?>
 				
 				<?php if ($this->params->get('category_show_comment_total', 0) && file_exists($comments)) : ?>
-				<td class="list-comments" id="tableOrdering8">
+				<td class="list-comments mymuse_cart_top" id="tableOrdering8">
 					<?php echo JHtml::_('grid.sort', 'COMMENTS_LIST_HEADER', 'a.price', $listDirn, $listOrder); ?>
 				</td>
 				<?php endif; ?>
@@ -164,9 +166,11 @@ $height 	= $this->params->get('category_product_image_height',0);
 					</td>
 				<?php endif; ?>
 
-				<?php if ($this->params->get('list_show_author', 1) && !empty($product->author )) : ?>
+				<?php if ($this->params->get('list_show_author', 1) ) : ?>
 					<td class="list-author mymuse_cart" valign="top">
-						<?php $author =  $product->author ?>
+						<?php 
+						if(!empty($product->author )) : 
+							$author =  $product->author ?>
 						<?php $author = ($product->created_by_alias ? $product->created_by_alias : $author);?>
 
 						<?php if (!empty($product->contactid ) &&  $this->params->get('link_author') == true):?>
@@ -178,6 +182,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 
 						<?php else :?>
 							<?php echo $author; ?>
+						<?php endif; ?>
 						<?php endif; ?>
 					</td>
 				<?php endif; ?>

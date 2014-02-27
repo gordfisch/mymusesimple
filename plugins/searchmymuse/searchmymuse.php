@@ -12,6 +12,10 @@
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
+if(!defined('DS')){
+	define('DS',DIRECTORY_SEPARATOR);
+}
+
 require_once(JPATH_SITE.DS.'components'.DS.'com_mymuse'.DS.'helpers'.DS.'route.php');
 
 class plgSearchSearchMymuse extends JPlugin

@@ -214,7 +214,7 @@ if($this->cart['idx']){
 
 <!--  the filters  -->
 
-<form method="post" action="index.php" id="adminForm">
+<form method="post" action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" id="adminForm">
 
 <?php if ( ($this->params->get('filter') == "show" || $this->params->get('show_pagination_limit'))) : ?>
 	<table class="mymuse_filter">

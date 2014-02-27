@@ -1010,6 +1010,15 @@
 			<option value="product_made_date">MYMUSE_PRODUCT_CREATED_LABEL</option>
 				
 		</field>
+		
+		<field name="group_by" type="list"
+				label="MYMUSE_GROUPBY_LABEL"
+				description="MYMUSE_GROUPBY_DESC">
+
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="a.parentid">MYMUSE_PRODUCT</option>
+				<option value="c.id">MYMUSE_CATEGORY</option>
+		</field>
 
 		<field 
 			name="show_pagination"
