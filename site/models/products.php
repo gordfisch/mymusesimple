@@ -549,8 +549,8 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 		parent.id, parent.path, parent.alias, v.rating_sum, v.rating_count, c.published, c.lft, 
 		a.ordering, parent.lft,  c.id, a.urls');
 
-	print_pre($_REQUEST);
-	echo $query;
+	//print_pre($_REQUEST);
+	//echo $query;
 		return $query;
 	}
 
