@@ -29,7 +29,7 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 	<h2><?php echo JText::_("MYMUSE_FEATURED") ?></h2>
 <?php endif; ?>
 
-
+<div class="cat-items">
 <?php $leadingcount=0 ; ?>
 <?php if (!empty($this->lead_items)) : ?>
 <div class="items-leading">
@@ -97,4 +97,5 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 		</div>
 <?php  endif; ?>
 
+</div>
 </div>

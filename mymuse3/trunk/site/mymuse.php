@@ -32,10 +32,6 @@ $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
 
 
-//print_pre($_REQUEST);
-//$user = JFactory::getUser();
-//print_pre($user);
-
 // add css and javascript
 $Doc = JFactory::getDocument();
 $Doc->addStyleSheet( 'components/com_mymuse/assets/css/mymuse.css' );

@@ -53,6 +53,8 @@ class MyMuseModelProducts extends JModelList
 				'publish_down', 'a.publish_down',
 				'images', 'a.images',
 				'urls', 'a.urls',
+				'sales', 's.sales',
+				'product_made_date', 'a.product_made_date'
 			);
 		}
 
@@ -81,6 +83,7 @@ class MyMuseModelProducts extends JModelList
 		$this->setState('list.start', $value);
 
 		$orderCol	= JRequest::getCmd('filter_order', 'a.ordering');
+
 		if (!in_array($orderCol, $this->filter_fields)) {
 			$orderCol = 'a.ordering';
 		}
@@ -157,6 +160,7 @@ class MyMuseModelProducts extends JModelList
 	 */
 	function getListQuery()
 	{
+
 		// Create a new query object.
 		$db = $this->getDbo();
 		$query = $db->getQuery(true);
@@ -530,7 +534,7 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 		}
 
 		// Add the list ordering clause.
-		$ordering = $this->getState('list.ordering', 'a.title');
+		$ordering = $this->getState('list.ordering');
 		
 		if(!preg_match("/ASC|DESC/",$ordering)){
 			$ordering .= " ".$this->getState('list.direction', 'ASC');
@@ -544,7 +548,9 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 		c.title, c.path, c.access, c.alias, uam.id, ua.name, ua.email, contact.id, parent.title, 
 		parent.id, parent.path, parent.alias, v.rating_sum, v.rating_count, c.published, c.lft, 
 		a.ordering, parent.lft,  c.id, a.urls');
-//echo $query;
+
+	print_pre($_REQUEST);
+	echo $query;
 		return $query;
 	}
 
@@ -622,7 +628,7 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 			}
 
 			// get display date
-			switch ($item->params->get('list_show_date'))
+			switch ($params->get('order_date'))
 			{
 				case 'modified':
 					$item->displayDate = $item->modified;

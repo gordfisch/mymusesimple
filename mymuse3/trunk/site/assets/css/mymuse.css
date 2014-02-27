@@ -1,5 +1,9 @@
 @CHARSET "UTF-8";
 
+.clear
+{
+	clear: both;
+}
 /* those dickey print and email icons */
 ul.actions
 {
@@ -101,6 +105,11 @@ div.cat-items div.items-row{
   height: 20px;
 }
 
+/* blog links */
+.items-more
+{
+	clear: both;
+}
 /* end blog */
 
 /* list items */
@@ -125,7 +134,7 @@ div.cat-items div.items-row{
 /* end list items */
 
 .mymusetable {
-	width: auto;
+	width: 100%;
 }
 .mymusetable td {
 	padding: 5px;
@@ -157,7 +166,7 @@ table.mymuse_cart_inner {
 	padding: 0px;
 	border: 1px solid #CCCCCC;
 	border-spacing: 0px;    
-	width: auto;
+	width: 100%;
 
 }
 

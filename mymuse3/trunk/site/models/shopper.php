@@ -130,7 +130,7 @@ class mymuseModelShopper extends JModelForm
 					
 					//I want to see if any fields that are required have not been filled in
 					$profile = $user->get('profile');
-					//print_pre($profile); 
+			
 					$plugin = JPluginHelper::getPlugin('user', $my_profile_key);
     				$profile_params = new JRegistry();
     				if($plugin->params){

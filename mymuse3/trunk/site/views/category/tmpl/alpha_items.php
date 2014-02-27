@@ -12,6 +12,7 @@
 // no direct access
 defined('_JEXEC') or die;
 $class = ' class="first"';
+$height = $this->params->get('subcat_image_height',0);
 
 if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) :
 $count = count($this->children[$this->category->id]) ;
@@ -31,8 +32,8 @@ foreach($alpha as $letter){
 	}
 }
 $count = count($this->children[$this->category->id]) + count($alphaarr);
-$break =  round($count / $this->params->get('cat_num_columns',2),0,PHP_ROUND_HALF_DOWN);
-$r = $count  %  $this->params->get('cat_num_columns',2);
+$break =  round($count / $this->params->get('subcat_columns',2),0,PHP_ROUND_HALF_DOWN);
+$r = $count  %  $this->params->get('subcat_columns',2);
 if($r){
 	$break++;
 }
@@ -43,7 +44,7 @@ $column = 1;
 
 ?>
 
-<div class="cols-<?php echo $this->params->get('cat_num_columns',2); ?>">
+<div class="cols-<?php echo $this->params->get('subcat_columns',2); ?>">
 	<?php foreach($alphaarr as $letter => $children) : 
 	
 	if(!$total_shown){
@@ -95,6 +96,15 @@ $column = 1;
 			?>
 			<li <?php echo $class; ?>>
 				<?php $class = ''; ?>
+				<?php if ($this->params->get('show_subcat_image') && $child->getParams()->get('image')) : ?>
+                <span class="item_image">
+                  <a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($child->id));?>">
+                  <img 
+                  <?php if($height):?>
+                  	height="<?php echo $height; ?>"
+                  <?php  endif; ?>
+                  src="<?php echo $child->getParams()->get('image'); ?>"/></a></span>
+            <?php endif; ?>
 				<span class="item-title"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($child->id));?>">
 					<?php echo $this->escape($child->title); ?></a>
 				</span>

@@ -98,7 +98,7 @@ class MyMuseModelTracks extends JModelList
         $this->setState('list.searchword', JRequest::getString('searchword',''));
         
 		//$value = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
-		$value = JRequest::getUInt('limit', $app->getCfg('list_limit', 0));
+		$value = JRequest::getUInt('limit', $params->get('display_num',$app->getCfg('list_limit', 0)));
 		$this->setState('list.limit', $value);
 
 		//$value = $app->getUserStateFromRequest($this->context.'.limitstart', 'limitstart', 0);
@@ -221,6 +221,7 @@ class MyMuseModelTracks extends JModelList
 	{
 		// Create a new query object.
 		$db = $this->getDbo();
+		$params 	= MyMuseHelper::getParams();
 
         $alpha = $this->getState('list.alpha','');
         $searchword = $this->getState('list.searchword','');
@@ -275,6 +276,10 @@ class MyMuseModelTracks extends JModelList
         	OR c.title LIKE ".$db->quote('%'.$searchword.'%')."
         	)";
         }
+        if($params->get('group_by',0)){
+        	$query .= " GROUP BY ".$params->get('group_by',0)."
+        	";
+        }
         $orderby = "ORDER BY $ordering $listDirn
         ";
         if($secondaryOrder){
@@ -282,7 +287,7 @@ class MyMuseModelTracks extends JModelList
         }
         $query .= $orderby;
         //echo "$query <br />";
-        print_pre($_REQUEST);
+
 		return $query;
 	}
 

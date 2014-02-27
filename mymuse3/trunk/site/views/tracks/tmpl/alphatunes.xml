@@ -279,7 +279,8 @@
 			<option value="order">JGLOBAL_ARTICLE_MANAGER_ORDER</option>
 		</field>
 
-			<field name="order_date" type="list"
+			<field name="order_date" 
+				type="list"
 				description="JGLOBAL_ORDERING_DATE_DESC"
 				label="JGLOBAL_ORDERING_DATE_LABEL"
 			>
@@ -290,6 +291,15 @@
 				<option value="product_made_date">MYMUSE_PRODUCT_CREATED_LABEL</option>
 			</field>
 
+			<field name="group_by" type="list"
+				label="MYMUSE_GROUPBY_LABEL"
+				description="MYMUSE_GROUPBY_DESC">
+
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="a.parentid">MYMUSE_PRODUCT</option>
+				<option value="c.id">MYMUSE_CATEGORY</option>
+			</field>
+		
 			<field name="show_pagination" type="list"
 				description="JGLOBAL_PAGINATION_DESC"
 				label="JGLOBAL_PAGINATION_LABEL"
