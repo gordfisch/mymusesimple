@@ -356,7 +356,7 @@ class mymuseModelShopper extends JModelForm
 				$user->profile[$k] = $v[1];
 			}
 		}
-		if($user->profile['region'] && !isset($user->profile['region_name']) && $profile_key != 'mymuse'){
+		if(isset($user->profile['region']) && !isset($user->profile['region_name']) && $profile_key != 'mymuse'){
 			$user->profile['region_name'] = $user->profile['region'];
 		}
 		if(!isset($user->profile['shopper_group'])){

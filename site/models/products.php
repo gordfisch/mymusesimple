@@ -198,7 +198,7 @@ class MyMuseModelProducts extends JModelList
 
 		$query->from('#__mymuse_product AS a');
 
-		// Join over the frontpage articles.
+		// Join over the featured products.
 		if ($this->context != 'com_mymuse.featured') {
 			//$query->join('LEFT', '#__content_frontpage AS fp ON fp.content_id = a.id');
 			
@@ -535,8 +535,8 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 
 		// Add the list ordering clause.
 		$ordering = $this->getState('list.ordering');
-		
-		if(!preg_match("/ASC|DESC/",$ordering)){
+
+		if(!preg_match("/ASC|DESC/",strtoupper($ordering))){
 			$ordering .= " ".$this->getState('list.direction', 'ASC');
 		}
 		$query->order($ordering);
@@ -549,8 +549,6 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 		parent.id, parent.path, parent.alias, v.rating_sum, v.rating_count, c.published, c.lft, 
 		a.ordering, parent.lft,  c.id, a.urls');
 
-	//print_pre($_REQUEST);
-	//echo $query;
 		return $query;
 	}
 

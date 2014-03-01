@@ -101,7 +101,7 @@ $column = 1;
                   <a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($child->id));?>">
                   <img 
                   <?php if($height):?>
-                  	height="<?php echo $height; ?>"
+                  	style="height: <?php echo $height; ?>px"
                   <?php  endif; ?>
                   src="<?php echo $child->getParams()->get('image'); ?>"/></a></span>
             <?php endif; ?>
