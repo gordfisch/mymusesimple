@@ -133,6 +133,10 @@ div.cat-items div.items-row{
 }
 /* end list items */
 
+/* category alphabet */
+.item_image img{
+	padding: 0 5px 10px 0;
+}
 .mymusetable {
 	width: 100%;
 }

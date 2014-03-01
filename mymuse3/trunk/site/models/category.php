@@ -91,7 +91,12 @@ class MyMuseModelCategory extends JModelList
 				'publish_up', 'a.publish_up',
 				'publish_down', 'a.publish_down',
 				'author', 'a.author',
-				'price', 'a.price'
+				'price', 'a.price',
+				'product_discount', 'a.product_discount',
+				'images', 'a.images',
+				'urls', 'a.urls',
+				'sales', 's.sales',
+				'product_made_date', 'a.product_made_date'
 
 			);
 		}
@@ -213,7 +218,7 @@ class MyMuseModelCategory extends JModelList
 		
 		if ($this->_products === null && $category = $this->getCategory()) {
 			$model = JModelList::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
-			$model->setState('params', JFactory::getApplication()->getParams());
+			$model->setState('params', $params);
 			$model->setState('filter.category_id', $category->id);
 			$model->setState('filter.published', $this->getState('filter.published'));
 			$model->setState('filter.access', $this->getState('filter.access'));
