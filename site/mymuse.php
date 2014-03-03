@@ -33,8 +33,10 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
 
 
 // add css and javascript
-$Doc = JFactory::getDocument();
+$Doc =& JFactory::getDocument();
 $Doc->addStyleSheet( 'components/com_mymuse/assets/css/mymuse.css' );
+include(JPATH_COMPONENT.DS.'assets'.DS.'css'.DS.'mobile_css.php');
+$Doc->addStyleDeclaration($mobile_style);
 $Doc->addScript( 'components/com_mymuse/assets/javascript/mymuse.js' );
 
 JPluginHelper::importPlugin('mymuse');

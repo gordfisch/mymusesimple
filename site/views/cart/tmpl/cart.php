@@ -32,31 +32,27 @@ $task		= $this->task;
 		    </div>
 		<?php } ?>
 	<table class="mymuse_cart">
-		<tr class="mymuse_cart_top">
-		<td class="mymuse_cart_top"><b><?php echo JText::_('MYMUSE_TITLE'); ?></b></td>
+		<thead>
+		<tr>
+		<th class="mytitle"><b><?php echo JText::_('MYMUSE_TITLE'); ?></b></th>
 	<?php if($params->get("my_show_sku")){ ?>
-		<td class="mymuse_cart_top"><b><?php echo JText::_('MYMUSE_CART_SKU'); ?></b></td>
+		<th class="mysku"><b><?php echo JText::_('MYMUSE_CART_SKU'); ?></b></th>
 	<?php } ?>
-		<td class="mymuse_cart_top" align="right"><b><?php echo JText::_('MYMUSE_CART_PRICE'); ?></b></td>
-		<td class="mymuse_cart_top"><b><?php echo JText::_('MYMUSE_CART_QUANTITY'); ?></b></td>
-		<td class="mymuse_cart_top"  align="right"><b><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?></b></td>
+		<th class="myprice"><b><?php echo JText::_('MYMUSE_CART_PRICE'); ?></b></th>
+		<th class="myquantity"><b><?php echo JText::_('MYMUSE_CART_QUANTITY'); ?></b></th>
+		<th class="mysubtotal"><b><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?></b></th>
 		<?php if(@$order->do_html){ ?>
-		    <td align="center" class="mymuse_cart_top"><b><?php echo JText::_('MYMUSE_CART_ACTION'); ?></b>&nbsp;<?php echo $order->update_form; ?></td>		    
+		    <th class="myaction"><b><?php echo JText::_('MYMUSE_CART_ACTION'); ?></b>&nbsp;<?php echo $order->update_form; ?></th>		    
 		<?php } ?>
 		</tr>
-		
+		</thead>
 		<?php
 		  // LOOP THRU order_items
 		  for ($i=0;$i<count($order->items); $i++) { 
-		      if ($i % 2){
-		          $class = "row1";
-		      }else{
-		          $class = "row2";
-		      }
 		?>
 		
-		    <tr class="<?php echo $class ?>">
-		        <td align="left">
+		    <tr>
+		        <td class="mytitle">
 		        <?php if(isset($order_item[$i]->category_name)){ ?>
 		        	 <?php echo $order_item[$i]->category_name; ?> :
 		        <?php } ?>
@@ -68,28 +64,22 @@ $task		= $this->task;
 		        
 		        </td>
 		    <?php if($params->get("my_show_sku")){ ?>
-		        <td align="right"><?php echo $order_item[$i]->product_sku; ?></td>
+		        <td class="mysku"><?php echo $order_item[$i]->product_sku; ?></td>
 		    <?php } ?>
-		        <td align="right"> <?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_price); ?></td>
+		        <td class="mysku"> <?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_price); ?></td>
 		        
 		   <?php if($order->do_html && $order_item[$i]->quantity){ ?>
-		        <td> <input class="inputbox" type="text" size="4" maxlength="4" name="quantity[<?php echo $order_item[$i]->id ?>]"
+		        <td class="myquantity"> <input class="inputbox" type="text" size="4" maxlength="4" name="quantity[<?php echo $order_item[$i]->id ?>]"
 		        value="<?php echo $order_item[$i]->quantity;?>" style="width: 20%;"   />&nbsp;</td>
 		        
 		    <?php }else{ ?>
-		        <td align="center"><?php echo $order_item[$i]->quantity; ?></td>
+		        <td class="myquantity"><?php echo $order_item[$i]->quantity; ?></td>
 		    <?php } ?>
 		        
-		        <td align="right"><?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_subtotal); ?></td>
+		        <td class="myprice"><?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_subtotal); ?></td>
 		        
 		    <?php if($order->do_html){ ?>
-		        <td>
-		        <table>
-		        	<tr>
-		        		<td><a href="<?php echo $order_item[$i]->delete_url; ?>"><?php echo JText::_('MYMUSE_DELETE'); ?></a></td>
-		        	</tr>
-		        </table>
-		        </td>
+		        <td class="myaction"><a href="<?php echo $order_item[$i]->delete_url; ?>"><?php echo JText::_('MYMUSE_DELETE'); ?></a></td>
 		    <?php } ?>
 		       </tr>
 		<?php } ?>
@@ -100,27 +90,27 @@ $task		= $this->task;
 			
 			?>
 			<tr>
-		    	<td colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_CART_ORIGINAL_SUBTOTAL'); ?>:</td>
-		        <td align="right" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->discount + $order->order_subtotal); ?></td>
+		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_CART_ORIGINAL_SUBTOTAL'); ?>:</td>
+		        <td class="myoriginalsubtotal" align="right" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->discount + $order->order_subtotal); ?></td>
 		        <?php if(@$order->do_html){ ?>
-		        <td>&nbsp;</td>
+		        <td class="mobile-hide">&nbsp;</td>
 		        <?php } ?>
 		    </tr>
 		    
 		    <tr>
-		    	<td colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:
+		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:
 		    	<?php echo $order->shopper_group_name; ?> <?php echo $order->shopper_group_discount; ?> %</td>
-		        <td align="right" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->discount); ?></td>
+		        <td class="myshoppergroupdiscount" align="right" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->discount); ?></td>
 		        <?php if(@$order->do_html){ ?>
-		        <td>&nbsp;</td>
+		        <td class="mobile-hide">&nbsp;</td>
 		        <?php } ?>
 		    </tr>
 		    
 		    <tr>
-		    	<td colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_CART_NEW_SUBTOTAL'); ?>:</td>
-		        <td align="right" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->order_subtotal); ?></td>
+		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_CART_NEW_SUBTOTAL'); ?>:</td>
+		        <td class="mynewsubtotal" align="right" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->order_subtotal); ?></td>
 		        <?php if(@$order->do_html){ ?>
-		        <td>&nbsp;</td>
+		        <td class="mobile-hide">&nbsp;</td>
 		        <?php } ?>
 		    </tr>
 		
@@ -132,8 +122,8 @@ $task		= $this->task;
 		if($params->get("my_use_coupons") && @$order->coupon->id){ ?>
 		    <tr>
 		    	<td><?php echo JText::_('MYMUSE_YOUR_COUPON'); ?> : <?php echo $order->coupon->title ?></td>
-		    	<td colspan="<?php echo $order->colspan -1; ?>">&nbsp;</td>
-		        <td colspan="<?php echo $order->colspan2; ?>" align="right">-<?php echo MyMuseHelper::printMoney($order->coupon->discount); ?> </td>
+		    	<td class="mobile-hide" colspan="<?php echo $order->colspan -1; ?>">&nbsp;</td>
+		        <td class="mycoupon" colspan="<?php echo $order->colspan2; ?>" align="right">-<?php echo MyMuseHelper::printMoney($order->coupon->discount); ?> </td>
 		        <?php if(@$order->do_html){ ?>
 		        <td>&nbsp;</td>
 		        <?php } ?>
@@ -143,8 +133,8 @@ $task		= $this->task;
 		<?php // SHIPPING
 		if ($params->get("my_use_shipping") && @$order->order_shipping->cost > 0) { ?>
 		    <tr>
-		    <td colspan="<?php echo $order->colspan; ?>" align="right"><b><?php echo JText::_('MYMUSE_SHIPPING') ?>:</b></td>
-		    <td colspan="<?php echo $order->colspan2; ?>" align="right"><?php echo MyMuseHelper::printMoney($order->order_shipping->cost); ?>
+		    <td class="mobile-hide" colspan="<?php echo $order->colspan; ?>" align="right"><b><?php echo JText::_('MYMUSE_SHIPPING') ?>:</b></td>
+		    <td class="myshipping" colspan="<?php echo $order->colspan2; ?>" align="right"><?php echo MyMuseHelper::printMoney($order->order_shipping->cost); ?>
 		    </td>
 		    <?php if(@$order->do_html){ ?>
 		        <td>&nbsp;</td>
@@ -158,8 +148,8 @@ $task		= $this->task;
 		    	$key = preg_replace("/_/"," ", $key);
 		    	?>
 		        <tr>
-		        <td colspan="<?php echo $order->colspan; ?>" align="right"><?php echo $key; ?></td>
-		        <td colspan="<?php echo $order->colspan2; ?>" align="right"><?php echo MyMuseHelper::printMoney($val); ?></td>
+		        <td class="mytaxname" colspan="<?php echo $order->colspan; ?>"><?php echo $key; ?></td>
+		        <td class="mytaxes" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($val); ?></td>
 		        <?php if(@$order->do_html){ ?>
 		        <td>&nbsp;</td>
 		        <?php  } ?>
@@ -169,21 +159,20 @@ $task		= $this->task;
 		
 		
 		<tr>
-		    <td colspan="<?php echo $order->colspan; ?>" class="textbox2" align="right"><b><?php echo JText::_('MYMUSE_CART_TOTAL') ?>:</b></td>
-		    <td colspan="<?php echo $order->colspan2; ?>" class="textbox2" align="right"><b><?php echo MyMuseHelper::printMoney($order->order_total); ?>
+		    <td class="textbox2 mobile-hide" colspan="<?php echo $order->colspan; ?>"><b><?php echo JText::_('MYMUSE_CART_TOTAL') ?>:</b></td>
+		    <td class="textbox2 mytotal" colspan="<?php echo $order->colspan2; ?>"><b><?php echo MyMuseHelper::printMoney($order->order_total); ?>
 		    <?php echo $this->currency['currency_code']; ?></b></td>
 		    <?php if($order->do_html){ ?>
-		        <td>&nbsp;</td>
+		        <td class="mobile-hide" >&nbsp;</td>
 		    <?php  } ?>
-		</tr>
 		
 		
 		<?php if($order->do_html){ ?>
 		<tr>
-		    <td colspan="<?php echo $order->colspan; ?>"  class="textbox2" align="left"></td>
-		    <td colspan="<?php echo $order->colspan2; ?>" class="textbox2"><input type="submit" name="submit" 
+		    <td class="textbox2 mobile-hide" colspan="<?php echo $order->colspan; ?>"  align="left"></td>
+		    <td class="textbox2 myupdate" colspan="<?php echo $order->colspan2; ?>"><input type="submit" name="submit" 
 		    value="<?php echo JText::_('MYMUSE_UPDATE_CART'); ?>" class="button" /></td>
-		    <td>&nbsp;</td>
+		    <td class="mobile-hide">&nbsp;</td>
 		</tr>
 		    
 		
@@ -191,8 +180,8 @@ $task		= $this->task;
 		
 		<?php  if($order->reservation_fee > 0){ ?>
 		<tr>
-		    <td colspan="<?php echo $order->colspan; ?>" align="right"><b><?php echo JText::_('MYMUSE_RESERVATION_FEE') ?>:</b></td>
-		    <td colspan="<?php echo $order->colspan2; ?>" align="right"><b><?php echo MyMuseHelper::printMoney($order->reservation_fee); ?></b>
+		    <td class="mobile-hide" colspan="<?php echo $order->colspan; ?>" align="right"><b><?php echo JText::_('MYMUSE_RESERVATION_FEE') ?>:</b></td>
+		    <td class="myreservationfee" colspan="<?php echo $order->colspan2; ?>" align="right"><b><?php echo MyMuseHelper::printMoney($order->reservation_fee); ?></b>
 		    </td>
 		    <?php if(@$order->do_html){ ?>
 		        <td>&nbsp;</td>
@@ -200,16 +189,16 @@ $task		= $this->task;
 		</tr>
 			<?php  if($order->non_res_total > 0){ ?>
 			<tr>
-		    	<td colspan="<?php echo $order->colspan; ?>" align="right"><b><?php echo JText::_('MYMUSE_OTHER_CHARGES') ?>:</b></td>
-		    	<td colspan="<?php echo $order->colspan2; ?>" align="right"><b><?php echo MyMuseHelper::printMoney($order->non_res_total); ?></b>
+		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>" align="right"><b><?php echo JText::_('MYMUSE_OTHER_CHARGES') ?>:</b></td>
+		    	<td class="myothercharges" colspan="<?php echo $order->colspan2; ?>" align="right"><b><?php echo MyMuseHelper::printMoney($order->non_res_total); ?></b>
 		    	</td>
 		    	<?php if(@$order->do_html){ ?>
 		        	<td>&nbsp;</td>
 		        	<?php } ?>
 			</tr>
 			<tr>
-		    	<td colspan="<?php echo $order->colspan; ?>" align="right"><b><?php echo JText::_('MYMUSE_PAYNOW') ?>:</b></td>
-		    	<td colspan="<?php echo $order->colspan2; ?>" align="right"><b><?php echo MyMuseHelper::printMoney($order->must_pay_now); ?></b>
+		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>" align="right"><b><?php echo JText::_('MYMUSE_PAYNOW') ?>:</b></td>
+		    	<td class="mypaynow" colspan="<?php echo $order->colspan2; ?>" align="right"><b><?php echo MyMuseHelper::printMoney($order->must_pay_now); ?></b>
 		    	</td>
 		    	<?php if(@$order->do_html){ ?>
 		        	<td>&nbsp;</td>
