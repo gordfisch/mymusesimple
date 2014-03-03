@@ -39,7 +39,7 @@ if(count($tracks)){
 	$count += count($tracks);
 }
 ?>
-
+ 
 <script type="text/javascript">
 function hasProduct(that, count){
 	<?php if($items_select && count($items)){ ?>
@@ -63,8 +63,8 @@ function hasProduct(that, count){
 	alert("<?php echo JText::_("MYMUSE_PLEASE_SELECT_A_PRODUCT") ?>");
 	return false;
 }
-
 </script>
+	
 <!--  HEADING TITLE ICONS -->
 <div class="mymuse">
 
@@ -253,72 +253,62 @@ endif; ?>
 <input type="hidden" name="catid" value="<?php echo $product->catid; ?>" />
 
 <!-- IMAGE INTROTEXT -->
-<table class="mymusetable">
+
 <?php 
 
 if( ($params->get('product_show_product_image') && $product->detail_image) || $params->get('show_intro')) :?>
-<tr>
-	<td>
-	<table class="mymusetable">
-	  <tr>
+
    <?php if ($params->get('product_show_product_image') && $product->detail_image) : ?>
-		<td 
-		<?php if($height) : ?>
-		 height="<?php echo $height; ?>"
-		<?php endif; ?> 
-		valign="top">
-			<div><img
+		<div class="product-image"><img
 			<?php if($height) : ?>
 			height="<?php echo $height; ?>"
 			<?php endif; ?>
 			src="<?php echo $product->detail_image;?>"
 			alt="<?php echo $product->title;?>" 
 			title="<?php echo $product->title;?>" 
-			/></div>
-		</td>
+			/>
+		</div>
+		
 	<?php endif; ?>
 	
-		<td   valign="top">
+		<div class="product-intro">
 		<?php  if ($params->get('show_intro')) : ?>
 			<?php echo $product->introtext ?>
 		<?php endif ?>
 		<?php if($product->introtext && $product->fulltext && $params->get('show_readmore')) : ?><br />
 			<a href="#readmore" class="readon"><?php echo JText::_("MYMUSE_READ_MORE"); ?></a>
 		<?php endif ?>
-		</td>
-		</tr>
-	</table>
-	</td>
-</tr>	
+		</div>
 <?php endif; ?>
 <!-- END IMAGE INTROTEXT -->
-
+<div style="clear: both"></div>
 <!--  PRODUCT PHYSICAL -->
-<tr>
-	<td>
+
 		<?php if($product->product_physical){  ?>
 		<h3><?php echo JText::_('MYMUSE_PRODUCT'); ?></h3> 
 		<table class="mymuse_cart">
-		    <tr class="mymuse_cart_top">
-		    	<td class="mymuse_cart_top" align="left" width="5%" ><?php echo JText::_('MYMUSE_SELECT'); ?></td>  
-        		<td class="mymuse_cart_top" align="left" width="55%" ><?php echo JText::_('MYMUSE_NAME'); ?></td>
-       			<td class="mymuse_cart_top" align="center" width="20%"><?php echo JText::_('MYMUSE_COST'); ?></td>
+			<thead>
+		    <tr>
+		    	<th class="myselect" align="left" width="5%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>  
+        		<th class="mytitle" align="left" width="55%" ><?php echo JText::_('MYMUSE_NAME'); ?></th>
+       			<th class="myprice" align="center" width="20%"><?php echo JText::_('MYMUSE_COST'); ?></th>
        		<?php if ($params->get('product_show_quantity')) :?>
-        		<td class="mymuse_cart_top" align="left" width="20%"><?php echo JText::_('MYMUSE_QUANTITY'); ?></td>
+        		<th class="myquantity" align="left" width="20%"><?php echo JText::_('MYMUSE_QUANTITY'); ?></th>
       	    <?php endif; ?>
       		</tr>
+      		</thead>
 			<tr>
-				<td align="center"><span class="mycheckbox"><input type="checkbox" name="productid[]" 
+				<td class="myselect"><span class="mycheckbox"><input type="checkbox" name="productid[]" 
 				value="<?php echo $product->id; ?>" id="box<?php echo $check; $check++; ?>" 
 				<?php if($count == 1){ ?>
 				CHECKED="CHECKED"
 				<?php } ?>
 				/></span></td>
-				<td><?php echo $product->title; ?></td>
-				<td align="center"><?php  echo MyMuseHelper::printMoneyPublic($product->price);
+				<td class="mytitle" ><?php echo $product->title; ?></td>
+				<td class="myprice"><?php  echo MyMuseHelper::printMoneyPublic($product->price);
 				?></td>
 			<?php if ($params->get('product_show_quantity')) :?>
-				<td><input class="inputbox" type="text" name="quantity[<?php echo $product->id; ?>]" size="2" value="1" /> 
+				<td class="myquantity"><input class="inputbox" type="text" name="quantity[<?php echo $product->id; ?>]" size="2" value="1" /> 
 				<?php echo JText::_('MYMUSE_QUANTITY'); ?></td>
 
 			<?php endif; ?>
@@ -344,35 +334,37 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 	<?php if(count($items) && !$items_select){  ?>
 		<h3><?php echo JText::_('MYMUSE_ITEMS'); ?></h3> 
 		<table class="mymuse_cart">
-		    <tr class="sectiontableheader">
-		    	<td class="mymuse_cart_top" align="left" width="5%" ><?php echo JText::_('MYMUSE_SELECT'); ?></td>
-        		<td class="mymuse_cart_top" align="left" width="55%" ><?php echo JText::_('MYMUSE_NAME'); ?>
-				</td>
+			<thead>
+		    <tr>
+		    	<th class="myselect" align="left" width="5%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
+        		<th class="mytitle" align="left" width="55%" ><?php echo JText::_('MYMUSE_NAME'); ?>
+				</th>
        			<?php foreach($product->attribute_sku as $a_sku){ ?>
-						<td class="mymuse_cart_top" align="left"><?php echo $a_sku->name; ?></td>
+						<th class="my<?php echo $a_sku->name ?>" align="left"><?php echo $a_sku->name; ?></th>
 				<?php } ?>
        			
-				<td class="mymuse_cart_top" align="center" width="20%"><?php echo JText::_('MYMUSE_COST'); ?></td>
+				<th class="myprice" align="center" width="20%"><?php echo JText::_('MYMUSE_COST'); ?></th>
         	<?php if ($params->get('product_show_quantity')) :?>
-        		<td class="mymuse_cart_top" align="left" width="20%"><?php echo JText::_('MYMUSE_QUANTITY'); ?></td>
+        		<th class="myquantity" align="left" width="20%"><?php echo JText::_('MYMUSE_QUANTITY'); ?></th>
       	    <?php endif; ?>
       		</tr>
+      		</thead>
 			<?php 
 
 			foreach($items as $item){  
 				?>
 			  		<tr>
-        				<td align="center"><span class="mycheckbox"><input type="checkbox" name="productid[]" 
+        				<td class="myselect"><span class="mycheckbox"><input type="checkbox" name="productid[]" 
         				value="<?php echo $item->id; ?>" id="box<?php echo $check; $check++; ?>" /></span></td>
-        				<td><?php echo $item->title; ?></td>
+        				<td class="mytitle"><?php echo $item->title; ?></td>
         			<?php foreach($product->attribute_sku as $a_sku){ ?>
-						<td><?php echo $item->attributes[$a_sku->name]; ?></td>
+						<td class="my<?php echo $a_sku->name ?>"><?php echo $item->attributes[$a_sku->name]; ?></td>
 					<?php } ?>
-						<td align="center">
+						<td class="myprice">
 						<?php echo MyMuseHelper::printMoneyPublic($item->price); 
 				?></td>
         			<?php if ($params->get('product_show_quantity')) :?>
-						<td><input class="inputbox" type="text" name="quantity[<?php echo $item->id; ?>]" size="2" value="1" /></td>
+						<td class="myquantity"><input class="inputbox" type="text" name="quantity[<?php echo $item->id; ?>]" size="2" value="1" /></td>
 					<?php endif; ?>
       				</tr>
       		<?php  } ?>
@@ -390,8 +382,8 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 	<?php } ?>
 
 	<?php 
-		//select option
-		if(count($items) && $items_select){  ?>
+	//select option
+	if(count($items) && $items_select){  ?>
 		<h3><?php echo JText::_('MYMUSE_ITEMS'); ?></h3> 
 		<script type="text/javascript">
 		function updateq (sid){
@@ -413,19 +405,21 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 		}
 		</script>
 		<table class="mymuse_cart">
-		    <tr class="sectiontableheader">
-		    	<td class="sectiontableheader mymuse_cart_top" align="left" width="45%" ><?php echo JText::_('MYMUSE_NAME'); ?></td>
-		    	<td class="sectiontableheader mymuse_cart_top" align="left" width="45%" ><?php echo JText::_('MYMUSE_SELECT'); ?></td>
+			<thead>
+		    <tr>
+		    	<th class="mytitle" align="left" width="45%" ><?php echo JText::_('MYMUSE_NAME'); ?></th>
+		    	<th class="myselect" align="left" width="45%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
         	<?php if ($params->get('product_show_quantity')) :?>
-        		<td class="sectiontableheader mymuse_cart_top" align="left" width="20%"><?php echo JText::_('MYMUSE_QUANTITY'); ?></td>
+        		<th class="myquantity" align="left" width="20%"><?php echo JText::_('MYMUSE_QUANTITY'); ?></th>
       	    <?php endif; ?>
       		</tr>
+      		</thead>
       	<?php foreach($items as $item){ ?>
       		<tr>
-      			<td><?php echo $item->title; ?></td>
-      			<td><?php echo $item->select; ?></td>
+      			<td class="mytitle"><?php echo $item->title; ?></td>
+      			<td class="myselect"><?php echo $item->select; ?></td>
       			<?php if ($params->get('product_show_quantity')) :?>
-						<td><input class="inputbox" type="text" name="item_quantity[<?php echo $item->pidselect; ?>]" 
+						<td class="myquantity"><input class="inputbox" type="text" name="item_quantity[<?php echo $item->pidselect; ?>]" 
 						id="item_quantity<?php echo $item->pidselect; ?>"
 						size="2" value="1" 
 						onchange="updateq(<?php echo $item->pidselect; ?>);"
@@ -435,7 +429,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
       		</tr>
       	<?php } ?>
 		</table>
-		<table width="100%" border="0">
+		<table class="mymuse_cart">
 	  		<tr>	
 				<td width="30%"><input class="button" type="submit" value="<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?>"
 				title="<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?>" />&nbsp;&nbsp;&nbsp;&nbsp;</td>
@@ -476,35 +470,38 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 		
 <?php if($params->get('product_show_tracks',1)){ ?>
 		<table class="mymuse_cart tracks jp-gui ui-widget ui-widget-content ui-corner-all">
-		    <tr class="sectiontableheader">
+			<thead>
+		    <tr>
 		    <?php  if($params->get('product_show_select_column', 1)){?>
-		    	<td class="mymuse_cart_top" align="left" width="5%" ><?php echo JText::_('MYMUSE_SELECT'); ?></td>
+		    	<th class="myselect" align="left" width="5%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
         	<?php } ?>
         	
-        		<td class="mymuse_cart_top" align="left" width="55%" ><?php echo JText::_('MYMUSE_NAME'); ?></td>
+        		<th class="mytitle" align="left" width="55%" ><?php echo JText::_('MYMUSE_NAME'); ?></th>
        		
        		<?php  if($params->get('product_show_filetime', 0)){?>
-       			<td class="mymuse_cart_top" align="center" width="10%"><?php echo JText::_('MYMUSE_TIME'); ?></td>
+       			<th class="mytime" align="center" width="10%"><?php echo JText::_('MYMUSE_TIME'); ?></th>
        		<?php } ?>
        		
        		<?php  if($params->get('product_show_filesize', 0)){?>
-       			<td class="mymuse_cart_top" align="center" width="10%"><?php echo JText::_('MYMUSE_FILE_SIZE'); ?></td>
+       			<th class="myfilesize" align="center" width="10%"><?php echo JText::_('MYMUSE_FILE_SIZE'); ?></th>
        		<?php } ?>
        		
        		<?php  if($params->get('product_show_cost_column', 1)){?>
-       			<td class="mymuse_cart_top" align="center" width="10%"><?php echo JText::_('MYMUSE_COST'); ?></td>
+       			<th class="myprice" align="center" width="10%"><?php echo JText::_('MYMUSE_COST'); ?></th>
        		<?php } ?>
 
        		<?php if($params->get('product_show_preview_column', 1) && $params->get('product_player_type') != "playlist"){ ?>
-        		<td class="mymuse_cart_top" align="left" width="20%"><?php echo JText::_('MYMUSE_PREVIEWS'); ?></td>
+        		<th class="mypreviews" align="left" width="10%"><?php echo JText::_('MYMUSE_PREVIEWS'); ?></th>
       		<?php } ?>
       		</tr>
+      		</thead>
+
       		
       		<?php foreach($tracks as $track){ ?>
 			  		<tr>
 			  		<!--  SELECT COLUMN -->
 			  		<?php  if($params->get('product_show_select_column', 1)){?>
-        				<td align="center" valign="top">
+        				<td class="myselect">
         				<?php if($track->file_name || $track->product_allfiles) :?>
         				<span class="mycheckbox"><input type="checkbox" name="productid[]" 
         				value="<?php echo $track->id; ?>" id="box<?php echo $check; $check++; ?>" />
@@ -514,7 +511,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
       				<?php } ?>	
       					
       				<!--  TITLE COLUMN -->	
-						<td valign="top"><?php echo $track->title; ?> 
+						<td class="mytitle"><?php echo $track->title; ?> 
       						<?php  if($track->product_allfiles == "1"){ 
 								echo "(".JText::_("MYMUSE_ALL_TRACKS").")";
 					 		} ?>
@@ -524,19 +521,19 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
       					</td>
       				<!--  TIME COLUMN -->
         			<?php  if($params->get('product_show_filetime', 0)){?>	
-        				<td align="center" valign="top">
+        				<td class="mytime">
         				<?php echo $track->file_time ?>
         				</td>
         			<?php } ?>
         			<!--  FILE SIZE COLUMN -->
         			<?php  if($params->get('product_show_filesize', 1) && !$track->product_allfiles){?>	
-        				<td align="center" valign="top">
+        				<td class="myfilesize">
         				<?php echo "(".MyMuseHelper::ByteSize($track->file_length).")"; ?>
         				</td>
         			<?php } ?>
 					<!--  COST COLUMN -->
         			<?php  if($params->get('product_show_cost_column', 1)){?>	
-        				<td align="center" valign="top">
+        				<td class="myprice">
         				<?php if($params->get('my_free_downloads') || $params->get('my_downloads_enable')){
         				if(isset($track->free_download) && $track->free_download){ ?>
         					<a class="free_download_link" 
@@ -554,13 +551,16 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
         			
         			<!--  PREVIEW COLUMN -->
         			<?php  if($params->get('product_show_preview_column', 1) && $params->get('product_player_type') != "playlist"){?>	
-        				<td align="center" width="253" valign="top"><?php echo $track->flash; ?></td>
+        				<td class="mypreviews"><?php echo $track->flash; ?></td>
         			<?php }?>
+        			
       				</tr>
       		<?php  } ?>
 		</table>
 		</div>
 	</div>
+</form>
+<div style="clear: both"></div>
 	<?php } ?>
 		<?php if($params->get('product_show_cartadd')){ ?>
 		<table class="mymuse_cart">
@@ -572,23 +572,20 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 	  		</tr>
 		</table>
 		<?php } ?>
-	</td>
-</tr>
+
 <?php } ?>
 <!-- END TRACKS -->
-<tr>
-	<td>&nbsp;</td>
-</tr>
 
+<div style="clear: both"></div>
 <!--  FULLTEXT -->
 <?php if($product->fulltext != ''){ ?>	
-<tr>
-	<td valign="top" colspan="2"><a name="readmore"></a>
-	<?php echo $product->fulltext; ?> </td>
-</tr>
+
+	<div class="fulltext"><a name="readmore"></a>
+	<?php echo $product->fulltext; ?> </div>
+
 <?php } ?>
-</table>
-</form>
+
+<div style="clear: both"></div>
 <!--END FULL TEXT -->
 
 <!-- COMMENTS -->
@@ -603,4 +600,3 @@ $comments = JPATH_SITE . DS .'components' . DS . 'com_jcomments' . DS . 'jcommen
 
 
 <?php echo $this->item->event->afterDisplayProduct; ?>
-</div>

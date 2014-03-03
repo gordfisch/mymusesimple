@@ -1,29 +1,35 @@
 @CHARSET "UTF-8";
 
-.clear
-{
+.clear {
 	clear: both;
 }
 /* those dickey print and email icons */
-ul.actions
-{
+ul.actions {
 	list-style-type:none;
 	margin:0;
 	padding:0;
 	height: 20px;
 }
 
-.actions li
-{
-float:left;	
+.actions li {
+	float:left;	
 }
 
-.actions a
-{
-display:block;
-width:20px;
+.actions a {
+	display:block;
+	width:20px;
 }
 
+.mymusetable {
+	width: 100%;
+}
+.mymusetable td {
+	padding: 5px;
+}
+.mymuse_msg {
+	color:#dd0000;	
+	
+}
 /* blog layouts */
 .category-desc img{
     padding: 10px;
@@ -38,9 +44,8 @@ width:20px;
 
 }
 
-.item-title
-{
-font-weight: bold;
+.item-title {
+	font-weight: bold;
 }
 
 
@@ -96,13 +101,11 @@ div.cat-items div.items-row{
 	margin-top:20px;
 }
 .cat-items .list_image {
-  height: 150px;
-  max-width: 150px;
-  
+
 }
 .cat-items .title {
   font-weight: bold;
-  height: 20px;
+  margin-bottom: 10px;
 }
 
 /* blog links */
@@ -112,41 +115,13 @@ div.cat-items div.items-row{
 }
 /* end blog */
 
-/* list items */
-.list-image {
 
-}
-.list-title{
-
-}
-.list-date{
-	
-}
-.list-author{
-	
-}
-.list-hits{
-	
-}
-.list-price{
-	
-}
-/* end list items */
 
 /* category alphabet */
 .item_image img{
 	padding: 0 5px 10px 0;
 }
-.mymusetable {
-	width: 100%;
-}
-.mymusetable td {
-	padding: 5px;
-}
-.mymuse_msg {
-	color:#dd0000;	
-	
-}
+
 
 .mymuse_cart ul{
 	list-style-type:none;
@@ -154,6 +129,19 @@ div.cat-items div.items-row{
 	padding:0;
 }
 
+/* product pages */
+.product-image{
+	max-width: 100%;
+	float: left;
+    clear: right;
+    padding-right: 10px;
+}
+.product-image img{
+	
+}
+.product-intro{
+	max-width: 100%;
+}
 /* cart */
 table.mymuse_cart {
 	background-color: #FFFFFF;
@@ -162,6 +150,10 @@ table.mymuse_cart {
 	border: 1px solid #CCCCCC;
 	border-spacing: 0px;
     width: 100%;
+}
+
+table.mymuse_cart tr:nth-of-type(even) { 
+  background: #eee; 
 }
 
 table.mymuse_cart_inner {
@@ -174,9 +166,8 @@ table.mymuse_cart_inner {
 
 }
 
-td.mymuse_cart_top{ 
-    
-    background-color: #ccc;
+.mymuse_cart thead th{ 
+    background-color: #aaa;
 	text-decoration: none; 
     font-weight: bold; 
 	color: #FFFFFF; 
@@ -185,24 +176,14 @@ td.mymuse_cart_top{
 }
 
 
-table.mymuse_cart td {
+table.mymuse_cart td, table.mymuse_cart th {
 	border-bottom: 1px solid #e5e5e5;
 	padding: 4px;
-
-}
-table.mymuse_cart tr.row0 {
-	background-color: #ccc;
-}
-table.mymuse_cart tr.row1 {
-	background-color: #fbfbfb;
-}
-table.mymuse_cart tr.row0:hover {
-	background-color: #eeeeee;
-}
-table.mymuse_cart tr.row1:hover {
-	background-color: #eeeeee;
 }
 
+.mycheckbox{
+	text-align: center;
+}
 #player{
 	margin-left: 174px;
 }
@@ -224,4 +205,87 @@ div.mymuse_button a {
 span.discount {
 	text-decoration: line-through;
 	color: red;
+}
+
+.myselect, .myfilesize{
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+
+}
+td.myprice, td.mytotal, td.myoriginalsubtotal, yd.myshoppergroupdiscount,
+td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal
+{
+	text-align: right;
+} 
+	
+	
+	
+	
+
+/* Only Phones */  
+@media (max-width: 767px) { 
+	
+	.mobile-hide{
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	.product-image{
+		width:100%;
+		clear: both;
+	}
+	td.myselect, td.myprice, td.myfilesize, td.mytotal,
+	td.myoriginalsubtotal, yd.myshoppergroupdiscount,
+	td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal
+	{
+		text-align: left;
+	}
+
+	/* Force table to not be like tables anymore */
+	.mymuse_cart table, .mymuse_cart thead, .mymuse_cart tbody, .mymuse_cart th, 
+	.mymuse_cart td, .mymuse_cart tr { 
+		display: block; 
+	}
+	
+	/* Hide table headers (but not display: none;, for accessibility) */
+	.mymuse_cart thead tr { 
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
+	}
+	
+	.mymuse_cart tr { border: 1px solid #ccc; }
+	
+	.mymuse_cart td { 
+		/* Behave  like a "row" */
+		border: none;
+		border-bottom: 1px solid #ccc; 
+		position: relative;
+		padding-left: 50%; 
+	}
+	
+	
+	td.myselect:before, td.mytitle:before, td.mytime:before,
+	td.myfilesize:before, td.myprice:before, td.mypreviews:before,
+	td.myquantity:before, td.mysku:before, td.mysubtotal:before, 
+	td.myaction:before, td.myoriginalsubtotal:before, td.myshoppergroupdiscount:before,
+	td.mynewsubtotal:before, td.myshipping:before, td.mytotal:before, 
+	td.myupdatecart:before, td.mycoupon:before, td.myreservationfee:before, 
+	td.myothercharges:before, td.mypaynow:before, td.mydiscount:before,
+	td.myimage:before, td.myauthor:before, td.myhits:before, td.mysales:before,
+	td.mydate-modified:before, td.mydate-created:before, td.mydate-published:before, 
+	td.mydate-product_made_date:before, 
+	td.myColour:before
+	 { 
+		white-space: nowrap;
+		padding-right: 10px;
+		width: 25%;
+		display: inline-block;
+		border-right: 1px solid #ccc;
+
+	}
+	td.mytotal:before, td.mytotal {
+		font-weight: bold;
+	}
 }

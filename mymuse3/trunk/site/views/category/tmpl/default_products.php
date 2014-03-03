@@ -61,16 +61,16 @@ $height 	= $this->params->get('category_product_image_height',0);
 		<thead>
 			<tr>
 			<?php if ($this->params->get('category_show_product_image')): ?>
-				<td class="list-image mymuse_cart_top"><?php echo JText::_('MYMUSE_IMAGE'); ?></td>
+				<th class="list-image mymuse_cart_top"><?php echo JText::_('MYMUSE_IMAGE'); ?></th>
 			<?php endif; ?>
-				<td class="list-title mymuse_cart_top" id="tableOrdering">
+				<th class="myselect" id="tableOrdering">
 					<?php  echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder) ; ?>
-				</td>
+				</th>
 
 				<?php if ($this->params->get('list_show_date') && $this->params->get('order_date')) : 
                 		$date = $this->params->get('order_date');
                 ?>
-				<td class="list-date mymuse_cart_top" id="tableOrdering2">
+				<th class="mydate-<?php  echo $date; ?>" id="tableOrdering2">
 					<?php if ($date == "created") : ?>
 						<?php echo JHtml::_('grid.sort', 'MYMUSE_'.$date.'_DATE', 'a.created', $listDirn, $listOrder); ?>
 					<?php elseif ($date == "modified") : ?>
@@ -80,43 +80,43 @@ $height 	= $this->params->get('category_product_image_height',0);
 					<?php elseif ($date == "product_made_date") : ?>
 						<?php echo JHtml::_('grid.sort', 'MYMUSE_'.$date.'_DATE', 'a.product_made_date', $listDirn, $listOrder); ?>
 					<?php endif; ?>
-				</td>
+				</th>
 				<?php endif; ?>
 
 				<?php if ($this->params->get('list_show_author', 1)) : ?>
-				<td class="list-author mymuse_cart_top" id="tableOrdering3">
+				<th class="myauthor" id="tableOrdering3">
 					<?php echo JHtml::_('grid.sort', 'JAUTHOR', 'author', $listDirn, $listOrder); ?>
-				</td>
+				</th>
 				<?php endif; ?>
 
 				<?php if ($this->params->get('list_show_hits', 1)) : ?>
-				<td class="list-hits mymuse_cart_top" id="tableOrdering4">
+				<th class="myhits" id="tableOrdering4">
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
-				</td>
+				</th>
 				<?php endif; ?>
 				
 				<?php if ($this->params->get('list_show_price', 0)) : ?>
-				<td class="list-price mymuse_cart_top" id="tableOrdering4">
+				<th class="myprice" id="tableOrdering4">
 					<?php echo JHtml::_('grid.sort', 'MYMUSE_CART_PRICE', 'a.price', $listDirn, $listOrder); ?>
-				</td>
+				</th>
 				<?php endif; ?>
 				
 				<?php if ($this->params->get('list_show_discount', 0)) : ?>
-				<td class="list-discount mymuse_cart_top" id="tableOrdering6">
+				<th class="list-discount mymuse_cart_top" id="tableOrdering6">
 					<?php echo JHtml::_('grid.sort', 'MYMUSE_DISCOUNT', 'a.product_discount', $listDirn, $listOrder); ?>
-				</td>
+				</th>
 				<?php endif; ?>
 				
 				<?php if ($this->params->get('list_show_sales', 0)) : ?>
-				<td class="list-sales mymuse_cart_top" id="tableOrdering7">
+				<th class="mysales" id="tableOrdering7">
 					<?php echo JHtml::_('grid.sort', 'MYMUSE_SALES', 's.sales', $listDirn, $listOrder); ?>
-				</td>
+				</th>
 				<?php endif; ?>
 				
 				<?php if ($this->params->get('category_show_comment_total', 0) && file_exists($comments)) : ?>
-				<td class="list-comments mymuse_cart_top" id="tableOrdering8">
+				<th class="mycomments" id="tableOrdering8">
 					<?php echo JHtml::_('grid.sort', 'COMMENTS_LIST_HEADER', 'a.price', $listDirn, $listOrder); ?>
-				</td>
+				</th>
 				<?php endif; ?>
 			</tr>
 		</thead>
@@ -133,7 +133,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 
 			<?php if (in_array($product->access, $this->user->getAuthorisedViewLevels())) : ?>
 				<?php if ($this->params->get('category_show_product_image')): ?>
-				<td class="list-image mymuse_cart"><?php if ($product->list_image): ?>
+				<td class="myimage"><?php if ($product->list_image): ?>
 					<a
 					href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($product->id, $product->catid)); ?>">
 						<img <?php if($height) : ?> height="<?php echo $height; ?>"
@@ -143,7 +143,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 				</td>
 			<?php endif; ?>
 
-				<td class="list-title mymuse_cart" valign="top"><a
+				<td class="mytitle" valign="top"><a
 					href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($product->id, $product->catid)); ?>">
 						<?php echo $this->escape($product->title); ?>
 				</a> <?php if ($product->params->get('access-edit')) : ?> <!--  
@@ -156,7 +156,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 				</td>
 
 				<?php if ($this->params->get('list_show_date')) : ?>
-					<td class="list-date mymuse_cart" valign="top">
+					<td class="mydate-<?php  echo $date; ?>" valign="top">
 						<?php 
 						if($product->displayDate != '0000-00-00'){
 							echo JHtml::_('date', $product->displayDate, $this->escape(
@@ -167,7 +167,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 				<?php endif; ?>
 
 				<?php if ($this->params->get('list_show_author', 1) ) : ?>
-					<td class="list-author mymuse_cart" valign="top">
+					<td class="myauthor" valign="top">
 						<?php 
 						if(!empty($product->author )) : 
 							$author =  $product->author ?>
@@ -188,19 +188,19 @@ $height 	= $this->params->get('category_product_image_height',0);
 				<?php endif; ?>
 
 				<?php if ($this->params->get('list_show_hits', 1)) : ?>
-					<td class="list-hits mymuse_cart" valign="top">
+					<td class="myhits" valign="top">
 						<?php echo $product->hits; ?>
 					</td>
 				<?php endif; ?>
 					
 				<?php if ($this->params->get('list_show_price', 0)) : ?>
-					<td class="list-price mymuse_cart" valign="top">
+					<td class="myprice" valign="top">
 						<?php echo myMuseHelper::printMoney($product->price); ?>
 					</td>
 				<?php endif; ?>
 					
 				<?php if ($this->params->get('list_show_discount', 0)) : ?>
-					<td class="list-discount" valign="top">
+					<td class="mydiscount" valign="top">
 						<?php 
 						if($product->product_discount > 0){
 							echo myMuseHelper::printMoney($product->product_discount); 
@@ -210,7 +210,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 				<?php endif; ?>
 					
 				<?php if ($this->params->get('list_show_sales', 0)) : ?>
-					<td class="list-sales" valign="top">
+					<td class="mysales" valign="top">
 						<?php echo $product->sales; ?>
 					</td>
 				<?php endif; ?>
@@ -219,14 +219,14 @@ $height 	= $this->params->get('category_product_image_height',0);
 					<?php 
 						$count = JComments::getCommentsCount($product->id, 'com_mymuse');
 						if($count){
-							echo '<td class="list-comments" valign="top">'.$count.'</td>';
+							echo '<td class="mycomments" valign="top">'.$count.'</td>';
 						}
 					?>
 				<?php endif; ?>
 					
 
 				<?php else : // Show unauth links. ?>
-					<td valign="top">
+					<td class="myregister" valign="top">
 						<?php
 							echo $this->escape($product->title).' : ';
 							$menu		= JFactory::getApplication()->getMenu();

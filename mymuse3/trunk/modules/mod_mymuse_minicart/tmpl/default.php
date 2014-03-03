@@ -5,23 +5,18 @@ if(isset($order->items) && count($order->items)){
 $i = 0;
 ?>
 <table class="mymuse_cart">
+<thead>
 <tr class="sectiontableheader mymuse_cart_top">
 	<th class="sectiontableheader mymuse_cart_top"><?php echo JText::_('MYMUSE_ITEM') ?></th>
 	<th class="sectiontableheader mymuse_cart_top"><?php echo JText::_('MYMUSE_CART_QUANTITY') ?></th>
 	<th class="sectiontableheader mymuse_cart_top"><?php echo JText::_('MYMUSE_CART_SUBTOTAL') ?></th>
 </tr>
-<?php foreach($order->items as $item) {
-
-	if ($i++ % 2){
-		$class = "row1";
-	}else{
-		$class = "row2";
-	}
-	?>
-	<tr class="<?php echo $class ?>">
-		<td><?php echo $item->title; ?></td>
-		<td><?php echo $item->quantity; ?></td>
-		<td align="right"><?php echo MyMuseHelper::printMoney($item->product_item_subtotal); ?></td>
+</thead>
+<?php foreach($order->items as $item) { ?>
+	<tr>
+		<td class="mytitle"><?php echo $item->title; ?></td>
+		<td class="myquantity"><?php echo $item->quantity; ?></td>
+		<td class="myprice"><?php echo MyMuseHelper::printMoney($item->product_item_subtotal); ?></td>
 	</tr>
 <?php }?>
 		
@@ -31,20 +26,20 @@ $i = 0;
 			
 			?>
 			<tr>
-		    	<td colspan="2" align="right"><?php echo JText::_('MYMUSE_CART_ORIGINAL_SUBTOTAL'); ?>:</td>
-		        <td align="right"><?php echo MyMuseHelper::printMoney($order->discount + $order->order_subtotal); ?></td>
+		    	<td class="mobile-hide" colspan="2"><?php echo JText::_('MYMUSE_CART_ORIGINAL_SUBTOTAL'); ?>:</td>
+		        <td class="myoriginalsubtotal"><?php echo MyMuseHelper::printMoney($order->discount + $order->order_subtotal); ?></td>
 		    </tr>
 		    
 		    <tr>
-		    	<td colspan="2" align="right"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:
+		    	<td colspan="2"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:
 		    	<?php echo $order->shopper_group_name; ?> <?php echo $order->shopper_group_discount; ?> %</td>
-		        <td align="right"><?php echo MyMuseHelper::printMoney($order->discount); ?></td>
+		        <td class="mydiscount"><?php echo MyMuseHelper::printMoney($order->discount); ?></td>
 
 		    </tr>
 		    
 		    <tr>
-		    	<td colspan="2" align="right"><?php echo JText::_('MYMUSE_CART_NEW_SUBTOTAL'); ?>:</td>
-		        <td align="right"><?php echo MyMuseHelper::printMoney($order->order_subtotal); ?></td>
+		    	<td class="mobile-hide" colspan="2"><?php echo JText::_('MYMUSE_CART_NEW_SUBTOTAL'); ?>:</td>
+		        <td class="mynewsubtotal"><?php echo MyMuseHelper::printMoney($order->order_subtotal); ?></td>
 
 		    </tr>
 		
@@ -55,8 +50,8 @@ $i = 0;
 		<?php //COUPONS
 		if($params->get("my_use_coupons") && @$order->coupon->id){ ?>
 		    <tr>
-		    	<td olspan="2" align="right"><?php echo JText::_('MYMUSE_YOUR_COUPON'); ?> : <?php echo $order->coupon->title ?></td>
-		        <td  align="right">-<?php echo MyMuseHelper::printMoney($order->coupon->discount); ?> </td>
+		    	<td colspan="2"><?php echo JText::_('MYMUSE_YOUR_COUPON'); ?> : <?php echo $order->coupon->title ?></td>
+		        <td class="mydiscount">-<?php echo MyMuseHelper::printMoney($order->coupon->discount); ?> </td>
 
 		    </tr>
 		<?php } ?>
@@ -74,16 +69,16 @@ $i = 0;
 		if(@$order->tax_array){
 		    while(list($key,$val) = each($order->tax_array)){ ?>
 		        <tr>
-		        <td colspan="2" align="right"><?php echo $key; ?></td>
-		        <td align="right"><?php echo MyMuseHelper::printMoney($val); ?></td>
-
+		        <td class="mytaxname" colspan="2"><?php echo $key; ?></td>
+		        <td><?php echo MyMuseHelper::printMoney($val); ?></td>
+				</tr>
 		<?php  } 
 		} ?>
 		
 		
 <tr>
-	<td colspan="2" align="right"><b><?php echo JText::_('MYMUSE_CART_TOTAL') ?></b></td>
-	<td align="right"><?php echo MyMuseHelper::printMoney($order->order_total); ?></td>
+	<td class="mobile-hide" colspan="2"><b><?php echo JText::_('MYMUSE_CART_TOTAL') ?></b></td>
+	<td class="mytotal"><?php echo MyMuseHelper::printMoney($order->order_total); ?></td>
 </tr>
 <tr>
 	<td colspan="3" align="center"><a href="index.php?option=com_mymuse&task=checkout"><?php echo JText::_('MYMUSE_CHECKOUT') ?></a></td>
