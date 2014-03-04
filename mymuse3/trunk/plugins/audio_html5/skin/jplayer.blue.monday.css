@@ -144,18 +144,15 @@ li.jp-unmute,
 		display: none;
 	}
 	.jp-current-time,.jp-duration {
-		position: relative;
-		font-size: 0.8em;
-		cursor: default;
-		display:inline;
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
 	}
 	.jp-current-time {
-		left: 2%;
-		top: -35px;
+
 	}
 	.jp-duration {
-		left: 60%;
-		top: -35px;
+
 	}
 	.jp-gui.jp-no-volume .jp-duration {
 		position: absolute;

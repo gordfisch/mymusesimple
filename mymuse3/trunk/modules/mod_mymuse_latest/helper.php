@@ -77,6 +77,7 @@ class modMyMuseLatestHelper
 			AND ( p.publish_up = '.$db->Quote($nullDate).' OR p.publish_up <= '.$db->Quote($now).' )
 			AND ( p.publish_down = '.$db->Quote($nullDate).' OR p.publish_down >= '.$db->Quote($now).' )
 			AND p.parentid > 0
+			AND pa.state=1
 			ORDER BY '.$search.' DESC LIMIT 0,'.$maximum_shown;
 		}
 
