@@ -79,6 +79,9 @@ $mobile_style = '
 	}
 	td.mydate-product_made_date:before { content: "'.JText::_('MYMUSE_PRODUCT_CREATED_DATE').'";
 	}
+	
+	td.myartist:before { content: "'.JText::_('MYMUSE_ARTIST').'";
+	}
 
 	
 }

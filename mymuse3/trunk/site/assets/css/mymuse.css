@@ -213,8 +213,8 @@ span.discount {
 	text-align: center;
 
 }
-td.myprice, td.mytotal, td.myoriginalsubtotal, yd.myshoppergroupdiscount,
-td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal
+td.myprice, td.mytotal, td.myoriginalsubtotal, td.myshoppergroupdiscount,
+td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount
 {
 	text-align: right;
 } 
@@ -237,7 +237,8 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal
 	}
 	td.myselect, td.myprice, td.myfilesize, td.mytotal,
 	td.myoriginalsubtotal, yd.myshoppergroupdiscount,
-	td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal
+	td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal,
+	td.mydiscount
 	{
 		text-align: left;
 	}
@@ -275,7 +276,7 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal
 	td.myothercharges:before, td.mypaynow:before, td.mydiscount:before,
 	td.myimage:before, td.myauthor:before, td.myhits:before, td.mysales:before,
 	td.mydate-modified:before, td.mydate-created:before, td.mydate-published:before, 
-	td.mydate-product_made_date:before, 
+	td.mydate-product_made_date:before, td.myartist:before,
 	td.myColour:before
 	 { 
 		white-space: nowrap;

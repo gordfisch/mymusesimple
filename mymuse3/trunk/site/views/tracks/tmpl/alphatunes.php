@@ -90,11 +90,11 @@ function tableOrdering( order, dir, task )
 
 </script>
 <style>
-/*
+/* to hide the player, uncomment the following
 #product_player {
-  //top: -1000px;
-  //position: absolute;
-  //z-index:2000000;
+  top: -1000px;
+  position: absolute;
+  z-index:2000000;
 }
 
 .tracks a.jp-play,
@@ -107,16 +107,18 @@ function tableOrdering( order, dir, task )
 }
 
 .tracks a.jp-play {
-	//background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") 0 0 no-repeat;
+	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") 0 0 no-repeat;
 }
 #main  .tracks a.jp-play:hover {
-	//background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") -41px 0 no-repeat;
+	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") -41px 0 no-repeat;
 	
 }
-*/
+
 .tracks a.jp-pause {
-	//background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") 0 -42px no-repeat;
+	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") 0 -42px no-repeat;
 }
+*/
+
 #alphabet .letter{
     padding: 0 5px 0 0;
     font-weight:bold;
@@ -144,42 +146,45 @@ function tableOrdering( order, dir, task )
     margin-bottom:10px;
 }
 </style>
-<!--  the category title -->
-<?php if ($this->params->get('show_category_title', 1)) : ?>
-<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
-	<h2><?php echo $this->category->title; ?></h2>
-</div>
-<?php endif; ?>
 
-<?php if ($this->params->get('page_subheading')) : ?>
-<div class="componentheading<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>">
-	<h3><?php echo $this->escape($this->params->get('page_subheading')); ?></h3>
-</div>
-<?php endif; ?>
 
-<!--  the category image and description -->
-<?php if (($this->params->get('show_description_image') && $this->category->params->get('image')) ||
-		$this->params->get('show_description')) : ?>
-<table class="contentpane<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>" border="0">
-<tr>
-	<td class="contentdescription<?php echo $this->escape($this->params->get('pageclass_sfx')); ?>" colspan="2">
-	<?php if ($this->params->get('show_description_image') && $this->category->params->get('image')) : ?>
-		<img class="catimage" src="<?php echo $this->baseurl ."/". $this->category->params->get('image');?>" 
-		align="left" hspace="6"  alt="<?php echo $this->category->params->get('image');?>" 
-		<?php if($category_height){ echo 'height="'.$category_height.'"'; } ?>
 
+<div class="track-list<?php echo $this->pageclass_sfx;?>">
+
+	<?php if ($this->params->get('show_page_heading')) : ?>
+	<h1>
+		<?php echo $this->escape($this->params->get('page_heading')); ?>
+	</h1>
+	<?php endif; ?>
+	
+	<?php if ($this->params->get('show_category_title')) : ?>
+	<h2>
+			<span class="category-title"><?php echo $this->category->title;?></span>
+	</h2>
+	<?php endif; ?>
+	
+	<?php if ($this->params->get('page_subheading')) : ?>
+	<h3>
+		<span class="category-subheading"><?php echo $this->escape($this->params->get('page_subheading')); ?></span>
+	</h3>
+	<?php endif; ?>
+	
+	<?php if ($this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>
+	<div class="category-desc">
+		<?php if ($this->params->get('show_description_image') && $this->category->params->get('image'))  : ?>
+			<img src="<?php echo $this->category->params->get('image'); ?>"
+			<?php if ($this->params->get('category_image_height')) : ?>
+				style="height: <?php echo $this->params->get('category_image_height'); ?>px; "
+			<?php endif; ?>
 		/>
+		<?php endif; ?>
+		<?php if ($this->params->get('show_description') && $this->category->description) : ?>
+			<?php echo JHtml::_('content.prepare', $this->category->description, '', 'com_content.category'); ?>
+		<?php endif; ?>
+		<div class="clr"></div>
+	</div>
 	<?php endif; ?>
-	<?php if ($this->params->get('show_description')) : ?>
-		<?php echo $this->category->description; ?>
-	<?php endif; ?>
-</td>
-</tr>
-</table>
-<br />
-<br />
-<?php endif; ?>
-
+<div class="clear"></div>
 
 <?php if($this->params->get('show_minicart')) :?>
 <!--  the cart box  -->
@@ -197,6 +202,7 @@ if($this->cart['idx']){
 }
 ?></span>
 </div>
+<div class="clear"></div>
 <?php  endif; ?>
 
 
@@ -208,6 +214,7 @@ if($this->cart['idx']){
 	}
 	?>
 </div>
+<div class="clear"></div>
 <?php  endif; ?>
 
 
@@ -217,7 +224,7 @@ if($this->cart['idx']){
 <form method="post" action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" id="adminForm">
 
 <?php if ( ($this->params->get('filter') == "show" || $this->params->get('show_pagination_limit'))) : ?>
-	<table class="mymuse_filter">
+	<table class="mymuse_cart">
 		<tr>
 		<?php if ($this->params->get('filter') != 'hide') : ?>
 			<td align="left" width="60%" nowrap="nowrap">
@@ -238,6 +245,7 @@ if($this->cart['idx']){
 		<?php endif; ?>
 		</tr>
 	</table>
+	<br />
 <?php endif; ?>
 
 
@@ -272,8 +280,9 @@ if($this->cart['idx']){
 		<?php } ?>
 		class="clips petrol" >
 
-		<table class="mymuse_cart">
-		    <tr class="sectiontableheader">
+		<table class="mymuse_cart tracks jp-gui ui-widget ui-widget-content ui-corner-all">
+			<thead>
+		    <tr>
 
         		<th class="mymuse_cart_top" align="left" width="40%" >
         		<?php echo JHtml::_('grid.sort', 'MYMUSE_ARTIST', 'category_name', $listDirn, $listOrder); ?></th>
@@ -325,10 +334,11 @@ if($this->cart['idx']){
     			<?php } ?>
     
       		</tr>
-      		
+      		</thead>
       		<?php foreach($tracks as $track){ ?>
+      			<!--  ARTIST/ALBUM COLUMN -->	
 			  		<tr>
-                        <td>
+                        <td class="myartist">
                             <?php
                             echo $track->category_name; ?>
                             <?php if($params->get('show_title')) { 
@@ -345,8 +355,8 @@ if($this->cart['idx']){
                             	echo ")";
                             } ?>
                         </td>
-      						
-						<td valign="middle"><?php echo $track->title; ?> <br />
+      				<!--  TITLE COLUMN -->			
+						<td class="mytitle" valign="middle"><?php echo $track->title; ?> <br />
 							<?php if($params->get('product_show_filesize') && $track->file_length) { ?>
 								<?php echo "(".MyMuseHelper::ByteSize($track->file_length).")"; ?>
       						<?php } ?>
@@ -357,7 +367,8 @@ if($this->cart['idx']){
       						</td>
 
         			<?php if($params->get('list_show_price')) { ?>
-        				<td align="center" valign="middle">
+        			<!--  PRICE COLUMN -->	
+        				<td class="myprice" align="center" valign="middle">
         				<?php if($params->get('my_free_downloads') || $params->get('my_downloads_enable')){
         				if(isset($track->free_download) && isset($track->free_download_link)){ ?>
         					<a class="free_download_link" 
@@ -374,13 +385,15 @@ if($this->cart['idx']){
         			<?php } ?>
         			
         			<?php if($params->get('list_show_discount')) { ?>
-        				<td align="center" valign="middle">
+        			<!--  DISCOUNT COLUMN -->	
+        				<td class="mydiscount">
         				<?php echo MyMuseHelper::printMoneyPublic($track->product_discount); ?>
         				</td>
         			<?php } ?>
         			
         			<?php if ($this->params->get('list_show_date') && $track->displayDate) : ?>
-					<td  align="center" valign="middle">
+        			<!--  DATE COLUMN -->	
+					<td class="mydate-<?php  echo $date; ?>">
 						<?php if($track->displayDate != "0000-00-00"){
 							echo JHtml::_('date', $track->displayDate, $this->escape(
 							$this->params->get('date_format', JText::_('DATE_FORMAT_LC3')))); 
@@ -389,17 +402,19 @@ if($this->cart['idx']){
 					<?php endif; ?>
 					
 					<?php if($params->get('list_show_sales')) { ?>
-        				<td  align="center" valign="middle"><?php echo $track->sales; ?></td>
+					<!--  SALES COLUMN -->	
+        				<td class="mysales" ><?php echo $track->sales; ?></td>
         			<?php } ?>
         				
         			<?php if($params->get('product_show_preview_column') && $params->get('product_player_type') != "playlist"){ ?>
-        				<td align="center" valign="middle"><?php echo $track->flash; ?></td>
+        				<!--  PREVIEW COLUMN -->	
+        				<td class="mypreviews"><?php echo $track->flash; ?></td>
         			<?php }?>
         			
                     <?php if($params->get('product_show_cartadd')) { ?>
-                        <td align="center" height="42px" valign="middle">
+                    <!--  SELECT COLUMN -->	
+                        <td class="myselect" height="42px">
         				<?php if($track->file_name || $track->product_allfiles) :?>
-        				<span class="checkbox">
                         <a href="javascript:void(0)" id="box_<?php echo $track->id; ?>"><img id="img_<?php echo $track->id; ?>" src="<?php
                             if(in_array($track->id, $products)){
                                 echo "components/com_mymuse/assets/images/cart.png";
@@ -407,7 +422,6 @@ if($this->cart['idx']){
                                 echo "components/com_mymuse/assets/images/checkbox.png";
                             }
                         ?>"></a>
-      						</span>
       					<?php  endif; ?>
       					</td>
       				<?php } ?>
@@ -444,3 +458,4 @@ if($this->cart['idx']){
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <input type="hidden" name="filter_alpha" value="<?php echo $this->filterAlpha; ?>" />
 </form>
+</div>

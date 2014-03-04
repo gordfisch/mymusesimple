@@ -54,7 +54,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 		</div>
 		<?php endif; ?>
 	</fieldset>
-	<?php endif; ?>
+<?php endif; ?>
 
 	<table class="mymuse_cart">
 		<?php if ($this->params->get('show_headings')) :?>
@@ -143,7 +143,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 				</td>
 			<?php endif; ?>
 
-				<td class="mytitle" valign="top"><a
+				<td class="mytitle"><a
 					href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($product->id, $product->catid)); ?>">
 						<?php echo $this->escape($product->title); ?>
 				</a> <?php if ($product->params->get('access-edit')) : ?> <!--  
