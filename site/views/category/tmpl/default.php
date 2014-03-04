@@ -15,19 +15,22 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 ?>
 <div class="category-list<?php echo $this->pageclass_sfx;?>">
 
-	<?php if ($this->params->get('show_page_heading', 1)) : ?>
+	<?php if ($this->params->get('show_page_heading')) : ?>
 	<h1>
 		<?php echo $this->escape($this->params->get('page_heading')); ?>
 	</h1>
 	<?php endif; ?>
 
-	<?php if ($this->params->get('show_category_title', 1) or $this->params->get('page_subheading')) : ?>
+	<?php if ($this->params->get('show_category_title')) : ?>
 	<h2>
-		<?php echo $this->escape($this->params->get('page_subheading')); ?>
-		<?php if ($this->params->get('show_category_title')) : ?>
-			<span class="subheading-category"><?php echo $this->category->title;?></span>
-		<?php endif; ?>
+		<span class="category-title"><?php echo $this->category->title;?></span>
 	</h2>
+	<?php endif; ?>
+	
+	<?php if ($this->params->get('page_subheading')) : ?>
+	<h3>
+		<span class="category-subheading"><?php echo $this->escape($this->params->get('page_subheading')); ?></span>
+	</h3>
 	<?php endif; ?>
 
 	<?php if ($this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>
