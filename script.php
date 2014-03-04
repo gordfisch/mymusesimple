@@ -718,6 +718,7 @@ if(!function_exists('recursiveDelete')){
 		}else{
 			//WAS ALREADY INSTALLED
 			//restore the css file
+			/** so different we wnat to overwrite 2014-03-05
 			$name = JText::_("MYMUSE_SAVE_CSS");
 			$myFile = JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'assets'.DS.'css'.DS.'mymuse.css';
 			if($this->css != ""){
@@ -732,6 +733,7 @@ if(!function_exists('recursiveDelete')){
 				}
 				$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 			}
+			*/
 			
 		}
 		
