@@ -27,27 +27,27 @@ $params 	= $this->params;
                 </tr>
                 
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_FULL_NAME') ?>:</td>
-                	<td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_FULL_NAME') ?>:</td>
+                	<td class="myfullname">
                 	<?php echo $shopper->name ?>
                 	</td>
                 </tr>
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_EMAIL') ?>:</td>
-                	<td><?php echo $shopper->email ?></td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_EMAIL') ?>:</td>
+                	<td class="myemail"><?php echo $shopper->email ?></td>
                 </tr>
                 
             <?php if(isset($shopper->profile)){ ?>
               <?php if(isset($shopper->profile['phone']) && $shopper->profile['phone'] != ''){ ?> 
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_PHONE') ?>:</td>
-                	<td><?php echo $shopper->profile['phone'] ?></td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_PHONE') ?>:</td>
+                	<td class="myphone"><?php echo $shopper->profile['phone'] ?></td>
                 </tr>
               <?php } ?>
               <?php if(isset($shopper->profile['address1']) && $shopper->profile['address1']){ ?> 
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_ADDRESS') ?>:</td>
-                	<td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_ADDRESS') ?>:</td>
+                	<td class="myaddress">
                 	<?php echo $shopper->profile['address1'] ?>
                 	
                 	<?php echo @$shopper->profile['address2'] ?>
@@ -56,26 +56,26 @@ $params 	= $this->params;
               <?php } ?>
               <?php if(isset($shopper->profile['city']) && $shopper->profile['city'] != ''){ ?> 
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_CITY') ?>:</td>
-                	<td><?php echo $shopper->profile['city'] ?></td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_CITY') ?>:</td>
+                	<td class="mycity"><?php echo $shopper->profile['city'] ?></td>
                 </tr>
               <?php } ?>
               <?php if(isset($shopper->profile['postal_code']) && $shopper->profile['postal_code'] != ''){ ?>
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_ZIP') ?>:</td>
-                	<td><?php echo $shopper->profile['postal_code'] ?></td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_ZIP') ?>:</td>
+                	<td class="myzip"><?php echo $shopper->profile['postal_code'] ?></td>
                 </tr>
               <?php } ?>
               <?php if(isset($shopper->profile['region_name']) && $shopper->profile['region_name'] != ''){ ?>
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_STATE') ?>:</td>
-                	<td><?php echo $shopper->profile['region_name'] ?></td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_STATE') ?>:</td>
+                	<td class="myregion"><?php echo $shopper->profile['region_name'] ?></td>
                 </tr>
               <?php } ?>
               <?php if(isset($shopper->profile['country']) && $shopper->profile['country'] != ''){ ?>
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_COUNTRY') ?>:</td>
-                	<td><?php echo $shopper->profile['country'] ?></td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_COUNTRY') ?>:</td>
+                	<td class="mycountry"><?php echo $shopper->profile['country'] ?></td>
                 </tr>
             <?php  }
 				} ?>
@@ -92,11 +92,11 @@ $params 	= $this->params;
                 <th class="mymuse_cart_top" COLSPAN="2"><b><?php echo JText::_('MYMUSE_SHIPPING_ADDRESS') ?></b></th>
                 </tr>
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_COMPANY') ?>:</td>
-                	<td><?php echo $shopper->shipto->company ?></td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_COMPANY') ?>:</td>
+                	<td class="mycompany"><?php echo $shopper->shipto->company ?></td>
                 </tr>
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_FULL_NAME') ?>:</td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_FULL_NAME') ?>:</td>
                 	<td>
                 	<?php echo $shopper->shipto->first_name ?>
         
@@ -106,40 +106,40 @@ $params 	= $this->params;
                 	</td>
                 </tr>
                 <tr VALIGN=TOP>
-                	<td><?php echo JText::_('MYMUSE_ADDRESS') ?>:</td>
-                	<td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_ADDRESS') ?>:</td>
+                	<td class="myaddress">
                 	<?php echo $shopper->shipto->address_1 ?>
                 	<BR>
                 	<?php echo $shopper->shipto->address_2 ?>
                 	</td>
                 </tr>
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_CITY') ?>:</td>
-                	<td><?php echo $shopper->shipto->city ?></td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_CITY') ?>:</td>
+                	<td class="mycity"><?php echo $shopper->shipto->city ?></td>
                 </tr>
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_STATE') ?>:</td>
-                	<td><?php echo $shopper->shipto->state ?></td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_STATE') ?>:</td>
+                	<td class="myregion"><?php echo $shopper->shipto->state ?></td>
                 </tr>
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_ZIP') ?>:</td>
-                	<td><?php echo $shopper->shipto->zip ?></td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_ZIP') ?>:</td>
+                	<td class="myzip"><?php echo $shopper->shipto->zip ?></td>
                 </tr>
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_COUNTRY') ?>:</td>
-                	<td><?php echo $shopper->shipto->country ?></td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_COUNTRY') ?>:</td>
+                	<td class="mycountry"><?php echo $shopper->shipto->country ?></td>
                 </tr>
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_PHONE') ?>:</td>
-                	<td><?php echo $shopper->shipto->phone_1 ?></td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_PHONE') ?>:</td>
+                	<td class="myphone"><?php echo $shopper->shipto->phone_1 ?></td>
                 </tr>
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_FAX') ?>:</td>
-                	<td><?php echo $shopper->shipto->fax ?></td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_FAX') ?>:</td>
+                	<td class="myfax"><?php echo $shopper->shipto->fax ?></td>
                 </tr>
                 <tr>
-                	<td><?php echo JText::_('MYMUSE_EMAIL') ?>:</td>
-                	<td><?php echo $shopper->shipto->email ?></td>
+                	<td class="mobile-hide"><?php echo JText::_('MYMUSE_EMAIL') ?>:</td>
+                	<td class="myemail"><?php echo $shopper->shipto->email ?></td>
                 </tr>
             </table>
             <!-- End ShipTo -->
