@@ -214,7 +214,7 @@ span.discount {
 
 }
 td.myprice, td.mytotal, td.myoriginalsubtotal, td.myshoppergroupdiscount,
-td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount
+td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount, td.myshipping
 {
 	text-align: right;
 } 
@@ -226,19 +226,15 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount
 /* Only Phones */  
 @media (max-width: 767px) { 
 	
-	.mobile-hide{
-		position: absolute;
-		top: -9999px;
-		left: -9999px;
-	}
+	
 	.product-image{
 		width:100%;
 		clear: both;
 	}
 	td.myselect, td.myprice, td.myfilesize, td.mytotal,
-	td.myoriginalsubtotal, yd.myshoppergroupdiscount,
+	td.myoriginalsubtotal, td.myshoppergroupdiscount,
 	td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal,
-	td.mydiscount
+	td.mydiscount, td.myshipping
 	{
 		text-align: left;
 	}
@@ -276,17 +272,27 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount
 	td.myothercharges:before, td.mypaynow:before, td.mydiscount:before,
 	td.myimage:before, td.myauthor:before, td.myhits:before, td.mysales:before,
 	td.mydate-modified:before, td.mydate-created:before, td.mydate-published:before, 
-	td.mydate-product_made_date:before, td.myartist:before,
+	td.mydate-product_made_date:before, td.myartist:before, td.myorderid:before,
+	td.mydate:before, td.myorderstatus:before, td.myfullname:before, td.myemail:before,
+	td.myphone:before, td.myaddress:before, td.mycity:before, td.myzip:before,
+	td.myregion:before, td.mycountry:before, td.mycompany:before , td.myfax:before, 
 	td.myColour:before
 	 { 
 		white-space: nowrap;
-		padding-right: 10px;
-		width: 25%;
+		padding-right: 7%;
+		margin-right: 7%;
+		width: 23%;
 		display: inline-block;
 		border-right: 1px solid #ccc;
 
 	}
 	td.mytotal:before, td.mytotal {
 		font-weight: bold;
+	}
+	
+	td.mobile-hide{
+		position: absolute;
+		top: -9999px;
+		left: -9999px;
 	}
 }

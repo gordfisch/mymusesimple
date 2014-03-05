@@ -16,19 +16,21 @@ $params 	= $this->params;
 <div class="componentheading"><?php echo JText::_('MYMUSE_YOUR_ORDER_HISTORY'); ?></div>
 
 <table class="mymuse_cart">
+	<thead>
 	<tr>
-		<th class="mymuse_cart_top" width="50"><?php echo JText::_('MYMUSE_ORDER_ID'); ?></th>
-		<th class="mymuse_cart_top" width="200"><?php echo JText::_('MYMUSE_DATE'); ?></th>
-		<th class="mymuse_cart_top" width="100"><?php echo JText::_('MYMUSE_ORDER_STATUS'); ?></th>
-		<th class="mymuse_cart_top" width="100" align="right"><?php echo JText::_('MYMUSE_ORDER_TOTAL'); ?></th>
+		<th class="myorderid" width="10%"><?php echo JText::_('MYMUSE_ORDER_ID'); ?></th>
+		<th class="mydate" width="50%"><?php echo JText::_('MYMUSE_DATE'); ?></th>
+		<th class="myorderstatus" width="40%"><?php echo JText::_('MYMUSE_ORDER_STATUS'); ?></th>
+		<th class="mytotal" width="40%" align="right"><?php echo JText::_('MYMUSE_ORDER_TOTAL'); ?></th>
 		
 	</tr>
+	</thead>
 	<?php  foreach($this->orders as $order){ ?>
 	<tr>
-		<td><a href="<?php echo $order->url; ?>"><?php echo $order->id; ?></a></td>
-		<td><?php echo $order->created; ?></td>
-		<td><?php echo JText::_('MYMUSE_'.strtoupper(MyMuseHelper::getStatusName($order->order_status))) ?></td>
-		<td align="right"><?php echo MyMuseHelper::printMoney($order->order_total); ?></td>
+		<td class="myorderid"><a href="<?php echo $order->url; ?>"><?php echo $order->id; ?></a></td>
+		<td class="mydate" ><?php echo $order->created; ?></td>
+		<td class="myorderstatus"><?php echo JText::_('MYMUSE_'.strtoupper(MyMuseHelper::getStatusName($order->order_status))) ?></td>
+		<td class="mytotal"><?php echo MyMuseHelper::printMoney($order->order_total); ?></td>
 		
 	</tr>
 	<?php } ?>

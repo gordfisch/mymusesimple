@@ -90,25 +90,25 @@ $task		= $this->task;
 			
 			?>
 			<tr>
-		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_CART_ORIGINAL_SUBTOTAL'); ?>:</td>
-		        <td class="myoriginalsubtotal" align="right" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->discount + $order->order_subtotal); ?></td>
+		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_CART_ORIGINAL_SUBTOTAL'); ?>:</td>
+		        <td class="myoriginalsubtotal" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->discount + $order->order_subtotal); ?></td>
 		        <?php if(@$order->do_html){ ?>
 		        <td class="mobile-hide">&nbsp;</td>
 		        <?php } ?>
 		    </tr>
 		    
 		    <tr>
-		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:
+		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:
 		    	<?php echo $order->shopper_group_name; ?> <?php echo $order->shopper_group_discount; ?> %</td>
-		        <td class="myshoppergroupdiscount" align="right" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->discount); ?></td>
+		        <td class="myshoppergroupdiscount" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->discount); ?></td>
 		        <?php if(@$order->do_html){ ?>
 		        <td class="mobile-hide">&nbsp;</td>
 		        <?php } ?>
 		    </tr>
 		    
 		    <tr>
-		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_CART_NEW_SUBTOTAL'); ?>:</td>
-		        <td class="mynewsubtotal" align="right" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->order_subtotal); ?></td>
+		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_CART_NEW_SUBTOTAL'); ?>:</td>
+		        <td class="mynewsubtotal" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->order_subtotal); ?></td>
 		        <?php if(@$order->do_html){ ?>
 		        <td class="mobile-hide">&nbsp;</td>
 		        <?php } ?>
@@ -133,8 +133,8 @@ $task		= $this->task;
 		<?php // SHIPPING
 		if ($params->get("my_use_shipping") && @$order->order_shipping->cost > 0) { ?>
 		    <tr>
-		    <td class="mobile-hide" colspan="<?php echo $order->colspan; ?>" align="right"><b><?php echo JText::_('MYMUSE_SHIPPING') ?>:</b></td>
-		    <td class="myshipping" colspan="<?php echo $order->colspan2; ?>" align="right"><?php echo MyMuseHelper::printMoney($order->order_shipping->cost); ?>
+		    <td class="mobile-hide myshipping" colspan="<?php echo $order->colspan; ?>"><b><?php echo JText::_('MYMUSE_SHIPPING') ?>:</b></td>
+		    <td class="myshipping" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->order_shipping->cost); ?>
 		    </td>
 		    <?php if(@$order->do_html){ ?>
 		        <td>&nbsp;</td>
@@ -149,7 +149,7 @@ $task		= $this->task;
 		    	?>
 		        <tr>
 		        <td class="mytaxname" colspan="<?php echo $order->colspan; ?>"><?php echo $key; ?></td>
-		        <td class="mytaxes" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($val); ?></td>
+		        <td class="mytax" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($val); ?></td>
 		        <?php if(@$order->do_html){ ?>
 		        <td>&nbsp;</td>
 		        <?php  } ?>

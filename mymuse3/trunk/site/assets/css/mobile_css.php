@@ -14,6 +14,8 @@ $mobile_style = '
 @media (max-width: 767px) {
 	/*
 	 Label the data
+	 
+	 TODO: mytaxname mytax
 	*/
 
 	td.myselect:before { content: "'.JText::_('MYMUSE_SELECT').'";}
@@ -35,6 +37,8 @@ $mobile_style = '
 	td.myupdatecart:before { content: "'.JText::_('MYMUSE_UPDATE_CART').'";}
 	td.mycoupon:before { content: "'.JText::_('MYMUSE_YOUR_COUPON').'";}
 	
+	
+	
 	td.myreservationfee:before { content: "'.JText::_('MYMUSE_RESERVATION_FEE').'";}
 	td.myothercharges:before { content: "'.JText::_('MYMUSE_OTHER_CHARGES').'";}
 	td.mypaynow:before { content: "'.JText::_('MYMUSE_PAYNOW').'";}
@@ -50,5 +54,21 @@ $mobile_style = '
 	td.mydate-published:before { content: "'.JText::_('MYMUSE_PUBLISHED_DATE').'";}
 	td.mydate-product_made_date:before { content: "'.JText::_('MYMUSE_PRODUCT_CREATED_DATE').'";}
 	td.myartist:before { content: "'.JText::_('MYMUSE_ARTIST').'";}
+	
+	td.myorderid:before { content: "'.JText::_('MYMUSE_ORDER_ID').'";}
+	td.mydate:before { content: "'.JText::_('MYMUSE_DATE').'";}
+	td.myorderstatus:before { content: "'.JText::_('MYMUSE_ORDER_STATUS').'";}
+	
+	td.myfullname:before { content: "'.JText::_('MYMUSE_FULL_NAME').'"; }
+	td.myemail:before { content: "'.JText::_('MYMUSE_EMAIL').'"; }
+	td.myphone:before { content: "'.JText::_('MYMUSE_PHONE').'"; }
+	td.myaddress:before { content: "'.JText::_('MYMUSE_ADDRESS').'"; }
+	td.mycity:before { content: "'.JText::_('MYMUSE_CITY').'"; }
+	td.myzip:before { content: "'.JText::_('MYMUSE_ZIP').'"; }
+	td.myregion:before { content: "'.JText::_('MYMUSE_STATE').'"; }
+	td.mycountry:before { content: "'.JText::_('MYMUSE_COUNTRY').'"; }
+	td.mycompany:before { content: "'.JText::_('MYMUSE_COMPANY').'"; }
+	td.myfax:before { content: "'.JText::_('MYMUSE_FAX').'"; }
+
 }
 ';
