@@ -65,7 +65,10 @@ function mydownload(url,item_id){
 
 				if($item->downloads < $my_download_max && $end_date > time()){
 				?><a href="javascript:void(0);" onclick="mydownload('index.php?option=com_mymuse&task=downloadfile&id=<?php echo $id; ?>&item_id=<?php echo $item->id; ?>','<?php echo $item->id; ?>');">
-				<?php } ?><?php echo $item->product_name; ?><?php 
+				<?php } ?>
+				
+				<?php echo $item->product_name; ?>
+				<?php 
 				if($item->downloads < $my_download_max && $end_date > time()){ ?></a><?php } ?></td>
 				
 				<td align="center"><?php echo $item->downloads; ?></td>

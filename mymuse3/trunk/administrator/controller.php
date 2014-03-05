@@ -88,9 +88,9 @@ class MymuseController extends JControllerLegacy
 		$language =& JFactory::getLanguage();
 		$extension = 'com_mymuse';
 		$base_dir = JPATH_SITE;
-		$language_tag = $language->_lang;
-		$language->load($extension, $base_dir, $language_tag, true);
-	
+
+		$language->load($extension, $base_dir, 'en-GB', true);
+		$language->load($extension, $base_dir, null, true);
 	
 		include_once( JPATH_SITE.DS.'components'.DS.'com_mymuse'.DS.'templates'.DS.'mail_html_header.php' );
 	
@@ -110,11 +110,21 @@ class MymuseController extends JControllerLegacy
 		$subject = Jtext::_('MYMUSE_ORDER_STATUS_CHANGED')." ".$store->title;
 		$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
 	
-		$fromname = $store->contact_first_name." ".$store->contact_last_name;
-		$mailfrom = $store->contact_email;
-	
-		JMail::sendMail($mailfrom, $fromname, $user_email, $subject, $message, 1);
-		//redirect to edit edit
+		$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
+		$mailfrom = $params->get('contact_email');
+		
+		$mailer = JFactory::getMailer();
+		$mailer->isHTML(true);
+		$mailer->setSender(array($mailfrom,$fromname));
+		$mailer->addRecipient($user_email);
+		$mailer->setSubject($subject);
+		$mailer->setBody($message);
+		$send = $mailer->Send();
+		if ( $send !== true ) {
+			echo 'Error sending email: ' . $send->message;
+		}
+		
+		//redirect to edit page
 		$this->msg = "Downloads Reset";
 		$this->setRedirect( 'index.php?option=com_mymuse&view=order&layout=edit&id='.$id, $this->msg);
 	}
