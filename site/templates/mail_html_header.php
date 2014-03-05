@@ -10,7 +10,8 @@
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-$my_email_msg = preg_replace("/\\n/","<br />",$my_email_msg);
+$my_email_msg = isset($my_email_msg)? $my_email_msg : '';
+
 	$header =  '
 <!DOCTYPE HTML>
 <html lang="en-gb" dir="ltr">
