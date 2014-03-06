@@ -28,7 +28,7 @@ $return_link = 'index.php?option=com_mymuse&view=product&task=product&id='.$prod
 $canEdit	= $this->item->params->get('access-edit',0);
 $items_select 	= $this->params->get('product_item_selectbox',0);
 
-if($product->product_physical && !count($items)){
+if($product->product_physical){
 	$count++;
 }
 if(count($items) && !$items_select){ 
@@ -559,7 +559,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 		</table>
 		</div>
 	</div>
-</form>
+
 <div style="clear: both"></div>
 	<?php } ?>
 		<?php if($params->get('product_show_cartadd')){ ?>
@@ -575,7 +575,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 
 <?php } ?>
 <!-- END TRACKS -->
-
+</form>
 <div style="clear: both"></div>
 <!--  FULLTEXT -->
 <?php if($product->fulltext != ''){ ?>	
