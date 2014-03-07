@@ -86,6 +86,23 @@ class myMuseViewShopper extends JViewLegacy
 			parent::display();
 			return true;
 		}
+		if($this->getLayout() == "waiting"){
+			$heading 	= Jtext::_('MYMUSE_THANK_YOU');
+			$link 		= "index.php?option=com_mymuse&task=thankyou";
+		
+			if($Itemid){
+				$link 		.= "&Itemid=$Itemid";
+			}
+			$link 		.= "&st=5";
+			$message 	= '<a href="'.$link.'">'.Jtext::_('MYMUSE_CHECK_ORDER_WAITING').'</a>';
+				
+			$this->assignRef('heading', $heading);
+			$this->assignRef('message', $message);
+			$this->setLayout("thank_you");
+			parent::display();
+			return true;
+				
+		}
 		if($this->getLayout() == "listorders"){
 			
 			if($params->get('my_registration') == "no_reg"){
