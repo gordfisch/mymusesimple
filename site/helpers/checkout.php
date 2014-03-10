@@ -732,8 +732,10 @@ class MyMuseCheckout
 		foreach($tax_rates as $rate){
 			$name = trim($rate->tax_name);
 			$name = preg_replace("/$regex/","_",$name);
-			$order->tax_array[$name] = $order->$name;
-			$order->tax_total += $order->$name;
+			if($order->$name > 0.00){
+				$order->tax_array[$name] = $order->$name;
+				$order->tax_total += $order->$name;
+			}
 		}
 
 		//build up the items
