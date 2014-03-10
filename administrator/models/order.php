@@ -134,8 +134,10 @@ class MymuseModelorder extends JModelAdmin
 				$name = trim($rate->tax_name);
 				//$regex = TAX_REG_EX;
 				$name = preg_replace("/['-\/\s\\\]/","_",$name);
-				$item->tax_array[$name] = $item->$name;
-				$item->tax_total += $item->tax_array[$name];
+				if($item->$name > 0.00){
+					$item->tax_array[$name] = $item->$name;
+					$item->tax_total += $item->tax_array[$name];
+				}
 			}
 
 			$item->order_total	= $item->order_subtotal
