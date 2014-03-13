@@ -28,13 +28,13 @@ for ($i=0;$i<$this->cart["idx"];$i++) {
 $js = '';
 foreach($this->items as $track){
     if($track->product_allfiles){
-        continue;
+        //continue;
     }
     			$js .= '
 jQuery(document).ready(function($){
 		$("#box_'.$track->id.'").click(function(e){
             
-            //alert("'.$track->id.'");
+            alert("'.$track->id.'");
             $.post("'.$url.'",
             {
                 productid:"'.$track->id.'"
