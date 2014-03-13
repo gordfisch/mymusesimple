@@ -348,14 +348,22 @@ class MyMuseModelProduct extends JModelItem
 					}else{
 						$track->flash_type = "mix";
 					}
+		
+					if($track->file_preview){
+						$preview_tracks[] = $track;
+					}else{
+						$track->flash= '';
+					}
+					
 				}
 
 				$dispatcher	= JDispatcher::getInstance();
 				if($params->get('product_player_type') == "each" || 
 					$params->get('product_player_type') == "single"){
-					reset($tracks);
-					$count = count($tracks);
-					while (list($i,$track)= each( $tracks )){
+					reset($preview_tracks);
+					$count = count($preview_tracks);
+					while (list($i,$track) = each( $preview_tracks )){
+						echo "$i <br />";
 						$flash = '';
 						$track->purchased = 0;
 						
@@ -419,13 +427,13 @@ class MyMuseModelProduct extends JModelItem
 				
 				if($params->get('product_player_type') == "single"){
 					// make a controller for the play/pause buttons
-					$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$tracks) );
+					$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$preview_tracks) );
 					//get the player itself
-					reset($tracks);
+					reset($preview_tracks);
 					$flash = '';
 					$audio = 0;
 					$video = 0;
-					foreach($tracks as $track){
+					foreach($preview_tracks as $track){
 						if($track->file_preview){
 							if($track->file_type == "video" && !$video){
 								//movie
@@ -463,14 +471,14 @@ class MyMuseModelProduct extends JModelItem
 				if($params->get('product_player_type') == "playlist"){
 					//get the main flash for the product
 			
-					reset($tracks);
+					reset($preview_tracks);
 					$this->_item[$pk]->previews = array();
 					$audio = 0;
 					$site_url = preg_replace("#administrator/#","",JURI::base());
 					$prev_dir = $site_url.str_replace($root,'',$params->get('my_preview_dir'));
 					$i = 0;
 					$type = "";
-					foreach($tracks as $track){
+					foreach($preview_tracks as $track){
 						if($track->file_preview){
 							$track->path .= $prev_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->file_preview;
 						}
