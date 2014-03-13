@@ -60,17 +60,22 @@ if($params->get('type_shown') == "tracks" && $params->get('show_track_preview'))
 		<?php echo JText::_('MYMUSE_TRACK'); ?> : <a href="<?php echo $item->product_link; ?>" class="mymuse_latest<?php echo $params->get('moduleclass_sfx'); ?>">
 			<?php echo $item->title; ?></a>
 	<?php endif; ?>
-	<?php if ($params->get('show_track_preview') && $item->flash) : ?>
-			<?php echo $item->flash; ?>
-	<?php endif; ?>
+	
 	<?php if ($params->get('type_shown') == 'tracks') : ?>
 	<br />
 	<?php endif; ?>
+	
 	<?php if ($params->get('show_number') && $params->get('type_search') == "pa.hits") : ?>
 			<?php echo JText::_('MYMUSE_HITS'); ?> : <?php echo $item->hits; ?><br />
 	<?php endif; ?>
 	<?php if ($params->get('show_number') && $params->get('type_search') == "p.file_downloads") : ?>
 			<?php echo JText::_('MYMUSE_DOWNLOADS'); ?> : <?php echo $item->file_downloads; ?><br />
+	<?php endif; ?>
+	<?php if ($params->get('show_number') && $params->get('type_search') == "s.sales") : ?>
+			<?php echo JText::_('MYMUSE_SALES'); ?> : <?php echo $item->sales; ?><br />
+	<?php endif; ?>
+	<?php if ($params->get('show_track_preview') && $item->flash) : ?>
+			<?php echo $item->flash; ?>
 	<?php endif; ?>
 	</li>
 <?php endforeach; ?>

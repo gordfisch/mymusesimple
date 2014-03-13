@@ -63,13 +63,11 @@ class modMyMuseLatestHelper
 			LEFT JOIN #__categories as c on c.id=p.catid
 			LEFT JOIN #__mymuse_product as pa on pa.id=p.parentid
 				
-			LEFT JOIN (SELECT sum(quantity) as sales, x.product_name, x.product_id FROM
-			(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
+			LEFT JOIN (SELECT sum(i.product_quantity) as sales, i.product_id, p.parentid,
 			i.product_name, CASE WHEN parentid > 0 THEN parentid ELSE product_id END as all_id
 			FROM #__mymuse_order_item as i
 			LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
-			GROUP BY i.product_id )
-			as x GROUP BY x.all_id) as s ON s.product_id = p.id
+			GROUP BY i.product_id ) as s ON s.product_id = p.id
 
 			WHERE c.published=1
 			AND p.product_downloadable=1
