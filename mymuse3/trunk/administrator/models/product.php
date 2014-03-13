@@ -449,11 +449,16 @@ class MymuseModelproduct extends JModelAdmin
 
     		$i = 0;
     		foreach($this->_tracks as $track){
-    			if($track->product_allfiles){
+    			if($track->file_preview){
+    				$preview_tracks[$i] = $track;
+    				$i++;
+    			}else{
     				$track->stream = '';
     				$track->flash= '';
-    				continue;
     			}
+    		}
+    		$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$preview_tracks) );
+    		foreach($preview_tracks as $track){
     			$flash = '';
     			
     			//Audio/Video or some horrid mix of both
@@ -526,13 +531,17 @@ class MymuseModelproduct extends JModelAdmin
 
     			//make flash for admin to listen to Main File, we'll call it stream
     			$stream = "";
+    			$htaccess = "";
     			if($params->get('my_encode_filenames')){
     				$name = $track->title_alias;
     			}else{
     				$name = $track->file_name;
     			}
+    			if(file_exists($params->get('my_download_dir').DS.'.htaccess')){
+    				$htaccess = 1;
+    			}
 
-    			if($name){
+    			if($name && !$htaccess){
     				$full_filename = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
     				if(!file_exists($full_filename)){
     					//try with the root
@@ -584,19 +593,18 @@ class MymuseModelproduct extends JModelAdmin
 
     			}
     				
-    			if(file_exists($params->get('my_download_dir').DS.'.htaccess')){
-    				$stream = '';
-    			}
+    			
     			$track->stream = $stream;
 
     		}
     		
     		// get main player, set to play first track
-    		reset($this->_tracks);
+    		reset($preview_tracks);
     		$flash = '';
     		$audio = 0;
     		$video = 0;
-    		$track = $this->_tracks[0];
+    		$done = 0;
+			$track = $preview_tracks[0];
     		if($track->file_preview){
     			if($track->file_type == "video" && !$video){
     				//movie

@@ -70,8 +70,11 @@ JHTML::_('behavior.tooltip');
 				
 				<li><label id="jform_product_file-lbl" for="jform_product_file"  class="hasTip" title="<?php echo JText::_("MYMUSE_BROWSE_TO_FILE")?>">
 				<?php echo JText::_( 'MYMUSE_UPLOAD_NEW_FILE' ); ?></label>
-				<input class="inputbox" type="file" name="product_file" id="jform_product_file" size="40" /></li>
-
+				<input class="inputbox" type="file" name="product_file" id="jform_product_file" size="40" /><br />
+				upload_max_filesize: <?php echo ini_get('upload_max_filesize'); ?><br />
+				post_max_size: <?php echo ini_get('post_max_size'); ?><br />
+				
+				</li>
 		<?php //if(!$this->params->get('my_encode_filenames')){ ?>
 				<li><label id="jform_product_file_select-lbl" for="jform_product_file_select"  class="hasTip" title="<?php echo JText::_("MYMUSE_BROWSE_TO_FILE")?>">
 				<?php echo JText::_( 'MYMUSE_SELECT_FILE' ); ?></label>
