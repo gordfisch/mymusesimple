@@ -272,7 +272,7 @@ class myMuseViewStore extends JViewLegacy
 
         		}
         	}else{
-        		//download a physical file
+        		//download a file from the filesystem
         		if(!$filename){
         			$message = JText::_('MYMUSE_NO_FILENAME_FOUND'). " ".$filename;
         			if($params->get('my_debug')){
@@ -323,6 +323,9 @@ class myMuseViewStore extends JViewLegacy
         			$object->download(); //Download File
         			// update the database
         			$query = "UPDATE #__mymuse_order_item SET downloads = downloads +1 WHERE id=$item_id";
+        			$db->setQuery($query);
+        			$db->execute();
+        			$query = "UPDATE #__mymuse_product SET file_downloads = file_downloads +1 WHERE id=".$product->id;
         			$db->setQuery($query);
         			$db->execute();
         		}
@@ -464,6 +467,9 @@ class myMuseViewStore extends JViewLegacy
         		}else{
         			$object->use_resume = true; //Enable Resume Mode
         			$object->download(); //Download File
+        			$query = "UPDATE #__mymuse_product SET file_downloads = file_downloads +1 WHERE id=".$product->id;
+        			$db->setQuery($query);
+        			$db->execute();
         		}
         	}
         	exit;
