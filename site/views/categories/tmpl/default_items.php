@@ -33,17 +33,24 @@ $item_params->loadString($item->params);
 			(<?php echo $this->_getProductCount($item); ?>)
 		<?php endif; ?>
 		</span>
-		<?php if ($this->params->get('show_description_image') && $item_params->get('image')): ?>
+		<?php if ($this->params->get('show_cat_subcat_image') && $item_params->get('image')): ?>
 <div class="list_image">
 <a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($item->id)); ?>"
 ><img src="<?php echo  $item_params->get('image'); ?>" 
-		<?php if ($this->params->get('category_image_height')) : ?>
-style="height: <?php echo $this->params->get('category_image_height'); ?>px"
+		<?php if ($this->params->get('cat_subcat_image_height')) : ?>
+style="height: <?php echo $this->params->get('cat_subcat_image_height'); ?>px"
 		<?php endif; ?>
 alt="<?php echo htmlspecialchars($item_params->get('image')); ?>" border="0" /></a></div>
 <?php endif; ?>
 		<?php if ($this->params->get('show_subcat_desc_cat') == 1) :?>
-		<?php if ($item->description) : ?>
+		<?php if ($item->description && $item->description != '') : ?>
+		<?php if ($this->params->get('subcat_desc_cat_truncate')) : 
+			$item->description = JHtmlString::truncate($item->description,$this->params->get('subcat_desc_cat_truncate'));
+		 	$item->description = str_replace("...",'',$item->description);
+		 	$item->description = preg_replace("~</p>$~",' ...</p>',$item->description);
+		
+		endif; ?>
+		
 			<div class="category-desc">
 				<?php echo JHtml::_('content.prepare', $item->description, '', 'com_content.categories'); ?>
 			</div>

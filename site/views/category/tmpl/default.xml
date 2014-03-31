@@ -129,6 +129,11 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+			
+			<field name="subcat_desc_truncate" type="text" default="" 
+	 			label="MYMUSE_TUNCATE_DESCRIPTION_LABEL" 
+	 			description="MYMUSE_TUNCATE_DESCRIPTION_DESC">
+	 		</field>
 
 			<field name="show_cat_num_articles" 
 				type="list"

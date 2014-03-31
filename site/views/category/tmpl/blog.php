@@ -18,16 +18,16 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 	<h1>
 		<?php echo $this->escape($this->params->get('page_heading')); ?>
 	</h1>
-	<?php endif; ?>
+<?php endif; ?>
 
-	<?php if ($this->params->get('show_category_title', 1) or $this->params->get('page_subheading')) : ?>
+<?php if ($this->params->get('show_category_title', 1) or $this->params->get('page_subheading')) : ?>
 	<h2>
 		<?php echo $this->escape($this->params->get('page_subheading')); ?>
 		<?php if ($this->params->get('show_category_title')) : ?>
 			<span class="subheading-category"><?php echo $this->category->title;?></span>
 		<?php endif; ?>
 	</h2>
-	<?php endif; ?>
+<?php endif; ?>
 
 
 
@@ -78,6 +78,7 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 		?>
 	<?php endforeach; ?>
 </div>
+<div class="clear"></div>
 <?php endif; ?>
 
 
@@ -110,8 +111,7 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 		</div>
 		<?php endif; ?>
 	<?php endforeach; ?>
-
-
+	<div class="clear"></div>
 <?php endif; ?>
 
 <?php if (!empty($this->link_items)) : ?>

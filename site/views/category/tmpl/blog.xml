@@ -128,6 +128,11 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+			
+			<field name="subcat_desc_truncate" type="text" default="" 
+	 			label="MYMUSE_TUNCATE_DESCRIPTION_LABEL" 
+	 			description="MYMUSE_TUNCATE_DESCRIPTION_DESC">
+	 		</field>
 
 			<field name="show_cat_num_articles" 
 				type="list"
@@ -214,8 +219,10 @@
 			<option value="rauthor">JGLOBAL_AUTHOR_REVERSE_ALPHABETICAL</option>
 			<option value="hits">JGLOBAL_MOST_HITS</option>
 			<option value="rhits">JGLOBAL_LEAST_HITS</option>
-			<option value="order">MYMUSE_PRODUCT_MANAGER_ORDER</option>
 			<option value="sales">MYMUSE_MOST_SALES_ORDER</option>
+			<option value="discount">MYMUSE_MOST_DISCOUNT</option>
+			<option value="rdiscount">MYMUSE_LEAST_DISCOUNT</option>
+			<option value="order">MYMUSE_PRODUCT_MANAGER_ORDER</option>
 		</field>
 
 		<field 

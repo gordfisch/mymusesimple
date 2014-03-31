@@ -25,17 +25,21 @@ foreach($alpha as $letter){
 		if(mb_stripos($child->title, $letter ) === 0){
 			$alphaarr[$letter][$n] = $child;
 			$n++;
+			$lets[$letter]= 1;
 		}
 	}
 }
-$break = round(count($this->items) / $this->params->get('num_columns'));
+$count = count($this->items)+count($lets);
+$break = round($count / $this->params->get('num_columns'),0,PHP_ROUND_HALF_DOWN);
 $r = $count  %  $this->params->get('num_columns');
 if($r){ $break++; }
 
 $i = 0;
 $total_shown = 0;
 $column = 1;
+//echo "count = $count break = $break letters = ".count($lets);
 ?>
+<div class="cat-items">
 <h3><?php echo JText::_('MYMUSE_PRODUCTS'); ?></h3>
 <div class="cols-<?php echo $this->params->get('num_columns'); ?>">
 	<?php foreach($alphaarr as $letter => $children) : 
@@ -45,21 +49,37 @@ $column = 1;
 		?><div class="column-<?php echo $column; $column++;?>">
 		<?php
 	}
-	
+	$total_shown++;
+	$i++;
+	if($i == $break){
+		if ($total_shown == $count){
+			echo '</ul></div>';
+		}else{
+			echo '</ul></div>
+			<div class="column-'.$column.'" >';
+			$column++;
+			if($lettercount != $l){
+				echo '<ul>';
+			}
+				
+		}
+		$i = 0;
+	}
 	?>
 	<span class="alphabet"><?php echo $letter; ?></span>
 		<ul>
 		<?php
+		
+		
 		$lettercount = count($children );
 		$l = 0;
 		foreach($children as $child){
-            //print_pre($child); exit;
-			$total_shown++; 
 			$i++;
 			$l++;
 			if ($total_shown == $count) :
 				$class = ' class="last"';
 			endif;
+			$total_shown++;
 			?>
 			<li <?php echo $class; ?>>
 				<?php $class = ''; ?>
@@ -99,4 +119,5 @@ $column = 1;
 	<?php endforeach; ?>
 </div>
 
-<?php endif;
+<?php endif; ?>
+</div>

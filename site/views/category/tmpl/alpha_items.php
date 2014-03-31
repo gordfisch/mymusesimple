@@ -97,7 +97,7 @@ $column = 1;
 			<li <?php echo $class; ?>>
 				<?php $class = ''; ?>
 				<?php if ($this->params->get('show_subcat_image') && $child->getParams()->get('image')) : ?>
-                <span class="item_image">
+                <span class="subcat-image">
                   <a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($child->id));?>">
                   <img 
                   <?php if($height):?>
