@@ -457,7 +457,8 @@ class MymuseModelproduct extends JModelAdmin
     				$track->flash= '';
     			}
     		}
-    		$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$preview_tracks) );
+    		
+    		$i = 0;
     		foreach($preview_tracks as $track){
     			$flash = '';
     			
@@ -597,6 +598,9 @@ class MymuseModelproduct extends JModelAdmin
     			$track->stream = $stream;
 
     		}
+    		
+    		// make a controller for the play/pause buttons
+    		$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$preview_tracks) );
     		
     		// get main player, set to play first track
     		reset($preview_tracks);

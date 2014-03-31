@@ -79,7 +79,7 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 
 <?php endif; ?>
-
+<div class="clear"></div>
 <?php if (!empty($this->link_items)) : ?>
 
 	<?php echo $this->loadTemplate('links'); ?>

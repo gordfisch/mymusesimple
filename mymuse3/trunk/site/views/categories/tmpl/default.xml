@@ -86,6 +86,11 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+			
+			<field name="subcat_desc_cat_truncate" type="text" default="" 
+	 			label="MYMUSE_TUNCATE_DESCRIPTION_LABEL" 
+	 			description="MYMUSE_TUNCATE_DESCRIPTION_DESC">
+	 		</field>
 
 			<field name="show_cat_num_articles_cat"
 				type="list"
@@ -96,6 +101,21 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
+			
+			<field name="show_cat_subcat_image" 
+				type="list"
+				description="MYMUSE_SHOW_SUBCAT_IMAGE_DESC"
+				label="MYMUSE_SHOW_SUBCAT_IMAGE_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			
+			<field name="cat_subcat_image_height" type="text" default="0" 
+	 			label="MYMUSE_CATEGORY_IMAGE_HEIGHT" 
+	 			description="MYMUSE_CATEGORY_IMAGE_HEIGHT_DESC">
+	 		</field>
 
 </fieldset>
 

@@ -2,7 +2,7 @@
 <metadata>
 	<layout title="MYMUSE_PRODUCT_LAYOUT">
 		<message>
-			<![CDATA[MYMUSE_PRODUCT_LAYOUT]]>
+			<![CDATA[MYMUSE_PRODUCT_LAYOUT_DESC]]>
 		</message>
 	</layout>
 	<!-- Add fields to the request variables for the layout. -->

@@ -10,7 +10,7 @@
 defined('_JEXEC') or die;
 $class = ' class="first"';
 $count = count($this->children[$this->category->id]);
-$break =  round($count / $this->params->get('subcat_columns', 1));
+$break =  round($count / $this->params->get('subcat_columns', 1),0,PHP_ROUND_HALF_DOWN);
 $r = $count  %  $this->params->get('subcat_columns', 1);
 if($r){
 	$break++;
@@ -45,7 +45,7 @@ if(!$total_shown){
 			?>
 			
 			<?php if ($this->params->get('show_subcat_image') == 1 && $child->getParams()->get('image')) :?>
-			<span class="item-picture"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($child->id));?>">
+			<span class="subcat-image"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($child->id));?>">
 				<img src="<?php echo $child->getParams()->get('image'); ?>"
 				<?php if ($this->params->get('category_image_height')) : ?>
 					height="<?php echo $this->params->get('category_image_height'); ?>"
@@ -67,6 +67,12 @@ if(!$total_shown){
 
 			<?php if ($this->params->get('show_subcat_desc') == 1) :?>
 			<?php if ($child->description) : ?>
+			<?php if ($this->params->get('subcat_desc_truncate')) : 
+			$child->description = JHtmlString::truncate($child->description,$this->params->get('subcat_desc_truncate'));
+		 	$child->description = str_replace("...",'',$child->description);
+		 	$child->description = preg_replace("~</p>$~",' ...</p>',$child->description);
+		
+			endif; ?>
 				<div class="category-desc">
 					<?php echo JHtml::_('content.prepare', $child->description, '', 'com_content.category'); ?>
 				</div>
@@ -87,7 +93,7 @@ if(!$total_shown){
 			endif; ?>
 		</li>
 		<?php endif; ?>
-<?php 
+		<?php 
 			
 			if($i == $break){
 				echo '</ul>

@@ -44,18 +44,18 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 		<?php endif; ?>
 		
 	</div>
-	<div class="clr"></div>
+	<div class="clear"></div>
 	<?php endif; ?>
 	
 	<?php if (!empty($this->children[$this->category->id])&& $this->maxLevel != 0) : ?>
-	<div class="cat-children">
+	<div class="cat-children cat-items">
 		<h3>
 			<?php echo JTEXT::_('JGLOBAL_SUBCATEGORIES'); ?>
 		</h3>
 
 		<?php echo $this->loadTemplate('children'); ?>
 	</div>
-	<div class="clr"></div>
+	<div class="clear"></div>
 	<?php endif; ?>
 	
 

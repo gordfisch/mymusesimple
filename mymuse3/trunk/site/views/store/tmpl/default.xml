@@ -8,26 +8,26 @@
 <fields name="params">
 	<fieldset name="advanced" label="MYMUSE_FEATURED_LAYOUT_OPTIONS">
 
-						<field 
+		<field 
 				name="category_show_all_products" 
-				type="radio"
-				class="btn-group"
+				type="list"
 				default="1" 
 				label="MYMUSE_SHOW_ALL_PRODUCTS" 
 				description="MYMUSE_SHOW_ALL_PRODUCTS_DESC"
 			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
 	 			<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 	 		</field>
 	 		
 	 		<field 
 	 			name="category_show_product_image" 
-	 			type="radio"
-				class="btn-group"
+	 			type="list"
 	 			default="1" 
 	 			label="MYMUSE_SHOW_PRODUCT_IMAGE" 
 	 			description="MYMUSE_SHOW_PRODUCT_IMAGE_DESC"
 	 		>
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
 	 			<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 	 		</field>
@@ -43,22 +43,21 @@
 	 		
 	 		<field 
 	 			name="category_show_intro_text" 
-	 			type="radio"
-				class="btn-group"
-	 			default="1" 
+	 			type="list"
 	 			label="MYMUSE_SHOW_INTRO_TEXT" description="MYMUSE_SHOW_PRODUCT_INTRO_TEXT"
 	 		>
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
 	 			<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 	 		</field>
 	 		
 	 		<field 
 	 			name="category_product_link_titles" 
-	 			type="radio"
-				class="btn-group"
+	 			type="list"
 	 			default="1" 
 	 			label="MYMUSE_LINK_TITLES_LABEL" description="MYMUSE_LINK_TITLES_DESC"
 	 		>
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
 	 			<option value="0">JNO</option>
 				<option value="1">JYES</option>
 	 		</field>
@@ -103,14 +102,19 @@
 				<option value="0">JGLOBAL_DOWN</option>
 				<option value="1">JGLOBAL_ACROSS</option>
 			</field>
-
-
-			<field
-			name="spacer1"
-			type="spacer"
-			hr="true"
-			/>
-
+			
+		<field 
+			name="orderby_pri"
+			type="list"
+			default="none"
+			label="JGLOBAL_CATEGORY_ORDER_LABEL"
+			description="JGLOBAL_CATEGORY_ORDER_DESC"
+		>
+			<option value="none">JGLOBAL_NO_ORDER</option>
+			<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
+			<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
+			<option value="order">JGLOBAL_CATEGORY_MANAGER_ORDER</option>
+		</field>
 
 			<field name="orderby_sec" type="list"
 				description="MYMUSE_PRODUCT_ORDER_DESC"

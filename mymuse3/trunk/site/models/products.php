@@ -540,7 +540,7 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 			$ordering .= " ".$this->getState('list.direction', 'ASC');
 		}
 		$query->order($ordering);
-	
+
 		$query->group('a.id, a.title, a.alias, a.title_alias, a.introtext, a.checked_out, 
 		a.checked_out_time, a.catid, a.created, a.created_by, a.created_by_alias, a.created, 
 		a.modified, a.modified_by, uam.name, a.publish_up, a.attribs, a.metadata, a.metakey, 
