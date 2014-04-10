@@ -91,6 +91,7 @@ window.addEvent('domready', function() {Calendar.setup({
 <?php 
 if($orders_total >0 && count( $rows )){ ?>
 		<h2><?php echo JText::_('MYMUSE_ORDER_SUMMARY'); ?></h2>
+		<?php echo JText::_('MYMUSE_ORDER_SUMMARY_EXPLANATION'); ?>
 		<table class="mymuse_cart">
 		<tr>
 			<td width="200"><?php echo JText::_( 'MYMUSE_TOTAL_NO_ORDERS' ); ?>:</td>

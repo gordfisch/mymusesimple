@@ -184,19 +184,18 @@ class myMuseModelReports extends JmodelList
         $prodarr = array_unique($prodarr, SORT_NUMERIC);
         sort($prodarr, SORT_NUMERIC);
 
-
-        //make sql bit for catids
-        $_prodids = "(";
+        $prodids = "(";
         foreach($prodres as $id){
-  		    $_prodids .= $id->product_id.",";
+  		    $prodids .= $id->product_id.",";
   		}
-  		$_prodids = preg_replace("/,$/","",$_prodids);
-  		$_prodids .= ")";
+  		$prodids = preg_replace("/,$/","",$prodids);
+  		$prodids .= ")";
         
         $this->_catidsIN = $catids; 
-        $this->_prodids = $_prodids;
+        $this->_prodids = $prodids;
         $this->_orderids = $orderids;
-      	/*
+      	
+        /*
         echo "catids "; print_pre($this->_catidsIN);
         echo "prodids "; print_pre($this->_prodids);
         echo "orderids "; print_pre($this->_orderids);
@@ -273,8 +272,49 @@ class myMuseModelReports extends JmodelList
     	$params = JComponentHelper::getParams('com_mymuse');
     	$this->setState('params', $params);
     
+    	//set the limit to be unlimited
+    	$this->setState('list.limit', '0');
+    	
     	// List state information.
-    	parent::populateState('a.id', 'asc');
+    	//parent::populateState('a.id', 'asc');
+    }
+    
+    /**
+     * Method to get an array of data items.
+     *
+     * @return  mixed  An array of data items on success, false on failure.
+     *
+     * @since   12.2
+     */
+    public function getItems()
+    {
+    	// Get a storage key.
+    	$store = $this->getStoreId();
+    
+    	// Try to load the data from internal storage.
+    	if (isset($this->cache[$store]))
+    	{
+    		return $this->cache[$store];
+    	}
+ 
+    	// Load the list items.
+    	$query = $this->_getListQuery();
+    
+    	try
+    	{
+    		$items = $this->_getList($query, $this->getStart(), $this->getState('list.limit'));
+    	}
+    	catch (RuntimeException $e)
+    	{
+    		$this->setError($e->getMessage());
+    
+    		return false;
+    	}
+    
+    	// Add the items to the internal cache.
+    	$this->cache[$store] = $items;
+    
+    	return $this->cache[$store];
     }
     
     /**
@@ -293,6 +333,8 @@ class myMuseModelReports extends JmodelList
     	// Compile the store id.
     	$id.= ':' . $this->getState('filter.catid');
     	$id.= ':' . $this->getState('filter.order_status');
+    	$id.= ':' . $this->getState('filter.start_date');
+    	$id.= ':' . $this->getState('filter.end_date');
     
     	return parent::getStoreId($id);
     }
@@ -359,7 +401,7 @@ class myMuseModelReports extends JmodelList
     	if ($orderCol && $orderDirn) {
     		$query->order($db->escape($orderCol.' '.$orderDirn));
     	}
-
+		//echo "List query: ".$query."<br />";
     	return $query;
     }
 
@@ -511,7 +553,7 @@ class myMuseModelReports extends JmodelList
 
   		$this->_db->setQuery( $query );
         $res = $this->_db->loadObjectList();
-
+		//echo $query;
         for($i=0;$i<count($res);$i++){
         	if($res[$i]->artist_name == ""){
         		$query = "SELECT a.title as artist_name FROM #__categories as a, #__mymuse_product as p 
