@@ -35,25 +35,30 @@ $height 	= $this->params->get('category_product_image_height',0);
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="limitstart" value="" />
 <?php if ($this->params->get('show_headings') || $this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit')) :?>
-	<fieldset class="filters">
-		<?php if ($this->params->get('filter_field') != 'hide') :?>
-		<legend class="hidelabeltxt">
-			<?php echo JText::_('JGLOBAL_FILTER_LABEL'); ?>
-		</legend>
-
-		<div class="filter-search">
-			<label class="filter-search-lbl" for="filter-search"><?php echo JText::_('MYMUSE_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;'; ?></label>
-			<input type="text" name="filter-search" id="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" class="inputbox" onchange="document.adminForm.submit();" title="<?php echo JText::_('COM_CONTENT_FILTER_SEARCH_DESC'); ?>" />
-		</div>
+<?php if ( ($this->params->get('filter') == "show" || $this->params->get('show_pagination_limit'))) : ?>
+	<table class="mymuse_cart">
+		<tr>
+		<?php if ($this->params->get('filter') != 'hide') : ?>
+			<td align="left" width="60%" nowrap="nowrap">
+				<?php echo JText::_('MYMUSE_TITLE_FILTER').'&nbsp;'; ?>
+				<input type="text" name="searchword" value="<?php echo $this->escape($this->state->get('list.searchword')); ?>" 
+				class="inputbox" 
+				onchange="this.start.value=0;this.form.submit();" />
+			</td>
 		<?php endif; ?>
-
+        
 		<?php if ($this->params->get('show_pagination_limit')) : ?>
-		<div class="display-limit">
-			<?php echo JText::_('JGLOBAL_DISPLAY_NUM'); ?>&#160;
-			<?php echo $this->pagination->getLimitBox(); ?>
-		</div>
+			<td  nowrap="nowrap">
+			<?php
+				echo '&nbsp;&nbsp;&nbsp;'.JText::_('MYMUSE_DISPLAY_NUM').'&nbsp;';
+				echo $this->pagination->getLimitBox();
+			?>
+			</td>
 		<?php endif; ?>
-	</fieldset>
+		</tr>
+	</table>
+	<br />
+<?php endif; ?>
 <?php endif; ?>
 
 	<table class="mymuse_cart">

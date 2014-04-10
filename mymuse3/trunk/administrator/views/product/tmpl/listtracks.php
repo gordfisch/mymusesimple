@@ -292,7 +292,7 @@ Joomla.orderTable = function()
 					<td class="center">
 						<div class="btn-group">
 							<?php echo JHtml::_('jgrid.published', $file->state, $i, 'products.', $canChange, 'cb', $file->publish_up, $file->publish_down); ?>
-							<?php //echo JHtml::_('contentadministrator.featured', $file->featured, $i, $canChange); ?>
+							<?php echo JHtml::_('mymuseadministrator.featured', $file->featured, $i, $canChange); ?>
 						</div>
 					</td>
 					

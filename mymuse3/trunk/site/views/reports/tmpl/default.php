@@ -115,6 +115,8 @@ if($orders_total >0 && count( $rows )){ ?>
 		</tr>
 	<?php } ?>	
 		</table>
+<?php 	}else{ ?>
+			<h3><?php echo JText::_( 'MYMUSE_NO_ORDER' ); ?></h3>
 <?php } ?>
 
 

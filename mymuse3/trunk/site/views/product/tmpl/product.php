@@ -276,7 +276,14 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 			<?php echo $product->introtext ?>
 		<?php endif ?>
 		<?php if($product->introtext && $product->fulltext && $params->get('show_readmore')) : ?><br />
-			<a href="#readmore" class="readon"><?php echo JText::_("MYMUSE_READ_MORE"); ?></a>
+			<a href="#readmore" class="readon"><?php echo JText::_("MYMUSE_READ_MORE"); ?>
+			<?php 
+			if ($params->get('show_readmore_title', 0) != 0) :
+				echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
+			endif;
+			?>
+			
+			</a>
 		<?php endif ?>
 		</div>
 <?php endif; ?>
@@ -309,13 +316,11 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 				?></td>
 			<?php if ($params->get('product_show_quantity')) :?>
 				<td class="myquantity"><input class="inputbox" type="text" name="quantity[<?php echo $product->id; ?>]" size="2" value="1" /> 
-				<?php echo JText::_('MYMUSE_QUANTITY'); ?></td>
+				</td>
 
 			<?php endif; ?>
 			</tr>
 		</table>
-		
-
 		<table class="mymuse_cart">
 	  		<tr>	
 				<td width="30%"><input class="button" type="submit" value="<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?>"
@@ -332,6 +337,28 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 			
 <!-- ITEMS   ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS -->
 	<?php if(count($items) && !$items_select){  ?>
+	<style type="text/css">
+	@media (max-width: 767px) { 
+	<?php foreach($product->attribute_sku as $a_sku){ ?>
+		td.my<?php echo $a_sku->name ?>:before { content: "<?php echo JText::_($a_sku->name); ?>";}
+		td.my<?php echo $a_sku->name ?>{
+			text-align: left;
+		}
+		td.my<?php echo $a_sku->name ?>:before {
+			white-space: nowrap;
+			padding-right: 7%;
+			margin-right: 7%;
+			width: 23%;
+			display: inline-block;
+			border-right: 1px solid #ccc;
+		}
+		td.my<?php echo $a_sku->name ?> {
+			clear: both;
+		}
+	}
+		
+	<?php } ?>
+	</style>
 		<h3><?php echo JText::_('MYMUSE_ITEMS'); ?></h3> 
 		<table class="mymuse_cart">
 			<thead>
@@ -526,9 +553,12 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
         				</td>
         			<?php } ?>
         			<!--  FILE SIZE COLUMN -->
-        			<?php  if($params->get('product_show_filesize', 1) && !$track->product_allfiles){?>	
+        			<?php  if($params->get('product_show_filesize', 0)){?>	
         				<td class="myfilesize">
-        				<?php echo "(".MyMuseHelper::ByteSize($track->file_length).")"; ?>
+        				<?php 
+        				if(!$track->product_allfiles){
+        					echo "(".MyMuseHelper::ByteSize($track->file_length).")"; 
+						}?>
         				</td>
         			<?php } ?>
 					<!--  COST COLUMN -->

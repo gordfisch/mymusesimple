@@ -108,10 +108,15 @@ class myMuseModelReports extends JmodelList
 		parent::__construct();
 
 		$user   = JFactory::getUser();
-        $profile = $user->get('profile');
+		$userid = $user->get('id');
+		
+		if(!$userid){
+			return;
+		}     
+		$profile = $user->get('profile');
 		$catid = @$profile['category_owner'];
         $this->_catid = (int)$catid;
-        
+
         //what if they want a sub-cat of the parent
         $subid = JRequest::getVar('catid',0);
         if($subid && $subid != $catid){
@@ -149,8 +154,7 @@ class myMuseModelReports extends JmodelList
   			}
   		}
   		$catids = preg_replace("/,$/","",$catids);
-  		$catids .= ")";
-        
+  		$catids .= ")";    
         
         //make sql bit for orderids
   		$orders =& $this->getItems();
@@ -163,7 +167,8 @@ class myMuseModelReports extends JmodelList
 
         //get products that fall under categories
         $query = "SELECT product_id from #__mymuse_product_category_xref 
-        WHERE catid IN $catids";
+        WHERE catid IN $catids
+        GROUP BY product_id";
         $this->_db->setQuery( $query );
         $prodres = $this->_db->loadObjectList();
         
@@ -173,6 +178,12 @@ class myMuseModelReports extends JmodelList
         $prodres2 = $this->_db->loadObjectList();
         
         $prodres = array_merge($prodres,$prodres2);
+        foreach($prodres as $id){
+        	$prodarr[] = $id->product_id.",";
+        }
+        $prodarr = array_unique($prodarr, SORT_NUMERIC);
+        sort($prodarr, SORT_NUMERIC);
+
 
         //make sql bit for catids
         $_prodids = "(";
@@ -185,10 +196,11 @@ class myMuseModelReports extends JmodelList
         $this->_catidsIN = $catids; 
         $this->_prodids = $_prodids;
         $this->_orderids = $orderids;
-      
-        //print_pre($this->_catidsIN);
-        //print_pre($this->_prodids);
-
+      	/*
+        echo "catids "; print_pre($this->_catidsIN);
+        echo "prodids "; print_pre($this->_prodids);
+        echo "orderids "; print_pre($this->_orderids);
+		*/
 	}
 	
 	/**
@@ -218,10 +230,6 @@ class myMuseModelReports extends JmodelList
 			$options = array();
 			//$options['countItems'] = $params->get('show_cat_num_articles_cat', 1) || !$params->get('show_empty_categories_cat', 0);
 			$categories = JCategories::getInstance('MyMuse', $options);
-	
-	
-			
-
 			$this->_parent = $categories->get($catid, $recursive);
 
 			if (is_object($this->_parent)) {
@@ -351,7 +359,7 @@ class myMuseModelReports extends JmodelList
     	if ($orderCol && $orderDirn) {
     		$query->order($db->escape($orderCol.' '.$orderDirn));
     	}
- 
+
     	return $query;
     }
 
@@ -428,8 +436,6 @@ class myMuseModelReports extends JmodelList
         $res = $this->_db->loadObject();
         $res->tax_array = $tax_array;
         
-        //echo "$query <br />";
-        //print_pre($res);
         return $res;
   	
   	}
@@ -444,6 +450,10 @@ class myMuseModelReports extends JmodelList
   	{ 
         $orderids  = $this->_orderids;
         $_prodids   = $this->_prodids;
+
+        if($orderids == '()' || $_prodids == '()'){
+        	return;
+        }
 
   		$query = "SELECT o.id 
   		FROM #__mymuse_order as o
@@ -484,6 +494,9 @@ class myMuseModelReports extends JmodelList
   		
         $orderids  = $this->_orderids;
         $_prodids   = $this->_prodids;
+        if($orderids == '()' || $_prodids == '()'){
+        	return;
+        }
 
   		$query = "SELECT sum(product_quantity) as quantity, sum(product_quantity * product_item_price) 
   		as total, i.product_name, a.title as artist_name, p.id as product_id
@@ -498,7 +511,7 @@ class myMuseModelReports extends JmodelList
 
   		$this->_db->setQuery( $query );
         $res = $this->_db->loadObjectList();
-    //echo $query; exit;   
+
         for($i=0;$i<count($res);$i++){
         	if($res[$i]->artist_name == ""){
         		$query = "SELECT a.title as artist_name FROM #__categories as a, #__mymuse_product as p 

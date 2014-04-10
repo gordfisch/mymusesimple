@@ -109,10 +109,7 @@
 			<field name="product_player_type" type="list" default="single" 
 				label="MYMUSE_PRODUCT_PLAYERTYPE_LABEL" 
 				description="MYMUSE_PRODUCT_PLAYERTYPE_DESC">
-				<option value="">JGLOBAL_USE_GLOBAL</option>
 	 			<option value="single">MYMUSE_SINGLE</option>
-	 			<option value="each">MYMUSE_EACH</option>
-	 			<option value="playlist">MYMUSE_PLAYLIST</option>
 	 		</field>
 	 		
 	 		<field name="product_player_width" type="text" size="6"
@@ -289,6 +286,17 @@
 				<option value="modified">JGLOBAL_MODIFIED</option>
 				<option value="published">JPUBLISHED</option>
 				<option value="product_made_date">MYMUSE_PRODUCT_CREATED_LABEL</option>
+			</field>
+			
+			<field 
+				name="featured" 
+				type="list"
+				label="MYMUSE_FEATURED_TRAKS_LABEL"
+				description="MYMUSE_FEATURED_TRACKS_DESC"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
 			</field>
 
 			<field name="group_by" type="list"

@@ -75,6 +75,11 @@ class MymuseControllerProducts extends JControllerAdmin
 		$values	= array('featured' => 1, 'unfeatured' => 0);
 		$task	= $this->getTask();
 		$value	= JArrayHelper::getValue($values, $task, 0, 'int');
+		
+		$view 	= JRequest::getVar('view','');
+		$parentid 	= JRequest::getVar('parentid','');
+		$layout = JRequest::getVar('layout','');
+		$id = JRequest::getVar('id','');
 
 		// Access checks.
 		foreach ($ids as $i => $id)
@@ -93,13 +98,19 @@ class MymuseControllerProducts extends JControllerAdmin
 			// Get the model.
 			$model = $this->getModel();
 
-			// Publish the items.
+			// Feature the items.
 			if (!$model->featured($ids, $value)) {
 				JError::raiseWarning(500, $model->getError());
 			}
+			
 		}
 
-		$this->setRedirect('index.php?option=com_mymuse&view=products');
+		if($view == 'product' && ($layout == 'listtracks' || $layout == 'listitems') && $parentid){
+			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $view .'&layout='.$layout.'&id='.$parentid, false));
+		}else{
+			$this->setRedirect('index.php?option=com_mymuse&view=products');
+		}
+		
 	}
 	
 	/**
@@ -250,6 +261,7 @@ class MymuseControllerProducts extends JControllerAdmin
 		$view 	= JRequest::getVar('view','');
 		$parentid 	= JRequest::getVar('parentid','');
 		$layout = JRequest::getVar('layout','');
+		$id = JRequest::getVar('id','');
 		$subtype = JRequest::getVar('subtype', '');
 
 		// Get items to publish from the request.
@@ -298,10 +310,9 @@ class MymuseControllerProducts extends JControllerAdmin
 		}
 		
 		if($view == 'product' && $layout == 'edit' && $parentid){
-
 			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $view .'&layout='.$layout.'&id='.$parentid.'&subtype='.$subtype, false));
 		}else{
-			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $this->view_list . $extensionURL, false));
+			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $view .'&layout='.$layout.'&id='.$id, false));
 		}
 	}
 	

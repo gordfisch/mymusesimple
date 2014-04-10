@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.0.0" method="upgrade">
 	<name>MyMuse</name>
-	<creationDate>2013-01-08</creationDate>
-	<copyright>Copyright (C) 2013. All rights reserved.</copyright>
+	<creationDate>2014-04-10</creationDate>
+	<copyright>Copyright (C) 2014. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Arboreta</author>
 	<authorEmail>gord@arboreta.ca</authorEmail>

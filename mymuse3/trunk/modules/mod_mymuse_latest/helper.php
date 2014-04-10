@@ -53,7 +53,7 @@ class modMyMuseLatestHelper
 			AND ( p.publish_up = '.$db->Quote($nullDate).' OR p.publish_up <= '.$db->Quote($now).' )
 			AND ( p.publish_down = '.$db->Quote($nullDate).' OR p.publish_down >= '.$db->Quote($now).' )
 			AND p.parentid=0
-			ORDER BY '.$search.' DESC LIMIT 0,'.$maximum_shown;
+			ORDER BY '.$search.' DESC, artist_name ASC LIMIT 0,'.$maximum_shown;
 		}else{
 			//type = tracks
 			$query = 'SELECT p.id, p.title, p.file_preview, p.file_preview_2, p.file_preview_3, p.parentid, p.file_downloads, p.file_type,
@@ -76,7 +76,7 @@ class modMyMuseLatestHelper
 			AND ( p.publish_down = '.$db->Quote($nullDate).' OR p.publish_down >= '.$db->Quote($now).' )
 			AND p.parentid > 0
 			AND pa.state=1
-			ORDER BY '.$search.' DESC LIMIT 0,'.$maximum_shown;
+			ORDER BY '.$search.' DESC, artist_name ASC LIMIT 0,'.$maximum_shown;
 		}
 
 		$db->setQuery($query);

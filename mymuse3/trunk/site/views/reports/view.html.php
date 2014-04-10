@@ -29,8 +29,7 @@ class myMuseViewReports extends JViewLegacy
         $profile = $user->get('profile');
 		$catid = $profile['category_owner'];
 		
-
-        if(!$catid){
+		if(!$catid || !$userid){
         	JRequest::setVar('not_auth','1');
         	JRequest::setVar( 'layout', 'no_auth');
         	JRequest::setVar( 'task', 'no_auth');
@@ -61,11 +60,10 @@ class myMuseViewReports extends JViewLegacy
 				
 				// Get data from the model
 				$this->state		    = $this->get('State');
-                // get all possible order id filtered by dates and status
+                // get all possible order ids filtered by dates and status
 				$this->items		    = $this->get('Items');
                 //get just our orders containing products with our catids
                 $this->orders		    = $this->get('Orders');
-                
 				$this->pagination		= $this->get('Pagination');
 				$this->orders_total 	= count($this->orders);
 				$this->lists  			= $this->get( 'Lists');
@@ -80,10 +78,53 @@ class myMuseViewReports extends JViewLegacy
 				}
 			} break;
 		}
+		$this->_prepareDocument();
 
 		parent::display($tpl);
 
 	}
-
+	/**
+	 * Prepares the document
+	 */
+	protected function _prepareDocument()
+	{
+		$app	= JFactory::getApplication();
+		$menus	= $app->getMenu();
+		$pathway = $app->getPathway();
+		$title = null;
+	
+		// Because the application sets a default page title,
+		// we need to get it from the menu item itself
+		$menu = $menus->getActive();
+		if ($menu)
+		{
+			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
+		}
+		else
+		{
+			$this->params->def('page_heading', JText::_('MyMuse'));
+		}
+	
+		$title = $this->params->get('page_title', '');
+	
+		$id = (int) @$menu->query['id'];
+	
+	
+		// Check for empty title and add site name if param is set
+		if (empty($title)) {
+			$title = $app->getCfg('sitename');
+		}
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 1) {
+			$title = JText::sprintf('JPAGETITLE', $app->getCfg('sitename'), $title);
+		}
+		elseif ($app->getCfg('sitename_pagetitles', 0) == 2) {
+			$title = JText::sprintf('JPAGETITLE', $title, $app->getCfg('sitename'));
+		}
+		if (empty($title)) {
+			$title = $this->item->title;
+		}
+		$this->document->setTitle($title);
+	
+	}
 }
  

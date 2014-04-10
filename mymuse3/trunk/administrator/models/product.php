@@ -448,6 +448,7 @@ class MymuseModelproduct extends JModelAdmin
     		}
 
     		$i = 0;
+    		$preview_tracks = array();
     		foreach($this->_tracks as $track){
     			if($track->file_preview){
     				$preview_tracks[$i] = $track;
@@ -608,31 +609,33 @@ class MymuseModelproduct extends JModelAdmin
     		$audio = 0;
     		$video = 0;
     		$done = 0;
-			$track = $preview_tracks[0];
-    		if($track->file_preview){
-    			if($track->file_type == "video" && !$video){
-    				//movie
-    				$flash .= '<!-- Begin VIDEO Player -->';
-    				$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
-    				if(is_array($results) && $results[0] != ''){
-    					$flash .= $results[0];
-    				}
-    				$flash .= '<!-- End Player -->';
-    				$video = 1;
+    		if(isset($preview_tracks[0])){
+    			$track = $preview_tracks[0];
+    			if($track->file_preview){
+    				if($track->file_type == "video" && !$video){
+    					//movie
+    					$flash .= '<!-- Begin VIDEO Player -->';
+    					$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
+    					if(is_array($results) && $results[0] != ''){
+    						$flash .= $results[0];
+    					}
+    					$flash .= '<!-- End Player -->';
+    					$video = 1;
 
-    			}elseif($track->file_type == "audio" && !$audio){
-    				//audio
-    				$flash .= '<!-- Begin AUDIO Player -->';
-    				$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
+    				}elseif($track->file_type == "audio" && !$audio){
+    					//audio
+    					$flash .= '<!-- Begin AUDIO Player -->';
+    					$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
 
-    				if(is_array($results) && isset($results[0]) && $results[0] != ''){
-    					$flash .= $results[0];
+    					if(is_array($results) && isset($results[0]) && $results[0] != ''){
+    						$flash .= $results[0];
+    					}
+    					$flash .= '<!-- End Player -->';
+    					$audio = 1;
     				}
-    				$flash .= '<!-- End Player -->';
-    				$audio = 1;
+    				$this->_item->flash = $flash;
+    				$this->_item->flash_id = $track->id;
     			}
-    			$this->_item->flash = $flash;
-    			$this->_item->flash_id = $track->id;
     		}
     	}
 

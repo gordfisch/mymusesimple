@@ -363,7 +363,6 @@ class MyMuseModelProduct extends JModelItem
 					reset($preview_tracks);
 					$count = count($preview_tracks);
 					while (list($i,$track) = each( $preview_tracks )){
-						echo "$i <br />";
 						$flash = '';
 						$track->purchased = 0;
 						
@@ -592,11 +591,9 @@ class MyMuseModelProduct extends JModelItem
 				}
 				
 
-			}
-			
+			}		
 			
 			if(count($items) && $params->get('product_item_selectbox',0)){ 
-				
 				$newitems = array();
 				$titles = array();
 				foreach($items as $i => $item){

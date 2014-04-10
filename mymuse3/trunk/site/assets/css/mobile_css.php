@@ -37,8 +37,6 @@ $mobile_style = '
 	td.myupdatecart:before { content: "'.JText::_('MYMUSE_UPDATE_CART').'";}
 	td.mycoupon:before { content: "'.JText::_('MYMUSE_YOUR_COUPON').'";}
 	
-	
-	
 	td.myreservationfee:before { content: "'.JText::_('MYMUSE_RESERVATION_FEE').'";}
 	td.myothercharges:before { content: "'.JText::_('MYMUSE_OTHER_CHARGES').'";}
 	td.mypaynow:before { content: "'.JText::_('MYMUSE_PAYNOW').'";}
