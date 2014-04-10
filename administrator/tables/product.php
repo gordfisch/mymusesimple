@@ -92,8 +92,8 @@ class MymuseTableproduct extends JTable
 	 */
 	public function check()
 	{
-
-		if (trim($this->title) == '') {
+		$this->title = trim($this->title);
+		if ($this->title == '') {
 			$this->setError(JText::_('MYMUSE_FILE_MUST_HAVE_A_TITLE'));
 			return false;
 		}

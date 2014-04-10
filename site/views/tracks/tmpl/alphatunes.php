@@ -368,7 +368,7 @@ if($this->cart['idx']){
 
         			<?php if($params->get('list_show_price')) { ?>
         			<!--  PRICE COLUMN -->	
-        				<td class="myprice" align="center" valign="middle">
+        				<td class="myprice">
         				<?php if($params->get('my_free_downloads') || $params->get('my_downloads_enable')){
         				if(isset($track->free_download) && isset($track->free_download_link)){ ?>
         					<a class="free_download_link" 
@@ -429,8 +429,7 @@ if($this->cart['idx']){
       		<?php  } ?>
 		</table>
 <?php endif; ?>
-</div>
-</div>
+
 
 <?php // Add pagination links ?>
 <?php if (!empty($this->items)) : ?>

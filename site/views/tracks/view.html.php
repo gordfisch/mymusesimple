@@ -68,11 +68,13 @@ class mymuseViewtracks extends JViewLegacy
         $result = $this->get('Items');
 
         $items = $result[0];
+        //print_pre($items);
         $category->flash = $result[1]->flash;
         $pagination = $result[2];
         $alpha = array();
         $alphabet = explode(":",JText::_('MYMUSE_ALPHABET'));
         $IN = $state->get('list.prods','');
+        $featured = $params->get('featured','0');
  
         foreach($alphabet as $letter){
             $query = "SELECT count(*) as total
@@ -89,9 +91,24 @@ class mymuseViewtracks extends JViewLegacy
 			AND sub.rgt < this.rgt WHERE this.id = ".$category->id.") 
 			OR a.id IN (0)) 
             ";
+            if($featured){
+            	$query .= " AND a.featured=1
+            	";
+            }
 
             $db->setQuery($query);
             $total = $db->loadResult();
+            /**
+            $total = 0;
+            foreach($items as $item){
+            	//echo $item->category_name."<br />";
+            	if(strtolower($letter) == strtolower(mb_substr($item->category_name, 0, 1))){
+            		$total = 1;
+
+            	}
+            }
+            */
+            
             $class = "";
             if($filter_alpha == $letter){
                 $class = "selected";

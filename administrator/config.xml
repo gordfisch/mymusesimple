@@ -871,7 +871,15 @@
 			<option value="1">JSHOW</option>
 		</field>
 
-
+		<field name="list_show_file_length" 
+			type="list"
+			description="MYMUSE_LIST_FILE_LENGTH_DESC"
+			label="MYMUSE_LIST_FILE_LENGTH_LABEL"
+			default="0"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+		</field>
 
 		<field name="list_show_date" 
 				type="radio"
@@ -938,7 +946,9 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 		</field>
-		<field name="list_show_discount" type="list"
+		<field name="list_show_discount" 
+			type="radio" 
+			class="btn-group"
 			default="0"
 			description="MYMUSE_LIST_DISCOUNT_DESC"
 			label="MYMUSE_LIST_DISCOUNT_LABEL"
@@ -947,18 +957,22 @@
 				<option value="1">JSHOW</option>
 		</field>
 		
-		<field type="spacer" name="spacerheadings" label="MYMUSE_TRACKS" /> 
-		<field name="show_alphabet" type="list"
+		<field type="spacer" name="spacerheadings" label="MYMUSE_TRACKS_OPTIONS" /> 
+		<field name="show_alphabet" 
+			type="radio" 
+			class="btn-group"
 			description="MYMUSE_SHOW_ALPHABET_DESC"
 			label="MYMUSE_SHOW_ALPHABET_LABEL"
-			default="0"
+			default="1"
 			>
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
 			
-		<field name="show_minicart" type="list"
-			default="0"
+		<field name="show_minicart" 
+			type="radio" 
+			class="btn-group"
+			default="1"
 			description="MYMUSE_SHOW_MINICART_DESC"
 			label="MYMUSE_SHOW_MINICART_LABEL"
 			>
@@ -966,19 +980,62 @@
 				<option value="1">JSHOW</option>
 			</field>
 			
+		<field name="product_show_preview_column" 
+			type="radio" 
+			class="btn-group"
+			default="1" 
+			label="MYMUSE_SHOW_PREVIEW_COLUMN" 
+			description="MYMUSE_SHOW_PREVIEW_COLUMN_DESC"
+			>
+	 			<option value="0">MYMUSE_HIDE</option>
+	 			<option value="1">MYMUSE_SHOW</option>
+	 	</field>
+	 		
+	 	<field name="product_show_cartadd" 
+	 		type="radio" 
+			class="btn-group" 
+	 		default="1" 
+	 		label="MYMUSE_SHOW_CARTADD" 
+	 		description="MYMUSE_SHOW_CARTADD_DESC"
+	 		>
+	 			<option value="0">MYMUSE_HIDE</option>
+	 			<option value="1">MYMUSE_SHOW</option>
+	 	</field>
+			
 		<field name="orderby_track"
 			type="list"
 			default=""
 			label="MYMUSE_TRACK_ORDER_LABEL"
-			description="MYMUSE_TRACK_ORDER_DESC">
-			<option value="">JGLOBAL_NO_ORDER</option>
-			<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
-			<option value="date">JGLOBAL_OLDEST_FIRST</option>
-			<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
-			<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
-			<option value="discount">MYMUSE_MOST_DISCOUNT</option>
-			<option value="rdiscount">MYMUSE_LEAST_DISCOUNT</option>
-			<option value="order">JGLOBAL_ARTICLE_MANAGER_ORDER</option>
+			description="MYMUSE_TRACK_ORDER_DESC"
+			>
+				<option value="">JGLOBAL_NO_ORDER</option>
+				<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
+				<option value="date">JGLOBAL_OLDEST_FIRST</option>
+				<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
+				<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
+				<option value="discount">MYMUSE_MOST_DISCOUNT</option>
+				<option value="rdiscount">MYMUSE_LEAST_DISCOUNT</option>
+				<option value="order">JGLOBAL_ARTICLE_MANAGER_ORDER</option>
+		</field>
+		
+		<field 
+			name="featured" 
+			type="list"
+			label="MYMUSE_FEATURED_TRAKS_LABEL"
+			description="MYMUSE_FEATURED_TRACKS_DESC"
+			default="0"
+			>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+		<field name="group_by" type="list"
+			label="MYMUSE_GROUPBY_LABEL"
+			description="MYMUSE_GROUPBY_DESC"
+			>
+				<option value=""></option>
+				<option value="a.parentid">MYMUSE_PRODUCT</option>
+				<option value="c.id">MYMUSE_CATEGORY</option>
 		</field>
 
 	</fieldset>

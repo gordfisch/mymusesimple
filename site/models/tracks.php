@@ -147,6 +147,10 @@ class MyMuseModelTracks extends JModelList
 			$this->setState('list.ordering', $primaryOrder );
 				
 		}
+		
+		// just fetured tracks?
+		$featured = $params->get('featured','0');
+		$this->setState('list.featured', $featured);
 
 		$this->setState('params', $params);
 		$user		= JFactory::getUser();
@@ -228,6 +232,7 @@ class MyMuseModelTracks extends JModelList
         $IN = $this->getState('list.prods','');
         $listDirn	= $this->getState('list.direction', 'ASC');
         $ordering 	= $this->getState('list.ordering', 'category_name');
+        $featured = $this->getState('list.featured',0);
         if(preg_match("/ASC|DESC/",strtoupper($ordering)) || !$ordering){
         	$listDirn	= '';
         }
@@ -276,6 +281,12 @@ class MyMuseModelTracks extends JModelList
         	OR c.title LIKE ".$db->quote('%'.$searchword.'%')."
         	)";
         }
+        
+        if($featured){
+        	$query .= " AND a.featured=1
+        	";
+        }
+        
         if($params->get('group_by',0)){
         	$query .= " GROUP BY ".$params->get('group_by',0)."
         	";
@@ -438,6 +449,7 @@ class MyMuseModelTracks extends JModelList
         	}
         }
         
+        $preview_tracks = array();
 		//check date, prices add flash
 		while (list($i,$track)= each( $tracks))
 		{
@@ -507,6 +519,7 @@ class MyMuseModelTracks extends JModelList
                 $track->flash_type = "mix";
             }
             
+            
             if($track->file_preview){
             	$preview_tracks[] = $track;
             }else{
@@ -515,11 +528,11 @@ class MyMuseModelTracks extends JModelList
         }
         $dispatcher		=& JDispatcher::getInstance();
 
-        if($params->get('product_player_type') == "each" || 
-            $params->get('product_player_type') == "single"){
+        if(count($preview_tracks) && ($params->get('product_player_type') == "each" || 
+            $params->get('product_player_type') == "single")){
             reset($preview_tracks);
             $count = count($tracks);
-            while (list($i,$track)= each( $preview_tracks )){
+            while (list($i,$track) = each( $preview_tracks )){
                 if($track->product_allfiles == 1){
                     continue;
                 }
@@ -586,16 +599,17 @@ class MyMuseModelTracks extends JModelList
         }
 
         
-        if($params->get('product_player_type') == "single"){
+        if(count($preview_tracks) && $params->get('product_player_type') == "single"){
         	// make a controller for the play/pause buttons
         	$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$preview_tracks) );
-            //get the player itself
             
+        	//get the player itself
             reset($preview_tracks);
             $flash = '';
             $audio = 0;
             $video = 0;
             foreach($preview_tracks as $track){
+            	
                 if($track->file_preview){
                     if($track->file_type == "video" && !$video){
                         //movie
@@ -618,6 +632,7 @@ class MyMuseModelTracks extends JModelList
                         $flash .= '<!-- End Player -->';
                         $audio = 1;
                     }
+                    
                     $this->_category->flash = $flash;
                     $this->_category->flash_id = $track->id;
                     if($this->_category->flash_type != "mix"){
@@ -629,7 +644,7 @@ class MyMuseModelTracks extends JModelList
             }
         }
  
-        if($params->get('product_player_type') == "playlist"){
+        if(count($preview_tracks) && $params->get('product_player_type') == "playlist"){
             //get the main flash for the product
     
             reset($preview_tracks);
@@ -685,7 +700,7 @@ class MyMuseModelTracks extends JModelList
         }
         
         // free downloads
-        if($params->get('my_free_downloads')){
+        if(count($tracks) && $params->get('my_free_downloads')){
             reset($tracks);
             foreach($tracks as $track){
                 if(

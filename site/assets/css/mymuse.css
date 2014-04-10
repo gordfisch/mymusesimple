@@ -134,6 +134,8 @@ div.cat-items div.items-row{
 .product-intro{
 	max-width: 100%;
 }
+
+
 /* cart */
 
 .mymuse_cart ul{
@@ -143,7 +145,7 @@ div.cat-items div.items-row{
 }
 table.mymuse_cart {
 	background-color: #FFFFFF;
-	margin: 0px;
+	margin: 1px;
 	padding: 0px;
 	border: 1px solid #CCCCCC;
 	border-spacing: 0px;
@@ -172,13 +174,19 @@ table.mymuse_cart_inner {
 
 
 table.mymuse_cart td, table.mymuse_cart th {
-	border-bottom: 1px solid #e5e5e5;
 	padding: 4px;
+	vertical-align: middle;
+	border: 1px solid #CCCCCC;
 }
 
 .mycheckbox{
 	text-align: center;
 }
+.myquantity .inputbox {
+	width:auto;
+}
+
+
 #player{
 	margin-left: 174px;
 }
@@ -280,6 +288,24 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount, td.myshippi
 		display: inline-block;
 		border-right: 1px solid #ccc;
 
+	}
+	
+	td.myselect, td.mytitle, td.mytime,
+	td.myfilesize, td.myprice, td.mypreviews,
+	td.myquantity, td.mysku, td.mysubtotal, 
+	td.myaction, td.myoriginalsubtotal, td.myshoppergroupdiscount,
+	td.mynewsubtotal, td.myshipping, td.mytotal, 
+	td.myupdatecart, td.mycoupon, td.myreservationfee, 
+	td.myothercharges, td.mypaynow, td.mydiscount,
+	td.myimage, td.myauthor, td.myhits, td.mysales,
+	td.mydate-modified, td.mydate-created, td.mydate-published, 
+	td.mydate-product_made_date, td.myartist, td.myorderid,
+	td.mydate, td.myorderstatus, td.myfullname, td.myemail,
+	td.myphone, td.myaddress, td.mycity, td.myzip,
+	td.myregion, td.mycountry, td.mycompany , td.myfax, 
+	td.myColour
+	 { 
+		clear:both;
 	}
 	td.mytotal:before, td.mytotal {
 		font-weight: bold;
