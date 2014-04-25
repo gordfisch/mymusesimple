@@ -320,6 +320,7 @@ class MyMuseUpdateHelper extends JObject
 	
 	function get_data($url, $file)
 	{
+		$params = MyMuseHelper::getParams();
 		$ch = curl_init();
 	
 		curl_setopt($ch,CURLOPT_URL,$url);
@@ -327,16 +328,38 @@ class MyMuseUpdateHelper extends JObject
 		curl_setopt($ch,CURLOPT_CONNECTTIMEOUT,5);
 		$data = curl_exec($ch);
 		curl_close($ch);
-			
+
+		
+		
 		if(!$data){
 			$this->error = "Could not get $url";
 			return false;
 		}
-		if(!JFILE::write($file, $data)){
-			$this->error = "Could not write file";
-			return false;
+		if($params->get('my_use_s3') && preg_match("/mp3/",$file)){
+			// write it to a tmp file
+			$jconfig = JFactory::getConfig();
+			$tmpName = $jconfig->get('tmp_path','').DS.'mytmp'.time();
+			file_put_contents($tmpName,$data);
+			
+			require_once (JPATH_COMPONENT.DS.'controllers'.DS.'product.php');
+			$controller	= new MymuseControllerProduct(array(
+					'base_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/",
+					'model_prefix' => 'MymuseModel',
+					'model_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/models",
+					'table_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/tables"
+			)
+			);
+			$model = $controller->getModel('product', 'MymuseModel',
+					array('table_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/tables"));
+			$table = $model->getTable();
+		
+			$table->fileUpload($tmpName, $file);
+		}else{
+			if(!JFILE::write($file, $data)){
+				$this->error = "Could not write file";
+				return false;
+			}
 		}
-	
 		return true;
 	}
 	
@@ -522,7 +545,7 @@ class MyMuseUpdateHelper extends JObject
 		echo "Downloaded some graphics to /images/A_MyMuseImages<br />";
 	
 	
-	
+		// get some mp3's
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/Are_You_My_Sister.mp3";
 		$to = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS."Are_You_My_Sister.mp3";
 		if(!$this->get_data($from, $to)){
@@ -531,14 +554,14 @@ class MyMuseUpdateHelper extends JObject
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/sister-preview.mp3";
-		$to = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."sister-preview.mp3";
+		$to = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."sister-preview.mp3";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
 			return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/sister-preview.ogg";
-		$to = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."sister-preview.ogg";
+		$to = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."sister-preview.ogg";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
 			return false;
@@ -553,14 +576,14 @@ class MyMuseUpdateHelper extends JObject
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/foggy-preview.mp3";
-		$to = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."foggy-preview.mp3";
+		$to = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."foggy-preview.mp3";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
 			return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/foggy-preview.ogg";
-		$to = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."foggy-preview.ogg";
+		$to = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."foggy-preview.ogg";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
 			return false;
@@ -568,6 +591,7 @@ class MyMuseUpdateHelper extends JObject
 		echo "Downloaded 'Foggy Dew' track and previews<br />";
 	
 		//make a track for Are You My Sister
+		$preview_dir = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
 		$data = Array(
 	
 			'jform' => Array
@@ -598,7 +622,7 @@ class MyMuseUpdateHelper extends JObject
 	
 			'select_file' => 'Are_You_My_Sister.mp3',
 			'download_dir' => $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias,
-				'preview_dir' => JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias,
+				'preview_dir' => $preview_dir,
 				'file_preview' => 'sister-preview.mp3',
 				'file_preview_2' => 'sister-preview.ogg',
 				'file_preview_3' => '',
@@ -656,7 +680,7 @@ class MyMuseUpdateHelper extends JObject
 
 				'select_file' => 'The_Foggy_Dew.mp3',
 				'download_dir' => $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias,
-				'preview_dir' => JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias,
+				'preview_dir' => $preview_dir,
 				'file_preview' => 'foggy-preview.mp3',
 			'file_preview_2' => 'foggy-preview.ogg',
 			'file_preview_3' => '',
