@@ -1,7 +1,7 @@
 <?php
 /**
  * @version     $Id$
- * @package     com_mymuse2.5
+ * @package     com_mymuse3
  * @copyright   Copyright (C) 2011. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  * @author      Gord Fisch arboreta.ca
@@ -9,6 +9,9 @@
 
 // No direct access
 defined('_JEXEC') or die;
+
+JLoader::import('joomla.filesystem.folder');
+JLoader::import('joomla.filesystem.file');
 
 /**
  * product Table class
@@ -181,16 +184,13 @@ class MymuseTableproduct extends JTable
 	{
 		$params = MyMuseHelper::getParams();
 		require_once (JPATH_COMPONENT.DS.'helpers'.DS.'mp3file.php');
-	
 		$post 			= JRequest::get('post');
 		$form 			= JRequest::getVar('jform', array());
 
-		
 		if(!isset($this->id)){
-        	$this->id 		= isset($form['id'])? $form['id'] : '' ;
+        	$this->id 	= $this->_id	= isset($form['id'])? $form['id'] : '' ;
 		}
-		
-		
+
 		$subtype 		= JRequest::getVar('subtype'); 
 		$date			= JFactory::getDate();
 		$user			= JFactory::getUser();
@@ -226,17 +226,18 @@ class MymuseTableproduct extends JTable
         	$artist_alias = MyMuseHelper::getArtistAlias($this->catid, 0);
         	$album_alias = $this->alias;
         }
-
+        if(isset($post['upgrade']) && $form['title_alias']){
+        	$this->title_alias = $form['title_alias'];
+        }
 
  
 		// Uploaded product file
 		$new = 0;
-
 		if(isset($_FILES['product_file']['name']) && $_FILES['product_file']['name'] != ""){
 			
 			if(isset($_FILES['product_file']['error']) && $_FILES['product_file']['error'])
 			{
-				JError::raiseError( 500, Jtext::_($this->_upload_errors[$_FILES['product_file']['error']]) );
+				$this->setError(Jtext::_($this->_upload_errors[$_FILES['product_file']['error']]) );
 				return false;
 			}
 			$this->product_downloadable = 1;
@@ -267,27 +268,19 @@ class MymuseTableproduct extends JTable
 				}
 				
         		$new_file = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
-				
-				if(!JFile::copy($tmpName, $new_file)){
-					$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$tmpName." ".$new_file);
-            		return false;
-				}else{
-					//echo "did the copy $tmpName, $new_file <br />"; 
-				}
-				
-			}
 			
-		}
-		if(isset($post['upgrade']) && $form['title_alias']){
-			$this->title_alias = $form['title_alias'];
+				if(!$this->fileUpload($tmpName, $new_file)){
+            		return false;
+				}
+			}
 		}
 		
-		$select_file = isset($post['select_file'])? $post['select_file']: '';
 
-		//if they selected a file from drop down
-		if($select_file && !$new){
+		// if they selected a file from drop down
+		$select_file = isset($post['select_file'])? $post['select_file']: '';
+		if($select_file && !$new && $select_file != $form['file_name']){
 			$new = 1;
-			// make name and copy it to the download dir
+			// tidy up name and copy it to the download dir
 			$ext = MyMuseHelper::getExt($select_file);
 			$name = preg_replace("/$ext$/","",$select_file);
 			$this->file_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
@@ -298,23 +291,21 @@ class MymuseTableproduct extends JTable
 			}else{
 				$new_file = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$this->file_name;
 			}
-
-			$old_file = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$select_file;
 			
-			$this->file_length = filesize($params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$select_file);
-			//echo "old = $old_file <br />new = $new_file <br />";
+			$old_file = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$select_file;
+			$this->file_length = filesize($old_file);
+			
 			if($old_file != $new_file){
-				if(!JFile::copy($old_file, $new_file)){
-					$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old." ".$new);
+				if(!$this->fileCopy($old_file, $new_file)){
             		return false;
 				}
-				if(!JFile::delete($old_file)){
-					$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old_file);
+				if(!$this->fileDelete($old)){
 					return false;
 				}
 			}
 		}
-		
+	
+		// TODO: get this to work with s3
 		if(isset($new_file) && is_file($new_file) 
 				&& strtolower(pathinfo($new_file, PATHINFO_EXTENSION)) == "mp3"){
 			$m = new mp3file($new_file);
@@ -324,29 +315,22 @@ class MymuseTableproduct extends JTable
 			}
 		}
 
+		// see if there is an old file to delete
 		if($this->parentid  && $new){
-			// see if there is an old file to delete
+
 			if(isset($post['current_title_alias']) && $post['current_title_alias'] != "" && $post['current_title_alias'] != $this->file_name){
 				$old = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$post['current_title_alias'];
-				if(file_exists($old)){
-					if(!JFile::delete($old)){
-						$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old);
-					}
-				}
-			}
-			if(isset($old_file_name) && $old_file_name != $this->file_name){
-				$old = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$old_file_name;
-				if(file_exists($old)){
-					if(!JFile::delete($old)){
+				if($this->fileExists($old)){
+					if(!$this->fileDelete($old)){
 						$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old);
 					}
 				}
 			}
 		}
 		
-		
-		
-		//check for errors
+	
+		// Previews
+		//check for errors with upload previews
 		if(isset($_FILES['product_preview']['name']) && $_FILES['product_preview']['name'] != ""){
 			if(isset($_FILES['product_file']['error']) && $_FILES['product_preview']['error'])
 			{
@@ -370,245 +354,79 @@ class MymuseTableproduct extends JTable
 		}
 		
 		
-		// Previews
-		if(isset($post['remove_preview']) && $post['remove_preview'] == "on" && $post['current_preview'] != ""){
-		
-			$old = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$post['current_preview'];
-			if(file_exists($old)){
-				if(!JFile::delete($old)){
-					$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old);
-						
-				}
-			}
-			$this->file_preview = '';
-			
+		$path = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) . $params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS;
+		// Previews 1
+		if(!$this->managePreview('preview', $path)){
+			return false;
 		}
-		if(isset($_FILES['product_preview']) && $_FILES['product_preview']['size'] >  0){
-			$ext = MyMuseHelper::getExt($_FILES['product_preview']['name']);
-			$_FILES['product_preview']['name'] = preg_replace("/$ext$/","",$_FILES['product_preview']['name']);
-			$this->file_preview = JFilterOutput::stringURLSafe($_FILES['product_preview']['name']).'.'.$ext;
-			$tmpName2  = $_FILES['product_preview']['tmp_name'];
-			
-			$new = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$this->file_preview;
-			//if(!get_magic_quotes_gpc())
-			//{
-    			//$this->file_preview = addslashes($this->file_preview);
-    			//$new = addslashes($new);
-			//}
-			if(!JFile::copy($tmpName2, $new)){
-				$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$tmpName2." ".$new);
-				return false;
-			}
-		}
-		
-		//if they selected a file from drop down
-	    $file_preview = isset($post['file_preview'])? $post['file_preview'] : '';
-		
-
-		if($file_preview 
-				&& ( !isset($_FILES['product_preview']['name']) || $_FILES['product_preview']['name'] == '' )
-				&& (!isset($post['remove_preview']) || !$post['remove_preview'] == "on")
-				){
-			$new = 1;
-			
-			$ext = MyMuseHelper::getExt($file_preview);
-			$name = preg_replace("/$ext$/","",$file_preview);
-			$this->file_preview = JFilterOutput::stringURLSafe($name).'.'.$ext;
-			$old_file = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$file_preview;
-			$new_file = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$this->file_preview;
-
-			//echo "old preview = $old_file <br />new preview = $new_file <br />";
-			if($old_file != $new_file){
-				if(file_exists($old_file)){
-					if(!JFile::copy($old_file, $new_file)){
-						$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file);
-						return false;
-					}
-					if(!JFile::delete($old_file)){
-						$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old_file);
-						//return false;
-					}
-				}
-			}
-		}
-		
-
-
 		// Previews 2
-		if(isset($post['remove_preview_2']) && $post['remove_preview_2'] == "on" && $post['current_preview_2'] != ""){
-		
-			$old = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$post['current_preview_2'];
-			if(file_exists($old)){
-				if(!JFile::delete($old)){
-					$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old);
-						
-				}
-			}
-
-			$this->file_preview_2 = '';
-			
-			
+		if(!$this->managePreview('preview_2', $path)){
+			return false;
 		}
-		
-		
-		if(isset($_FILES['product_preview_2']) && $_FILES['product_preview_2']['size'] >  0){
-			$ext = MyMuseHelper::getExt($_FILES['product_preview_2']['name']);
-			$_FILES['product_preview_2']['name'] = preg_replace("/$ext$/","",$_FILES['product_preview_2']['name']);
-			$this->file_preview_2 = JFilterOutput::stringURLSafe($_FILES['product_preview_2']['name']).'.'.$ext;
-			$tmpName2  = $_FILES['product_preview_2']['tmp_name'];
-				
-			$new = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$this->file_preview_2;
-
-			if(!JFile::copy($tmpName2, $new)){
-				$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$tmpName2." ".$new);
-				return false;
-			}
-		}
-
-		//if they selected a file from drop down
-		$file_preview_2 = isset($post['file_preview_2'])? $post['file_preview_2'] : '';
-		
-		if($file_preview_2  
-				&& (!isset($_FILES['product_preview_2']['name']) || $_FILES['product_preview_2']['name'] == '')
-				&& (!isset($post['remove_preview_2']) || !$post['remove_preview_2'] == "on")
-				){
-			$new = 1;
-			$ext = MyMuseHelper::getExt($file_preview_2);
-			$name = preg_replace("/$ext$/","",$file_preview_2);
-			$this->file_preview_2 = JFilterOutput::stringURLSafe($name).'.'.$ext;
-			$old_file = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$file_preview_2;
-			$new_file = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$this->file_preview_2;
-		
-			//echo "old preview = $old_file <br />new preview = $new_file <br />";
-			if($old_file != $new_file){
-				if(!JFile::copy($old_file, $new_file)){
-					$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old." ".$new);
-					return false;
-				}
-				if(!JFile::delete($old_file)){
-					$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old_file);
-					return false;
-				}
-			}
-		}
-		
-
-	
 		// Previews 3
-		if(isset($post['remove_preview_3']) && $post['remove_preview_3'] == "on" && $post['current_preview_3'] != ""){
-
-			$old = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$post['current_preview_3'];
-			if(file_exists($old)){
-				if(!JFile::delete($old)){
-					$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old);
-		
-				}
-			}
-			$this->file_preview_3 = '';
+		if(!$this->managePreview('preview_3', $path)){
+			return false;
 		}
+		//END of previews
 		
-		
-		if(isset($_FILES['product_preview_3']) && $_FILES['product_preview_3']['size'] >  0){
-			$ext = MyMuseHelper::getExt($_FILES['product_preview_3']['name']);
-			$_FILES['product_preview_3']['name'] = preg_replace("/$ext$/","",$_FILES['product_preview_3']['name']);
-			$this->file_preview_3 = JFilterOutput::stringURLSafe($_FILES['product_preview_3']['name']).'.'.$ext;
-			$tmpName3  = $_FILES['product_preview_3']['tmp_name'];
-		
-			$new = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$this->file_preview_3;
-			//if(!get_magic_quotes_gpc())
-			//{
-			//$this->file_preview = addslashes($this->file_preview);
-			//$new = addslashes($new);
-			//}
-			if(!JFile::copy($tmpName3, $new)){
-				$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$tmpName3." ".$new);
-				return false;
-			}
-		}
-		
-		//if they selected a file from drop down
-		$file_preview_3 = isset($post['file_preview_3'])? $post['file_preview_3'] : '';
-		
-		if($file_preview_3  
-				&& (!isset($_FILES['product_preview_3']['name']) || $_FILES['product_preview_3']['name'] == '')
-				&& (!isset($post['remove_preview_3']) && !$post['remove_preview_3'] == "on")
-				){
-			$new = 1;
-			$ext = MyMuseHelper::getExt($file_preview_3);
-			$name = preg_replace("/$ext$/","",$file_preview_3);
-			$this->file_preview_3 = JFilterOutput::stringURLSafe($name).'.'.$ext;
-			$old_file = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$file_preview_3;
-			$new_file = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$this->file_preview_3;
-		
-			//echo "old preview = $old_file <br />new preview = $new_file <br />";
-			if($old_file != $new_file){
-				if(!JFile::copy($old_file, $new_file)){
-					$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old." ".$new);
-					return false;
-				}
-				if(!JFile::delete($old_file)){
-					$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old_file);
-					return false;
-				}
-			}
-		}	
-		
-        $this->_id = $this->id;
 
-
-        // if it is the parent
+        // if it is the parent. Parentid will be 0
         if(!isset($this->parentid) || !$this->parentid){
-        	// make a download dir for this product
 
         	// get artist alias
         	$artist_alias = MyMuseHelper::getArtistAlias($this->catid);
         	$artistdir = $params->get('my_download_dir').DS.$artist_alias;
         	$albumdir = $params->get('my_download_dir').DS.$artist_alias.DS.$this->alias;
        	
-        	//what if they have changed?
-        	$changed = 0;
+        	//what if directory names have changed?
         	$old_alias = JRequest::getVar('old_alias', '');
         	$old_catid = JRequest::getVar('old_catid', '');
-        	if($old_alias && $old_alias != $this->alias){
-        		$changed = 1;
-        	}
-        	// If they changed only the album alias
-        	if($changed && $old_catid == $this->catid){
-        		// move the old dir to the new name
-        		$src = $params->get('my_download_dir').DS.$artist_alias.DS.$old_alias;
-        		if(!JFolder::move($src, $albumdir)){
-        			$this->setError("Could not rename: ".$src." ".$albumdir);
+        	if(($old_alias && $old_alias != $this->alias) || ($old_catid && $old_catid != $this->catid) ){
+        		// for the source
+        		if($old_alias && $old_alias != $this->alias){
+        			$src_alias = $old_alias;
+        		}else{
+        			$src_alias = $this->alias;
+        		}
+        		if($old_catid && $old_catid != $this->catid){
+        			$src_artist_alias = MyMuseHelper::getArtistAlias($old_catid);
+        		}else{
+        			$src_artist_alias = $artist_alias;
+        		}
+      	
+        		// for the main product dir
+        		$src = $params->get('my_download_dir').DS.$src_artist_alias.DS.$src_alias;
+        		$dest = $params->get('my_download_dir').DS.$artist_alias.DS.$this->alias;
+        		if(!$this->folderMove($src, $dest)){
         			return false;
         		}
-        		// move the old preview dir to the new name
-        		$preview_dir = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
-        		$src = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$old_alias;
-        		$ret = JFolder::move($src, $preview_dir);
-        		if(!$ret){
-        			$this->setError($ret." ".$src." ".$preview_dir);
+        		// for the preview dir
+        		$src  = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$src_artist_alias.DS.$src_alias;
+        		$dest = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
+        		if(!$this->folderMove($src, $dest)){
         			return false;
         		}
+        		$msg = JText::sprintf("MYMUSE_PRODUCT_CHANGED_CATEGORY_SUCCESS", $msg);
+        		JFactory::getApplication()->enqueueMessage($msg, 'notice');
         	}
-        	
-        
         	
         	//create new dirs if needed 
-        	if(!file_exists($artistdir)){
-        		if(!JFolder::create($artistdir)){
+        	if(!$this->fileExists($artistdir)){
+        		if(!$this->folderNew($artistdir)){
         			$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").$artistdir);
         			return false;
         		}
-        		if(!JFile::copy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
+        		if(!$this->fileCopy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
         		$artistdir.DS."index.html")){
         			$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").$artistdir);
         		}
         	}
-        	if(!file_exists($albumdir)){
-        		if(!JFolder::create($albumdir)){
+        	if(!$this->fileExists($albumdir)){
+        		if(!$this->folderNew($albumdir)){
         			$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").$albumdir);
         			return false;
         		}
-        		if(!JFile::copy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
+        		if(!$this->fileCopy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
         		$albumdir.DS."index.html")){
         			$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").$albumdir);
         		}
@@ -616,31 +434,30 @@ class MymuseTableproduct extends JTable
         	
         	
         	
-        	//create preview dir if needed
-        	$preview_dir = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
-        	if(!file_exists($preview_dir)){
+        	//create preview dirs if needed
+        	$preview_dir = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
+        	if(!$this->fileExists($preview_dir)){
         		//see if artist dir exists
-        		$preview_artist_dir= JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias;
-        		if(!file_exists($preview_artist_dir)){
-        			if(!JFolder::create($preview_artist_dir)){
+        		$preview_artist_dir= ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias;
+        		if(!$this->folderNew($preview_artist_dir)){
+        			if(!$this->folderNew($preview_dir)){
         				$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").' '.$preview_dir);
         				return false;
         			}
         		}
         		
-        		if(!JFolder::create($preview_dir)){
+        		if(!$this->folderNew($preview_dir)){
         			$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").' '.$preview_dir);
         			return false;
         		}
-        		if(!JFile::copy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
+        		if(!$this->fileCopy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
         		$preview_dir.DS."index.html")){
         			$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").' '.$preview_dir);
         		}
         	}
 
-        	
+
         	// other categories
-        	
         	if(isset($form['othercats'])  && !$this->parentid && $this->id){
         		// clear product_category_xref
         		$query = "DELETE FROM #__mymuse_product_category_xref WHERE product_id=".$this->id;
@@ -653,69 +470,18 @@ class MymuseTableproduct extends JTable
         			$query = "INSERT INTO #__mymuse_product_category_xref
         			(catid,product_id) VALUES (".$catid.",".$this->id.")";
         			$db->setQuery($query);
-        			 
+
         			if(!$db->execute()){
         				$this->setError(JText::_('MYMUSE_COULD_NOT_SAVE_PRODUCTCAT_XREF').$db->getErrorMsg());
         				return false;
         			}
-        	
-        		}
-        	}
-        	
-        	
-                	if($old_catid != '' && $old_catid != $this->catid){
-        		//now we are not sure what to move
-        		$old_artist_alias = MyMuseHelper::getArtistAlias($old_catid);
-        		$src = $params->get('my_download_dir').DS.$old_artist_alias.DS.$old_alias;
-        		$dest = $params->get('my_download_dir').DS.$artist_alias.DS.$this->alias;
-        	
-        		$msg = "<br />Old dir: ".$src;
-        		$msg .= " <br />New: ".$dest;
-        		
-        		//main files
-        		if(!JFOLDER::move($src,$dest)){
-        			$this->setError(JText::sprintf("MYMUSE_PRODUCT_CHANGED_CATEGORY", $msg));
-        		}else{
-        			//Now we read all old files and put them in an array.
-        			$old_files = JFolder::files($src);
-        			
-        			//Now we need some stuff from the JFile:: class to move all files into the new folder
-        			foreach ($old_files as $file) {
-        				JFile::move($src . DS . $file, $dest . DS . $file);
-        			}
-        			$this->setError(JText::sprintf("MYMUSE_PRODUCT_CHANGED_CATEGORY_SUCCESS", $msg));
-        		}
-        		//preview files
-        		$src = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$old_artist_alias.DS.$old_alias;
-        		$dest = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$this->alias;
-        		$msg .= "<br />Old dir: ".$src;
-        		$msg .= " <br />New: ".$dest;
-        		if(!JFOLDER::move($src,$dest)){
-        			$this->setError(JText::sprintf("MYMUSE_PRODUCT_CHANGED_CATEGORY", $msg));
-        		}else{
-        			//Now we read all old files and put them in an array.
-        			$old_files = JFolder::files($src);
         			 
-        			//Now we need some stuff from the JFile:: class to move all files into the new folder
-        			foreach ($old_files as $file) {
-        				JFile::move($src . DS . $file, $dest . DS . $file);
-        			}
-        			$this->setError(JText::sprintf("MYMUSE_PRODUCT_CHANGED_CATEGORY_SUCCESS", $msg));
         		}
-        		
-        		
-        		$this->checkin();
-        		if($this->parentid){
-        			$this->checkin($this->parentid);
-        		}
-        		parent::store($updateNulls);
-        		return false;
-        		
         	}
+        	
 
         }
-
-
+        
 		$this->checkin();
 		if($this->parentid){
 			$this->checkin($this->parentid);
@@ -724,7 +490,87 @@ class MymuseTableproduct extends JTable
 		return parent::store($updateNulls);
 	}
 	
+	/**
+	 * Manage Previews
+	 * Remove old one/Upload new one/Select from drop down
+     *
+     * @param    string preview name ie. preview, preview_2, preview_3
+     * @param    string path
+     * @return    boolean    True on success.
+	 */
+	
+	private function managePreview($preview, $path)
+	{
+		$params = MyMuseHelper::getParams();
+		 
+		$post 			= JRequest::get('post');
+		$form 			= JRequest::getVar('jform', array());
+		$preview_name 	= 'product_'.$preview;
+		$remove_name 	= 'remove_'.$preview;
+		$current_name 	= 'current_'.$preview;
+		$file_preview_name = 'file_'.$preview;
 
+		// remove old one?
+		if(isset($post[$remove_name]) && $post[$remove_name] == "on"
+				&& $post[$current_name] != ""){
+			 
+			$old = $path.$post[$current_name];
+			
+			if($this->fileExists($old)){
+
+				if(!$this->fileDelete($old)){
+					return false;
+				}
+			}
+			$this->$file_preview_name = '';
+		}
+		
+		//upload a file
+		if(isset($_FILES[$preview_name]) && $_FILES[$preview_name]['size'] >  0){
+			$ext = MyMuseHelper::getExt($_FILES[$preview_name]['name']);
+			$_FILES[$preview_name]['name'] = preg_replace("/$ext$/","",$_FILES[$preview_name]['name']);
+			$this->$file_preview_name = JFilterOutput::stringURLSafe($_FILES[$preview_name]['name']).'.'.$ext;
+			$tmpName2  = $_FILES[$preview_name]['tmp_name'];
+			 
+			$new = $path.$this->$file_preview_name;
+			if(!$this->fileUpload($tmpName2, $new)){
+				return false;
+			}
+		}
+
+		 
+		//if they selected a file from drop down
+		$file_preview = isset($post[$file_preview_name])? $post[$file_preview_name] : '';
+		if($file_preview
+				&& ( !isset($_FILES[$preview_name]['name']) || $_FILES[$preview_name]['name'] == '' )
+				&& (!isset($post[$remove_name]) || !$post[$remove_name] == "on")
+				&& ($file_preview != $post[$current_name])
+		){
+			$new = 1;
+			 
+			$ext = MyMuseHelper::getExt($file_preview);
+			$name = preg_replace("/$ext$/","",$file_preview);
+			$this->$file_preview_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
+			$old_file = $path.$file_preview;
+			$new_file = $path.$this->$preview_name;
+			
+			if($old_file != $new_file){
+				if($this->fileExists($old_file)){
+					if(!$this->fileCopy($old_file, $new_file)){
+						$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file);
+						return false;
+					}
+					//if(!$this->fileDelete($old_file)){
+					//	$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old_file);
+					//	return false;
+					//}
+				}
+			}
+		}
+		return true;
+		 
+	}
+	
 	
 
     /**
@@ -880,6 +726,253 @@ class MymuseTableproduct extends JTable
     
     	return true;
     }
+    
+    
 
+    /**
+     * Create a new folder
+     * 
+     * @param   string folder name
+     *
+     * @return  boolean  True on success.
+     */
+    public function folderNew($dir)
+    {
+    
+    	$params = MyMuseHelper::getParams();
+    	if($params->get('my_use_s3')){
+    		$s3 = MyMuseHelperAmazons3::getInstance();
+    		// first section is bucket name
+    		$parts = explode(DS,$dir);
+    		$bucket = array_shift($parts);
+    		$bucket = trim($bucket, DS);
+    		$uri = implode(DS, $parts);
+    		$uri = trim($uri,DS).DS;
+    		$status = $s3->putObject('', $bucket, $uri);
+    		if(!$status){
+    			$this->setError( 'S3 Error: '.$s3->getError() );
+    			return false;
+    		}
+    	}else{
+    		$status = JFolder::create($dir);
+    		if(!$status){
+    			$this->setError( "Could not create $dir");
+    			return false;
+    		}
+    		if(!JFile::copy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
+    				$dir.DS."index.html")){
+    			$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").$artistdir);
+    			return false;
+    		}
+    	}
+    	 
+    	return true;
+    }
+    
+    
+    /**
+     * Delete a file
+     * 
+     * @param   string file name
+     *
+     * @return  boolean  True on success.
+     */
+    public function fileDelete($file)
+    {
+    	$params = MyMuseHelper::getParams();
+    	if($params->get('my_use_s3')){
+    		
+    		$s3 = MyMuseHelperAmazons3::getInstance();
+    		// first section is bucket name
+    		$parts = explode(DS,$file);
+    		$bucket = array_shift($parts);
+    		$bucket = trim($bucket, DS);
+    		$uri = implode(DS, $parts);
+    		$uri = trim($uri,DS);
+    		
+    		$status = $s3->deleteObject($bucket, $uri);
+    		if(!$status){
+    			$this->setError('S3 Error : '.$s3->getError() );
+    			return false;
+    		}
+    	}else{
+    		if(!JFile::delete($file)){
+    			$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".file);
+    		}
+    	}
+    	return true;
+    }
+    
+    /**
+     * Upload a file
+     * 
+     * @param   string file to move
+     * @param   string file name moving to
+     *
+     * @return  boolean  True on success.
+     */
+    public function fileUpload($tmpName, $new_file)
+    {
+    	$params = MyMuseHelper::getParams();
+    	if($params->get('my_use_s3')){
+    		$s3 = MyMuseHelperAmazons3::getInstance();
+    		// first section is bucket name
+    		$parts = explode(DS,$new_file);
+    		$bucket = array_shift($parts);
+    		$bucket = trim($bucket, DS);
+    		$uri = implode(DS, $parts);
+    		$uri = trim($uri,DS);
+    		$input = $s3->inputFile($tmpName);
+    		if($bucket == $params->get('my_download_dir')){
+    			//we are uploiading to the download dir, set additinal request headers
+    			$requestHeaders = array("Content-Type" => "application/octet-stream", "Content-Disposition" => "attachment");
+    		}
 
+    		$success = $s3->putObject($input, $bucket, $uri, null, null, $requestHeaders);
+   
+    		if(!@unlink($tmpName)) {
+    			JFile::delete($tmpName);
+    		}
+    		if(!$success){
+    			$this->setError('S3 Error: '. $s3->getError() );
+    			return false;
+    		}
+    	}else{
+ 
+    		if(!JFile::upload($tmpName, $new_file)){
+    			$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$tmpName." ".$new_file);
+    			return false;
+    		}
+    	}
+    	return true;
+    	 
+    }
+    
+    /**
+     * Copy a file
+     * 
+     * @param   string file to copy
+     * @param   string file name copy to
+     *
+     * @return  boolean  True on success.
+     */
+    public function fileCopy($old_file, $new_file)
+    {
+    	$params = MyMuseHelper::getParams();
+    	if($params->get('my_use_s3')){
+    		//they are both on s3. Must download one 
+    		$s3 = MyMuseHelperAmazons3::getInstance();
+    		$oldParts = explode(DS,$old_file);
+    		
+    		$oldBucket = array_shift($oldParts);
+    		$oldBucket = trim($oldBucket, DS);
+    		$uri = implode(DS, $oldParts);
+    		
+    		$jconfig = JFactory::getConfig();
+    		$tmpName = $jconfig->get('tmp_path','').DS.array_pop($oldParts );
+    	//echo "old bucket: $oldBucket, $uri, $tmpName <br />"; 	
+    		if(!$s3->getObject($oldBucket, $uri, $tmpName)){
+    			$this->setError('S3 Error: '.$s3->getError() );
+    			return false;
+    		}
+    		
+    		// upload the tmp file
+    		$parts = explode(DS,$new_file);
+    		$bucket = array_shift($parts);
+    		$bucket = trim($bucket, DS);
+    		$file = implode(DS, $parts);
+    		$file = trim($file,DS);
+    		$input = $s3->inputFile($tmpName);
+    	//echo print_pre($input).", $bucket, $file <br />"; 
+    		$success = $s3->putObject($input, $bucket, $file);
+    		if(!@unlink($tmpName)) {
+    			JFile::delete($tmpName);
+    		}
+    		if(!$success){
+    			$this->setError('S3 Error: '.$s3->getError() );
+    			return false;
+    		}
+    	}else{
+    
+    		if(!JFile::copy($old_file, $new_file)){
+    			$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file);
+    			return false;
+    		}
+    	}
+    	return true;
+    
+    }
+    
+    /**
+     * File Exists?
+     * 
+     * @param   string file name
+     *
+     * @return  boolean  True on success.
+     */
+    public function fileExists($file)
+    {
+    	$params = MyMuseHelper::getParams();
+    	
+    	if($params->get('my_use_s3')){
+    		$s3 = MyMuseHelperAmazons3::getInstance();
+    		$parts = explode(DS,$file);
+    		$bucket = array_shift($parts);
+    		$bucket = trim($bucket, DS);
+    		$uri = implode(DS, $parts);
+    		$uri = trim($uri,DS);
+    		return $s3->getObject($bucket, $uri);
+    	}else{
+    		return file_exists($file);
+    	}
+    }
+    
+    public function folderMove($src, $dest)
+    {
+    	$params = MyMuseHelper::getParams();
+    	if($params->get('my_use_s3')){
+    		if(!$this->folderNew($dest)){
+    			return false;
+    		}
+    		$s3 = MyMuseHelperAmazons3::getInstance();
+    		// first section is bucket name
+    		$parts = explode(DS,$src);
+    		$bucket = array_shift($parts);
+    		$bucket = trim($bucket, DS);
+    		$uri = implode(DS, $parts);
+    		$uri = trim($uri,DS);
+    		echo "get files $uri $bucket <br />";
+    		$old_files = $s3->listS3Contents($uri, $bucket);
+
+  			$old_folders = array();
+    		foreach($old_files as $path=>$info){
+    			if($info['size'] > 0 && (substr($path, -1) != '/')){
+    				$parts = explode(DS,$path);
+    				$file = array_pop($parts);
+    				$new_file = trim($dest, DS).DS.$file;
+
+    				if(!$this->fileCopy($bucket.DS.$path, $new_file)){
+    					return false;
+    				}
+    				if(!$this->fileDelete($bucket.DS.$path)){
+    					return false;
+    				}
+    			}else{
+    				$old_folders[] = $path;
+    			}
+    		}
+    		
+    		foreach($old_folders as $folder){
+    			$this->fileDelete($folder);
+    		}
+    		
+    	}else{
+    		if(!JFOLDER::move($src,$dest)){
+        		$this->setError(JText::sprintf("MYMUSE_PRODUCT_CHANGED_CATEGORY", $msg));
+        		return false;
+    		}
+    	}
+    	return true;
+
+    }
 }

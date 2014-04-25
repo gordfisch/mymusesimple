@@ -1,7 +1,7 @@
 <?php
 /**
  * @version     $Id$
- * @package     com_mymuse2.5
+ * @package     com_mymuse3
  * @copyright   Copyright (C) 2011. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  * @author      Gord Fisch arboreta.ca
@@ -11,6 +11,8 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controllerform');
+jimport( 'joomla.filesystem.folder' );
+jimport( 'joomla.filesystem.file' );
 
 /**
  * Product controller class.
@@ -132,14 +134,14 @@ class MymuseControllerProduct extends JControllerForm
 					break;
 				}
 			}else {
-        		$this->msg = JText::_( 'MYMUSE_ERROR_SAVING_FILE' ).": ".$this->getError();
+        		$this->msg = JText::_( 'MYMUSE_ERROR_SAVING_FILE' ).": ".$table->getError();
         		//echo $this->msg; print_pre($_POST); exit;
         		if($this->id){
-        			$task = "editfile";
+        			$this->setRedirect( "index.php?option=com_mymuse&view=product&task=product.editfile&parentid=".$this->parentid.'&id='.$this->id.'&subtype='.$post['subtype'], $this->msg );
         		}else{
-        			$task = "addfile";
+        			$this->setRedirect( "index.php?option=com_mymuse&view=product&task=product.addfile&parentid=".$this->parentid.'&id='.$this->id.'&subtype='.$post['subtype'], $this->msg );
 				}
-        		$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.$task&parentid='.$this->parentid.'&subtype='.$post['subtype'], $this->msg );
+
         	}
  
 			//save an item
@@ -194,7 +196,25 @@ class MymuseControllerProduct extends JControllerForm
         $parentid = JRequest::getVar( 'parentid', '', 'post', 'int' );
         $subtype = JRequest::getVar( 'subtype', '' );
         $this->msg = JText::_( 'MYMUSE_ITEM_CANCELLED' );
-        $this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit&id='.$parentid,$this->msg );
+        if($subtype == 'file'){
+        	$this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=listtracks&id='.$parentid,$this->msg );
+        }elseif($subtype == 'item'){
+        	$this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=listitems&id='.$parentid,$this->msg );
+        }else{
+        	$this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=edit&id='.$parentid,$this->msg );
+        }
+    }
+    
+    function productreturn()
+    {
+    	// Checkin the item
+    	$model = $this->getModel('product');
+    	$model->checkin();
+    	$parentid = JRequest::getVar( 'parentid', '', 'post', 'int' );
+    	
+    	
+    	$this->msg = JText::_( 'MYMUSE_ITEM_CANCELLED' );
+    	$this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=edit&id='.$parentid,$this->msg );
     }
 	
 

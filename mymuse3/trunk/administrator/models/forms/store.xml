@@ -278,6 +278,42 @@
                 default="images/A_MyMusePreviews"
                 size="40"
             />
+        <field
+                name="my_use_s3"
+                type="radio"
+                label="MYMUSE_USE_S3_LABEL"
+                description="MYMUSE_USE_S3_DESC"
+                class="btn-group"
+                default="0">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>
+            </field>
+        <field name="my_s3web" type="text" default="" label="MYMUSE_CONFIG_S3_WEB_LABEL" description="MYMUSE_CONFIG_S3_WEB_DESC" size="100" filter="raw" />
+        <field name="my_s3access" type="text" default="" label="MYMUSE_CONFIG_S3_ACCESSKEY_LABEL" description="MYMUSE_CONFIG_S3_ACCESSKEY_DESC" size="50" filter="raw" />
+		<field name="my_s3secret" type="password" default="" label="MYMUSE_CONFIG_S3_SECRETKEY_LABEL" description="MYMUSE_CONFIG_S3_SECRETKEY_DESC" size="50" filter="raw" />
+
+		<field name="my_s3perms" type="list" default="private"
+			label="MYMUSE_CONFIG_S3_PERMS_LABEL"
+			description ="MYMUSE_CONFIG_S3_PERMS_DESC">
+			<option value="private">MYMUSE_CONFIG_S3_PERMS_PRIVATE</option>
+			<option value="public-read">MYMUSE_CONFIG_S3_PERMS_PUBLIC_READ</option>
+			<option value="public-read-write">MYMUSE_CONFIG_S3_PERMS_PUBLIC_READ_WRITE</option>
+			<option value="authenticated-read">MYMUSE_CONFIG_S3_PERMS_ACL_AUTHENTICATED_READ</option>
+			<option value="bucket-owner-read">MYMUSE_CONFIG_S3_PERMS_ACL_BUCKET_OWNER_READ</option>
+			<option value="bucket-owner-full-control">MYMUSE_CONFIG_S3_PERMS_ACL_BUCKET_OWNER_FULL_CONTROL</option>
+		</field>
+		<field name="my_s3time" type="list" default="900"
+			label="MYMUSE_CONFIG_S3_TIME_LABEL" desc="MYMUSE_CONFIG_S3_TIME_DESC">
+			<option value="60">MYMUSE_CONFIG_S3_TIME_1MINUTE</option>
+			<option value="900">MYMUSE_CONFIG_S3_TIME_15MINUTES</option>
+			<option value="3600">MYMUSE_CONFIG_S3_TIME_1HOUR</option>
+			<option value="21600">MYMUSE_CONFIG_S3_TIME_6HOURS</option>
+			<option value="43200">MYMUSE_CONFIG_S3_TIME_12HOURS</option>
+			<option value="86400">MYMUSE_CONFIG_S3_TIME_1DAY</option>
+			<option value="604800">MYMUSE_CONFIG_S3_TIME_7DAYS</option>
+			<option value="2592000">MYMUSE_CONFIG_S3_TIME_1MONTH</option>
+		</field>
+           
             <field
                 name="my_encode_filenames"
                 type="radio"

@@ -93,16 +93,21 @@ class myMuseViewStore extends JViewLegacy
         		$query = "SELECT * FROM #__mymuse_order_item WHERE id=$item_id";
         		$db->setQuery($query);
         		$item = $db->loadObject();
-        		
-        		if($item->downloads == 0){
+   		
+        		if($item->downloads == 0 && !$params->get('my_use_s3')){
         			$query = "UPDATE #__mymuse_product SET file_downloads = file_downloads +1 WHERE id=".$item->product_id;
         			$db->setQuery($query);
         			$db->execute();
         		}
-        		
-        		//$query = "UPDATE #__mymuse_order_item SET downloads = downloads +1 WHERE id=$item_id";
-        		//$db->setQuery($query);
-        		//$db->execute();
+        		if($params->get('my_use_s3')){
+        			// update the database
+        			$query = "UPDATE #__mymuse_order_item SET downloads = downloads +1 WHERE id=$item_id";
+        			$db->setQuery($query);
+        			$db->execute();
+        			$query = "UPDATE #__mymuse_product SET file_downloads = file_downloads +1 WHERE id=".$item->product_id;
+        			$db->setQuery($query);
+        			$db->execute();
+        		}
         	}
 			
         	JRequest::setVar('layout','store');
@@ -121,6 +126,25 @@ class myMuseViewStore extends JViewLegacy
         			if($all_files){
         				unset($MyMuseShopper->order->items[$i]);
         			}
+        		}
+        		if($params->get('my_use_s3',0)){
+        			require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
+        			$s3 = MyMuseHelperAmazons3::getInstance();
+        			$query = "SELECT * FROM #__mymuse_product WHERE id = '".$MyMuseShopper->order->items[$i]->product_id."'";
+        			$db->setQuery($query);
+        			$product = $db->loadObject();
+        			$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
+        			$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
+        			if($params->get('my_encode_filenames')){
+        				$filename = $product->title_alias;
+        			}else{
+        				$filename = $product->file_name;
+        			}
+        			$bucket = $params->get('my_download_dir');
+        			$uri = $artist_alias.DS.$album_alias.DS.$filename;
+        			$lifetime = $params->get('my_s3time');
+        			//getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false)
+        			$MyMuseShopper->order->items[$i]->s3URL = $s3->getAuthenticatedURL($bucket, $uri, $lifetime);
         		}
         	}
         	
@@ -294,6 +318,7 @@ class myMuseViewStore extends JViewLegacy
         		$full_filename = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
         		$full_filename1 = $full_filename;
         		//echo $full_filename;
+        		
         		if(!file_exists($full_filename)){
         			//try with the root
         			$full_filename = JPATH_ROOT.DS.$params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;

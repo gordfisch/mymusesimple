@@ -64,7 +64,12 @@ function mydownload(url,item_id){
 				$my_download_max = $params->get('my_download_max')? $params->get('my_download_max') : ($item->downloads+1)*2;
 
 				if($item->downloads < $my_download_max && $end_date > time()){
-				?><a href="javascript:void(0);" onclick="mydownload('index.php?option=com_mymuse&task=downloadfile&id=<?php echo $id; ?>&item_id=<?php echo $item->id; ?>','<?php echo $item->id; ?>');">
+					if($params->get('my_use_s3')){
+						$url = $item->s3URL;
+					}else{
+						$url = 'index.php?option=com_mymuse&task=downloadfile&id='.$id.'&item_id='.$item->id;
+					}
+				?><a href="javascript:void(0);" onclick="mydownload('<?php echo $url; ?>','<?php echo $item->id; ?>');">
 				<?php } ?>
 				
 				<?php echo $item->product_name; ?>

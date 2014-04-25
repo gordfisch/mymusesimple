@@ -300,8 +300,10 @@ class MyMuseModelProduct extends JModelItem
 		
 			$artist_alias = MyMuseHelper::getArtistAlias($pk,'1');
 			$album_alias = MyMuseHelper::getAlbumAlias($pk);
-			$site_url = preg_replace("#administrator/#","",JURI::base());
 			
+			$site_url = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base()); 
+    		$site_url .= $params->get('my_use_s3')? '' :  $params->get('my_preview_dir');
+    		$site_url .=  DS.$artist_alias.DS.$album_alias.DS;
 			// set up flash previews and streams
 		
 			$this->_item[$pk]->flash = '';
@@ -314,24 +316,26 @@ class MyMuseModelProduct extends JModelItem
 						$tracks[$i]->price["product_price"] = MyMuseCheckout::addTax($tracks[$i]->price["product_price"]);
 					}
 					
-					//get download file
+					
 					if($params->get('my_encode_filenames')){
 						$track->download_name = $track->title_alias;
 					}else{
 						$track->download_name = $track->file_name;
 					}
 					
-					$down_dir = str_replace($root,'',$params->get('my_download_dir'));
-					$track->download_path = JURI::base().'/'.$down_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->download_name;
-					$track->download_real_path = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$track->download_name;
-					
-					if((!$track->price["product_price"] || $track->price["product_price"] == "FREE")
-							&& $params->get('my_play_downloads')){
-						$track->file_preview = 1;
+					//get download file NOTE NOT available while using Amazon s3
+					if(!$params->get('my_use_s3',0)){
+						$down_dir = str_replace($root,'',$params->get('my_download_dir'));
+						$track->download_path = JURI::base().'/'.$down_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->download_name;
+						$track->download_real_path = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$track->download_name;
+							
+						if((!$track->price["product_price"] || $track->price["product_price"] == "FREE")
+								&& $params->get('my_play_downloads')){
+							$track->file_preview = 1;
+						}
 					}
 					
 					//Audio/Video or some horrid mix of both
-					
 					if($this->_item[$pk]->flash_type != "mix"){
 						if($this->_item[$pk]->flash_type == "audio" && $track->file_type == "video"){
 							//oh christ it's a mix
@@ -368,31 +372,33 @@ class MyMuseModelProduct extends JModelItem
 						
 						if($track->file_preview){
 
-							$prev_dir = $site_url.str_replace($root,'',$params->get('my_preview_dir'));
-							$track->path = $prev_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->file_preview;
+							
+							$track->path = $site_url.$track->file_preview;
 							$track->real_path = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview;
+							
 							if($track->file_preview_2){
-								$track->path_2 = $prev_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->file_preview_2;
+								$track->path_2 = $site_url.$track->file_preview_2;
 								$track->real_path_2 = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview_2;
 							}
 							if($track->file_preview_3){
-								$track->path_3 = $prev_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->file_preview_3;
+								$track->path_3 = $site_url.$track->file_preview_3;
 								$track->real_path_3 = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview_3;
 							}
 							
-							//should we use the real download file?
-							if($params->get('my_play_downloads', 0) && in_array($track->id, $myOrders)){
-								$track->path = $track->download_path;
-								$track->real_path = $track->download_real_path;
-								$track->purchased = 1;
+							//should we use the real download file? Not available in AmazonS3
+							if(!$params->get('my_use_s3')){
+								if($params->get('my_play_downloads', 0) && in_array($track->id, $myOrders)){
+									$track->path = $track->download_path;
+									$track->real_path = $track->download_real_path;
+									$track->purchased = 1;
+								}
+								if($params->get('my_play_downloads', 0) &&
+										(!$track->price["product_price"] || $track->price["product_price"] == "FREE")){
+									$track->path = $track->download_path;
+									$track->real_path = $track->download_real_path;
+									$track->purchased = 1;
+								}
 							}
-							if($params->get('my_play_downloads', 0) && 
-									(!$track->price["product_price"] || $track->price["product_price"] == "FREE")){
-								$track->path = $track->download_path;
-								$track->real_path = $track->download_real_path;
-								$track->purchased = 1;
-							}
-							
 							//audio or video?
 							$ext = MyMuseHelper::getExt($track->file_preview);
 		
@@ -941,4 +947,3 @@ class MyMuseModelProduct extends JModelItem
   		return false;
   	}
 }
-	
