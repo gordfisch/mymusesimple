@@ -413,7 +413,7 @@ class MymuseTableproduct extends JTable
         	//create new dirs if needed 
         	if(!$this->fileExists($artistdir)){
         		if(!$this->folderNew($artistdir)){
-        			$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").$artistdir);
+        			//$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").$artistdir);
         			return false;
         		}
         		if(!$this->fileCopy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
@@ -423,7 +423,7 @@ class MymuseTableproduct extends JTable
         	}
         	if(!$this->fileExists($albumdir)){
         		if(!$this->folderNew($albumdir)){
-        			$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").$albumdir);
+        			//$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").$albumdir);
         			return false;
         		}
         		if(!$this->fileCopy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
@@ -441,7 +441,7 @@ class MymuseTableproduct extends JTable
         		$preview_artist_dir= ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias;
         		if(!$this->folderNew($preview_artist_dir)){
         			if(!$this->folderNew($preview_dir)){
-        				$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").' '.$preview_dir);
+        				//$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").' '.$preview_dir);
         				return false;
         			}
         		}
@@ -824,7 +824,7 @@ class MymuseTableproduct extends JTable
     		$uri = trim($uri,DS);
     		$input = $s3->inputFile($tmpName);
     		if($bucket == $params->get('my_download_dir')){
-    			//we are uploiading to the download dir, set additinal request headers
+    			//we are uploading to the download dir, set additinal request headers
     			$requestHeaders = array("Content-Type" => "application/octet-stream", "Content-Disposition" => "attachment");
     		}
 
@@ -870,7 +870,7 @@ class MymuseTableproduct extends JTable
     		
     		$jconfig = JFactory::getConfig();
     		$tmpName = $jconfig->get('tmp_path','').DS.array_pop($oldParts );
-    	//echo "old bucket: $oldBucket, $uri, $tmpName <br />"; 	
+    		
     		if(!$s3->getObject($oldBucket, $uri, $tmpName)){
     			$this->setError('S3 Error: '.$s3->getError() );
     			return false;
@@ -883,7 +883,7 @@ class MymuseTableproduct extends JTable
     		$file = implode(DS, $parts);
     		$file = trim($file,DS);
     		$input = $s3->inputFile($tmpName);
-    	//echo print_pre($input).", $bucket, $file <br />"; 
+    	
     		$success = $s3->putObject($input, $bucket, $file);
     		if(!@unlink($tmpName)) {
     			JFile::delete($tmpName);
