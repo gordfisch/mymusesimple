@@ -1,7 +1,7 @@
 <?php
 /**
  * @version     $Id$
- * @package     com_mymuse2.5
+ * @package     com_mymuse3
  * @copyright   Copyright (C) 2011. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  * @author      Gord Fisch arboreta.ca
@@ -48,7 +48,8 @@ function MymuseBuildRoute(&$query)
 	}
 
 	// are we dealing with an product or category that is attached to a menu item?
-	if (($menuItem instanceof stdClass) && $menuItem->query['view'] == $query['view'] && isset($query['id']) && $menuItem->query['id'] == intval($query['id'])) {
+	if (($menuItem instanceof stdClass) && $menuItem->query['view'] == $query['view'] && isset($query['id']) 
+			&& isset($menuItem->query['id']) && $menuItem->query['id'] == intval($query['id'])) {
 		unset($query['view']);
 
 		if (isset($query['catid'])) {

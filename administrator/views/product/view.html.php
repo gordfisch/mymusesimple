@@ -1,7 +1,7 @@
 <?php
 /**
  * @version     $Id$
- * @package     com_mymuse2.5
+ * @package     com_mymuse3
  * @copyright   Copyright (C) 2011. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  * @author      Gord Fisch arboreta.ca
@@ -33,11 +33,9 @@ class MymuseViewProduct extends JViewLegacy
 		$this->lists 	= $this->get('Lists');
 
 		
-		$this->tracks 	= $this->get('Tracks');
-		$this->trackPagination = $this->get('TrackPagination');
+
 	
-		$this->items 	= $this->get('Items');
-		$this->itemPagination = $this->get('ItemPagination');
+
 		
 		
 		$this->params 	= MyMuseHelper::getParams();
@@ -56,14 +54,25 @@ class MymuseViewProduct extends JViewLegacy
 		$jinput = JFactory::getApplication()->input;
 		$layout = $jinput->get('layout', 'edit');
 		
+		if($layout == "listtracks"){
+			$this->tracks 	= $this->get('Tracks');
+			$this->trackPagination = $this->get('TrackPagination');
+		}
+		if($layout == "listitems"){
+			$this->items 	= $this->get('Items');
+			$this->itemPagination = $this->get('ItemPagination');
+		}
+		
 		$this->setLayout($layout);
 		
 		
 		//new file || edit file
 		if($task == "addfile" || ($this->item->parentid && !$this->item->product_allfiles)){
+
 			$layout = 'edittracks';
         	$this->setLayout('edittracks');
         	$filelists = $this->get('FileLists');
+
         	$this->lists = array_merge($this->lists,$filelists);
         	if(!$this->item->parentid){
         		$this->item->parentid= JRequest::getVar('parentid', 0);
@@ -86,7 +95,7 @@ class MymuseViewProduct extends JViewLegacy
         }
         //item
         if($task == "additem" || (isset($this->item->parentid) && $this->item->parentid > 0 && $this->item->product_physical)){
-
+        	
         	$layout = 'edititems';
         	$this->setLayout('edititems');
         	$this->attribute_skus = $this->get('Attributeskus');
@@ -146,12 +155,12 @@ class MymuseViewProduct extends JViewLegacy
 	
 		if($layout == "listtracks"){
 			// LIST TRACKS
-			JToolBarHelper::apply('product.cancelitem', 'MYMUSE_RETURN_TO_PRODUCT');
+			JToolBarHelper::apply('product.productreturn', 'MYMUSE_RETURN_TO_PRODUCT');
 			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-tracks?tmpl=component');
 			
 		}elseif($layout == "listitems"){
 			// LIST ITEMS
-			JToolBarHelper::apply('product.cancelitem', 'MYMUSE_RETURN_TO_PRODUCT');
+			JToolBarHelper::apply('product.productreturn', 'MYMUSE_RETURN_TO_PRODUCT');
 			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-items?tmpl=component');
 			
 			
