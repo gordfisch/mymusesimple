@@ -706,16 +706,22 @@ class MyMuseHelperAmazons3 extends JObject
 		if(empty($bucket)) $bucket = self::$__default_bucket;
 		if(is_null($lifetime)) $lifetime = self::$__default_time;
 		$expires = time() + $lifetime;
-		$uri = str_replace('%2F', '/', rawurlencode($uri)); // URI should be encoded (thanks Sean O'Dea)
-		$rh = "?response-content-disposition=attachment%%3B%%20filename%%3D$uri";
 		
-		return sprintf(($https ? 'https' : 'http').'://%s/%s?AWSAccessKeyId=%s&Expires=%u&Signature=%s',
-				$hostBucket ? $bucket : $bucket.'.s3.amazonaws.com', $uri, self::$__accessKey, $expires,
-				urlencode(self::__getHash("GET\n\n\n{$expires}\n/{$bucket}/{$uri}")));
-		//return sprintf(($https ? 'https' : 'http').
-		//		'://%s/%s?AWSAccessKeyId=%s&Expires=%u&Signature=%s',
+		$parts = explode(DS,$uri);
+		$filename = array_pop($parts);
+		
+		
+		$uri = str_replace('%2F', '/', rawurlencode($uri)); // URI should be encoded (thanks Sean O'Dea)
+		$rh = "$uri?response-content-disposition=attachment; filename=$filename";
+		
+		//return sprintf(($https ? 'https' : 'http').'://%s/%s?"AWSAccessKeyId=%s&Expires=%u&Signature=%s',
 		//		$hostBucket ? $bucket : $bucket.'.s3.amazonaws.com', $uri, self::$__accessKey, $expires,
-		//		urlencode(self::__getHash("GET\n\n\n{$expires}\n/{$bucket}/{$uri}{$rh}")));
+		//		urlencode(self::__getHash("GET\n\n\n{$expires}\n/{$bucket}/{$uri}")));
+		
+		return sprintf(($https ? 'https' : 'http').
+				'://%s/%s?response-content-disposition=attachment%%3B%%20filename%%3D'.$filename.'&AWSAccessKeyId=%s&Expires=%u&Signature=%s',
+				$hostBucket ? $bucket : $bucket.'.s3.amazonaws.com', $uri, self::$__accessKey, $expires,
+				urlencode(self::__getHash("GET\n\n\n{$expires}\n/{$bucket}/{$rh}")));
 	}
 
 	/**
@@ -819,7 +825,7 @@ class MyMuseHelperAmazons3 extends JObject
 			$s3 = MyMuseHelperAmazons3::getInstance();
 			$lastListing = $s3->getBucket($bucket, $directory, null, null, '/', true);
 			if(!$lastListing && $s3->getError()){
-				JError::raiseError(500, $s3->getError() );
+				JError::raiseError(500, $s3->getError(). " bucket = $bucket and dir = $directory" );
 			}
 		}
 		return $lastListing;
