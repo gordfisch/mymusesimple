@@ -568,7 +568,7 @@ class MyMuseUpdateHelper extends JObject
 		}
 		echo "Downloaded 'Are You My Sister' track and previews<br />";
 	
-		$from = "http://www.joomlamymuse.com/public_html/mysoftware/mymuse-downloads/The_Foggy_Dew.mp3";
+		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/The_Foggy_Dew.mp3";
 		$to = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS."The_Foggy_Dew.mp3";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;

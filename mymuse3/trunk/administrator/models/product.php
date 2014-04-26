@@ -768,10 +768,6 @@ class MymuseModelproduct extends JModelAdmin
 						$path = substr($path, $dirLength);
 					}
 					$path = trim($path,'/');
-					//$files[] = array(
-					//	'filename'	=> $path,
-					//	'size'		=> $info['size']
-					//);
 					$files[] = $path;
 				}
 			}
@@ -793,7 +789,7 @@ class MymuseModelproduct extends JModelAdmin
 		$files = array();
 		if($params->get('my_use_s3')){
 			$folder = $artist_alias.'/'.$album_alias;
-			echo $folder;
+			echo $params->get('my_download_dir')." ".$folder;
 			$everything = $s3->listS3Contents($folder, $params->get('my_download_dir'));
 			$folder = trim($folder,'/');
 			$dirLength = strlen($folder);
@@ -803,10 +799,6 @@ class MymuseModelproduct extends JModelAdmin
 						$path = substr($path, $dirLength);
 					}
 					$path = trim($path,'/');
-					//$files[] = array(
-					//	'filename'	=> $path,
-					//	'size'		=> $info['size']
-					//);
 					$files[] = $path;
 				}
 			}
