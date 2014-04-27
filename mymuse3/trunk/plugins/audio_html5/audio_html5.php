@@ -550,34 +550,39 @@ jQuery(document).ready(function(){  ';
 				] ";
 					
 				$supplied = implode(", ",$supplied);
+
+				//Old example
 				$js = '
 jQuery(document).ready(function(jQuery){
-
-
-	new jPlayerPlaylist({
-		jPlayer: "#jquery_jplayer_1",
-		cssSelectorAncestor: "#jp_container_1"
-	}, '.$playlist.', {
-		swfPath: "'.$swf_path .'",
-		';
-		if($this->params->get("my_player_errors")){
-			$js .= "errorAlerts: true,
-			";
-		}
-		
-		$js .= 'supplied: "'.$supplied.'"
-	});
-	';
-	if($this->params->get("my_player_errors")){
-		$js .= '$("#jplayer_inspector_1").jPlayerInspector({jPlayer:$("#jquery_jplayer_1")});
-		';
-	}
-	$js .= '
-	});
-';
-	
+				
+				
+				new jPlayerPlaylist({
+				jPlayer: "#jquery_jplayer_1",
+				cssSelectorAncestor: "#jp_container_1"
+				}, '.$playlist.', {
+				swfPath: "'.$swf_path .'",
+				';
+				if($this->params->get("my_player_errors")){
+					$js .= "errorAlerts: true,
+					";
+				}
+				
+				$js .= 'supplied: "'.$supplied.'",
+				wmode: "window",
+				smoothPlayBar: true,
+				keyEnabled: true
+				});
+				';
+				if($this->params->get("my_player_errors")){
+					$js .= '$("#jplayer_inspector_1").jPlayerInspector({jPlayer:$("#jquery_jplayer_1")});
+					';
+				}
+				$js .= '
+});
+				';	
 	
 	$js = '
+jQuery(document).ready(function(jQuery){
 	var myPlayer = jQuery("#jquery_jplayer_1");
 	var jpAncestor = "#jp_container_1",
 	myPlayerData,
@@ -682,13 +687,19 @@ jQuery(document).ready(function(jQuery){
 		max: 1,
 		range: "min",
 		step: 0.01,
-		value: $.jPlayer.prototype.options.volume,
+		value: jQuery.jPlayer.prototype.options.volume,
 		slide: function (event, ui) {
 			myPlayer.jPlayer("option", "muted", false);
 			myPlayer.jPlayer("option", "volume", ui.value);
 		}
 	});
+});
 	';
+	
+
+	
+	
+	
 	
 			$document->addScriptDeclaration($js);
 
