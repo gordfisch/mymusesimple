@@ -479,20 +479,19 @@ class MyMuseModelProduct extends JModelItem
 					reset($preview_tracks);
 					$this->_item[$pk]->previews = array();
 					$audio = 0;
-					$site_url = preg_replace("#administrator/#","",JURI::base());
-					$prev_dir = $site_url.str_replace($root,'',$params->get('my_preview_dir'));
+					
 					$i = 0;
 					$type = "";
 					foreach($preview_tracks as $track){
 						if($track->file_preview){
-							$track->path .= $prev_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->file_preview;
+							$track->path .= $site_url.$track->file_preview;
 						}
 
 						if($track->file_preview_2){
-							$track->path_2 = $prev_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->file_preview_2;
+							$track->path_2 = $site_url.$track->file_preview_2;
 						}
 						if($track->file_preview_3){
-							$track->path_3 = $prev_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->file_preview_3;
+							$track->path_3 = $site_url.$track->file_preview_3;
 						}
 						$this->_item[$pk]->previews[] = $track;
 						if(preg_match("/video/",$track->file_type)){
