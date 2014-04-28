@@ -252,8 +252,8 @@ class plgMymuseAudio_html5 extends JPlugin
 
 	// Define hover states of the buttons
 	jQuery(".jp-gui ul li").hover(
-		function() { $(this).addClass("ui-state-hover"); },
-		function() { $(this).removeClass("ui-state-hover"); }
+		function() { jQuery(this).addClass("ui-state-hover"); },
+		function() { jQuery(this).removeClass("ui-state-hover"); }
 	);
 
 	// Create the progress slider control
@@ -452,8 +452,10 @@ jQuery(document).ready(function(){  ';
             jQuery("#track_play_li_'.$track->id.'").css("display","none");
             jQuery("#track_pause_'.$track->id.'").css("display","block");
             jQuery("#track_pause_li_'.$track->id.'").css("display","block");
+            
             myPlayer.jPlayer("setMedia",{ '.$media.' });
             myPlayer.jPlayer("play");
+            
 
 			return false;
 		}); 
