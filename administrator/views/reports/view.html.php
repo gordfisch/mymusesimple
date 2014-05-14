@@ -26,6 +26,14 @@ class myMuseViewReports extends JViewLegacy
 		
 		// Get data from the model
 		$this->state		= $this->get('State');
+		if(!$this->state->get('filter.start_date')
+				&& !$this->state->get('filter.end_date')
+				&& !$this->state->get('filter.order_status')
+				&& !$this->state->get('filter.catid') ){
+			 
+			parent::display($tpl);
+			return true;
+		}
 		$this->items		= $this->get('Items');
 
 		$this->pagination		= $this->get('Pagination');

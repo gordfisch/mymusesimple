@@ -121,6 +121,7 @@ window.addEvent('domready', function() {Calendar.setup({
 		<table  width="800">
 		<thead>
 			<tr>
+				<th></th>
 				<th class="title">
 					<?php echo JText::_('MYMUSE_PRODUCT'); ?>
 				</th>
@@ -144,6 +145,7 @@ window.addEvent('domready', function() {Calendar.setup({
 			$row =& $rows[$i];
 			?>
 			<tr class="<?php echo "row$k"; ?>">
+				<td><?php echo $i+1; ?></td>
 				<td>
 					<?php echo $row->product_name; ?>
 				</td>

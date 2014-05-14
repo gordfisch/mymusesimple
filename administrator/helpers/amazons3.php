@@ -830,6 +830,29 @@ class MyMuseHelperAmazons3 extends JObject
 		}
 		return $lastListing;
 	}
+	
+	/**
+	 * Get object information
+	 *
+	 * @param string $bucket Bucket name
+	 * @param string $uri Object URI
+	 * @param boolean $returnInfo Return response information
+	 * @return mixed | false
+	 */
+	public static function getObjectInfo($bucket, $uri, $returnInfo = true)
+	{
+		$rest = new MyMuseS3Request('HEAD', $bucket, $uri, 's3.amazonaws.com');
+		$rest = $rest->getResponse();
+		if ($rest->error === false && ($rest->code !== 200 && $rest->code !== 404))
+			$rest->error = array('code' => $rest->code, 'message' => 'Unexpected HTTP status');
+		if ($rest->error !== false)
+		{
+			self::__triggerError(sprintf("S3::getObjectInfo({$bucket}, {$uri}): [%s] %s",
+			$rest->error['code'], $rest->error['message']), __FILE__, __LINE__);
+			return false;
+		}
+		return $rest->code == 200 ? $returnInfo ? $rest->headers : true : false;
+	}
 
 }
 

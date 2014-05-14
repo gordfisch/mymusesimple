@@ -16,7 +16,7 @@ if(!defined('DS')){
 }
 
 if(!defined('MYMUSE_ADMIN_PATH')){
-	define('MYMUSE_ADMIN_PATH',JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_mymuse'.DS);
+	define('MYMUSE_ADMIN_PATH',JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_mymuse');
 }
 
 require_once( MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php' );
