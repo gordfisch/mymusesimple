@@ -5,7 +5,15 @@
  * @copyright   Copyright (C) 2011. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  * @author      Gord Fisch info@mymuse.ca	
+ * 
+ * based on the file categorytree.php found in flexicontent. It seemed to be based on a 
+ * joomla core file called category parent. At least, the head of that file had these comments:
+ * version		Id: categoryparent.php 18808 2010-09-08 05:44:54Z eddieajau 
+ * copyright	Copyright (C) 2005 - 2010 Open Source Matters, Inc. All rights reserved.
+ * license		GNU General Public License version 2 or later; see LICENSE.txt
+ * 
  */
+ 
 
 defined('JPATH_BASE') or die;
 

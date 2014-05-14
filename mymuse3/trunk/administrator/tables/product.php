@@ -293,14 +293,19 @@ class MymuseTableproduct extends JTable
 			}
 			
 			$old_file = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$select_file;
-			$this->file_length = filesize($old_file);
-			
+			$this->file_length = $this->fileFilesize($old_file);
+	
 			if($old_file != $new_file){
-				if(!$this->fileCopy($old_file, $new_file)){
-            		return false;
-				}
-				if(!$this->fileDelete($old)){
-					return false;
+				if($params->get('my_use_s3') && $this->file_length > 10240000){ // over 10 megs
+					$this->file_name = $select_file;
+					JFactory::getApplication()->enqueueMessage(JText::sprintf('MYMUSE_S3_FILE_TOO_LARGE_TO_COPY', $old_file, $new_file), 'warning');
+				}else{
+					if(!$this->fileCopy($old_file, $new_file)){
+						return false;
+					}
+					if(!$this->fileDelete($old_file)){
+						return false;
+					}
 				}
 			}
 		}
@@ -974,5 +979,23 @@ class MymuseTableproduct extends JTable
     	}
     	return true;
 
+    }
+    
+    public function fileFilesize($src)
+    {
+    	$params = MyMuseHelper::getParams();
+    	if($params->get('my_use_s3')){
+    		$s3 = MyMuseHelperAmazons3::getInstance();
+    		// first section is bucket name
+    		$parts = explode(DS,$src);
+    		$bucket = array_shift($parts);
+    		$bucket = trim($bucket, DS);
+    		$uri = implode(DS, $parts);
+    		$uri = trim($uri,DS);
+    		$header  = $s3->getObjectInfo($bucket, $uri);
+    		return $header['size'];
+    	}else{
+    		return filesize($path);
+    	}
     }
 }

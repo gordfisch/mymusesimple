@@ -99,6 +99,9 @@ class MymuseModelReports extends JModelList
     	// Initialise variables.
     	$app = JFactory::getApplication('administrator');
     
+        // List state information.
+    	parent::populateState('a.id', 'asc');
+    
     	$catid	= $app->getUserStateFromRequest( $this->context.'catid','catid','','int' );
     	$this->setState('filter.catid', $catid);
     
@@ -110,13 +113,12 @@ class MymuseModelReports extends JModelList
     
     	$end_date = $app->getUserStateFromRequest($this->context.'.filter.end_date', 'filter_end_date', '', 'string');
     	$this->setState('filter.end_date', $end_date);
-    
+        
+        $this->setState('list.limit', 1000000000);
+
     	// Load the parameters.
     	$params = JComponentHelper::getParams('com_mymuse');
     	$this->setState('params', $params);
-    
-    	// List state information.
-    	parent::populateState('a.id', 'asc');
     }
     
     /**
@@ -198,7 +200,7 @@ class MymuseModelReports extends JModelList
     		$query->where("a.created >= '$start_date 00:00:00'");
     	}
     	if($end_date){
-    		$query->where("a.created <= '$end_date 00:00:00'");
+    		$query->where("a.created <= '$end_date 23:59:59'");
     	}
     
     	// Filter by search in title
