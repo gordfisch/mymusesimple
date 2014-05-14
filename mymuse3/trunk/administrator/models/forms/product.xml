@@ -61,12 +61,13 @@
 		   
 		  <field 
 		  		name="catid" 
-		  		type="category" 
+		  		type="categorytree" 
 		  		extension="com_mymuse"
 				label="MYMUSE_MAIN_CATEGORY_LABEL" 
 				description="MYMUSE_MAIN_CATEGORY_DESC"
 				class="inputbox" 
 				required="true"
+				multiple="false" 
 		/>
 		
 		<field 
