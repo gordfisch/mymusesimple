@@ -7,7 +7,7 @@
     <author>Arboreta</author>
 	<authorEmail>gord@arboreta.ca</authorEmail>
 	<authorUrl>http://www.mymuse.ca</authorUrl>
-	<version>3.2.5</version>
+	<version>3.2.6</version>
 	<description>Sell your CD's and tracks online. Visit http://www.mymuse.ca for more info.</description>
 
 	<media destination="com_mymuse" folder="media">
