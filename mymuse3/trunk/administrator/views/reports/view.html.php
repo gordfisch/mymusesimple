@@ -23,6 +23,8 @@ class myMuseViewReports extends JViewLegacy
 		$mainframe = JFactory::getApplication();
 		$option = 'com_mymuse';
 		$params = MyMuseHelper::getParams();
+		$this->sidebar = JHtmlSidebar::render();
+		$this->lists  			=& $this->get( 'Lists');
 		
 		// Get data from the model
 		$this->state		= $this->get('State');
@@ -38,7 +40,7 @@ class myMuseViewReports extends JViewLegacy
 
 		$this->pagination		= $this->get('Pagination');
 		$this->orders_total 	= count($this->items);
-		$this->lists  			=& $this->get( 'Lists');
+		
 		$this->orders_summary 	=& $this->get( 'OrderSummary');
 		$this->items_summary  	=& $this->get( 'ItemsSummary');
 		$this->catid			= $mainframe->getUserStateFromRequest( 'filter.catid','catid','','int' );
@@ -50,7 +52,7 @@ class myMuseViewReports extends JViewLegacy
 		}
 		
 		$this->addToolbar();
-		$this->sidebar = JHtmlSidebar::render();
+		
 		parent::display($tpl);
 	}
 

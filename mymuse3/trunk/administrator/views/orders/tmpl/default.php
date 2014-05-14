@@ -83,14 +83,14 @@ window.addEvent('domready', function() {Calendar.setup({
 		 		<label class="filter-search-lbl" for="startdate_img"><?php echo JText::_('MYMUSE_START_DATE'); ?></label> 
 				<input name="filter_start_date" id="startdate" type="text"
 				value="<?php echo $this->state->get('filter.start_date')?>" /> <img
-				class="calendar" src="/templates/system/images/calendar.png"
+				class="calendar" src="templates/system/images/calendar.png"
 				alt="calendar" id="startdate_img"/ > 
 			</div>
 			<div class="btn-group pull-left hidden-phone">
 				<label class="filter-search-lbl" for="enddate_img"><?php echo JText::_('MYMUSE_END_DATE'); ?></label> 
 				<input name="filter_end_date" id="enddate" type="text"
 				value="<?php echo $this->state->get('filter.end_date')?>" /> <img
-				class="calendar" src="/templates/system/images/calendar.png"
+				class="calendar" src="templates/system/images/calendar.png"
 				alt="calendar" id="enddate_img"/ >
 			</div>
 	<div style="clear:both"> </div>
