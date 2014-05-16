@@ -457,9 +457,7 @@ class MyMuseController extends JControllerLegacy
 				notes LIKE '%". $user->get('email')  ."%' ORDER BY id DESC LIMIT 0,1";
 				$db->setQuery($q1);
 				$orderid = $db->loadResult();
-			}
-			
-			if(!$orderid && $pp !== 'paymentoffline'){
+			}elseif(!$orderid && $pp !== 'paymentoffline'){
 				//get the last orderid
 				$q1 = "SELECT id from #__mymuse_order WHERE
 				user_id = '$user_id' ORDER BY id DESC LIMIT 0,1";
