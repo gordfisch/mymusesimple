@@ -119,12 +119,12 @@ class plgMymusePayment_Paypal extends JPlugin
 		}
 		
 		//custom field
-		$custom = 'custom=1';
-		if($params->get('my_registration') == "no_reg"){
+		$custom = 'custom=1&userid='.$shopper->id;
+		//if($params->get('my_registration') == "no_reg"){
 			foreach($shopper->profile as $key=>$val){
 				$custom .= '&'.$key.'='.$val;
 			}
-		}
+		//}
 		if(isset($order->order_number)){
 			$custom .= '&order_number='.$order->order_number.'&email='.$shopper->email;
 		}
@@ -277,6 +277,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		$result['order_number'] 		= isset($custom['order_number'])? $custom['order_number'] : '';
 		$result['payer_email'] 			= urldecode($_POST['payer_email']);
 		$result['user_email'] 			= $custom['email'];
+		$result['userid'] 				= $custom['userid'];
 		/**
 		 ?>
 		 <script type="text/javascript">
@@ -381,7 +382,7 @@ class plgMymusePayment_Paypal extends JPlugin
   					}else{
   						$q = "SELECT u.id from #__users as u
   						WHERE
-  						u.email='".$result['user_email']."'";
+  						u.id='".$result['userid']."'";
   					}
 					$db->setQuery($q);
 					$user_id = $db->loadResult();
