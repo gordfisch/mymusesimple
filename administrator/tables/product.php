@@ -337,21 +337,21 @@ class MymuseTableproduct extends JTable
 		// Previews
 		//check for errors with upload previews
 		if(isset($_FILES['product_preview']['name']) && $_FILES['product_preview']['name'] != ""){
-			if(isset($_FILES['product_file']['error']) && $_FILES['product_preview']['error'])
+			if(isset($_FILES['product_preview']['error']) && $_FILES['product_preview']['error'])
 			{
 				JError::raiseError( 500, Jtext::_($this->_upload_errors[$_FILES['product_preview']['error']]) );
 				return false;
 			}
 		}
 		if(isset($_FILES['product_preview_2']['name']) && $_FILES['product_preview_2']['name'] != ""){
-			if(isset($_FILES['product_file']['error']) && $_FILES['product_preview_2']['error'])
+			if(isset($_FILES['product_preview_2']['error']) && $_FILES['product_preview_2']['error'])
 			{
 				JError::raiseError( 500, Jtext::_($this->_upload_errors[$_FILES['product_preview_2']['error']]) );
 				return false;
 			}
 		}
 		if(isset($_FILES['product_preview_3']['name']) && $_FILES['product_preview_3']['name'] != ""){
-			if(isset($_FILES['product_file']['error']) && $_FILES['product_preview_3']['error'])
+			if(isset($_FILES['product_preview_3']['error']) && $_FILES['product_preview_3']['error'])
 			{
 				JError::raiseError( 500, Jtext::_($this->_upload_errors[$_FILES['product_preview_3']['error']]) );
 				return false;

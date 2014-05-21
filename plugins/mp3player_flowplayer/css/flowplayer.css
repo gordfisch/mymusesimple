@@ -35,8 +35,10 @@
 	border-top-width:1px;
 }
 
+
+
 .clips a.playing, .clips a.paused, .clips a.progress {
-	background:url(../images/light.png) no-repeat 0px -69px;
+	background:url(../images/light_small.png) no-repeat 0px -69px;
 	width:225px;
 	border:0;
 }
