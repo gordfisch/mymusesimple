@@ -36,10 +36,12 @@
 }
 
 .clips a.playing, .clips a.paused, .clips a.progress {
-	background:url(../images/light.png) no-repeat 0px -69px;
+	background:url(../images/dark80.png) no-repeat 0px -40px;
 	width:225px;
 	border:0;
 }
+	
+	
 	
 .clips a.progress {
 	opacity:0.6;		

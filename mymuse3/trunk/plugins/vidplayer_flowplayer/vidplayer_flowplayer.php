@@ -145,8 +145,6 @@ class plgMymuseVidplayer_Flowplayer extends JPlugin
 			$text = '
 
 			<script>
-jQuery.noConflict();
-
 jQuery(document).ready(function($){
 	
 	// setup player without "internal" playlists
@@ -201,13 +199,11 @@ jQuery(document).ready(function($){
 		
 <script>
 // wait for the DOM to load using jQuery
-jQuery.noConflict();
-
 jQuery(document).ready(function($){
 
 
 			
-	$f("player1", "'. $player_path .'", {
+	flowplayer("player1", "'. $player_path .'", {
 		// clip properties common to all playlist entries
 		clip: {
 			subTitle: \'mymuse\',
@@ -233,7 +229,7 @@ jQuery(document).ready(function($){
 	
 	});
 
-	$f("player1").playlist("div.clips:first", {loop:false});
+	flowplayer("player1").playlist("div.clips:first", {loop:false});
 });		
 			</script>
 <!-- setup player container  -->

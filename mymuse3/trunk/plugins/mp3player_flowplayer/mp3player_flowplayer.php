@@ -45,7 +45,7 @@ class plgMymuseMp3Player_Flowplayer extends JPlugin
 		$document->addScript( $js_path );
 		$css_url = './components/com_mymuse/assets/css/mymuse.css';
 		$document->addStyleSheet( $css_url );
-		$document->addStyleSheet( './plugins/mymuse/mp3player_flowplayer/css/flowplayer.css' );
+		$document->addStyleSheet( 'plugins/mymuse/mp3player_flowplayer/css/flowplayer.css' );
 		
 	}
 
@@ -96,7 +96,8 @@ class plgMymuseMp3Player_Flowplayer extends JPlugin
 			<div id="player'.$id.'" style="display:block;width:'.$width.'px;height:'.$height.'px;"></div>
 			<!-- install flowplayer into container -->
 			<script>
-			$f("player'.$id.'", "'. $player_path .'", {
+		jQuery(function() {
+			flowplayer("player'.$id.'", "'. $player_path .'", {
 
 				clip: { 
 				   url: \''.$track->path.'\',
@@ -117,6 +118,7 @@ class plgMymuseMp3Player_Flowplayer extends JPlugin
 					}
 				}
 			});
+		});
 			</script>';
 			return $text;
 		}
@@ -125,7 +127,7 @@ class plgMymuseMp3Player_Flowplayer extends JPlugin
 		
 		
 		/**
-		 * Single palyer with buttons for each track
+		 * Single player with buttons for each track
 		 */
 		
 		
@@ -144,10 +146,10 @@ class plgMymuseMp3Player_Flowplayer extends JPlugin
 			
 			$text = '
 			<script>
-$(function() {
+jQuery(function() {
 	
 	// setup player without "internal" playlists
-	$f("player'.$id.'", "'.$player_path.'", {
+	flowplayer("player'.$id.'", "'.$player_path.'", {
 
 		plugins:  {
 		
@@ -206,10 +208,10 @@ $(function() {
 			] ";
 			
 			$text = '<script>
-$(function() {
+jQuery(function() {
 	
 	// setup player with playlist
-	$f("player1", "'.$player_path.'", {
+	flowplayer("player1", "'.$player_path.'", {
 		
 		plugins:  {
                     

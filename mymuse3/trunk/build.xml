@@ -272,7 +272,9 @@
                         todir="${test}/plugins/mymuse/mp3player_flowplayer/mp3players" /> 
                 <copy file="${src}/plugins/mp3player_flowplayer/mp3players/flowplayer.playlist-3.0.8.min.js"
                         todir="${test}/plugins/mymuse/mp3player_flowplayer/mp3players" />
-
+        	
+        		<copy file="${src}/plugins/mp3player_flowplayer/css/flowplayer.css"
+        	             todir="${test}/plugins/mymuse/mp3player_flowplayer/css" />
                  
                 <copy file="${src}/plugins/vidplayer_html5/vidplayer_html5.php"
                         todir="${test}/plugins/mymuse/vidplayer_html5" />  
@@ -287,6 +289,7 @@
                         todir="${test}/plugins/mymuse/vidplayer_dewplayer/vidplayers" /> 
                 <copy file="${src}/plugins/vidplayer_dewplayer/vidplayers/dewplayervid.js"
                         todir="${test}/plugins/mymuse/vidplayer_dewplayer/vidplayers" /> 
+        		
                         
                 <copy file="${src}/plugins/vidplayer_flowplayer/vidplayer_flowplayer.php"
                         todir="${test}/plugins/mymuse/vidplayer_flowplayer" />  
@@ -298,6 +301,8 @@
                         todir="${test}/plugins/mymuse/vidplayer_flowplayer/vidplayers" /> 
                 <copy file="${src}/plugins/vidplayer_flowplayer/vidplayers/flowplayer.controls-3.2.5.swf"
                         todir="${test}/plugins/mymuse/vidplayer_flowplayer/vidplayers" /> 
+        		<copy file="${src}/plugins/vidplayer_flowplayer/css/flowplayer.css"
+        	            todir="${test}/plugins/mymuse/vidplayer_flowplayer/css" /> 
                         
                 <copy file="${src}/plugins/user_mymuse/mymuse.xml"
                         todir="${test}/plugins/user/mymuse" /> 
