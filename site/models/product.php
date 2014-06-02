@@ -529,7 +529,7 @@ class MyMuseModelProduct extends JModelItem
 				}
 				
 				// free downloads
-				if($params->get('my_free_downloads')){
+				if(isset($tracks) && $params->get('my_free_downloads')){
 					reset($tracks);
 					foreach($tracks as $track){
 						if(
@@ -544,11 +544,7 @@ class MyMuseModelProduct extends JModelItem
 							$track->free_download = 0;
 						}
 					}
-				}else{
-					$track->free_download = 0;
 				}
-				
-				
 			} 
 			
 
