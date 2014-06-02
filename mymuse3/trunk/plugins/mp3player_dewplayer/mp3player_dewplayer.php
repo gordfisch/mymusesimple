@@ -43,7 +43,7 @@ class plgMymuseMp3Player_Dewplayer extends JPlugin
 		parent::__construct($subject, $config);
 		
         
-        $document = &JFactory::getDocument();
+        $document = JFactory::getDocument();
         $site_url = preg_replace("#administrator/#","",JURI::base());
 		$js_path = $site_url.'plugins'.DS.'mymuse'.DS."mp3player_dewplayer".DS.'mp3players'.DS.'dewplayer.js';
 		$document->addScript( $js_path );
@@ -57,7 +57,7 @@ class plgMymuseMp3Player_Dewplayer extends JPlugin
 	 */
 	function onPrepareMyMuseMp3Player(&$track, $type='each', $height=0, $width=0)
 	{
-		$params 	=& MyMuseHelper::getParams();
+		$params 	= MyMuseHelper::getParams();
 
 		$height = $height? $height :  $params->get('product_player_height');		
 		$width  = $width? $width : $params->get('product_player_width');

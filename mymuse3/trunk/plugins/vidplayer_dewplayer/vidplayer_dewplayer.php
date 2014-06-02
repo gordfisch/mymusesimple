@@ -40,7 +40,7 @@ class plgMymuseVidplayer_Dewplayer extends JPlugin
 		parent::__construct($subject, $config);
 		
         
-        $document = &JFactory::getDocument();
+        $document = JFactory::getDocument();
         $site_url = preg_replace("#administrator/#","",JURI::base());
 		$js_path = $site_url.'plugins'.DS.'mymuse'.DS.'vidplayer_dewplayer'.DS.'vidplayers'.DS.'dewplayervid.js';
 		$document->addScript( $js_path );
@@ -53,7 +53,7 @@ class plgMymuseVidplayer_Dewplayer extends JPlugin
 	 */
 	function onPrepareMyMuseVidPlayer(&$track, $type='each', $height=0, $width=0)
 	{
-		$params 	=& MyMuseHelper::getParams();
+		$params 	= MyMuseHelper::getParams();
 
 		$height = $height? $height :  $params->get('product_player_height',300);
 		$width  = $width? $width : $params->get('product_player_width',420);
