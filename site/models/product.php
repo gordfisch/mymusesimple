@@ -363,7 +363,7 @@ class MyMuseModelProduct extends JModelItem
 				}
 
 				$dispatcher	= JDispatcher::getInstance();
-				if(count($preview_tacks) && ($params->get('product_player_type') == "each" || 
+				if(count($preview_tracks) && ($params->get('product_player_type') == "each" || 
 					$params->get('product_player_type') == "single")){
 					reset($preview_tracks);
 					$count = count($preview_tracks);
@@ -431,7 +431,7 @@ class MyMuseModelProduct extends JModelItem
 				}
 				
 				
-				if(count($preview_tacks) && $params->get('product_player_type') == "single"){
+				if(count($preview_tracks) && $params->get('product_player_type') == "single"){
 					// make a controller for the play/pause buttons
 					$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$preview_tracks) );
 					//get the player itself
@@ -474,7 +474,7 @@ class MyMuseModelProduct extends JModelItem
 					}
 				}
 				
-				if(count($preview_tacks) && $params->get('product_player_type') == "playlist"){
+				if(count($preview_tracks) && $params->get('product_player_type') == "playlist"){
 					//get the main flash for the product
 			
 					reset($preview_tracks);

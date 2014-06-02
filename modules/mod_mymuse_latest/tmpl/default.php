@@ -43,7 +43,7 @@ if($params->get('type_shown') == "tracks" && $params->get('show_track_preview'))
 	    <a href="<?php echo $item->product_link; ?>" class="mymuse_latest<?php echo $params->get('moduleclass_sfx'); ?>">
 			<img
 			<?php if($height){
-				?>style="height: <?php echo $height; ?>px"
+				?>style="width: <?php echo $height; ?>px"
 			<?php }?>
 			src="<?php echo $item->list_image;?>"
 			hspace="6" border="0" alt="<?php echo $item->list_image;?>" /></a><br />
