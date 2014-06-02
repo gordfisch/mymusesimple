@@ -42,7 +42,7 @@ class plgMymuseVidplayer_Flowplayer extends JPlugin
 		parent::__construct($subject, $config);
 		
         
-        $document = &JFactory::getDocument();
+        $document = JFactory::getDocument();
         $site_url = preg_replace("#administrator/#","",JURI::base());
 		$js_path = $site_url.'plugins/mymuse/vidplayer_flowplayer/vidplayers/flowplayer-3.2.6.min.js';
 		$document->addScript( $js_path );
@@ -60,7 +60,7 @@ class plgMymuseVidplayer_Flowplayer extends JPlugin
 	 */
 	function onPrepareMyMuseVidPlayer(&$track, $type='each', $height=0, $width=0)
 	{
-		$params 	=& MyMuseHelper::getParams();
+		$params = MyMuseHelper::getParams();
 		
 		$site_url = preg_replace("#administrator/#","",JURI::base());
 		$player_path = $site_url."plugins/mymuse/vidplayer_flowplayer/vidplayers/flowplayer-3.2.7.swf";

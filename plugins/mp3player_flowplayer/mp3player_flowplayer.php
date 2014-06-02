@@ -39,7 +39,7 @@ class plgMymuseMp3Player_Flowplayer extends JPlugin
 	function plgMymuseMp3Player_Flowplayer(&$subject, $config)  {
 		parent::__construct($subject, $config);
 		
-        $document = &JFactory::getDocument();
+        $document = JFactory::getDocument();
         $site_url = preg_replace("#administrator/#","",JURI::base());
 		$js_path = $site_url.'plugins'.DS.'mymuse'.DS."mp3player_flowplayer".DS.'mp3players'.DS.'flowplayer-3.2.6.min.js';
 		$document->addScript( $js_path );
@@ -55,7 +55,7 @@ class plgMymuseMp3Player_Flowplayer extends JPlugin
 	 */
 	function onPrepareMyMuseMp3Player(&$track, $type='each', $height=0, $width=0)
 	{
-		$params 	=& MyMuseHelper::getParams();
+		$params = MyMuseHelper::getParams();
 		
 		$height = $height? $height :  $params->get('product_player_height');
 		$width  = $width? $width : $params->get('product_player_width');
@@ -81,7 +81,7 @@ class plgMymuseMp3Player_Flowplayer extends JPlugin
 			$id = $track->id;
 		}
 		if($type == 'playlist' || $type == 'singleplayer'){
-			$document = &JFactory::getDocument();
+			$document = JFactory::getDocument();
 			$document->addScript( "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" );
 			$js_path = $site_url.'plugins'.DS.'mymuse'.DS."mp3player_flowplayer".DS.'mp3players'.DS.'flowplayer.playlist-3.0.8.min.js';
 			$document->addScript( $js_path );
