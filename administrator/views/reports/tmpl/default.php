@@ -20,26 +20,7 @@ defined('_JEXEC') or die('Restricted access');
 	JHTML::_( 'behavior.calendar' );
 
 		?>
-<script  type="text/javascript">
-window.addEvent('domready', function() {Calendar.setup({
-        inputField     :    "startdate",     // id of the input field
-        ifFormat       :    "%Y-%m-%d",      // format of the input field
-        button         :    "startdate_img",  // trigger for the calendar (button ID)
-        align          :    "Bl",           // alignment (defaults to "Bl" = Bottom Left, 
-// "Tl" = Top Left, "Br" = Bottom Right, "Bl" = Botton Left)
-        singleClick    :    true
-    });});
-</script>
-<script  type="text/javascript">
-window.addEvent('domready', function() {Calendar.setup({
-        inputField     :    "enddate",     // id of the input field
-        ifFormat       :    "%Y-%m-%d",      // format of the input field
-        button         :    "enddate_img",  // trigger for the calendar (button ID)
-        align          :    "Bl",           // alignment (defaults to "Bl" = Bottom Left, 
-// "Tl" = Top Left, "Br" = Bottom Right, "Bl" = Botton Left)
-        singleClick    :    true
-    });});
-</script>
+
 <form action="index.php" method="post" name="adminForm" id="adminForm">	
 	<div id="j-sidebar-container" class="span2">
 	<?php
@@ -51,43 +32,66 @@ window.addEvent('domready', function() {Calendar.setup({
 	<div class="clearfix"> </div>
 		
 		<h2><?php echo JText::_('Filter'); ?></h2>
-		<table class="admintable">
-		<tr>
-			<td width="200" class="paramlist_key"><?php echo JText::_( 'MYMUSE_ORDER_STATUS' ); ?>:</td>
-			<td width="100" class="paramlist_value"> <select name="filter_order_status" class="inputbox" onchange="this.form.submit()">
-                    <option value=""><?php echo JText::_('MYMUSE_ORDER_STATUS');?></option>
-                    <?php echo JHtml::_('select.options', MGrid::orderStatusOptions(), "value", "text", $this->state->get('filter.order_status'), true);?>
-                </select></td>
-			<td ><label class="filter-search-lbl" for="startdate_img"><?php echo JText::_('MYMUSE_START_DATE'); ?></label></td>
-			<td><input name="filter_start_date" id="startdate" type="text" value="<?php echo $this->state->get('filter.start_date')?>" /> 
-				<img class="calendar" 
-				src="templates/system/images/calendar.png" 
-				alt="calendar" id="startdate_img" / ></td>
-			<td rowspan="2" valign="top">
-			<button onclick="this.form.submit();"><?php echo JText::_( 'MYMUSE_CREATE_REPORT' ); ?></button>
-			</td>
-		</tr>
-		<tr>
-			<td width="200" class="paramlist_key"><?php echo JText::_( 'MYMUSE_CATEGORY' ); ?>:</td>
-			<td width="100" class="paramlist_value"><?php echo $lists['catid']; ?></td>
-			<td><label class="filter-search-lbl" for="enddate_img"><?php echo JText::_('MYMUSE_END_DATE'); ?></label></td>
-			<td><input name="filter_end_date" id="enddate" type="text" value="<?php echo $this->state->get('filter.end_date')?>" /> 
-				<img class="calendar" 
-				src="templates/system/images/calendar.png" 
-				alt="calendar" id="enddate_img" / ></td>
-		</tr>
-		</table>
+
 		<input type="hidden" name="option" value="com_mymuse" />
 		<input type="hidden" name="view" value="reports" />
 		<input type="hidden" name="task" value="" />
-		<input type="hidden" name="boxchecked" value="0" />
+		
+	<div class="pull-left span5">	
+		<div class="control-group">
+			<div class="control-label">
+				<?php echo $this->form->getLabel('catid'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('catid'); ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="control-label">
+				<?php echo $this->form->getLabel('filter_order_status'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('filter_order_status'); ?>
+			</div>
+		</div>
+	</div>
+	<div class="pull-right span5">	
+		<div class="control-group">
+			<div class="control-label">
+				<?php echo $this->form->getLabel('filter_start_date'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('filter_start_date'); ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="control-label">
+				<?php echo $this->form->getLabel('filter_end_date'); ?>
+			</div>
+			<div class="controls">
+				<?php echo $this->form->getInput('filter_end_date'); ?>
+			</div>
+		</div>
+		<div class="control-group">
+			<div class="control-label">
+				
+			</div>
+			<div class="controls">
+				<button onclick="this.form.submit();"><?php echo JText::_( 'MYMUSE_CREATE_REPORT' ); ?></button>
+			</div>
+		</div>
+	</div>
+<div style="clear: both;"></div>			
+			
 
 		<?php echo JHTML::_( 'form.token' ); ?>
 		</form>
 		
 		
-<?php if($orders_total >0 && !$this->catid){ ?>
-		<h2>Order Summary</h2>
+<?php if($orders_total >0){ ?>
+		<h2><?php echo JText::_('MYMUSE_ORDER_SUMMARY'); ?></h2>
+		<b><?php echo JText::_('MYMUSE_ORDER_SUMMARY_EXPLANATION'); ?></b><br />
+		<?php echo $this->orderlinks; ?>
 		<table class="paramlist admintable">
 		<tr>
 			<td width="200" class="paramlist_key"><?php echo JText::_( 'MYMUSE_TOTAL_NO_ORDERS' ); ?>:</td>
@@ -100,6 +104,10 @@ window.addEvent('domready', function() {Calendar.setup({
 		<tr>
 			<td width="200" class="paramlist_key"><?php echo JText::_( 'MYMUSE_TOTAL_SHIPPING' ); ?>:</td>
 			<td width="100" class="paramlist_value"><?php echo $orders_summary->total_shipping;?></td>
+		</tr>
+		<tr>
+			<td width="200" class="paramlist_key"><?php echo JText::_( 'MYMUSE_COUPON_DISCOUNT' ); ?>:</td>
+			<td width="100" class="paramlist_value"><?php echo $orders_summary->total_coupon_discount;?></td>
 		</tr>
 		<tr>
 			<td width="200" class="paramlist_key"><?php echo JText::_( 'MYMUSE_TOTAL_DISCOUNTS' ); ?>:</td>

@@ -21,26 +21,7 @@ JHtml::_('behavior.tooltip');
 JHTML::_( 'behavior.calendar' );
 
 ?>
-<script  type="text/javascript">
-window.addEvent('domready', function() {Calendar.setup({
-        inputField     :    "startdate",     // id of the input field
-        ifFormat       :    "%Y-%m-%d",      // format of the input field
-        button         :    "startdate_img",  // trigger for the calendar (button ID)
-        align          :    "Bl",           // alignment (defaults to "Bl" = Bottom Left, 
-// "Tl" = Top Left, "Br" = Bottom Right, "Bl" = Botton Left)
-        singleClick    :    true
-    });});
-</script>
-<script  type="text/javascript">
-window.addEvent('domready', function() {Calendar.setup({
-        inputField     :    "enddate",     // id of the input field
-        ifFormat       :    "%Y-%m-%d",      // format of the input field
-        button         :    "enddate_img",  // trigger for the calendar (button ID)
-        align          :    "Bl",           // alignment (defaults to "Bl" = Bottom Left, 
-// "Tl" = Top Left, "Br" = Bottom Right, "Bl" = Botton Left)
-        singleClick    :    true
-    });});
-</script>		
+		
 		<form action="index.php" method="post" name="adminForm" >
 		<h2><?php echo JText::_('JGLOBAL_FILTER_BUTTON'); ?></h2>
 		<table class="mymuse_cart"">
@@ -58,20 +39,13 @@ window.addEvent('domready', function() {Calendar.setup({
 			<td width="100"><?php echo $lists['catid']; ?></td>
 		</tr>
 		<tr>
-				<td ><label class="filter-search-lbl" for="startdate_img"><?php echo JText::_('MYMUSE_START_DATE'); ?></label></td>
-			
-			<td><input name="filter_start_date" id="startdate" type="text" value="<?php echo $this->state->get('filter.start_date')?>" /> 
-				<img class="calendar" 
-				src="media/system/images/calendar.png" 
-				alt="calendar" id="startdate_img" / ></td>
+			<td ><?php echo $this->form->getLabel('filter_start_date'); ?></td>
+			<td><?php echo $this->form->getInput('filter_start_date'); ?></td>
 			
 		</tr>
 		<tr>
-			<td><label class="filter-search-lbl" for="enddate_img"><?php echo JText::_('MYMUSE_END_DATE'); ?></label></td>
-			<td><input name="filter_end_date" id="enddate" type="text" value="<?php echo $this->state->get('filter.end_date')?>" /> 
-				<img class="calendar" 
-				src="media/system/images/calendar.png" 
-				alt="calendar" id="enddate_img" / ></td>
+			<td><?php echo $this->form->getLabel('filter_end_date'); ?></td>
+			<td><?php echo $this->form->getInput('filter_end_date'); ?></td>
 		</tr>
 		<tr>
 			<td colspan="2" valign="top">

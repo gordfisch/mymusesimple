@@ -170,7 +170,7 @@ jQuery(function() {
 });
 </script>
 <a class="player plain" id="player'.$id.'"  style="float:left; display: block; width:'.$width.'px;height:'.$height.'px;">
-<img src="plugins/mymuse/mp3players/play_text.png" />
+<img src="plugins/mymuse/mp3player_flowplayer/images/play_text.png" />
 </a>
 
 ';
