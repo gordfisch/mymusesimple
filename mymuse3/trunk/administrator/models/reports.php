@@ -15,16 +15,6 @@ jimport('joomla.application.component.modellist');
 
 class MymuseModelReports extends JModelList
 {
-	function __construct(){
-		parent::__construct();
-
-		$this->_task = JRequest::getVar('task', null, 'default', 'cmd');
-		$array = JRequest::getVar('cid',  0, '', 'array');
-		if($array[0]){
-    		$this->setId((int)$array[0]);
-		}
-
-	}
 
 	/**
      * Store id
@@ -33,19 +23,6 @@ class MymuseModelReports extends JModelList
      */
      var $_id = null;
      
-	/**
-     * Store task
-     *
-     * string
-     */
-     var $_task = null;
-     
-    /**
-     * Store data array
-     *
-     * @$item->array
-     */
-     var $_data = null;
  
     /**
      * Store lists array
@@ -68,26 +45,86 @@ class MymuseModelReports extends JModelList
   	*/
   	var $_total = null;
   	
-  	/**
-  	* stores shopper
-  	*
-  	* @var object
-  	*/
-  	var $_shopper = null;
-     
+    
+	/**
+	 * cats: the main and sublevel category objects
+	 *
+	 * array
+	 */
+	var $_cats = array();
+    
+    
     /**
-     * Method to set the store identifier
-     *
-     * @access    public
-     * @param    int Store identifier
-     * @return    void
-     */
-    function setId($id)
-    {
-    	// Set id and wipe data
-    	$this->_id      = $id;
-    	$this->_data    = null;
-    }
+	 * orders order objects
+	 *
+	 * string
+	 */
+	var $_orders = null;
+    
+    /**
+	 * orderids: (1,2,3))
+	 *
+	 * string
+	 */
+	var $orderids = null;
+    
+    
+    /**
+	 * catid: the top level catid
+	 *
+	 * int
+	 */
+	var $_catid = null;
+    
+
+  
+  	function __construct(){
+  		
+  		parent::__construct();
+  	
+  	}
+  	
+  	/**
+  	 * getCats: fill $this->_catids with the main cat id and all subcat ids
+  	 *
+  	 * @param	bool	$recursive	True if you want to return children recursively.
+  	 *
+  	 * @return	mixed	An array of data items on success, false on failure.
+  	 * @since	1.6
+  	 */
+  	public function getCats($catid, $recursive = false)
+  	{
+  			
+  		if (!count($this->_cats)) {
+  			$app = JFactory::getApplication();
+  			$menu = $app->getMenu();
+  			$active = $menu->getActive();
+  			$params = new JRegistry();
+  	
+  			if ($active) {
+  				$params->loadString($active->params);
+  			}
+  	
+  			$options = array();
+  			$categories = JCategories::getInstance('MyMuse', $options);
+  	
+  			$this->_parent = $categories->get($catid, $recursive);
+  	
+  			if (is_object($this->_parent)) {
+  				$this->_cats = $this->_parent->getChildren($recursive);
+  				//foreach($this->_cats as $cat){
+  				//	echo "<br />".$cat->title;
+  				//}
+  			}
+  			else {
+  				$this->_cats = false;
+  			}
+  	
+  		}
+  	
+  		return $this->_cats;
+  	}
+  	
     
     /**
      * Method to auto-populate the model state.
@@ -98,13 +135,60 @@ class MymuseModelReports extends JModelList
     {
     	// Initialise variables.
     	$app = JFactory::getApplication('administrator');
-    
+    	$db	 = $this->getDbo();
+    	
         // List state information.
     	parent::populateState('a.id', 'asc');
     
     	$catid	= $app->getUserStateFromRequest( $this->context.'catid','catid','','int' );
+   
     	$this->setState('filter.catid', $catid);
-    
+    	if($catid){
+    		$this->getCats($catid, true);
+    		//make sql bit for catids. get all subcats
+    		$catids = '(';
+    		$catids .= "$catid,";
+    		 
+    		if(is_array($this->_cats)){
+    			foreach($this->_cats as $cat){
+    				$catids .= $cat->id.",";
+    			}
+    		}
+    		$catids = preg_replace("/,$/","",$catids);
+    		$catids .= ")";
+    	
+    		$this->setState('list.catids', $catids);
+    	
+    		//get products that fall under categories
+    		
+    		/** from product_category_xref 
+    		$q = "SELECT product_id from #__mymuse_product_category_xref
+    		WHERE catid IN $catids";
+    		$db->setQuery( $q );
+    		$prodres = $this->_db->loadObjectList();
+    		*/
+    		
+    		$q = "SELECT id as product_id from #__mymuse_product
+    		WHERE catid IN $catids";
+    		$db->setQuery( $q );
+    		$prodres = $this->_db->loadObjectList();
+    	
+    		//$prodres = array_merge($prodres,$prodres2);
+    	
+    		//make sql bit for productid.
+    		$prodids = '';
+    		if($prodres){
+    			$prodids = "(";
+    			foreach($prodres as $id){
+    				$prodids .= $id->product_id.",";
+    			}
+    			$prodids = preg_replace("/,$/","",$prodids);
+    			$prodids .= ")";
+    		}
+    		$this->setState('list.prodids', $prodids);
+    	
+    	}
+    	
     	$order_status = $app->getUserStateFromRequest($this->context.'.filter.order_status', 'filter_order_status', '', 'string');
     	$this->setState('filter.order_status', $order_status);
     
@@ -137,6 +221,8 @@ class MymuseModelReports extends JModelList
     	// Compile the store id.
     	$id.= ':' . $this->getState('filter.catid');
     	$id.= ':' . $this->getState('filter.order_status');
+    	$id.= ':' . $this->getState('filter.start_date');
+    	$id.= ':' . $this->getState('filter.end_date');
     
     	return parent::getStoreId($id);
     }
@@ -157,19 +243,11 @@ class MymuseModelReports extends JModelList
     	$query->select(
     			$this->getState(
     					'list.select',
-    					'a.*',
-    					'u.first_name, u.last_name '
+    					'i.*'
     			)
     	);
-    	$query->from('`#__mymuse_order` AS a');
-    
-    	// Join over the users for the checked out user.
-    	$query->select('uc.name AS editor');
-    	$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
-    
-    	// Join over the users for the order owner.
-    	$query->select('u.name AS shopper');
-    	$query->join('LEFT', '#__users AS u ON u.id=a.user_id');
+    	$query->from('`#__mymuse_order_item` AS i');
+    	$query->join('LEFT',  '#__mymuse_order as a ON i.order_id=a.id');
     
     	// Join over the order_status for the status name.
     	$query->select('os.name AS status_name');
@@ -202,6 +280,19 @@ class MymuseModelReports extends JModelList
     	if($end_date){
     		$query->where("a.created <= '$end_date 23:59:59'");
     	}
+    	
+    	//filter by cat and product
+    	$catid = $this->getState('filter.catid');
+    	
+    	if($catid){
+    	
+    		$prodids = $this->getState('list.prodids');
+    		if($prodids){
+    			$query->where("(i.product_id IN $prodids)");
+    		}
+    		$query->group('i.order_id');
+    	
+    	}
     
     	// Filter by search in title
     	$search = $this->getState('filter.search');
@@ -220,7 +311,7 @@ class MymuseModelReports extends JModelList
     	if ($orderCol && $orderDirn) {
     		$query->order($db->escape($orderCol.' '.$orderDirn));
     	}
-   
+    	//echo "1. $query <br /><br />";
     	return $query;
     }
 
@@ -242,6 +333,7 @@ class MymuseModelReports extends JModelList
 		}
 		
     	$where = array();
+    	$where[] = "1";
 		if($start_date){
 			$where[] = "c.created >= '$start_date 00:00:00'";
 		}
@@ -251,26 +343,48 @@ class MymuseModelReports extends JModelList
 		if ( $order_status  ) {
 			$where[] = "c.order_status = '$order_status '";
 		}
+		
+		$orders = $this->getItems();
+		$orderids = "";
+		if(is_array($orders ) && count($orders)){
 
+			$orderids = "(";
+			foreach($orders as $order){
+				$orderids .= $order->order_id.",";
+			}
+			$orderids = preg_replace("/,$/","",$orderids);
+			$orderids .= ")";
+		}
+		if($orderids){
+			$where[] = "c.id IN ".$orderids;
+		}
 
 		$where 		= ( count( $where ) ? ' WHERE ' . implode( ' AND ', $where ) : '' );
 
     	return $where;
     }
-    /**
-     * Returns the query
-     * @return string The query to be used to retrieve the rows from the database
-     */
-    function _buildQueryOne()
-    {
-        $query = 'SELECT *'
-		. ' FROM #__mymuse_order  '
-		. ' WHERE id='.$this->_id;
-        return $query;
-    }
-     
 
-  
+     
+    function getOrderlinks()
+    {
+    	
+    		$orders = $this->getItems();
+    		$orderids = "";
+    		if(is_array($orders ) && count($orders)){
+    			 
+    			$orderids = "(";
+    			foreach($orders as $order){
+    				$orderids .= '<a href="index.php?option=com_mymuse&view=order&layout=edit&id='.$order->order_id;
+    				$orderids .= '">'.$order->order_id."</a>, ";
+    			}
+    			$orderids = preg_replace("/,$/","",$orderids);
+    			$orderids .= ")";
+    		}
+    		$this->orderids = $orderids;
+   
+    	return $this->orderids;
+    }
+
   	/**
   	* Method to get summary of orders for a period, status, shopper
   	*
@@ -281,13 +395,6 @@ class MymuseModelReports extends JModelList
   	{ 	
   	    // Get the WHERE clauses for the query
   		$where = $this->_buildContentWhere();
-  		
-  		// query by shopper
-  		$q_by_s = "SELECT SUM(c.order_subtotal) as total_subtotal, 
-		SUM(c.order_shipping) as total_shipping, u.first_name, u.last_name
-  		FROM #__mymuse_order AS c LEFT JOIN #__mymuse_shopper as u ON c.shopper_id = u.id "
-  		. $where 
-  		. " GROUP BY shopper_id";
   		
   		$q = "SELECT * FROM #__mymuse_tax_rate ORDER BY ordering";
         $this->_db->setQuery($q);
@@ -315,7 +422,7 @@ class MymuseModelReports extends JModelList
         $res = $this->_db->loadObject();
         $res->tax_array = $tax_array;
         
-        //echo "$query <br />";
+        //echo "2. Order Summary: $query <br /><br />";
         //print_pre($res);
         return $res;
   	
@@ -332,46 +439,49 @@ class MymuseModelReports extends JModelList
   	{ 	
 
   		$catid	= $this->getState('filter.catid');
-  		$orders =& $this->getItems();
-  		if(!count($orders)){
-  			return null;
-  		}
- 
-  		$order_ids = "(";
-  		foreach($orders as $order){
-  		    $order_ids .= $order->id.",";
-  		}
-  		$order_ids = preg_replace("/,$/","",$order_ids);
-  		$order_ids .= ")";
+  		$where = $this->_buildContentWhere();
   		
-  		$query = "SELECT sum(product_quantity) as quantity, sum(product_quantity * product_item_price) 
-  		as total, i.product_name, a.title as artist_name, p.id as product_id
-  		FROM #__mymuse_order_item as i
-  		LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
-  		LEFT JOIN #__categories as a ON p.catid=a.id 
-  		WHERE i.order_id IN $order_ids 
+  		$orders = $this->getItems();
+  		$order_ids = '';
+  		if(is_array($orders ) && count($orders)){
+  			$order_ids = "(";
+  			foreach($orders as $order){
+  				$order_ids .= $order->order_id.",";
+  			}
+  			$order_ids = preg_replace("/,$/","",$order_ids);
+  			$order_ids .= ")";
+  		}
+  		$prodids   = $this->getState('list.prodids');
+  		$catids 	= $this->getState('list.catids');
+  		
+  		$query = "SELECT sum(product_quantity) as quantity, sum(product_quantity * product_item_price)
+  		as total, c.product_name, a.title as artist_name, c.product_id
+  		FROM #__mymuse_order_item as c
+  		LEFT JOIN #__mymuse_product as p ON c.product_id=p.id
+  		LEFT JOIN #__categories as a ON p.catid=a.id
+  		WHERE 1
   		";
   		
-  		if($catid){
-  			$query .= "AND a.id=$catid ";
+  		
+  		if($order_ids){
+  			$query .= "AND c.order_id IN $order_ids
+  			";
   		}
   		
-  		$query .= "GROUP BY product_name ORDER BY total DESC";
-  		//echo "$query <br />";
+  		if($catids){
+  			//$query .= " AND a.id IN ".$catids." ";
+  		}
+  		if($prodids){
+  			$query .= " AND c.product_id IN $prodids
+  			";
+  		}
+  		
+  		
+  		$query .= " GROUP BY product_name ORDER BY total DESC";
+  	//echo "3. Items:  $query <br />";
   		$this->_db->setQuery( $query );
         $res = $this->_db->loadObjectList();
        
-        for($i=0;$i<count($res);$i++){
-        	if($res[$i]->artist_name == ""){
-        		$query = "SELECT a.title as artist_name FROM #__categories as a, #__mymuse_product as p 
-					LEFT JOIN #__mymuse_product as p2 ON p2.id=p.parentid
-					WHERE  p.id='".$res[$i]->product_id."' AND p2.catid=a.id"; 
-        		$this->_db->setQuery( $query );
-        		$res[$i]->artist_name = $this->_db->loadResult();
-        		
-        		
-        	}
-        }
         
   		//print_pre($res);
         return $res;;
@@ -406,34 +516,6 @@ class MymuseModelReports extends JModelList
  		return $this->_shopper;
   	}
   	
-    /**
-  	* Method to get the order items
-  	*
-  	* @access public
-  	* @return objects
-  	*/
-  	function getOrderItems()
-  	{
-  		// Lets load the items if they do not exist
-  		if (empty($this->_data[0]->items))
-  		{
-  			$query = "SELECT * FROM #__mymuse_order_item 
-  				WHERE order_id=".$this->_id;
-  			$this->_db->setQuery( $query );
-  			$this->_data[0]->items = $this->_db->loadObjectList();
-  			$this->_data[0]->order_total = 0.00;
-  		  	for($i = 0; $i < count($this->_data[0]->items); $i++){
-
-				$this->_data[0]->items[$i]->subtotal = sprintf("%.2f", $this->_data[0]->items[$i]->product_item_price * $this->_data[0]->items[$i]->product_quantity);
-				$this->_data[0]->order_total += $this->_data[0]->items[$i]->subtotal;
-  			}
-  			
-  		}
-  		$this->_data[0]->order_total = sprintf("%.2f", $this->_data[0]->order_total);
- 		return $this->_data[0]->items;
-  	}
-  	
-
 
     /**
      * Method to get a pagination object for orders
@@ -483,7 +565,59 @@ class MymuseModelReports extends JModelList
 		return $lists;
     }
  
-
+    /**
+     * Method to get the record form.
+     *
+     * @param	array	$data		An optional array of data for the form to interogate.
+     * @param	boolean	$loadData	True if the form is to load its own data (default case), false if not.
+     * @return	JForm	A JForm object on success, false on failure
+     * @since	1.6
+     */
+    public function getForm($data = array(), $loadData = true)
+    {
+    	// Initialise variables.
+    	$app	= JFactory::getApplication();
+    
+    	// Get the form.
+    	$form = $this->loadForm('com_mymuse.reports', 'reports', array());
+    	if (empty($form)) {
+    		return false;
+    	}
+    
+    	return $form;
+    }
+    
+    /**
+     * Method to get the data that should be injected in the form.
+     *
+     * @return	mixed	The data for the form.
+     * @since	1.6
+     */
+    protected function loadFormData()
+    {
+    	// Check the session for previously entered form data.
+    	$data = JFactory::getApplication()->getUserState('com_mymuse.edit.reports.data', array());
+    
+    	if (empty($data)) {
+    		$data = '';
+    	}
+    
+    	return $data;
+    }
+    
+    /**
+     * Returns a reference to a Table object, always creating it.
+     *
+     * @param	type	The table type to instantiate
+     * @param	string	A prefix for the table class name. Optional.
+     * @param	array	Configuration array for model. Optional.
+     * @return	JTable	A database object
+     * @since	1.6
+     */
+    public function getTable($type = 'Orderitem', $prefix = 'MymuseTable', $config = array())
+    {
+    	return JTable::getInstance($type, $prefix, $config);
+    }
 
 
 }

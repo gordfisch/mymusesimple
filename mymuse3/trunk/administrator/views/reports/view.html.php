@@ -20,14 +20,18 @@ class myMuseViewReports extends JViewLegacy
 	
 	function display($tpl = null){
 		
-		$mainframe = JFactory::getApplication();
-		$option = 'com_mymuse';
-		$params = MyMuseHelper::getParams();
-		$this->sidebar = JHtmlSidebar::render();
-		$this->lists  			=& $this->get( 'Lists');
+		$mainframe 		= JFactory::getApplication();
+		$option 		= 'com_mymuse';
+		$params 		= MyMuseHelper::getParams();
+		$this->sidebar 	= JHtmlSidebar::render();
+		
 		
 		// Get data from the model
-		$this->state		= $this->get('State');
+		$this->state	= $this->get('State');
+		$this->lists  	= $this->get( 'Lists');
+		$this->form		= $this->get('Form');
+		$this->orderlinks = $this->get('Orderlinks');
+		
 		if(!$this->state->get('filter.start_date')
 				&& !$this->state->get('filter.end_date')
 				&& !$this->state->get('filter.order_status')
