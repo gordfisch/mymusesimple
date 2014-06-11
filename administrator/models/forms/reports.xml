@@ -13,13 +13,11 @@
 		/>
 		<field
                 name="filter_order_status"
-                type="sql"
+                type="orderstatus"
                 label="MYMUSE_ORDER_STATUS"
                 description="MYMUSE_ORDER_STATUS"
                 class="inputbox"
-                query="SELECT code, name AS filter_order_status FROM #__mymuse_order_status"
-                key_field="code"
-                default="C"
+
                 size="1"
           	/>
           	<field

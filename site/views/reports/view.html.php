@@ -25,9 +25,9 @@ class myMuseViewReports extends JViewLegacy
 
 		$user   = JFactory::getUser();
         $userid = $user->get('id');
-        $this->Itemid = JRequest::getVar('Itemid');
         $profile = $user->get('profile');
 		$catid = $profile['category_owner'];
+		$this->Itemid = JRequest::getVar('Itemid');
 		
 		if(!$catid || !$userid){
         	JRequest::setVar('not_auth','1');
@@ -59,13 +59,11 @@ class myMuseViewReports extends JViewLegacy
 				$this->params = MyMuseHelper::getParams();
 				
 				// Get data from the model
-				$this->form		= $this->get('Form');
+				$this->form				= $this->get('Form');
 				$this->state		    = $this->get('State');
-                //get just our orders containing products with our catids
+                //get just our order items containing products with our catids
 				$this->items		    = $this->get('Items');
-                
                 $this->pagination		= $this->get('Pagination');
-				$this->orders_total 	= count($this->items);
 				$this->lists  			= $this->get( 'Lists');
 				$this->orders_summary 	= $this->get( 'OrderSummary');
 				$this->items_summary  	= $this->get( 'ItemsSummary');

@@ -13,7 +13,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 	$lists =& $this->lists;
-	$orders_total =& $this->orders_total;
+	$orders_total =& $this->orders_summary->total_orders;
 	$orders_summary =& $this->orders_summary;
 	$rows =& $this->items_summary;
 	JHtml::_('behavior.tooltip');
@@ -28,7 +28,7 @@ defined('_JEXEC') or die('Restricted access');
 	?>
 	</div>
 
-	<div id="j-main-container" class="span10">	
+<div id="j-main-container" class="span10">	
 	<div class="clearfix"> </div>
 		
 		<h2><?php echo JText::_('Filter'); ?></h2>

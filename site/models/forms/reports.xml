@@ -5,21 +5,19 @@
 		  		name="catid" 
 		  		type="categorytree" 
 		  		extension="com_mymuse"
-				label="MYMUSE_MAIN_CATEGORY_LABEL" 
-				description="MYMUSE_MAIN_CATEGORY_DESC"
+				label="MYMUSE_CATEGORIES" 
+				description="MYMUSE_CATEGORIES"
 				class="inputbox" 
 				required="true"
-				multiple="false" 
+				multiple="false"
+				parent="true" 
 		/>
 		<field
                 name="filter_order_status"
-                type="sql"
+                type="orderstatus"
                 label="MYMUSE_ORDER_STATUS"
                 description="MYMUSE_ORDER_STATUS"
                 class="inputbox"
-                query="SELECT code, name AS filter_order_status FROM #__mymuse_order_status"
-                key_field="code"
-                default="C"
                 size="1"
           	/>
           	<field
