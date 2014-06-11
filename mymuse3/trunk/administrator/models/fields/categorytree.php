@@ -49,7 +49,9 @@ class JFormFieldCategoryTree extends JFormFieldList{
 		$html = array();
 		$attr = '';
 		$selectedCats = array();
+		//product id
 		$id = JRequest::getVar('id',0);
+		
 		if($id){
 			$db = JFactory::getDBO();
 			$query = 'SELECT catid' .
@@ -61,6 +63,12 @@ class JFormFieldCategoryTree extends JFormFieldList{
 			foreach($cats as $cat){
 				$this->value[$cat->catid] = $cat->catid;
 			}
+		}
+		
+		//a catid coming in
+		$catid = JRequest::getVar('catid', 0);
+		if($catid){
+			$this->value[$catid] = $catid;
 		}
 
 		if(!is_array($this->value)) $this->value = array($this->value);

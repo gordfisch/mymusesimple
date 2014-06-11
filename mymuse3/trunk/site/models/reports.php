@@ -241,6 +241,9 @@ class myMuseModelReports extends JmodelList
     
     /**
      * Build an SQL query to load the list data.
+     * Filter on start date, end date, order status and category 
+     * Find order items with products that belong to the category (or sub-category) 
+     * 
      *
      * @return	JDatabaseQuery
      * @since	1.6
@@ -268,7 +271,7 @@ class myMuseModelReports extends JmodelList
     
     	// Filter by order_status
     	$order_status = $this->getState('filter.order_status');
-    	if (is_string($order_status) && $order_status != '') {
+    	if (is_string($order_status) && $order_status != '0') {
     		$query->where('a.order_status = "'.$order_status.'"');
     	} else if ($order_status === '') {
     		//$query->where('(a.order_status IN (SELECT code from #__mymuse_order_status))');
@@ -293,7 +296,7 @@ class myMuseModelReports extends JmodelList
     		$query->where("a.created <= '$end_date 23:59:59'");
     	}
     	
-    	//filter by cat and product
+    	//filter by products in cat
     	$catid = $this->getState('filter.catid');
     	
     	if($catid){
@@ -323,7 +326,7 @@ class myMuseModelReports extends JmodelList
     	if ($orderCol && $orderDirn) {
     		$query->order($db->escape($orderCol.' '.$orderDirn));
     	}
-    	//echo "1. $query <br /><br />";
+   //echo "1. $query <br /><br />";
     	return $query;
     }
 
@@ -356,13 +359,17 @@ class myMuseModelReports extends JmodelList
 			$where[] = "c.order_status = '$order_status '";
 		}
 		
-		$orders = $this->getItems();
+		$orderItems = $this->getItems();
 		$orderids = "";
-		if(is_array($orders ) && count($orders)){
+		$seen = array();
+		if(is_array($orderItems) && count($orderItems)){
 
 			$orderids = "(";
-			foreach($orders as $order){
-				$orderids .= $order->order_id.",";
+			foreach($orderItems as $item){
+				if(!in_array($item->order_id,$seen  )){
+					$orderids .= $item->order_id.",";
+					$seen[] = $item->order_id;
+				}
 			}
 			$orderids = preg_replace("/,$/","",$orderids);
 			$orderids .= ")";
@@ -413,7 +420,7 @@ class myMuseModelReports extends JmodelList
         $tax_rates = $this->_db->loadObjectList();
         $tax_array = array();
   		
-        $query = 'SELECT SUM(c.order_subtotal) as total_subtotal, 
+        $query = 'SELECT COUNT(*) as total_orders, SUM(c.order_subtotal) as total_subtotal, 
 		SUM(c.order_shipping) as total_shipping, 
 		SUM(c.discount) as total_discount ,
 		SUM(c.coupon_discount) as total_coupon_discount, 
@@ -434,8 +441,8 @@ class myMuseModelReports extends JmodelList
         $res = $this->_db->loadObject();
         $res->tax_array = $tax_array;
         
-        //echo "2. Order Summary: $query <br /><br />";
-        //print_pre($res);
+       //echo "2. Order Summary: $query <br /><br />";
+       // print_pre($res);
         return $res;
   	
   	}
@@ -554,9 +561,6 @@ class myMuseModelReports extends JmodelList
      */
     function getLists()
     {
-
-
-		
     	// categories
     	$chosen_cat	= $this->getState('filter.catid');
 

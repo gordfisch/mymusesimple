@@ -14,7 +14,7 @@
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die('Restricted access');
 $lists =& $this->lists;
-$orders_total =& $this->orders_total;
+$orders_total =& $this->orders_summary->total_orders;
 $orders_summary =& $this->orders_summary;
 $rows =& $this->items_summary;
 JHtml::_('behavior.tooltip');
@@ -26,22 +26,17 @@ JHTML::_( 'behavior.calendar' );
 		<h2><?php echo JText::_('JGLOBAL_FILTER_BUTTON'); ?></h2>
 		<table class="mymuse_cart"">
 		<tr>
-			<td width="200"><?php echo JText::_( 'MYMUSE_ORDER_STATUS' ); ?> :</td>
-			<td width="100"> <select name="filter_order_status" class="inputbox" onchange="this.form.submit()">
-                    <option value=""><?php echo JText::_('MYMUSE_ORDER_STATUS');?></option>
-                    <?php echo JHtml::_('select.options', MGrid::orderStatusOptions(), "value", "text", $this->state->get('filter.order_status'), true);?>
-                </select></td>
-			
+
+			<td width="200"><?php echo $this->form->getLabel('catid'); ?></td>
+			<td width="100"><?php echo $this->form->getInput('catid'); ?></td>
 		</tr>
 		<tr>
-
-			<td width="200"><?php echo JText::sprintf( 'MYMUSE_CATEGORY','' ); ?>:</td>
-			<td width="100"><?php echo $lists['catid']; ?></td>
+			<td ><?php echo $this->form->getLabel('filter_order_status'); ?></td>
+			<td><?php echo $this->form->getInput('filter_order_status'); ?></td>
 		</tr>
 		<tr>
 			<td ><?php echo $this->form->getLabel('filter_start_date'); ?></td>
 			<td><?php echo $this->form->getInput('filter_start_date'); ?></td>
-			
 		</tr>
 		<tr>
 			<td><?php echo $this->form->getLabel('filter_end_date'); ?></td>

@@ -19,7 +19,7 @@ class myMuseViewReports extends JViewLegacy
 	protected $state;
 	
 	function display($tpl = null){
-		
+
 		$mainframe 		= JFactory::getApplication();
 		$option 		= 'com_mymuse';
 		$params 		= MyMuseHelper::getParams();
@@ -30,7 +30,7 @@ class myMuseViewReports extends JViewLegacy
 		$this->state	= $this->get('State');
 		$this->lists  	= $this->get( 'Lists');
 		$this->form		= $this->get('Form');
-		$this->orderlinks = $this->get('Orderlinks');
+		
 		
 		if(!$this->state->get('filter.start_date')
 				&& !$this->state->get('filter.end_date')
@@ -40,13 +40,12 @@ class myMuseViewReports extends JViewLegacy
 			parent::display($tpl);
 			return true;
 		}
-		$this->items		= $this->get('Items');
-
-		$this->pagination		= $this->get('Pagination');
-		$this->orders_total 	= count($this->items);
 		
-		$this->orders_summary 	=& $this->get( 'OrderSummary');
-		$this->items_summary  	=& $this->get( 'ItemsSummary');
+		$this->items			= $this->get('Items');
+		$this->orderlinks 		= $this->get('Orderlinks');
+		$this->pagination		= $this->get('Pagination');
+		$this->orders_summary 	= $this->get( 'OrderSummary');
+		$this->items_summary  	= $this->get( 'ItemsSummary');
 		$this->catid			= $mainframe->getUserStateFromRequest( 'filter.catid','catid','','int' );
 		
 		// Check for errors.
@@ -56,7 +55,6 @@ class myMuseViewReports extends JViewLegacy
 		}
 		
 		$this->addToolbar();
-		
 		parent::display($tpl);
 	}
 

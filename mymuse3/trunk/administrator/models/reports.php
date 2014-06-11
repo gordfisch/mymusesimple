@@ -256,7 +256,7 @@ class MymuseModelReports extends JModelList
     
     	// Filter by order_status
     	$order_status = $this->getState('filter.order_status');
-    	if (is_string($order_status) && $order_status != '') {
+    	if (is_string($order_status) && $order_status != '0') {
     		$query->where('a.order_status = "'.$order_status.'"');
     	} else if ($order_status === '') {
     		//$query->where('(a.order_status IN (SELECT code from #__mymuse_order_status))');
@@ -344,13 +344,17 @@ class MymuseModelReports extends JModelList
 			$where[] = "c.order_status = '$order_status '";
 		}
 		
-		$orders = $this->getItems();
+    	$orderItems = $this->getItems();
 		$orderids = "";
-		if(is_array($orders ) && count($orders)){
+		$seen = array();
+		if(is_array($orderItems) && count($orderItems)){
 
 			$orderids = "(";
-			foreach($orders as $order){
-				$orderids .= $order->order_id.",";
+			foreach($orderItems as $item){
+				if(!in_array($item->order_id,$seen  )){
+					$orderids .= $item->order_id.",";
+					$seen[] = $item->order_id;
+				}
 			}
 			$orderids = preg_replace("/,$/","",$orderids);
 			$orderids .= ")";
@@ -368,21 +372,20 @@ class MymuseModelReports extends JModelList
     function getOrderlinks()
     {
     	
-    		$orders = $this->getItems();
-    		$orderids = "";
-    		if(is_array($orders ) && count($orders)){
-    			 
-    			$orderids = "(";
-    			foreach($orders as $order){
-    				$orderids .= '<a href="index.php?option=com_mymuse&view=order&layout=edit&id='.$order->order_id;
-    				$orderids .= '">'.$order->order_id."</a>, ";
-    			}
-    			$orderids = preg_replace("/,$/","",$orderids);
-    			$orderids .= ")";
+    	$orderItems = $this->getItems();
+    	$orderids = "";
+    	if(is_array($orderItems ) && count($orderItems )){
+
+    		$orderids = "(";
+    		foreach($orderItems as $item){
+    			$orderids .= '<a href="index.php?option=com_mymuse&view=order&layout=edit&id='.$item->order_id;
+    			$orderids .= '">'.$item->order_id."</a>, ";
     		}
-    		$this->orderids = $orderids;
-   
-    	return $this->orderids;
+    		$orderids = preg_replace("/,$/","",$orderids);
+    		$orderids .= ")";
+    	}
+
+    	return $orderids;
     }
 
   	/**
@@ -401,7 +404,7 @@ class MymuseModelReports extends JModelList
         $tax_rates = $this->_db->loadObjectList();
         $tax_array = array();
   		
-        $query = 'SELECT SUM(c.order_subtotal) as total_subtotal, 
+        $query = 'SELECT COUNT(*) as total_orders,  SUM(c.order_subtotal) as total_subtotal, 
 		SUM(c.order_shipping) as total_shipping, 
 		SUM(c.discount) as total_discount ,
 		SUM(c.coupon_discount) as total_coupon_discount, 
@@ -488,34 +491,6 @@ class MymuseModelReports extends JModelList
   	}
   	
   	
-    /**
-  	* Method to get the shopper and possible shiptto entries
-  	*
-  	* @access public
-  	* @return object
-  	*/
-  	function getShopper()
-  	{
-  		// Lets load the shopper if it does not exist
-  		if (empty($this->_shopper) && isset($this->_data[0]->id))
-  		{
-  			$query = "SELECT s.*,u.email FROM #__mymuse_shopper as s  
-  				LEFT JOIN #__users as u ON u.id=s.user_id
-  				WHERE s.id=".$this->_data[0]->shopper_id;
-  			$this->_db->setQuery( $query );
-  			$this->_shopper = $this->_db->loadObject();
-  			
-  			if($this->_data[0]->ship_info_id && ($this->_data[0]->ship_info_id != $this->_data[0]->shopper_id)){
-  				$query = "SELECT s.*,u.email FROM #__mymuse_shopper as s  
-  					LEFT JOIN #__users as u ON u.id=s.user_id
-  					WHERE s.id=".$this->_data[0]->ship_info_id;
-  				$this->_db->setQuery( $query );
-  				$this->_shopper->shipto = $this->_db->loadObject();
-  			}
-  		}
- 		return $this->_shopper;
-  	}
-  	
 
     /**
      * Method to get a pagination object for orders
@@ -543,8 +518,6 @@ class MymuseModelReports extends JModelList
     function getLists()
     {
 
-
-		
     	// categories
     	$chosen_cat	= $this->getState('filter.catid');
 
