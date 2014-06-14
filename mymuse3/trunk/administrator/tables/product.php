@@ -995,7 +995,7 @@ class MymuseTableproduct extends JTable
     		$header  = $s3->getObjectInfo($bucket, $uri);
     		return $header['size'];
     	}else{
-    		return filesize($path);
+    		return filesize($src);
     	}
     }
 }
