@@ -36,7 +36,8 @@
 				img="class:groups" alt="Mymuse/Shoppergroups">COM_MYMUSE_SHOPPERGROUPS</menu>
 			<menu link="option=com_plugins&amp;view=plugins&amp;filter_folder=mymuse&amp;filter_order=name&amp;filter_dir=asc" view="plugins" 
 				img="class:themes" alt="Mymuse/Plugins">COM_MYMUSE_PLUGINS</menu>	
-
+			<menu link="option=com_plugins&amp;view=plugins&amp;filter_folder=user&amp;filter_order=name&amp;filter_dir=asc" view="plugins" 
+				img="class:themes" alt="Mymuse/PluginsUser">COM_MYMUSE_USER_PLUGINS</menu>
         </submenu>
 		<files folder="administrator">
 			<filename>access.xml</filename>

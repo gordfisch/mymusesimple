@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 $item = $this->item;
 $lists = $this->lists;
 
-$editor =& JFactory::getEditor();
+$editor = JFactory::getEditor();
 
 JHTML::_('behavior.tooltip');
 
