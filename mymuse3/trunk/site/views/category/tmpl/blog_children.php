@@ -10,18 +10,31 @@
 defined('_JEXEC') or die;
 $class = ' class="first"';
 $count = count($this->children[$this->category->id]);
-$break =  round($count / $this->params->get('subcat_columns', 1),0,PHP_ROUND_HALF_DOWN);
-$r = $count  %  $this->params->get('subcat_columns', 1);
+$columns =  $this->params->get('subcat_columns', 1);
+if($count <  $this->params->get('subcat_columns', 1)){
+	$columns = $count;
+}
+$this->cols[$this->maxLevel] = $columns;
+if($this->maxLevel < 1 && isset($this->cols[$this->maxLevel+1])){
+	$columns = $this->cols[$this->maxLevel+1] - 2;
+}
+
+
+$break =  round($count / $columns,0,PHP_ROUND_HALF_DOWN);
+$r = $count  %  $columns;
 if($r){
 	$break++;
+}
+if($columns == 1){
+	$break = 0;
 }
 $total_shown = 0;
 $column = 1;
 $i=0;
-//echo "count = $count break = $break";
+
 ?>
 
-<div class="cols-<?php echo $this->params->get('subcat_columns', 1); ?>">
+<div class="cols-<?php echo $columns; ?>">
 
 <?php if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) : 
 if(!$total_shown){

@@ -89,6 +89,7 @@ div.cat-items ul {
 .cat-items .cols-4 .column-3 { width: 24%; }
 .cat-items .cols-4 .column-4 { width: 24%; }
 
+.cat-items .cols-1 .column-1 { width: 98%; }
 
 div.cat-items div.items-row{
 	clear: both;

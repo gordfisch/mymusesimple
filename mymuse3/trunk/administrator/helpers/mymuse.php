@@ -456,11 +456,13 @@ class MyMuseHelper extends JObject
 			$db->setQuery($query);
    			$id = $db->loadResult();
 		}
+
 		$query = "SELECT title FROM #__categories 
    		WHERE id='".$id."'";
 
    		$db->setQuery($query);
-   		$alias = JApplication::stringURLSafe($db->loadResult());
+   		$title = $db->loadResult();
+   		$alias = JApplication::stringURLSafe($title);
 
 		return $alias;
 		
