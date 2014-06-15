@@ -330,7 +330,7 @@ if(!function_exists('recursiveDelete')){
 			$extensions = array();
 		
 			// reseting post installation session variables
-			$session  =& JFactory::getSession();
+			$session  = JFactory::getSession();
 			$session->set('mymuse.postinstall', false);
 			$session->set('mymuse.allplgpublish', false);
 		

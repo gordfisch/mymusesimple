@@ -157,6 +157,12 @@ class MyMuseHelper extends JObject
 			$vName == 'plugins'
 		);
 		
+		JHtmlSidebar::addEntry(
+			JText::_('MYMUSE_PLUGINS_USER'),
+			'index.php?option=com_plugins&view=plugins&filter_folder=user',
+			$vName == 'plugins'
+		);
+		
 		
 
 	}
