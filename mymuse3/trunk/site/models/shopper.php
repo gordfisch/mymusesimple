@@ -484,7 +484,7 @@ class mymuseModelShopper extends JModelForm
 
 	function getOrders()
 	{
-		
+		$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
 		$user		= JFactory::getUser();
 		$user_id 	= $user->get('id');
 		$db			= JFactory::getDBO();
@@ -493,7 +493,7 @@ class mymuseModelShopper extends JModelForm
 		$orders = $db->loadObjectList();
 
 		while(list($key,$order) = each($orders)){
-			$orders[$key] = MyMuseCheckout::getOrder($order->id);
+			$orders[$key] = $MyMuseCheckout->getOrder($order->id);
 			$orders[$key]->url = "index.php?option=com_mymuse&task=vieworder&orderid=".$order->id;
 		}
 
