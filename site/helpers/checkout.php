@@ -698,7 +698,7 @@ class MyMuseCheckout
 	function getOrder($id=0){
 		$mainframe 	= JFactory::getApplication();
 		$params 	= MyMuseHelper::getParams();
-		$db			= & JFactory::getDBO();
+		$db			= JFactory::getDBO();
 
 		if(!$id){
 			$this->error = JText::_('MYMUSE_NO_ORDER_ID');
