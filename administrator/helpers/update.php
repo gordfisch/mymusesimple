@@ -296,7 +296,7 @@ class MyMuseUpdateHelper extends JObject
 		curl_setopt($ch, CURLOPT_AUTOREFERER, true);     // set referer on redirect
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);      // timeout on connect
 		curl_setopt($ch, CURLOPT_TIMEOUT, 120);      // timeout on response
-		curl_setopt($ch, CURLOPT_MAXREDIRS , 10);       // stop after 10 redirects
+		curl_setopt($ch, CURLOPT_MAXREDIRS , 1);       // stop after 10 redirects
 		curl_setopt($ch, CURLOPT_HTTPHEADER, array( 'Expect:' ) );
 		// return web page
 		$result=curl_exec ($ch);
@@ -365,11 +365,12 @@ class MyMuseUpdateHelper extends JObject
 	
 	function addSampleData()
 	{
-		require_once (JPATH_COMPONENT.DS.'helpers'.DS.'update.php');
-	
-		echo "addSampleData <br />";
+
+		$application = JFactory::getApplication();
+		$msg =  "addSampleData <br />";
 		if(!function_exists('curl_init')){
 			$this->error = "Sorry, we need the cURL library to get sample data.";
+			JFactory::getApplication()->enqueueMessage($this->error, 'error');
 			return false;
 		}
 		$db = JFactory::getDBO();
@@ -385,10 +386,11 @@ class MyMuseUpdateHelper extends JObject
 		$description = 'Top Level Sample MyMuse Category';
 		$image = 'mymuse.jpg';
 		if(!$topcatid = $this->makeCategory($title,$parent,$description,$image)){
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
-		echo "Created category MyMuse<br />";
+		$msg .= "Created category MyMuse<br />";
 	
 	
 		// add an artist category
@@ -397,10 +399,11 @@ class MyMuseUpdateHelper extends JObject
 		$description = 'All Artist Unite!';
 		$image = 'artists.png';
 		if(!$artcatid = $this->makeCategory($title,$parent,$description,$image)){
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
-		echo "Created category Artists<br />";
+		$msg .= "Created category Artists<br />";
 	
 		// add a genre category
 		$title = 'Genres';
@@ -408,10 +411,11 @@ class MyMuseUpdateHelper extends JObject
 		$description = 'Genres make the world go round. Can I be in BOTH genres?';
 		$image = 'genres.png';
 		if(!$genreid = $this->makeCategory($title,$parent,$description,$image)){
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
-		echo "Created category Genres<br />";
+		$msg .= "Created category Genres<br />";
 	
 		// add an artist category called Iron Brew
 		$title = 'Iron Brew';
@@ -419,10 +423,11 @@ class MyMuseUpdateHelper extends JObject
 		$description = 'Iron Brew. Warning: Celtic Nuts.';
 		$image = 'ironbrew.jpg';
 		if(!$ironbrewid = $this->makeCategory($title,$parent,$description,$image)){
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
-		echo "Created category Artists->Iron Brew<br />";
+		$msg .= "Created category Artists->Iron Brew<br />";
 	
 		// add a genre category called World Beat
 		$title = 'World Beat';
@@ -430,10 +435,11 @@ class MyMuseUpdateHelper extends JObject
 		$description = 'And the beat goes on.';
 		$image = 'worldbeat.jpg';
 		if(!$worldbeatid = $this->makeCategory($title,$parent,$description,$image)){
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
-		echo "Created category Genres->World Beat<br />";
+		$msg .= "Created category Genres->World Beat<br />";
 	
 	
 	
@@ -490,8 +496,9 @@ class MyMuseUpdateHelper extends JObject
 		);
 		
 		if($parentid = $this->makeProduct($data)){
-			echo "Created product 'Are You My Sister'<br />";
+			$msg .= "Created product 'Are You My Sister'<br />";
 		}else{
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
@@ -504,6 +511,7 @@ class MyMuseUpdateHelper extends JObject
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/mymuse.jpg";
 		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."mymuse.jpg";
 		if(!$this->get_data($from, $to)){
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
@@ -511,6 +519,7 @@ class MyMuseUpdateHelper extends JObject
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/worldbeat.jpg";
 		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."worldbeat.jpg";
 		if(!$this->get_data($from, $to)){
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
@@ -519,12 +528,14 @@ class MyMuseUpdateHelper extends JObject
 		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."ironbrew.jpg";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
+			$application->enqueueMessage($this->error, 'error');
 			return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/sister.jpg";
 		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."sister.jpg";
 		if(!$this->get_data($from, $to)){
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
@@ -532,6 +543,7 @@ class MyMuseUpdateHelper extends JObject
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/artists.png";
 		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."artists.png";
 		if(!$this->get_data($from, $to)){
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
@@ -539,16 +551,18 @@ class MyMuseUpdateHelper extends JObject
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/genres.png";
 		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."genres.png";
 		if(!$this->get_data($from, $to)){
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
-		echo "Downloaded some graphics to /images/A_MyMuseImages<br />";
+		$msg .= "Downloaded some graphics to /images/A_MyMuseImages<br />";
 	
 	
 		// get some mp3's
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/Are_You_My_Sister.mp3";
 		$to = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS."Are_You_My_Sister.mp3";
 		if(!$this->get_data($from, $to)){
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
@@ -556,6 +570,7 @@ class MyMuseUpdateHelper extends JObject
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/sister-preview.mp3";
 		$to = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."sister-preview.mp3";
 		if(!$this->get_data($from, $to)){
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
@@ -563,14 +578,16 @@ class MyMuseUpdateHelper extends JObject
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/sister-preview.ogg";
 		$to = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."sister-preview.ogg";
 		if(!$this->get_data($from, $to)){
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
-		echo "Downloaded 'Are You My Sister' track and previews<br />";
+		$msg .= "Downloaded 'Are You My Sister' track and previews<br />";
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/The_Foggy_Dew.mp3";
 		$to = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS."The_Foggy_Dew.mp3";
 		if(!$this->get_data($from, $to)){
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			exit;
 		}
@@ -578,6 +595,7 @@ class MyMuseUpdateHelper extends JObject
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/foggy-preview.mp3";
 		$to = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."foggy-preview.mp3";
 		if(!$this->get_data($from, $to)){
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
@@ -585,10 +603,11 @@ class MyMuseUpdateHelper extends JObject
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/foggy-preview.ogg";
 		$to = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."foggy-preview.ogg";
 		if(!$this->get_data($from, $to)){
+			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
-		echo "Downloaded 'Foggy Dew' track and previews<br />";
+		$msg .= "Downloaded 'Foggy Dew' track and previews<br />";
 	
 		//make a track for Are You My Sister
 		$preview_dir = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
@@ -596,12 +615,12 @@ class MyMuseUpdateHelper extends JObject
 	
 			'jform' => Array
 			(
-					'title' => 'Are You My Sister',
+					'title' => 'Are You My Sister Song',
 					'file_type' =>'audio',
 					'title_alias' => 'Are_You_My_Sister.mp3',
 					'product_sku' => 'ayms-t1',
 					'ordering' => '0',
-					'file_name' => 'Are_You_My_Sister.mp3',
+					'file_name' => '',
 					'file_length' => '',
 					'file_downloads' => '',
 					'price' => '2.00',
@@ -639,9 +658,10 @@ class MyMuseUpdateHelper extends JObject
 				$token => '1'
 			);
 		if($track1id = $this->makeProduct($data)){
-			echo "Created a track 'Are You My Sister' :: Trackid = $track1id.<br />";
+			$msg .= "Created a track 'Are You My Sister' :: Trackid = $track1id.<br />";
 		}else{
-			echo "Could not create a sample track. ";
+			echo "Could not create a sample track. <br />";
+			$application->enqueueMessage("Could not create a sample track. <br />".$this->error, 'error');
 			echo $this->error;
 			return false;
 		}
@@ -653,10 +673,10 @@ class MyMuseUpdateHelper extends JObject
 				(
 						'title' => 'The Foggy Dew',
 						'file_type' =>'audio',
-						'title_alias' => 'The_Foggy_Dew.mp3',
+						'title_alias' => '',
 						'product_sku' => 'ayms-t2',
 						'ordering' => '0',
-						'file_name' => 'The_Foggy_Dew.mp3',
+						'file_name' => '',
 						'file_length' => '',
 						'file_downloads' => '',
 						'price' => '2.00',
@@ -665,8 +685,8 @@ class MyMuseUpdateHelper extends JObject
 						'featured' => '0',
 						'language' => '*',
 						'id' => '0',
-						'file_preview' => '',
-						'file_preview_2' => '',
+						'file_preview' => 'foggy-preview.mp3',
+						'file_preview_2' => 'foggy-preview.ogg',
 						'file_preview_3' => '',
 						'articletext' => '
 
@@ -699,9 +719,9 @@ class MyMuseUpdateHelper extends JObject
 
 	
 		if($track2id = $this->makeProduct($data)){
-			echo "Created a track 'Foggy Dew' :: Trackid = $track2id.<br />";
+			$msg .= "Created a track 'Foggy Dew' :: Trackid = $track2id.<br />";
 		}else{
-			echo "Could not create a sample track. ";
+			$application->enqueueMessage("Could not create a sample track. <br />".$this->error, 'error');
 			echo $this->error;
 			return false;
 		}
@@ -712,8 +732,8 @@ class MyMuseUpdateHelper extends JObject
 		$db->query();
 	
 
-		echo '<a href="index.php?option=com_mymuse&view=products">Return</a> to Product View';
-	
+		$msg .= '<a href="index.php?option=com_mymuse&view=products">Return</a> to Product View';
+		$application->enqueueMessage($msg);
 		return true;
 	}
 	

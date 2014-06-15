@@ -294,7 +294,7 @@ class MymuseTableproduct extends JTable
 			
 			$old_file = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$select_file;
 			$this->file_length = $this->fileFilesize($old_file);
-	
+
 			if($old_file != $new_file){
 				if($params->get('my_use_s3') && $this->file_length > 10240000){ // over 10 megs
 					$this->file_name = $select_file;
@@ -418,7 +418,7 @@ class MymuseTableproduct extends JTable
         	//create new dirs if needed 
         	if(!$this->fileExists($artistdir)){
         		if(!$this->folderNew($artistdir)){
-        			//$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").$artistdir);
+        			$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").$artistdir);
         			return false;
         		}
         		if(!$this->fileCopy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
@@ -514,7 +514,7 @@ class MymuseTableproduct extends JTable
 		$remove_name 	= 'remove_'.$preview;
 		$current_name 	= 'current_'.$preview;
 		$file_preview_name = 'file_'.$preview;
-
+		$application = JFactory::getApplication();
 		// remove old one?
 		if(isset($post[$remove_name]) && $post[$remove_name] == "on"
 				&& $post[$current_name] != ""){
@@ -557,12 +557,16 @@ class MymuseTableproduct extends JTable
 			$name = preg_replace("/$ext$/","",$file_preview);
 			$this->$file_preview_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
 			$old_file = $path.$file_preview;
-			$new_file = $path.$this->$preview_name;
+			$new_file = $path.$preview_name;
 			
 			if($old_file != $new_file){
 				if($this->fileExists($old_file)){
 					if(!$this->fileCopy($old_file, $new_file)){
 						$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file);
+						
+						// Add a message to the message queue
+						$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file, 'error');
+						
 						return false;
 					}
 					//if(!$this->fileDelete($old_file)){
@@ -743,7 +747,7 @@ class MymuseTableproduct extends JTable
      */
     public function folderNew($dir)
     {
-    
+    	$application = JFactory::getApplication();
     	$params = MyMuseHelper::getParams();
     	if($params->get('my_use_s3')){
     		$s3 = MyMuseHelperAmazons3::getInstance();
@@ -756,17 +760,20 @@ class MymuseTableproduct extends JTable
     		$status = $s3->putObject('', $bucket, $uri);
     		if(!$status){
     			$this->setError( 'S3 Error: '.$s3->getError() );
+    			$application->enqueueMessage('S3 Error: '.$s3->getError() , 'error');
     			return false;
     		}
     	}else{
     		$status = JFolder::create($dir);
     		if(!$status){
     			$this->setError( "Could not create $dir");
+    			$application->enqueueMessage("Could not create $dir" , 'error');
     			return false;
     		}
     		if(!JFile::copy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
     				$dir.DS."index.html")){
-    			$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").$artistdir);
+    			$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").": ".$artistdir);
+    			$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").": ".$artistdir, 'error');
     			return false;
     		}
     	}
@@ -784,6 +791,7 @@ class MymuseTableproduct extends JTable
      */
     public function fileDelete($file)
     {
+    	$application = JFactory::getApplication();
     	$params = MyMuseHelper::getParams();
     	if($params->get('my_use_s3')){
     		
@@ -798,11 +806,13 @@ class MymuseTableproduct extends JTable
     		$status = $s3->deleteObject($bucket, $uri);
     		if(!$status){
     			$this->setError('S3 Error : '.$s3->getError() );
+    			$application->enqueueMessage('S3 Error: '.$s3->getError() , 'error');
     			return false;
     		}
     	}else{
     		if(!JFile::delete($file)){
     			$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".file);
+    			$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".file , 'error');
     		}
     	}
     	return true;
@@ -818,6 +828,7 @@ class MymuseTableproduct extends JTable
      */
     public function fileUpload($tmpName, $new_file)
     {
+    	$application = JFactory::getApplication();
     	$params = MyMuseHelper::getParams();
     	if($params->get('my_use_s3')){
     		$s3 = MyMuseHelperAmazons3::getInstance();
@@ -840,12 +851,14 @@ class MymuseTableproduct extends JTable
     		}
     		if(!$success){
     			$this->setError('S3 Error: '. $s3->getError() );
+    			$application->enqueueMessage('S3 Error: '.$s3->getError() , 'error');
     			return false;
     		}
     	}else{
  
     		if(!JFile::upload($tmpName, $new_file)){
     			$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$tmpName." ".$new_file);
+    			$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$tmpName." ".$new_file , 'error');
     			return false;
     		}
     	}
@@ -863,6 +876,7 @@ class MymuseTableproduct extends JTable
      */
     public function fileCopy($old_file, $new_file)
     {
+    	$application = JFactory::getApplication();
     	$params = MyMuseHelper::getParams();
     	if($params->get('my_use_s3')){
     		//they are both on s3. Must download one 
@@ -878,6 +892,7 @@ class MymuseTableproduct extends JTable
     		
     		if(!$s3->getObject($oldBucket, $uri, $tmpName)){
     			$this->setError('S3 Error: '.$s3->getError() );
+    			$application->enqueueMessage('S3 Error: '.$s3->getError() , 'error');
     			return false;
     		}
     		
@@ -895,12 +910,14 @@ class MymuseTableproduct extends JTable
     		}
     		if(!$success){
     			$this->setError('S3 Error: '.$s3->getError() );
+    			$application->enqueueMessage('S3 Error: '.$s3->getError() , 'error');
     			return false;
     		}
     	}else{
     
     		if(!JFile::copy($old_file, $new_file)){
     			$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file);
+    			$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file , 'error');
     			return false;
     		}
     	}
@@ -934,6 +951,7 @@ class MymuseTableproduct extends JTable
     
     public function folderMove($src, $dest)
     {
+    	$application = JFactory::getApplication();
     	$params = MyMuseHelper::getParams();
     	if($params->get('my_use_s3')){
     		if(!$this->folderNew($dest)){

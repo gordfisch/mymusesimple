@@ -751,9 +751,11 @@ class MymuseModelproduct extends JModelAdmin
     	$params = MyMuseHelper::getParams();
 
  		// file lists for albums
- 	
+
  		$artist_alias = MyMuseHelper::getArtistAlias($this->_parent->id,'1');
 		$album_alias = MyMuseHelper::getAlbumAlias($this->_parent->id);
+		
+	
 		$files = array();
 		// get the preview lists
 		if($params->get('my_use_s3')){
