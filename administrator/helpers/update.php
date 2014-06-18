@@ -513,7 +513,7 @@ class MyMuseUpdateHelper extends JObject
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
-			return false;
+			//return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/worldbeat.jpg";
@@ -521,7 +521,7 @@ class MyMuseUpdateHelper extends JObject
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
-			return false;
+			//return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/ironbrew.jpg";
@@ -529,7 +529,7 @@ class MyMuseUpdateHelper extends JObject
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
 			$application->enqueueMessage($this->error, 'error');
-			return false;
+			//return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/sister.jpg";
@@ -537,7 +537,7 @@ class MyMuseUpdateHelper extends JObject
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
-			return false;
+			//return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/artists.png";
@@ -545,7 +545,7 @@ class MyMuseUpdateHelper extends JObject
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
-			return false;
+			//return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/genres.png";
@@ -564,7 +564,7 @@ class MyMuseUpdateHelper extends JObject
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
-			return false;
+			//return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/sister-preview.mp3";
@@ -572,7 +572,7 @@ class MyMuseUpdateHelper extends JObject
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
-			return false;
+			//return false;
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/sister-preview.ogg";
@@ -580,7 +580,7 @@ class MyMuseUpdateHelper extends JObject
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
-			return false;
+			//return false;
 		}
 		$msg .= "Downloaded 'Are You My Sister' track and previews<br />";
 	
