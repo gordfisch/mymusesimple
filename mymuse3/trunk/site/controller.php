@@ -222,12 +222,28 @@ class MyMuseController extends JControllerLegacy
         
 		//no_reg and not logged in
         if(!$user->get('id') && $params->get('my_registration') == "no_reg"){
-        	$url = JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$Itemid";
-        	$return = base64_encode($url);
+        	
+        	$plugin = JPluginHelper::getPlugin('user', 'mymusenoreg');
+        	if(!count($plugin)){
+        		//plugin is not on, try to login as buyer
+        		if(!$this->MyMuseShopper->savenoreg()){
+        			echo $this->MyMuseShopper->getError();
+        			echo "Could not Log in"; 
+        			return false;
+        		}else{
+        			$this->shopper 			=  $this->MyMuseShopper->getShopper();
+        		}
+        	
+        	}else{
 
-        	$msg = JText::_("MYMUSE_PLEASE_COMPLETE_THE_FORM");
-        	$this->setRedirect( "index.php?option=com_mymuse&view=shopper&layout=register&Itemid=$Itemid", $msg );
-        	return true;
+        	
+        		$url = JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$Itemid";
+        		$return = base64_encode($url);
+
+        		$msg = JText::_("MYMUSE_PLEASE_COMPLETE_THE_FORM");
+        		$this->setRedirect( "index.php?option=com_mymuse&view=shopper&layout=register&Itemid=$Itemid", $msg );
+        		return true;
+        	}
         }
         //no_reg, logged in but no form yet
         if($user->get('id') && $params->get('my_registration') == "no_reg" && !$this->shopper->perms){

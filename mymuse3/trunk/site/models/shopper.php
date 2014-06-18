@@ -71,7 +71,7 @@ class mymuseModelShopper extends JModelForm
         	$task = JRequest::getVar('task');
         	$db = JFactory::getDBO();
         	
-        	//if this is no reg coming in
+        	//if this is no reg coming in for a download
         	if($params->get('my_registration') == "no_reg" && !$user->get('id') 
         			&& ($task == 'accdownloads' || $task == 'downloads') ){
         		$id = JRequest::getVar('id','');
@@ -197,7 +197,7 @@ class mymuseModelShopper extends JModelForm
 					$plugin = JPluginHelper::getPlugin('user', 'mymusenoreg');
 					$profile_params = new JRegistry();
 					$needed = 0;
-					if($plugin->params){
+					if(isset($plugin->params)){
 						$profile_params->loadString($plugin->params);
 						foreach ($fields as $field) {
 							if(isset($profile[$field])){
@@ -426,7 +426,9 @@ class mymuseModelShopper extends JModelForm
 					$app->enqueueMessage($errors[$i], 'warning');
 				}
 			}
-			return false;
+			if(count($errors)){
+				return false;
+			}
 		}
 
 		//perform the login action
@@ -505,7 +507,6 @@ class mymuseModelShopper extends JModelForm
 		
 	function createGuestUser()
 	{
-
  		$data = array('name' => 'Guest Buyer',
 		'username' => 'buyer',
 		'password1' => 'buyer',
