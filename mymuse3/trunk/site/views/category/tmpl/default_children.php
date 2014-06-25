@@ -96,10 +96,13 @@ if(!$total_shown){
 		<?php 
 			if($i == $break){
 				echo '</ul>
-				</div>
-				<div class="column-'.$column.'">
-				<ul>
+				</div><!-- end of break -->
 				';
+				if($total_shown != $count){
+					echo '			<div class="column-'.$column.'">
+						<ul>
+						';
+				}
 				$column++;
 				$i=0;
 			}
