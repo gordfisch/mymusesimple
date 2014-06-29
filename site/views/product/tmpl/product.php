@@ -244,7 +244,7 @@ endif; ?>
 <?php endif; ?>
 <div style="clear: both"></div>
 
-<!-- RECORDING DETAILS -->
+<!-- END RECORDING DETAILS -->
 
 
 <form method="post" action="<?php echo JURI::base() ?>index.php?Itemid=<?php echo $Itemid; ?>" onsubmit="return hasProduct(this,<?php echo $count; ?>);" name="mymuseform">
@@ -630,3 +630,4 @@ $comments = JPATH_SITE . DS .'components' . DS . 'com_jcomments' . DS . 'jcommen
 
 
 <?php echo $this->item->event->afterDisplayProduct; ?>
+</div>
