@@ -64,7 +64,7 @@ function hasProduct(that, count){
 	return false;
 }
 </script>
-	
+<!--  START PRODUCT VIEW -->	
 <!--  HEADING TITLE ICONS -->
 <div class="mymuse">
 
@@ -488,12 +488,14 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 			</div>
 			
 		<?php } ?>
+		<div style="clear: both"></div>
+		
 		<div class="clips petrol" 
 		<?php if($params->get('product_player_type') == "each"){ ?>
 		id="product_player"
 		<?php } ?>
 		>
-		<div style="clear: both"></div>
+		
 		
 <?php if($params->get('product_show_tracks',1)){ ?>
 		<table class="mymuse_cart tracks jp-gui ui-widget ui-widget-content ui-corner-all">
@@ -587,8 +589,8 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
       				</tr>
       		<?php  } ?>
 		</table>
-		</div>
 	</div>
+<!--  END TRACKS -->
 
 <div style="clear: both"></div>
 	<?php } ?>
@@ -631,3 +633,4 @@ $comments = JPATH_SITE . DS .'components' . DS . 'com_jcomments' . DS . 'jcommen
 
 <?php echo $this->item->event->afterDisplayProduct; ?>
 </div>
+<!--  end PRODUCT VIEW -->	
