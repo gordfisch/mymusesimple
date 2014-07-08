@@ -329,6 +329,12 @@ jQuery(document).ready(function(){
 			
 			$text = '
 		<section>
+		<style type="text/css">
+		.jp-gui ul {
+			margin:0;
+			padding:0;
+		}
+		</style>
 		<div id="jquery_jplayer_1" class="jp-jplayer"></div>
 
 		<div id="jp_container_1">
