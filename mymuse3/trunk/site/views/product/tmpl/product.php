@@ -481,7 +481,9 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 			<?php } ?>
 			><?php echo $product->flash; ?>
 			</div>
+			<?php if($product->flash){ ?>
 			<div><?php echo JText::_('MYMUSE_NOW_PLAYING');?> <span id="jp-title-li"></span></div>
+			<?php } ?>
 		<?php } ?>
 		<?php if($params->get('product_player_type') == "playlist"){ ?>
 			<div id="product_player" ><?php echo $product->flash; ?>
