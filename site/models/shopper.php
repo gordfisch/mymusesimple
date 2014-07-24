@@ -114,6 +114,7 @@ class mymuseModelShopper extends JModelForm
 				$this->_shopper->user_id = $user->get('id');
 				$this->_shopper->perms = 1;
 				$profile = $user->get('profile');
+				
 				if(!$profile){
 					//try to load their profile
 					if($this->loadProfile($user)){
@@ -123,7 +124,7 @@ class mymuseModelShopper extends JModelForm
 				if(!isset($profile['shopper_group'])){
 					$profile['shopper_group'] = 1;
 				}
-				
+	
 				
 				//is there a profile to fill in?
 				if($params->get('my_registration') == "full" && $my_profile_key != ''){
