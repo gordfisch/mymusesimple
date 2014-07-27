@@ -309,6 +309,11 @@ class MymuseTableproduct extends JTable
 				}
 			}
 		}
+		
+		if(!$this->file_length && $this->file_name){
+			$file = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$this->file_name;
+			$this->file_length = $this->fileFilesize($file);
+		}
 	
 		// TODO: get this to work with s3
 		if(isset($new_file) && is_file($new_file) 

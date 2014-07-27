@@ -61,7 +61,7 @@
 		   
 		  <field 
 		  		name="catid" 
-		  		type="categorytree" 
+		  		type="category" 
 		  		extension="com_mymuse"
 				label="MYMUSE_MAIN_CATEGORY_LABEL" 
 				description="MYMUSE_MAIN_CATEGORY_DESC"
