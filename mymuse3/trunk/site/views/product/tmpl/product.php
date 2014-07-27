@@ -500,7 +500,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 		
 		
 <?php if($params->get('product_show_tracks',1)){ ?>
-		<table class="mymuse_cart tracks jp-gui ui-widget ui-widget-content ui-corner-all">
+		<table class="mymuse_cart">
 			<thead>
 		    <tr>
 		    <?php  if($params->get('product_show_select_column', 1)){?>
@@ -585,7 +585,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
         			
         			<!--  PREVIEW COLUMN -->
         			<?php  if($params->get('product_show_preview_column', 1) && $params->get('product_player_type') != "playlist"){?>	
-        				<td class="mypreviews"><?php echo $track->flash; ?></td>
+        				<td class="mypreviews tracks jp-gui ui-widget ui-widget-content ui-corner-all"><?php echo $track->flash; ?></td>
         			<?php }?>
         			
       				</tr>
