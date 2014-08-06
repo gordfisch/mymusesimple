@@ -61,7 +61,7 @@ class MymuseTabletaxrate extends JTable
      * Overloaded store function
      * Add the tax rate to the order table
      */
-    public function store() {
+    public function store($updateNulls = false) {
     
     	$post = JRequest::get( 'post' );
     	$form = $post['jform'];
