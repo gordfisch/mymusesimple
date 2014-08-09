@@ -588,16 +588,17 @@ class MyMuseCheckout
 	 */
 	function addTax($price=0)
 	{
+		$db			= JFactory::getDBO();
 		if(!$price){
 			return false;
 		}
 		$new_price = $price;
 		$taxes = array();
 		$q = "SELECT * FROM #__mymuse_tax_rate ORDER BY ordering";
-		$this->_db->setQuery($q);
+		$db->setQuery($q);
 		$regex = TAX_REGEX;
 
-		if($tax_rates = $this->_db->loadObjectList()){
+		if($tax_rates = $db->loadObjectList()){
 			$temp_tax = 0;
 			foreach($tax_rates as $rate){
 				$temp_tax = $price * $rate->tax_rate;

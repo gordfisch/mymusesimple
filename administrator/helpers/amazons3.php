@@ -962,8 +962,8 @@ final class MyMuseS3Request {
 		curl_setopt($curl, CURLOPT_USERAGENT, 'AkeebaReleaseSystem/S3Integration');
 
 		if (MyMuseHelperAmazons3::$useSSL) {
-			curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, (stristr(PHP_OS, 'WIN') ? false : true));
-			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, (stristr(PHP_OS, 'WIN') ? false : true));
+			curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, (stristr(PHP_OS, 'WIN') ? false : 2));
+			curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, (stristr(PHP_OS, 'WIN') ? false : 2));
 		}
 
 		curl_setopt($curl, CURLOPT_URL, $url);
@@ -1000,7 +1000,7 @@ final class MyMuseS3Request {
 		curl_setopt($curl, CURLOPT_RETURNTRANSFER, false);
 		curl_setopt($curl, CURLOPT_WRITEFUNCTION, array(&$this, '__responseWriteCallback'));
 		curl_setopt($curl, CURLOPT_HEADERFUNCTION, array(&$this, '__responseHeaderCallback'));
-		curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+		//curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
 
 		// Request types
 		switch ($this->verb) {
