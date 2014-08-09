@@ -419,16 +419,18 @@ class MymuseTableproduct extends JTable
         		$msg = JText::sprintf("MYMUSE_PRODUCT_CHANGED_CATEGORY_SUCCESS", $msg);
         		JFactory::getApplication()->enqueueMessage($msg, 'notice');
         	}
-        	
+
         	//create new dirs if needed 
         	if(!$this->fileExists($artistdir)){
         		if(!$this->folderNew($artistdir)){
         			$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").$artistdir);
         			return false;
         		}
-        		if(!$this->fileCopy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
-        		$artistdir.DS."index.html")){
-        			$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").$artistdir);
+        		if(!$params->get('my_use_s3')){
+        			if(!$this->fileCopy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
+        			$artistdir.DS."index.html")){
+        				$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").$artistdir);
+        			}
         		}
         	}
         	if(!$this->fileExists($albumdir)){
@@ -436,11 +438,13 @@ class MymuseTableproduct extends JTable
         			//$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").$albumdir);
         			return false;
         		}
-        		if(!$this->fileCopy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
-        		$albumdir.DS."index.html")){
-        			$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").$albumdir);
+        		if(!$params->get('my_use_s3')){
+        			if(!$this->fileCopy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
+        			$albumdir.DS."index.html")){
+        				$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").$albumdir);
+        			}
         		}
-        	}
+        	}	
         	
         	
         	
@@ -460,9 +464,11 @@ class MymuseTableproduct extends JTable
         			$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").' '.$preview_dir);
         			return false;
         		}
-        		if(!$this->fileCopy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
-        		$preview_dir.DS."index.html")){
-        			$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").' '.$preview_dir);
+        		if(!$params->get('my_use_s3')){
+        			if(!$this->fileCopy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
+        			$preview_dir.DS."index.html")){
+        				$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").' '.$preview_dir);
+        			}
         		}
         	}
 
