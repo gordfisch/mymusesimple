@@ -2,9 +2,9 @@
 <project name="MyMuse3.5" basedir="." default="copy_to_test351">
  		<property name="myversion" value="3.5.1" override="true" />
 	<!-- arboreta/joomlamymuse/callinish || mymusetest35 -->
-        <property name="test" value="/var/www/html/mymusetest35" override="true" />
+        <property name="test" value="/var/www/html/arboreta/joomlamymuse/callinish" override="true" />
         <property name="testadmincomp"
-                value="/var/www/html/mymusetest35/administrator/components/com_mymuse"
+                value="/var/www/html/arboreta/joomlamymuse/callinish/administrator/components/com_mymuse"
                 override="true" />
         <property name="src" value="${project.basedir}" override="true" />
         <fileset dir="./site" id="site_files">
@@ -137,6 +137,14 @@
         	            todir="${test}/administrator/language/en-GB" />
         	    <copy file="${src}/plugins/user_mymusenoreg/languages/en-GB.plg_user_mymusenoreg.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />
+        	
+        	
+        	
+        		<copy file="${src}/plugins/findermymuse/languages/en-GB.plg_finder_findermymuse.ini"
+        	        	 todir="${test}/administrator/language/en-GB" />
+        	    <copy file="${src}/plugins/user_mymusenoreg/languages/en-GB.plg_finder_findermymuse.sys.ini"
+        	        	 todir="${test}/administrator/language/en-GB" />
+        	
         	
         	
                 <copy file="${src}/modules/mod_mymuse_minicart/languages/en-GB.mod_mymuse_minicart.ini"
@@ -326,6 +334,13 @@
         	            todir="${test}/plugins/user/redirectonlogin" /> 
         	    <copy file="${src}/plugins/user_redirectonlogin/redirectonlogin.php"
         	            todir="${test}/plugins/user/redirectonlogin" />
+        	
+        		<copy file="${src}/plugins/finder/findermymuse.xml"
+        	        	todir="${test}/plugins/finder/findermymuse" /> 
+        	    <copy file="${src}/plugins/findermymuse/findermymuse.php"
+        	        	todir="${test}/plugins/finder/findermymuse" />
+        	
+        	
                 <!--  modules -->
                 <copy todir="${test}/modules/mod_mymuse_minicart">
                         <fileset refid="mod_minicart_files" />

@@ -32,12 +32,8 @@ class MymuseViewProduct extends JViewLegacy
 		$this->form		= $this->get('Form');
 		$this->lists 	= $this->get('Lists');
 
-		
 
-	
 
-		
-		
 		$this->params 	= MyMuseHelper::getParams();
 		$app 			= JFactory::getApplication();
 		$subtype 		= $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'details');
@@ -53,7 +49,7 @@ class MymuseViewProduct extends JViewLegacy
 		//setlayout
 		$jinput = JFactory::getApplication()->input;
 		$layout = $jinput->get('layout', 'edit');
-		
+
 		if($layout == "listtracks"){
 			$this->tracks 	= $this->get('Tracks');
 			$this->trackPagination = $this->get('TrackPagination');

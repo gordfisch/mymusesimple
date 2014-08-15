@@ -16,6 +16,74 @@ defined('_JEXEC') or die;
 class MymuseModelproduct extends JModelAdmin
 {
 	/**
+	 * @var		string	The prefix to use with controller messages.
+	 * @since	1.6
+	 */
+	protected $text_prefix = 'COM_MYMUSE';
+	
+	/**
+	 * @var		object	The parent object
+	 * @since	1.6
+	 */
+	protected $_parent = null;
+	
+	/**
+	 * @var		product(item) object
+	 * @since	1.6
+	 */
+	protected $_item = null;
+	
+	/**
+	 * @var		array of product(track) objects
+	 * @since	1.6
+	 */
+	protected $_tracks = null;
+	
+	/**
+	 * @var		array of product(item) objects
+	 * @since	1.6
+	 */
+	protected $_items = null;
+	
+	/**
+	 * @var		object
+	 * @since	1.6
+	 */
+	protected $_trackPaginition = null;
+	
+	/**
+	 * @var		object
+	 * @since	1.6
+	 */
+	protected $_itemPaginition = null;
+	
+	/**
+	 * @var		array
+	 */
+	protected $filter_fields = null;
+	
+	/**
+	 * @var		array
+	 */
+	protected $_attribute_skus = null;
+	
+	/**
+	 * @var		object
+	 */
+	protected $_params = null;
+	
+	/**
+	 * @var		array
+	 */
+	protected $_previews = null;
+	
+	/**
+	 * @var		object
+	 */
+	protected $_s3 = null;
+	
+	
+	/**
 	 * Constructor
 	 *
 	 */
@@ -49,62 +117,21 @@ class MymuseModelproduct extends JModelAdmin
 				'author', 'a.author'
 		);
 		
-		require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
+		$this->_params 			= MyMuseHelper::getParams();
+		
+		//Amazon S3
+		// getBucket($bucket, $prefix = null, $marker = null, $maxKeys = null, $delimiter = null, $returnCommonPrefixes = false)
+		if($this->_params->get('my_use_s3')){
+			require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
+			$this->_s3 = MyMuseHelperAmazons3::getInstance();
+			$this->_previews = $this->_s3->getBucket($this->_params->get('my_preview_dir'));
+			//print_pre($this->_previews); exit;
+		}
 		
 		parent::__construct($config);
 	}
 	
-	/**
-	 * @var		string	The prefix to use with controller messages.
-	 * @since	1.6
-	 */
-	protected $text_prefix = 'COM_MYMUSE';
-	
-	/**
-	 * @var		object	The parent object
-	 * @since	1.6
-	 */
-	protected $_parent = null;
-	
-	/**
-	 * @var		product(item) object
-	 * @since	1.6
-	 */
-	protected $_item = null;
-	
-	/**
-	 * @var		array of product(track) objects
-	 * @since	1.6
-	 */
-	protected $_tracks = null;
-	
-	/**
-	 * @var		array of product(item) objects
-	 * @since	1.6
-	 */
-	protected $_items = null;
-	
-	/**
-	 * @var		object	
-	 * @since	1.6
-	 */
-	protected $_trackPaginition = null;
-	
-	/**
-	 * @var		object
-	 * @since	1.6
-	 */
-	protected $_itemPaginition = null;
-	
-	/**
-	 * @var		array
-	 */
-	protected $filter_fields = null;
-	
-	/**
-	 * @var		array
-	 */
-	protected $_attribute_skus = null;
+
         
 	/**
 	 * Returns a reference to a Table object, always creating it.
@@ -246,7 +273,6 @@ class MymuseModelproduct extends JModelAdmin
     {
     	global $option;
     	$app 				= JFactory::getApplication();
-    	$params 			= MyMuseHelper::getParams();
     	$id 				= JRequest::getVar('id', 0);
 
 		
@@ -349,8 +375,6 @@ class MymuseModelproduct extends JModelAdmin
     	$filter_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
     	$this->setState('file.ordering', $filter_order);
     	$this->setState('file.direction', $filter_order_Dir);
-
-    	$params = MyMuseHelper::getParams();
     	$table = $this->getTable('product','MymuseTable');
 
     	$limit = $this->getState('list.limit');
@@ -381,10 +405,10 @@ class MymuseModelproduct extends JModelAdmin
     		$model->setState('filter.downloadable', 1);
     		$model->setState('filter.parentid', $product->id);
 
-    		
+
     		if ($limit >= 0) {
     			$this->_tracks = $model->getItems();
-    
+   
     			if ($this->_tracks  === false) {
     				$this->setError($model->getError());
     			}
@@ -395,10 +419,16 @@ class MymuseModelproduct extends JModelAdmin
     
     		$this->_trackPagination = $model->getPagination();
     	}
-
-    	 
+  
+    	
+ 
+    	
+    	
+    	
+  //$time_start = microtime(true);
+  //print_pre($this->_previews);
     	if(count($this->_tracks)){
-    		 
+    		
     		//need count minus any alltracks minus any missing files
     		$i = 0;
     		foreach($this->_tracks as $track){
@@ -408,34 +438,36 @@ class MymuseModelproduct extends JModelAdmin
     			}
     			
     			//main file
-    			if($params->get('my_encode_filenames')){
+    			if($this->_params->get('my_encode_filenames')){
     				$name = $track->title_alias;
     			}else{
     				$name = $track->file_name;
     			}
-    			
-    			$full_filename = $filename = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
-    			
-    			if(!$params->get('my_use_s3') && file_exists($full_filename) ){
+    			$full_filename = $filename = $this->_params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
+    			if(!$this->_params->get('my_use_s3') && file_exists($full_filename) ){
     				$i++;
     			}
-
+    			
     			//preview
-    			$path = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) . $params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS;
+    			$path = ($this->_params->get('my_use_s3')? $artist_alias.DS.$album_alias.DS : JPATH_ROOT.DS . $this->_params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS);
     			$preview_full_filename = $path.$track->file_preview;
-    			if($table->fileExists($preview_full_filename)){
+    			
+    			if(!$this->_params->get('my_use_s3')  && file_exists($preview_full_filename)
+    				||
+    					($this->_previews && array_key_exists($preview_full_filename, $this->_previews))
+    					){
     				$i++;
     			}
-
     		}
+
     		$count = $i;
 
     		JPluginHelper::importPlugin( 'mymuse' );
     		$dispatcher		= JDispatcher::getInstance();
     		$i = 0;
-    		$download_dir = $params->get('my_download_dir');
+    		$download_dir = $this->_params->get('my_download_dir');
 
-    		if(stristr(PHP_OS, 'win') && !$params->get('my_use_s3')){
+    		if(stristr(PHP_OS, 'win') && !$this->_params->get('my_use_s3')){
     			$root = str_replace("\\","/", $root);
     			$download_dir = str_replace("\\","/", $download_dir);
     		}
@@ -453,6 +485,7 @@ class MymuseModelproduct extends JModelAdmin
     		}
 
     		$i = 0;
+
     		foreach($preview_tracks as $track){
     			$flash = '';
     			
@@ -481,27 +514,31 @@ class MymuseModelproduct extends JModelAdmin
     				$ext = MyMuseHelper::getExt($track->file_preview);
     				
 
-    				$site_url = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base()); 
-    				$site_url .= $params->get('my_use_s3')? '' :  $params->get('my_preview_dir');
+    				$site_url = $this->_params->get('my_use_s3')? $this->_params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base()); 
+    				$site_url .= $this->_params->get('my_use_s3')? '' :  $this->_params->get('my_preview_dir');
     				$site_url .=  DS.$artist_alias.DS.$album_alias.DS;
     				
     				$track->path = $site_url.$track->file_preview;
-    				$track->real_path = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) . $params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview;
-    				
+    				$track->real_path = ($this->_params->get('my_use_s3')? '' : JPATH_ROOT.DS) . $this->_params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview;
+    				$s3_path = $artist_alias.DS.$album_alias.DS.$track->file_preview;
     				
     				
     				if($track->file_preview_2){
-    					$track->real_path2 = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview_2;
+    					$track->real_path2 = ($this->_params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$this->_params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview_2;
     					$track->path_2 = $site_url.$track->file_preview_2;
     				}
     				if($track->file_preview_3){
-    					$track->real_path3 = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview_3;
+    					$track->real_path3 = ($this->_params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$this->_params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview_3;
     					$track->path_3 = $site_url.$track->file_preview_3;
 
     				}
     				$track->flash_type = $track->file_type;
 				
-    				if($table->fileExists($track->real_path)){
+    				if((!$this->_params->get('my_use_s3')  && file_exists($track->real_path))
+    						|| 
+    						($this->_previews && array_key_exists($s3_path, $this->_previews))
+    						){
+    				//if($table->fileExists($track->real_path)){
     					if($track->file_type == "video"){
     						//video
     							
@@ -526,25 +563,30 @@ class MymuseModelproduct extends JModelAdmin
     					$i++;
     				}
     			}
+    			
+    			//$time_end = microtime(true);
+    			//$time = $time_end - $time_start;
+    			//echo "Did nothing in $time seconds\n<br />";
+    			
     			$track->flash = $flash;
 
     			//make flash for admin to listen to Main File, we'll call it stream
     			$stream = "";
     			$htaccess = "";
-    			if($params->get('my_encode_filenames')){
+    			if($this->_params->get('my_encode_filenames')){
     				$name = $track->title_alias;
     			}else{
     				$name = $track->file_name;
     			}
-    			if(file_exists($params->get('my_download_dir').DS.'.htaccess')){
+    			if(file_exists($this->_params->get('my_download_dir').DS.'.htaccess')){
     				$htaccess = 1;
     			}
 
     			if($name && !$htaccess){
-    				$full_filename = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
+    				$full_filename = $this->_params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
     				if(!file_exists($full_filename)){
     					//try with the root
-    					$full_filename = JPATH_ROOT.DS.$params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
+    					$full_filename = JPATH_ROOT.DS.$this->_params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
     				}
     				//echo $full_filename."<br />";
     				if(!file_exists($full_filename)){
@@ -596,7 +638,7 @@ class MymuseModelproduct extends JModelAdmin
     			$track->stream = $stream;
 
     		}
-    		
+
     		// if there were previews
     		if($i){
     			// make a controller for the play/pause buttons
@@ -663,7 +705,7 @@ class MymuseModelproduct extends JModelAdmin
     	$app = JFactory::getApplication();
     	$option = JRequest::getVar('option','com_mymuse');
 
-    	$params = $this->getState()->get('params');
+    	$this->_params = $this->getState()->get('params');
     	$limit = $this->getState('list.limit');
     	$id = JRequest::getVar('id');
 
@@ -748,20 +790,17 @@ class MymuseModelproduct extends JModelAdmin
      */
     function getFileLists()
     {
-    	$params = MyMuseHelper::getParams();
-
  		// file lists for albums
-
  		$artist_alias = MyMuseHelper::getArtistAlias($this->_parent->id,'1');
 		$album_alias = MyMuseHelper::getAlbumAlias($this->_parent->id);
 		
 	
 		$files = array();
 		// get the preview lists
-		if($params->get('my_use_s3')){
+		if($this->_params->get('my_use_s3')){
 			$s3 = MyMuseHelperAmazons3::getInstance();
 			$folder = $artist_alias.'/'.$album_alias;
-			$everything = $s3->listS3Contents($folder, $params->get('my_preview_dir'));
+			$everything = $s3->listS3Contents($folder, $this->_params->get('my_preview_dir'));
 			$folder = trim($folder,'/');
 			$dirLength = strlen($folder);
 			if(count($everything)) foreach($everything as $path => $info) {
@@ -775,7 +814,7 @@ class MymuseModelproduct extends JModelAdmin
 			}
 		}else{
 			
-			$directory = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
+			$directory = JPATH_ROOT.DS.$this->_params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
 			$files = JFolder::files( $directory );
 		}
 
@@ -789,10 +828,10 @@ class MymuseModelproduct extends JModelAdmin
 		
 		// get the tracks lists
 		$files = array();
-		if($params->get('my_use_s3')){
+		if($this->_params->get('my_use_s3')){
 			$folder = $artist_alias.'/'.$album_alias;
-			echo $params->get('my_download_dir')." ".$folder;
-			$everything = $s3->listS3Contents($folder, $params->get('my_download_dir'));
+			echo $this->_params->get('my_download_dir')." ".$folder;
+			$everything = $s3->listS3Contents($folder, $this->_params->get('my_download_dir'));
 			$folder = trim($folder,'/');
 			$dirLength = strlen($folder);
 			if(count($everything)) foreach($everything as $path => $info) {
@@ -805,7 +844,7 @@ class MymuseModelproduct extends JModelAdmin
 				}
 			}
 		}else{
-			$directory = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias;
+			$directory = $this->_params->get('my_download_dir').DS.$artist_alias.DS.$album_alias;
 			$files = JFolder::files( $directory );
 		}
 		
@@ -817,8 +856,8 @@ class MymuseModelproduct extends JModelAdmin
 		$lists['select_file'] = JHTML::_('select.genericlist',  $myfiles, 'select_file', 'class="inputbox" size="1" ', 'value', 'text', $current);
 		
 		// for display purposes
-		$lists['preview_dir'] = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS).$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
-		$lists['download_dir'] = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias;
+		$lists['preview_dir'] = ($this->_params->get('my_use_s3')? '' : JPATH_ROOT.DS).$this->_params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
+		$lists['download_dir'] = $this->_params->get('my_download_dir').DS.$artist_alias.DS.$album_alias;
 	
 		return $lists;
     	

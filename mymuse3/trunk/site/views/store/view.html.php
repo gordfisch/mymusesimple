@@ -135,6 +135,7 @@ class myMuseViewStore extends JViewLegacy
         			$product = $db->loadObject();
         			$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
         			$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
+        			$realname = $product->file_name;
         			if($params->get('my_encode_filenames')){
         				$filename = $product->title_alias;
         			}else{
@@ -143,8 +144,8 @@ class myMuseViewStore extends JViewLegacy
         			$bucket = $params->get('my_download_dir');
         			$uri = $artist_alias.DS.$album_alias.DS.$filename;
         			$lifetime = $params->get('my_s3time');
-        			//getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false)
-        			$MyMuseShopper->order->items[$i]->s3URL = $s3->getAuthenticatedURL($bucket, $uri, $lifetime);
+        			//getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false, $realname = '')
+        			$MyMuseShopper->order->items[$i]->s3URL = $s3->getAuthenticatedURL($bucket, $uri, $lifetime, false, false, $realname);
         		}
         	}
         	
@@ -416,6 +417,28 @@ class myMuseViewStore extends JViewLegacy
         	$object	=& MyMuse::getObject('httpdownload','helpers');
         	$filename = $product->file_name;
         	 
+        	if($params->get('my_use_s3',0)){
+        		require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
+        		$s3 = MyMuseHelperAmazons3::getInstance();
+        		
+        		$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
+        		$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
+        		$realname = $product->file_name;
+        		if($params->get('my_encode_filenames')){
+        			$filename = $product->title_alias;
+        		}else{
+        			$filename = $product->file_name;
+        		}
+        		$bucket = $params->get('my_download_dir');
+        		$uri = $artist_alias.DS.$album_alias.DS.$filename;
+        		$lifetime = $params->get('my_s3time');
+        		//getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false, $realname = '')
+        		$s3URL = $s3->getAuthenticatedURL($bucket, $uri, $lifetime, false, false, $realname);
+        		$app =& JFactory::getApplication();
+        		$app->redirect($s3URL);
+        		return false;
+        	}
+        	
         	// download data from the database
         	if($params->get('my_use_database')){
         		if(!$object->set_bydata($product->file_contents)){

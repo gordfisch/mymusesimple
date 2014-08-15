@@ -305,7 +305,8 @@ class MyMuseModelProduct extends JModelItem
     		$site_url .= $params->get('my_use_s3')? '' :  $params->get('my_preview_dir');
     		$site_url .=  DS.$artist_alias.DS.$album_alias.DS;
 			// set up flash previews and streams
-		
+
+	
 			$this->_item[$pk]->flash = '';
 			$this->_item[$pk]->flash_type = '';
 			$preview_tracks = array();
