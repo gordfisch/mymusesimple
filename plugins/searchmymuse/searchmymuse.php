@@ -244,7 +244,7 @@ class plgSearchSearchMymuse extends JPlugin
 		.' AND a.access IN ('.$groups.') '
 		." GROUP BY a.id "
 		." ORDER BY a.title DESC ";
-		
+	
 		$db->setQuery( $query, 0, $limit );
         $list2 = $db->loadObjectList();
 

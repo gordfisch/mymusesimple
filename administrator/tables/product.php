@@ -296,17 +296,18 @@ class MymuseTableproduct extends JTable
 			$this->file_length = $this->fileFilesize($old_file);
 
 			if($old_file != $new_file){
-				if($params->get('my_use_s3') && $this->file_length > 10240000){ // over 10 megs
-					$this->file_name = $select_file;
-					JFactory::getApplication()->enqueueMessage(JText::sprintf('MYMUSE_S3_FILE_TOO_LARGE_TO_COPY', $old_file, $new_file), 'warning');
-				}else{
+				// DO we put a limit on size?
+				//if($params->get('my_use_s3') && $this->file_length > 10240000){ // over 10 megs
+				//	$this->file_name = $select_file;
+				//	JFactory::getApplication()->enqueueMessage(JText::sprintf('MYMUSE_S3_FILE_TOO_LARGE_TO_COPY', $old_file, $new_file), 'warning');
+				//}else{
 					if(!$this->fileCopy($old_file, $new_file)){
 						return false;
 					}
 					if(!$this->fileDelete($old_file)){
 						return false;
 					}
-				}
+				//}
 			}
 		}
 		
@@ -955,6 +956,7 @@ class MymuseTableproduct extends JTable
     		$uri = implode(DS, $parts);
     		$uri = trim($uri,DS);
     		return $s3->getObject($bucket, $uri);
+    		
     	}else{
     		return file_exists($file);
     	}

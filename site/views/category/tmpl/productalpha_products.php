@@ -35,6 +35,7 @@ $r = $count  %  $this->params->get('num_columns');
 if($r){ $break++; }
 
 $i = 0;
+$l= 0;
 $total_shown = 0;
 $column = 1;
 //echo "count = $count break = $break letters = ".count($lets);
@@ -51,6 +52,7 @@ $column = 1;
 	}
 	$total_shown++;
 	$i++;
+	$lettercount = count($children );
 	if($i == $break){
 		if ($total_shown == $count){
 			echo '</ul></div>';
@@ -66,12 +68,14 @@ $column = 1;
 		$i = 0;
 	}
 	?>
-	<span class="alphabet"><?php echo $letter; ?></span>
+	<span class="alphabet"><?php echo $letter;
+	// echo "lettercount=$lettercount, i=$i, total_shown = $total_shown";
+	?></span>
 		<ul>
 		<?php
 		
 		
-		$lettercount = count($children );
+		
 		$l = 0;
 		foreach($children as $child){
 			$i++;

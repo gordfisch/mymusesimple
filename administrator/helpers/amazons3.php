@@ -702,24 +702,27 @@ class MyMuseHelperAmazons3 extends JObject
 	* @param boolean $https Use HTTPS ($hostBucket should be false for SSL verification)
 	* @return string
 	*/
-	public static function getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false) {
+	public static function getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false, $realname='') {
 		if(empty($bucket)) $bucket = self::$__default_bucket;
 		if(is_null($lifetime)) $lifetime = self::$__default_time;
 		$expires = time() + $lifetime;
 		
 		$parts = explode(DS,$uri);
 		$filename = array_pop($parts);
+		if(!$realname){
+			$realname = $filename;
+		}
 		
 		
 		$uri = str_replace('%2F', '/', rawurlencode($uri)); // URI should be encoded (thanks Sean O'Dea)
-		$rh = "$uri?response-content-disposition=attachment; filename=$filename";
+		$rh = "$uri?response-content-disposition=attachment; filename=$realname";
 		
 		//return sprintf(($https ? 'https' : 'http').'://%s/%s?"AWSAccessKeyId=%s&Expires=%u&Signature=%s',
 		//		$hostBucket ? $bucket : $bucket.'.s3.amazonaws.com', $uri, self::$__accessKey, $expires,
 		//		urlencode(self::__getHash("GET\n\n\n{$expires}\n/{$bucket}/{$uri}")));
 		
 		return sprintf(($https ? 'https' : 'http').
-				'://%s/%s?response-content-disposition=attachment%%3B%%20filename%%3D'.$filename.'&AWSAccessKeyId=%s&Expires=%u&Signature=%s',
+				'://%s/%s?response-content-disposition=attachment%%3B%%20filename%%3D'.$realname.'&AWSAccessKeyId=%s&Expires=%u&Signature=%s',
 				$hostBucket ? $bucket : $bucket.'.s3.amazonaws.com', $uri, self::$__accessKey, $expires,
 				urlencode(self::__getHash("GET\n\n\n{$expires}\n/{$bucket}/{$rh}")));
 	}
