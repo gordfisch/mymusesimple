@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     $Id:$
+ * @version     $Id$
  * @package     com_mymuse3
  * @copyright   Copyright (C) 2014. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -33,11 +33,12 @@ class JFormFieldOrderstatus extends JFormFieldSQL
 		// Initialize variables.
 		$html = array();
 		$html[] = '<select id="filter_order_status" name="filter_order_status" class="inputbox">';
-		$filter_order_status = JRequest::getVar('filter_order_status',0);
+		$filter_order_status = JRequest::getVar('filter_order_status','0');
+
 		// do the SQL
 		$db = JFactory::getDbo();
 		$query="SELECT 0 AS id, 'None selected' AS name 
-		UNION ALL SELECT code as id, name FROM #__mymuse_order_status";
+		UNION ALL SELECT code as id, name FROM #__mymuse_order_status ORDER BY id";
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 

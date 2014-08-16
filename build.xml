@@ -142,7 +142,7 @@
         	
         		<copy file="${src}/plugins/findermymuse/languages/en-GB.plg_finder_findermymuse.ini"
         	        	 todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/user_mymusenoreg/languages/en-GB.plg_finder_findermymuse.sys.ini"
+        	    <copy file="${src}/plugins/findermymuse/languages/en-GB.plg_finder_findermymuse.sys.ini"
         	        	 todir="${test}/administrator/language/en-GB" />
         	
         	
@@ -335,10 +335,10 @@
         	    <copy file="${src}/plugins/user_redirectonlogin/redirectonlogin.php"
         	            todir="${test}/plugins/user/redirectonlogin" />
         	
-        		<copy file="${src}/plugins/finder/findermymuse.xml"
-        	        	todir="${test}/plugins/finder/findermymuse" /> 
+        		<copy file="${src}/plugins/findermymuse/findermymuse.xml"
+        	        	todir="${test}/plugins/findermymuse/findermymuse" /> 
         	    <copy file="${src}/plugins/findermymuse/findermymuse.php"
-        	        	todir="${test}/plugins/finder/findermymuse" />
+        	        	todir="${test}/plugins/findermymuse/findermymuse" />
         	
         	
                 <!--  modules -->
