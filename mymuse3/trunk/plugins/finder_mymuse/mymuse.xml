@@ -14,7 +14,7 @@
     	<filename>index.html</filename>
 	</files>
 	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.plg_finder_findermymuse.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.plg_finder_findermymuse.sys.ini</language>
+		<language tag="en-GB">languages/en-GB/en-GB.plg_finder_findermymuse.ini</language>
+		<language tag="en-GB">languages/en-GB/en-GB.plg_finder_findermymuse.sys.ini</language>
 	</languages>
 </extension>
