@@ -132,6 +132,7 @@ class myMuseModelReports extends JmodelList
   			else {
   				$this->_cats = false;
   			}
+  			
   	
   		}
   	
@@ -153,7 +154,7 @@ class myMuseModelReports extends JmodelList
         // List state information.
     	parent::populateState('a.id', 'asc');
     
-    	$catid	= $app->getUserStateFromRequest( $this->context.'catid','catid','','int' );
+    	$catid	= $this->_catid;
     	$this->setState('filter.catid', $catid);
     	if($catid){
     		$this->getCats($catid, true);
@@ -201,20 +202,25 @@ class myMuseModelReports extends JmodelList
     	
     	}
     	
+    	
     	$order_status = $app->getUserStateFromRequest($this->context.'.filter.order_status', 'filter_order_status', '', 'string');
     	$this->setState('filter.order_status', $order_status);
-    
+
+    	
     	$start_date = $app->getUserStateFromRequest($this->context.'.filter.start_date', 'filter_start_date', '', 'string');
     	$this->setState('filter.start_date', $start_date);
-    
+
+    	
     	$end_date = $app->getUserStateFromRequest($this->context.'.filter.end_date', 'filter_end_date', '', 'string');
     	$this->setState('filter.end_date', $end_date);
-        
+
+    	
         $this->setState('list.limit', 1000000000);
 
     	// Load the parameters.
     	$params = JComponentHelper::getParams('com_mymuse');
     	$this->setState('params', $params);
+    	
     }
     
     /**
@@ -271,7 +277,7 @@ class myMuseModelReports extends JmodelList
     
     	// Filter by order_status
     	$order_status = $this->getState('filter.order_status');
-    	if (is_string($order_status) && $order_status != '0') {
+    	if ($order_status && is_string($order_status) && $order_status != '0') {
     		$query->where('a.order_status = "'.$order_status.'"');
     	} else if ($order_status === '') {
     		//$query->where('(a.order_status IN (SELECT code from #__mymuse_order_status))');
@@ -298,7 +304,7 @@ class myMuseModelReports extends JmodelList
     	
     	//filter by products in cat
     	$catid = $this->getState('filter.catid');
-    	
+ 
     	if($catid){
     	
     		$prodids = $this->getState('list.prodids');
@@ -326,7 +332,7 @@ class myMuseModelReports extends JmodelList
     	if ($orderCol && $orderDirn) {
     		$query->order($db->escape($orderCol.' '.$orderDirn));
     	}
-   //echo "1. $query <br /><br />";
+  // echo "1. $query <br /><br />";
     	return $query;
     }
 
@@ -469,6 +475,8 @@ class myMuseModelReports extends JmodelList
   			}
   			$order_ids = preg_replace("/,$/","",$order_ids);
   			$order_ids .= ")";
+  		}else{
+  			return null;
   		}
   		$prodids   = $this->getState('list.prodids');
   		$catids 	= $this->getState('list.catids');
@@ -480,12 +488,9 @@ class myMuseModelReports extends JmodelList
   		LEFT JOIN #__categories as a ON p.catid=a.id
   		WHERE 1
   		";
-  		
-  		
-  		if($order_ids){
-  			$query .= "AND c.order_id IN $order_ids
-  			";
-  		}
+
+  		$query .= "AND c.order_id IN $order_ids ";
+
   		
   		if($catids){
   			//$query .= " AND a.id IN ".$catids." ";
@@ -500,9 +505,6 @@ class myMuseModelReports extends JmodelList
   	//echo "3. Items:  $query <br />";
   		$this->_db->setQuery( $query );
         $res = $this->_db->loadObjectList();
-       
-        
-  		//print_pre($res);
         return $res;;
   	}
   	
@@ -592,14 +594,14 @@ class myMuseModelReports extends JmodelList
     public function getForm($data = array(), $loadData = true)
     {
     	// Initialise variables.
-    	$app	= JFactory::getApplication();
-    
+    	
+
     	// Get the form.
-    	$form = $this->loadForm('com_mymuse.reports', 'reports', array());
+    	$form = $this->loadForm('com_mymuse.reports', 'reports', array('load_data' => $loadData));
     	if (empty($form)) {
     		return false;
     	}
-    
+
     	return $form;
     }
     
@@ -611,9 +613,18 @@ class myMuseModelReports extends JmodelList
      */
     protected function loadFormData()
     {
-    	// Check the session for previously entered form data.
-    	$data = JFactory::getApplication()->getUserState('com_mymuse.edit.reports.data', array());
-    
+    	$app	= JFactory::getApplication();
+    	$data['catid'] = $this->_catid;
+    	 
+    	$order_status = $app->getUserStateFromRequest($this->context.'.filter.order_status', 'filter_order_status', '', 'string');
+    	$data['filter_order_status'] = $order_status;
+    	 
+    	$start_date = $app->getUserStateFromRequest($this->context.'.filter.start_date', 'filter_start_date', '', 'string');
+    	$data['filter_start_date'] = $start_date;
+    	 
+    	$end_date = $app->getUserStateFromRequest($this->context.'.filter.end_date', 'filter_end_date', '', 'string');
+    	$data['filter_end_date'] = $end_date;
+    	
     	if (empty($data)) {
     		$data = '';
     	}

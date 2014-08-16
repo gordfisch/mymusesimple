@@ -59,6 +59,7 @@ class myMuseViewReports extends JViewLegacy
 				$this->params = MyMuseHelper::getParams();
 				
 				// Get data from the model
+
 				$this->form				= $this->get('Form');
 				$this->state		    = $this->get('State');
                 //get just our order items containing products with our catids
@@ -74,6 +75,7 @@ class myMuseViewReports extends JViewLegacy
 					JError::raiseError(500, implode("\n", $errors));
 					return false;
 				}
+				
 			} break;
 		}
 		$this->_prepareDocument();
