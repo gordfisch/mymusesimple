@@ -303,7 +303,7 @@ class MyMuseModelProduct extends JModelItem
 			
 			$site_url = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base()); 
     		$site_url .= $params->get('my_use_s3')? '' :  $params->get('my_preview_dir');
-    		$site_url .=  DS.$artist_alias.DS.$album_alias.DS;
+    		$site_url .=  '/'.$artist_alias.'/'.$album_alias.'/';
 			// set up flash previews and streams
 
 	
