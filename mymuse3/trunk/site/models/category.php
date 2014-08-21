@@ -233,8 +233,6 @@ class MyMuseModelCategory extends JModelList
 				
 			}
 			
-			
-			
 			$model->setState('list.start', $this->getState('list.start'));
 			$model->setState('list.limit', $limit);
 			$model->setState('list.direction', $this->getState('list.direction'));

@@ -36,6 +36,14 @@ class myMuseHelperRoute
 		$needles = array(
 			'product'  => array((int) $id)
 		);
+		$db = JFactory::getDBO();
+		$q = "SELECT parentid from #__mymuse_product WHERE id ='".$id."'";
+		$db->setQuery($q);
+		$parentid = $db->loadResult();
+		if($parentid > 0){
+			$id = $parentid;
+		}
+				
 		//Create the link
 		$link = 'index.php?option=com_mymuse&view=product&id='. $id;
 		if ((int)$catid > 1)

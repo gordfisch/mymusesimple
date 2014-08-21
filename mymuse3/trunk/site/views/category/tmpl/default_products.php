@@ -34,14 +34,13 @@ $height 	= $this->params->get('category_product_image_height',0);
 <input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 <input type="hidden" name="task" value="" />
 <input type="hidden" name="limitstart" value="" />
-<?php if ($this->params->get('show_headings') || $this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit')) :?>
-<?php if ( ($this->params->get('filter') == "show" || $this->params->get('show_pagination_limit'))) : ?>
+<?php if ($this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit')) :?>
 	<table class="mymuse_cart">
 		<tr>
-		<?php if ($this->params->get('filter') != 'hide') : ?>
+		<?php if ($this->params->get('filter_field') != 'hide') : ?>
 			<td align="left" width="60%" nowrap="nowrap">
-				<?php echo JText::_('MYMUSE_TITLE_FILTER').'&nbsp;'; ?>
-				<input type="text" name="searchword" value="<?php echo $this->escape($this->state->get('list.searchword')); ?>" 
+				<?php echo JText::_('MYMUSE_'.$this->params->get('filter_field').'_FILTER_LABEL').'&#160;'; ?>
+				<input type="text" name="filter-search" value="<?php echo $this->escape($this->state->get('list.filter')); ?>" 
 				class="inputbox" 
 				onchange="this.start.value=0;this.form.submit();" />
 			</td>
@@ -59,7 +58,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 	</table>
 	<br />
 <?php endif; ?>
-<?php endif; ?>
+
 
 	<table class="mymuse_cart">
 		<?php if ($this->params->get('show_headings')) :?>

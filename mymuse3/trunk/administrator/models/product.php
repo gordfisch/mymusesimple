@@ -125,7 +125,6 @@ class MymuseModelproduct extends JModelAdmin
 			require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
 			$this->_s3 = MyMuseHelperAmazons3::getInstance();
 			$this->_previews = $this->_s3->getBucket($this->_params->get('my_preview_dir'));
-			//print_pre($this->_previews); exit;
 		}
 		
 		parent::__construct($config);
@@ -420,13 +419,6 @@ class MymuseModelproduct extends JModelAdmin
     		$this->_trackPagination = $model->getPagination();
     	}
   
-    	
- 
-    	
-    	
-    	
-  //$time_start = microtime(true);
-  //print_pre($this->_previews);
     	if(count($this->_tracks)){
     		
     		//need count minus any alltracks minus any missing files
