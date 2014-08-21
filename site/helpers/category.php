@@ -136,6 +136,7 @@ class MymuseCategories extends JCategories
 		$db->setQuery($query);
 		$results = $db->loadObjectList('id');
 		$childrenLoaded = false;
+		$view = JRequest::getVar('view');
 
 		if (count($results))
 		{
@@ -143,12 +144,15 @@ class MymuseCategories extends JCategories
 			foreach ($results as $result)
 			{
 				//arboreta, get any products with this as their main caegory, add it to numitems
-				$query = "SELECT count(*) FROM #__mymuse_product WHERE catid=".$result->id."
-				AND parentid=0";
-				$db->setQuery($query);
-				$more = $db->loadResult();
-				if($more){
-					$result->numitems += $more;
+                // do not run in tracks view
+                if($view != "tracks"){
+                    $query = "SELECT count(*) FROM #__mymuse_product WHERE catid=".$result->id."
+                    AND parentid=0";
+                    $db->setQuery($query);
+                    $more = $db->loadResult();
+                    if($more){
+                        $result->numitems += $more;
+                    }
 				}
 				
 				// Deal with root category

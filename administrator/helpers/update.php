@@ -281,7 +281,7 @@ class MyMuseUpdateHelper extends JObject
 		$str = http_build_query($data);
 		$url = JURI::base()."index.php";
 		$cookie = session_name()."=".session_id();
-	
+
 		$ch = curl_init();
 		curl_setopt($ch, CURLOPT_URL,            $url );
 		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
@@ -301,17 +301,19 @@ class MyMuseUpdateHelper extends JObject
 		// return web page
 		$result=curl_exec ($ch);
 		curl_close($ch);
-	
+		
 		//see if it worked
 		$query = "SELECT id from #__mymuse_product WHERE title = ".$db->quote($data['jform']['title']);
-		//echo "<br />$query<br />";
+
 		$db->setQuery($query);
-	
-		if($res = $db->loadResult()){
+		$res = $db->loadResult();
+		
+		if($res > 0){
 			return $res;
 		}else{
-			echo $result; exit;
+
 			$this->error = "Could not create product. ".$result;
+			echo $result;  exit;
 			return false;
 		}
 	

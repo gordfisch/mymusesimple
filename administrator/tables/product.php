@@ -182,6 +182,7 @@ class MymuseTableproduct extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
+		
 		$params = MyMuseHelper::getParams();
 		require_once (JPATH_COMPONENT.DS.'helpers'.DS.'mp3file.php');
 		$post 			= JRequest::get('post');
@@ -206,6 +207,7 @@ class MymuseTableproduct extends JTable
 			// Existing item
 			$this->modified		= $date->toSQL();
 			$this->modified_by	= $user->get('id');
+			$isNew = 0;
 		} else {
 			// New product.
 			if (!intval($this->created)) {
@@ -216,6 +218,7 @@ class MymuseTableproduct extends JTable
 				$this->created_by = $user->get('id');
 			}
 			$this->parentid 	= isset($form['parentid'])? $form['parentid'] : '0' ;
+			$isNew = 1;
 		}
 
         // get artist alias
@@ -498,13 +501,21 @@ class MymuseTableproduct extends JTable
         	
 
         }
-        
+
 		$this->checkin();
 		if($this->parentid){
 			$this->checkin($this->parentid);
 		}
+		$result = parent::store($updateNulls);
+		if($result){
+			// onMymuseAfterSave  onFinderAfterSave
+			$dispatcher = JEventDispatcher::getInstance();
+			JPluginHelper::importPlugin('finder');
+			//$dispatcher->trigger('onMymuseAfterSave', array('com_mymuse.product', $this, $isNew));
+			$res = $dispatcher->trigger('onFinderAfterSave', array('com_mymuse.product', $this, $isNew));
+		}
+		return $result; 
 
-		return parent::store($updateNulls);
 	}
 	
 	/**
@@ -670,6 +681,13 @@ class MymuseTableproduct extends JTable
             $this->state = $state;
         }
 
+        // onMymuseChangeState  onFinderChangeState
+        $dispatcher = JEventDispatcher::getInstance();
+        JPluginHelper::importPlugin('finder');
+        //$dispatcher->trigger('onMymuseChangeState', array('com_mymuse.product', $pks, $state));
+        $res = $dispatcher->trigger('onFinderChangeState', array('com_mymuse.product', $pks, $state));
+
+        
         $this->setError('');
         return true;
     }
@@ -744,6 +762,8 @@ class MymuseTableproduct extends JTable
     
     	// Implement JObservableInterface: Post-processing by observers
     	$this->_observers->update('onAfterDelete', array($pk));
+    	
+    	$this->_observers->update('onFinderAfterDelete', array($pk));
     
     	return true;
     }

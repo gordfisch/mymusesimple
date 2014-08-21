@@ -38,6 +38,12 @@ class myMuseViewProduct extends JViewLegacy
 		$dispatcher	= JDispatcher::getInstance();
 
 		$this->item		= $this->get('Item');
+		if($this->item->parentid > 0){
+			//send them to the parent
+			$item->route = MyMuseHelperRoute::getProductRoute($item->id, $item->catid, $item->language);
+			$app->redirect($item->route);
+		}
+		
 		$this->print	= JRequest::getBool('print');
 		$this->state	= $this->get('State');
 		$this->user		= $user;

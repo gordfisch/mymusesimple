@@ -18,7 +18,7 @@ require_once JPATH_ADMINISTRATOR . '/components/com_finder/helpers/indexer/adapt
  * @subpackage  Finder.MyMuse
  * @since       2.5
  */
-class PlgFinderMyMuse extends FinderIndexerAdapter
+class PlgFinderMymuse extends FinderIndexerAdapter
 {
 	/**
 	 * The plugin identifier.
@@ -83,7 +83,7 @@ class PlgFinderMyMuse extends FinderIndexerAdapter
 	 */
 	public function onFinderCategoryChangeState($extension, $pks, $value)
 	{
-		// Make sure we're handling com_content categories.
+		// Make sure we're handling com_mymuse categories.
 		if ($extension == 'com_mymuse')
 		{
 			$this->categoryStateChange($pks, $value);
@@ -137,6 +137,7 @@ class PlgFinderMyMuse extends FinderIndexerAdapter
 	 */
 	public function onFinderAfterSave($context, $row, $isNew)
 	{
+
 		// We only want to handle articles here.
 		if ($context == 'com_mymuse.product' || $context == 'com_content.form')
 		{
@@ -217,7 +218,8 @@ class PlgFinderMyMuse extends FinderIndexerAdapter
 	 */
 	public function onFinderChangeState($context, $pks, $value)
 	{
-		// We only want to handle articles here.
+
+		// We only want to handle products here.
 		if ($context == 'com_mymuse.product' || $context == 'com_mymuse.form')
 		{
 			$this->itemStateChange($pks, $value);
@@ -266,8 +268,11 @@ class PlgFinderMyMuse extends FinderIndexerAdapter
 		$item->body = FinderIndexerHelper::prepareContent($item->body, $item->params);
 
 		// Build the necessary route and path information.
+		
+		//Special to MyMuse. Link to the parent if it is a child!!
 		$item->url = $this->getURL($item->id, $this->extension, $this->layout);
-		$item->route = MyMuseHelperRoute::getArticleRoute($item->slug, $item->catslug, $item->language);
+		//$item->url = MyMuseHelperRoute::getProductRoute($item->id, $item->catid, $item->language);
+		$item->route = MyMuseHelperRoute::getProductRoute($item->id, $item->catid, $item->language);
 		$item->path = FinderIndexerHelper::getContentPath($item->route);
 
 		// Get the menu title if it exists.
@@ -313,6 +318,21 @@ class PlgFinderMyMuse extends FinderIndexerAdapter
 		// Index the item.
 		$this->indexer->index($item);
 	}
+	
+	protected function getMyURL($item, $extension, $view)
+	{
+		//$db = JFactory::getDBO();
+		//$q = "SELECT parentid from #__mymuse_product WHERE id ='".$id."'";
+		//$db->setQuery($q);
+		//$parentid = $db->loadResult();
+		if($item->parentid > 0){
+			$id = $parentid;
+		}else{
+			$id = $item->id;
+		}
+	
+		return 'index.php?option=' . $extension . '&view=' . $view . '&id=' . $id;
+	}
 
 	/**
 	 * Method to setup the indexer to be run.
@@ -342,10 +362,10 @@ class PlgFinderMyMuse extends FinderIndexerAdapter
 	{
 		$db = JFactory::getDbo();
 
-		// Check if we can use the supplied SQL query.
-		$query = $query instanceof JDatabaseQuery ? $query : $db->getQuery(true)
+		// override the query to get parentid
+		$query = $db->getQuery(true)
 			->select('a.id, a.title, a.alias, a.introtext AS summary, a.fulltext AS body')
-			->select('a.state, a.catid, a.created AS start_date, a.created_by')
+			->select('a.parentid, a.state, a.catid, a.created AS start_date, a.created_by')
 			->select('a.created_by_alias, a.modified, a.modified_by, a.attribs AS params')
 			->select('a.metakey, a.metadesc, a.metadata, a.language, a.access, a.version, a.ordering')
 			->select('a.publish_up AS publish_start_date, a.publish_down AS publish_end_date')

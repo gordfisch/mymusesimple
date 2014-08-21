@@ -58,7 +58,6 @@ class MymuseControllerProduct extends JControllerForm
 		if($cid[0] > 0){
 			JRequest::setVar('id',$cid[0]);
 		}
-		
 
     }
     
@@ -74,17 +73,17 @@ class MymuseControllerProduct extends JControllerForm
     	
         $post = JRequest::get('post');
      
-        $this->id = isset($post['id'])? $post['id'] : null ;
-        $this->parentid = isset($post['parentid'])? $post['parentid'] : 0;
-        $form = $post['jform'];
-		$this->product_sku = $form['product_sku'];
-		$db = JFactory::getDBO();
+        $this->id 			= isset($post['id'])? $post['id'] : null ;
+        $this->parentid 	= isset($post['parentid'])? $post['parentid'] : 0;
+        $form 				= $post['jform'];
+		$this->product_sku 	= $form['product_sku'];
+		$db 				= JFactory::getDBO();
 
-		$subtype = $post['subtype'];
-		$layout = @$post['layout'];
-		$model =& $this->getModel();
-        $table =& $model->getTable();
-
+		$subtype 			= $post['subtype'];
+		$layout 			= @$post['layout'];
+		$model 				=& $this->getModel();
+        $table 				=& $model->getTable();
+        
     	// is this the special 'AllFiles'?
 		if(isset($form['product_allfiles']) && $form['product_allfiles'] == 1){
 			$subtype = 'allfiles';
@@ -98,8 +97,7 @@ class MymuseControllerProduct extends JControllerForm
 			
 			if ($this->save()) {
 				//get the product id
-				$query = "SELECT id FROM #__mymuse_product WHERE product_sku='".$this->product_sku."'";
-				
+				$query = "SELECT id FROM #__mymuse_product WHERE product_sku='".$this->product_sku."'";			
 				$db->setQuery($query);
 				if(!$this->id = $db->loadResult()){
 					$this->msg = JText::_( 'MYMUSE_COULD_NOT_FIND_ID' );
@@ -108,7 +106,7 @@ class MymuseControllerProduct extends JControllerForm
 				}
 			
 				$task = JRequest::getVar('task', null, 'default', 'cmd');
-				//echo $task; exit;
+			
 				switch ($task )
 				{
 				case 'apply_allfiles':
@@ -135,7 +133,7 @@ class MymuseControllerProduct extends JControllerForm
 				}
 			}else {
         		$this->msg = JText::_( 'MYMUSE_ERROR_SAVING_FILE' ).": ".$table->getError();
-        		//echo $this->msg; print_pre($_POST); exit;
+        		echo $this->msg; print_pre($_POST); exit;
         		if($this->id){
         			$this->setRedirect( "index.php?option=com_mymuse&view=product&task=product.editfile&parentid=".$this->parentid.'&id='.$this->id.'&subtype='.$post['subtype'], $this->msg );
         		}else{
@@ -144,7 +142,7 @@ class MymuseControllerProduct extends JControllerForm
 
         	}
  
-			//save an item
+		//save an item
 		}elseif ($this->save()) {
 			//get the product id
 			$query = "SELECT id FROM #__mymuse_product WHERE product_sku='".$this->product_sku."'";
@@ -255,7 +253,7 @@ class MymuseControllerProduct extends JControllerForm
      */
     public function saveOrderAjax()
     {
-    	MyMuseHelper::logMessage("here ware Ajax\n");
+    	//MyMuseHelper::logMessage("here we are Ajax\n");
     	// Get the input
     	$pks = $this->input->post->get('cid', array(), 'array');
     	$order = $this->input->post->get('order', array(), 'array');

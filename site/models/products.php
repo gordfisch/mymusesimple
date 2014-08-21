@@ -333,43 +333,51 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 			$includeSubcategories = $this->getState('filter.subcategories', false);
 			
 			$categoryEquals = 'a.catid '.$type.(int) $categoryId;
-			//$categoryEquals = 1;
 
 			//ARBORETA
 			//get other sub cats
-			if ($includeSubcategories) {
-				$in = array();
-				$subQuery = "SELECT sub.id FROM #__categories as sub
-				INNER JOIN #__categories as this ON sub.lft > this.lft AND sub.rgt < this.rgt
-				WHERE this.id = $categoryId";
-					
-				$db->setQuery($subQuery);
-				$subCats = $db->loadObjectList();
-				foreach($subCats as $subCat){
-					$subQuery = "SELECT product_id FROM #__mymuse_product_category_xref WHERE catid = ".$subCat->id;
-					$db->setQuery($subQuery);
-					$pids = $db->loadObjectList();
-						
-					foreach($pids as $pid){
-						$in[] = $pid->product_id;
-					}
-				}
-			}
-			// get this cat from xref
+			$in = array();
+			
+		    // get prodids from xref for the top level cat
 			$subQuery = "SELECT product_id FROM #__mymuse_product_category_xref WHERE catid = ".$categoryId;
 			$db->setQuery($subQuery);
 			$pids = $db->loadObjectList();
 			foreach($pids as $pid){
 				$in[] = $pid->product_id;
 			}
-			
-			if(!count($in)){
-				$in[] = 0;
-			}
-			$IN = "(".implode(",",$in).")";
-		
-
+            
 			if ($includeSubcategories) {
+				
+				$subQuery = "SELECT sub.id FROM #__categories as sub
+				INNER JOIN #__categories as this ON sub.lft > this.lft AND sub.rgt < this.rgt
+				WHERE this.id = $categoryId";
+					
+				$db->setQuery($subQuery);
+				$subCats = $db->loadObjectList();
+               
+                $cats_in[] = $categoryId;
+				foreach($subCats as $subCat){
+                    $cats_in[] = $subCat->id;
+                }
+                $cats_in = "(".implode(",",$cats_in).")";   
+                  
+                $subQuery = "SELECT product_id FROM #__mymuse_product_category_xref WHERE catid IN ".$cats_in;
+                //echo $subQuery;
+                $db->setQuery($subQuery);
+                $pids = $db->loadObjectList();
+						
+                foreach($pids as $pid){
+                    $in[] = $pid->product_id;
+                }
+            }
+                
+                if(!count($in)){
+                	$in[] = 0;
+                }
+                $IN = "(".implode(",",$in).")";
+                
+                
+            if ($includeSubcategories) {
 				
 				$levels = (int) $this->getState('filter.max_category_levels', '1');
 				// Create a subquery for the subcategory list
@@ -548,7 +556,7 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 		c.title, c.path, c.access, c.alias, uam.id, ua.name, ua.email, contact.id, parent.title, 
 		parent.id, parent.path, parent.alias, v.rating_sum, v.rating_count, c.published, c.lft, 
 		a.ordering, parent.lft,  c.id, a.urls');
-
+//echo $query;
 		return $query;
 	}
 

@@ -250,7 +250,7 @@ class MyMuseModelTracks extends JModelList
         p.id as parentid, p.title as product_title, p.alias as parent_alias, p.catid as artistid, 
         p.product_made_date as product_made_date,
         p.created as created, p.publish_up as publish_up, p.modified as modified,
-        c.title as category_name, s.sales,
+        c.title as category_name, c.alias as category_alias, s.sales,
         ROUND(v.rating_sum / v.rating_count, 0) AS rating, v.rating_count as rating_count,
         CASE WHEN p.created_by_alias > ' ' THEN p.created_by_alias ELSE ua.name END AS author
         FROM #__mymuse_product as a
@@ -422,6 +422,11 @@ class MyMuseModelTracks extends JModelList
 		$tracks	= parent::getItems();
 
 		$site_url = preg_replace("#administrator/#","",JURI::base());
+		
+		$site_url = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base());
+
+		
+		
 		$globalParams = JComponentHelper::getParams('com_mymuse', true);
         $root = JPATH_ROOT.DS;
         $top_cat = $this->getState('filter.category_id');
@@ -481,8 +486,9 @@ class MyMuseModelTracks extends JModelList
 				$tracks[$i]->price = MyMuseCheckout::addTax($item->price);
 			}
 			$track->params = clone $this->getState('params');
-			$artist_alias = MyMuseHelper::getArtistAlias($track->artistid);
-			$album_alias = MyMuseHelper::getAlbumAlias($track->parentid);
+			
+			$artist_alias = $track->category_alias;
+			$album_alias = $track->parent_alias;
 
             //get download file
             if($params->get('my_encode_filenames')){
@@ -490,6 +496,10 @@ class MyMuseModelTracks extends JModelList
             }else{
                 $track->download_name = $track->file_name;
             }
+            
+            
+           
+            
             
             $down_dir = str_replace($root,'',$params->get('my_download_dir'));
             $track->download_path = JURI::base().'/'.$down_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->download_name;
@@ -527,6 +537,10 @@ class MyMuseModelTracks extends JModelList
             }
         }
         $dispatcher		=& JDispatcher::getInstance();
+        //$prev_dir = $site_url.str_replace($root,'',$params->get('my_preview_dir'));
+        $prev_dir = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base());
+        $prev_dir .= $params->get('my_use_s3')? '' :  $params->get('my_preview_dir');
+         
 
         if(count($preview_tracks) && ($params->get('product_player_type') == "each" || 
             $params->get('product_player_type') == "single")){
@@ -536,14 +550,18 @@ class MyMuseModelTracks extends JModelList
                 if($track->product_allfiles == 1){
                     continue;
                 }
-                $artist_alias = MyMuseHelper::getArtistAlias($track->artistid);
-                $album_alias = MyMuseHelper::getAlbumAlias($track->parentid);
+                
+                $artist_alias = $track->category_alias;
+				$album_alias = $track->parent_alias;
+			
                 $flash = '';
                 $track->purchased = 0;
                 //echo "artist alias $album_alias $artist_alias";
                 if($track->file_preview){
 
-                    $prev_dir = $site_url.str_replace($root,'',$params->get('my_preview_dir'));
+                   
+                    
+                    
                     $track->path = $prev_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->file_preview;
                     $track->real_path = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview;
                     if($track->file_preview_2){
@@ -556,12 +574,12 @@ class MyMuseModelTracks extends JModelList
                     }
                     
                     //should we use the real download file?
-                    if($params->get('my_play_downloads', 0) && in_array($track->id, $myOrders)){
+                    if(!$params->get('my_use_s3') && $params->get('my_play_downloads', 0) && in_array($track->id, $myOrders)){
                         $track->path = $track->download_path;
                         $track->real_path = $track->download_real_path;
                         $track->purchased = 1;
                     }
-                    if($params->get('my_play_downloads', 0) && 
+                    if(!$params->get('my_use_s3') && $params->get('my_play_downloads', 0) && 
                             (!$track->price["product_price"] || $track->price["product_price"] == "FREE")){
                         $track->path = $track->download_path;
                         $track->real_path = $track->download_real_path;
@@ -650,8 +668,7 @@ class MyMuseModelTracks extends JModelList
             reset($preview_tracks);
             $this->_category->previews = array();
             $audio = 0;
-            $site_url = preg_replace("#administrator/#","",JURI::base());
-            $prev_dir = $site_url.str_replace($root,'',$params->get('my_preview_dir'));
+     
             $i = 0;
             $type = "";
             foreach($preview_tracks as $track){
@@ -700,7 +717,7 @@ class MyMuseModelTracks extends JModelList
         }
         
         // free downloads
-        if(count($tracks) && $params->get('my_free_downloads')){
+        if(!$params->get('my_use_s3') && count($tracks) && $params->get('my_free_downloads')){
             reset($tracks);
             foreach($tracks as $track){
                 if(

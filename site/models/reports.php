@@ -53,6 +53,13 @@ class myMuseModelReports extends JmodelList
 	 * array
 	 */
 	var $_cats = array();
+	
+	/**
+	 * catids string for SQL
+	 *
+	 * string
+	 */
+	var $_catids = array();
     
 	/**
 	 * Store lists array
@@ -80,21 +87,80 @@ class myMuseModelReports extends JmodelList
 	
 	function __construct(){
 		
-		parent::__construct();
-
-        $app = JFactory::getApplication();
+		$app = JFactory::getApplication();
 		$user   = JFactory::getUser();
-        $profile = $user->get('profile');
+		$profile = $user->get('profile');
 		$catid = @$profile['category_owner'];
-        $this->_catid = (int)$catid;
+		$this->_catid = (int)$catid;
+		$db	 = JFactory::getDbo();
+		
+		$subid	= $app->getUserStateFromRequest( $this->context.'catid','catid','','int' );
+		
+		//what if they want a sub-cat of the parent
+		$subid = JRequest::getVar('catid',0);
+		if($subid && $subid != $catid){
+			$this->_catid = $subid;
+		}
+		
+		$options = array();
+		$categories = JCategories::getInstance('MyMuse', $options);
+		 
+		$this->_parent = $categories->get($this->_catid, true);
+		 
+		if (is_object($this->_parent)) {
+			$this->_cats = $this->_parent->getChildren(true);
+		}
+		else {
+			$this->_cats = false;
+		}
+			
+		//make sql bit for catids. get all subcats
+		$catids = '(';
+		$catids .= $this->_catid.",";
+		 
+		if(is_array($this->_cats)){
+			foreach($this->_cats as $cat){
+				$catids .= $cat->id.",";
+			}
+		}
+		$catids = preg_replace("/,$/","",$catids);
+		$catids .= ")";
+		$this->_catids = $catids;
+		
+		 
+		//get products that fall under categories
+		//from product_category_xref
+		$q = "SELECT product_id from #__mymuse_product_category_xref
+		WHERE catid IN $catids";
+		$db->setQuery( $q );
+		$prodres = $db->loadColumn();
+		 
+		
+		//from products
+		$q = "SELECT id as product_id from #__mymuse_product
+		WHERE catid IN $catids";
+		$db->setQuery( $q );
+		$prodres2 = $db->loadColumn();
+		
+		$prodres = array_merge($prodres,$prodres2);
+	
+		$prodids = "(".implode(',',array_values($prodres)).")";
+
+		
+
+		//get child tracks
+		$q = "SELECT id as product_id from #__mymuse_product
+		WHERE parentid in $prodids";
+		$db->setQuery( $q );
+		$children = $db->loadColumn();		
         
-        $subid	= $app->getUserStateFromRequest( $this->context.'catid','catid','','int' );
-        
-        //what if they want a sub-cat of the parent
-        $subid = JRequest::getVar('catid',0);
-        if($subid && $subid != $catid){
-            $this->_catid = $subid;
-        }
+		$prodres = array_merge($prodres,$children);
+		$prodids = "(".implode(',',array_values($prodres)).")";
+		
+		$this->_prodids = $prodids;   
+		
+		parent::__construct();
+     
 	}
 	
   	/**
@@ -135,7 +201,7 @@ class myMuseModelReports extends JmodelList
   			
   	
   		}
-  	
+
   		return $this->_cats;
   	}
   	
@@ -155,53 +221,11 @@ class myMuseModelReports extends JmodelList
     	parent::populateState('a.id', 'asc');
     
     	$catid	= $this->_catid;
-    	$this->setState('filter.catid', $catid);
-    	if($catid){
-    		$this->getCats($catid, true);
-    		//make sql bit for catids. get all subcats
-    		$catids = '(';
-    		$catids .= "$catid,";
-    		 
-    		if(is_array($this->_cats)){
-    			foreach($this->_cats as $cat){
-    				$catids .= $cat->id.",";
-    			}
-    		}
-    		$catids = preg_replace("/,$/","",$catids);
-    		$catids .= ")";
+    	$this->setState('filter.catid', $this->_catid);
+
+    	$this->setState('list.catids', $this->_catids);
     	
-    		$this->setState('list.catids', $catids);
-    	
-    		//get products that fall under categories
-    		
-    		/** from product_category_xref 
-    		$q = "SELECT product_id from #__mymuse_product_category_xref
-    		WHERE catid IN $catids";
-    		$db->setQuery( $q );
-    		$prodres = $this->_db->loadObjectList();
-    		*/
-    		
-    		$q = "SELECT id as product_id from #__mymuse_product
-    		WHERE catid IN $catids";
-    		$db->setQuery( $q );
-    		$prodres = $this->_db->loadObjectList();
-    	
-    		//$prodres = array_merge($prodres,$prodres2);
-    	
-    		//make sql bit for productid.
-    		$prodids = '';
-    		if($prodres){
-    			$prodids = "(";
-    			foreach($prodres as $id){
-    				$prodids .= $id->product_id.",";
-    			}
-    			$prodids = preg_replace("/,$/","",$prodids);
-    			$prodids .= ")";
-    		}
-    		$this->setState('list.prodids', $prodids);
-    	
-    	}
-    	
+    	$this->setState('list.prodids', $this->_prodids);
     	
     	$order_status = $app->getUserStateFromRequest($this->context.'.filter.order_status', 'filter_order_status', '', 'string');
     	$this->setState('filter.order_status', $order_status);
@@ -594,7 +618,8 @@ class myMuseModelReports extends JmodelList
     public function getForm($data = array(), $loadData = true)
     {
     	// Initialise variables.
-    	
+    	//echo "catids = ".$this->_catids." <br />";
+    	//echo "prodids = ".$this->_prodids."<br />";
 
     	// Get the form.
     	$form = $this->loadForm('com_mymuse.reports', 'reports', array('load_data' => $loadData));
