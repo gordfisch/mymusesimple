@@ -68,7 +68,7 @@ function hasProduct(that, count){
 <!--  HEADING TITLE ICONS -->
 <div class="mymuse">
 
-<?php if ($this->params->get('show_page_heading', 1)) : ?>
+<?php if ($this->params->get('show_page_heading', 0)) : ?>
 	<h1>
 	<?php echo $this->escape($this->params->get('page_heading')); ?>
 	</h1>

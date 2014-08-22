@@ -763,7 +763,10 @@ class MymuseTableproduct extends JTable
     	// Implement JObservableInterface: Post-processing by observers
     	$this->_observers->update('onAfterDelete', array($pk));
     	
-    	$this->_observers->update('onFinderAfterDelete', array($pk));
+    	$dispatcher = JEventDispatcher::getInstance();
+    	JPluginHelper::importPlugin('finder');
+    	$res = $dispatcher->trigger('onFinderAfterDelete', array('com_mymuse.product', $this, $isNew));
+
     
     	return true;
     }
