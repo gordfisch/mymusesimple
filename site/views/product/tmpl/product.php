@@ -38,8 +38,9 @@ if(count($items) && !$items_select){
 if(count($tracks)){ 
 	$count += count($tracks);
 }
+
 ?>
- 
+
 <script type="text/javascript">
 function hasProduct(that, count){
 	<?php if($items_select && count($items)){ ?>

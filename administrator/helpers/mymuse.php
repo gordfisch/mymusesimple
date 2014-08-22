@@ -236,6 +236,7 @@ class MyMuseHelper extends JObject
 			//merge app params includes menu
 			$app            = JFactory::getApplication();
 			if(!$app->isAdmin()){
+				
 				$app_params      = $app->getParams();
 				$params->merge( $app_params );
 			}
