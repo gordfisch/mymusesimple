@@ -103,28 +103,32 @@ Joomla.orderTable = function()
 				<div class="toolbar-list" id="toolbar">
 	<ul  style="list-style-type: none;">
 
-		<li class="btn btn-small" id="toolbar-edit"  style="display: inline;"><a href="#"
+		<li id="toolbar-edit"  style="display: inline;"><button
+		 class="btn btn-small btn-success"
 			onclick="javascript: if (document.adminForm.boxchecked.value==0){
 			alert('<?php echo JText::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'); ?>');}
 			else{ submitbutton1('product.edit')}" > <span
-			class="icon-32-edit"> </span> <?php echo JText::_( 'MYMUSE_EDIT_TRACK' ); ?> </a>
+			class="icon-apply icon-white"> </span> <?php echo JText::_( 'MYMUSE_EDIT_TRACK' ); ?> </button>
 		</li>
 
-		<li class="btn btn-small" id=""  style="display: inline;"><a href="#"
+		<li  id=""  style="display: inline;"><button
+		 class="btn btn-small btn-success"
 			onclick="javascript: submitbutton1('product.addfile')" class="toolbar"> <span
-			class="icon-32-new"> </span> <?php echo JText::_( 'MYMUSE_NEW_TRACK' ); ?> </a>
+			class="icon-new icon-white"> </span> <?php echo JText::_( 'MYMUSE_NEW_TRACK' ); ?> </button>
 		</li>
 <?php if(!$all_files){ ?>		
-		<li class="btn btn-small" id="toolbar-all"  style="display: inline;"><a href="#"
+		<li  id="toolbar-all"  style="display: inline;"><button
+		 class="btn btn-small btn-success"
 			onclick="javascript: submitbutton1('product.new_allfiles')" class="toolbar"> <span
-			class="icon-32-new"> </span> <?php echo JText::_( 'MYMUSE_ALL_TRACKS' ); ?> </a>
+			class="icon-new "> </span> <?php echo JText::_( 'MYMUSE_ALL_TRACKS' ); ?> </button>
 		</li>
 <?php } ?>	
-		<li class="btn btn-small" id="toolbar-delete"  style="display: inline;"><a href="#"
+		<li  id="toolbar-delete"  style="display: inline;"><button
+		 class="btn btn-small btn-danger"
 			onclick="javascript: if (document.adminForm.boxchecked.value==0){
 				alert('<?php echo JText::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'); ?>');}
 				else{ submitbutton1('product.removefile')}" class="toolbar"> <span
-			class="icon-32-delete"> </span> <?php echo JText::_( 'MYMUSE_DELETE_TRACKS' ); ?> </a>
+			class="icon-apply icon-white"> </span> <?php echo JText::_( 'MYMUSE_DELETE_TRACKS' ); ?> </button>
 		</li>
 	</ul>
 				</div>
