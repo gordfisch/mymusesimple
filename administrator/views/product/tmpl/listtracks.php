@@ -111,7 +111,7 @@ Joomla.orderTable = function()
 			class="icon-apply icon-white"> </span> <?php echo JText::_( 'MYMUSE_EDIT_TRACK' ); ?> </button>
 		</li>
 
-		<li  id=""  style="display: inline;"><button
+		<li  id="toolbar-add"  style="display: inline;"><button
 		 class="btn btn-small btn-success"
 			onclick="javascript: submitbutton1('product.addfile')" class="toolbar"> <span
 			class="icon-new icon-white"> </span> <?php echo JText::_( 'MYMUSE_NEW_TRACK' ); ?> </button>
