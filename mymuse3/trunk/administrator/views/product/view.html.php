@@ -58,13 +58,12 @@ class MymuseViewProduct extends JViewLegacy
 			$this->items 	= $this->get('Items');
 			$this->itemPagination = $this->get('ItemPagination');
 		}
-		
+
 		$this->setLayout($layout);
 		
-		
 		//new file || edit file
-		if($task == "addfile" || ($this->item->parentid && !$this->item->product_allfiles)){
-
+		if($task == "addfile" || (isset($this->item->parentid) && $this->item->parentid > 0 && !$this->item->product_allfiles && $subtype == "file")){
+		
 			$layout = 'edittracks';
         	$this->setLayout('edittracks');
         	$filelists = $this->get('FileLists');
@@ -95,11 +94,13 @@ class MymuseViewProduct extends JViewLegacy
         	$layout = 'edititems';
         	$this->setLayout('edititems');
         	$this->attribute_skus = $this->get('Attributeskus');
+        	
         	$this->attributes = $this->get('Attributes');
         	$isNew  = (@$items->id < 1);
         	$this->lists['isNew'] = $isNew;
         	JRequest::setVar('subtype','item');
         	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'item');
+        	
         }
 
         //It's the parent, set the user state

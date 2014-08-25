@@ -1,5 +1,12 @@
 <?php
-		//ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS
+//ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS
+JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+
+JHtml::_('bootstrap.tooltip');
+JHtml::_('behavior.multiselect');
+JHtml::_('dropdown.init');
+JHtml::_('formbehavior.chosen', 'select');
+
 $lists 		= $this->lists;
 $listOrder	= $this->escape($this->state->get('item.ordering'));
 $listDirn	= $this->escape($this->state->get('item.direction'));
@@ -101,25 +108,29 @@ $assoc		= isset($app->item_associations) ? $app->item_associations : 0;
 			<div class="m">
 				<div class="toolbar-list" id="toolbar">
 	<ul  style="list-style-type: none;">
-
-		<li class="btn btn-small" id="toolbar-edit" style="display: inline;"><a href="#"
+		
+		<li id="toolbar-list" style="display: inline;"><button
+		 class="btn btn-small btn-success"
 			onclick="javascript: submitform4('list')" class="toolbar"> <span
-			class="icon-32-publish"> </span> <?php echo JText::_( 'MYMUSE_LIST_ATTRIBUTES' ); ?> </a>
+			class="icon-apply icon-white"> </span> <?php echo JText::_( 'MYMUSE_LIST_ATTRIBUTES' ); ?> </button>
 		</li>
 
-		<li class="btn btn-small" id="toolbar-new" style="display: inline;"><a href="#"
+		<li id="toolbar-new" style="display: inline;"><button
+		 class="btn btn-small btn-success"
 			onclick="javascript: submitform5('productattributesku.add')" class="toolbar"> <span
-			class="icon-32-new"> </span> <?php echo JText::_( 'MYMUSE_ADD_ATTRIBUTES' ); ?> </a>
+			class="icon-new icon-white"> </span> <?php echo JText::_( 'MYMUSE_ADD_ATTRIBUTES' ); ?></button>
 		</li>	
-		<li class="btn btn-small" id="toolbar-all" style="display: inline;"><a href="#"
+		<li id="toolbar-new-item" style="display: inline;"><button
+		 class="btn btn-small btn-success"
 			onclick="javascript: submitbutton1('product.additem')" class="toolbar"> <span
-			class="icon-32-new"> </span> <?php echo JText::_( 'MYMUSE_NEW_ITEM' ); ?> </a>
+			class="icon-new icon-white"> </span> <?php echo JText::_( 'MYMUSE_NEW_ITEM' ); ?> </a>
 		</li>
-		<li class="btn btn-small" id="toolbar-new" style="display: inline;"><a href="#"
+		<li id="toolbar-delete" style="display: inline;"><button
+		 class="btn btn-small btn-danger"
 			onclick="javascript: if (document.adminForm.boxchecked.value==0){
 				alert('<?php echo JText::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'); ?>');}
 		else{ submitbutton1('product.removeitem'); }" class="toolbar"> <span
-			class="icon-32-delete"> </span> <?php echo JText::_( 'MYMUSE_DELETE_ITEM' ); ?> </a>
+			class="icon-apply icon-white"> </span> <?php echo JText::_( 'MYMUSE_DELETE_ITEM' ); ?> </button>
 		</li>
 	</ul>
 				</div>
