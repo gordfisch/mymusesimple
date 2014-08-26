@@ -18,7 +18,6 @@ $attributes = $this->attributes;
 $lists = $this->lists;
 JFilterOutput::objectHTMLSafe( $row );
 JHTML::_('behavior.tooltip');
-
 ?>
 		<script  type="text/javascript">
 		<!--
