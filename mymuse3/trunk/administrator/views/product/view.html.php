@@ -60,7 +60,7 @@ class MymuseViewProduct extends JViewLegacy
 		}
 
 		$this->setLayout($layout);
-		
+ 
 		//new file || edit file
 		if($task == "addfile" || (isset($this->item->parentid) && $this->item->parentid > 0 && !$this->item->product_allfiles && $subtype == "file")){
 		
@@ -94,8 +94,16 @@ class MymuseViewProduct extends JViewLegacy
         	$layout = 'edititems';
         	$this->setLayout('edititems');
         	$this->attribute_skus = $this->get('Attributeskus');
-        	
         	$this->attributes = $this->get('Attributes');
+        	if(!count($this->attribute_skus)){
+        		//no attributes ye1!!
+        		$msg = JText::_("MYMUSE_CREATE_ATTRIBUTE_FIRST");
+        		$url = "index.php?option=com_mymuse&view=product&layout=listitems&id=".$this->item->parentid;
+        		$app->redirect($url, $msg);
+        		exit;
+        	}
+        	
+        	
         	$isNew  = (@$items->id < 1);
         	$this->lists['isNew'] = $isNew;
         	JRequest::setVar('subtype','item');
