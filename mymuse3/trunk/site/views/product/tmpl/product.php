@@ -586,7 +586,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
         			
         			<!--  PREVIEW COLUMN -->
         			<?php  if($params->get('product_show_preview_column', 1) && $params->get('product_player_type') != "playlist"){?>	
-        				<td class="mypreviews tracks jp-gui ui-widget ui-widget-content ui-corner-all"><?php echo $track->flash; ?></td>
+        				<td class="mypreviews tracks jp-gui ui-widget"><?php echo $track->flash; ?></td>
         			<?php }?>
         			
       				</tr>

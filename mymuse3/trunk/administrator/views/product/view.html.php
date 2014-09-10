@@ -40,7 +40,6 @@ class MymuseViewProduct extends JViewLegacy
 		$task 			= JRequest::getVar('task', 'edit');
 		$view 			= JRequest::getVar('view');
 		
-
         $isNew  		= ($this->item->id < 1);
 		$lists['isNew'] = $isNew;
 		
@@ -62,7 +61,7 @@ class MymuseViewProduct extends JViewLegacy
 		$this->setLayout($layout);
  
 		//new file || edit file
-		if($task == "addfile" || (isset($this->item->parentid) && $this->item->parentid > 0 && !$this->item->product_allfiles && $subtype == "file")){
+		if($task == "addfile" || $task == "product.addfile" || (isset($this->item->parentid) && $this->item->parentid > 0 && !$this->item->product_allfiles && $subtype == "file")){
 		
 			$layout = 'edittracks';
         	$this->setLayout('edittracks');
@@ -78,7 +77,7 @@ class MymuseViewProduct extends JViewLegacy
         }
         
         // allfiles
-        if($task == "new_allfiles" || ($this->item->parentid && $this->item->product_allfiles)){
+        if($task == "new_allfiles" || $task == "product.new_allfiles" || ($this->item->parentid && $this->item->product_allfiles)){
         	$layout = 'new_allfiles';
         	$this->setLayout('edit_allfiles');
 			if(!$this->item->parentid){
@@ -88,8 +87,9 @@ class MymuseViewProduct extends JViewLegacy
         	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'allfiles');
   
         }
+     
         //item
-        if($task == "additem" || (isset($this->item->parentid) && $this->item->parentid > 0 && $this->item->product_physical)){
+        if($task == "additem" || $task == "product.additem" || (isset($this->item->parentid) && $this->item->parentid > 0 && $this->item->product_physical)){
         	
         	$layout = 'edititems';
         	$this->setLayout('edititems');

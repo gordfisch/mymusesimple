@@ -30,11 +30,11 @@ $assoc		= isset($app->item_associations) ? $app->item_associations : 0;
 			$ordering = ($listOrder == 'a.ordering');
 		?>
 		<script type="text/javascript">
-		Joomla.orderTable = function()
+		Joomla.orderTable2 = function()
 		{
 			table = document.getElementById("sortTable");
 			direction = document.getElementById("directionTable");
-			alert(direction);
+			
 			order = table.options[table.selectedIndex].value;
 			if (order != '<?php echo $listOrder; ?>')
 			{
@@ -210,6 +210,9 @@ $assoc		= isset($app->item_associations) ? $app->item_associations : 0;
 					<th class="title" width="10%">
 						<?php echo JHtml::_('grid.sort', 'MYMUSE_DISCOUNT', 'a.discount', $listDirn, $listOrder); ?>
 					</th>
+					<th class="title" width="10%">
+						<?php echo JHtml::_('grid.sort', 'MYMUSE_PRODUCT_IN_STOCK_LABEL', 'a.product_in_stock', $listDirn, $listOrder); ?>
+					</th>
 		
 					<?php foreach($lists['attribute_sku'] as $a_sku){ ?>
 						<th><?php echo $a_sku->name; ?>
@@ -281,6 +284,8 @@ $assoc		= isset($app->item_associations) ? $app->item_associations : 0;
 					</td>
 					<td align="right"><?php echo $item->price; ?></td>
 					<td align="right"><?php echo $item->product_discount; ?></td>
+					
+					<td align="right"><?php echo $item->product_in_stock; ?></td>
 					<?php foreach($lists['attribute_sku'] as $a_sku){?>
 						<td align="center"><?php echo $item->attributes[$a_sku->name]; ?>
 						</td>
