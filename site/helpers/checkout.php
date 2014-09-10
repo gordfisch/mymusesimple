@@ -224,7 +224,7 @@ class MyMuseCheckout
 
 
 		//save the order number in the session
-		$session = &JFactory::getSession();
+		$session = JFactory::getSession();
 		$session->set("order_number",$order->order_number);
 
 
@@ -397,7 +397,7 @@ class MyMuseCheckout
 		$link_message = '';
 		
 		//see if there is a message
-		$dispatcher		=& JDispatcher::getInstance();
+		$dispatcher		= JDispatcher::getInstance();
 		$pp = JRequest::getVar('pp', '');
 		$my_email_msg = $params->get('my_email_msg');
 		if($pp){

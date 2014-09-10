@@ -50,42 +50,81 @@ JHTML::_('behavior.tooltip');
 		<form action="index.php" method="post" name="adminForm" id="adminForm">
 <div id="j-main-container" class="span10">
 <div class="pull-left">
-	<fieldset class="adminform">
+	<fieldset class="adminform form-horizontal">
 
 			<legend><?php echo empty($this->item->id) ? JText::_('MYMUSE_NEW_ITEM') : JText::sprintf('MYMUSE_EDIT_ITEM', $this->item->id); ?></legend>
-			<ul class="adminformlist">
-				<li><?php echo $this->form->getLabel('title'); ?>
-				<?php echo $this->form->getInput('title'); ?></li>
+				<div class="control-group">
+					<div class="control-label">
+						<?php echo $this->form->getLabel('id'); ?>
+					</div>
+					<div class="controls">
+						<?php echo $this->form->getInput('id'); ?>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="control-label">
+						<?php echo $this->form->getLabel('title'); ?>
+					</div>
+					<div class="controls">
+						<?php echo $this->form->getInput('title'); ?>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="control-label">
+						<?php echo $this->form->getLabel('product_sku'); ?>
+					</div>
+					<div class="controls">
+						<?php echo $this->form->getInput('product_sku'); ?>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="control-label">
+						<?php echo $this->form->getLabel('price'); ?>
+					</div>
+					<div class="controls">
+						<?php echo $this->form->getInput('price'); ?>
+					</div>
+				</div>
 				
-				<li><?php echo $this->form->getLabel('product_sku'); ?>
-				<?php echo $this->form->getInput('product_sku'); ?></li>
+				<div class="control-group">
+					<div class="control-label">
+						<?php echo $this->form->getLabel('state'); ?>
+					</div>
+					<div class="controls">
+						<?php echo $this->form->getInput('state'); ?>
+					</div>
+				</div>
+				<div class="control-group">
+					<div class="control-label">
+						<?php echo $this->form->getLabel('language'); ?>
+					</div>
+					<div class="controls">
+						<?php echo $this->form->getInput('language'); ?>
+					</div>
+				</div>
 				
-				<li><?php echo $this->form->getLabel('price'); ?>
-				<?php echo $this->form->getInput('price'); ?></li>
-				
-				<li><?php echo $this->form->getLabel('product_discount'); ?>
-				<?php echo $this->form->getInput('product_discount'); ?></li>
-				
-				<li><?php echo $this->form->getLabel('state'); ?>
-				<?php echo $this->form->getInput('state'); ?></li>
-
-				<li><?php echo $this->form->getLabel('language'); ?>
-				<?php echo $this->form->getInput('language'); ?></li>
-
-				<li><?php echo $this->form->getLabel('id'); ?>
-				<?php echo $this->form->getInput('id'); ?></li>
-				
-			</ul>
+				<div class="control-group">
+					<div class="control-label">
+						<?php echo $this->form->getLabel('product_in_stock'); ?>
+					</div>
+					<div class="controls">
+						<?php echo $this->form->getInput('product_in_stock'); ?>
+					</div>
+				</div>
+	
 	</fieldset>
 </div>
 <div class="pull-right">
-	<fieldset class="adminform">
+	<fieldset class="adminform form-horizontal">
 			<legend><?php echo JText::_('MYMUSE_ITEM_ATTRIBUTES'); ?></legend>
-			<ul class="adminformlist">
+		
 			<?php
 			foreach($attribute_skus as $attribute_sku){
 					?>
-			<li><label><?php echo $attribute_sku->name; ?></label>
+			<div class="control-group">
+					<div class="control-label"><?php echo $attribute_sku->name; ?>
+			</div>
+			<div class="controls">
 				<input class="inputbox" type="text"
 					name="attribute_value[<?php echo $attribute_sku->id; ?>]"
 					id="attribute_value.<?php echo $attribute_sku->id; ?>" size="30"
@@ -94,9 +133,9 @@ JHTML::_('behavior.tooltip');
 					type="hidden"
 					name="attribute_name[<?php echo $attribute_sku->id; ?>]"
 					value="<?php echo $attribute_sku->name ?>" />
-			</li>
+			</div>
 			<?php } ?>
-		</ul>
+	
 </fieldset>
 </div>
 

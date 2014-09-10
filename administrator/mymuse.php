@@ -33,9 +33,6 @@ require_once (JPATH_COMPONENT.DS.'helpers'.DS.'mymuse.php');
 require_once (JPATH_COMPONENT.DS.'helpers'.DS.'permission.php');
 
 
-
-//print_pre($_POST); exit;
-
 //initialize
 $params = MyMuseHelper::getParams();
 

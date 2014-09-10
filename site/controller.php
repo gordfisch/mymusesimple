@@ -501,7 +501,6 @@ class MyMuseController extends JControllerLegacy
 		}
 		
 		
-		
 		if(!$orderid){
 			// no id
 			$msg = JText::_("MYMUSE_NO_ORDER_ID");
@@ -526,7 +525,7 @@ class MyMuseController extends JControllerLegacy
 	
 		$notifyCustomer = JRequest::getVar('notifyCustomer', 0);
 		if($notifyCustomer){
-			MyMuseCheckout::mailOrder($this->MyMuseShopper,$this->MyMuseStore);
+			$this->MyMuseCheckout->mailOrder($this->MyMuseShopper,$this->MyMuseStore);
 		}
 		
 		if($this->MyMuseShopper->order->order_status == "C"){
