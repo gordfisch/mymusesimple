@@ -31,24 +31,23 @@ class MymuseViewProduct extends JViewLegacy
 		$this->item		= $this->get('Item');
 		$this->form		= $this->get('Form');
 		$this->lists 	= $this->get('Lists');
-
+		$input = JFactory::getApplication()->input; 
 
 
 		$this->params 	= MyMuseHelper::getParams();
 		$app 			= JFactory::getApplication();
 		$subtype 		= $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'details');
-		$task 			= JRequest::getVar('task', 'edit');
-		$view 			= JRequest::getVar('view');
+		$task 			= $input->get('task', 'edit');
+		$view 			= $input->get('view');
 		
         $isNew  		= ($this->item->id < 1);
 		$lists['isNew'] = $isNew;
 		
-		
+
 		
 		//setlayout
-		$jinput = JFactory::getApplication()->input;
-		$layout = $jinput->get('layout', 'edit');
-
+		$layout = $input->get('layout', 'edit');
+		
 		if($layout == "listtracks"){
 			$this->tracks 	= $this->get('Tracks');
 			$this->trackPagination = $this->get('TrackPagination');
@@ -59,9 +58,9 @@ class MymuseViewProduct extends JViewLegacy
 		}
 
 		$this->setLayout($layout);
- 
+
 		//new file || edit file
-		if($task == "addfile" || $task == "product.addfile" || (isset($this->item->parentid) && $this->item->parentid > 0 && !$this->item->product_allfiles && $subtype == "file")){
+		if($task == "addfile" || $task == "editfile" || (isset($this->item->parentid) && $this->item->parentid > 0 && !$this->item->product_allfiles && $subtype == "file")){
 		
 			$layout = 'edittracks';
         	$this->setLayout('edittracks');

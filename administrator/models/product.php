@@ -197,9 +197,10 @@ class MymuseModelproduct extends JModelAdmin
 	public function getItem($pk = null)
 	{
 		if(!$this->_item){
-			$task = JRequest::getVar('task','');
-			$parentid= JRequest::getVar('parentid','');
-			$id = JRequest::getVar('id','');
+			$input = JFactory::getApplication()->input;
+			$task = $input->get('task','');
+			$parentid= $input->get('parentid','');
+			$id = $input->get('id','');
 			if($task == "addfile" || $task == "additem"){
 				$pk = 0;
 			}
@@ -272,9 +273,9 @@ class MymuseModelproduct extends JModelAdmin
     {
     	global $option;
     	$app 				= JFactory::getApplication();
-    	$id 				= JRequest::getVar('id', 0);
+    	$input 				= $app->input;
+    	$id 				= $input->get('id', 0);
 
-		
     	$filter_state 		= $app->getUserStateFromRequest( $option.'filter_state', 'filter_state', '', 'word' );
 		$filter_catid 		= $app->getUserStateFromRequest( $option.'filter_catid', 'filter_catid', 0, 'int' );
 		$filter_artistid 	= $app->getUserStateFromRequest( $option.'filter_artistid', 'filter_artistid', 0, 'int' );
@@ -292,7 +293,7 @@ class MymuseModelproduct extends JModelAdmin
 		
 		$lists['order'] = $filter_order;
 		$lists['order_Dir'] = $filter_order_Dir;
-		$edit = JRequest::getVar('edit', 0);
+		$edit = $input->get('edit', 0);
 
 		//other categories
 		$selectedCats = array();
@@ -319,7 +320,7 @@ class MymuseModelproduct extends JModelAdmin
 		$lists['files'] 		= array();
 	
 		//attributes
-		$subtype				= JRequest::getVar('subtype', '');
+		$subtype				= $input->get('subtype', '');
 		if($this->_item->parentid){
 			//we want the parentid
 			$pid = $this->_item->parentid;
@@ -368,18 +369,19 @@ class MymuseModelproduct extends JModelAdmin
     function getTracks()
     {
 
-    	$app = JFactory::getApplication();
-    	$option = JRequest::getVar('option','com_mymuse');
+    	$app 				= JFactory::getApplication();
+    	$input 				= $app->input;
+    	$option 			= $input->get('option','com_mymuse');
     	$filter_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
     	$filter_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
     	$this->setState('file.ordering', $filter_order);
     	$this->setState('file.direction', $filter_order_Dir);
     	$table = $this->getTable('product','MymuseTable');
 
-    	$limit = $this->getState('list.limit');
-    	$id = JRequest::getVar('id');
-    	$artist_alias = MyMuseHelper::getArtistAlias($this->_item->catid);
-    	$album_alias = MyMuseHelper::getAlbumAlias($this->_item->id);
+    	$limit 				= $this->getState('list.limit');
+    	$id 				= $input->get('id');
+    	$artist_alias 		= MyMuseHelper::getArtistAlias($this->_item->catid);
+    	$album_alias 		= MyMuseHelper::getAlbumAlias($this->_item->id);
 
     	$root = JPATH_ROOT;
   
@@ -695,11 +697,12 @@ class MymuseModelproduct extends JModelAdmin
     {
     	
     	$app = JFactory::getApplication();
-    	$option = JRequest::getVar('option','com_mymuse');
+    	$input = $app->input;
+    	$option = 'com_mymuse';
 
     	$this->_params = $this->getState()->get('params');
     	$limit = $this->getState('list.limit');
-    	$id = JRequest::getVar('id');
+    	$id = $input->get('id');
 
     	$root = JPATH_ROOT.DS;
     
@@ -909,7 +912,9 @@ class MymuseModelproduct extends JModelAdmin
 	 */
 	function checkAttributes(){
 
-		$pid	= JRequest::getVar( 'parentid', null, 'post', 'int' );
+		$app 	= JFactory::getApplication();
+		$input 	= $app->input;
+		$pid	= $input->get( 'parentid', null, 'post', 'int' );
 		if(!$pid){
 			//see if we can get the parent from the item id
 			if(isset($this->_id)){
@@ -944,7 +949,9 @@ class MymuseModelproduct extends JModelAdmin
 		if(!$this->_attribute_skus){
 			$this->getAttributeskus();
 		}
-		$id = JRequest::getVar('id',0);
+		$app 	= JFactory::getApplication();
+		$input 	= $app->input;
+		$id 	= $input->get('id',0);
 		if($id){
 			foreach($this->_attribute_skus as $a_sku){
 				$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$id.'
@@ -968,7 +975,9 @@ class MymuseModelproduct extends JModelAdmin
 	 */
 	function getAttributeskus(){
 		$db = JFactory::getDBO();
-		$pid	= JRequest::getVar( 'parentid', null );
+		$app 	= JFactory::getApplication();
+		$input 	= $app->input;
+		$pid	= $input->get( 'parentid', null );
 		if(!$pid){
 			//see if we can get the parent from the item id
 			$item = $this->getItem();
@@ -1031,10 +1040,12 @@ class MymuseModelproduct extends JModelAdmin
 	
 
 	function getReorderConditions($table){
-		$subtype = JRequest::getVar('subtype','');
-		$parentid = JRequest::getVar('parentid','');
+		$app 	= JFactory::getApplication();
+		$input 	= $app->input;
+		$subtype = $input->get('subtype','');
+		$parentid = $input->get('parentid','');
 		$db = JFactory::getDBO();
-		$app = JFactory::getApplication();
+	
 		$where = '';
 	
 		if($subtype && $parentid){
