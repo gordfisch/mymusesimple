@@ -22,7 +22,8 @@ class MymuseControllerProduct extends JControllerForm
 
     function __construct() {
     	
-    	$subtype = JRequest::getVar('subtype','');
+    	$input = JFactory::getApplication()->input;
+    	$subtype = $input->get('subtype');
     	if(isset($subtype) && $subtype == "file"){
     		$this->view_list = "product";
     	}else{
@@ -54,14 +55,16 @@ class MymuseControllerProduct extends JControllerForm
 		
 		$this->registerTask( 'save2newfile', 'saveitem' );
 		
-		$cid = JRequest::getVar( 'cid', array(0), 'post', 'array' );
+		$cid = $input->get( 'cid', array(0));
 		if($cid[0] > 0){
-			JRequest::setVar('id',$cid[0]);
+			$input->set('id',$cid[0]);
 		}
-
+		$input->set('view','product');
+		
     }
     
-
+    
+    
     /**
 	 * saveitem
 	 * 
@@ -78,6 +81,7 @@ class MymuseControllerProduct extends JControllerForm
         $form 				= $post['jform'];
 		$this->product_sku 	= $form['product_sku'];
 		$db 				= JFactory::getDBO();
+		$input 				= JFactory::getApplication()->input;
 
 		$subtype 			= $post['subtype'];
 		$layout 			= @$post['layout'];
@@ -105,7 +109,7 @@ class MymuseControllerProduct extends JControllerForm
 					return false;
 				}
 			
-				$task = JRequest::getVar('task', null, 'default', 'cmd');
+				$task = $input->get('task');
 			
 				switch ($task )
 				{

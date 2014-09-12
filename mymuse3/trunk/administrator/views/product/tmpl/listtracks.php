@@ -251,9 +251,9 @@ Joomla.orderTable = function()
 				$file = &$this->tracks[$i];
 
 				if($file->product_allfiles == "1"){
-					$link 	= 'index.php?option=com_mymuse&task=product.edit&type=allfiles&id='. $file->id;
+					$link 	= 'index.php?option=com_mymuse&task=product.edit_allfiles&type=allfiles&id='. $file->id;
 				}else{
-					$link 	= 'index.php?option=com_mymuse&task=product.edit&type=file&id='. $file->id;
+					$link 	= 'index.php?option=com_mymuse&task=product.editfile&type=file&id='. $file->id;
 				}
 				$alt = "p";
 				
