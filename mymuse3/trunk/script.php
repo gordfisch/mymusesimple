@@ -696,11 +696,11 @@ if(!function_exists('recursiveDelete')){
 			//UPDATE PLUGINS
 			$name = JText::_("MYMUSE_ENABLE_PLUGINS");
 			$query = "UPDATE #__extensions SET enabled=1 WHERE
-			element='paymentoffline' OR
+			element='payment_offline' OR
 			element='shipping_standard' OR
 			element='audio_html5' OR
 			element='vidplayer_html5' OR
-			element='paymentpaypal' OR
+			element='payment_paypal' OR
 			element='search_mymuse'
 			";
 			$db->setQuery($query);
