@@ -284,7 +284,8 @@ class MymuseViewProduct extends JViewLegacy
 				'a.title' => JText::_('JGLOBAL_TITLE'),
 				'a.id' => JText::_('JGRID_HEADING_ID'),
 				'a.price' => JText::_('MYMUSE_PRICE'),
-				'a.product_discount' => JText::_('MYMUSE_DISCOUNT')
+				'a.product_discount' => JText::_('MYMUSE_DISCOUNT'),
+				'a.product_in_stock' => JText::_('MYMUSE_PRODUCT_IN_STOCK_LABEL')
 		);
 	}
 }

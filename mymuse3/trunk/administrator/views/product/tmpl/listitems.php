@@ -7,12 +7,14 @@ JHtml::_('behavior.multiselect');
 JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
 
+$params 	= $this->state->get('params');
 $lists 		= $this->lists;
 $listOrder	= $this->escape($this->state->get('item.ordering'));
 $listDirn	= $this->escape($this->state->get('item.direction'));
-
 $saveOrder	= $listOrder == 'a.ordering';
-$user = JFactory::getUser();
+
+$user 		= JFactory::getUser();
+$userId		= $user->get('id');
 $app		= JFactory::getApplication();
 if ($saveOrder)
 {
@@ -20,87 +22,65 @@ if ($saveOrder)
 	JHtml::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 $sortFields = $this->getSortFields2();
+
 $assoc		= isset($app->item_associations) ? $app->item_associations : 0;
 
+if(isset($lists['isNew'])){
+	echo JText::_("MYMUSE_SAVE_THEN_ADD_ITEMS");
+}else{
+$ordering = ($listOrder == 'a.ordering');
+
+$js = '
+/**
+* Submit the item form
+*/
+
+function submitform(pressbutton){
+
+	if (pressbutton) {
+		document.adminForm.task.value=pressbutton;
+	}
+	if (typeof document.adminForm.onsubmit == "function") {
+		document.adminForm.onsubmit();
+	}
+
+	if(pressbutton == "product.additem" ){
+		document.adminForm.id.value = "";
+	}
+
+	document.adminForm.submit();
+}
+
+function submitbutton1(pressbutton)
+{
+	submitform( pressbutton );
+}
+';
+
+$document = JFactory::getDocument();
+$document->addScriptDeclaration($js);
 
 
-		if(isset($lists['isNew'])){
-			echo JText::_("MYMUSE_SAVE_THEN_ADD_ITEMS");
-		}else{
-			$ordering = ($listOrder == 'a.ordering');
 		?>
-		<script type="text/javascript">
-		Joomla.orderTable2 = function()
-		{
-			table = document.getElementById("sortTable");
-			direction = document.getElementById("directionTable");
-			
-			order = table.options[table.selectedIndex].value;
-			if (order != '<?php echo $listOrder; ?>')
-			{
-				dirn = 'asc';
-			}
-			else
-			{
-				dirn = direction.options[direction.selectedIndex].value;
-			}
-			Joomla.tableOrdering(order, dirn, '');
-		}
+<script type="text/javascript">
+Joomla.orderTable = function()
+{
+	table = document.getElementById("sortTable");
+	direction = document.getElementById("directionTable");
+	order = table.options[table.selectedIndex].value;
+	if (order != '<?php echo $listOrder; ?>')
+	{
+		dirn = 'asc';
+	}
+	else
+	{
+		dirn = direction.options[direction.selectedIndex].value;
+	}
+	Joomla.tableOrdering(order, dirn, '');
+}
 
+</script>
 
-		/**
-		* Submit the item form
-		*/
-
-		function submitform(pressbutton){
-			
-			if (pressbutton) {
-				document.adminForm.task.value=pressbutton;
-			}
-			if (typeof document.adminForm.onsubmit == "function") {
-				document.adminForm.onsubmit();
-			}
-			
-			if(pressbutton == "product.additem" ){
-				document.adminForm.id.value = "";
-			}
-			
-			document.adminForm.submit();
-		}
-		
-		function submitbutton1(pressbutton)
-		{
-			submitform( pressbutton );
-		}
-
-
-		/**
-		* Submit the attribute list
-		*/
-		function submitform4(pressbutton){
-			if (pressbutton) {
-				document.adminForm4.task.value=pressbutton;
-			}
-			if (typeof document.adminForm4.onsubmit == "function") {
-				document.adminForm4.onsubmit();
-			}
-			document.adminForm4.submit();
-		}
-
-		/**
-		* Submit the attribute form
-		*/
-		function submitform5(pressbutton){
-			if (pressbutton) {
-				document.adminForm5.task.value=pressbutton;
-			}
-			if (typeof document.adminForm5.onsubmit == "function") {
-				document.adminForm5.onsubmit();
-			}
-			document.adminForm5.submit();
-		}
-		
-		</script>
 <div id="items">
 <h2><?php echo JText::_( 'MYMUSE_ITEMS' ); ?></h2>
 	<div id="content-box">
@@ -148,6 +128,8 @@ $assoc		= isset($app->item_associations) ? $app->item_associations : 0;
 	<input type="hidden" name="subtype" value="item" /> 
 	<input type="hidden" name="boxchecked" value="" /> 
 	<input type="hidden" name="parentid" value="<?php echo $this->item->id; ?>" /> 
+	<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 	<input type="hidden" name="filter_item_order" value="<?php echo $listOrder; ?>" />
 	<input type="hidden" name="filter_item_order_Dir" value="<?php echo $listDirn; ?>" />
 	
@@ -171,7 +153,7 @@ $assoc		= isset($app->item_associations) ? $app->item_associations : 0;
 
 			<div class="btn-group pull-right hidden-phone">
 				<label for="directionTable" class="element-invisible"><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></label>
-				<select name="directionTable" id="directionTable" class="input-medium" onchange="Joomla.orderTable2()">
+				<select name="directionTable" id="directionTable" class="input-medium" onchange="Joomla.orderTable()">
 					<option value=""><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></option>
 					<option value="asc" <?php if ($listDirn == 'asc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING'); ?></option>
 					<option value="desc" <?php if ($listDirn == 'desc') echo 'selected="selected"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING');  ?></option>
@@ -179,7 +161,7 @@ $assoc		= isset($app->item_associations) ? $app->item_associations : 0;
 			</div>
 			<div class="btn-group pull-right">
 				<label for="sortTable" class="element-invisible"><?php echo JText::_('JGLOBAL_SORT_BY'); ?></label>
-				<select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable2()">
+				<select name="sortTable" id="sortTable" class="input-medium" onchange="Joomla.orderTable()">
 					<option value=""><?php echo JText::_('JGLOBAL_SORT_BY');?></option>
 					<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder); ?>
 				</select>
@@ -189,7 +171,7 @@ $assoc		= isset($app->item_associations) ? $app->item_associations : 0;
 	<?php 
 	if(count($this->items) > 0){ 
 	?>
-		<table class="adminlist table-striped"  id="articleList2">
+		<table class="table table-striped" id="articleList">
 			<thead>
 				<tr>
 					<th width="1%" class="nowrap center hidden-phone">
@@ -303,27 +285,8 @@ $assoc		= isset($app->item_associations) ? $app->item_associations : 0;
 
 		<?php } ?>
 
+	<?php echo JHTML::_( 'form.token' ); ?>
+	</form>
 
-
-	
-	<?php echo JHTML::_( 'form.token' ); ?>
-	</form>
-	
-	<form action="index.php" method="post" name="adminForm4">
-	<input type="hidden" name="parentid" value="<?php echo $this->item->id; ?>" /> 
-	<input type="hidden" name="option" value="com_mymuse" /> 
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="view" value="productattributeskus" />
-	<?php echo JHTML::_( 'form.token' ); ?>
-	</form>
-	
-	<form action="index.php" method="post" name="adminForm5">
-	<input type="hidden" name="parentid" value="<?php echo $this->item->id; ?>" /> 
-	<input type="hidden" name="option" value="com_mymuse" /> 
-	<input type="hidden" name="task" value="" />
-	<input type="hidden" name="view" value="productattributesku" />
-	<?php echo JHTML::_( 'form.token' ); ?>
-	</form>
-    
     </div>
 </div>

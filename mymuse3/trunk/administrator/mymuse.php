@@ -24,7 +24,7 @@ if(JRequest::getCmd('view','') == 'liveupdate') {
 if (!JFactory::getUser()->authorise('core.manage', 'com_mymuse')) {
 	return JError::raiseWarning(404, JText::_('JERROR_ALERTNOAUTHOR'));
 }
-	
+	;
 $document = JFactory::getDocument();
 $document->addStyleSheet(JURI::base() . 'components/com_mymuse/assets/css/mymuse.css');
 
