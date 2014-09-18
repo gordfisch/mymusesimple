@@ -282,13 +282,13 @@ class MymuseModelproduct extends JModelAdmin
 		$filter_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
 		$filter_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
 
-		$filter_item_order 		= $app->getUserStateFromRequest( $option.'filter_item_order', 'filter_item_order', 'a.ordering', 'cmd' );
-		$filter_item_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_item_order_Dir', 'filter_item_order_Dir', 'asc', 'word' );
+		$filter_item_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
+		$filter_item_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
 		
 		$this->setState('file.ordering', $filter_order);
 		$this->setState('file.direction', $filter_order_Dir);
 		
-		$this->setState('item.ordering', $filter_item_order);
+		$this->setState('item.ordering', $filter_order);
 		$this->setState('item.direction', $filter_item_order_Dir);
 		
 		$lists['order'] = $filter_order;
