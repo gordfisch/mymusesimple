@@ -305,7 +305,7 @@ class MymuseModelorder extends JModelAdmin
 
         	$MyMuseHelper = new MyMuseHelper;
         	if(!$MyMuseHelper->logPayment($payment)){
-        		$this->setError($MyMuseHelper->gerError());
+        		$this->setError($MyMuseHelper->getError());
         		return false;
         	}
         	
