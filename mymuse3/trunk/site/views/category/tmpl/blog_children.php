@@ -18,7 +18,7 @@ $this->cols[$this->maxLevel] = $columns;
 if($this->maxLevel < 1 && isset($this->cols[$this->maxLevel+1])){
 	$columns = $this->cols[$this->maxLevel+1] - 2;
 }
-
+$columns = $columns? $columns : 1;
 
 $break =  round($count / $columns,0,PHP_ROUND_HALF_DOWN);
 $r = $count  %  $columns;
@@ -126,3 +126,4 @@ if(!$total_shown){
 	</ul>
 	</div>
 <?php endif; ?>
+</div>
