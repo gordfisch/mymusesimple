@@ -131,6 +131,6 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 		</div>
 <?php  endif; ?>
 
-</div>
+	</div>
 <?php  endif; ?>
 </div>
