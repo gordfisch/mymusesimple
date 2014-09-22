@@ -59,9 +59,7 @@ style="height: <?php echo $params->get('category_product_image_height'); ?>px"
 
 <?php if($params->get('category_show_intro_text')) :?>
 <?php echo $this->item->introtext; ?>
-<?php endif;
-
-?>
+<?php endif; ?>
 
 
 <?php if ($params->get('show_readmore') && $this->item->readmore) :

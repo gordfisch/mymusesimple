@@ -79,8 +79,33 @@ Joomla.orderTable = function()
 	Joomla.tableOrdering(order, dirn, '');
 }
 
-</script>
+		/**
+		* Submit the attribute list
+		*/
+		function submitform4(pressbutton){
+			if (pressbutton) {
+				document.adminForm4.task.value=pressbutton;
+			}
+			if (typeof document.adminForm4.onsubmit == "function") {
+				document.adminForm4.onsubmit();
+			}
+			document.adminForm4.submit();
+		}
 
+		/**
+		* Submit the attribute form
+		*/
+		function submitform5(pressbutton){
+			if (pressbutton) {
+				document.adminForm5.task.value=pressbutton;
+			}
+			if (typeof document.adminForm5.onsubmit == "function") {
+				document.adminForm5.onsubmit();
+			}
+			document.adminForm5.submit();
+		}
+		
+		</script>
 <div id="items">
 <h2><?php echo JText::_( 'MYMUSE_ITEMS' ); ?></h2>
 	<div id="content-box">
@@ -287,6 +312,22 @@ Joomla.orderTable = function()
 
 	<?php echo JHTML::_( 'form.token' ); ?>
 	</form>
-
+	
+	<form action="index.php" method="post" name="adminForm4">
+	<input type="hidden" name="parentid" value="<?php echo $this->item->id; ?>" /> 
+	<input type="hidden" name="option" value="com_mymuse" /> 
+	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="view" value="productattributeskus" />
+	<?php echo JHTML::_( 'form.token' ); ?>
+	</form>
+	
+	<form action="index.php" method="post" name="adminForm5">
+	<input type="hidden" name="parentid" value="<?php echo $this->item->id; ?>" /> 
+	<input type="hidden" name="option" value="com_mymuse" /> 
+	<input type="hidden" name="task" value="" />
+	<input type="hidden" name="view" value="productattributesku" />
+	<?php echo JHTML::_( 'form.token' ); ?>
+	</form>
+    
     </div>
 </div>
