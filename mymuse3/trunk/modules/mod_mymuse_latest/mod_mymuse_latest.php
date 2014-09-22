@@ -24,7 +24,7 @@ if(!defined('MYMUSE_PATH')){
 require_once( MYMUSE_PATH.'mymuse.class.php');
 require_once( MYMUSE_PATH.'helpers'.DS.'route.php');
 require_once (dirname(__FILE__).DS.'helper.php');
-require_once(MYMUSE_ADMIN_PATH.'helpers'.DS.'mymuse.php');
+require_once(MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php');
 $MyMuseHelper 	= new MyMuseHelper;
 
 $doc =& JFactory::getDocument();
