@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     $Id:$
+ * @version     $Id$
  * @package     com_mymuse3
  * @copyright   Copyright (C) 2014. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -41,6 +41,8 @@ class JFormFieldOrderstatus extends JFormFieldSQL
 		$db->setQuery($query);
 		$rows = $db->loadObjectList();
 
+		
+		
 		// iterate through returned rows
 		foreach( $rows as $row ){
 			$selected = '';
