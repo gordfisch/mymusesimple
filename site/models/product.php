@@ -551,7 +551,6 @@ class MyMuseModelProduct extends JModelItem
 				}
 			} 
 			
-
 			$this->_item[$pk]->tracks = $tracks;
 
 			// get child items with prices
