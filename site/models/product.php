@@ -285,7 +285,7 @@ class MyMuseModelProduct extends JModelItem
 			// get child tracks with prices
 			$track_query = "SELECT id,title,title_alias,introtext,`fulltext`, parentid, product_physical, product_downloadable, product_allfiles, product_sku,
 			product_made_date, price, featured, product_discount, product_package_ordering, product_package,file_length,file_time,
-			file_name,file_preview,file_preview_2, file_preview_3,file_type, detail_image,
+			file_name,file_preview,file_preview_2, file_preview_3,file_type, detail_image,access,
 			ROUND(v.rating_sum / v.rating_count, 0) AS rating, v.rating_count as rating_count
 			FROM #__mymuse_product as a
 			LEFT JOIN #__mymuse_product_rating AS v ON a.id = v.product_id
@@ -541,6 +541,9 @@ class MyMuseModelProduct extends JModelItem
 							$track->free_download = 1;
 							$track->free_download_link = $track->download_path;
 							$track->free_download_link = "index.php?option=com_mymuse&view=store&task=downloadit&id=".$track->id;
+							if($track->access > 1 && !$user->get('id')){
+								$track->free_download_link = "index.php?option=com_users&view=registration";
+							}
 						}else{
 							$track->free_download = 0;
 						}
