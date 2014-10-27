@@ -577,7 +577,7 @@ class MyMuseCart {
 
 
 			
-			$order->items[$i]->delete_url .= "index.php?option=com_mymuse";
+			$order->items[$i]->delete_url = "index.php?option=com_mymuse";
 			$order->items[$i]->delete_url .= "&task=cartdelete";
 			$order->items[$i]->delete_url .= "&product_id=".$order->items[$i]->id;
 			$order->items[$i]->delete_url .= "&Itemid=$Itemid";

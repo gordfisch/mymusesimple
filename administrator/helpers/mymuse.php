@@ -411,7 +411,9 @@ class MyMuseHelper extends JObject
 				$string .= MyMuseHelper::printMoney($price['product_original_price']);
 				$string .= '</span> ';
 		}
-		$string .= MyMuseHelper::printMoney($price['product_price']);
+		if(isset($price['product_price'])){
+			$string .= MyMuseHelper::printMoney($price['product_price']);
+		}
 		return $string;
 	}	
 	

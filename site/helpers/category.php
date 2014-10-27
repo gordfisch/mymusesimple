@@ -146,6 +146,7 @@ class MymuseCategories extends JCategories
 				//arboreta, get any products with this as their main caegory, add it to numitems
                 // do not run in tracks view
                 if($view != "tracks"){
+                	$result->numitems = 0;
                     $query = "SELECT count(*) FROM #__mymuse_product WHERE catid=".$result->id."
                     AND parentid=0";
                     $db->setQuery($query);

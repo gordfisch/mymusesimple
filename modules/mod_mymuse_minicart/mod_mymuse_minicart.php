@@ -33,6 +33,7 @@ $MyMuseCart 	=& MyMuse::getObject('cart','helpers');
 $cart 			=& $MyMuseCart->cart;
 $order 			= $MyMuseCart->buildOrder( 0 );
 $params			= MyMuseHelper::getParams();
-$Itemid			= JRequest::get("Itemid");
+$jinput 		= JFactory::getApplication()->input;
+$Itemid			= $jinput->get("Itemid", "", "string");
 $checkoutUrl 	= 'index.php?option=com_mymuse&task=checkout&Itemid='.$Itemid;
 require(JModuleHelper::getLayoutPath('mod_mymuse_minicart'));
