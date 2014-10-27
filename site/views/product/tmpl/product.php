@@ -575,7 +575,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
         			
         			<!--  SALES COLUMN -->
         			<?php  if($params->get('product_show_sales', 0)){?>	
-        				<td class="mydownloads">
+        				<td class="mysales">
         				<?php echo $track->sales; ?>
         				</td>
         			<?php } ?>
