@@ -814,10 +814,17 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function ajaxtogglecart()
 	{
-		$productid  = JRequest::getVar('productid', '');
+		$jinput = JFactory::getApplication()->input;
+		$productid  = $jinput->get('productid', '', 'int');
+		
 		if(!$productid ){
 			$data = array();
 		}else{
+			$db = JFactory::getDBO();
+			$query = "SELECT title from #__mymuse_product WHERE id =$productid";
+			$db->setQuery($query);
+			$title = $db->loadResult();
+			
 			$incart = 0;
 			for ($i=0;$i<$this->MyMuseCart->cart["idx"];$i++) {
 				if($this->MyMuseCart->cart[$i]["product_id"] == $productid){
@@ -828,17 +835,19 @@ class MyMuseController extends JControllerLegacy
 			if($incart){
 				// let us remove it
 				$this->MyMuseCart->delete($productid );
-				$msg = "deleted";
+				$msg = JText::_("MYMUSE_DELETED")." ".$title;
+				$action = "deleted";
 			}else{
 				//let us add it
 				$this->MyMuseCart->addToCart();
-				$msg = "added";
+				$msg = JText::_("MYMUSE_ADDED")." ".$title;
+				$action = "added";
 			}
-			$data = array('msg'=>$msg, 'idx' => $this->MyMuseCart->cart['idx']);
+			$data = array('action'=>$action, 'msg'=>$msg, 'idx' => $this->MyMuseCart->cart['idx']);
 		}
 	
 		//save the cart in the session
-		$session = &JFactory::getSession();
+		$session = JFactory::getSession();
 		$session->set("cart",$this->MyMuseCart->cart);
 	
 		$rand = JUserHelper::genRandomPassword(8);

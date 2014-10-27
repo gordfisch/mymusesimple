@@ -27,7 +27,7 @@ require_once (dirname(__FILE__).DS.'helper.php');
 require_once(MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php');
 $MyMuseHelper 	= new MyMuseHelper;
 
-$doc =& JFactory::getDocument();
+$doc = JFactory::getDocument();
 $doc->addStyleSheet( 'modules/mod_mymuse_latest/mod_mymuse_latest_style.css' );
 
 $mparams 	= MyMuseHelper::getParams();

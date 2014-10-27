@@ -27,14 +27,12 @@ for ($i=0;$i<$this->cart["idx"];$i++) {
 
 $js = '';
 foreach($this->items as $track){
-    if($track->product_allfiles){
-        //continue;
-    }
+
     			$js .= '
 jQuery(document).ready(function($){
 		$("#box_'.$track->id.'").click(function(e){
             
-            alert("'.$track->id.'");
+            //alert("'.$url.'");
             $.post("'.$url.'",
             {
                 productid:"'.$track->id.'"
@@ -44,8 +42,9 @@ jQuery(document).ready(function($){
                 var res = jQuery.parseJSON(data);
                 idx = res.idx;
                 msg = res.msg;
-                //alert("msg: " + res.msg + "\nStatus: " + status);
-                if(msg == "deleted"){
+                action = res.action;
+                alert(res.msg + "\nStatus: " + status);
+                if(action == "deleted"){
                     $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/checkbox.png");
                 }else{
                     $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/cart.png");
@@ -284,20 +283,20 @@ if($this->cart['idx']){
 			<thead>
 		    <tr>
 
-        		<th class="mymuse_cart_top" align="left" width="40%" >
+        		<th class="mymuse_cart_top myartist" align="left" width="40%" >
         		<?php echo JHtml::_('grid.sort', 'MYMUSE_ARTIST', 'category_name', $listDirn, $listOrder); ?></th>
        
-       			<th class="mymuse_cart_top" align="center" width="40%">
+       			<th class="mymuse_cart_top mytitle" align="center" width="40%">
        			<?php echo JHtml::_('grid.sort', 'MYMUSE_NAME', 'a.title', $listDirn, $listOrder); ?>
        			</th>
        	
      			<?php if($params->get('list_show_price')) { ?>
-        			<th class="mymuse_cart_top" align="left" width="10%">
+        			<th class="mymuse_cart_top myprice" align="left" width="10%">
         			<?php echo JHtml::_('grid.sort', 'MYMUSE_CART_PRICE', 'a.price', $listDirn, $listOrder); ?>
         			</th>
                 <?php } ?>
                 <?php if($params->get('list_show_discount')) { ?>
-        			<th class="mymuse_cart_top" align="left" width="20%">
+        			<th class="mymuse_cart_top mydiscount" align="left" width="20%">
         			<?php echo JHtml::_('grid.sort', 'MYMUSE_DISCOUNT', 'a.product_discount', $listDirn, $listOrder); ?>
         			</th>
                 <?php } ?>
@@ -305,7 +304,7 @@ if($this->cart['idx']){
                 <?php if ($this->params->get('list_show_date') && $this->params->get('order_date')) : 
                 		$date = $this->params->get('order_date');
                 ?>
-				<th class="mymuse_cart_top" id="tableOrdering2">
+				<th class="mymuse_cart_top myordering" id="tableOrdering2">
 					<?php if ($date == "created") : ?>
 						<?php echo JHtml::_('grid.sort', 'MYMUSE_'.$date.'_DATE', 'p.created', $listDirn, $listOrder); ?>
 					<?php elseif ($date == "modified") : ?>
@@ -319,18 +318,18 @@ if($this->cart['idx']){
 				<?php endif; ?>
 				
 				<?php if($params->get('list_show_sales')){ ?>
-				<th class="mymuse_cart_top" align="center" width="10%">
+				<th class="mymuse_cart_top mysales" align="center" width="10%">
         			<?php echo JHtml::_('grid.sort', 'MYMUSE_SALES', 's.sales', $listDirn, $listOrder); ?>
         		</th>	
                 <?php } ?>
                 
                 
                 <?php if($params->get('product_show_preview_column')  && $params->get('product_player_type') != "playlist") { ?>
-                	<th class="mymuse_cart_top" align="center" width="10%"><?php echo JText::_('MYMUSE_PLAY'); ?></th>
+                	<th class="mymuse_cart_top mypreview" align="center" width="10%"><?php echo JText::_('MYMUSE_PLAY'); ?></th>
                 <?php } ?>
                 
                 <?php if($params->get('product_show_cartadd')) { ?>
-                	<th class="mymuse_cart_top" align="center" width="10%" ><?php echo JText::_('MYMUSE_ADD'); ?></th>
+                	<th class="mymuse_cart_top myslect" align="center" width="10%" ><?php echo JText::_('MYMUSE_ADD'); ?></th>
     			<?php } ?>
     
       		</tr>

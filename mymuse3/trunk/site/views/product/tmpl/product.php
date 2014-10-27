@@ -505,25 +505,29 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 			<thead>
 		    <tr>
 		    <?php  if($params->get('product_show_select_column', 1)){?>
-		    	<th class="myselect" align="left" width="5%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
+		    	<th class="mymuse_cart_top myselect" align="left" width="5%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
         	<?php } ?>
         	
-        		<th class="mytitle" align="left" width="55%" ><?php echo JText::_('MYMUSE_NAME'); ?></th>
+        		<th class="mymuse_cart_top mytitle" align="left" width="55%" ><?php echo JText::_('MYMUSE_NAME'); ?></th>
        		
        		<?php  if($params->get('product_show_filetime', 0)){?>
-       			<th class="mytime" align="center" width="10%"><?php echo JText::_('MYMUSE_TIME'); ?></th>
+       			<th class="mymuse_cart_top mytime" align="center" width="10%"><?php echo JText::_('MYMUSE_TIME'); ?></th>
        		<?php } ?>
        		
        		<?php  if($params->get('product_show_filesize', 0)){?>
-       			<th class="myfilesize" align="center" width="10%"><?php echo JText::_('MYMUSE_FILE_SIZE'); ?></th>
+       			<th class="mymuse_cart_top myfilesize" align="center" width="10%"><?php echo JText::_('MYMUSE_FILE_SIZE'); ?></th>
        		<?php } ?>
        		
+       		<?php if($params->get('product_show_sales', 0)){ ?>
+        		<th class="mymuse_cart_top mydownloads" align="left" width="10%"><?php echo JText::_('MYMUSE_SALES'); ?></th>
+      		<?php } ?>
+       		
        		<?php  if($params->get('product_show_cost_column', 1)){?>
-       			<th class="myprice" align="center" width="10%"><?php echo JText::_('MYMUSE_COST'); ?></th>
+       			<th class="mymuse_cart_top myprice" align="center" width="10%"><?php echo JText::_('MYMUSE_COST'); ?></th>
        		<?php } ?>
 
        		<?php if($params->get('product_show_preview_column', 1) && $params->get('product_player_type') != "playlist"){ ?>
-        		<th class="mypreviews" align="left" width="10%"><?php echo JText::_('MYMUSE_PREVIEWS'); ?></th>
+        		<th class="mymuse_cart_top mypreviews" align="left" width="10%"><?php echo JText::_('MYMUSE_PREVIEWS'); ?></th>
       		<?php } ?>
       		</tr>
       		</thead>
@@ -551,12 +555,14 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 					 			echo "<br />".$track->introtext;
 							}?>
       					</td>
+      					
       				<!--  TIME COLUMN -->
         			<?php  if($params->get('product_show_filetime', 0)){?>	
         				<td class="mytime">
         				<?php echo $track->file_time ?>
         				</td>
         			<?php } ?>
+        			
         			<!--  FILE SIZE COLUMN -->
         			<?php  if($params->get('product_show_filesize', 0)){?>	
         				<td class="myfilesize">
@@ -566,6 +572,14 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 						}?>
         				</td>
         			<?php } ?>
+        			
+        			<!--  SALES COLUMN -->
+        			<?php  if($params->get('product_show_sales', 0)){?>	
+        				<td class="mydownloads">
+        				<?php echo $track->sales; ?>
+        				</td>
+        			<?php } ?>
+        			
 					<!--  COST COLUMN -->
         			<?php  if($params->get('product_show_cost_column', 1)){?>	
         				<td class="myprice">

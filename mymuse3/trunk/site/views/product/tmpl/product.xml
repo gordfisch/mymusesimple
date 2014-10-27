@@ -247,10 +247,7 @@
 	 			<option value="1">MYMUSE_SHOW</option>
 	 		</field>
 			
-	 		
-	
-	 		
-	<field type="spacer" name="spacerdownload" label="MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" /> 		
+	 <field type="spacer" name="spacerdownload" label="MYMUSE_PRODUCT_PAGES_ITEMS_SECTION" /> 		
 			<field name="product_show_quantity" 
 	 			type="list" 
 	 			default="0" 
@@ -270,8 +267,11 @@
 	 			<option value="1">MYMUSE_YES</option>
 	 		</field>
 	 		
+	<field type="spacer" name="spacerdownload" label="MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" /> 		
+
+	 		
 			<field name="product_show_tracks" 
-				type="radio"
+				type="list"
 				label="MYMUSE_SHOW_TRACKS_LABEL" 
 				description="MYMUSE_SHOW_TRACKS_DESC">
 	 			<option value="">JGLOBAL_USE_GLOBAL</option>
@@ -300,14 +300,6 @@
 				label="MYMUSE_PLAYER_HEIGHT_LABEL" 
 				description="MYMUSE_PLAYER_HEIGHT_DESC"
 			/>
-			<field name="product_show_tracks" 
-				type="list" 
-				label="MYMUSE_SHOW_TRACKS_LABEL" 
-				description="MYMUSE_SHOW_TRACKS_DESC">
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field>
 		
 			<field name="product_show_select_column" type="list" default="1" label="MYMUSE_SHOW_SELECT_COLUMN" description="MYMUSE_SHOW_SELECT_COLUMN_DESC">
 	 			<option value="">JGLOBAL_USE_GLOBAL</option>
@@ -328,6 +320,15 @@
 	 			type="list" 
 	 			label="MYMUSE_SHOW_FILETIME" 
 	 			description="MYMUSE_SHOW_FILETIME_DESC">
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+	 		</field>
+	 		
+	 		<field name="product_show_sales" 
+	 			type="list" 
+	 			label="MYMUSE_SHOW_SALES" 
+	 			description="MYMUSE_SHOW_SALES_DESC">
 	 			<option value="">JGLOBAL_USE_GLOBAL</option>
 	 			<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>

@@ -15,10 +15,10 @@ defined('_JEXEC') or die('Restricted access');
 class modMyMuseLatestHelper
 {
 
-	function getResults($params)
+	static function getResults($params)
 	{
 		$db = JFactory::getDBO();
-		$jnow			=& JFactory::getDate();
+		$jnow			= JFactory::getDate();
 		$now			= $jnow->toSql();
 		$nullDate		= $db->getNullDate();
 		$results 		= array();
@@ -29,7 +29,7 @@ class modMyMuseLatestHelper
 
 		$type = $params->get('type_shown','tracks');
 		$maximum_shown = $params->get('maximum_shown',5);
-		$datenow =& JFactory::getDate();
+		$datenow = JFactory::getDate();
 		$search = $params->get('type_search');
 		if($type =="albums"){
 			if($search == "pa.hits"){

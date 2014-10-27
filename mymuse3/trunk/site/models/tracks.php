@@ -536,7 +536,7 @@ class MyMuseModelTracks extends JModelList
             	$track->flash= '';
             }
         }
-        $dispatcher		=& JDispatcher::getInstance();
+        $dispatcher		= JDispatcher::getInstance();
         //$prev_dir = $site_url.str_replace($root,'',$params->get('my_preview_dir'));
         $prev_dir = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base());
         $prev_dir .= $params->get('my_use_s3')? '' :  $params->get('my_preview_dir');
