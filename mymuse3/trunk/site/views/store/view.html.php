@@ -370,7 +370,7 @@ class myMuseViewStore extends JViewLegacy
         	$id = JRequest::getVar('id',0);
         	$free = 0;
         	$owned = 0;
-        	$db	= & JFactory::getDBO();
+        	$db	= JFactory::getDBO();
         	
         	if(!$id){
         		$message = JText::_('MYMUSE_NO_DOWNLOAD_KEY');

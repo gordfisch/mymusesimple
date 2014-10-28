@@ -247,7 +247,7 @@
 	 			<option value="1">MYMUSE_SHOW</option>
 	 		</field>
 			
-	 <field type="spacer" name="spacerdownload" label="MYMUSE_PRODUCT_PAGES_ITEMS_SECTION" /> 		
+	 <field type="spacer" name="spaceritems" label="MYMUSE_PRODUCT_PAGES_ITEMS_SECTION" /> 		
 			<field name="product_show_quantity" 
 	 			type="list" 
 	 			default="0" 
@@ -329,6 +329,15 @@
 	 			type="list" 
 	 			label="MYMUSE_SHOW_SALES" 
 	 			description="MYMUSE_SHOW_SALES_DESC">
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+	 		</field>
+	 		
+	 		<field name="product_show_downloads" 
+	 			type="list" 
+	 			label="MYMUSE_SHOW_DOWNLOADS" 
+	 			description="MYMUSE_SHOW_DOWNLOADS_DESC">
 	 			<option value="">JGLOBAL_USE_GLOBAL</option>
 	 			<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>

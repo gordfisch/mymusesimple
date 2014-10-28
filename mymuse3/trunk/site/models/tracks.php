@@ -62,6 +62,7 @@ class MyMuseModelTracks extends JModelList
 				'language', 'a.language',
 				'hits', 'a.hits',
 				'price','a.price',
+				'file_downloads', 'a.file_downloads',
 				'product_discount','a.product_discount',
 				'publish_up', 'a.publish_up',
 				'publish_down', 'a.publish_down',
@@ -243,7 +244,7 @@ class MyMuseModelTracks extends JModelList
         // get child tracks with prices
         $query = "SELECT a.id, a.title, a.title_alias,a.alias, a.introtext, a.fulltext, a.parentid, a.product_physical, 
         a.product_downloadable, a.product_allfiles, a.product_sku, a.hits,
-        a.price, a.featured, a.product_discount, a.product_package_ordering, 
+        a.price, a.featured, a.product_discount, a.product_package_ordering, a.file_downloads,
         a.product_package,
         a.file_length,a.file_time,
         a.file_name,a.file_preview,a.file_preview_2, a.file_preview_3,a.file_type, a.detail_image,

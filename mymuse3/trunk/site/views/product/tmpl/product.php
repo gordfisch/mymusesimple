@@ -27,7 +27,10 @@ $count		= 0;
 $return_link = 'index.php?option=com_mymuse&view=product&task=product&id='.$product->id.'&catid='.$product->catid.'&Itemid='.$Itemid;
 $canEdit	= $this->item->params->get('access-edit',0);
 $items_select 	= $this->params->get('product_item_selectbox',0);
+$document 	= JFactory::getDocument();
 
+
+// get the count of all products, items and tracks
 if($product->product_physical){
 	$count++;
 }
@@ -39,6 +42,50 @@ if(count($tracks)){
 	$count += count($tracks);
 }
 
+//add javascript for updating the cart by ajax
+$js = '';
+$url = "index.php?option=com_mymuse&task=ajaxtogglecart";
+foreach($tracks as $track){
+
+	$js .= '
+jQuery(document).ready(function($){
+		$("#box_'.$track->id.'").click(function(e){
+
+            //alert("'.$url.'");
+            $.post("'.$url.'",
+            {
+                productid:"'.$track->id.'"
+            },
+            function(data,status)
+            {
+                var res = jQuery.parseJSON(data);
+                idx = res.idx;
+                msg = res.msg;
+                action = res.action;
+                alert(res.msg + "\nStatus: " + status);
+                if(action == "deleted"){
+                    $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/checkbox.png");
+                }else{
+                    $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/cart.png");
+                }
+                if(idx){
+                    txt = idx+" "+"'.JText::_('MYMUSE_PRODUCTS').'";
+                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&view=cart&layout=cart').'">'.JText::_('MYMUSE_VIEW_CART').'</a>\';
+                    $("#carttop1").html(txt);
+                    $("#carttop2").html(link);
+                }else{
+
+                    $("#carttop1").html(" ");
+                    $("#carttop2").html("'.JText::_('MYMUSE_YOUR_CART_IS_EMPTY').'");
+                }
+            });
+
+		});
+	});
+
+';
+}
+$document->addScriptDeclaration($js);
 ?>
 
 <script type="text/javascript">
@@ -64,6 +111,15 @@ function hasProduct(that, count){
 	alert("<?php echo JText::_("MYMUSE_PLEASE_SELECT_A_PRODUCT") ?>");
 	return false;
 }
+
+function tableOrdering( order, dir, task )
+{
+	var form = document.adminForm;
+	form.filter_order.value 	= order;
+	form.filter_order_Dir.value	= dir;
+	document.adminForm.submit( task );
+}
+
 </script>
 <!--  START PRODUCT VIEW -->	
 <!--  HEADING TITLE ICONS -->
@@ -501,14 +557,14 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 		
 		
 <?php if($params->get('product_show_tracks',1)){ ?>
-		<table class="mymuse_cart">
+		<table class="mymuse_cart tracks jp-gui ui-widget ui-widget-content ui-corner-all">
 			<thead>
 		    <tr>
 		    <?php  if($params->get('product_show_select_column', 1)){?>
 		    	<th class="mymuse_cart_top myselect" align="left" width="5%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
         	<?php } ?>
         	
-        		<th class="mymuse_cart_top mytitle" align="left" width="55%" ><?php echo JText::_('MYMUSE_NAME'); ?></th>
+        	<th class="mymuse_cart_top mytitle" align="center" width="40%"><?php echo JText::_('MYMUSE_NAME'); ?></th>
        		
        		<?php  if($params->get('product_show_filetime', 0)){?>
        			<th class="mymuse_cart_top mytime" align="center" width="10%"><?php echo JText::_('MYMUSE_TIME'); ?></th>
@@ -519,7 +575,11 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
        		<?php } ?>
        		
        		<?php if($params->get('product_show_sales', 0)){ ?>
-        		<th class="mymuse_cart_top mydownloads" align="left" width="10%"><?php echo JText::_('MYMUSE_SALES'); ?></th>
+        		<th class="mymuse_cart_top mysales" align="left" width="10%"><?php echo JText::_('MYMUSE_SALES'); ?></th>
+      		<?php } ?>
+      		
+      		<?php if($params->get('product_show_downloads', 0)){ ?>
+        		<th class="mymuse_cart_top mydownloads" align="left" width="10%"><?php echo JText::_('MYMUSE_DOWNLOADS'); ?></th>
       		<?php } ?>
        		
        		<?php  if($params->get('product_show_cost_column', 1)){?>
@@ -577,6 +637,13 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
         			<?php  if($params->get('product_show_sales', 0)){?>	
         				<td class="mysales">
         				<?php echo $track->sales; ?>
+        				</td>
+        			<?php } ?>
+        			
+        			<!--  DOWNLOADS COLUMN -->
+        			<?php  if($params->get('product_show_downloads', 0)){?>	
+        				<td class="mydownloads">
+        				<?php echo $track->file_downloads; ?>
         				</td>
         			<?php } ?>
         			

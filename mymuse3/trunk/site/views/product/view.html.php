@@ -165,8 +165,6 @@ class myMuseViewProduct extends JViewLegacy
 		JPluginHelper::importPlugin('content');
 		$dispatcher->trigger('onContentPrepare', array ('com_content.article', &$item, &$this->params, $offset));
 		
-		
-		
 
 		//Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($this->item->params->get('pageclass_sfx'));
