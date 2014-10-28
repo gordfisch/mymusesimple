@@ -89,7 +89,7 @@ function tableOrdering( order, dir, task )
 
 </script>
 <style>
-/* to hide the player, uncomment the following
+/* to hide the player, uncomment this comment
 #product_player {
   top: -1000px;
   position: absolute;
@@ -323,6 +323,12 @@ if($this->cart['idx']){
         		</th>	
                 <?php } ?>
                 
+                <?php if($params->get('product_show_downloads')){ ?>
+				<th class="mymuse_cart_top mydownloads" align="center" width="10%">
+        			<?php echo JHtml::_('grid.sort', 'MYMUSE_DOWNLOADS', 'a.file_downloads', $listDirn, $listOrder); ?>
+        		</th>	
+                <?php } ?>
+                
                 
                 <?php if($params->get('product_show_preview_column')  && $params->get('product_player_type') != "playlist") { ?>
                 	<th class="mymuse_cart_top mypreview" align="center" width="10%"><?php echo JText::_('MYMUSE_PLAY'); ?></th>
@@ -403,6 +409,11 @@ if($this->cart['idx']){
 					<?php if($params->get('list_show_sales')) { ?>
 					<!--  SALES COLUMN -->	
         				<td class="mysales" ><?php echo $track->sales; ?></td>
+        			<?php } ?>
+        			
+        			<?php if($params->get('product_show_downloads')){ ?>
+        			<!-- DOWNLOADS COLUMN -->	
+        				<td class="mydownloads" ><?php echo $track->file_downloads; ?></td>
         			<?php } ?>
         				
         			<?php if($params->get('product_show_preview_column') && $params->get('product_player_type') != "playlist"){ ?>

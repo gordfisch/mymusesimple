@@ -731,6 +731,15 @@
 				<option value="1">JSHOW</option>
 	 		</field>
 	 		
+	 		<field name="product_show_downloads" 
+	 			type="list" 
+	 			label="MYMUSE_SHOW_DOWNLOADS" 
+	 			description="MYMUSE_SHOW_DOWNLOADS_DESC">
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+	 		</field>
+	 		
 	 		<field name="product_show_cost_column" 
 	 			type="list" 
 	 			label="MYMUSE_SHOW_COST_COLUMN" 

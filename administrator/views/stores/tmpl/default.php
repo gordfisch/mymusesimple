@@ -87,7 +87,7 @@ $saveOrder	= $listOrder == 'a.ordering';
                 <?php if (isset($this->items[0]->state)) { ?>
 				    <td class="center">
 						<div class="btn-group">
-							<?php echo JHtml::_('jgrid.published', $item->state, $i, 'stores.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+							<?php echo JHtml::_('jgrid.published', $item->state, $i, 'stores.', $canChange, 'cb'); ?>
 							
 						</div>
 					</td>
