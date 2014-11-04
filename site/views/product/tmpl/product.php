@@ -394,10 +394,13 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 			
 <!-- ITEMS   ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS -->
 	<?php if(count($items) && !$items_select){  ?>
+
 	<style type="text/css">
 	@media (max-width: 767px) { 
 	<?php foreach($product->attribute_sku as $a_sku){ ?>
-		td.my<?php echo $a_sku->name ?>:before { content: "<?php echo JText::_($a_sku->name); ?>";}
+		td.my<?php echo $a_sku->name ?>:before { 
+			content: "<?php echo JText::_($a_sku->name); ?>";
+		}
 		td.my<?php echo $a_sku->name ?>{
 			text-align: left;
 		}
@@ -412,9 +415,9 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 		td.my<?php echo $a_sku->name ?> {
 			clear: both;
 		}
-	}
 		
 	<?php } ?>
+	}
 	</style>
 		<h3><?php echo JText::_('MYMUSE_ITEMS'); ?></h3> 
 		<table class="mymuse_cart">
@@ -557,7 +560,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 		
 		
 <?php if($params->get('product_show_tracks',1)){ ?>
-		<table class="mymuse_cart tracks jp-gui ui-widget ui-widget-content ui-corner-all">
+		<table class="mymuse_cart tracks">
 			<thead>
 		    <tr>
 		    <?php  if($params->get('product_show_select_column', 1)){?>
