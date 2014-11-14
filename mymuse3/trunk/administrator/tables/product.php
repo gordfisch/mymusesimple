@@ -580,9 +580,10 @@ class MymuseTableproduct extends JTable
 			$name = preg_replace("/$ext$/","",$file_preview);
 			$this->$file_preview_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
 			$old_file = $path.$file_preview;
-			$new_file = $path.$preview_name;
+			$new_file = $path.$this->$file_preview_name;
 			
 			if($old_file != $new_file){
+				
 				if($this->fileExists($old_file)){
 					if(!$this->fileCopy($old_file, $new_file)){
 						$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file);
@@ -591,6 +592,8 @@ class MymuseTableproduct extends JTable
 						$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file, 'error');
 						
 						return false;
+					}else{
+						//echo "copied old file: ".$old_file ."to  new file: ". $new_file; exit;
 					}
 					//if(!$this->fileDelete($old_file)){
 					//	$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old_file);
