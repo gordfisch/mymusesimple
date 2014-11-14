@@ -218,13 +218,16 @@ class MyMuseController extends JControllerLegacy
 		$mainframe = JFactory::getApplication();
 		$params = MyMuseHelper::getParams();
 		$user = JFactory::getUser();
-        $Itemid = JRequest::getVar('Itemid','');
-        
+		$jinput = JFactory::getApplication()->input;
+        $Itemid = $jinput->get('Itemid','');
+       
 		//no_reg and not logged in
         if(!$user->get('id') && $params->get('my_registration') == "no_reg"){
         	
         	$plugin = JPluginHelper::getPlugin('user', 'mymusenoreg');
+        	
         	if(!count($plugin)){
+        	
         		//plugin is not on, try to login as buyer
         		if(!$this->MyMuseShopper->savenoreg()){
         			echo $this->MyMuseShopper->getError();
@@ -232,11 +235,12 @@ class MyMuseController extends JControllerLegacy
         			return false;
         		}else{
         			$this->shopper 			=  $this->MyMuseShopper->getShopper();
+        			$url = "index.php?option=com_mymuse&task=checkout&Itemid=$Itemid";
+        			$this->setRedirect( $url );
+        			return true;
         		}
-        	
+        	    
         	}else{
-
-        	
         		$url = JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$Itemid";
         		$return = base64_encode($url);
 
@@ -245,6 +249,7 @@ class MyMuseController extends JControllerLegacy
         		return true;
         	}
         }
+        //
         //no_reg, logged in but no form yet
         if($user->get('id') && $params->get('my_registration') == "no_reg" && !$this->shopper->perms){
         	$msg = JText::_("MYMUSE_PLEASE_COMPLETE_THE_FORM");
@@ -613,27 +618,33 @@ class MyMuseController extends JControllerLegacy
 		 
 	function paycancel()
 	{
-		//get order
-		$db 		= JFactory::getDBO();
-		$user		= JFactory::getUser();
-		$user_id 	= $user->get('id');
-		$id 		= JRequest::getVar('id', 0);
-		$session 	= JFactory::getSession();
-		$order_number = $session->get("order_number",0);
-
-		if($order_number){
-			$q = "SELECT id from #__mymuse_order WHERE order_number='".$order_number."' ORDER BY id DESC";
-			$db->setQuery($q);
-			$id = $db->loadResult();
-		}
+		$params 	= MyMuseHelper::getParams();
 		
-		$this->MyMuseShopper->order = $this->MyMuseCheckout->getOrder( $id );
-
-		if($this->MyMuseShopper->order->user_id != $user_id ){
-			// not the right user!!
-			$msg = JText::_("MYMUSE_USER_ORDER_OWNER_MISMATCH");
-			$this->setRedirect("index.php", $msg);
-			return false;
+		if($params->get('my_saveorder') == "after"){
+			//there won't be an order
+		}else{
+			// get order
+			$db = JFactory::getDBO ();
+			$user = JFactory::getUser ();
+			$user_id = $user->get ( 'id' );
+			$id = JRequest::getVar ( 'id', 0 );
+			$session = JFactory::getSession ();
+			$order_number = $session->get ( "order_number", 0 );
+			
+			if ($order_number) {
+				$q = "SELECT id from #__mymuse_order WHERE order_number='" . $order_number . "' ORDER BY id DESC";
+				$db->setQuery ( $q );
+				$id = $db->loadResult ();
+			}
+			
+			$this->MyMuseShopper->order = $this->MyMuseCheckout->getOrder ( $id );
+			
+			if ($this->MyMuseShopper->order->user_id != $user_id) {
+				// not the right user!!
+				$msg = JText::_ ( "MYMUSE_USER_ORDER_OWNER_MISMATCH" );
+				$this->setRedirect ( "index.php", $msg );
+				return false;
+			}
 		}
 		JRequest::setVar('view', 'cart');
 		JRequest::setVar('layout', 'cart');

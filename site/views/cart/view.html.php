@@ -172,11 +172,15 @@ class myMuseViewCart extends JViewLegacy
 				
 			case "paycancel":
 				$edit 		= false;
-				$this->order = $order 		= $MyMuseCheckout->getOrder($MyMuseShopper->order->id);
+				if($params->get('my_saveorder') == "after"){
+					$this->order = $order 		= $MyMuseCart->buildOrder( $edit );
+				}else{
+					$this->order = $order 		= $MyMuseCheckout->getOrder($MyMuseShopper->order->id);
+				}
 				$heading 	= Jtext::_('MYMUSE_CONFIRM');
 				$message 	= Jtext::_('MYMUSE_PAY_CANCEL');
-				$order->show_checkout = 0;
-				$order->show_summary  = 0;
+				$order->show_checkout = 1;
+				$order->show_summary  = 1;
 				break;
 				
 			default:
@@ -221,10 +225,10 @@ class myMuseViewCart extends JViewLegacy
 		if($task == "checkout"){
 			if($params->get('my_use_shipping') && $order->need_shipping){
 				$task = "shipping";
-				$button = JText::_("MYMUSE_SHIPPING");
+				$button = JText::_("MYMUSE_SHIPPING_BUTTON");
 			}else{
 				$task = "confirm";
-				$button  = JText::_("MYMUSE_CONFIRM");
+				$button  = JText::_("MYMUSE_CONFIRM_BUTTON");
 			}
 			$this->assignRef('button', $button);
 			parent::display("next_form");
