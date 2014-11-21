@@ -77,8 +77,10 @@ class myMuseViewCart extends JViewLegacy
 				$this->order = $order 		= $MyMuseCart->buildOrder( $edit );
 				$heading 	= Jtext::_('MYMUSE_CHECKOUT');
 				$message 	= Jtext::_('MYMUSE_MAKE_ANY_FINAL_CHANGES');
-				$order->show_checkout = 0;
-				$order->show_summary  = 0;
+				if(isset($order)){
+					$order->show_checkout = 0;
+					$order->show_summary  = 0;
+				}
 				break;
 				
 			case "shipping":
@@ -220,7 +222,6 @@ class myMuseViewCart extends JViewLegacy
 		if($heading && $user->get('id') > 0 && $user->get('name') != "Guest Buyer"){
 			parent::display("shopper_info"); //
 		}
-		
 
 		if($task == "checkout"){
 			if($params->get('my_use_shipping') && $order->need_shipping){
@@ -244,7 +245,8 @@ class myMuseViewCart extends JViewLegacy
             	$res = array();
             }
 			$this->assignRef('shipMethods', $res);
-			 
+			$button = JText::_("MYMUSE_SHIPPING_BUTTON");
+			$this->assignRef('button', $button);
 			parent::display("shipping_form");
 			
 		}elseif($task == "confirm" || $task == "paycancel" || 

@@ -56,15 +56,7 @@ class plgMymuseAudio_html5 extends JPlugin
 		$this->language = $document->language;
 		$this->direction = $document->direction;
 		
-        if($this->direction == "rtl"){
-        	$css_path = $site_url.'plugins/mymuse/audio_html5/skin/jplayer.blue.monday.rtl.css';
-        }else{
-        	$css_path = $site_url.'plugins/mymuse/audio_html5/skin/jplayer.blue.monday.css';
-        	//$css_path = $site_url.'plugins/mymuse/audio_html5/skin/premium-pixels.css';
-        }
-        $document->addStyleSheet( $css_path );
-        
-        
+
         if($this->params->get("my_player_errors")){
         	$js_path = $site_url.'plugins/mymuse/audio_html5/js/jquery.jplayer.inspector.js';
         	$document->addScript( $js_path );
@@ -99,7 +91,15 @@ class plgMymuseAudio_html5 extends JPlugin
 			$document->addScript( $js_path );
 		}
 		
+		if($this->direction == "rtl"){
+			$css_path = 'plugins/mymuse/audio_html5/skin/jplayer.blue.monday.rtl.css';
+		}else{
+			$css_path = 'plugins/mymuse/audio_html5/skin/jplayer.blue.monday.css';
+			//$css_path = $site_url.'plugins/mymuse/audio_html5/skin/premium-pixels.css';
+		}
+		
 	//echo "type = $type, index = $index  count = $count<br />";
+	
 		$params 	= MyMuseHelper::getParams();
 
 		$swf_path = JURI::root() .'/plugins/mymuse/audio_html5/Jplayer.swf';
@@ -329,12 +329,7 @@ jQuery(document).ready(function(){
 			
 			$text = '
 		<section>
-		<style type="text/css">
-		.jp-gui ul {
-			margin:0;
-			padding:0;
-		}
-		</style>
+		<link rel="stylesheet" href="'.$css_path .'" type="text/css" />
 		<div id="jquery_jplayer_1" class="jp-jplayer"></div>
 
 		<div id="jp_container_1">

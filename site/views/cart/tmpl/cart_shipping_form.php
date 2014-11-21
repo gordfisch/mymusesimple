@@ -34,7 +34,7 @@ $params 	= $this->params;
 	</tr>
 <?php } ?>
 	<tr>
-		<td><input type="submit" class="button" name="confirm" value="<?php echo JText::_('MYMUSE_CONFIRM'); ?>"></td>
+		<td><input type="submit" class="button" name="confirm" value="<?php echo $this->button; ?>"></td>
 	</tr>
 </table>
 

@@ -53,7 +53,9 @@ class plgMymusePayment_Offline extends JPlugin
 	{
 
 		$string = '';
-		
+		if($params->get('my_saveorder') == "after"){
+			return $string;
+		}
 		$string .= '
 		<form action="index.php?Itemid='.$Itemid.'" method="post" name="adminFormPayOffline">
 		<input type="hidden" name="option" value="com_mymuse">

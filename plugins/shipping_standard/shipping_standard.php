@@ -68,19 +68,30 @@ class plgMymuseShipping_Standard extends JPlugin
 		for($i=1;$i<4;$i++){
             $param = "ship_".$i."_active";
             if($this->params->get($param)){
+            	// see if countries match
+            	$good = 0;
+            	if($this->params->get("ship_all_countries_$i")){
+            		$good = 1;
+            	}elseif(isset($shopper->country) && in_array($shopper->country, $this->params->get("ship_countries_$i"))){
+            		$good = 1;
+            	}
+           
+            	
+            	if($good){
                 $result[$j] 	= new JObject;
-                $result[$j]->id = $i;
-                $carrier    	= "ship_carrier_".$i;
-                $method     	= "ship_method_".$i;
-                $handling   	= "ship_handling_".$i;
-                $additional 	= "ship_additional_".$i;
-                
-                $result[$j]->ship_carrier_name          = $this->params->get($carrier);
-                $result[$j]->ship_method_name           = $this->params->get($method);
-                $result[$j]->ship_handling_charge       = $this->params->get($handling);
-                $result[$j]->ship_handling_additional   = $this->params->get($additional);
-                $result[$j]->cost                       = $this->calculateShipping($order,$result[$j]);
-                $j++;
+					$result [$j]->id = $i;
+					$carrier = "ship_carrier_" . $i;
+					$method = "ship_method_" . $i;
+					$handling = "ship_handling_" . $i;
+					$additional = "ship_additional_" . $i;
+					
+					$result [$j]->ship_carrier_name = $this->params->get ( $carrier );
+					$result [$j]->ship_method_name = $this->params->get ( $method );
+					$result [$j]->ship_handling_charge = $this->params->get ( $handling );
+					$result [$j]->ship_handling_additional = $this->params->get ( $additional );
+					$result [$j]->cost = $this->calculateShipping ( $order, $result [$j] );
+					$j ++;
+            	}
             }
         }
 		return $result;

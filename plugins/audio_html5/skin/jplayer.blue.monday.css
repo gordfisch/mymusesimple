@@ -1,3 +1,9 @@
+#product_player{
+	position:relative;
+	
+}
+
+
 .jp-gui {
 	position:relative;
 	padding:20px;
@@ -39,7 +45,7 @@ li.jp-unmute,
 	display:none;
 }
 .jp-progress-slider {
-	position:absolute;
+	position:relative;
 	top:8px;
 	left:75px;
 	width:280px;
@@ -48,7 +54,7 @@ li.jp-unmute,
 	cursor:pointer;
 }
 .jp-volume-slider {
-	position:absolute;
+	position:relative;
 	top:-4px;
 	left:475px;
 	width:100px;
