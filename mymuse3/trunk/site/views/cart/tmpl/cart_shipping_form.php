@@ -33,9 +33,18 @@ $params 	= $this->params;
 		<td><?php echo MyMuseHelper::printMoney($sm->cost); ?></td>
 	</tr>
 <?php } ?>
+
+
+<?php if($this->order->need_shipping && count($this->shipMethods) == 0){ ?>
 	<tr>
-		<td><input type="submit" class="button" name="confirm" value="<?php echo $this->button; ?>"></td>
+		<td colspan="3"><strong><?php echo JText::_('MYMUSE_NO_SHIPPING_AVAILABLE'); ?></strong></td>
 	</tr>
+<?php  }else{ ?>
+	<tr>
+		<td colspan="3"><input type="submit" class="button" name="confirm" value="<?php echo $this->button; ?>"></td>
+	</tr>
+<?php } ?>
+
 </table>
 
 <?php  }else{ ?>
