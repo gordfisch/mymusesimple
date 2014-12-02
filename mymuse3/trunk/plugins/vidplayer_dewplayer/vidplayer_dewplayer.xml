@@ -24,7 +24,6 @@
 	<config>
 	<fields  name="params">
 		<fieldset name="basic">
-
 		<field name="my_dewtube_allowFullScreen" type="radio" default="1" label="MYMUSE_ALLOWFULLSCREEN_LABEL" 
 		description="MYMUSE_ALLOWFULLSCREEN_DESC">
 		  <option value="0">JNO</option>

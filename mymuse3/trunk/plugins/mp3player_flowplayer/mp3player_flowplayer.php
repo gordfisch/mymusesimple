@@ -82,7 +82,12 @@ class plgMymuseMp3Player_Flowplayer extends JPlugin
 		}
 		if($type == 'playlist' || $type == 'singleplayer'){
 			$document = JFactory::getDocument();
-			$document->addScript( "http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js" );
+			JHtml::_('jquery.framework');
+			if($this->params->get('my_include_jquery', 0)){
+				//load same jquery as Joomla, 1.8.3
+				$js_path = "http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js";
+				$document->addScript( $js_path );
+			}
 			$js_path = $site_url.'plugins'.DS.'mymuse'.DS."mp3player_flowplayer".DS.'mp3players'.DS.'flowplayer.playlist-3.0.8.min.js';
 			$document->addScript( $js_path );
 		}
@@ -134,9 +139,8 @@ class plgMymuseMp3Player_Flowplayer extends JPlugin
 		if($type == 'single'){
 			$text = '
 			<!-- single playlist entry -->
-	<a href="'.$track->path.'" style="text-align: left;">
+	<a href="'.$track->path.'" style="text-align: left;" onClick=\'jQuery("#jp-title-li").html("'.addslashes($track->title).'");\'>
 		'.$track->title.'
-
 	</a>
 			
 			';
@@ -168,10 +172,14 @@ jQuery(function() {
 	}).playlist("div.petrol", {loop:false});
 	
 });
+	jQuery(document).ready(function(){
+		jQuery("#jp-title-li").html("'.addslashes($track->title).'");
+	});
 </script>
 <a class="player plain" id="player'.$id.'"  style="float:left; display: block; width:'.$width.'px;height:'.$height.'px;">
 <img src="plugins/mymuse/mp3player_flowplayer/images/play_text.png" />
 </a>
+		
 
 ';
 			return $text;
