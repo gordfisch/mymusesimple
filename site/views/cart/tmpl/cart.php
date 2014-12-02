@@ -33,7 +33,7 @@ $task		= $this->task;
 		<?php } ?>
 	<table class="mymuse_cart">
 		<thead>
-		<tr>
+		<tr class="mymuse_cart">
 		<th class="mytitle"><b><?php echo JText::_('MYMUSE_TITLE'); ?></b></th>
 	<?php if($params->get("my_show_sku")){ ?>
 		<th class="mysku"><b><?php echo JText::_('MYMUSE_CART_SKU'); ?></b></th>

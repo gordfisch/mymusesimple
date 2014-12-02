@@ -238,7 +238,7 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount, td.myshippi
 	td.myselect, td.myprice, td.myfilesize, td.mytotal,
 	td.myoriginalsubtotal, td.myshoppergroupdiscount,
 	td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal,
-	td.mydiscount, td.myshipping
+	td.mydiscount, td.myshipping, td.myshipmethod
 	{
 		text-align: left;
 	}
@@ -280,7 +280,7 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount, td.myshippi
 	td.mydate:before, td.myorderstatus:before, td.myfullname:before, td.myemail:before,
 	td.myphone:before, td.myaddress:before, td.mycity:before, td.myzip:before,
 	td.myregion:before, td.mycountry:before, td.mycompany:before , td.myfax:before, 
-	td.myColour:before
+	td.myColour:before, td.myshipmethod:before
 	 { 
 		white-space: nowrap;
 		padding-right: 7%;

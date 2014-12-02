@@ -13,7 +13,7 @@
 		  if(dewp!=null) {
 			dewp.dewset(file);
 		  }
-		  var cell = document.getElementById("playing_title");
+		  var cell = document.getElementById("jp-title-li");
 		  title = stripslashes(title);
 		  cell.innerHTML=title;
 		}

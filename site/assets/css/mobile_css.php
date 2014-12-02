@@ -23,7 +23,7 @@ $mobile_style = '
 	td.mytime:before { content: "'.JText::_('MYMUSE_TIME').'";}
 	td.myfilesize:before { content: "'.JText::_('MYMUSE_FILE_SIZE').'";}
 	td.mydownloads:before { content: "'.JText::_('MYMUSE_DOWNLOADS').'";}
-	td.myprice:before { content: "'.JText::_('MYMUSE_COST').'";}
+	td.myprice:before { content: "'.JText::_('MYMUSE_CART_PRICE').'";}
 	td.mypreviews:before { content: "'.JText::_('MYMUSE_PLAY').'";}
 	td.myquantity:before { content: "'.JText::_('MYMUSE_QUANTITY').'";}
 	td.mysku:before { content: "'.JText::_('MYMUSE_CART_SKU').'";}
@@ -68,6 +68,9 @@ $mobile_style = '
 	td.mycountry:before { content: "'.JText::_('MYMUSE_COUNTRY').'"; }
 	td.mycompany:before { content: "'.JText::_('MYMUSE_COMPANY').'"; }
 	td.myfax:before { content: "'.JText::_('MYMUSE_FAX').'"; }
+			
+	td.mychoose:before { content: "'.JText::_('MYMUSE_CHOOSE').'";
+	td.myshipmethod:before { content: "'.JText::_('MYMUSE_SHIP_METHOD').'";
 
 }
 ';

@@ -89,7 +89,7 @@ function tableOrdering( order, dir, task )
 
 </script>
 <style>
-/* to hide the player, uncomment this comment
+/* to hide the player, uncomment this commented sction
 #product_player {
   top: -1000px;
   position: absolute;
@@ -112,7 +112,6 @@ function tableOrdering( order, dir, task )
 	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") -41px 0 no-repeat;
 	
 }
-
 .tracks a.jp-pause {
 	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") 0 -42px no-repeat;
 }
