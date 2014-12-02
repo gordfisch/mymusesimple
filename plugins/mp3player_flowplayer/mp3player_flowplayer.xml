@@ -28,6 +28,13 @@
 		<fieldset name="basic">
 		<field name="my_flowplayer_bgcolor" type="text" size="6" default="#002200" 
 		label="MYMUSE_BGCOLOR_LABEL" description="MYMUSE_BGCOLOR_DESC" />
+		<field name="my_include_jquery" 
+		type="radio" 
+		default="0" label="MYMUSE_FLOWPLAYER_INCLUDE_JQUERY_LABEL" 
+		description="MYMUSE_FLOWPLAYER_INCLUDE_JQUERY_DESC">
+		  <option value="0">JNO</option>
+		  <option value="1">JYES</option>
+		</field>
 		</fieldset>
 	</fields>
 	</config>

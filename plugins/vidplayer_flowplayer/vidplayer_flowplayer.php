@@ -125,14 +125,14 @@ class plgMymuseVidplayer_Flowplayer extends JPlugin
 		
 		
 		/**
-		 * Single palyer with buttons for each track
+		 * Single player with buttons for each track
 		 */
 		
 		
 		if($type == 'single'){
 			$text = '
 			<!-- single playlist entry -->
-	<a href="'.$track->path.'" style="text-align: left;">
+	<a href="'.$track->path.'" style="text-align: left;" onClick=\'jQuery("#jp-title-li").html("'.addslashes($track->title).'");\'>
 		'.$track->title.'
 
 	</a>
@@ -168,6 +168,9 @@ jQuery(document).ready(function($){
 	}).playlist("div.petrol", {loop:false});
 	
 });
+jQuery(document).ready(function(){
+		jQuery("#jp-title-li").html("'.addslashes($track->title).'");
+	});
 </script>
 <a class="player petrol" id="player'.$id.'"  style="float:left; display: block; width:'.$width.'px;height:'.$height.'px;">
 <img src="plugins/mymuse/mp3player_flowplayer/images/play_text.png" />

@@ -24,6 +24,13 @@
 		<language tag="en-GB">en-GB.plg_mymuse_mp3player_dewplayer.ini</language>
 		<language tag="en-GB">en-GB.plg_mymuse_mp3player_dewplayer.sys.ini</language>
 	</languages>
+	<config>
+	<fields  name="params">
+		<fieldset name="basic">
+		</fieldset>
+	</fields>
+	</config>
+		
 <updateservers>
     <server type="extension" priority="1"
         name="Plug MyMuse mp3player Dewplayer">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=36</server>
