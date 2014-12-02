@@ -13,38 +13,40 @@
 defined('_JEXEC') or die('Restricted access');
 $params 	= $this->params;
 ?>
+<div class="componentheading"><?php echo Jtext::_('MYMUSE_SHIPPING'); ?></div>
+
+
+<?php if($this->order->need_shipping && count($this->shipMethods) == 0){ ?>
+	<div class="message alert"><?php echo JText::_('MYMUSE_NO_SHIPPING_AVAILABLE'); ?></div>
+<?php  }else{ ?>
+
+
 <form action="index.php?Itemid=<?php echo $this->Itemid; ?>" method="post" name="adminForm">
 <input type="hidden" name="option" value="com_mymuse">
 <input type="hidden" name="task" value="confirm">
-<div class="componentheading"><?php echo Jtext::_('MYMUSE_SHIPPING'); ?></div>
+
 
 <?php if($this->order->need_shipping){ ?>
 
 <table class="mymuse_cart">
-	<tr class="mymuse_cart_top">
-		<td class="mymuse_cart_top" width="50"><b><?php echo JText::_('MYMUSE_CHOOSE'); ?></b></td>
-		<td class="mymuse_cart_top"><b><?php echo JText::_('MYMUSE_SHIP_METHOD'); ?></b></td>
-		<td class="mymuse_cart_top"><b><?php echo JText::_('MYMUSE_COST'); ?></b></td>
+	<thead>
+	<tr>
+		<th class="myselect" width="50"><b><?php echo JText::_('MYMUSE_SELECT'); ?></b></th>
+		<th class="myshipmethod"><b><?php echo JText::_('MYMUSE_SHIP_METHOD'); ?></b></th>
+		<th class="myprice"><b><?php echo JText::_('MYMUSE_COST'); ?></b></th>
 	</tr>
+	</thead>
 <?php foreach($this->shipMethods as $sm){ ?>
 	<tr>
-		<td><input type="radio" name="shipmethodid" value="<?php echo $sm->id; ?>" /></td>
-		<td><?php echo $sm->ship_carrier_name." ".$sm->ship_method_name; ?></td>
-		<td><?php echo MyMuseHelper::printMoney($sm->cost); ?></td>
+		<td class="myselect"><input type="radio" name="shipmethodid" value="<?php echo $sm->id; ?>" /></td>
+		<td class="myshipmethod"><?php echo $sm->ship_carrier_name." ".$sm->ship_method_name; ?></td>
+		<td class="myprice"><?php echo MyMuseHelper::printMoney($sm->cost); ?></td>
 	</tr>
 <?php } ?>
 
-
-<?php if($this->order->need_shipping && count($this->shipMethods) == 0){ ?>
-	<tr>
-		<td colspan="3"><strong><?php echo JText::_('MYMUSE_NO_SHIPPING_AVAILABLE'); ?></strong></td>
-	</tr>
-<?php  }else{ ?>
 	<tr>
 		<td colspan="3"><input type="submit" class="button" name="confirm" value="<?php echo $this->button; ?>"></td>
 	</tr>
-<?php } ?>
-
 </table>
 
 <?php  }else{ ?>
@@ -52,3 +54,5 @@ $params 	= $this->params;
 		<?php echo JText::_('MYMUSE_NO_SHIPPING_NEEDED')?> <input type="submit" class="button" name="confirm" value="<?php echo JText::_('Next'); ?>">
 <?php }?>
 </form>
+
+<?php } ?>

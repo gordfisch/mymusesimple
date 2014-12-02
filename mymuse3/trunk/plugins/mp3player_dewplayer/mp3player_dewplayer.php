@@ -73,6 +73,18 @@ class plgMymuseMp3Player_Dewplayer extends JPlugin
 		}else{
 			$id = $track->id;
 		}
+		if($type == 'singleplayer'){
+			$document = JFactory::getDocument();
+			
+			$js = 'jQuery(document).ready(function(){
+				jQuery("#jp-title-li").html("'.addslashes($track->title).'");
+			});
+			';
+			$document->addScriptDeclaration($js);
+		}
+		
+		
+		
 		$my_dewplayer_player = $gettype[$type];
 		
 		$site_url = preg_replace("#administrator/#","",JURI::base());
@@ -90,6 +102,7 @@ class plgMymuseMp3Player_Dewplayer extends JPlugin
 			<param name="flashvars" value="mp3='. $track->path .'" />
 			<param name="wmode" value="transparent" />
 			</object>
+
 			';		
 			return $text;
 		}

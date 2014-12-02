@@ -41,7 +41,7 @@ if(count($items) && !$items_select){
 if(count($tracks)){ 
 	$count += count($tracks);
 }
-
+/* coming soon 
 //add javascript for updating the cart by ajax
 $js = '';
 $url = "index.php?option=com_mymuse&task=ajaxtogglecart";
@@ -86,6 +86,7 @@ jQuery(document).ready(function($){
 ';
 }
 $document->addScriptDeclaration($js);
+*/
 ?>
 
 <script type="text/javascript">
