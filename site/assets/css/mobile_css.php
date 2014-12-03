@@ -69,8 +69,8 @@ $mobile_style = '
 	td.mycompany:before { content: "'.JText::_('MYMUSE_COMPANY').'"; }
 	td.myfax:before { content: "'.JText::_('MYMUSE_FAX').'"; }
 			
-	td.mychoose:before { content: "'.JText::_('MYMUSE_CHOOSE').'";
-	td.myshipmethod:before { content: "'.JText::_('MYMUSE_SHIP_METHOD').'";
+	td.mychoose:before { content: "'.JText::_('MYMUSE_CHOOSE').'"; }
+	td.myshipmethod:before { content: "'.JText::_('MYMUSE_SHIP_METHOD').'"; }
 
 }
 ';
