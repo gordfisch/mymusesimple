@@ -73,7 +73,11 @@ $task		= $this->task;
 		        value="<?php echo $order_item[$i]->quantity;?>" style="width: 20%;"   />&nbsp;</td>
 		        
 		    <?php }else{ ?>
-		        <td class="myquantity"><?php echo $order_item[$i]->quantity; ?></td>
+		        <td class="myquantity"><?php echo $order_item[$i]->quantity; 
+		        if($params->get('my_add_stock_zero',0) && $order_item[$i]->quantity == 0) {
+		        	echo " ".JText::_('MYMUSE_BACKORDERED');
+		        }
+		        ?></td>
 		    <?php } ?>
 		        
 		        <td class="myprice"><?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_subtotal); ?></td>

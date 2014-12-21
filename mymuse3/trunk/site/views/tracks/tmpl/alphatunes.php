@@ -24,7 +24,6 @@ for ($i=0;$i<$this->cart["idx"];$i++) {
     $products[] = $this->cart[$i]['product_id'];
 }
 
-
 $js = '';
 foreach($this->items as $track){
 
@@ -438,8 +437,8 @@ if($this->cart['idx']){
       		<?php  } ?>
 		</table>
 <?php endif; ?>
-
-
+</div>
+</div>
 <?php // Add pagination links ?>
 <?php if (!empty($this->items)) : ?>
 	<?php if (($this->params->def('show_pagination', 2) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>

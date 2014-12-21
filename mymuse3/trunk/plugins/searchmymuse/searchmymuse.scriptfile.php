@@ -19,11 +19,7 @@ class plgSearchSearchmymuseInstallerScript
   function install($parent) { 
      // activate the plugin
 	 $db = JFactory::getDbo();
-     $tableExtensions = $db->nameQuote("#__extensions");
-     $columnElement   = $db->nameQuote("element");
-     $columnType      = $db->nameQuote("type");
-     $columnEnabled   = $db->nameQuote("enabled");
-     
+
      // Enable plugin
      $db->setQuery("UPDATE #__extensions SET enabled=1 WHERE element='searchmymuse' AND type='plugin'");
      $db->execute();
