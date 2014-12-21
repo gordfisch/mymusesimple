@@ -40,8 +40,8 @@ li.jp-unmute,
 }
 .jp-progress-slider {
 	position:absolute;
-	top:8px;
-	left:75px;
+	top:28px;
+	left:100px;
 	width:280px;
 }
 .jp-progress-slider .ui-slider-handle {
@@ -49,8 +49,8 @@ li.jp-unmute,
 }
 .jp-volume-slider {
 	position:absolute;
-	top:-4px;
-	left:475px;
+	top:30px;
+	left:500px;
 	width:100px;
 	height:.4em;
 }

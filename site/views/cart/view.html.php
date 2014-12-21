@@ -186,8 +186,10 @@ class myMuseViewCart extends JViewLegacy
 				break;
 				
 			default:
-				$this->order = $order 		= $MyMuseCart->buildOrder( $edit );
-				$order->show_checkout = 1;
+				if($cart['idx'] > 0){
+					$this->order = $order 		= $MyMuseCart->buildOrder( $edit );
+					$order->show_checkout = 1;
+				}
 				break;
 		}
 

@@ -64,7 +64,7 @@ class plgMymuseAudio_html5 extends JPlugin
         
         // ui js and css
         //if (!$app->isAdmin()) {
-        	$document->addScript( 'http://code.jquery.com/ui/1.8.23/jquery-ui.min.js' );
+        	$document->addScript( 'http://code.jquery.com/ui/1.11.2/jquery-ui.min.js' );
         //}
         $document->addStyleSheet('http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
         
@@ -76,10 +76,17 @@ class plgMymuseAudio_html5 extends JPlugin
 	 */
 	function onPrepareMyMuseMp3Player(&$track, $type='single', $height=0, $width=0, $index=0, $count=0)
 	{
-		//load jquery.jplayer.min.js? Not if it has been added already
+		
 		$document = JFactory::getDocument();
 		$match = 0;
 		$site_url = preg_replace("#administrator/#","",JURI::base());
+		
+		
+		if($this->params->get('my_include_jquery', 0)){
+			JHtml::_('jquery.framework');
+		}
+		
+		//load jquery.jplayer.min.js? Not if it has been added already
 		while(list($url,$arr) = each($document->_scripts)){
 			if(preg_match("/jquery.jplayer.min.js/", $url)){
 				//echo "<br />audio url: ".$url;
@@ -238,7 +245,8 @@ class plgMymuseAudio_html5 extends JPlugin
 		$js .= 'supplied: "'.$supplied.'",
         cssSelectorAncestor: "#jp_container_'.$id.'",
         wmode: "window",
-        keyEnabled: true
+        keyEnabled: true,
+        autoPlay: true
       },
       myControl = {
 			progress: jQuery(options.cssSelectorAncestor + " .jp-progress-slider"),
@@ -297,7 +305,7 @@ class plgMymuseAudio_html5 extends JPlugin
 			myPlayer.jPlayer("option", "volume", ui.value);
 		}
 	});
-
+       myPlayer.jPlayer("play");
     	';
         
         if(($count && ($index +1) == $count) || $count == 0){
@@ -309,6 +317,8 @@ class plgMymuseAudio_html5 extends JPlugin
         			';
         		}
         	}
+        	
+
         }
     
         if($count == 0 && $this->params->get("my_player_errors")){
@@ -318,9 +328,11 @@ class plgMymuseAudio_html5 extends JPlugin
         
         $js .= '
 });
+        	
 jQuery(document).ready(function(){
 		jQuery("#jp-title-li").html("'.addslashes($track->title).'");
-	});
+		
+});
 ';
 
         
@@ -360,7 +372,16 @@ jQuery(document).ready(function(){
 			<div id="jplayer_inspector_'.$id.'"></div>
 		</section>
 ';
-			
+			if($this->params->get("my_playonload")){
+				$text .= '
+<script type="text/javascript">
+jQuery(document).ready(function(){
+		jQuery("#track_play_'.$track->id.'").trigger( "click" );
+				jQuery("#jquery_jplayer_1").jPlayer("play");
+	
+});
+</script>';
+			}	
 			return $text;
 		}
 		
@@ -427,12 +448,12 @@ jQuery(document).ready(function(){
 			
 			$media = '';
 			foreach($trs as $source){
-				$media .= $source['ext'].': "'.$source['src'].'",'."\n";
+				$media .= $source['ext'].": '".$source['src']."',\n";
 				
 			}
 			
-			$media = preg_replace("/,\\n$/","",$media);		
-			//$media .= ', title: "'.$track->title.'"';
+			$media = preg_replace("/,\n$/","",$media);		
+
 			
 			$track->title = preg_replace("/\"/","",$track->title);
 			$js = '';
@@ -445,34 +466,18 @@ jQuery(document).ready(function(){  ';
 			$js .= '
 
 		jQuery("#track_play_'.$track->id.'").click( function(e) {
-			pauseAll();
-			var title = "'.$track->title.'";
-			jQuery("#jp-title-li").html(title);
-
-            jQuery("#track_play_'.$track->id.'").css("display","none");
-            jQuery("#track_play_li_'.$track->id.'").css("display","none");
-            jQuery("#track_pause_'.$track->id.'").css("display","block");
-            jQuery("#track_pause_li_'.$track->id.'").css("display","block");
-            
-            myPlayer.jPlayer("setMedia",{ '.$media.' });
-            myPlayer.jPlayer("play");
-            
-
-			return false;
+			media = {'.$media.'}
+			playOne('.$track->id.',"'.$track->title.'",media);
+			return true;
 		}); 
 		
 		jQuery("#track_pause_'.$track->id.'").click( function(e) {
-
-			jQuery("#track_play_'.$track->id.'").css("display","block");
-            jQuery("#track_play_li_'.$track->id.'").css("display","block");
-            jQuery("#track_pause_'.$track->id.'").css("display","none");
-            jQuery("#track_pause_li_'.$track->id.'").css("display","none");
-            myPlayer.jPlayer("stop");
-			return false;
+			pauseOne('.$track->id.');
+			return true;
 		})
 
-
 ';
+
 			$document->addScriptDeclaration($js);
 			return $text;
 
@@ -756,21 +761,54 @@ jQuery(document).ready(function(jQuery){
 	function onPrepareMyMuseMp3PlayerControl(&$tracks)
 	{
 		$document = JFactory::getDocument();
-		$js = 'function pauseAll(){  
+		$j = 0;
+		$js = '
+function pauseAll(){  
+	var tracks = new Array();
 		';
 		
 		foreach ($tracks as $track){
 			$js .= '
-			jQuery("#track_play_'.$track->id.'").css("display","block");
-            jQuery("#track_play_li_'.$track->id.'").css("display","block");
-            jQuery("#track_pause_'.$track->id.'").css("display","none");
-            jQuery("#track_pause_li_'.$track->id.'").css("display","none");
-            ';
+			tracks['.$j.'] = '.$track->id.';';
+			$j++;
 		}
 		$js .= '
+			for (var i = 0; i < tracks.length; i++) {
+				pauseOne(tracks[i]);
+			}
 		}
 		';
+		
+		$js .= '
+function playOne(id,title,media){
+			
+			pauseAll();
+			jQuery("#jp-title-li").html(title);
+
+            jQuery("#track_play_"+id).css("display","none");
+            jQuery("#track_play_li_"+id).css("display","none");
+            jQuery("#track_pause_"+id).css("display","block");
+            jQuery("#track_pause_li_"+id).css("display","block");
+            myPlayer.jPlayer("setMedia",media);
+            myPlayer.jPlayer("play");
+            
+
+			return false;
+		
+	}
+
+function pauseOne(id){
+			jQuery("#track_play_"+id).css("display","block");
+            jQuery("#track_play_li_"+id).css("display","block");
+            jQuery("#track_pause_"+id).css("display","none");
+            jQuery("#track_pause_li_"+id).css("display","none");
+            myPlayer.jPlayer("stop");
+			return false;
+}
+				
+				
+			';
 		$document->addScriptDeclaration($js);
-		return "made a func";
+		return true;
 	}
 }

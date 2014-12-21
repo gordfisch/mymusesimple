@@ -139,118 +139,7 @@ class com_mymuseInstallerScript
 
 		$extensions = array();
 		
-		//directories
-		/**
-		 * 
-if(!function_exists('recursiveDelete')){
-	function recursiveDelete($str){
-		if(is_file($str)){
-			return JFile::delete($str);
-		}
-		elseif(is_dir($str)){
-			$scan = glob(rtrim($str,'/').'/*');
-			foreach($scan as $index=>$path){
-				recursiveDelete($path);
-			}
-			return JFile::delete($str);
-		}
-	}
-}
-
-		$i = 0;
-		$dir =  $params->get('my_download_dir');
-		
-		//specifically remove .htaccess
-		if(file_exists($dir.DS.".htaccess")){
-			$extensions[$i]['msg'] = '';
-			$extensions[$i]['name'] = "Remove .htaccess";
-			$extensions[$i]['type'] = "File in download Dir";
-			$extensions[$i]['status'] = 0;
-			if(JFile::delete($dir.DS.".htaccess"))
-			{
-				$extensions[$i]['status'] = 1;
-			}else{
-				$extensions[$i]['msg'] = '';
-			}
-			
-			$i++;
-		}
-		
-		$extensions[$i]['name'] = "Remove Previews";
-		$extensions[$i]['type'] = "Directory";
-		$extensions[$i]['status'] = 0;
-		$extensions[$i]['msg'] = '';
-		$dir =  JPATH_ROOT.DS.$params->get('my_preview_dir');
-		if(stristr(PHP_OS, 'win')){
-			$dir = str_replace("/", "\\", $dir);
-		}
-		if(recursiveDelete($dir))
-		{
-			$extensions[$i]['status'] = 1;
-		}else{
-			$extensions[$i]['msg'] = " $dir";
-		}
-		$i++;
-		
-		$extensions[$i]['name'] = "Remove Downloads";
-		$extensions[$i]['type'] = "Directory";
-		$extensions[$i]['status'] = 0;
-		$extensions[$i]['msg'] = '';
-		$dir =  $params->get('my_download_dir');
-		if(recursiveDelete($dir))
-		{
-			$extensions[$i]['status'] = 1;
-		}else{
-			$extensions[$i]['msg'] = " $dir";;
-		}
-		$i++;
-		
-		$extensions[$i]['name'] = "Remove Graphics";
-		$extensions[$i]['type'] = "Directory";
-		$extensions[$i]['status'] = 0;
-		$extensions[$i]['msg'] = '';
-		$dir =  JPATH_ROOT.DS."images".DS."A_MyMuseImages";
-		
-		if(recursiveDelete($dir))
-		{
-			$extensions[$i]['status'] = 1;
-		}else{
-			$extensions[$i]['msg'] = " $dir";
-		}
-		$i++;
-		*/
-		
-		
-		?>
-		<!--  
-		<h3><?php echo JText::_('Remove Directories'); ?></h3>
-		<table class="adminlist">
-			<thead>
-				<tr>
-					<th class="title"><?php echo JText::_('Extension'); ?></th>
-					<th width="60%"><?php echo JText::_('Status'); ?></th>
-				</tr>
-			</thead>
-			<tfoot>
-				<tr>
-					<td colspan="2">&nbsp;</td>
-				</tr>
-			</tfoot>
-			<tbody>
-				<?php foreach ($extensions as $i => $ext) : ?>
-					<tr class="row<?php echo $i % 2; ?>">
-						<td class="key"><?php echo $ext['name']; ?> (<?php echo JText::_($ext['type']); ?>)</td>
-						<td>
-							<?php $style = $ext['status'] ? 'font-weight: bold; color: green;' : 'font-weight: bold; color: red;'; ?>
-							<span style="<?php echo $style; ?>"><?php echo $ext['status'] ? JText::_('Uninstalled successfully') : JText::_('Uninstall FAILED'); ?>
-							<?php echo $ext['msg'] ?></span>
-						</td>
-					</tr>
-				<?php endforeach; ?>
-			</tbody>
-		</table>
-		-->
-		<?php 
+		//directories??
 
 	}
  
@@ -718,7 +607,7 @@ if(!function_exists('recursiveDelete')){
 		}else{
 			//WAS ALREADY INSTALLED
 			//restore the css file
-			/** so different we wnat to overwrite 2014-03-05
+			/** so different we want to overwrite 2014-03-05
 			$name = JText::_("MYMUSE_SAVE_CSS");
 			$myFile = JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'assets'.DS.'css'.DS.'mymuse.css';
 			if($this->css != ""){

@@ -24,6 +24,13 @@
 	<config>
 	<fields  name="params">
 		<fieldset name="basic">
+		<field name="my_playonload" 
+		type="radio" 
+		default="0" label="MYMUSE_AUDIO5_PLAYONLOAD_LABEL" 
+		description="MYMUSE_AUDIO5_PLAYONLOAD_DESC">
+		  <option value="0">JNO</option>
+		  <option value="1">JYES</option>
+		</field>
 		<field name="my_include_jquery" 
 		type="radio" 
 		default="0" label="MYMUSE_AUDIO5_INCLUDE_JQUERY_LABEL" 

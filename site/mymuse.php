@@ -25,9 +25,10 @@ ini_set('max_execution_time',"120");
 
 //load com_user language for logins and registration
 $lang = JFactory::getLanguage();
+$rtl = $lang->get('rtl');
 $extension = 'com_user';
 $base_dir = JPATH_SITE;
-$language_tag = 'en-GB';
+$language_tag = $lang->get('tag');
 $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
 
@@ -37,6 +38,10 @@ $Doc = JFactory::getDocument();
 $Doc->addStyleSheet( 'components/com_mymuse/assets/css/mymuse.css' );
 include(JPATH_COMPONENT.DS.'assets'.DS.'css'.DS.'mobile_css.php');
 $Doc->addStyleDeclaration($mobile_style);
+if($rtl){
+	$Doc->addStyleSheet( 'components/com_mymuse/assets/css/mymuse_rtl.css' );
+}
+
 $Doc->addScript( 'components/com_mymuse/assets/javascript/mymuse.js' );
 
 JPluginHelper::importPlugin('mymuse');

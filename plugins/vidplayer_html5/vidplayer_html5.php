@@ -42,11 +42,9 @@ class plgMymuseVidplayer_html5 extends JPlugin
 		
 		$document = JFactory::getDocument();
 		$app = JFactory::getApplication('site');
-		JHtml::_('jquery.framework');
+		
 		if($this->params->get('my_include_jquery', 0)){
-			//load same jquery as Joomla, 1.8.3
-			$js_path = "http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js";
-			$document->addScript( $js_path );
+			JHtml::_('jquery.framework');
 		}
         
         $site_url = preg_replace("#administrator/#","",JURI::base());

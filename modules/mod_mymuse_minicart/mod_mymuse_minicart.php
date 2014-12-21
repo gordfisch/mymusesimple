@@ -25,7 +25,7 @@ require_once( MYMUSE_PATH.'mymuse.class.php');
 
 // add css
 $Doc = JFactory::getDocument();
-$Doc->addStyleSheet( MYMUSE_PATH.'assets/css/mymuse.css' );
+$Doc->addStyleSheet( 'components/com_mymuse/assets/css/mymuse.css' );
 include(MYMUSE_PATH.'assets'.DS.'css'.DS.'mobile_css.php');
 $Doc->addStyleDeclaration($mobile_style);
 
