@@ -307,7 +307,18 @@ class plgUserMyMuse extends JPlugin
 						$form->setFieldAttribute($field, 'type', 'hidden', 'profile');
 						//$form->setFieldAttribute($field, 'value', '1', 'profile');
 					}
+					
+					if($field == 'region'){
+						$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_REGION')."' as region, 0 as country_id  UNION 
+								SELECT id as value, state_name as region, country_id FROM #__mymuse_state 
+						ORDER by country_id, region";
+						$form->setFieldAttribute($field, 'query', $q, 'profile');
+					}
 					if($field == 'country'){
+						$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_COUNTRY')."' as country UNION SELECT country_3_code as value, country_name as country FROM #__mymuse_country ORDER by country";
+						$form->setFieldAttribute($field, 'query', $q, 'profile');
+						
+						
 						$countrystates = $this->listCountryState();
 						$javascript = '
 		var countrystates = new Array;
@@ -319,7 +330,7 @@ class plgUserMyMuse extends JPlugin
 			}
 		}
 		
-		$document =& JFactory::getDocument();
+		$document = JFactory::getDocument();
 		$document->addScriptDeclaration($javascript);
 		
 		$js = "/**
@@ -522,7 +533,7 @@ class plgUserMyMuse extends JPlugin
      */
    function listCountryState($country_select='', $state_select='', $store_country='') {
 
-		$db	= & JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		//echo "country = $country_select state = $state_select"; exit;
 		$javascript = "onchange=\"changeDynaList( 'state', countrystates, document.adminForm.country.options[document.adminForm.country.selectedIndex].value, 0, 0);\"";
 		
@@ -531,7 +542,6 @@ class plgUserMyMuse extends JPlugin
 		$db->setQuery($query);
 		$dbcountries = $db->loadObjectList();
 		$countries = array_merge($countries, $dbcountries);
-		$lists['country'] = JHTML::_('select.genericlist',  $countries, 'country', 'class="inputbox" size="1" '.$javascript, 'value', 'text', $country_select);
 
 	
 		foreach ($dbcountries as $country)
