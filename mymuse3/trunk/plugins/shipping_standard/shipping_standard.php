@@ -62,7 +62,6 @@ class plgMymuseShipping_Standard extends JPlugin
 	{
 		// loading plugin parameters
         $this->_plugin = JPluginHelper::getPlugin('mymuse', 'shipping_standard');
-        
         $result = array();
         $j = 0;
 		for($i=1;$i<4;$i++){
@@ -72,7 +71,7 @@ class plgMymuseShipping_Standard extends JPlugin
             	$good = 0;
             	if($this->params->get("ship_all_countries_$i")){
             		$good = 1;
-            	}elseif(isset($shopper->country) && in_array($shopper->country, $this->params->get("ship_countries_$i"))){
+            	}elseif(isset($shopper->profile['country']) && in_array($shopper->profile['country'], $this->params->get("ship_countries_$i"))){
             		$good = 1;
             	}
            

@@ -305,7 +305,7 @@ class plgMymuseAudio_html5 extends JPlugin
 			myPlayer.jPlayer("option", "volume", ui.value);
 		}
 	});
-       myPlayer.jPlayer("play");
+    
     	';
         
         if(($count && ($index +1) == $count) || $count == 0){
