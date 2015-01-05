@@ -244,6 +244,7 @@ class MyMuseCheckout
 
 
 		// LOOP OVER CART ITEMS TO STORE TO DB
+		$order->idx = 0;
 		for($i = 0; $i < $cart["idx"]; $i++) {
 			if(@$cart[$i]["coupon_id"]){
 				continue;
@@ -369,7 +370,7 @@ class MyMuseCheckout
 		// SEND EMAIL CONFIRMATION MESSAGES IF STATUS IS CONFIRMED
 		// or if payment offline is enabled
 		jimport( 'joomla.plugin.helper' );
-		if($order->order_status == "C" || JPluginHelper::isEnabled('mymuse','payment_offline')){
+		if($order->order_status == "C"){
 			$this->mailOrder($MyMuseShopper,$MyMuseStore);
 		}
 		 

@@ -528,6 +528,7 @@ class MyMuseController extends JControllerLegacy
 			return false;
 		}
 	
+		
 		$notifyCustomer = JRequest::getVar('notifyCustomer', 0);
 		if($notifyCustomer){
 			$this->MyMuseCheckout->mailOrder($this->MyMuseShopper,$this->MyMuseStore);

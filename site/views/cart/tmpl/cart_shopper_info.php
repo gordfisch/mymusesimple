@@ -149,5 +149,19 @@ $params 	= $this->params;
         ?></td>
             <!-- End Customer Information --> 
         </tr>
+        <?php if($this->user->id){ 
+        		$url = JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$this->Itemid;
+        		$return = base64_encode($url);
+        	?>
+        <tr>
+        	<td colspan="2"><form method="post" action="" id="profile_form">
+        	<input type="hidden" name="option" value="com_users">
+        	<input type="hidden" name="task" value="profile.edit">
+        	<input type="hidden" name="user_id" value="<?php echo $this->user->id;?>">
+        	<input type="hidden" name="return" value="<?php echo $return;?>">
+        	<input type="submit" name="submit" class="button" value="<?php echo JText::_("MYMUSE_EDIT_PROFILE");?>">
+        	</form></td>
+        </tr>
+        <?php }?>
         </table>
         <br />

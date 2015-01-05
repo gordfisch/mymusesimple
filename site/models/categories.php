@@ -45,7 +45,7 @@ class mymuseModelCategories extends JModelList
 	 *
 	 * @since	1.6
 	 */
-	protected function populateState()
+	protected function populateState($ordering = NULL, $direction = NULL)
 	{
 		$app = JFactory::getApplication();
 		$this->setState('filter.extension', $this->_extension);
