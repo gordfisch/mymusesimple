@@ -95,7 +95,7 @@ class MymuseViewProduct extends JViewLegacy
         	$this->attribute_skus = $this->get('Attributeskus');
         	$this->attributes = $this->get('Attributes');
         	if(!count($this->attribute_skus)){
-        		//no attributes ye1!!
+        		//no attributes yet!!
         		$msg = JText::_("MYMUSE_CREATE_ATTRIBUTE_FIRST");
         		$url = "index.php?option=com_mymuse&view=product&layout=listitems&id=".$this->item->parentid;
         		$app->redirect($url, $msg);
@@ -109,7 +109,51 @@ class MymuseViewProduct extends JViewLegacy
         	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'item');
         	
         }
-
+          
+        //upload screen
+        if($task == "uploadpayload" || $task == "uploadpreview" ){
+        	$this->setLayout('upload');
+        	$item ->artist_alias = MyMuseHelper::getArtistAlias($item->id, 1);
+        	$item->album_alias = MyMuseHelper::getAlbumAlias($item->id);
+        	$language = JFactory::getLanguage();
+        	$lang = $language->getTag();
+        	
+        	$langfiles        = JPATH_COMPONENT_ADMINISTRATOR.'/assets/plupload/js/i18n/';
+        	$PLdataDir        = JURI::root() . "administrator/components/com_mymuse/assets/plupload/";
+        	$document         = JFactory::getDocument();
+        	$PLuploadScript   = new PLuploadScript($PLdataDir);
+        	$runtimeScript    = $PLuploadScript->runtimeScript;
+        	$runtime          = $PLuploadScript->runtime;
+        	//add default PL css
+        	$document->addStyleSheet($PLdataDir . 'css/plupload.css');
+        	
+        	//add PL styles and scripts
+        	$document->addStyleSheet($PLdataDir . 'js/jquery.plupload.queue/css/jquery.plupload.queue.css', 'text/css', 'screen');
+        	$document->addScript($PLdataDir . 'js/jquery.min.js');
+        	$document->addScript($PLdataDir . 'js/plupload.full.min.js');
+        	
+        	// load plupload language file
+        	if ($lang){
+        		if (JFile::exists($langfiles . $lang.'.js')){
+        			$document->addScript($PLdataDir . 'js/i18n/'.$lang.'.js');
+        		} else {
+        			$document->addScript($PLdataDir . 'js/i18n/en-GB.js');
+        		}
+        	}
+        	$document->addScript($PLdataDir . 'js/jquery.plupload.queue/jquery.plupload.queue.js');
+        	$document->addScriptDeclaration( $PLuploadScript->getScript() );
+        	
+        	//set variables for the template
+        	$this->enableLog = $jlistConfig['plupload.enable.uploader.log'];
+        	$this->runtime = $runtime;
+        	
+        	if($this->task == "uploadpayload" ){
+        		$this->currentDir = $this->params->get('my_download_dir') . DS . $item ->artist_alias . DS . $item->album_alias . DS;
+        	}else{
+        		$this->currentDir = JURI::root() . DS . $this->params->get('my_preview_dir') . DS . $item ->artist_alias . DS . $item->album_alias . DS;
+        	}
+        }
+       
         //It's the parent, set the user state
         if($this->item->id && $this->item->parentid == 0){
         	$app = JFactory::getApplication();

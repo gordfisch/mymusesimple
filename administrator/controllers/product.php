@@ -285,15 +285,7 @@ class MymuseControllerProduct extends JControllerForm
     	JFactory::getApplication()->close();
     }
     
-    /**
-     * Method to show the upload screen
-     */
-    public function upload()
-    {
-    	$input = JFactory::getApplication()->input;
-    	$task = $input->get('task');
-    	$input->set('layout', 'upload');
-    }
+
     
 
 
