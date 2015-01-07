@@ -37,7 +37,7 @@ class MymuseViewProduct extends JViewLegacy
 		$this->params 	= MyMuseHelper::getParams();
 		$app 			= JFactory::getApplication();
 		$subtype 		= $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'details');
-		$task 			= $input->get('task', 'edit');
+		$this->task 	= $task 	= $input->get('task', 'edit');
 		$view 			= $input->get('view');
 		
         $isNew  		= ($this->item->id < 1);

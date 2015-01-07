@@ -657,7 +657,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
         				<?php if($params->get('my_free_downloads') || $params->get('my_downloads_enable')){
         				if(isset($track->free_download) && $track->free_download){ ?>
         					<a class="free_download_link" 
-        					target="_new"
+        				
         					href="<?php echo $track->free_download_link; ?>"><img src="components/com_mymuse/assets/images/download_dark.png" border="0" /></a>
         				<?php }else{ 
 							echo MyMuseHelper::printMoneyPublic($track->price); 
