@@ -549,7 +549,8 @@ class MyMuseModelProduct extends JModelItem
 							$track->free_download_link = $track->download_path;
 							$track->free_download_link = "index.php?option=com_mymuse&view=store&task=downloadit&id=".$track->id;
 							if($track->access > 1 && !$user->get('id')){
-								$track->free_download_link = "index.php?option=com_users&view=registration";
+								$view = $params->get('my_registration_redirect', 'login');
+								$track->free_download_link = "index.php?option=com_users&view=$view";
 							}
 						}else{
 							$track->free_download = 0;

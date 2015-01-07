@@ -55,6 +55,9 @@ class MymuseControllerProduct extends JControllerForm
 		
 		$this->registerTask( 'save2newfile', 'saveitem' );
 		
+		$this->registerTask( 'uploadpayload', 'upload' );
+		$this->registerTask( 'uploadpreview', 'upload' );
+		
 		$cid = $input->get( 'cid', array(0));
 		if($cid[0] > 0){
 			$input->set('id',$cid[0]);
@@ -280,6 +283,16 @@ class MymuseControllerProduct extends JControllerForm
     
     	// Close the application
     	JFactory::getApplication()->close();
+    }
+    
+    /**
+     * Method to show the upload screen
+     */
+    public function upload()
+    {
+    	$input = JFactory::getApplication()->input;
+    	$task = $input->get('task');
+    	$input->set('layout', 'upload');
     }
     
 
