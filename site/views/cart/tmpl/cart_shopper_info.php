@@ -16,7 +16,6 @@ $params 	= $this->params;
 
 ?>     <!-- Begin 2 column bill-ship to -->
         <h2><?php echo JText::_('MYMUSE_SHOPPER_INFORMATION') ?></h2>
-
 		<table class="mymuse_cart">
         <tr VALIGN=top>
             <td> <!-- Begin BillTo -->
