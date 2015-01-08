@@ -114,7 +114,8 @@ class mymuseModelShopper extends JModelForm
 				$this->_shopper->user_id = $user->get('id');
 				$this->_shopper->perms = 1;
 				$profile = $user->get('profile');
-				
+				$this->loadProfile($user);
+
 				if(!$profile){
 					//try to load their profile
 					if($this->loadProfile($user)){
