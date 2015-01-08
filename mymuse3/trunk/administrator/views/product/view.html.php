@@ -112,16 +112,33 @@ class MymuseViewProduct extends JViewLegacy
           
         //upload screen
         if($task == "uploadpayload" || $task == "uploadpreview" ){
+        	
+        	require_once (JPATH_COMPONENT.DS.'helpers'.DS.'pluploadscript.php');
+        	
         	$this->setLayout('upload');
-        	$item ->artist_alias = MyMuseHelper::getArtistAlias($item->id, 1);
-        	$item->album_alias = MyMuseHelper::getAlbumAlias($item->id);
+        	$this->item ->artist_alias = MyMuseHelper::getArtistAlias($this->item->id, 1);
+        	$this->item->album_alias = MyMuseHelper::getAlbumAlias($this->item->id);
         	$language = JFactory::getLanguage();
         	$lang = $language->getTag();
         	
         	$langfiles        = JPATH_COMPONENT_ADMINISTRATOR.'/assets/plupload/js/i18n/';
         	$PLdataDir        = JURI::root() . "administrator/components/com_mymuse/assets/plupload/";
         	$document         = JFactory::getDocument();
-        	$PLuploadScript   = new PLuploadScript($PLdataDir);
+        	$options = array(
+        			"plupload.runtime" => "full",
+        			"plupload.max.file.size" => "100",
+        			"plupload.chunk.size" => "0",
+        			"plupload.chunk.unit" => "mb",
+        			"plupload.rename" => "0",
+        			"plupload.image.file.extensions" => "gif,png,jpg,jpeg,GIF,PNG,JPG,JPEG",
+        			"plupload.other.file.extensions" => "zip,rar,pdf,doc,txt,ZIP,RAR,PDF,DOC,TXT",
+        			"plupload.unique.names" => "0",
+        			"plupload.enable.image.resizing" => "0",
+        			"plupload.resize.width" => "640",
+        			"plupload.resize.height" => "480",
+        			"plupload.resize.quality" => "90"
+        			);
+        	$PLuploadScript   = new PLuploadScript($PLdataDir, options);
         	$runtimeScript    = $PLuploadScript->runtimeScript;
         	$runtime          = $PLuploadScript->runtime;
         	//add default PL css
@@ -144,13 +161,13 @@ class MymuseViewProduct extends JViewLegacy
         	$document->addScriptDeclaration( $PLuploadScript->getScript() );
         	
         	//set variables for the template
-        	$this->enableLog = $jlistConfig['plupload.enable.uploader.log'];
+        	$this->enableLog =0;
         	$this->runtime = $runtime;
         	
         	if($this->task == "uploadpayload" ){
-        		$this->currentDir = $this->params->get('my_download_dir') . DS . $item ->artist_alias . DS . $item->album_alias . DS;
+        		$this->currentDir = $this->params->get('my_download_dir') . DS . $this->item ->artist_alias . DS . $this->item->album_alias . DS;
         	}else{
-        		$this->currentDir = JURI::root() . DS . $this->params->get('my_preview_dir') . DS . $item ->artist_alias . DS . $item->album_alias . DS;
+        		$this->currentDir = JURI::root() . DS . $this->params->get('my_preview_dir') . DS . $this->item ->artist_alias . DS . $this->item->album_alias . DS;
         	}
         }
        
