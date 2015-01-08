@@ -48,10 +48,10 @@ class PLuploadScript
      * @param string $PLdataDir Root folder for the script
      *
      */
-	public function __construct( $PLdataDir )
+	public function __construct( $PLdataDir, $options )
 	{
 		$this->mediaRoot = $PLdataDir;
-		$this->_setParams();
+		$this->_setParams($options);
 		$this->_buildScript();
 	}
         
@@ -60,33 +60,33 @@ class PLuploadScript
      * Properly set parameters for JavaScript usage
      * 
      */
-	private function _setParams()
+	private function _setParams($options)
 	{
-        global $jlistConfig;        
+          
         //runtimes
         $allRuntimes                    = 'html5,flash,gears,silverlight,browserplus,html4';
-        $this->runtimeScript            = $jlistConfig['plupload.runtime'];
+        $this->runtimeScript            = $options['plupload.runtime'];
         $this->runtime                  = $this->runtimeScript == 'full' ? $allRuntimes : $this->runtimeScript;
         //default 1MB
-        $this->_maxFileSize             = $jlistConfig['plupload.max.file.size'];
+        $this->_maxFileSize             = $options['plupload.max.file.size'];
         //chunk upload
-		$this->_chunkSize 		        = $jlistConfig['plupload.chunk.size'];
-        $this->_chunkUnit               = $jlistConfig['plupload.chunk.unit'];
+		$this->_chunkSize 		        = $options['plupload.chunk.size'];
+        $this->_chunkUnit               = $options['plupload.chunk.unit'];
         $this->_chunkUnit               = strtolower($this->_chunkUnit);
         //file rename
-		$this->_rename 			        = ($jlistConfig['plupload.rename'] == 1) ? 'true' : 'false';
+		$this->_rename 			        = ($options['plupload.rename'] == 1) ? 'true' : 'false';
         //file filters
-		$imageFilter                    = $jlistConfig['plupload.image.file.extensions'];
+		$imageFilter                    = $options['plupload.image.file.extensions'];
         $this->_imageFilter             = $this->_cleanOption($imageFilter);
-		$otherFilesFilter               = $jlistConfig['plupload.other.file.extensions'];
+		$otherFilesFilter               = $options['plupload.other.file.extensions'];
         $this->_otherFilesFilter        = $this->_cleanOption($otherFilesFilter);
         //generate unique file names
-		$this->_uniqueNames		        = $jlistConfig['plupload.unique.names'] == 1 ? 'true' : 'false';
+		$this->_uniqueNames		        = $options['plupload.unique.names'] == 1 ? 'true' : 'false';
         //image resizing
-        $this->_resize 			        = $jlistConfig['plupload.enable.image.resizing'] == 0 ? false : true;
-        $this->_resizeWidth 		    = $jlistConfig['plupload.resize.width'];  // '640' default);
-		$this->_resizeHeight		    = $jlistConfig['plupload.resize.height']; // '480' default;
-		$this->_resizeQuality		    = $jlistConfig['plupload.resize.quality']; // '90' default;
+        $this->_resize 			        = $options['plupload.enable.image.resizing'] == 0 ? false : true;
+        $this->_resizeWidth 		    = $options['plupload.resize.width'];  // '640' default);
+		$this->_resizeHeight		    = $options['plupload.resize.height']; // '480' default;
+		$this->_resizeQuality		    = $options['plupload.resize.quality']; // '90' default;
 	}
         
     /**
@@ -201,7 +201,7 @@ class PLuploadScript
 		        $("#uploader").pluploadQueue({
 			        // General settings
 			        runtimes : '<?php echo $this->runtime ?>',
-			        url : 'index.php?option=com_jdownloads&no_html=1&task=uploads.upload&<?php echo JSession::getFormToken()  ?>=1',
+			        url : 'index.php?option=com_mymuse&no_html=1&task=product.upload&<?php echo JSession::getFormToken()  ?>=1',
 			        <?php echo $l_chunk ?>
 					
 			        rename : <?php echo $this->_rename ?>,
