@@ -128,8 +128,10 @@ class myMuseViewCart extends JViewLegacy
 					$session->set("order_number",$order->order_number);
 					*/
 					
-					$order->show_checkout = 0;
-					$order->show_summary  = 0;
+					if($cart['idx'] > 0){
+						$order->show_checkout = 0;
+						$order->show_summary  = 0;
+					}
 				}
 				break;
 				
