@@ -442,7 +442,7 @@ class plgUserMyMuse extends JPlugin
 							$data['profile']['region_name'] = $row->state_name;
 						}
 					}else{
-						//it is an id, bet the state_name
+						//it is an id, get the state_name
 						$query = "SELECT state_name FROM #__mymuse_state WHERE id='".$data['profile']['region']."'";
 						$db->setQuery($query);
 						$data['profile']['region_name'] = $db->loadResult();
@@ -469,7 +469,7 @@ class plgUserMyMuse extends JPlugin
 				$this->_subject->setError($e->getMessage());
 				return false;
 			}
-			$session =& JFactory::getSession();
+			$session = JFactory::getSession();
 			$user = $session->get("user");
 			$user->profile = $data['profile'];
 			$session->set('user', $user);
