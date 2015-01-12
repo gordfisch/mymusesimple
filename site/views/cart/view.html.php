@@ -62,6 +62,7 @@ class myMuseViewCart extends JViewLegacy
 		$this->assignRef('store', $MyMuseStore->_store);
 
 		$heading 			= '';
+		$message 			= '';
 		$footer 			= '';
 		$edit 				= true;
 		$currency 			= MyMuseHelper::getCurrency($MyMuseStore->_store->currency);
@@ -166,9 +167,11 @@ class myMuseViewCart extends JViewLegacy
 				$currency 	= $order->order_currency;
 				$edit 		= false;
 				$heading 	= Jtext::_('MYMUSE_THANK_YOU');
-				$message 	= Jtext::_('MYMUSE_HERE_IS_YOUR_ORDER');
+				
 				if($order->downloadable && $order->order_status == "C"){
-					$footer .= "<br />".$order->downloadlink;
+					$message  .= $order->downloadlink;
+				}else{
+					$message   = Jtext::_('MYMUSE_HERE_IS_YOUR_ORDER');
 				}
 				$order->show_checkout = 0;
 				$order->show_summary  = 1;

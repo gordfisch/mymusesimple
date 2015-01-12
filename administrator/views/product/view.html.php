@@ -109,9 +109,9 @@ class MymuseViewProduct extends JViewLegacy
         	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'item');
         	
         }
-          
+ 
         //upload screen
-        if($task == "uploadpayload" || $task == "uploadpreview" ){
+        if($task == "uploadtrack" || $task == "uploadpreview" ){
         	
         	require_once (JPATH_COMPONENT.DS.'helpers'.DS.'pluploadscript.php');
         	
@@ -124,21 +124,10 @@ class MymuseViewProduct extends JViewLegacy
         	$langfiles        = JPATH_COMPONENT_ADMINISTRATOR.'/assets/plupload/js/i18n/';
         	$PLdataDir        = JURI::root() . "administrator/components/com_mymuse/assets/plupload/";
         	$document         = JFactory::getDocument();
-        	$options = array(
-        			"plupload.runtime" => "full",
-        			"plupload.max.file.size" => "100",
-        			"plupload.chunk.size" => "0",
-        			"plupload.chunk.unit" => "mb",
-        			"plupload.rename" => "0",
-        			"plupload.image.file.extensions" => "gif,png,jpg,jpeg,GIF,PNG,JPG,JPEG",
-        			"plupload.other.file.extensions" => "zip,rar,pdf,doc,txt,ZIP,RAR,PDF,DOC,TXT",
-        			"plupload.unique.names" => "0",
-        			"plupload.enable.image.resizing" => "0",
-        			"plupload.resize.width" => "640",
-        			"plupload.resize.height" => "480",
-        			"plupload.resize.quality" => "90"
-        			);
-        	$PLuploadScript   = new PLuploadScript($PLdataDir, options);
+
+        	
+        	$PLuploadScript   = new PLuploadScript($PLdataDir);
+        	
         	$runtimeScript    = $PLuploadScript->runtimeScript;
         	$runtime          = $PLuploadScript->runtime;
         	//add default PL css
@@ -146,7 +135,7 @@ class MymuseViewProduct extends JViewLegacy
         	
         	//add PL styles and scripts
         	$document->addStyleSheet($PLdataDir . 'js/jquery.plupload.queue/css/jquery.plupload.queue.css', 'text/css', 'screen');
-        	$document->addScript($PLdataDir . 'js/jquery.min.js');
+        	//$document->addScript($PLdataDir . 'js/jquery.min.js');
         	$document->addScript($PLdataDir . 'js/plupload.full.min.js');
         	
         	// load plupload language file
@@ -161,14 +150,19 @@ class MymuseViewProduct extends JViewLegacy
         	$document->addScriptDeclaration( $PLuploadScript->getScript() );
         	
         	//set variables for the template
-        	$this->enableLog =0;
+        	$this->enableLog =$this->params->get("my_plupload_enable_uploader_log");
         	$this->runtime = $runtime;
         	
-        	if($this->task == "uploadpayload" ){
+        	if($this->task == "uploadtrack" ){
         		$this->currentDir = $this->params->get('my_download_dir') . DS . $this->item ->artist_alias . DS . $this->item->album_alias . DS;
+        		$this->message = JText::_("MYMUSE_UPLOAD_TRACKS");
         	}else{
         		$this->currentDir = JURI::root() . DS . $this->params->get('my_preview_dir') . DS . $this->item ->artist_alias . DS . $this->item->album_alias . DS;
+        		$this->message = JText::_("MYMUSE_UPLOAD_PREVIEWS");
         	}
+        	$this->addToolbar($subtype,$this->item->parentid);
+        	parent::display($tpl);
+        	return true;
         }
        
         //It's the parent, set the user state
@@ -202,6 +196,7 @@ class MymuseViewProduct extends JViewLegacy
 		$user		= JFactory::getUser();
 		$isNew		= ($this->item->id == 0);
 		$layout 	= $this->getLayout();
+
 		
         if (isset($this->item->checked_out)) {
 		    $checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
@@ -228,9 +223,12 @@ class MymuseViewProduct extends JViewLegacy
 			JToolBarHelper::apply('product.productreturn', 'MYMUSE_RETURN_TO_PRODUCT');
 			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-items?tmpl=component');
 			
-			
+		}elseif ($this->task == "uploadtrack" || $this->task == "uploadpreview" ){
+			JToolBarHelper::apply('product.cancelupload', 'MYMUSE_RETURN_TO_TRACKS');
+			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-items?tmpl=component');
+		
 		}elseif($subtype == "file" && $parentid){
-			//TRACK
+			//TRAC
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
 			{

@@ -55,8 +55,8 @@ class MymuseControllerProduct extends JControllerForm
 		
 		$this->registerTask( 'save2newfile', 'saveitem' );
 		
-		$this->registerTask( 'uploadpayload', 'upload' );
-		$this->registerTask( 'uploadpreview', 'upload' );
+		$this->registerTask( 'uploadtrack', 'uploadscreen' );
+		$this->registerTask( 'uploadpreview', 'uploadscreen' );
 		
 		$cid = $input->get( 'cid', array(0));
 		if($cid[0] > 0){
@@ -285,6 +285,17 @@ class MymuseControllerProduct extends JControllerForm
     	JFactory::getApplication()->close();
     }
     
+    
+    public function uploadscreen()
+    {
+    	parent::display();  
+    }
+    
+    public function cancelupload()
+    {
+    	print_pre($_POST); exit;
+    }
+    
     /**
      *
      * File upload handler
@@ -293,14 +304,15 @@ class MymuseControllerProduct extends JControllerForm
      */
     public function upload()
     {
-    	global $jlistConfig;
+
     	$app = JFactory::getApplication();
+    	$params 	= MyMuseHelper::getParams();
     
     	// 5 minutes execution time
     	@set_time_limit(5 * 60);
     
     	//enable valid json response when debugging is disabled
-    	if(!COM_MEDIAMU_DEBUG)
+    	if(!$params->get('my_debug'))
     	{
     		error_reporting(0);
     	}
@@ -308,13 +320,11 @@ class MymuseControllerProduct extends JControllerForm
     	$session    = JFactory::getSession();
     	$user       = JFactory::getUser();
     
-    	$cleanupTargetDir = true; //remove old files
+    	$cleanupTargetDir = false; //remove old files
     	$maxFileAge = 5 * 3600; // Temp file age in seconds
     
     	//directory for file upload
-    	//$targetDirBase64  = $session->get('current_dir', null, 'com_jdownloads');
-    	//$targetDirDecoded  = base64_decode($jlistConfig['files.uploaddir']);
-    	$targetDirWithSep  = $jlistConfig['files.uploaddir'] . DS;
+    	$targetDirWithSep  = $app->input->get('uploaddir','/var/www/html/mymusetest35/images');
     	//check for snooping
     	$targetDirCleaned  = JPath::check($targetDirWithSep);
     	//finally
@@ -330,8 +340,8 @@ class MymuseControllerProduct extends JControllerForm
     	$fileName = JFile::makeSafe($fileNameFromReq);
     
     	//check file extension
-    	$ext_images = $jlistConfig['plupload.image.file.extensions'];
-    	$ext_other  = $jlistConfig['plupload.other.file.extensions'];
+    	$ext_images = $params->get('my_plupload_image_file_extensions');
+    	$ext_other  = $params->get('my_plupload_other_file_extensions');
     
     	//prepare extensions for validation
     	$exts = $ext_images . ',' . $ext_other;
@@ -345,21 +355,21 @@ class MymuseControllerProduct extends JControllerForm
     	}
     
     	//check user perms
-    	if(!$user->authorise('core.create', 'com_jdownloads'))
+    	if(!$user->authorise('core.create', 'com_mymuse'))
     	{
-    		$this->_setResponse(400, JText::_('COM_JDOWNLOADS_ERROR_PERM_DENIDED'));
+    		$this->_setResponse(400, JText::_('MYMUSE_ERROR_PERM_DENIED'));
     	}
     
     	//directory check
     	if(!file_exists($targetDir) && !is_dir($targetDir) && strpos(COM_MEDIAMU_BASE_ROOT, $targetDir) !== false)
     	{
-    		$this->_setResponse(100, JText::_('COM_JDOWNLOADS_ERROR_UPLOAD_INVALID_PATH'));
+    		$this->_setResponse(101, JText::_('MYMUSE_ERROR_UPLOAD_INVALID_PATH'));
     	}
     
     	//file type check
     	if(!in_array(JFile::getExt($fileName), $exts_arr))
     	{
-    		$this->_setResponse(100, JText::_('COM_JDOWNLOADS_ERROR_UPLOAD_INVALID_FILE_EXTENSION'));
+    		$this->_setResponse(100, JText::_('MYMUSE_ERROR_UPLOAD_INVALID_FILE_EXTENSION'));
     	}
     
     	// Make sure the fileName is unique but only if chunking is disabled
@@ -380,6 +390,7 @@ class MymuseControllerProduct extends JControllerForm
     
     	$filePath = $targetDir . DS . $fileName;
     
+    	/**
     	// Remove old temp files
     	if ($cleanupTargetDir && ($dir = opendir($targetDir)))
     	{
@@ -398,9 +409,9 @@ class MymuseControllerProduct extends JControllerForm
     	}
     	else
     	{
-    		$this->_setResponse(100, 'Failed to open temp directory.');
+    		$this->_setResponse(100, 'Failed to open directory. '.$dir);
     	}
-    
+    */
     	// Look for the content type header
     	if (isset($_SERVER["HTTP_CONTENT_TYPE"]))
     	{

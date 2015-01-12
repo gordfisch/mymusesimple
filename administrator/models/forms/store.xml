@@ -347,7 +347,141 @@
             </field>
             
 	</fieldset>
-	
+	<fieldset name="uploads" label="MYMUSE_UPLOADS_LABEL">
+  			
+		<field 
+		  		name="my_plupload_runtime" 
+		  		type="list" 
+		  		label="MYMUSE_UPLOADER_RUNTIME_LABEL"
+				description="MYMUSE_UPLOADER_RUNTIME_LABEL_DESC" 
+				class="btn-group"
+				default="full">
+				<option value="full">MYMUSE_UPLOADER_RUNTIME_ALL</option>
+				<option value="html5">MYMUSE_UPLOADER_RUNTIME_HTML5</option>
+				<option value="flash">MYMUSE_UPLOADER_RUNTIME_FLASH</option>
+				<option value="gears">MYMUSE_UPLOADER_RUNTIME_GEARS</option>
+				<option value="silverlight">MYMUSE_UPLOADER_RUNTIME_SILVERLIGHT</option>
+				<option value="browserplus">MYMUSE_UPLOADER_RUNTIME_BROWSERPLUS</option>
+				<option value="html4">MYMUSE_UPLOADER_RUNTIME_HTML4</option>
+		  </field>
+		  <field
+                name="my_plupload_max_file_size"
+                type="text"
+                label="MYMUSE_UPLOADER_MAX_FILE_SIZE"
+                description="MYMUSE_UPLOADER_MAX_FILE_SIZE_DESC"
+                class="inputbox"
+                size="4"
+                default="100"
+           />
+           <field
+                name="my_plupload_chunk_size"
+                type="text"
+                label="MYMUSE_UPLOADER_CHUNK_SIZE"
+                description="MYMUSE_UPLOADER_CHUNK_SIZE_DESC"
+                class="inputbox"
+                size="4"
+                default="0"
+           />
+           <field 
+		  		name="my_plupload_chunk_unit" 
+		  		type="list" 
+		  		label="MYMUSE_UPLOADER_CHUNK_UNIT"
+				description="MYMUSE_UPLOADER_CHUNK_UNIT_DESC" 
+				class="btn-group"
+				default="mb">
+				<option value="b">B</option>
+				<option value="kb">KB</option>
+				<option value="mb">MB</option>
+
+		  </field>
+		  <field
+                name="my_plupload_rename"
+                type="radio"
+                label="MYMUSE_UPLOADER_RENAME"
+                description="MYMUSE_UPLOADER_RENAME_DESC"
+                class="btn-group"
+                default="0">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>
+            </field>
+            <field
+                name="my_plupload_image_file_extensions"
+                type="text"
+                label="MYMUSE_UPLOADER_IMAGE_FILE_EXTENSIONS"
+                description="MYMUSE_UPLOADER_IMAGE_FILE_EXTENSIONS_DESC"
+                class="inputbox"
+                size="100"
+                default="gif,png,jpg,jpeg,GIF,PNG,JPG,JPEG"
+           />
+           <field
+                name="my_plupload_other_file_extensions"
+                type="text"
+                label="MYMUSE_UPLOADER_OTHER_FILE_EXTENSIONS"
+                description="MYMUSE_UPLOADER_OTHER_FILE_EXTENSIONS_DESC"
+                class="inputbox"
+                size="100"
+                default="zip,rar,pdf,doc,txt,mp3,m4a,oga,webma,flac,webmv,ogv,m4v,MP3,M4A,OGA,WEBMA,FLAC,WEBMV,OGV,M4V,ZIP,RAR,PDF,DOC,TXT"
+           />
+           <field
+                name="my_plupload_unique_names"
+                type="radio"
+                label="MYMUSE_UPLOADER_UNIQUE_NAMES"
+                description="MYMUSE_UPLOADER_UNIQUE_NAMES_DESC"
+                class="btn-group"
+                default="0">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>
+            </field>
+             <field
+                name="my_plupload_enable_image_resizing"
+                type="radio"
+                label="MYMUSE_UPLOADER_ENABLE_IMAGE_RESIZING"
+                description="MYMUSE_UPLOADER_ENABLE_IMAGE_RESIZING_DESC"
+                class="btn-group"
+                default="0">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>
+            </field>
+            <field
+                name="my_plupload_resize_width"
+                type="text"
+                label="MYMUSE_UPLOADER_RESIZE_WIDTH"
+                description="MYMUSE_UPLOADER_RESIZE_WIDTH_DESC"
+                class="inputbox"
+                size="4"
+                default="640"
+           />
+           <field
+                name="my_plupload_resize_height"
+                type="text"
+                label="MYMUSE_UPLOADER_RESIZE_HEIGHT"
+                description="MYMUSE_UPLOADER_RESIZE_HEIGHT_DESC"
+                class="inputbox"
+                size="4"
+                default="480"
+           />
+           <field
+                name="my_plupload_resize_quality"
+                type="text"
+                label="MYMUSE_UPLOADER_RESIZE_QUALITY"
+                description="MYMUSE_UPLOADER_RESIZE_QUALITY_DESC"
+                class="inputbox"
+                size="4"
+                default="90"
+           />
+           <field
+                name="my_plupload_enable_uploader_log"
+                type="radio"
+                label="MYMUSE_UPLOADER_ENABLE_LOG"
+                description="MYMUSE_UPLOADER_ENABLE_LOG_DESC"
+                class="btn-group"
+                default="0">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>
+            </field>
+            
+           
+    </fieldset>
 	<fieldset name="physical" label="MYMUSE_PHYSICAL_LABEL">
 		<field
                 name="my_use_shipping"

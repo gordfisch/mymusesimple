@@ -537,7 +537,6 @@ class MyMuseController extends JControllerLegacy
 		if($this->MyMuseShopper->order->order_status == "C"){
 			//already confirmed 
 			$dispatcher		= JDispatcher::getInstance();
-
 			$results = $dispatcher->trigger('onAfterMyMuseConfirm', 
 				array(&$this->shopper, &$this->store, &$params, &$Itemid) );
 
@@ -547,16 +546,19 @@ class MyMuseController extends JControllerLegacy
 				}
 			}
 			
-			JRequest::setVar('task', 'vieworder');
-			JRequest::setVar('view', 'cart');
-			JRequest::setVar('layout', 'cart');
-			$this->display();
 			if($this->MyMuseShopper->order->downloadable){
 				//print out download page
 				JRequest::setVar('task', 'downloads');
 				JRequest::setVar('id', $this->MyMuseShopper->order->order_number);
-				$this->downloads();
+				//$this->downloads();
+				//print_pre($this->MyMuseShopper->order);
 			}
+			
+			JRequest::setVar('task', 'vieworder');
+			JRequest::setVar('view', 'cart');
+			JRequest::setVar('layout', 'cart');
+			$this->display();
+			
 		}else{
 			JRequest::setVar('view', 'shopper');
 			JRequest::setVar('layout', 'thank_you');
@@ -603,17 +605,23 @@ class MyMuseController extends JControllerLegacy
 			$this->setRedirect("index.php", $msg);
 			return false;
 		}
+		
+		
+		
 		JRequest::setVar('view', 'cart');
 		JRequest::setVar('layout', 'cart');
 		$this->display();
 		
-		if($this->MyMuseShopper->order->downloadable 
-		&& $this->MyMuseShopper->order->order_status == "C"){
-				//print out download page
-				JRequest::setVar('task', 'downloads');
-				JRequest::setVar('id', $this->MyMuseShopper->order->order_number);
-				$this->downloads();
+		if($this->MyMuseShopper->order->downloadable
+				&& $this->MyMuseShopper->order->order_status == "C"){
+			//print out download page
+			JRequest::setVar('task', 'downloads');
+			JRequest::setVar('id', $this->MyMuseShopper->order->order_number);
+			$this->downloads();
 		}
+		
+		
+		
 
 	}
 		 

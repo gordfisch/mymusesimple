@@ -104,13 +104,13 @@ Joomla.orderTable = function()
 	<ul  style="list-style-type: none;">
 
 		<li  id="toolbar-uploadpayload"  style="display: inline;"><button
-		 class="btn btn-small btn-success"
-			onclick="javascript: submitbutton1('product.uploadpayload')" class="toolbar"> <span
-			class="icon-new icon-white"> </span> <?php echo JText::_( 'MYMUSE_UPLOAD_PAYLOADS' ); ?> </button>
+		 class="btn btn-small btn-warning"
+			onclick="javascript: submitbutton1('product.uploadtrack')" class="toolbar"> <span
+			class="icon-new icon-white"> </span> <?php echo JText::_( 'MYMUSE_UPLOAD_TRACKS' ); ?> </button>
 		</li>
 		
 		<li  id="toolbar-uploadpreview"  style="display: inline;"><button
-		 class="btn btn-small btn-success"
+		 class="btn btn-small btn-warning"
 			onclick="javascript: submitbutton1('product.uploadpreview')" class="toolbar"> <span
 			class="icon-new icon-white"> </span> <?php echo JText::_( 'MYMUSE_UPLOAD_PREVIEWS' ); ?> </button>
 		</li>
