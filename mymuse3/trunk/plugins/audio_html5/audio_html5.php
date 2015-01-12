@@ -99,9 +99,9 @@ class plgMymuseAudio_html5 extends JPlugin
 		}
 		
 		if($this->direction == "rtl"){
-			$css_path = 'plugins/mymuse/audio_html5/skin/jplayer.blue.monday.rtl.css';
+			$css_path = $site_url.'plugins/mymuse/audio_html5/skin/jplayer.blue.monday.rtl.css';
 		}else{
-			$css_path = 'plugins/mymuse/audio_html5/skin/jplayer.blue.monday.css';
+			$css_path = $site_url.'plugins/mymuse/audio_html5/skin/jplayer.blue.monday.css';
 			//$css_path = $site_url.'plugins/mymuse/audio_html5/skin/premium-pixels.css';
 		}
 		

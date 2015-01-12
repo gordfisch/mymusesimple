@@ -45,7 +45,7 @@ class myMuseViewShopper extends JViewLegacy
 			list($shopper->first_name, $shopper->last_name) = explode(" ", $user->get('name'), 2);
 
 		}
-		
+	
 		$this->pageclass_sfx = htmlspecialchars($this->params->get('pageclass_sfx'));
 		
 		$document		= JFactory::getDocument();

@@ -28,6 +28,7 @@ class PLuploadScript
 	public  $mediaRoot;
 	public  $runtime;
     public  $runtimeScript;
+    public  $params;
         
 	private $_maxFileSize;
 	private $_chunkSize;
@@ -40,6 +41,7 @@ class PLuploadScript
 	private $_resizeWidth;
 	private $_resizeHeight;
 	private $_resizeQuality;
+	
         
 	private $_SCRIPT;
 
@@ -48,11 +50,13 @@ class PLuploadScript
      * @param string $PLdataDir Root folder for the script
      *
      */
-	public function __construct( $PLdataDir, $options )
+	public function __construct( $PLdataDir)
 	{
+		$this->params 	= MyMuseHelper::getParams();
 		$this->mediaRoot = $PLdataDir;
-		$this->_setParams($options);
+		$this->_setParams();
 		$this->_buildScript();
+		
 	}
         
     /**
@@ -60,33 +64,33 @@ class PLuploadScript
      * Properly set parameters for JavaScript usage
      * 
      */
-	private function _setParams($options)
+	private function _setParams()
 	{
-          
+        
         //runtimes
         $allRuntimes                    = 'html5,flash,gears,silverlight,browserplus,html4';
-        $this->runtimeScript            = $options['plupload.runtime'];
+        $this->runtimeScript            = $this->params->get('my_plupload_runtime');
         $this->runtime                  = $this->runtimeScript == 'full' ? $allRuntimes : $this->runtimeScript;
         //default 1MB
-        $this->_maxFileSize             = $options['plupload.max.file.size'];
+        $this->_maxFileSize             = $this->params->get('my_plupload_max_file_size');
         //chunk upload
-		$this->_chunkSize 		        = $options['plupload.chunk.size'];
-        $this->_chunkUnit               = $options['plupload.chunk.unit'];
+		$this->_chunkSize 		        = $this->params->get('my_plupload_chunk_size');
+        $this->_chunkUnit               = $this->params->get('my_plupload_chunk_unit');
         $this->_chunkUnit               = strtolower($this->_chunkUnit);
         //file rename
-		$this->_rename 			        = ($options['plupload.rename'] == 1) ? 'true' : 'false';
+		$this->_rename 			        = ($this->params->get('my_plupload_rename') == 1) ? 'true' : 'false';
         //file filters
-		$imageFilter                    = $options['plupload.image.file.extensions'];
+		$imageFilter                    = $this->params->get('my_plupload_image_file_extensions');
         $this->_imageFilter             = $this->_cleanOption($imageFilter);
-		$otherFilesFilter               = $options['plupload.other.file.extensions'];
+		$otherFilesFilter               = $this->params->get('my_plupload_other_file_extensions');
         $this->_otherFilesFilter        = $this->_cleanOption($otherFilesFilter);
         //generate unique file names
-		$this->_uniqueNames		        = $options['plupload.unique.names'] == 1 ? 'true' : 'false';
+		$this->_uniqueNames		        = $this->params->get('my_plupload_unique_names') == 1 ? 'true' : 'false';
         //image resizing
-        $this->_resize 			        = $options['plupload.enable.image.resizing'] == 0 ? false : true;
-        $this->_resizeWidth 		    = $options['plupload.resize.width'];  // '640' default);
-		$this->_resizeHeight		    = $options['plupload.resize.height']; // '480' default;
-		$this->_resizeQuality		    = $options['plupload.resize.quality']; // '90' default;
+        $this->_resize 			        = $this->params->get('my_plupload_enable_image_resizing') == 0 ? false : true;
+        $this->_resizeWidth 		    = $this->params->get('my_plupload_resize_width');  // '640' default);
+		$this->_resizeHeight		    = $this->params->get('my_plupload_resize_height'); // '480' default;
+		$this->_resizeQuality		    = $this->params->get('my_plupload_resize_quality'); // '90' default;
 	}
         
     /**
@@ -116,10 +120,10 @@ class PLuploadScript
         ?>
 
 
-        $(function() {
+        jQuery(function() {
 
-                $('a#dismiss').click(function () {
-                    $('#system-message-container').html('');
+                jQuery('a#dismiss').click(function () {
+                    jQuery('#system-message-container').html('');
                 });
                 
                 function handleUpStatus(up, file, info, chunk) {
@@ -130,7 +134,7 @@ class PLuploadScript
                     var spanClass = '';
 
                     if(rspObj.error == 1) {
-                        $('#' + file.id).attr('class', 'plupload_failed');
+                        jQuery('#' + file.id).attr('class', 'plupload_failed');
                         file.hint = rspObj.msg;
                         file.status = plupload.FAILED;
                         file.percent = 0;
@@ -140,7 +144,7 @@ class PLuploadScript
                         up.total.uploaded-=1;
                         spanClass = 'failed_uploading';
                     } else {
-                        $('#' + file.id).attr('class', 'plupload_done');
+                        jQuery('#' + file.id).attr('class', 'plupload_done');
                         file.status = plupload.DONE;
                         spanClass = 'success_uploading';
                     }
@@ -163,10 +167,10 @@ class PLuploadScript
 
 	        function ajaxReq(dataString, action) {
 
-		        var msgCont = $('#system-message-container');
+		        var msgCont = jQuery('#system-message-container');
 		        msgCont.html('<span class="loading"></span>');
 
-		        $.ajax({
+		        jQuery.ajax({
 			        type: 'POST',  
 			        url: action, 
 			        data: dataString,
@@ -198,10 +202,10 @@ class PLuploadScript
 	        }
 	        //init uploader
 	        function initUploader() {
-		        $("#uploader").pluploadQueue({
+		        jQuery("#uploader").pluploadQueue({
 			        // General settings
 			        runtimes : '<?php echo $this->runtime ?>',
-			        url : 'index.php?option=com_mymuse&no_html=1&task=product.upload&<?php echo JSession::getFormToken()  ?>=1',
+			        url : 'index.php?option=com_mymuse&template=component&task=product.upload&<?php echo JSession::getFormToken()  ?>=1',
 			        <?php echo $l_chunk ?>
 					
 			        rename : <?php echo $this->_rename ?>,
@@ -257,29 +261,29 @@ class PLuploadScript
                             // Called when the state of the queue is changed
                             if(up.state == plupload.STARTED) {
                                 //disable navigation
-                                $('#dirbroswer').hide();
+                                jQuery('#dirbroswer').hide();
                                                         
-                                $('div#upload_in_progress').addClass('upload_in_progress');
-                                $('div#upload_in_progress').html('<h5>Upload in progress...</h5>');
+                                jQuery('div#upload_in_progress').addClass('upload_in_progress');
+                                jQuery('div#upload_in_progress').html('<h5>Upload in progress...</h5>');
                                 // Add stop button
                                 var stopBtn = document.createElement('a');
                                 stopBtn.className = 'plupload_button plupload_stop';
                                 stopBtn.id = 'plupload_stop';
-                                stopBtn.innerHTML = '<?php echo addslashes(JText::_('COM_JDOWNLOADS_UPLOADER_STOP_UPLOAD'))  ?>';
+                                stopBtn.innerHTML = '<?php echo addslashes(JText::_('MYMUSE_UPLOADER_STOP_UPLOAD'))  ?>';
                                 stopBtn.href = '#',
                                 stopBtn.onclick = function (up) {
                                     up.stop();
                                 }
                                 
-                                $('.plupload_filelist_footer').prepend(stopBtn);
+                                jQuery('.plupload_filelist_footer').prepend(stopBtn);
                                 
                              }
 
                             if(up.state == plupload.STOPPED) {
                                 //enable navigation and reload iframe
-                                $('div#upload_in_progress').removeClass('upload_in_progress');
-                                $('div#upload_in_progress').html('');
-                                $('#dirbroswer').show();
+                                jQuery('div#upload_in_progress').removeClass('upload_in_progress');
+                                jQuery('div#upload_in_progress').html('');
+                                jQuery('#dirbroswer').show();
                                                         
                                 //window.frames[0].location.reload();
 
@@ -287,13 +291,13 @@ class PLuploadScript
                                 var refreshBtn = document.createElement('a');
                                 refreshBtn.className = 'plupload_button plupload_refresh';
                                 refreshBtn.id = 'plupload_refresh';
-                                refreshBtn.innerHTML = '<?php echo addslashes(JText::_('COM_JDOWNLOADS_UPLOADER_REFRESH_UPLOADER'))  ?>';
+                                refreshBtn.innerHTML = '<?php echo addslashes(JText::_('MYMUSE_UPLOADER_REFRESH_UPLOADER'))  ?>';
                                 refreshBtn.href = '#',
                                 refreshBtn.onclick = function (up) {
                                     initUploader();
                                 }
                                 
-                                $('.plupload_filelist_footer').prepend(refreshBtn);
+                                jQuery('.plupload_filelist_footer').prepend(refreshBtn);
                                 
                             }
                                                 log('<b>[StateChanged]</b>', up.state == plupload.STARTED ? "STARTED" : "STOPPED");  
@@ -411,14 +415,14 @@ class PLuploadScript
 						}
 					});
 
-                        $('#log').prepend(str + '<span class="log_sep"></span>');
+                        jQuery('#log').prepend(str + '<span class="log_sep"></span>');
 	        }	
 
 
 
 	        // show/hide uploader log
-	        $("#log_btn").click(function () {
-		        $("#log").slideToggle('slow');
+	        jQuery("#log_btn").click(function () {
+		        jQuery("#log").slideToggle('slow');
 	        });
 
 	        //add language support and initialize uploader

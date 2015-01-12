@@ -23,10 +23,11 @@ defined('_JEXEC') or die('Restricted Access');
 
 ?>
 <div class="jdlists-header-info"><?php echo '<img align="left" src="'.JURI::root().'administrator/components/com_mymuse/assets/images/info22.png" 
-width="22" height="22" border="0" alt="" />&nbsp;&nbsp;'.JText::_('COM_MYMUSE_UPLOADER_DESC').'<br />'
+width="22" height="22" border="0" alt="" />&nbsp;&nbsp;'.$this->message.'<br /><br />'
 .$this->currentDir.'
-<br />'.JText::_('COM_JDOWNLOADS_UPLOADER_DESC2'); ?> </div>
+<br /><br />'.JText::_('MYMUSE_UPLOADER_DESC2'); ?> <br /><br /></div>
     <div class="clr"> </div> 
+    <div id="msgCont"></div>
 <div id="mediamu_wrapper">
     <div id="uploader_content">
         <?php
