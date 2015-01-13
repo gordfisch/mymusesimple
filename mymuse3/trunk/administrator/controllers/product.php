@@ -324,18 +324,19 @@ class MymuseControllerProduct extends JControllerForm
     	$maxFileAge = 5 * 3600; // Temp file age in seconds
     
     	//directory for file upload
-    	$targetDirWithSep  = $app->input->get('uploaddir','/var/www/html/mymusetest35/images');
+    	$targetDirWithSep  = $app->input->get('uploaddir',$params->get('my_download_dir'), 'string');
+    	
     	//check for snooping
     	$targetDirCleaned  = JPath::check($targetDirWithSep);
     	//finally
     	$targetDir = $targetDirCleaned;
-    
+
     	// Get parameters
     	$chunk = $app->input->get('chunk', 0, 'request');
     	$chunks = $app->input->get('chunks', 0, 'request');
     
     	//current file name
-    	$fileNameFromReq = $app->input->get('name', '', 'request');
+    	$fileNameFromReq = $app->input->get('name', '');
     	// Clean the fileName for security reasons
     	$fileName = JFile::makeSafe($fileNameFromReq);
     
@@ -343,6 +344,8 @@ class MymuseControllerProduct extends JControllerForm
     	$ext_images = $params->get('my_plupload_image_file_extensions');
     	$ext_other  = $params->get('my_plupload_other_file_extensions');
     
+    	//echo "fileName = $fileName <br />";
+    	
     	//prepare extensions for validation
     	$exts = $ext_images . ',' . $ext_other;
     	$exts_lc = strtolower($exts);
@@ -500,7 +503,7 @@ class MymuseControllerProduct extends JControllerForm
     		@rename("{$filePath}.part", $filePath);
     	}
     
-    	$this->_setResponse(0, null, false);
+    	$this->_setResponse(0, $filePath, false);
     
     }
     
@@ -527,7 +530,7 @@ class MymuseControllerProduct extends JControllerForm
     		$jsonrpc = array (
     				"error"     => 0,
     				"code"      => $code,
-    				"msg"       => "File uploaded!"
+    				"msg"       => "File uploaded! ".$msg
     		);
     	}
     
