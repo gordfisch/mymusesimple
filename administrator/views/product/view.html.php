@@ -120,13 +120,20 @@ class MymuseViewProduct extends JViewLegacy
         	$this->item->album_alias = MyMuseHelper::getAlbumAlias($this->item->id);
         	$language = JFactory::getLanguage();
         	$lang = $language->getTag();
+        	if($this->task == "uploadtrack" ){
+        		$this->currentDir = $this->params->get('my_download_dir') . DS . $this->item ->artist_alias . DS . $this->item->album_alias . DS;
+        		$this->message = JText::_("MYMUSE_UPLOAD_TRACKS");
+        	}else{
+        		$this->currentDir = JPATH_ROOT . DS . $this->params->get('my_preview_dir') . DS . $this->item ->artist_alias . DS . $this->item->album_alias . DS;
+        		$this->message = JText::_("MYMUSE_UPLOAD_PREVIEWS");
+        	}
         	
         	$langfiles        = JPATH_COMPONENT_ADMINISTRATOR.'/assets/plupload/js/i18n/';
         	$PLdataDir        = JURI::root() . "administrator/components/com_mymuse/assets/plupload/";
         	$document         = JFactory::getDocument();
 
         	
-        	$PLuploadScript   = new PLuploadScript($PLdataDir);
+        	$PLuploadScript   = new PLuploadScript($PLdataDir, $this->currentDir);
         	
         	$runtimeScript    = $PLuploadScript->runtimeScript;
         	$runtime          = $PLuploadScript->runtime;
@@ -153,13 +160,7 @@ class MymuseViewProduct extends JViewLegacy
         	$this->enableLog =$this->params->get("my_plupload_enable_uploader_log");
         	$this->runtime = $runtime;
         	
-        	if($this->task == "uploadtrack" ){
-        		$this->currentDir = $this->params->get('my_download_dir') . DS . $this->item ->artist_alias . DS . $this->item->album_alias . DS;
-        		$this->message = JText::_("MYMUSE_UPLOAD_TRACKS");
-        	}else{
-        		$this->currentDir = JURI::root() . DS . $this->params->get('my_preview_dir') . DS . $this->item ->artist_alias . DS . $this->item->album_alias . DS;
-        		$this->message = JText::_("MYMUSE_UPLOAD_PREVIEWS");
-        	}
+        	
         	$this->addToolbar($subtype,$this->item->parentid);
         	parent::display($tpl);
         	return true;
@@ -224,7 +225,7 @@ class MymuseViewProduct extends JViewLegacy
 			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-items?tmpl=component');
 			
 		}elseif ($this->task == "uploadtrack" || $this->task == "uploadpreview" ){
-			JToolBarHelper::apply('product.cancelupload', 'MYMUSE_RETURN_TO_TRACKS');
+			JToolBarHelper::apply('product.cancelfile', 'MYMUSE_RETURN_TO_TRACKS');
 			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-items?tmpl=component');
 		
 		}elseif($subtype == "file" && $parentid){

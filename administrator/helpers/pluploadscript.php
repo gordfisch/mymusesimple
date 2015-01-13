@@ -41,6 +41,7 @@ class PLuploadScript
 	private $_resizeWidth;
 	private $_resizeHeight;
 	private $_resizeQuality;
+	private $_currentDir;
 	
         
 	private $_SCRIPT;
@@ -50,11 +51,12 @@ class PLuploadScript
      * @param string $PLdataDir Root folder for the script
      *
      */
-	public function __construct( $PLdataDir)
+	public function __construct( $PLdataDir, $currentDir)
 	{
 		$this->params 	= MyMuseHelper::getParams();
 		$this->mediaRoot = $PLdataDir;
 		$this->_setParams();
+		$this->_currentDir = $currentDir;
 		$this->_buildScript();
 		
 	}
@@ -205,7 +207,7 @@ class PLuploadScript
 		        jQuery("#uploader").pluploadQueue({
 			        // General settings
 			        runtimes : '<?php echo $this->runtime ?>',
-			        url : 'index.php?option=com_mymuse&template=component&task=product.upload&<?php echo JSession::getFormToken()  ?>=1',
+			        url : 'index.php?option=com_mymuse&template=component&task=product.upload&<?php echo JSession::getFormToken()  ?>=1&uploaddir=<?php echo $this->_currentDir; ?>',
 			        <?php echo $l_chunk ?>
 					
 			        rename : <?php echo $this->_rename ?>,
