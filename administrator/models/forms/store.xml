@@ -420,7 +420,7 @@
                 description="MYMUSE_UPLOADER_OTHER_FILE_EXTENSIONS_DESC"
                 class="inputbox"
                 size="100"
-                default="zip,rar,pdf,doc,txt,mp3,m4a,oga,webma,flac,webmv,ogv,m4v,MP3,M4A,OGA,WEBMA,FLAC,WEBMV,OGV,M4V,ZIP,RAR,PDF,DOC,TXT"
+                default="zip,rar,pdf,doc,txt,mp3,m4a,oga,ogg,webma,flac,webmv,ogv,m4v,MP3,M4A,OGA,OGG,WEBMA,FLAC,WEBMV,OGV,M4V,ZIP,RAR,PDF,DOC,TXT"
            />
            <field
                 name="my_plupload_unique_names"
