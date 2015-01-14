@@ -38,7 +38,7 @@ $i=0;
 
 <?php if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) : 
 if(!$total_shown){
-	//top of first column
+	//top of column
 	?><div class="column-<?php echo $column; $column++;?>">
 				<?php
 }
