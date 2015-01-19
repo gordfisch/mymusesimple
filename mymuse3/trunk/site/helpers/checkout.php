@@ -405,6 +405,7 @@ class MyMuseCheckout
 			JPluginHelper::importPlugin('mymuse',$pp);
 			$results = $dispatcher->trigger('onAfterMyMusePayment',
 					array() );
+			
 			foreach($results as $res){
 				if(preg_match("/$pp/", $res)){
 					$arr = explode(":",$res);
