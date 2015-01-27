@@ -207,7 +207,7 @@ class PLuploadScript
 		        jQuery("#uploader").pluploadQueue({
 			        // General settings
 			        runtimes : '<?php echo $this->runtime ?>',
-			        url : 'index.php?option=com_mymuse&template=component&task=product.upload&<?php echo JSession::getFormToken()  ?>=1&uploaddir=<?php echo $this->_currentDir; ?>',
+			        url : 'index.php?option=com_mymuse&tmpl=component&task=product.upload&<?php echo JSession::getFormToken()  ?>=1&uploaddir=<?php echo $this->_currentDir; ?>',
 			        <?php echo $l_chunk ?>
 					
 			        rename : <?php echo $this->_rename ?>,

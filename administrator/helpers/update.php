@@ -22,6 +22,19 @@ class MyMuseUpdateHelper extends JObject
 	
 	var $error = '';
 	
+	
+	/**
+	 * Constructor
+	 *
+	 */
+	public function __construct()
+	{
+		if(!defined('DS')){
+			define('DS',DIRECTORY_SEPARATOR);
+		}
+	}
+	
+	
 	/**
 	 * makeCategory
 	 *
@@ -34,21 +47,29 @@ class MyMuseUpdateHelper extends JObject
 	 */
 	function makeCategory($title='', $parent_id=1,$description='',$image='', $alias = '')
 	{
+		
 		$db = JFactory::getDBO();
-		$url = JURI::base()."index.php";
+		$url = JURI::base();
+		if(!preg_match('/administrator/', $url)){
+			$url .= 'administrator/';
+		}
+		
+		$url .= "index.php";
+	
 		$token = JSession::getFormToken();
 		$cookie = session_name()."=".session_id();
 	
-		$query = "DELETE from #__categories WHERE title = '$title'";
+		$query = "SELECT id from #__categories WHERE title = ".$db->quote($title);
 		$db->setQuery($query);
-		$db->execute();
+	
+		if($res = $db->loadResult()){
+			return $res;
+		}
 	
 		$title = urlencode($title);
 		$description = urlencode($description);
 		$image = urlencode($image);
-	
-	
-	
+
 		if(!$title){
 			$this->error="Missing Title";
 			return false;
@@ -86,6 +107,7 @@ class MyMuseUpdateHelper extends JObject
 		$db->setQuery($query);
 	
 		if($res = $db->loadResult()){
+			echo "res = $res"; exit;
 			return $res;
 		}else{
 			echo $result; exit;
@@ -259,23 +281,31 @@ class MyMuseUpdateHelper extends JObject
 		$db = JFactory::getDBO();
 		$app = JFactory::getApplication();
 		$token = JSession::getFormToken();
-		$query = "DELETE from #__mymuse_product WHERE product_sku = '".$data['jform']['product_sku']."'";
+		
+		//see if it exists
+		$query = "SELECT id from #__mymuse_product WHERE title = ".$db->quote($data['jform']['title']);
+
 		$db->setQuery($query);
-		$db->execute();
+		$res = $db->loadResult();
+		
+		if($res > 0){
+			return $this->upgradeProduct($data);
+		}
+		
+		/**
 		$user = JFactory::getUser();
 		$userid = $user->get('id');
 	
-	
-		require_once (JPATH_COMPONENT.DS.'controllers'.DS.'product.php');
+		require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_mymuse'.DS.'controllers'.DS.'product.php');
 	
 		$controller	= new MymuseControllerProduct(array(
-				'base_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/",
+				'base_path' => JPATH_ADMINISTRATOR.DS.'components'.DS.'com_mymuse'.DS,
 				'model_prefix' => 'MymuseModel',
-				'model_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/models",
-				'table_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/tables"
+				'model_path' => JPATH_ADMINISTRATOR.DS.'components'.DS.'com_mymuse'.DS.'models',
+				'table_path' => JPATH_ADMINISTRATOR.DS.'components'.DS.'com_mymuse'.DS.'tables'
 				)
 		);
-	
+		*/
 
 	
 		$str = http_build_query($data);
