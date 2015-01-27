@@ -43,101 +43,240 @@ JHTML::_('behavior.tooltip');
 		}
 		//-->
 		</script>
-		<h2><?php echo $item->title; ?></h2>
-		<form action="index.php" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
-<div class="edittracks">
-<div class="pull-left">
+		<h2><?php echo empty($this->item->id) ? JText::_('MYMUSE_NEW_TRACK') : JText::_('MYMUSE_EDIT_TRACK'); ?> <?php echo $item->title; ?></h2>
 
+		<form action="index.php" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
+	<div class="row-fluid">
+		<!-- Begin Content -->
+		<div class="span10 form-horizontal">
+
+<?php echo JHtml::_('bootstrap.startTabSet', 'myTab', array('active' => 'details')); ?>
+
+<!--  DETAILS TAB -->
+<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'details', JText::_('MYMUSE_DETAILS', true)); ?>
+<fieldset class="adminform">
+
+	<legend><?php echo JText::_('MYMUSE_DETAILS'); ?></legend>
+	<div class="pull-left span5">
+
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('title'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('title'); ?>
+				</div>
+			</div>
+				
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('file_type'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('file_type'); ?>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('alias'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('alias'); ?>
+				</div>
+			</div>
+				
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('product_sku'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('product_sku'); ?>
+				</div>
+			</div>
+				
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('ordering'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('ordering'); ?>
+				</div>
+			</div>
+			
+		<?php if(!$this->params->get('my_use_database')){ ?>
+			<div class="control-group">
+				<div class="control-label">
+				<?php echo JText::_( 'MYMUSE_DOWNLOAD_PATH' ); ?>
+				</div>
+				<div class="controls">
+				<input  type="text" name="download_dir" id="jform_download_dir" value="<?php echo $lists['download_dir']; ?>" 
+				class="readonly" readonly="readonly" style="font-weight:normal; font-size: 10px;" size="60" />
+				</div>
+			</div>
+		<?php } ?>
+				
+
+			
+	</div>
+	<div class="pull-right span5">	
+
+				
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('state'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('state'); ?>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('access'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('access'); ?>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('featured'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('featured'); ?>
+				</div>
+			</div>
+
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('language'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('language'); ?>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('detail_image'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('detail_image'); ?><br />
+				<?php if($this->item->list_image && file_exists(JPATH_ROOT.DS.$this->item->detail_image)){?>
+					<img src="../<?php  echo JURI::root().DS.$this->item->detail_image; ?>" />
+				<?php } ?>
+				
+				</div>
+			</div>
+
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('id'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('id'); ?>
+				</div>
+			</div>
+	</div>
+	</fieldset>
 		<fieldset class="adminform">
 
-			<legend><?php echo empty($this->item->id) ? JText::_('MYMUSE_NEW_TRACK') : JText::_('MYMUSE_EDIT_TRACK'); ?></legend>
-			<ul class="adminformlist">
-			
-				<li><?php echo $this->form->getLabel('title'); ?>
-				<?php echo $this->form->getInput('title'); ?></li>
-				
-				<li><?php echo $this->form->getLabel('file_type'); ?>
-				<?php echo $this->form->getInput('file_type'); ?></li>
+			<legend><?php echo JText::_( 'MYMUSE_DESCRIPTION' ); ?></legend>
+			<?php echo $this->form->getLabel('articletext'); ?>
+			<div class="clr"></div>
+			<?php echo $this->form->getInput('articletext'); ?>
 
-				<li><?php echo $this->form->getLabel('alias'); ?>
-				<?php echo $this->form->getInput('alias'); ?></li>
-				
-				<li><?php echo $this->form->getLabel('product_sku'); ?>
-				<?php echo $this->form->getInput('product_sku'); ?></li>
-				
-				<li><?php echo $this->form->getLabel('ordering'); ?>
-				<?php echo $this->form->getInput('ordering'); ?></li>
-				
-				<li><label id="jform_product_file-lbl" for="jform_product_file"  class="hasTip" title="<?php echo JText::_("MYMUSE_BROWSE_TO_FILE")?>">
-				<?php echo JText::_( 'MYMUSE_UPLOAD_NEW_FILE' ); ?></label>
+		</fieldset>
+<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+
+<!--  TRACKS TAB -->
+<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'tracks', '<b>'.strtoupper(JText::_('MYMUSE_TRACKS', true))).'</b>'; ?>
+<fieldset class="adminform">
+
+	<legend><?php echo JText::_('MYMUSE_TRACKS'); ?></legend>
+	<div class="pull-left span5">
+
+			<div class="control-group">
+				<div class="control-label">
+				<?php echo JText::_( 'MYMUSE_UPLOAD_NEW_FILE' ); ?>
+				</div>
+				<div class="controls">
 				<input class="inputbox" type="file" name="product_file" id="jform_product_file" size="40" /><br />
 				upload_max_filesize: <?php echo ini_get('upload_max_filesize'); ?><br />
 				post_max_size: <?php echo ini_get('post_max_size'); ?><br />
 				
-				</li>
+				</div>
+			</div>
 		<?php //if(!$this->params->get('my_encode_filenames')){ ?>
-				<li><label id="jform_product_file_select-lbl" for="jform_product_file_select"  class="hasTip" title="<?php echo JText::_("MYMUSE_BROWSE_TO_FILE")?>">
-				<?php echo JText::_( 'MYMUSE_SELECT_FILE' ); ?></label>
-				<?php echo $lists['select_file']; ?></li>
+			<div class="control-group">
+				<div class="control-label">
+				<?php echo JText::_( 'MYMUSE_SELECT_FILE' ); ?>
+				</div>
+				<div class="controls">
+				</div>
+				<div class="controls">
+				<?php echo $lists['select_file']; ?>
+				</div>
+			</div>
 		<?php //} ?>
 		
-		<?php if(!$this->params->get('my_use_database')){ ?>
-				<li><label id="jform_download_dir-lbl" for="jform_download_dir"  class="hasTip" title="<?php echo JText::_("MYMUSE_DOWNLOAD_DIR_DESC")?>">
-				<?php echo JText::_( 'MYMUSE_DOWNLOAD_PATH' ); ?></label>
-				<input  type="text" name="download_dir" id="jform_download_dir" value="<?php echo $lists['download_dir']; ?>" 
-				class="readonly" readonly="readonly" style="font-weight:normal; font-size: 10px;" size="60" />
-				</li>
-		<?php } ?>
-		
-				<li><?php echo $this->form->getLabel('file_name'); ?>
-				<?php echo $this->form->getInput('file_name'); ?></li>
+
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('file_name'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('file_name'); ?>
+				</div>
+			</div>
 				
 		<?php if($item->title_alias != ""){ ?>
-				<li><label id="jform_file_alias-lbl" class="hasTip" title="" for="jform_file_alias"><?php echo JText::_("MYMUSE_FILE_ALIAS")?></label>
+			<div class="control-group">
+				<div class="control-label"><?php echo JText::_("MYMUSE_FILE_ALIAS")?>
+				</div>
+				<div class="controls">
 				<input id="jform_file_alias" class="readonly" type="text" size="40" value="<?php echo $item->title_alias; ?>" name="jform[file_alias]">
+				</div>
+			</div>
 		<?php }?>
 				
-				<li><?php echo $this->form->getLabel('file_length'); ?>
-				<?php echo $this->form->getInput('file_length'); ?></li>
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('file_length'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('file_length'); ?>
+				</div>
+			</div>
 				
-				<li><?php echo $this->form->getLabel('file_time'); ?>
-				<?php echo $this->form->getInput('file_time'); ?></li>
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('file_time'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('file_time'); ?>
+				</div>
+			</div>
 				
-				<li><?php echo $this->form->getLabel('file_downloads'); ?>
-				<?php echo $this->form->getInput('file_downloads'); ?></li>
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('file_downloads'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('file_downloads'); ?>
+				</div>
+			</div>
 				
-				<li><?php echo $this->form->getLabel('price'); ?>
-				<?php echo $this->form->getInput('price'); ?></li>
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('price'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('price'); ?>
+				</div>
+			</div>
 				
-				<li><?php echo $this->form->getLabel('product_discount'); ?>
-				<?php echo $this->form->getInput('product_discount'); ?></li>
-				
-				<li><?php echo $this->form->getLabel('state'); ?>
-				<?php echo $this->form->getInput('state'); ?></li>
-
-				<li><?php echo $this->form->getLabel('access'); ?>
-				<?php echo $this->form->getInput('access'); ?></li>
-
-				<li><?php echo $this->form->getLabel('featured'); ?>
-				<?php echo $this->form->getInput('featured'); ?></li>
-
-				<li><?php echo $this->form->getLabel('language'); ?>
-				<?php echo $this->form->getInput('language'); ?></li>
-			
-				<li><?php echo $this->form->getLabel('detail_image'); ?>
-				<?php echo $this->form->getInput('detail_image'); ?></li>
-				<?php if($this->item->list_image && file_exists(JPATH_ROOT.DS.$this->item->detail_image)){?>
-					<img src="../<?php  echo JURI::root().DS.$this->item->detail_image; ?>" />
-				<?php } ?>
-				</li>
-
-				<li><?php echo $this->form->getLabel('id'); ?>
-				<?php echo $this->form->getInput('id'); ?></li>
-				
-			</ul>
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('product_discount'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('product_discount'); ?>
+				</div>
+			</div>
 		</fieldset>
-</div>
-<div class="pull-right">
+<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+
+<!--  PREVIEWS TAB -->
+<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'previews', '<b>'.strtoupper(JText::_('MYMUSE_PREVIEWS', true))).'</b>'; ?>
+<div class="pull-left">
 		<fieldset class="adminform">
 
 			<legend><?php echo JText::_( 'MYMUSE_PREVIEW_PATH_STORE' ); ?></legend>
@@ -203,16 +342,13 @@ JHTML::_('behavior.tooltip');
 				<?php echo $lists['previews_3']; ?> </li>
 			</ul>
 		</fieldset>
-		<fieldset class="adminform">
 
-			<legend><?php echo JText::_( 'MYMUSE_DESCRIPTION' ); ?></legend>
-			<?php echo $this->form->getLabel('articletext'); ?>
-			<div class="clr"></div>
-			<?php echo $this->form->getInput('articletext'); ?>
+	</div>
 
-		</fieldset>
+<?php echo JHtml::_('bootstrap.endTab'); ?>
 </div>
 </div>
+
 <div style="clear: both;"></div>
 
 		<input type="hidden" name="parentid" value="<?php echo $item->parentid ?>" />
