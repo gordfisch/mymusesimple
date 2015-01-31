@@ -113,6 +113,7 @@ class MymuseViewProduct extends JViewLegacy
         //upload screen
         if($task == "uploadtrack" || $task == "uploadpreview" ){
         	
+        	JHtml::_('jquery.framework');
         	require_once (JPATH_COMPONENT.DS.'helpers'.DS.'pluploadscript.php');
         	
         	$this->setLayout('upload');

@@ -536,7 +536,31 @@ class myMuseViewStore extends JViewLegacy
 			return false;
 		}
 
+		//
+		// Process the mymuse plugins.
+		//
+		$dispatcher	= JDispatcher::getInstance();
+		$store->event = new stdClass();
+		$store->text = $store->description;
+		$store->catid = 1;
+		$store->list_image = '';
+		$store->introtext = $store->description;
+	
+		$offset = 0;
 		
+		JPluginHelper::importPlugin('mymuse');
+		$results = $dispatcher->trigger('onProductBeforeHeader', array ('com_mymuse.product', &$store, &$this->params, $offset));
+		$store->event->beforeDisplayHeader = trim(implode("\n", $results));
+		
+		$results = $dispatcher->trigger('onProductAfterTitle', array('com_mymuse.product', &$store, &$this->params, $offset));
+		$store->event->afterDisplayTitle = trim(implode("\n", $results));
+		
+		$results = $dispatcher->trigger('onProductBeforeDisplay', array('com_mymuse.product', &$store, &$this->params, $offset));
+		$store->event->beforeDisplayProduct = trim(implode("\n", $results));
+		
+		$results = $dispatcher->trigger('onProductAfterDisplay', array('com_mymuse.product', &$store, &$this->params, $offset));
+		$store->event->afterDisplayProduct = trim(implode("\n", $results));
+						
 
 		// PREPARE THE DATA FOR FEATURED PRODUCTS
 
@@ -567,10 +591,10 @@ class myMuseViewStore extends JViewLegacy
 
 				$results = $dispatcher->trigger('onContentAfterTitle', array('com_mymuse.product', &$item, &$item->params, 0));
 				$item->event->afterDisplayTitle = trim(implode("\n", $results));
-
+				
 				$results = $dispatcher->trigger('onContentBeforeDisplay', array('com_mymuse.product', &$item, &$item->params, 0));
 				$item->event->beforeDisplayContent = trim(implode("\n", $results));
-
+				
 				$results = $dispatcher->trigger('onContentAfterDisplay', array('com_mymuse.product', &$item, &$item->params, 0));
 				$item->event->afterDisplayContent = trim(implode("\n", $results));
 			}

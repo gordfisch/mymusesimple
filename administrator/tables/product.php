@@ -184,7 +184,7 @@ class MymuseTableproduct extends JTable
 	{
 		
 		$params = MyMuseHelper::getParams();
-		require_once (JPATH_COMPONENT.DS.'helpers'.DS.'mp3file.php');
+		require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_mymuse'.DS.'helpers'.DS.'mp3file.php');
 		$post 			= JRequest::get('post');
 		$form 			= JRequest::getVar('jform', array());
 

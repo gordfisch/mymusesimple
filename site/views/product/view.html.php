@@ -139,12 +139,15 @@ class myMuseViewProduct extends JViewLegacy
 		$this->Itemid = JRequest::getVar("Itemid",'');
 
 		//
-		// Process the content plugins.
+		// Process the mymuse plugins.
 		//
-		JPluginHelper::importPlugin('mymuse');
-		$results = $dispatcher->trigger('onProductPrepare', array ('com_mymuse.product', &$item, &$this->params, $offset));
-
 		$item->event = new stdClass();
+		$item->text = $item->introtext." ".$item->fulltext;
+		
+		JPluginHelper::importPlugin('mymuse');
+		$results = $dispatcher->trigger('onProductBeforeHeader', array ('com_mymuse.product', &$item, &$this->params, $offset));
+		$item->event->beforeDisplayHeader = trim(implode("\n", $results));
+		
 		$results = $dispatcher->trigger('onProductAfterTitle', array('com_mymuse.product', &$item, &$this->params, $offset));
 		$item->event->afterDisplayTitle = trim(implode("\n", $results));
 
@@ -161,7 +164,7 @@ class myMuseViewProduct extends JViewLegacy
 		}
 		
 		// process the text with content plugins. You have to use $item->text in the template
-		$item->text = $item->introtext." ".$item->fulltext;
+		
 		JPluginHelper::importPlugin('content');
 		$dispatcher->trigger('onContentPrepare', array ('com_content.article', &$item, &$this->params, $offset));
 		

@@ -126,6 +126,8 @@ function tableOrdering( order, dir, task )
 <!--  HEADING TITLE ICONS -->
 <div class="mymuse">
 
+<?php echo $this->item->event->beforeDisplayHeader; ?>
+
 <?php if ($this->params->get('show_page_heading', 0)) : ?>
 	<h1>
 	<?php echo $this->escape($this->params->get('page_heading')); ?>
@@ -708,6 +710,8 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 <div style="clear: both"></div>
 <!--END FULL TEXT -->
 
+<?php echo $this->item->event->afterDisplayProduct; ?>
+
 <!-- COMMENTS -->
 <?php 
 $comments = JPATH_SITE . DS .'components' . DS . 'com_jcomments' . DS . 'jcomments.php';
@@ -719,6 +723,6 @@ $comments = JPATH_SITE . DS .'components' . DS . 'com_jcomments' . DS . 'jcommen
 <!-- ENDCOMMENTS -->
 
 
-<?php echo $this->item->event->afterDisplayProduct; ?>
+
 </div>
 <!--  end PRODUCT VIEW -->	

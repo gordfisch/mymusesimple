@@ -72,6 +72,32 @@ class MymuseViewCategory extends JViewLegacy
 		if (!in_array($category->access, $groups)) {
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
+		
+		//
+		// Process the mymuse plugins.
+		//
+		print_pre($category); exit;
+		$dispatcher	= JDispatcher::getInstance();
+		$category->event = new stdClass();
+		$category->text = $category->description;
+		$category->catid = 1;
+		$category->list_image = '';
+		$category->introtext = $category->description;
+		
+		$offset = 0;
+		
+		JPluginHelper::importPlugin('mymuse');
+		$results = $dispatcher->trigger('onProductBeforeHeader', array ('com_mymuse.product', &$category, &$this->params, $offset));
+		$category->event->beforeDisplayHeader = trim(implode("\n", $results));
+		
+		$results = $dispatcher->trigger('onProductAfterTitle', array('com_mymuse.product', &$category, &$this->params, $offset));
+		$category->event->afterDisplayTitle = trim(implode("\n", $results));
+		
+		$results = $dispatcher->trigger('onProductBeforeDisplay', array('com_mymuse.product', &$category, &$this->params, $offset));
+		$category->event->beforeDisplayProduct = trim(implode("\n", $results));
+		
+		$results = $dispatcher->trigger('onProductAfterDisplay', array('com_mymuse.product', &$category, &$this->params, $offset));
+		$category->event->afterDisplayProduct = trim(implode("\n", $results));
 
 		// PREPARE THE DATA
 		// Get the metrics for the structural page layout.

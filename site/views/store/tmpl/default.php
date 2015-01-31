@@ -14,6 +14,8 @@ defined('_JEXEC') or die('Restricted access');
 
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 ?>
+<?php echo $this->store->event->beforeDisplayHeader; ?>
+
 <div class="blog<?php echo $this->pageclass_sfx;?>">
 <?php if ( $this->params->get('show_page_heading')!=0) : ?>
 	<h1>
@@ -22,6 +24,10 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 <?php endif; ?>
 
 <h2><?php echo $this->store->title; ?></h2>
+
+<?php echo $this->store->event->afterDisplayTitle; ?>
+
+<?php echo $this->store->event->beforeDisplayProduct; ?>
 
 <div class="text-area mm_text"><?php echo $this->store->description; ?></div>
 	
@@ -99,3 +105,5 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 
 </div>
 </div>
+
+<?php echo $this->store->event->afterDisplayProduct; ?>
