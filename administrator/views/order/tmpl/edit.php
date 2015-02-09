@@ -318,11 +318,10 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 		</table>
 		</fieldset>
 		
-		
 		<fieldset class="adminform">
 				<h2><?php echo JText::_('MYMUSE_ORDER_ITEMS') ?></h2>
 		<?php $string = '
-        		<table class="adminlist" width="600">
+        		<table class="adminlist">
 		<tr>
 		<th><b>'. JText::_('Title') .'</b></th>
         ';
@@ -358,7 +357,16 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 
 			$string .= '
 		    <tr class="'.$class .'">
-		        <td>'. $this->item->items[$i]->product_name .'</td>
+		        <td>';
+		    if($this->item->items[$i]->category_name != ''){
+		    	$string .= $this->item->items[$i]->category_name .' : ';
+		    }
+		    if($this->item->items[$i]->parent_name != ''){
+		    	$string .= $this->item->items[$i]->parent_name .' : ';
+		    }
+		        
+
+			$string .= $this->item->items[$i]->product_name .'</td>
 		        ';
 		    if($this->params->get("my_show_sku")){ 
                 $string .= '

@@ -307,7 +307,17 @@ if($downloads && $order->order_status == "C"){
 		?>
 		
 		    <tr class="<?php echo $class ?>">
-		        <td align="left"><?php echo $order_item[$i]->product_name; ?></td>
+		        <td align="left">
+		        <?php 
+		        if($order_item[$i]->category_name != ''){
+		        	echo $order_item[$i]->category_name." : ";
+		        }
+		        if($order_item[$i]->parent_name != ''){
+		        	echo $order_item[$i]->parent_name." : ";
+		        }
+		        ?>
+		        
+		        <?php echo $order_item[$i]->product_name; ?></td>
 		        <td align="right"> <?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_price); ?></td>
 		        <td align="center"><?php echo $order_item[$i]->product_quantity; ?></td>
 		        <td align="right"><?php echo MyMuseHelper::printMoney($order_item[$i]->subtotal); ?></td>
