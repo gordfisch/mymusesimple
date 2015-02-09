@@ -49,7 +49,7 @@ class MymuseViewOrder extends JViewLegacy
 				$store			= $MyMuseStore->getStore();
 				$extra = '';
 				// Process order plugins
-    			$dispatcher	=& JDispatcher::getInstance();
+    			$dispatcher	= JDispatcher::getInstance();
 				JPluginHelper::importPlugin('system');
 				$results = $dispatcher->trigger('onRenderOrder', array ( ));
 				if(isset($results[0])){

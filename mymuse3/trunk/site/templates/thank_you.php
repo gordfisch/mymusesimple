@@ -75,8 +75,16 @@ defined('_JEXEC') or die('Restricted access');
 		
 		    <tr class="<?php echo $class ?>">
 		        <td align="left"> 
-		        <?php echo $order->items[$i]->title; ?> :
-				<?php echo $order->items[$i]->category_name; ?> </td>
+		        <?php if(isset($order_item[$i]->category_name)){ ?>
+		        	 <?php echo $order_item[$i]->category_name; ?> :
+		        <?php } ?>
+		        
+		        <?php if(isset($order_item[$i]->parent->title)){ ?>
+		        	 <?php echo $order_item[$i]->parent->title; ?> :
+		        <?php } ?>
+		        <?php echo $order_item[$i]->title; ?>
+				
+				</td>
 		        <?php if($params->get("my_show_sku")){ ?>
 		        <td align="right"><?php echo $order->items[$i]->product_sku; ?></td>
 		        <?php } ?>

@@ -99,6 +99,26 @@ class MymuseModelorder extends JModelAdmin
 			$db = JFActory::getDBO();
 			$db->setQuery( $query );
 			$item->items = $db->loadObjectList();
+			
+			for($i=0; $i<count($item->items); $i++){
+				$item->items[$i]->parent_name = '';
+				$item->items[$i]->category_name = '';
+				$query = "SELECT c.title, p.catid, p.parentid 
+						
+						FROM #__mymuse_product as p LEFT JOIN #__categories as c ON c.id=p.catid
+						WHERE p.id='".$item->items[$i]->product_id."'";
+				$db->setQuery( $query );
+				$res = $db->loadObject();
+				$item->items[$i]->category_name = $res->title;
+				$item->items[$i]->parentid = $res->parentid;
+				if($item->items[$i]->parentid > 0){
+					$query = "SELECT title from #__mymuse_product
+							WHERE id = '".$item->items[$i]->parentid."'";
+					$db->setQuery( $query );
+					$item->items[$i]->parent_name = $db->loadResult();
+				}
+			}
+		
 			$item->order_total = 0.00;
 			$downloadable = 0;
 
@@ -270,7 +290,7 @@ class MymuseModelorder extends JModelAdmin
 	 *
 	 * @since	1.6
 	 */
-	protected function prepareTable(&$table)
+	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
 		$jinput = JFactory::getApplication()->input;
