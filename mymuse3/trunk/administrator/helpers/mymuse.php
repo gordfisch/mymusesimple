@@ -221,7 +221,7 @@ class MyMuseHelper extends JObject
 
 			if(!$store){
 				$db = JFactory::getDBO();
-				$query = "SELECT * from #__mymuse_store WHERE id='1'";
+				$query = "SELECT * from `#__mymuse_store` WHERE id='1'";
 				$db->setQuery($query);
 				$store = $db->loadObject();
 			}
