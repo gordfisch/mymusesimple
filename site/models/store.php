@@ -27,7 +27,7 @@ class MyMuseModelStore extends MyMuseModelProducts
 	function getStore()
 	{
 		if($this->_store == null){
-			$query = "SELECT * from #__mymuse_store WHERE id=1";
+			$query = "SELECT * from #__mymuse_store WHERE id='1'";
 			$this->_db->setQuery( $query );
         	$this->_store = $this->_db->loadObject();
         	$params = MyMuseHelper::getParams();
