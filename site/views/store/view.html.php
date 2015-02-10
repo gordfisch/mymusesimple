@@ -388,7 +388,7 @@ class myMuseViewStore extends JViewLegacy
         	if($product->price == 0.00 || $product->price == '' || !$product->price){
         		$free = 1;
         	}
-       // echo "free = $free <br />";	
+  	
         	// see if it is owned
         	if(!$free){
         		$user = JFactory::getUser();
@@ -405,7 +405,7 @@ class myMuseViewStore extends JViewLegacy
         		}
         		
         	}
-       // echo "owned = $owned <br />";
+  
         	if(!$free && !$owned){
         		$message = JText::_('MYMUSE_NOT_AVAILABLE');
         		$this->assignRef( 'message', $message );

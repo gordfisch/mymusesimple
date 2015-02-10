@@ -296,8 +296,18 @@ class plgUserMyMusenoreg extends JPlugin
 				if ($this->params->get('register-require_' . $field, 1) > 0) {
 					$form->setFieldAttribute($field, 'required', ($this->params->get('register-require_' . $field) == 2) ? 'required' : '', 'profile');
 					
-					if($field == 'country'){
-						$countrystates = $this->listCountryState();
+				if($field == 'region'){
+						$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_REGION')."' as region, 0 as country_id  UNION 
+								SELECT id as value, state_name as region, country_id FROM #__mymuse_state 
+						ORDER by country_id, region";
+						$form->setFieldAttribute($field, 'query', $q, 'profile');
+					}
+				if($field == 'country'){
+						$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_COUNTRY')."' as country UNION SELECT country_3_code as value, country_name as country FROM #__mymuse_country ORDER by country";
+						$form->setFieldAttribute($field, 'query', $q, 'profile');
+						
+						
+					$countrystates = $this->listCountryState();
 						$javascript = '
 		var countrystates = new Array;
 		';
