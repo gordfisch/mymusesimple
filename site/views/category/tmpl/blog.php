@@ -11,9 +11,11 @@
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
-
+$category = $this->category;
 ?>
-<?php echo $this->$category->event->beforeDisplayHeader; ?>
+
+<?php  echo $category->event->beforeDisplayHeader; ?>
+
 <div class="blog<?php echo $this->pageclass_sfx;?>">
 <?php if ($this->params->get('show_page_heading', 1)) : ?>
 	<h1>
@@ -29,7 +31,7 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 		<?php endif; ?>
 	</h2>
 <?php endif; ?>
-
+<?php echo $category->event->afterDisplayTitle; ?>
 
 
 
@@ -59,6 +61,8 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 <?php endif; ?>
 
 <div class="clear"></div>
+
+<?php echo $category->event->beforeDisplayProduct; ?>
 
 <?php if($this->params->get('category_show_all_products')) : ?>
 <div class="cat-items">
@@ -135,3 +139,4 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 	</div>
 <?php  endif; ?>
 </div>
+<?php echo $category->event->afterDisplayProduct; ?>

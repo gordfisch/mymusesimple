@@ -76,11 +76,10 @@ class MymuseViewCategory extends JViewLegacy
 		//
 		// Process the mymuse plugins.
 		//
-		print_pre($category); exit;
 		$dispatcher	= JDispatcher::getInstance();
 		$category->event = new stdClass();
 		$category->text = $category->description;
-		$category->catid = 1;
+		$category->catid = $category->id ;
 		$category->list_image = '';
 		$category->introtext = $category->description;
 		
