@@ -36,7 +36,7 @@ class com_mymuseInstallerScript
 		$helper_path = JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS.'helpers'.DS.'mymuse.php';
 		if(file_exists($helper_path)){
 			require_once (JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS.'helpers'.DS.'mymuse.php');
-			$this->mymuse_params = MyMuseHelper::getParams();
+			//$this->mymuse_params = MyMuseHelper::getParams();
 			
 		}
 	}
