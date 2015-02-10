@@ -319,9 +319,9 @@ class MyMuseModelCategory extends JModelList
 	{
 		if (!is_object($this->_item)) {
 			if( isset( $this->state->params ) ) {
-				$params = $this->state->params;
+				$cparams = $this->state->params;
 				$options = array();
-				$options['countItems'] = $params->get('show_cat_num_articles', 1) || !$params->get('show_empty_categories_cat', 0);
+				$options['countItems'] = $cparams->get('show_cat_num_articles', 1) || !$cparams->get('show_empty_categories_cat', 0);
 			}
 			else {
 				$options['countItems'] = 0;
@@ -329,6 +329,9 @@ class MyMuseModelCategory extends JModelList
 
 			$categories = JCategories::getInstance('Mymuse', $options);
 			$this->_item = $categories->get($this->getState('category.id', 'root'));
+			
+			$params = new JRegistry($this->_item->params);
+			$params->merge( $cparams );
 
 			// Compute selected asset permissions.
 			if (is_object($this->_item)) {
