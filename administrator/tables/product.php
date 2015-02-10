@@ -1029,10 +1029,24 @@ class MymuseTableproduct extends JTable
     		}
     		
     	}else{
-    		if(!JFOLDER::move($src,$dest)){
+    		if ( !JFolder::create($dest) ) {
+                //Throw error message and stop script
+                $this->setError("Could not create $dest");
+                return false;
+            }
+            $files = JFolder::files($src);
+            foreach ($files as $file) {
+                JFile::move($src. DS . $file, $dest . DS. $file);
+            }
+            /**
+    		if(!JFolder::move($src,$dest)){
         		$this->setError(JText::sprintf("MYMUSE_PRODUCT_CHANGED_CATEGORY", $msg));
+        		
         		return false;
+    		}else{
+    			$this->setError(JText::sprintf("Folder Moved", $msg));
     		}
+            * */
     	}
     	return true;
 
