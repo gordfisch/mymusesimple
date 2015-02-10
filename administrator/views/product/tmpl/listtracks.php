@@ -1,4 +1,15 @@
 <?php
+/**
+ * @version     $$
+ * @package     com_mymuse3
+ * @copyright   Copyright (C) 2011. All rights reserved.
+ * @license     GNU General Public License version 2 or later; see LICENSE.txt
+ * @author      Gord Fisch arboreta.ca
+ */
+
+
+// no direct access
+defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
 JHtml::_('bootstrap.tooltip');
@@ -23,7 +34,7 @@ if ($saveOrder)
 $sortFields = $this->getSortFields();
 $assoc		= isset($app->item_associations) ? $app->item_associations : 0;
 
-
+require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 
 
 //TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS
@@ -216,7 +227,7 @@ Joomla.orderTable = function()
 	if(count($this->tracks) > 0){ 
 
 		?>
-		<table class="table table-striped" id="articleList">
+		<table id="articleList" class="table table-striped">
 			<thead>
 				<tr>
 
@@ -262,16 +273,13 @@ Joomla.orderTable = function()
 			for ($i=0, $n=count( $this->tracks ); $i < $n; $i++)
 			{
 				$file = &$this->tracks[$i];
-
+				$file->max_ordering = 0;
 				if($file->product_allfiles == "1"){
 					$link 	= 'index.php?option=com_mymuse&task=product.edit_allfiles&type=allfiles&id='. $file->id;
 				}else{
 					$link 	= 'index.php?option=com_mymuse&task=product.editfile&type=file&id='. $file->id;
 				}
-				$alt = "p";
-				
-				$checked 	= JHTML::_('grid.checkedout',  $file, $i );
-				
+
 				$ordering   = ($listOrder == 'a.ordering');
 				$canCreate	= $user->authorise('core.create',		'com_mymuse.category.'.$file->catid);
 				$canEdit	= $user->authorise('core.edit',			'com_mymuse.product.'.$file->id);
@@ -283,26 +291,25 @@ Joomla.orderTable = function()
 				?>
 				
 				
-				<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $file->catid; ?>">
+				<tr class="row<?php echo $i % 2; ?>">
 					<td class="order nowrap center hidden-phone">
-						<?php
-						$iconClass = '';
-						if (!$canChange)
-						{
-							$iconClass = ' inactive';
-						}
-						elseif (!$saveOrder)
-						{
-							$iconClass = ' inactive tip-top hasTooltip" title="' . JHtml::tooltipText('JORDERINGDISABLED');
-						}
-						?>
-						<span class="sortable-handler<?php echo $iconClass ?>">
+					<?php if ($canChange) :
+						$disableClassName = '';
+						$disabledLabel	  = '';
+
+						if (!$saveOrder) :
+							$disabledLabel    = JText::_('JORDERINGDISABLED');
+							$disableClassName = 'inactive tip-top';
+						endif; ?>
+						<span class="sortable-handler hasTooltip <?php echo $disableClassName; ?>" title="<?php echo $disabledLabel; ?>">
 							<i class="icon-menu"></i>
 						</span>
-						<?php if ($canChange && $saveOrder) : ?>
-							<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $file->ordering; ?>" class="width-20 text-area-order " />
-						<?php endif; ?>
-						<?php echo $file->ordering; ?>
+						<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $file->ordering; ?>" class="width-20 text-area-order " />
+					<?php else : ?>
+						<span class="sortable-handler inactive" >
+							<i class="icon-menu"></i>
+						</span>
+					<?php endif; ?>
 					</td>
 					<td class="center hidden-phone">
 						<?php echo JHtml::_('grid.id', $i, $file->id); ?>
@@ -315,10 +322,12 @@ Joomla.orderTable = function()
 					</td>
 					
 					<td>
-					<a href="<?php echo $link ?>"><?php echo htmlspecialchars($file->title, ENT_QUOTES); ?></a> 
+					<a href="<?php echo $link ?>"><?php echo $this->escape($file->title); ?></a> 
 					<?php  if($file->product_allfiles == "1"){ 
 						echo JText::_("MYMUSE_ALL_TRACKS");
 					 } ?>
+					 <p class="smallsub">
+						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($file->alias));?></p>
 					</td>
 					<td class="small hidden-phone">
 						<?php echo $this->escape($file->access_level); ?>
@@ -352,7 +361,6 @@ Joomla.orderTable = function()
 			?>
 			</tbody>
 			</table>
-
 		<?php   } ?>
 
 	<?php echo JHTML::_( 'form.token' ); ?>
