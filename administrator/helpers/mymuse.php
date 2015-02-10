@@ -326,7 +326,7 @@ class MyMuseHelper extends JObject
 		if(!$code){
 			jimport( 'joomla.html.parameter' );
 			$db = JFactory::getDBO();
-			$query = "SELECT * from #__mymuse_store WHERE id='1'";
+			$query = "SELECT * from `#__mymuse_store` WHERE id='1'";
 			$db->setQuery($query);
 			$store = $db->loadObject();
 			$params = new JRegistry($store->params);
