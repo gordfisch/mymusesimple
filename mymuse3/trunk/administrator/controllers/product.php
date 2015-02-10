@@ -88,8 +88,8 @@ class MymuseControllerProduct extends JControllerForm
 
 		$subtype 			= $post['subtype'];
 		$layout 			= @$post['layout'];
-		$model 				=& $this->getModel();
-        $table 				=& $model->getTable();
+		$model 				= $this->getModel();
+        $table 				= $model->getTable();
         
     	// is this the special 'AllFiles'?
 		if(isset($form['product_allfiles']) && $form['product_allfiles'] == 1){
@@ -140,7 +140,8 @@ class MymuseControllerProduct extends JControllerForm
 				}
 			}else {
         		$this->msg = JText::_( 'MYMUSE_ERROR_SAVING_FILE' ).": ".$table->getError();
-        		echo $this->msg; print_pre($_POST); exit;
+        	
+        		JFactory::getApplication()->enqueueMessage($this->msg, 'notice');
         		if($this->id){
         			$this->setRedirect( "index.php?option=com_mymuse&view=product&task=product.editfile&parentid=".$this->parentid.'&id='.$this->id.'&subtype='.$post['subtype'], $this->msg );
         		}else{
