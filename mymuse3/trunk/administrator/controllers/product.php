@@ -104,7 +104,7 @@ class MymuseControllerProduct extends JControllerForm
 			
 			if ($this->save()) {
 				//get the product id
-				$query = "SELECT id FROM #__mymuse_product WHERE product_sku='".$this->product_sku."'";			
+				$query = "SELECT id FROM #__mymuse_product WHERE product_sku='".$db->escape($this->product_sku)."'";			
 				$db->setQuery($query);
 				if(!$this->id = $db->loadResult()){
 					$this->msg = JText::_( 'MYMUSE_COULD_NOT_FIND_ID' );
@@ -294,7 +294,7 @@ class MymuseControllerProduct extends JControllerForm
     
     public function cancelupload()
     {
-    	print_pre($_POST); exit;
+    	
     }
     
     /**

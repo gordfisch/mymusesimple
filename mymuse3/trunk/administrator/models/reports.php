@@ -161,26 +161,40 @@ class MymuseModelReports extends JModelList
     	
     		//get products that fall under categories
     		
-    		/** from product_category_xref 
+    		//from product_category_xref 
     		$q = "SELECT product_id from #__mymuse_product_category_xref
     		WHERE catid IN $catids";
     		$db->setQuery( $q );
     		$prodres = $this->_db->loadObjectList();
-    		*/
     		
-    		$q = "SELECT id as product_id from #__mymuse_product
-    		WHERE catid IN $catids";
+    		$q = "SELECT p.id as product_id from #__mymuse_product as p
+    		WHERE p.catid IN $catids";
     		$db->setQuery( $q );
-    		$prodres = $this->_db->loadObjectList();
+    		$prodres2 = $this->_db->loadObjectList();
     	
-    		//$prodres = array_merge($prodres,$prodres2);
+    		$prodres = array_merge($prodres,$prodres2);
     	
+    		//get children
+    		foreach($prodres as $id){
+    			$query = "SELECT p.id as product_id from #__mymuse_product as p
+    			WHERE parentid='$id->product_id'";
+    			$db->setQuery( $query );
+    			$children = $this->_db->loadObjectList();
+    			if(count($children)){
+    				$prodres = array_merge($prodres,$children);
+    			}
+    		}
     		//make sql bit for productid.
     		$prodids = '';
+    		$seen = array();
     		if($prodres){
     			$prodids = "(";
     			foreach($prodres as $id){
-    				$prodids .= $id->product_id.",";
+    				if(!in_array($id->product_id, $seen)){
+    					
+    					$prodids .= $id->product_id.",";
+    				}
+    				$seen[] = $id->product_id;
     			}
     			$prodids = preg_replace("/,$/","",$prodids);
     			$prodids .= ")";
@@ -194,6 +208,7 @@ class MymuseModelReports extends JModelList
     
     	$start_date = $app->getUserStateFromRequest($this->context.'.filter.start_date', 'filter_start_date', '', 'string');
     	$this->setState('filter.start_date', $start_date);
+    	
     
     	$end_date = $app->getUserStateFromRequest($this->context.'.filter.end_date', 'filter_end_date', '', 'string');
     	$this->setState('filter.end_date', $end_date);
@@ -458,9 +473,10 @@ class MymuseModelReports extends JModelList
   		$catids 	= $this->getState('list.catids');
   		
   		$query = "SELECT sum(product_quantity) as quantity, sum(product_quantity * product_item_price)
-  		as total, c.product_name, a.title as artist_name, c.product_id
+  		as total, c.product_name, a.title as artist_name, c.product_id, pp.title as parent
   		FROM #__mymuse_order_item as c
   		LEFT JOIN #__mymuse_product as p ON c.product_id=p.id
+  		LEFT JOIN #__mymuse_product as pp ON p.parentid=pp.id
   		LEFT JOIN #__categories as a ON p.catid=a.id
   		WHERE 1
   		";
@@ -550,9 +566,18 @@ class MymuseModelReports extends JModelList
     {
     	// Initialise variables.
     	$app	= JFactory::getApplication();
-    
+    	$start_date = $this->getState('filter.start_date');
+    	$end_date = $this->getState('filter.end_date');
+    	
     	// Get the form.
     	$form = $this->loadForm('com_mymuse.reports', 'reports', array());
+    	if($start_date){
+    		$form->setFieldAttribute('filter_start_date', 'default', $start_date);
+    	}
+    	if($end_date){
+    		$form->setFieldAttribute('filter_end_date', 'default', $end_date);
+    	}
+    	
     	if (empty($form)) {
     		return false;
     	}
@@ -591,6 +616,264 @@ class MymuseModelReports extends JModelList
     {
     	return JTable::getInstance($type, $prefix, $config);
     }
+    
+    
+    /*
+     * get downloads query
+     */
+    protected function getDownloadsQuery()
+    {
+    	// Create a new query object.
+    	$db		= $this->getDbo();
+    	$query	= $db->getQuery(true);
+    	
+    	// Select the required fields from the table.
+    	$query->select('a.*');
+    	$query->from('`#__mymuse_downloads` AS a');
+    	//filter by date
+    	$start_date = $this->getState('filter.start_date');
+    	$end_date = $this->getState('filter.end_date');
+    	$datenow = JFactory::getDate();
+    	$now = $datenow->format("%Y-%m-%d");
+    	
+    	if($start_date== $now && $end_date == $now ){
+    		$start_date = '';
+    		$end_date = '';
+    	}
+    	
+    	$where = array();
+    	if($start_date){
+    		$query->where("a.date >= '$start_date 00:00:00'");
+    	}
+    	if($end_date){
+    		$query->where("a.date <= '$end_date 23:59:59'");
+    	}
+    	
+    	//filter by cat and product
+    	$catid = $this->getState('filter.catid');
+    	
+    	if($catid){
+    		$prodids = $this->getState('list.prodids');
+    		if($prodids){
+    			$query->where("(a.product_id IN $prodids)");
+    		}
+    		
+    		 
+    	}
+    	
+    	$query->order($db->escape('a.id ASC'));
+    	
+    	return $query;
+    }
+    
+    /*
+     * get downloads table
+     */
+    public function getDownloads()
+    {
+    	$db		= $this->getDbo();
+    	$query = $this->getDownloadsQuery();
+    	$db->setQuery($query);
+    	$res = $db->loadObjectList();
+  		
+    	return $res;
+    }
+    /**
+     * Build an SQL query to load the list data.
+     *
+     * @return	JDatabaseQuery
+     * @since	1.6
+     */
+    protected function getOrderQuery()
+    {
+    	// Create a new query object.
+    	$db		= $this->getDbo();
+    	$query	= $db->getQuery(true);
+  /*
+   * SELECT o.*, u.name, u.email,os.name AS status_name 
+FROM `vl6xc_mymuse_order` AS o 
+LEFT JOIN vl6xc_users as u on u.id=o.user_id 
+LEFT JOIN vl6xc_mymuse_order_status AS os ON os.code=o.order_status 
+LEFT JOIN vl6xc_mymuse_order_item AS i ON i.order_id=o.id WHERE (i.product_id IN (1,2,3,4,5,6,548,549,550,560,561,562,564,565,559,556,557,558,9,10,11,12,13,14,16,17,18,19,20,21,566,457,458,459,460,504,26,28,29,30,31,32,33,34,35,36,37,38,39,40,45,44,46,47,48,49,50,51,52,53,54,55,56,57,63,62,64,65,66,67,68,69,70,71,72,73,74,82,81,83,84,85,86,87,88,89,90,91,92,97,96,98,99,100,101,102,103,104,105,106,107,108,115,112,151,152,153,154,156,157,158,159,160,161,162,163,164,165,166,167,168,169,178,239,179,180,181,182,183,184,185,186,187,188,189,193,192,194,195,196,197,198,199,200,201,202,203,204,211,210,212,213,214,215,244,217,218,219,220,221,222,223,224,225,226,227,228,229,230,231,238,240,241,242,243,245,246,247,248,249,250,255,254,256,257,258,259,260,262,263,264,265,266,267,268,269,270,271,272,273,274,275,276,280,309,310,311,312,313,314,315,316,317,318,319,320,321,322,346,326,354,344,353,348,349,350,351,352,355,356,357,358,359,360,361,362,363,364,365,366,367,368,369,374,371,373,375,376,377,378,379,380,381,382,386,387,388,389,390,391,392,393,394,395,396,397,398,399,400,401,402,403,404,405,406,410,461,462,463,464,465,466,467,468,471,495,494,493,496,497,498,499,500,
+501,502,503,505,506,507,508,509,510,511,512,513,514,515,516,517,518,519,520,521,522,526,544,545,551)) 
+GROUP BY i.order_id ORDER BY o.id ASC 
+   */  
+    	
+    	// Select the required fields from the table.
+    	$query->select('o.*, u.name, u.email');
+    	$query->from('`#__mymuse_order` AS o');
+    	$query->join('LEFT',  '#__users as u on u.id=o.user_id');
+    
+    	// Join over the order_status for the status name.
+    	$query->select('os.name AS status_name');
+    	$query->join('LEFT', '#__mymuse_order_status AS os ON os.code=o.order_status');
+    
+   
+    	// Filter by order_status
+    	$order_status = $this->getState('filter.order_status');
+    	if (is_string($order_status) && $order_status != '0') {
+    		$query->where('a.order_status = "'.$order_status.'"');
+    	} else if ($order_status === '') {
+    		//$query->where('(a.order_status IN (SELECT code from #__mymuse_order_status))');
+    	}
+    
+    	//filter by date
+    	$start_date = $this->getState('filter.start_date');
+    	$end_date = $this->getState('filter.end_date');
+    	$datenow = JFactory::getDate();
+    	$now = $datenow->format("%Y-%m-%d");
+    
+    	if($start_date== $now && $end_date == $now ){
+    		$start_date = '';
+    		$end_date = '';
+    	}
+    
+    	$where = array();
+    	if($start_date){
+    		$query->where("o.created >= '$start_date 00:00:00'");
+    	}
+    	if($end_date){
+    		$query->where("o.created <= '$end_date 23:59:59'");
+    	}
+    	 
+    	//filter by cat and product
+    	$catid = $this->getState('filter.catid');
+    	 
+    	if($catid){
+    		$query->join('LEFT', '#__mymuse_order_item AS i ON i.order_id=o.id');    		
+    		$prodids = $this->getState('list.prodids');
+    		if($prodids){
+    			$query->where("(i.product_id IN $prodids)");
+    		}
+    		$query->group('i.order_id');
+    		 
+    	}
+    
+    	$query->order($db->escape('o.id ASC'));
+    	
+    	return $query;
+    }
+    
+    /**
+     * Build an SQL query to load the item table data.
+     *
+     * @return	JDatabaseQuery
+     * @since	1.6
+     */
+    protected function getItemQuery()
+    {
+    	// Create a new query object.
+    	$db		= $this->getDbo();
+    	$query	= $db->getQuery(true);
+    
+    	// Select the required fields from the table.
+    	$query->select('u.name, u.email, i.*');
+    	$query->from('`#__mymuse_order_item` AS i');
+    	$query->join('LEFT',  '#__mymuse_order as o ON i.order_id=o.id');
+    	$query->join('LEFT',  '#__users as u on u.id=o.user_id');
+    	
+    
+    	// Join over the order_status for the status name.
+    	$query->select('os.name AS status_name');
+    	$query->join('LEFT', '#__mymuse_order_status AS os ON os.code=o.order_status');
+    
+    
+    	// Filter by order_status
+    	$order_status = $this->getState('filter.order_status');
+    	if (is_string($order_status) && $order_status != '0') {
+    		$query->where('o.order_status = "'.$order_status.'"');
+    	} else if ($order_status === '') {
+    		//$query->where('(a.order_status IN (SELECT code from #__mymuse_order_status))');
+    	}
+    
+    	//filter by date
+    	$start_date = $this->getState('filter.start_date');
+    	$end_date = $this->getState('filter.end_date');
+    	$datenow = JFactory::getDate();
+    	$now = $datenow->format("%Y-%m-%d");
+    
+    	if($start_date== $now && $end_date == $now ){
+    		$start_date = '';
+    		$end_date = '';
+    	}
+    
+    	$where = array();
+    	if($start_date){
+    		$query->where("i.created >= '$start_date 00:00:00'");
+    	}
+    	if($end_date){
+    		$query->where("i.created <= '$end_date 23:59:59'");
+    	}
+    	 
+    	//filter by cat and product
+    	$catid = $this->getState('filter.catid');
+    	 
+    	if($catid){
+    		 
+    		$prodids = $this->getState('list.prodids');
+    		if($prodids){
+    			$query->where("(i.product_id IN $prodids)");
+    		}
+    		//$query->group('i.id');
+    		 
+    	}
+    
+    	// Filter by search in title
+    	$search = $this->getState('filter.search');
+    	if (!empty($search)) {
+    		if (stripos($search, 'id:') === 0) {
+    			$query->where('i.id = '.(int) substr($search, 3));
+    		} else {
+    			$search = $db->Quote('%'.$db->escape($search, true).'%');
+    			$query->where("u.name LIKE $search");
+    		}
+    	}
+    
+    	// Add the list ordering clause.
+    	$query->order($db->escape('i.id ASC'));
+    //echo "1. $query <br /><br />"; exit;
+    	return $query;
+    }
+    
+    
+    
+    /**
+     * download as CSV
+     * 
+     */
+     
+     public function getCSV($table='report')
+     {
+
+     	$db = JFactory::getDBO();
+     	if($table == "mymuse_order"){
+     		$query =  $this->getOrderQuery ();
+     		
+     	}elseif($table == "mymuse_order_item"){
+     		$query =  $this->getItemQuery ();
+     	}elseif($table == "mymuse_downloads"){
+     		$query =  "SELECT * FROM #__mymuse_downloads";
+     	}else{
+ 			$this->populateState();
+			$query =  $this->getListQuery ();
+     	}
+     	
+     	//echo $query; exit;
+     	$db->setQuery($query);
+     	$items = $db->loadObjectList();
+		$cols = array_keys ( ( array ) $items[0] );
+	
+		$csv = fopen ( 'php://output', 'w' );
+		fputcsv ( $csv, ( array ) $cols );
+		foreach ( $items as $line ) {
+			fputcsv ( $csv, ( array ) $line );
+		}
+		return fclose ( $csv ); 
+     	
+
+     }
+  
+    
 
 
 }

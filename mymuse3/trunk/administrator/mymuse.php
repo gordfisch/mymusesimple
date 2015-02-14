@@ -31,7 +31,7 @@ $document->addStyleSheet(JURI::base() . 'components/com_mymuse/assets/css/mymuse
 // require the helper
 require_once (JPATH_COMPONENT.DS.'helpers'.DS.'mymuse.php');
 require_once (JPATH_COMPONENT.DS.'helpers'.DS.'permission.php');
-//print_pre($_POST);exit;
+//print_pre($_POST);
 
 //initialize
 $params = MyMuseHelper::getParams();
@@ -40,6 +40,7 @@ $params = MyMuseHelper::getParams();
 jimport('joomla.application.component.controller');
 
 $controller	= JControllerLegacy::getInstance('Mymuse');
+
 $controller->execute(JFactory::getApplication()->input->get('task'));
 
 $controller->redirect();

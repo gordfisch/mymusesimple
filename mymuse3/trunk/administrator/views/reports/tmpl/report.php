@@ -15,6 +15,7 @@ defined('_JEXEC') or die('Restricted access');
 	$rows =& $this->items_summary;
 	
 		JHTML::_('behavior.tooltip');
+		
 		?>
 		
 
