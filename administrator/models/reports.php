@@ -456,9 +456,26 @@ class MymuseModelReports extends JModelList
   	function getItemsSummary()
   	{ 	
 
+  		$query = $this->getItemsQuery();
+  	//echo "3. Items:  $query <br />";
+  		$this->_db->setQuery( $query );
+        $res = $this->_db->loadObjectList();
+
+        return $res;;
+  	}
+  	
+  	/**
+  	 * Method to get summary of order items for a period, status, shopper
+  	 *
+  	 * @access public
+  	 * @return object
+  	 */
+  	protected function getItemsQuery()
+  	{
+  	
   		$catid	= $this->getState('filter.catid');
   		$where = $this->_buildContentWhere();
-  		
+  	
   		$orders = $this->getItems();
   		$order_ids = '';
   		if(is_array($orders ) && count($orders)){
@@ -471,42 +488,35 @@ class MymuseModelReports extends JModelList
   		}
   		$prodids   = $this->getState('list.prodids');
   		$catids 	= $this->getState('list.catids');
-  		
-  		$query = "SELECT sum(product_quantity) as quantity, sum(product_quantity * product_item_price)
-  		as total, c.product_name, a.title as artist_name, c.product_id, pp.title as parent
+  	
+  		$query = "SELECT a.title as artist_name, pp.title as parent, c.product_name, sum(product_quantity) as quantity, sum(product_quantity * product_item_price)
+  		as total,   c.product_id
   		FROM #__mymuse_order_item as c
   		LEFT JOIN #__mymuse_product as p ON c.product_id=p.id
   		LEFT JOIN #__mymuse_product as pp ON p.parentid=pp.id
   		LEFT JOIN #__categories as a ON p.catid=a.id
   		WHERE 1
-  		";
-  		
-  		
+  		";  
+
+
   		if($order_ids){
   			$query .= "AND c.order_id IN $order_ids
   			";
   		}
   		
   		if($catids){
-  			//$query .= " AND a.id IN ".$catids." ";
+  		//$query .= " AND a.id IN ".$catids." ";
   		}
   		if($prodids){
-  			$query .= " AND c.product_id IN $prodids
+  		$query .= " AND c.product_id IN $prodids
   			";
   		}
   		
   		
   		$query .= " GROUP BY product_name ORDER BY total DESC";
-  	//echo "3. Items:  $query <br />";
-  		$this->_db->setQuery( $query );
-        $res = $this->_db->loadObjectList();
-       
-        
-  		//print_pre($res);
-        return $res;;
+  		
+  		return $query;
   	}
-  	
-  	
 
     /**
      * Method to get a pagination object for orders
@@ -684,7 +694,7 @@ class MymuseModelReports extends JModelList
      * @return	JDatabaseQuery
      * @since	1.6
      */
-    protected function getOrderQuery()
+    protected function getOrderTableQuery()
     {
     	// Create a new query object.
     	$db		= $this->getDbo();
@@ -760,17 +770,26 @@ GROUP BY i.order_id ORDER BY o.id ASC
      * @return	JDatabaseQuery
      * @since	1.6
      */
-    protected function getItemQuery()
+    protected function getItemTableQuery()
     {
     	// Create a new query object.
     	$db		= $this->getDbo();
     	$query	= $db->getQuery(true);
     
     	// Select the required fields from the table.
-    	$query->select('u.name, u.email, i.*');
+    	//
+    	//		
+    	
+    	$query->select('i.id, i.order_id, i.product_id, i.product_sku, c.title as category, 
+    			pp.title as parent, i.product_name, i.file_name, i.product_quantity, i.product_item_price,
+    			i.end_date, i.downloads, i.created, i.modified, i.product_in_stock, os.name as status_name,
+    			u.name, u.email');
     	$query->from('`#__mymuse_order_item` AS i');
     	$query->join('LEFT',  '#__mymuse_order as o ON i.order_id=o.id');
     	$query->join('LEFT',  '#__users as u on u.id=o.user_id');
+    	$query->join('LEFT',  '#__mymuse_product as p on p.id=i.product_id');
+    	$query->join('LEFT',  '#__categories as c on c.id=p.catid');
+    	$query->join('LEFT',  '#__mymuse_product as pp on pp.id=p.parentid');
     	
     
     	// Join over the order_status for the status name.
@@ -847,18 +866,17 @@ GROUP BY i.order_id ORDER BY o.id ASC
 
      	$db = JFactory::getDBO();
      	if($table == "mymuse_order"){
-     		$query =  $this->getOrderQuery ();
-     		
+     		$query =  $this->getOrderTableQuery ();
      	}elseif($table == "mymuse_order_item"){
-     		$query =  $this->getItemQuery ();
+     		$query =  $this->getItemTableQuery ();
      	}elseif($table == "mymuse_downloads"){
      		$query =  "SELECT * FROM #__mymuse_downloads";
      	}else{
  			$this->populateState();
-			$query =  $this->getListQuery ();
+			$query =  $this->getItemsQuery ();
      	}
      	
-     	//echo $query; exit;
+     	
      	$db->setQuery($query);
      	$items = $db->loadObjectList();
 		$cols = array_keys ( ( array ) $items[0] );
