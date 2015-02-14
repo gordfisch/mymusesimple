@@ -23,15 +23,31 @@ class myMuseViewReports extends JViewLegacy
 		$mainframe 		= JFactory::getApplication();
 		$option 		= 'com_mymuse';
 		$params 		= MyMuseHelper::getParams();
-		$this->sidebar 	= JHtmlSidebar::render();
-		
+		$jinput = JFactory::getApplication()->input;
+		$task = $jinput->get('task');
+		$view = $jinput->get('view');
+
+		if($task == 'downloadCSV'){
+			$this->get('DownloadCSV');
+		}
 		
 		// Get data from the model
 		$this->state	= $this->get('State');
 		$this->lists  	= $this->get( 'Lists');
 		$this->form		= $this->get('Form');
+		$this->addToolbar();
 		
 		
+		
+		if($task == 'downloads'){
+			MyMuseHelper::addSubmenu('reports');
+			$this->sidebar = JHtmlSidebar::render();
+			$this->downloads = $this->get('Downloads');
+			parent::display('downloads');
+			return true;
+		}
+
+		$this->sidebar = JHtmlSidebar::render();
 		if(!$this->state->get('filter.start_date')
 				&& !$this->state->get('filter.end_date')
 				&& !$this->state->get('filter.order_status')
@@ -53,8 +69,8 @@ class myMuseViewReports extends JViewLegacy
 			JError::raiseError(500, implode("\n", $errors));
 			return false;
 		}
+
 		
-		$this->addToolbar();
 		parent::display($tpl);
 	}
 
@@ -65,9 +81,19 @@ class myMuseViewReports extends JViewLegacy
 	 */
 	protected function addToolbar()
 	{
+		
 		JToolBarHelper::title(JText::_('COM_MYMUSE').' : '. JText::_( 'MYMUSE_MYMUSE_REPORTS' ), 'mymuse.png');
-
-
+		JToolBarHelper::addNew('reports','MYMUSE_CREATE_REPORT');
+		JToolBarHelper::custom('reports.downloadCSV','publish.png', 'publish_f2.png','MYMUSE_DOWNLOAD_CSV_CURRENT_REPORT',false);
+		JToolBarHelper::custom('reports.downloadOrder','publish.png', 'publish_f2.png','MYMUSE_DOWNLOAD_CSV_ORDER_TABLE',false);
+		JToolBarHelper::custom('reports.downloadItem','publish.png', 'publish_f2.png','MYMUSE_DOWNLOAD_CSV_ITEM_TABLE',false);
+		
+		JToolBarHelper::spacer('10px');
+		
+		JToolBarHelper::addNew('reports.downloads','MYMUSE_DOWNLOADS_REPORT');
+		JToolBarHelper::custom('reports.downloadDownload','publish.png', 'publish_f2.png','MYMUSE_DOWNLOAD_CSV_DOWNLOADS',false);
+		
+		
 		JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/240-reports?tmpl=component');
 		
 

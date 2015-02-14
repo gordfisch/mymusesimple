@@ -356,6 +356,9 @@ class myMuseViewStore extends JViewLegacy
         			$db->execute();
         		}
         	}
+        	// All is good
+        	$order_item->id = $order_item->product_id;
+        	$this->_logDownload($user, $order_item);
 
         	exit;
         	
@@ -371,6 +374,9 @@ class myMuseViewStore extends JViewLegacy
         	$free = 0;
         	$owned = 0;
         	$db	= JFactory::getDBO();
+        	$user = JFactory::getUser();
+        	$user_id = $user->get('id');
+
         	
         	if(!$id){
         		$message = JText::_('MYMUSE_NO_DOWNLOAD_KEY');
@@ -391,8 +397,7 @@ class myMuseViewStore extends JViewLegacy
   	
         	// see if it is owned
         	if(!$free){
-        		$user = JFactory::getUser();
-        		$user_id = $user->get('id');
+        		
         		$query = "SELECT o.order_status FROM #__mymuse_order as o, #__mymuse_order_item as i
         		WHERE i.product_id=$id 
         		AND i.order_id=o.id 
@@ -413,6 +418,8 @@ class myMuseViewStore extends JViewLegacy
         		parent::display($tpl);
         		return false;
         	}
+        	
+        	
         	
         	$object	=& MyMuse::getObject('httpdownload','helpers');
         	$filename = $product->file_name;
@@ -520,6 +527,8 @@ class myMuseViewStore extends JViewLegacy
         			$db->execute();
         		}
         	}
+        	// All is good
+        	$this->_logDownload($user, $product);
         	exit;
         }
 
@@ -647,7 +656,32 @@ class myMuseViewStore extends JViewLegacy
 
 		parent::display($tpl);
 	}
+	
+	/**
+	 * log download to database
+	 */
 
+	protected  function _logDownload($user, $product)
+	{
+		$db = JFactory::getDBO();
+		$user_id = $user->get('id');
+		$user_name = $user->get('name');
+		$user_email = $user->get('email');
+		$product_id = $product->id;
+		$product_filename = $product->file_name;
+		$date = JFactory::getDate()->format('Y-m-d H:i:s');
+		$query = "INSERT INTO #__mymuse_downloads (`user_id`,`user_name`,`user_email`,date`,`product_id`,`product_filename`)
+				VALUES ('$user_id','$user_name','$user_email',$date','$product_id','$product_filename')";
+		
+		$db->setQuery($query);
+		if($db->execute()){
+			return true;
+		}else{
+			$msg = $db->getErrorMessage();
+			JFactory::getApplication()->enqueueMessage($msg, 'warning');
+			return false;
+		}
+	}
 	/**
 	 * Prepares the document
 	 */

@@ -152,11 +152,16 @@ class MymuseTableproduct extends JTable
 		}
 		
 		//check for unique sku
-		$query = "SELECT product_sku FROM #__mymuse_product WHERE product_sku='".$this->product_sku."'";
+		$query = "SELECT product_sku FROM #__mymuse_product WHERE product_sku='".$this->_db->escape($this->product_sku)."'";
 		if($this->id > 0){
 			$query .= "AND id !=".$this->id;
 		}
 
+		if(!$this->_db->setQuery($query)){
+			$this->setError(JText::_('DB Error'). $db->getErrorMsg());
+			return false;
+		}
+		
 		$this->_db->setQuery($query);
 		if($this->_db->loadResult()){
 			$this->setError(JText::_('MYMUSE_FILE_MUST_HAVE_A_UNIQUE_SKU'));
