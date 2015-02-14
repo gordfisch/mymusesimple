@@ -126,7 +126,7 @@ defined('_JEXEC') or die('Restricted access');
 			<tr>
 				<th></th>
 				<th class="title">
-					<?php echo JText::_('MYMUSE_PRODUCT').":".JText::_('MYMUSE_ITEM'); ?>
+					<?php echo JText::_('MYMUSE_PRODUCT').":".JText::_('COM_MYMUSE_TITLE_ITEMS'); ?>
 				</th>
 				<th class="title">
 					<?php echo JText::_('MYMUSE_ARTIST'); ?>
@@ -183,4 +183,5 @@ defined('_JEXEC') or die('Restricted access');
 		</tbody>
 		</table>
 <?php } ?>
+<div style="height: 100px"></div>
 </div>
