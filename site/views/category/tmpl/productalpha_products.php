@@ -9,9 +9,6 @@
 // no direct access
 defined('_JEXEC') or die;
 $class = ' class="first"';
-?>
-
-<?php 
 
 if (count($this->items) > 0) : 
 $count = count($this->items);
@@ -38,6 +35,7 @@ $i = 0;
 $l= 0;
 $total_shown = 0;
 $column = 1;
+$done = 0;
 //echo "count = $count break = $break letters = ".count($lets);
 ?>
 <div class="cat-items">
@@ -55,7 +53,8 @@ $column = 1;
 	$lettercount = count($children );
 	if($i == $break){
 		if ($total_shown == $count){
-			echo '</ul></div>';
+			echo '</ul>
+ 		</div>';
 		}else{
 			echo '</ul></div>
 			<div class="column-'.$column.'" >';
@@ -69,7 +68,8 @@ $column = 1;
 	}
 	?>
 	<span class="alphabet"><?php echo $letter;
-	// echo "lettercount=$lettercount, i=$i, total_shown = $total_shown";
+	
+	//echo " lettercount=$lettercount, break = $break, l = $l, i=$i, total_shown = $total_shown";
 	?></span>
 		<ul>
 		<?php
@@ -95,11 +95,14 @@ $column = 1;
 		
 
 			<?php 
-			
+			//echo " lettercount=$lettercount, break = $break, l = $l, i=$i, total_shown = $total_shown";
 			if($i == $break){
 				if ($total_shown == $count){
+					//we are done
+					$done = 1;
 					echo '</ul></div>';
 				}else{
+					//time for a new column
 					echo '</ul></div>
 					<div class="column-'.$column.'" >';
 					$column++;
@@ -111,10 +114,10 @@ $column = 1;
 				$i = 0;
 			}
 			
-			if($total_shown == $count && $i != $break){
+			if($total_shown == $count && $i != $break && !$done){
 				//very end
 				echo '</ul></div>';
-			}elseif($lettercount == $l){
+			}elseif($lettercount == $l  && $i != $break && !$done){
 				//end of a letter's cats
 				echo '</ul>';
 			}

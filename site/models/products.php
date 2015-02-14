@@ -131,8 +131,7 @@ class MyMuseModelProducts extends JModelList
 	 */
 	protected function getStoreId($id = '')
 	{
-		// Compile the store id.
-		$id .= ':'.$this->getState('filter.published');
+		// Compile the store id
 		$id .= ':'.$this->getState('filter.access');
 		$id .= ':'.$this->getState('filter.featured');
 		$id .= ':'.$this->getState('filter.product_id');

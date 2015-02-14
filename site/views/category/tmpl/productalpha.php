@@ -63,6 +63,7 @@ $category = $this->category;
 	<div class="clear"></div>
 	<?php endif; ?>
 </div>
+
 <?php echo $category->event->beforeDisplayProduct; ?>
      <div class="cat-items">
 		<?php echo $this->loadTemplate('products'); ?>
