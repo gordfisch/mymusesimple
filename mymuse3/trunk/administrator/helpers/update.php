@@ -107,7 +107,6 @@ class MyMuseUpdateHelper extends JObject
 		$db->setQuery($query);
 	
 		if($res = $db->loadResult()){
-			echo "res = $res"; exit;
 			return $res;
 		}else{
 			echo $result; exit;
