@@ -670,8 +670,8 @@ class myMuseViewStore extends JViewLegacy
 		$product_id = $product->id;
 		$product_filename = $product->file_name;
 		$date = JFactory::getDate()->format('Y-m-d H:i:s');
-		$query = "INSERT INTO #__mymuse_downloads (`user_id`,`user_name`,`user_email`,date`,`product_id`,`product_filename`)
-				VALUES ('$user_id','$user_name','$user_email',$date','$product_id','$product_filename')";
+		$query = "INSERT INTO #__mymuse_downloads (`user_id`,`user_name`,`user_email`,`date`,`product_id`,`product_filename`)
+				VALUES ('$user_id','$user_name','$user_email','$date','$product_id','$product_filename')";
 		
 		$db->setQuery($query);
 		if($db->execute()){
