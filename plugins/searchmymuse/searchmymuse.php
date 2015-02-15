@@ -91,7 +91,7 @@ class plgSearchSearchMymuse extends JPlugin
         $limit 			= $this->params->get( 'search_limit', 		50 );
     
         $nullDate   = $db->getNullDate();
-        $date       =& JFactory::getDate();
+        $date       = JFactory::getDate();
         $now        = $date->toSql();
 
     
