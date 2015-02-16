@@ -15,9 +15,9 @@ defined('_JEXEC') or die('Restricted access');
 JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 ?>
 <?php echo $this->store->event->beforeDisplayHeader; ?>
-
+<div class="clear"></div>
 <div class="blog<?php echo $this->pageclass_sfx;?>">
-<?php if ( $this->params->get('show_page_heading')!=0) : ?>
+<?php if ( $this->params->get('show_page_heading',0)!=0) : ?>
 	<h1>
 	<?php echo $this->escape($this->params->get('page_heading')); ?>
 	</h1>

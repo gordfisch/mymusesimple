@@ -118,7 +118,7 @@ class MymuseControllerProduct extends JControllerForm
 				{
 				case 'apply_allfiles':
 					$this->msg = JText::_( 'MYMUSE_CHANGES_TO_ALL_FILE_SAVED' );
-					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.addfile&id='. $this->id.'&subtype='.$post['subtype'], $this->msg );
+					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit_allfiles&id='. $this->id.'&subtype='.$post['subtype'], $this->msg );
 					break;
 				case 'save_allfiles':
 					$this->msg = JText::_( 'MYMUSE_ALL_FILE_SAVED' );
@@ -130,7 +130,7 @@ class MymuseControllerProduct extends JControllerForm
 					break;
 				case 'applyfile':
 					$this->msg = JText::_( 'MYMUSE_CHANGES_TO_FILE_SAVED' );
-					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.addfile&id='. $this->id.'&subtype='.$post['subtype'], $this->msg );
+					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.editfile&id='. $this->id.'&subtype='.$post['subtype'], $this->msg );
 					break;
 				case 'savefile':
 				default:

@@ -201,9 +201,12 @@ class MymuseModelproduct extends JModelAdmin
 			$task = $input->get('task','');
 			$parentid= $input->get('parentid','');
 			$id = $input->get('id','');
-			if($task == "addfile" || $task == "additem"){
+			
+			if($task == "addfile" || $task == "additem" || $task == "new_allfiles"){
 				$pk = 0;
+				$input->set('id',0);
 			}
+			
 			if ($item = parent::getItem($pk)) {
 				
 				// Convert the params field to an array.
@@ -222,6 +225,9 @@ class MymuseModelproduct extends JModelAdmin
 					$item->parentid = $parentid;
 				}
 					
+				if($task == "new_allfiles"){
+					$item->product_allfiles = 1;
+				}
 				if($item->parentid){
 					$q = "SELECT * FROM #__mymuse_product WHERE id='".$item->parentid."'";
 					$this->_db->setQuery($q);
@@ -336,7 +342,14 @@ class MymuseModelproduct extends JModelAdmin
 
 		// items
 		$query = "SELECT a.* from #__mymuse_product as a WHERE parentid=".$pid."
-			AND product_downloadable=0 ORDER BY $filter_item_order $filter_item_order_Dir";
+			AND product_downloadable=0 ";
+		if($filter_item_order){
+			$query .= "ORDER BY $filter_item_order ";
+		}
+		if($filter_item_order && $filter_item_order_Dir){
+			$query .= "$filter_item_order_Dir";
+		}
+			
 		$this->_db->setQuery($query);
 
 		if($lists['items'] = $this->_db->loadObjectList()){
@@ -376,6 +389,8 @@ class MymuseModelproduct extends JModelAdmin
     	$filter_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
     	$this->setState('file.ordering', $filter_order);
     	$this->setState('file.direction', $filter_order_Dir);
+    	$this->setState('list.ordering', $filter_order);
+    	$this->setState('list.direction', $filter_order_Dir);
     	$table = $this->getTable('product','MymuseTable');
 
     	$limit 				= $this->getState('list.limit');
@@ -785,11 +800,13 @@ class MymuseModelproduct extends JModelAdmin
      */
     function getFileLists()
     {
+    	$input = JFactory::getApplication()->input;
+    	$parentid= $input->get('parentid','');
  		// file lists for albums
- 		$artist_alias = MyMuseHelper::getArtistAlias($this->_parent->id,'1');
-		$album_alias = MyMuseHelper::getAlbumAlias($this->_parent->id);
+ 		$artist_alias = MyMuseHelper::getArtistAlias($parentid,'1');
+		$album_alias = MyMuseHelper::getAlbumAlias($parentid);
 		
-	
+
 		$files = array();
 		// get the preview lists
 		if($this->_params->get('my_use_s3')){

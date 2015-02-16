@@ -10,44 +10,36 @@
 
 // no direct access
 defined('_JEXEC') or die;
-JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 
-JHtml::_('bootstrap.tooltip');
+JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
+JHtml::_('behavior.tooltip');
 JHtml::_('behavior.multiselect');
 JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
 
-
-$params 	= $this->state->get('params');
-$lists 		= $this->lists;
-$listOrder	= $this->escape($this->state->get('file.ordering'));
-$listDirn	= $this->escape($this->state->get('file.direction'));
-$saveOrder	= $listOrder == 'a.ordering';
+$app		= JFactory::getApplication();
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
-$app		= JFactory::getApplication();
+$listOrder	= $this->escape($this->state->get('list.ordering'));
+$listDirn	= $this->escape($this->state->get('list.direction'));
+$saveOrder	= $listOrder == 'a.ordering';
 if ($saveOrder)
 {
-	$saveOrderingUrl = 'index.php?option=com_mymuse&task=product.saveOrderAjax&tmpl=component';
+	$saveOrderingUrl = 'index.php?option=com_mymuse&task=products.saveOrderAjax&tmpl=component';
 	JHtml::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
+
 $sortFields = $this->getSortFields();
 $assoc		= isset($app->item_associations) ? $app->item_associations : 0;
 
 require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 
 
+$params 	= $this->params;
+$lists 		= $this->lists;
+
 //TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS
 
-
-//See if there is an all files zip
-$all_files = 0;
-for ($i=0, $n=count( $this->tracks ); $i < $n; $i++)
-{
-if($this->tracks[$i]->product_allfiles == "1"){
-$all_files = 1;
-}
-}
 	
 if(isset($lists['isNew'])){
 echo JText::_("MYMUSE_SAVE_THEN_ADD_TRACKS");
@@ -86,7 +78,7 @@ $js = '
 $document = JFactory::getDocument();
 $document->addScriptDeclaration($js);
 ?>
-
+ <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.min.js" type="text/javascript"></script>
 <script type="text/javascript">
 Joomla.orderTable = function()
 {
@@ -108,59 +100,8 @@ Joomla.orderTable = function()
 </script>
 
 <h2><?php echo JText::_( 'MYMUSE_TRACKS' ); ?></h2>
-	<div id="content-box">
-		<div id="toolbar-box">
-			<div class="m">
-				<div class="toolbar-list" id="toolbar">
-	<ul  style="list-style-type: none;">
 
-		<li  id="toolbar-uploadpayload"  style="display: inline;"><button
-		 class="btn btn-small btn-warning"
-			onclick="javascript: submitbutton1('product.uploadtrack')" class="toolbar"> <span
-			class="icon-new icon-white"> </span> <?php echo JText::_( 'MYMUSE_UPLOAD_TRACKS' ); ?> </button>
-		</li>
-		
-		<li  id="toolbar-uploadpreview"  style="display: inline;"><button
-		 class="btn btn-small btn-warning"
-			onclick="javascript: submitbutton1('product.uploadpreview')" class="toolbar"> <span
-			class="icon-new icon-white"> </span> <?php echo JText::_( 'MYMUSE_UPLOAD_PREVIEWS' ); ?> </button>
-		</li>
-		
-		
-		<li id="toolbar-edit"  style="display: inline;"><button
-		 class="btn btn-small btn-success"
-			onclick="javascript: if (document.adminForm.boxchecked.value==0){
-			alert('<?php echo JText::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'); ?>');}
-			else{ submitbutton1('product.edit')}" > <span
-			class="icon-apply icon-white"> </span> <?php echo JText::_( 'MYMUSE_EDIT_TRACK' ); ?> </button>
-		</li>
 
-		<li  id="toolbar-add"  style="display: inline;"><button
-		 class="btn btn-small btn-success"
-			onclick="javascript: submitbutton1('product.addfile')" class="toolbar"> <span
-			class="icon-new icon-white"> </span> <?php echo JText::_( 'MYMUSE_NEW_TRACK' ); ?> </button>
-		</li>
-<?php if(!$all_files){ ?>		
-		<li  id="toolbar-all"  style="display: inline;"><button
-		 class="btn btn-small btn-success"
-			onclick="javascript: submitbutton1('product.new_allfiles')" class="toolbar"> <span
-			class="icon-new "> </span> <?php echo JText::_( 'MYMUSE_ALL_TRACKS' ); ?> </button>
-		</li>
-<?php } ?>	
-		<li  id="toolbar-delete"  style="display: inline;"><button
-		 class="btn btn-small btn-danger"
-			onclick="javascript: if (document.adminForm.boxchecked.value==0){
-				alert('<?php echo JText::_('JLIB_HTML_PLEASE_MAKE_A_SELECTION_FROM_THE_LIST'); ?>');}
-				else{ submitbutton1('product.removefile')}" class="toolbar"> <span
-			class="icon-apply icon-white"> </span> <?php echo JText::_( 'MYMUSE_DELETE_TRACKS' ); ?> </button>
-		</li>
-	</ul>
-				</div>
-			</div>
-		</div>
-	</div>
-
-<?php } ?>
 
 
 <div style="clear: both;"></div>
@@ -219,8 +160,9 @@ Joomla.orderTable = function()
 			style="height: <?php echo $params->get('product_player_height'); ?>px"
 			<?php } ?>
 			><?php if(isset($this->item->flash)){ echo $this->item->flash; }?>
-			</div><div id="playing_title">Now Playing</div>
-			<div id="jp-title-li"></div>
+		</div>
+		<div id="playing_title">Now Playing</div>
+		<div id="jp-title-li"></div>
 
 	<?php 
 
@@ -234,8 +176,8 @@ Joomla.orderTable = function()
 					<th width="1%" class="nowrap center hidden-phone">
 						<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
 					</th>
-					<th width="1%" class="hidden-phone">
-						<?php echo JHtml::_('grid.checkall'); ?>
+					<th width="1%">
+						<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 					</th>
 					<th width="1%" style="min-width:55px" class="nowrap center">
 						<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
@@ -260,6 +202,8 @@ Joomla.orderTable = function()
 					</th>
 					<th width="1%" class="title">ID
 					</th>
+					<th width="1%" class="title">Order
+					</th>
 				</tr>
 			</thead>
 			<tfoot>
@@ -275,9 +219,9 @@ Joomla.orderTable = function()
 				$file = &$this->tracks[$i];
 				$file->max_ordering = 0;
 				if($file->product_allfiles == "1"){
-					$link 	= 'index.php?option=com_mymuse&task=product.edit_allfiles&type=allfiles&id='. $file->id;
+					$link 	= 'index.php?option=com_mymuse&task=product.edit_allfiles&type=allfiles&id='. $file->id.'&parentid='.$file->parentid;
 				}else{
-					$link 	= 'index.php?option=com_mymuse&task=product.editfile&type=file&id='. $file->id;
+					$link 	= 'index.php?option=com_mymuse&task=product.editfile&type=file&id='. $file->id.'&parentid='.$file->parentid;
 				}
 
 				$ordering   = ($listOrder == 'a.ordering');
@@ -326,8 +270,7 @@ Joomla.orderTable = function()
 					<?php  if($file->product_allfiles == "1"){ 
 						echo JText::_("MYMUSE_ALL_TRACKS");
 					 } ?>
-					 <p class="smallsub">
-						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($file->alias));?></p>
+					 
 					</td>
 					<td class="small hidden-phone">
 						<?php echo $this->escape($file->access_level); ?>
@@ -337,7 +280,12 @@ Joomla.orderTable = function()
 					
 					<td><div id="product_player"><?php echo $file->stream; ?></div></td>
 					<td  align="center">
-						<?php echo stripslashes($file->file_name); ?>
+						<?php echo stripslashes($file->file_name); 
+						echo $params->get('my_encode_filenames',0)?>
+						<?php if($params->get('my_encode_filenames',0)){ ?>
+						<p class="smallsub">
+						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($file->title_alias));?></p>
+						<?php } ?>
 					</td>
 					<td  align="center">
 						<?php echo MyMuseHelper::ByteSize($file->file_length); ?>
@@ -346,6 +294,7 @@ Joomla.orderTable = function()
 					<td><div id="product_player"><?php echo $file->flash; ?></div></td>
 					<td  align="center">
 						<?php echo htmlspecialchars($file->file_preview, ENT_QUOTES); ?>
+						
 					</td>
 					<td nowrap="nowrap" align="center">
 						<?php echo $file->file_downloads; ?>
@@ -353,6 +302,9 @@ Joomla.orderTable = function()
 
 					<td>
 						<?php echo $file->id; ?>
+					</td>
+					<td>
+						<?php echo $file->ordering; ?>
 					</td>
 				</tr>
 				<?php
@@ -368,3 +320,4 @@ Joomla.orderTable = function()
 	</div>
 
 </div>
+<?php } ?>
