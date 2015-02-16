@@ -103,6 +103,9 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 				<th width="1%">
 					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
 				</th>
+				<th width="1%">
+					Ordering
+				</th>
 				<th width="25%">
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
@@ -174,6 +177,9 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 				</td>
 				<td class="center">
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
+				</td>
+				<td class="center">
+					<?php echo $item->ordering; ?>
 				</td>
 				<td>
 					<?php if ($item->checked_out) : ?>

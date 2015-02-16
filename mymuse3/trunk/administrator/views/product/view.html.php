@@ -26,30 +26,41 @@ class MymuseViewProduct extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
+		$input = JFactory::getApplication()->input;
+		$this->task 	= $task 	= $input->get('task', 'edit');
+		
+		if($task == "addfile" || $task == "additem" || $task == "new_allfiles"){
+			$input->set('id',0);
+		}
 
 		$this->state	= $this->get('State');
 		$this->item		= $this->get('Item');
 		$this->form		= $this->get('Form');
 		$this->lists 	= $this->get('Lists');
-		$input = JFactory::getApplication()->input; 
-
+		 
 
 		$this->params 	= MyMuseHelper::getParams();
+
 		$app 			= JFactory::getApplication();
 		$subtype 		= $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'details');
-		$this->task 	= $task 	= $input->get('task', 'edit');
+		
 		$view 			= $input->get('view');
 		
         $isNew  		= ($this->item->id < 1);
 		$lists['isNew'] = $isNew;
-		
-
 		
 		//setlayout
 		$layout = $input->get('layout', 'edit');
 		
 		if($layout == "listtracks"){
 			$this->tracks 	= $this->get('Tracks');
+			//See if there is an all files zip
+			$this->all_files = 0;
+			for ($i=0, $n=count( $this->tracks ); $i < $n; $i++){
+				if($this->tracks[$i]->product_allfiles == "1"){
+					$this->all_files = 1;
+				}
+			}
 			$this->trackPagination = $this->get('TrackPagination');
 		}
 		if($layout == "listitems"){
@@ -58,25 +69,30 @@ class MymuseViewProduct extends JViewLegacy
 		}
 
 		$this->setLayout($layout);
-
-		//new file || edit file
-		if($task == "addfile" || $task == "editfile" || (isset($this->item->parentid) && $this->item->parentid > 0 && !$this->item->product_allfiles && $subtype == "file")){
 		
+		//new file || edit file
+		if($task == "addfile" || $task == "editfile" || 
+				(isset($this->item->parentid) && $this->item->parentid > 0 
+						&& !$this->item->product_allfiles && $subtype == "file")){
+			if($task == "addfile"){
+				$input->set('id','0');
+			}
 			$layout = 'edittracks';
         	$this->setLayout('edittracks');
         	$filelists = $this->get('FileLists');
 
         	$this->lists = array_merge($this->lists,$filelists);
+        	
         	if(!$this->item->parentid){
         		$this->item->parentid= JRequest::getVar('parentid', 0);
         	}
-        	JRequest::setVar('subtype','file');
+        	$input->set('subtype','file');
         	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'file');
-  		
+        	
         }
         
         // allfiles
-        if($task == "new_allfiles" || $task == "product.new_allfiles" || ($this->item->parentid && $this->item->product_allfiles)){
+        elseif($task == "new_allfiles" || $task == "product.new_allfiles" || ($this->item->parentid && $this->item->product_allfiles)){
         	$layout = 'new_allfiles';
         	$this->setLayout('edit_allfiles');
 			if(!$this->item->parentid){
@@ -88,8 +104,8 @@ class MymuseViewProduct extends JViewLegacy
         }
      
         //item
-        if($task == "additem" || $task == "product.additem" || (isset($this->item->parentid) && $this->item->parentid > 0 && $this->item->product_physical)){
-        	
+        elseif($task == "additem" || $task == "product.additem" || (isset($this->item->parentid) && $this->item->parentid > 0 && $this->item->product_physical == 1)){
+        
         	$layout = 'edititems';
         	$this->setLayout('edititems');
         	$this->attribute_skus = $this->get('Attributeskus');
@@ -111,7 +127,7 @@ class MymuseViewProduct extends JViewLegacy
         }
  
         //upload screen
-        if($task == "uploadtrack" || $task == "uploadpreview" ){
+        elseif($task == "uploadtrack" || $task == "uploadpreview" ){
         	
         	JHtml::_('jquery.framework');
         	require_once (JPATH_COMPONENT.DS.'helpers'.DS.'pluploadscript.php');
@@ -175,7 +191,7 @@ class MymuseViewProduct extends JViewLegacy
         if(!$this->item->id  && $this->item->parentid == 0 && $this->item->parentid == 0){
         	$subtype = "details";
         }
-
+        
 		$this->lists['subtype'] 	= $subtype;
 
 		// Check for errors.
@@ -209,7 +225,7 @@ class MymuseViewProduct extends JViewLegacy
 		$title = JText::_('COM_MYMUSE_TITLE_PRODUCT');
 
 		if($this->item->parentid){
-			$title .= ' : <a href="index.php?option=com_mymuse&view=product&task=product.edit&id='.$this->item->parent->id.'">'.$this->item->parent->title."</a>";
+			$title .= ' : <a href="index.php?option=com_mymuse&view=product&task=product.edit&id='.$this->item->parentid.'">'.$this->item->parent->title."</a>";
 		}else{
 			$title .= " : ".$this->item->title;
 		}
@@ -217,9 +233,20 @@ class MymuseViewProduct extends JViewLegacy
 	
 		if($layout == "listtracks"){
 			// LIST TRACKS
-			JToolBarHelper::apply('product.productreturn', 'MYMUSE_RETURN_TO_PRODUCT');
-			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-tracks?tmpl=component');
+			JToolBarHelper::custom('product.uploadtrack', 'save-new.png', 'save-new_f2.png', 'MYMUSE_UPLOAD_TRACKS', false);
+			JToolBarHelper::custom('product.uploadpreview', 'save-new.png', 'save-new_f2.png', 'MYMUSE_UPLOAD_PREVIEWS', false);
+			JToolBarHelper::editList('product.edit', 'MYMUSE_EDIT_TRACK');
+			JToolBarHelper::addNew('product.addfile', 'MYMUSE_NEW_TRACK');
+			JToolBarHelper::deleteList('','product.removefile','MYMUSE_DELETE_TRACKS');
 			
+			
+			if(!$this->all_files){ 
+				JToolBarHelper::addNew('product.new_allfiles', 'MYMUSE_ALL_TRACKS');
+			}		  
+			JToolBarHelper::apply('product.productreturn', 'MYMUSE_RETURN_TO_PRODUCT');
+			
+			
+			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-tracks?tmpl=component');
 		}elseif($layout == "listitems"){
 			// LIST ITEMS
 			JToolBarHelper::apply('product.productreturn', 'MYMUSE_RETURN_TO_PRODUCT');

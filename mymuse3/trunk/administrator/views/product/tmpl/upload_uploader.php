@@ -46,6 +46,7 @@ $item = $this->item;
 		}
 		//-->
 		</script>
+		 <script src="http://code.jquery.com/ui/1.11.2/jquery-ui.min.js" type="text/javascript"></script>
 <form action="" method="post" id="adminForm" name="adminForm">
 	<div id="uploader">
 		<p><?php JText::printf('MYMUSE_ERROR_RUNTIME_NOT_SUPORTED', $this->runtime) ?></p>

@@ -235,9 +235,9 @@ Joomla.orderTable = function()
 			<tbody>
 			<?php
 			$k = 0;
-			$config =& JFactory::getConfig();
+			$config = JFactory::getConfig();
 		    $tzoffset = $config->get('config.offset');
-			$now =& JFactory::getDate();
+			$now = JFactory::getDate();
 			for ($i=0, $n=count( $this->items ); $i < $n; $i++)
 			{
 				

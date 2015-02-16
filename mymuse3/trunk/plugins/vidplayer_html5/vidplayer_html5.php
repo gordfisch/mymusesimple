@@ -66,10 +66,12 @@ class plgMymuseVidplayer_html5 extends JPlugin
         }
         
         // ui js and css
-        //if (!$app->isAdmin()) {
+        if (!$app->isAdmin()) {
         	$document->addScript( 'http://code.jquery.com/ui/1.11.2/jquery-ui.min.js' );
-        //}
+        	
+        }
         $document->addStyleSheet('http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
+        
        
 
 	}
