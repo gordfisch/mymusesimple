@@ -328,7 +328,7 @@ class MyMuseModelCategory extends JModelList
 			}
 
 			$categories = JCategories::getInstance('Mymuse', $options);
-			$this->_item = $categories->get($this->getState('category.id', 'root'));
+			$this->_item = $categories->get($this->getState('category.id', '0'));
 			
 			$params = new JRegistry($this->_item->params);
 			$params->merge( $cparams );
