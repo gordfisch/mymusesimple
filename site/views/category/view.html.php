@@ -33,14 +33,17 @@ class MymuseViewCategory extends JViewLegacy
 	{
 		$app	= JFactory::getApplication();
 		$user	= JFactory::getUser();
-
+		
 		// Get some data from the models
 		$state		= $this->get('State');
+	
 		$params		= $state->params;
 		$items		= $this->get('Items');
 		$category	= $this->get('Category');
+		
 		$children	= $this->get('Children');
 		$parent		= $this->get('Parent');
+	
 		$pagination = $this->get('Pagination');
 		$task = JRequest::getVar('task', 'notask');
 		
@@ -58,7 +61,7 @@ class MymuseViewCategory extends JViewLegacy
 		}
 
 		if ($parent == false) {
-			return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
+			//return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
 		}
 
 		// Setup the category parameters.
