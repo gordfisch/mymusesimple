@@ -21,9 +21,12 @@ class MymuseControllerTaxrates extends JControllerAdmin
 	 * Proxy for getModel.
 	 * @since	1.6
 	 */
-	public function &getModel($name = 'taxrate', $prefix = 'MymuseModel')
+	public function &getModel($name = 'taxrate', $prefix = 'MymuseModel', $config = Array())
 	{
-		$model = parent::getModel($name, $prefix, array('ignore_request' => true));
+		$config = array('ignore_request' => true);
+		$model = parent::getModel($name, $prefix, $config );
 		return $model;
 	}
+	
+
 }

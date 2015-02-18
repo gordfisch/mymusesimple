@@ -184,7 +184,26 @@ class MymuseTabletaxrate extends JTable
         return true;
     }
 
-
+    public function delete($pk = NULL)
+    {
+    	if(!$pk){
+    		return false;
+    	}
+    	$db = JFactory::getDBO();
+    	$query = "SELECT tax_name FROM #__mymuse_tax_rate WHERE id='$pk'";
+    	$db->setQuery($query);
+    	$name = $db->loadResult();
+    	
+    	$query = "ALTER TABLE `vl6xc_mymuse_order` DROP `$name`";
+    	$db->setQuery($query);
+    	$db->execute();
+    	
+    	$query = "DELETE FROM #__mymuse_tax_rate WHERE id='$pk'";
+    	$db->setQuery($query);
+    	$db->execute();
+    	return true;
+    	
+    }
 
 
 }

@@ -315,9 +315,21 @@ class plgUserMyMuse extends JPlugin
 						$form->setFieldAttribute($field, 'query', $q, 'profile');
 					}
 					if($field == 'country'){
+						//set default same as store
+						$db = JFactory::getDBO();
+						$query = "SELECT * from `#__mymuse_store` WHERE id='1'";
+						$db->setQuery($query);
+						$store = $db->loadObject();
+						$sparams = new JRegistry($store->params);
+						$country_2_code = $sparams->get('country');
+						$query = "SELECT country_3_code FROM #__mymuse_country WHERE country_2_code='$country_2_code'";
+						$db->setQuery($query);
+						$country = $db->loadResult();
+						$form->setFieldAttribute($field, 'default', $country, 'profile');
+						
+						
 						$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_COUNTRY')."' as country UNION SELECT country_3_code as value, country_name as country FROM #__mymuse_country ORDER by country";
 						$form->setFieldAttribute($field, 'query', $q, 'profile');
-						
 						
 						$countrystates = $this->listCountryState();
 						$javascript = '
@@ -363,6 +375,10 @@ class plgUserMyMuse extends JPlugin
 			}
 		}
 		list.length = i;
+	}
+	
+	window.onload = function(e){ 
+		changeDynaList2(jform_profile_region, jform_profile_country, countrystates,0,0); 
 	}
 		";
 						$document->addScriptDeclaration($js);

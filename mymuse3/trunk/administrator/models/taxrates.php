@@ -143,4 +143,5 @@ class MymuseModeltaxrates extends JModelList
 
 		return $query;
 	}
+	
 }
