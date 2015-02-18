@@ -33,15 +33,20 @@ $saveOrder	= $listOrder == 'a.ordering';
 	</div>
 	<div style="clear: both'"></div>
 		<div id="j-main-container" class="span10">
-			<div class="filter-search btn-group pull-left">
-				<label for="filter_search" class="element-invisible"><?php echo JText::_('MYMUSE_FILTER'); ?></label>
-				<input type="text" name="filter_search" placeholder="<?php echo JText::_('MYMUSE_FILTER'); ?>" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" title="<?php echo JText::_('MYMUSE_FILTER'); ?>" />
-			</div>
-			<div class="btn-group pull-left hidden-phone">
-				<button class="btn tip hasTooltip" type="submit" title="<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>"><i class="icon-search"></i></button>
-				<button class="btn tip hasTooltip" type="button" onclick="document.id('filter_search').value='';this.form.submit();" title="<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>"><i class="icon-remove"></i></button>
-			</div>
-	
+			
+
+		<div class="pull-left>
+			<label class="filter-search-lbl" for="filter_search"><?php echo JText::_('JSEARCH_FILTER_LABEL'); ?></label>
+			<input type="text" name="filter_search" id="filter_search" value="<?php echo $this->escape($this->state->get('filter.search')); ?>" title="<?php echo JText::_('Search'); ?>" />
+			<button type="submit"><?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?></button>
+			<button type="button" onclick="document.id('filter_search').value='';this.form.submit();"><?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?></button>
+		</div>
+		<div class="pull-right">
+                <select name="filter_published" class="inputbox" onchange="this.form.submit()">
+                    <option value=""><?php echo JText::_('JOPTION_SELECT_PUBLISHED');?></option>
+                    <?php echo JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), "value", "text", $this->state->get('filter.state'), true);?>
+                </select>
+		</div>
 	<div style="clear: both;"> </div>
 
 	<table id="articleList" class="table table-striped">

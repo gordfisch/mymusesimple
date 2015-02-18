@@ -31,7 +31,7 @@ $document->addStyleSheet(JURI::base() . 'components/com_mymuse/assets/css/mymuse
 // require the helper
 require_once (JPATH_COMPONENT.DS.'helpers'.DS.'mymuse.php');
 require_once (JPATH_COMPONENT.DS.'helpers'.DS.'permission.php');
-print_pre($_POST); 
+//print_pre($_POST);
 
 //initialize
 $params = MyMuseHelper::getParams();
