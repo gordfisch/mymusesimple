@@ -41,7 +41,7 @@ if($r){
 $i = 0;
 $total_shown = 0;
 $column = 1;
-
+$l = 0;
 ?>
 
 <div class="cols-<?php echo $this->params->get('subcat_columns',2); ?>">
@@ -54,6 +54,7 @@ $column = 1;
 	}
 	$total_shown++;
 	$i++;
+	$lettercount = count($children );
 	if($i >= $break){
 		if ($total_shown == $count){
 			$ulend = 1;
