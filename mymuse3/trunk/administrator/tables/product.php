@@ -95,6 +95,7 @@ class MymuseTableproduct extends JTable
 	 */
 	public function check()
 	{
+		$app = JFactory::getApplication();
 		$this->title = trim($this->title);
 		if ($this->title == '') {
 			$this->setError(JText::_('MYMUSE_FILE_MUST_HAVE_A_TITLE'));
@@ -159,12 +160,13 @@ class MymuseTableproduct extends JTable
 
 		if(!$this->_db->setQuery($query)){
 			$this->setError(JText::_('DB Error'). $db->getErrorMsg());
+			$app->enqueueMessage(JText::_('DB Error'). $db->getErrorMsg(), 'error');
 			return false;
 		}
 		
 		$this->_db->setQuery($query);
 		if($this->_db->loadResult()){
-			$this->setError(JText::_('MYMUSE_FILE_MUST_HAVE_A_UNIQUE_SKU'));
+			$app->enqueueMessage(JText::_("MYMUSE_FILE_MUST_HAVE_A_UNIQUE_SKU"), 'error');
 			return false;
 		}
 		
