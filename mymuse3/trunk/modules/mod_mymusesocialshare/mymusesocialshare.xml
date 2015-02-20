@@ -1,0 +1,380 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="mymuse" method="upgrade">
+	<name>PLG_MYMUSE_SOCIALSHARE</name>
+	<author>http://www.arboreta.ca</author>
+	<creationDate>30th January, 2015</creationDate>
+	<copyright>Arboreta Internet Services. All rights reserved.</copyright>
+	<authorEmail>gord@arboreta.ca</authorEmail>
+	<authorUrl>http://www.mymuse.ca/</authorUrl>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<version>3.0.1</version>
+	<description>PLG_MYMUSE_SOCIALSHARE_XML_DESCRIPTION</description>
+	<files>
+		<filename plugin="mymusesocialshare">mymusesocialshare.php</filename>
+		<filename plugin="mymusesocialshare">index.html</filename>
+		<folder plugin="mymusesocialshare">elements</folder>
+		<folder plugin="mymusesocialshare">images</folder>
+	</files>
+    <languages folder="language">
+        <language tag="en-GB">en-GB/en-GB.plg_mymuse_mymusesocialshare.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_mymuse_mymusesocialshare.sys.ini</language>
+	</languages>
+
+
+	<config>
+		<fields name="params">
+			<fieldset name="basic" addfieldpath="/plugins/content/mymuse_socialshare/elements">
+				
+				<field name="righttoleft" type="list" default="button" label="PLG_MYMUSE_SOCIALSHARE_DIRECTION_SUPPORT"   description="PLG_MYMUSE_SOCIALSHARE_DIRECTION_SUPPORT_DESC" >
+					   <option value="ltr">LTR_LANGUAGES</option>
+					   <option value="rtl">RTL_LANGUAGES</option>
+				</field>
+				<field name="" type="header" default="FACEBOOK" label="" description=""/>	
+				<field name="lang_like" type="list" default="en_US" label="Select language button Facebook" description="PLG_MYMUSE_SOCIALSHARE_LANGUAGE_DESC">
+					<option value="af_ZA">Afrikaans</option>
+					<option value="id_ID">Bahasa Indonesia</option>
+					<option value="ms_MY">Bahasa Melayu</option>
+					<option value="ca_ES">Català</option>
+					<option value="cs_CZ">Čeština</option>
+					<option value="cy_GB">Cymraeg</option>
+					<option value="da_DK">Dansk</option>
+					<option value="de_DE">Deutsch</option>
+					<option value="en_GB">English (UK)</option>
+					<option value="en_US">English (US)</option>
+					<option value="en_UD">English (Upside Down)</option>
+					<option value="es_LA">Español</option>
+					<option value="es_ES">Español (España)</option>
+					<option value="tl_PH">Filipino</option>
+					<option value="fr_CA">Français (Canada)</option>
+					<option value="fr_FR">Français (France)</option>
+					<option value="ko_KR">한국어</option>
+					<option value="hr_HR">Hrvatski</option>
+					<option value="it_IT">Italiano</option>
+					<option value="lt_LT">Lietuvių</option>
+					<option value="hu_HU">Magyar</option>
+					<option value="nl_NL">Nederlands</option>
+					<option value="ja_JP">日本語</option>
+					<option value="nb_NO">Norsk (bokmål)</option>
+					<option value="pl_PL">Polski</option>
+					<option value="pt_BR">Português (Brasil)</option>
+					<option value="pt_PT">Português (Portugal)</option>
+					<option value="ro_RO">Română</option>
+					<option value="ru_RU">Русский</option>
+					<option value="sk_SK">Slovenčina</option>
+					<option value="sl_SI">Slovenščina</option>
+					<option value="fi_FI">Suomi</option>
+					<option value="sv_SE">Svenska</option>
+					<option value="th_TH">ภาษาไทย</option>
+					<option value="vi_VN">Tiếng Việt</option>
+					<option value="tr_TR">Türkçe</option>
+					<option value="zh_CN">中文(简体)</option>
+					<option value="zh_TW">中文(台灣)</option>
+					<option value="zh_HK">中文(香港)</option>
+					<option value="el_GR">Ελληνικά</option>
+					<option value="bg_BG">Български</option>
+					<option value="sr_RS">Српски</option>
+					<option value="he_IL">עברית</option>
+					<option value="ar_AR">العربية</option>
+					<option value="hi_IN">हिन्दी</option>
+					<option value="bn_IN">বাংলা</option>
+					<option value="pa_IN">ਪੰਜਾਬੀ</option>
+					<option value="ta_IN">தமிழ்</option>
+					<option value="te_IN">తెలుగు</option>
+					<option value="ml_IN">മലയാളം</option>
+					<option value="az_AZ">Azərbaycan dili</option>
+					<option value="bs_BA">Bosanski</option>
+					<option value="et_EE">Eesti</option>
+					<option value="en_PI">English (Pirate)</option>
+					<option value="eo_EO">Esperanto</option>
+					<option value="eu_ES">Euskara</option>
+					<option value="fy_NL">Frisian</option>
+					<option value="fo_FO">Føroyskt</option>
+					<option value="ga_IE">Gaeilge</option>
+					<option value="gl_ES">Galego</option>
+					<option value="is_IS">Íslenska</option>
+					<option value="sw_KE">Kiswahili</option>
+					<option value="ku_TR">Kurdî</option>
+					<option value="lv_LV">Latviešu</option>
+					<option value="fb_LT">Leet Speak</option>
+					<option value="la_VA">lingua latina</option>
+					<option value="nn_NO">Norsk (nynorsk)</option>
+					<option value="sq_AL">Shqip</option>
+					<option value="ka_GE">ქართული</option>
+					<option value="be_BY">Беларуская</option>
+					<option value="mk_MK">Македонски</option>
+					<option value="uk_UA">Українська</option>
+					<option value="hy_AM">Հայերեն</option>
+					<option value="fa_IR">فارسی</option>
+					<option value="ps_AF">پښتو</option>
+					<option value="ne_NP">नेपाली</option>
+					<option value="gn_PY">Avañe'ẽ</option>
+					<option value="ay_BO">Aymar aru</option>
+					<option value="jv_ID">Basa Jawa</option>
+					<option value="ck_US">Cherokee</option>
+					<option value="se_NO">Davvisámegiella</option>
+					<option value="en_IN">English (India)</option>
+					<option value="es_CL">Español (Chile)</option>
+					<option value="es_CO">Español (Colombia)</option>
+					<option value="es_MX">Español (México)</option>
+					<option value="es_VE">Español (Venezuela)</option>
+					<option value="tl_ST">tlhIngan-Hol</option>
+					<option value="li_NL">Limburgs</option>
+					<option value="mg_MG">Malagasy</option>
+					<option value="mt_MT">Malti</option>
+					<option value="nl_BE">Nederlands (België)</option>
+					<option value="uz_UZ">O'zbek</option>
+					<option value="qu_PE">Qhichwa</option>
+					<option value="rm_CH">Rumantsch</option>
+					<option value="so_SO">Soomaaliga</option>
+					<option value="fb_FI">Suomi (koe)</option>
+					<option value="tt_RU">Tatarça</option>
+					<option value="xh_ZA">isiXhosa</option>
+					<option value="zu_ZA">isiZulu</option>
+					<option value="mn_MN">Монгол</option>
+					<option value="tg_TJ">тоҷикӣ</option>
+					<option value="kk_KZ">Қазақша</option>
+					<option value="yi_DE">ייִדיש</option>
+					<option value="ur_PK">اردو</option>
+					<option value="sy_SY">ܐܪܡܝܐ</option>
+					<option value="mr_IN">मराठी</option>
+					<option value="sa_IN">संस्कृतम्</option>
+					<option value="gu_IN">ગુજરાતી</option>
+					<option value="kn_IN">ಕನ್ನಡ</option>
+					<option value="km_KH">ភាសាខ្មែរ</option>
+				</field>
+			
+				<field name="showlike" type="radio" class="btn-group" default="1" label="PLG_MYMUSE_SOCIALSHARE_SHOW_LIKE_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_SHOW_LIKE_BUTTON_DESC" >
+					<option value="1">PLG_MYMUSE_SOCIALSHARE_YES</option>
+					<option value="0">PLG_MYMUSE_SOCIALSHARE_NO</option>
+				</field>
+				<field name="liketype" type="list" default="button_count" label="PLG_MYMUSE_SOCIALSHARE_LIKE_TYPE" description="PLG_MYMUSE_SOCIALSHARE_LIKE_TYPE_DESC" >
+					<option value="button_count">PLG_MYMUSE_SOCIALSHARE_HORIZONTAL_COUNT</option>
+					<option value="box_count">PLG_MYMUSE_SOCIALSHARE_VERTICAL_COUNT</option>
+				</field>
+				<field name="positionlike" type="positionbutton" default="1" label="PLG_MYMUSE_SOCIALSHARE_ORDER_LIKE_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_ORDER_LIKE_BUTTON_DESC" />
+				<field name="spacer1" type="spacer" hr="true" />		
+				
+				<field name="showsend" type="radio" class="btn-group" default="1" label="PLG_MYMUSE_SOCIALSHARE_SHOW_SEND_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_SHOW_SEND_BUTTON_DESC" >
+					<option value="1">PLG_MYMUSE_SOCIALSHARE_YES</option>
+					<option value="0">PLG_MYMUSE_SOCIALSHARE_NO</option>
+				</field>
+				<field name="positionsend" type="positionbutton" default="2" label="PLG_MYMUSE_SOCIALSHARE_ORDER_SEND_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_ORDER_SEND_BUTTON_DESC" />
+				
+				<field name="" type="header" default="TWITTER" label="" description=""/>	
+				<field name="lang_tweet" type="list" default="en" label="PLG_MYMUSE_SOCIALSHARE_LANGUAGE" description="PLG_MYMUSE_SOCIALSHARE_LANGUAGE_DESC">
+					<option value="he">Hebrew - עִבְרִית</option>  
+					<option value="pl">Polish - Polski</option>  
+					<option value="msa">Malay - Bahasa Melayu</option>  
+					<option value="da">Danish - Dansk</option>  
+					<option value="no">Norwegian - Norsk</option>  
+					<option value="zh-tw">Traditional Chinese - 繁體中文</option>  
+					<option value="ja">Japanese - 日本語</option>    
+					<option value="hu">Hungarian - Magyar</option>  
+					<option value="hi">Hindi - हिन्दी</option>  
+					<option value="zh-cn">Simplified Chinese - 简体中文</option>  
+					<option value="tr">Turkish - Türkçe</option>  
+					<option value="ko">Korean - 한국어</option>  
+					<option value="fr">French - français</option>  
+					<option value="fa">Farsi - فارسی</option>  
+					<option value="ar">Arabic - العربية</option>  
+					<option value="fi">Finnish - Suomi</option>  
+					<option value="ru">Russian - Русский</option>    
+					<option value="th">Thai - ภาษาไทย</option>  
+					<option value="ur">Urdu - اردو</option>
+					<option value="nl">Dutch - Nederlands</option>  
+					<option value="pt">Portuguese - Português</option>  
+					<option value="id">Indonesian - Bahasa Indonesia</option>  
+					<option value="es">Spanish - Español</option>  
+					<option value="en">English</option>  
+					<option value="sv">Swedish - Svenska</option>  
+					<option value="fil">Filipino - Filipino</option>  
+					<option value="it">Italian - Italiano</option>
+					<option value="de">German - Deutsch</option>
+				</field>	
+				<field name="showtwitter" type="radio" class="btn-group" default="1" label="PLG_MYMUSE_SOCIALSHARE_SHOW_TWITTER_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_SHOW_TWITTER_BUTTON_DESC" >
+					<option value="1">PLG_MYMUSE_SOCIALSHARE_YES</option>
+					<option value="0">PLG_MYMUSE_SOCIALSHARE_NO</option>
+				</field>
+				<field name="twittertype" type="list" default="Horizontal Count" label="PLG_MYMUSE_SOCIALSHARE_TWEET_TYPE" description="PLG_MYMUSE_SOCIALSHARE_TWEET_TYPE_DESC" >
+					<option value="Horizontal Count">PLG_MYMUSE_SOCIALSHARE_HORIZONTAL_COUNT</option>
+					<option value="vertical">PLG_MYMUSE_SOCIALSHARE_VERTICAL_COUNT</option>
+				</field>
+				<field name="positiontwitter" type="positionbutton" default="3" label="PLG_MYMUSE_SOCIALSHARE_ORDER_TWEET_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_ORDER_TWEET_BUTTON_DESC" />
+				
+				<field name="" type="header" default="GOOGLE+" label="" description=""/>	
+				<field name="lang_google" type="list" default="en-US" label="PLG_MYMUSE_SOCIALSHARE_LANGUAGE" description="PLG_MYMUSE_SOCIALSHARE_LANGUAGE_DESC">
+					<option value="ar">Arabic - العربية</option>
+					<option value="bg">Bulgarian - български</option>
+					<option value="ca">Catalan - català</option>
+					<option value="zh-CN">Chinese (Simplified) - 中文 （簡体）</option>
+					<option value="zh-TW">Chinese (Traditional) - 中文 （繁體）</option>
+					<option value="hr">Croatian - hrvatski</option>
+					<option value="cs">Czech - čeština</option>
+					<option value="da">Danish - dansk</option>
+					<option value="nl">Dutch - Nederlands</option>
+					<option value="en-US">English (US) - English (US)</option>
+					<option value="en-GB">English (UK) - English (UK)</option>
+					<option value="et">Estonian - eesti</option>
+					<option value="fil">Filipino - Filipino</option>
+					<option value="fi">Finnish - suomi</option>
+					<option value="fr">French - français</option>
+					<option value="de">German - Deutsch</option>
+					<option value="el">Greek - Ελληνικά</option>
+					<option value="iw">Hebrew - עברית</option>
+					<option value="hi">Hindi - हिन्दी</option>
+					<option value="hu">Hungarian - magyar</option>
+					<option value="id">Indonesian - Bahasa Indonesia</option>
+					<option value="it">Italian - italiano</option>
+					<option value="ja">Japanese - 日本語</option>
+					<option value="ko">Korean - 한국어</option>
+					<option value="lv">Latvian - latviešu</option>
+					<option value="lt">Lithuanian - lietuvių</option>
+					<option value="ms">Malay - Bahasa Melayu</option>
+					<option value="no">Norwegian - norsk</option>
+					<option value="fa">Persian - فارسی</option>
+					<option value="pl">Polish - polski</option>
+					<option value="pt-BR">Portuguese (Brazil) - português (Brasil)</option>
+					<option value="pt-PT">Portuguese (Portugal) - Português (Portugal)</option>
+					<option value="ro">Romanian - română</option>
+					<option value="ru">Russian - русский</option>
+					<option value="sr">Serbian - српски</option>
+					<option value="sv">Swedish - svenska</option>
+					<option value="sk">Slovak - slovenský</option>
+					<option value="sl">Slovenian - slovenščina</option>
+					<option value="es">Spanish - español</option>
+					<option value="es-419">Spanish (Latin America) - español (Latinoamérica y el Caribe)</option>
+					<option value="th">Thai - ไทย</option>
+					<option value="tr">Turkish - Türkçe</option>
+					<option value="uk">Ukrainian - українська</option>
+					<option value="vi">Vietnamese - Tiếng Việt</option>
+				</field>
+				<field name="showgoogle" type="radio" class="btn-group" default="1" label="PLG_MYMUSE_SOCIALSHARE_SHOW_GOOGLE_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_SHOW_GOOGLE_BUTTON_DESC" >
+					<option value="1">PLG_MYMUSE_SOCIALSHARE_YES</option>
+					<option value="0">PLG_MYMUSE_SOCIALSHARE_NO</option>
+				</field>
+				
+				<field name="googletype" type="list" default="medium" label="PLG_MYMUSE_SOCIALSHARE_GOOGLE_TYPE" description="PLG_MYMUSE_SOCIALSHARE_GOOGLE_TYPE_DESC" >
+				   	<option value="medium">PLG_MYMUSE_SOCIALSHARE_HORIZONTAL_COUNT</option>
+				   	<option value="tall">PLG_MYMUSE_SOCIALSHARE_VERTICAL_COUNT</option>
+				</field>
+				<field name="positiongoogle" type="positionbutton" default="4" label="PLG_MYMUSE_SOCIALSHARE_ORDER_GOOGLE_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_ORDER_GOOGLE_BUTTON_DESC" />
+				
+				<field name="" type="header" default="LINKEDIN" label="" description=""/>	
+				<field name="showlinkedin" type="radio" class="btn-group" default="1" label="PLG_MYMUSE_SOCIALSHARE_SHOW_LINKEDIN_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_SHOW_LINKEDIN_BUTTON_DESC" >
+					<option value="1">PLG_MYMUSE_SOCIALSHARE_YES</option>
+					<option value="0">PLG_MYMUSE_SOCIALSHARE_NO</option>
+				</field>	
+				
+				<field name="linkedintype" type="list" default="right" label="PLG_MYMUSE_SOCIALSHARE_LINKEDIN_TYPE" description="PLG_MYMUSE_SOCIALSHARE_LINKEDIN_TYPE_DESC" >
+					<option value="right">PLG_MYMUSE_SOCIALSHARE_HORIZONTAL_COUNT</option>
+					<option value="top">PLG_MYMUSE_SOCIALSHARE_VERTICAL_COUNT</option>
+				</field>
+				<field name="positionbuttonlinkedin" type="positionbutton" default="5" label="PLG_MYMUSE_SOCIALSHARE_ORDER_LINKEDIN_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_ORDER_LINKEDIN_BUTTON_DESC" />
+
+				<field name="" type="header" default="PINTEREST" label="" description=""/>	
+				<field name="showpinit" type="radio" class="btn-group" default="1" label="PLG_MYMUSE_SOCIALSHARE_SHOW_PINIT_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_SHOW_PINIT_BUTTON_DESC" >
+					<option value="1">PLG_MYMUSE_SOCIALSHARE_YES</option>
+					<option value="0">PLG_MYMUSE_SOCIALSHARE_NO</option>
+				</field>	
+				
+				<field name="pinittype" type="list" default="right" label="PLG_MYMUSE_SOCIALSHARE_PINIT_TYPE" description="PLG_MYMUSE_SOCIALSHARE_PINIT_TYPE_DESC" >
+					<option value="horizontal">PLG_MYMUSE_SOCIALSHARE_HORIZONTAL_COUNT</option>
+					<option value="vertical">PLG_MYMUSE_SOCIALSHARE_VERTICAL_COUNT</option>
+				</field>
+				<field name="positionbuttonpinit" type="positionbutton" default="6" label="PLG_MYMUSE_SOCIALSHARE_ORDER_PINIT_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_ORDER_PINIT_BUTTON_DESC" />
+
+				<field name="" type="header" default="STUMBLEUPON" label="" description=""/>	
+				<field name="showsubmit" type="radio" class="btn-group" default="1" label="PLG_MYMUSE_SOCIALSHARE_SHOW_STUMBLEUPON_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_SHOW_STUMBLEUPON_BUTTON_DESC" >
+					<option value="1">PLG_MYMUSE_SOCIALSHARE_YES</option>
+					<option value="0">PLG_MYMUSE_SOCIALSHARE_NO</option>
+				</field>	
+				
+				<field name="submittype" type="list" default="right" label="PLG_MYMUSE_SOCIALSHARE_STUMBLEUPON_TYPE" description="PLG_MYMUSE_SOCIALSHARE_STUMBLEUPON_TYPE_DESC" >
+					<option value="1">PLG_MYMUSE_SOCIALSHARE_HORIZONTAL_COUNT</option>
+					<option value="5">PLG_MYMUSE_SOCIALSHARE_VERTICAL_COUNT</option>
+				</field>
+				<field name="positionbuttonsubmit" type="positionbutton" default="7" label="PLG_MYMUSE_SOCIALSHARE_ORDER_STUMBLEUPON_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_ORDER_STUMBLEUPON_BUTTON_DESC" />
+				
+				<field name="" type="header" default="ADDTHIS BUTTON" label="" description=""/>	
+				<field name="showaddthis" type="radio" class="btn-group" default="1" label="PLG_MYMUSE_SOCIALSHARE_SHOW_ADDTHIS_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_SHOW_ADDTHIS_BUTTON_DESC" >
+					<option value="1">PLG_MYMUSE_SOCIALSHARE_YES</option>
+					<option value="0">PLG_MYMUSE_SOCIALSHARE_NO</option>
+				</field>	
+				
+				<field name="addthistype" type="list" default="right" label="PLG_MYMUSE_SOCIALSHARE_ADDTHIS_TYPE" description="PLG_MYMUSE_SOCIALSHARE_ADDTHIS_TYPE_DESC" >
+					<option value="addthis_counter addthis_pill_style">PLG_MYMUSE_SOCIALSHARE_HORIZONTAL_COUNT</option>
+					<option value="addthis_counter">PLG_MYMUSE_SOCIALSHARE_VERTICAL_COUNT</option>
+				</field>
+				<field name="positionbuttonaddthis" type="positionbutton" default="8" label="PLG_MYMUSE_SOCIALSHARE_ORDER_ADDTHIS_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_ORDER_ADDTHIS_BUTTON_DESC" />
+				
+				<field name="" type="header" default="VKONTAKTE" label="" description=""/>	
+				<field name="showvklike" type="radio" class="btn-group" default="1" label="PLG_MYMUSE_SOCIALSHARE_SHOW_VK_LIKE_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_SHOW_VK_LIKE_BUTTON_DESC" >
+					<option value="1">PLG_MYMUSE_SOCIALSHARE_YES</option>
+					<option value="0">PLG_MYMUSE_SOCIALSHARE_NO</option>
+				</field>	
+				
+				<field name="vkliketype" type="list" default="mini" label="PLG_MYMUSE_SOCIALSHARE_VKLIKE_TYPE" description="PLG_MYMUSE_SOCIALSHARE_VKLIKE_TYPE_DESC" >
+					<option value="button">PLG_MYMUSE_SOCIALSHARE_HORIZONTAL_MINI_COUNTER</option>
+					<option value="mini">PLG_MYMUSE_SOCIALSHARE_HORIZONTAL_MINI_BUTTON</option>
+					<option value="vertical">PLG_MYMUSE_SOCIALSHARE_VERTICAL_MINI_BUTTON</option>
+				</field>
+				<field name="positionbuttonvklike" type="positionbutton" default="9" label="PLG_MYMUSE_SOCIALSHARE_ORDER_VKLIKE_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_ORDER_VKLIKE_BUTTON_DESC" />	
+				<field name="vkappid" type="text" 
+					default="3204225" 
+					label="PLG_MYMUSE_SOCIALSHARE_VK_APPLICATION_ID" 
+					description="PLG_MYMUSE_SOCIALSHARE_VK_APPLICATION_ID_DESC" 
+				/>
+				<field name="spacerapp" type="spacer" label="PLG_MYMUSE_SOCIALSHARE_URL_CREATE_VKAPP"/>
+				<field name="spacer2" type="spacer" hr="true" />	
+				<field name="showvkshare" type="radio" class="btn-group" default="1" label="PLG_MYMUSE_SOCIALSHARE_SHOW_VK_SHARE_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_SHOW_VK_SHARE_BUTTON_DESC" >
+					<option value="1">PLG_MYMUSE_SOCIALSHARE_YES</option>
+					<option value="0">PLG_MYMUSE_SOCIALSHARE_NO</option>
+				</field>
+				
+				<field name="vksharetype" type="list" default="button" label="PLG_MYMUSE_SOCIALSHARE_VKSHARE_TYPE" description="PLG_MYMUSE_SOCIALSHARE_VKSHARE_TYPE_DESC" >
+					<option value="button">PLG_MYMUSE_SOCIALSHARE_VKSHARE_BUTTON</option>
+					<option value="button_nocount">PLG_MYMUSE_SOCIALSHARE_VKSHARE_BUTTON_WITHOUT_A_COUNTER</option>
+					<option value="link">PLG_MYMUSE_SOCIALSHARE_VKSHARE_LINK</option>					
+				</field>
+				<field name="vksharetext" type="text" 
+					default="Share" 
+					label="PLG_MYMUSE_SOCIALSHARE_VKSHARE_TEXT" 
+					description="PLG_MYMUSE_SOCIALSHARE_VKSHARE_TEXT_DESC" 
+				/>
+				<field name="positionbuttonvkshare" type="positionbutton" default="10" label="PLG_MYMUSE_SOCIALSHARE_ORDER_VKSHARE_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_ORDER_VKSHARE_BUTTON_DESC" />	
+				<field name="" type="header" default="SETTINGS" label="" description=""/>	
+				
+				<field name="positiondisplay" type="list" 
+					default="2" 
+					label="PLG_MYMUSE_SOCIALSHARE_POSITION" 
+					description="PLG_MYMUSE_SOCIALSHARE_POSITION_DESC">
+						<option value="0">PLG_MYMUSE_SOCIALSHARE_ABOVE_ITEM_HEADER</option>
+						<option value="1">PLG_MYMUSE_SOCIALSHARE_BELOW_ITEM_HEADER</option>
+						<option value="2">PLG_MYMUSE_SOCIALSHARE_ABOVE_PRODUCT</option>
+						<option value="3">PLG_MYMUSE_SOCIALSHARE_ABOVE_ITEMCOMMENTS</option>
+				</field>
+
+				<field name="showcategory" type="radio" class="btn-group"
+					default="0" 
+					label="PLG_MYMUSE_SOCIALSHARE_DISPLAY_ON_CATEGORY_LAYOUT" 
+					description="PLG_MYMUSE_SOCIALSHARE_DISPLAY_ON_CATEGORY_LAYOUT_DESC" >
+					<option value="1">PLG_MYMUSE_SOCIALSHARE_YES</option>
+					<option value="0">PLG_MYMUSE_SOCIALSHARE_NO</option>
+				</field>
+				
+				<field name="ex_categories" type="text" 
+					default="" 
+					label="PLG_MYMUSE_SOCIALSHARE_EXCLUDE_CATEGORIES_ID" 
+					description="PLG_MYMUSE_SOCIALSHARE_EXCLUDE_CATEGORIES_ID_DESC" 
+				/>
+				
+				<field name="ex_articles" type="text" 
+					default="" 
+					label="PLG_MYMUSE_SOCIALSHARE_EXCLUDE_ARTICLE_ID" 
+					description="PLG_MYMUSE_SOCIALSHARE_EXCLUDE_ARTICLE_ID_DESC" 
+				/>			
+				
+			</fieldset>
+		</fields>
+	</config>
+</extension>
