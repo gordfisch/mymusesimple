@@ -10,14 +10,14 @@
 	<version>3.0.1</version>
 	<description>PLG_MYMUSE_SOCIALSHARE_XML_DESCRIPTION</description>
 	<files>
-		<filename plugin="mymusesocialshare">mymusesocialshare.php</filename>
-		<filename plugin="mymusesocialshare">index.html</filename>
-		<folder plugin="mymusesocialshare">elements</folder>
-		<folder plugin="mymusesocialshare">images</folder>
+		<filename plugin="mymuse_socialshare">mymusesocialshare.php</filename>
+		<filename plugin="mymuse_socialshare">index.html</filename>
+		<folder plugin="mymuse_socialshare">elements</folder>
+		<folder plugin="mymuse_socialshare">images</folder>
 	</files>
     <languages folder="language">
-        <language tag="en-GB">en-GB/en-GB.plg_mymuse_mymusesocialshare.ini</language>
-        <language tag="en-GB">en-GB/en-GB.plg_mymuse_mymusesocialshare.sys.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_mymuse_mymuse_socialshare.ini</language>
+        <language tag="en-GB">en-GB/en-GB.plg_mymuse_mymuse_socialshare.sys.ini</language>
 	</languages>
 
 

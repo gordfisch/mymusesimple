@@ -1,2 +1,0 @@
-
-[11-Feb-2015 13:55:48 America/New_York] PHP Fatal error:  Call to undefined method JDocumentFeed::getHeadData() in /home/joomlamy/public_html/callinish/templates/yoo_nano3/warp/systems/joomla/layouts/head.php on line 15
