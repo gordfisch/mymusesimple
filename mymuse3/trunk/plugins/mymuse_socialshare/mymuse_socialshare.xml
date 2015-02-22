@@ -15,7 +15,7 @@
 		<folder plugin="mymuse_socialshare">elements</folder>
 		<folder plugin="mymuse_socialshare">images</folder>
 	</files>
-    <languages folder="language">
+    <languages folder="languages">
         <language tag="en-GB">en-GB/en-GB.plg_mymuse_mymuse_socialshare.ini</language>
         <language tag="en-GB">en-GB/en-GB.plg_mymuse_mymuse_socialshare.sys.ini</language>
 	</languages>
@@ -308,7 +308,7 @@
 				<field name="positionbuttonaddthis" type="positionbutton" default="8" label="PLG_MYMUSE_SOCIALSHARE_ORDER_ADDTHIS_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_ORDER_ADDTHIS_BUTTON_DESC" />
 				
 				<field name="" type="header" default="VKONTAKTE" label="" description=""/>	
-				<field name="showvklike" type="radio" class="btn-group" default="1" label="PLG_MYMUSE_SOCIALSHARE_SHOW_VK_LIKE_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_SHOW_VK_LIKE_BUTTON_DESC" >
+				<field name="showvklike" type="radio" class="btn-group" default="0" label="PLG_MYMUSE_SOCIALSHARE_SHOW_VK_LIKE_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_SHOW_VK_LIKE_BUTTON_DESC" >
 					<option value="1">PLG_MYMUSE_SOCIALSHARE_YES</option>
 					<option value="0">PLG_MYMUSE_SOCIALSHARE_NO</option>
 				</field>	
