@@ -10,7 +10,7 @@
 	<version>3.0.1</version>
 	<description>PLG_MYMUSE_SOCIALSHARE_XML_DESCRIPTION</description>
 	<files>
-		<filename plugin="mymuse_socialshare">mymusesocialshare.php</filename>
+		<filename plugin="mymuse_socialshare">mymuse_socialshare.php</filename>
 		<filename plugin="mymuse_socialshare">index.html</filename>
 		<folder plugin="mymuse_socialshare">elements</folder>
 		<folder plugin="mymuse_socialshare">images</folder>
