@@ -115,6 +115,11 @@
         		<copy file="${src}/plugins/vidplayer_html5/languages/en-GB.plg_mymuse_vidplayer_html5.sys.ini"
         	             todir="${test}/administrator/language/en-GB" />
         	
+        		<copy file="${src}/plugins/mymuse_socialshare/languages/en-GB.plg_mymuse_mymuse_socialshare.ini"
+        	        	todir="${test}/administrator/language/en-GB" />
+        	    <copy file="${src}/plugins/mymuse_socialshare/languages/en-GB.plg_MyMuse_mymuse_socialshare.sys.ini"
+        	        	todir="${test}/administrator/language/en-GB" />
+        	
         		<copy file="${src}/plugins/searchmymuse/languages/en-GB.plg_search_searchmymuse.ini"
         	        	todir="${test}/administrator/language/en-GB" />
         	    <copy file="${src}/plugins/searchmymuse/languages/en-GB.plg_search_searchmymuse.sys.ini"
@@ -195,7 +200,12 @@
                 <copy file="${src}/plugins/preorder/preorder.php"
                         todir="${test}/plugins/mymuse/preorder" />
                 <copy file="${src}/plugins/preorder/preorder.xml"
-                        todir="${test}/plugins/mymuse/preorder" />   
+                        todir="${test}/plugins/mymuse/preorder" /> 
+        	
+        		<copy file="${src}/plugins/mymuse_socialshare/mymuse_socialshare.php"
+        	            todir="${test}/plugins/mymuse/mymuse_socialshare" />
+        	    <copy file="${src}/plugins/mymuse_socialshare/mymuse_socialshare.xml"
+        	              todir="${test}/plugins/mymuse/mymuse_socialshare" /> 
         	
                 <copy file="${src}/plugins/searchmymuse/searchmymuse.php"
                         todir="${test}/plugins/search/searchmymuse" />
