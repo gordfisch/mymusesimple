@@ -31,6 +31,7 @@ class PlgMymuseMymusesocialshare extends JPlugin
 	function PlgMymuseMymusesocialshare( & $subject, $params) {
   
 		parent::__construct($subject, $params);
+		print_pre($params);
 	}
 	
 	function mymusesocialshare($item, $params, $limitstart) {

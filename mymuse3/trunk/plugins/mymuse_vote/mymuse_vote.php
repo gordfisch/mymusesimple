@@ -13,7 +13,7 @@
 defined('_JEXEC') or die;
 
 jimport( 'joomla.plugin.plugin');
-
+jimport( 'joomla.html.parameter' );
 
 /**
  * Vote plugin.
@@ -21,7 +21,7 @@ jimport( 'joomla.plugin.plugin');
  * @package		MyMuse.Plugin
  * @subpackage	MyMuse.vote
  */
-class plgMyMuseVote extends JPlugin
+class plgMyMuseMymuse_Vote extends JPlugin
 {
 	/**
 	 * Load the language file on instantiation.
@@ -37,7 +37,7 @@ class plgMyMuseVote extends JPlugin
 	 * @param   object  $subject  The object to observe
 	 * @param   array   $config   An array that holds the plugin configuration
 	 */
-	public function __construct(& $subject, $config)
+	function __construct(&$subject, $config)
 	{
 		parent::__construct($subject, $config);
 		$this->loadLanguage();
@@ -46,10 +46,9 @@ class plgMyMuseVote extends JPlugin
 	/**
 	* @since	1.6
 	*/
-	public function onProductBeforeDisplay($context, &$row, &$params, $page=0)
+	function onProductBeforeDisplay($context, &$row, &$params, $page=0)
 	{
 		$html = '';
-
 		if ($params->get('show_vote'))
 		{
 			$rating = intval(@$row->rating);
