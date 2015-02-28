@@ -48,6 +48,9 @@ class plgMyMuseMymuse_Vote extends JPlugin
 	*/
 	function onProductBeforeDisplay($context, &$row, &$params, $page=0)
 	{
+		if($context != "com_mymuse.product"){
+			return;
+		}
 		$html = '';
 		if ($params->get('show_vote'))
 		{

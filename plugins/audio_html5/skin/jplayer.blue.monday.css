@@ -136,8 +136,9 @@ li.jp-unmute,
 	}
 	.jp-progress-slider {
 		position: absolute;
-		top: -26px;
-		width: 60%;
+		top: 28px;
+		left: 100px;
+		width: 50%;
 	}
 
 	.jp-volume-slider {

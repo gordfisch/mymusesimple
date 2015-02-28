@@ -16,8 +16,8 @@
 		<folder plugin="mymuse_socialshare">images</folder>
 	</files>
     <languages folder="languages">
-        <language tag="en-GB">en-GB/en-GB.plg_mymuse_mymuse_socialshare.ini</language>
-        <language tag="en-GB">en-GB/en-GB.plg_mymuse_mymuse_socialshare.sys.ini</language>
+        <language tag="en-GB">en-GB.plg_mymuse_mymuse_socialshare.ini</language>
+        <language tag="en-GB">en-GB.plg_mymuse_mymuse_socialshare.sys.ini</language>
 	</languages>
 
 

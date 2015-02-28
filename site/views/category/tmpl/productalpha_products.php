@@ -87,7 +87,7 @@ $done = 0;
 			?>
 			<li <?php echo $class; ?>>
 				<?php $class = ''; ?>
-				<span class="item-title"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($child->id ,$child->catid));?>">
+				<span class="item-title"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($child->id ,$this->category->id));?>">
 					<?php echo $this->escape($child->title); ?></a>  - 
                     <a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($child->catid)); ?>"><?php echo $child->category_title; ?></a>
 				</span>

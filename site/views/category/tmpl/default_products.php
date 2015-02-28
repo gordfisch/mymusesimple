@@ -139,7 +139,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 				<?php if ($this->params->get('category_show_product_image')): ?>
 				<td class="myimage"><?php if ($product->list_image): ?>
 					<a
-					href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($product->id, $product->catid)); ?>">
+					href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($product->id, $this->category->id)); ?>">
 						<img <?php if($height) : ?> height="<?php echo $height; ?>"
 						<?php endif; ?> src="<?php echo $product->list_image; ?>"
 						alt="<?php echo htmlspecialchars($product->list_image); ?>" />
@@ -148,7 +148,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 			<?php endif; ?>
 
 				<td class="mytitle"><a
-					href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($product->id, $product->catid)); ?>">
+					href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($product->id, $this->category->id)); ?>">
 						<?php echo $this->escape($product->title); ?>
 				</a> <?php if ($product->params->get('access-edit')) : ?> <!--  
 						 <ul class="actions">
@@ -159,6 +159,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 						--> <?php endif; ?>
 				</td>
 
+				
 				<?php if ($this->params->get('list_show_date')) : ?>
 					<td class="mydate-<?php  echo $date; ?>" valign="top">
 						<?php 
