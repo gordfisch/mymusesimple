@@ -247,13 +247,12 @@ class plgMymuseAudio_html5 extends JPlugin
         cssSelectorAncestor: "#jp_container_'.$id.'",
         wmode: "window",
         keyEnabled: true,
-        autoPlay: true
       },
       myControl = {
 			progress: jQuery(options.cssSelectorAncestor + " .jp-progress-slider"),
 			volume: jQuery(options.cssSelectorAncestor + " .jp-volume-slider")
-		};
-      	// Instance jPlayer
+	  };
+    // Instance jPlayer
 	myPlayer.jPlayer(options);
 
 	// A pointer to the jPlayer data object
