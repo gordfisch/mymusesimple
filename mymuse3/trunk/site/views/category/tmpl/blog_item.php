@@ -49,7 +49,7 @@ JHtmlBehavior::framework();
 
 <?php if ($params->get('category_show_product_image') && $this->item->list_image): ?>
 <div class="list_image">
-<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid)); ?>"
+<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->category->id)); ?>"
 ><img src="<?php echo $this->item->list_image; ?>" 
 alt="<?php echo htmlspecialchars($this->item->list_image); ?>" border="0" 
 <?php if ($params->get('category_product_image_height')) : ?>
@@ -61,7 +61,7 @@ style="height: <?php echo $params->get('category_product_image_height'); ?>px"
 <?php if ($params->get('show_title')) : ?>
 	<div class="title">
 		<?php if ($params->get('category_product_link_titles') && $params->get('access-view')) : ?>
-			<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid)); ?>">
+			<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->category->id)); ?>">
 			<?php echo $this->escape($this->item->title); ?></a>
 		<?php else : ?>
 			<?php echo $this->escape($this->item->title); ?>

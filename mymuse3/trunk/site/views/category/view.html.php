@@ -89,16 +89,16 @@ class MymuseViewCategory extends JViewLegacy
 		$offset = 0;
 		
 		JPluginHelper::importPlugin('mymuse');
-		$results = $dispatcher->trigger('onProductBeforeHeader', array ('com_mymuse.product', &$category, &$this->params, $offset));
+		$results = $dispatcher->trigger('onProductBeforeHeader', array ('com_mymuse.category', &$category, &$this->params, $offset));
 		$category->event->beforeDisplayHeader = trim(implode("\n", $results));
 		
-		$results = $dispatcher->trigger('onProductAfterTitle', array('com_mymuse.product', &$category, &$this->params, $offset));
+		$results = $dispatcher->trigger('onProductAfterTitle', array('com_mymuse.category', &$category, &$this->params, $offset));
 		$category->event->afterDisplayTitle = trim(implode("\n", $results));
 		
-		$results = $dispatcher->trigger('onProductBeforeDisplay', array('com_mymuse.product', &$category, &$this->params, $offset));
+		$results = $dispatcher->trigger('onProductBeforeDisplay', array('com_mymuse.category', &$category, &$this->params, $offset));
 		$category->event->beforeDisplayProduct = trim(implode("\n", $results));
 		
-		$results = $dispatcher->trigger('onProductAfterDisplay', array('com_mymuse.product', &$category, &$this->params, $offset));
+		$results = $dispatcher->trigger('onProductAfterDisplay', array('com_mymuse.category', &$category, &$this->params, $offset));
 		$category->event->afterDisplayProduct = trim(implode("\n", $results));
 
 		// PREPARE THE DATA

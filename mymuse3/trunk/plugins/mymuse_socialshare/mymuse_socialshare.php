@@ -23,15 +23,41 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.error.error' );
 jimport('joomla.plugin.plugin');
 jimport( 'joomla.utilities.string' );
-class PlgMymuseMymusesocialshare extends JPlugin 
+class PlgMymuseMymuse_socialshare extends JPlugin 
 {
 	var $pluginName = 'MyMuse socialshare';
-	var $pluginNameHumanReadable = 'Social share on MyMuse content items';
+	var $pluginNameHumanReadable = 'Social share on MyMuse product items';
 	
-	function PlgMymuseMymusesocialshare( & $subject, $params) {
+	function PlgMymuseMymuse_socialshare(&$subject, $params) {
   
 		parent::__construct($subject, $params);
-		print_pre($params);
+		print_pre($params);exit;
+	}
+	
+
+	function onProductBeforeHeader($context, &$item, &$params, $limitstart) {
+		//above header
+		if($this->params->get('positiondisplay') == 0) {
+			return $this->mymusesocialshare($item, $params, $limitstart) ;
+		}
+	}
+	
+	function onProductAfterTitle($context, &$item, &$params, $limitstart) {
+		if($this->params->get('positiondisplay') == 1) {
+			return $this->mymusesocialshare($item, $params, $limitstart) ;
+		}
+	}
+	
+	function onProductBeforeDisplay($context,  &$item, &$params, $limitstart) {
+		if($this->params->get('positiondisplay') == 2) {
+			return $this->mymusesocialshare($item, $params, $limitstart) ;
+		}
+	}
+	
+	function onProductAfterDisplay($context, &$item, &$params, $limitstart) {
+		if($this->params->get('positiondisplay') == 3) {
+			return $this->mymusesocialshare($item, $params, $limitstart) ;
+		}
 	}
 	
 	function mymusesocialshare($item, $params, $limitstart) {
@@ -354,31 +380,7 @@ class PlgMymuseMymusesocialshare extends JPlugin
 		return $html;
 	}
     
-	
-	function onProductBeforeHeader($context, & $item, & $params, $limitstart) {
-        //above header
-		if($this->params->get('positiondisplay') == 0) {	 		
-	 		return $this->mymusesocialshare($item, $params, $limitstart) ;
-		}
-	}
-	
-	function onProductAfterTitle($context, & $item, & $params, $limitstart) {
-		if($this->params->get('positiondisplay') == 1) {
-	 		return $this->mymusesocialshare($item, $params, $limitstart) ;
-		}
-	}
 
-	function onProductBeforeDisplay($context,  & $item, & $params, $limitstart) {
-		if($this->params->get('positiondisplay') == 2) {
-	 		return $this->mymusesocialshare($item, $params, $limitstart) ;
-		}
-	} 
-	
-	function onProductAfterDisplay($context, & $item, & $params, $limitstart) {
-		if($this->params->get('positiondisplay') == 3) {
-	 		return $this->mymusesocialshare($item, $params, $limitstart) ;
-		}
-	}
 	
 	
 }
