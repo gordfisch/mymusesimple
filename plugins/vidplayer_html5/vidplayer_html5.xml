@@ -22,11 +22,6 @@
 	<config>
 	<fields  name="params">
 		<fieldset name="basic">
-		<field name="my_include_jquery" type="radio" default="0" label="MYMUSE_VIDPLAYER_HTML5_INCLUDE_JQUERY_LABEL" 
-		description="MYMUSE_VIDPLAYER_HTML5_INCLUDE_JQUERY_DESC">
-		  <option value="0">JNO</option>
-		  <option value="1">JYES</option>
-		</field>
 		<field name="my_player_errors" type="radio" default="0" label="MYMUSE_VIDPLAYER_HTML5_SHOW_ERRORS_LABEL" 
 		description="MYMUSE_VIDPLAYER_HTML5_SHOW_ERRORS_DESC">
 		  <option value="0">JNO</option>
