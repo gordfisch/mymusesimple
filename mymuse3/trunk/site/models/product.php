@@ -343,7 +343,7 @@ class MyMuseModelProduct extends JModelItem
 							$track->file_preview = 1;
 						}
 					}
-					
+				
 					//Audio/Video or some horrid mix of both
 					if($this->_item[$pk]->flash_type != "mix"){
 						if($this->_item[$pk]->flash_type == "audio" && $track->file_type == "video"){
@@ -411,7 +411,7 @@ class MyMuseModelProduct extends JModelItem
 							//audio or video?
 							$ext = MyMuseHelper::getExt($track->file_preview);
 		
-							if($track->file_type == "video"){
+							if(substr_count($track->file_type,"video")){
 								//movie
 								$flash = '<!-- Begin Player -->';
 								$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,$params->get('product_player_type'),0,0,$i, $count) );
@@ -419,7 +419,7 @@ class MyMuseModelProduct extends JModelItem
 									$flash .= $results[0];
 								}
 								$flash .= '<!-- End Player -->';
-							}elseif($track->file_type == "audio"){
+							}elseif(substr_count($track->file_type,"audio")){
 								//audio
 								$flash = '<!-- Begin Player -->';
 								$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,$params->get('product_player_type'),0,0,$i, $count));
@@ -442,6 +442,8 @@ class MyMuseModelProduct extends JModelItem
 				if(count($preview_tracks) && $params->get('product_player_type') == "single"){
 					// make a controller for the play/pause buttons
 					$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$preview_tracks) );
+					
+				
 					//get the player itself
 					reset($preview_tracks);
 					$flash = '';
@@ -449,7 +451,7 @@ class MyMuseModelProduct extends JModelItem
 					$video = 0;
 					foreach($preview_tracks as $track){
 						if($track->file_preview){
-							if($track->file_type == "video" && !$video){
+							if(substr_count($track->file_type,"video") && !$video){
 								//movie
 								$flash .= '<!-- Begin VIDEO Player -->';
 								$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
@@ -460,7 +462,7 @@ class MyMuseModelProduct extends JModelItem
 								$flash .= '<!-- End Player -->';
 								$video = 1;
 									
-							}elseif($track->file_type == "audio" && !$audio){
+							}elseif(substr_count($track->file_type,"audio") && !$audio){
 								//audio
 								$flash .= '<!-- Begin AUDIO Player -->';
 								$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );

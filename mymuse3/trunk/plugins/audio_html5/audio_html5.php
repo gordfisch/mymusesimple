@@ -42,13 +42,15 @@ class plgMymuseAudio_html5 extends JPlugin
 	function plgMymuseAudio_html5(&$subject, $config)  {
 		parent::__construct($subject, $config);
 		
+		JHtml::_('jquery.framework',  true, true);
 		$document = JFactory::getDocument();
 		$app = JFactory::getApplication('site');
-		JHtml::_('jquery.framework');
+		
 		if($this->params->get('my_include_jquery', 0)){
 			//load same jquery as Joomla, 1.8.3
-			$js_path = "http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js";
-			$document->addScript( $js_path );
+			$js_path = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js";
+			//$document->addScript( $js_path );
+			JHtml::_('script',$js_path, false, true, false, false);
 		}
         
         $site_url = preg_replace("#administrator/#","",JURI::base());
@@ -64,7 +66,8 @@ class plgMymuseAudio_html5 extends JPlugin
         
         // ui js and css
         if (!$app->isAdmin()) {
-        	$document->addScript( 'http://code.jquery.com/ui/1.11.2/jquery-ui.min.js' );
+        	$js_path = 'http://code.jquery.com/ui/1.11.2/jquery-ui.min.js';
+        	JHtml::_('script',$js_path, false, true, false, false);
         	
         }
         $document->addStyleSheet('http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
@@ -246,7 +249,7 @@ class plgMymuseAudio_html5 extends JPlugin
 		$js .= 'supplied: "'.$supplied.'",
         cssSelectorAncestor: "#jp_container_'.$id.'",
         wmode: "window",
-        keyEnabled: true,
+        keyEnabled: true
       },
       myControl = {
 			progress: jQuery(options.cssSelectorAncestor + " .jp-progress-slider"),
@@ -336,7 +339,6 @@ jQuery(document).ready(function(){
 ';
 
         
-
 			$document->addScriptDeclaration($js);
 			
 			$text = '
