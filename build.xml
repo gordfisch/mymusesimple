@@ -2,9 +2,9 @@
 <project name="MyMuse3.5" basedir="." default="copy_to_test351">
  		<property name="myversion" value="3.5.1" override="true" />
 	<!-- arboreta/joomlamy3/callinish || mymusetest35 || mymusetest336 -->
-        <property name="test" value="/var/www/html/singsong" override="true" />
+        <property name="test" value="/var/www/html/mymusetest35" override="true" />
         <property name="testadmincomp"
-                value="/var/www/html/singsong/administrator/components/com_mymuse"
+                value="/var/www/html/mymusetest35/administrator/components/com_mymuse"
                 override="true" />
         <property name="src" value="${project.basedir}" override="true" />
         <fileset dir="./site" id="site_files">
@@ -26,9 +26,6 @@
         <fileset dir="./modules/mod_mymuse_latest" id="mod_latest_files">
                 <include name="**" />
         </fileset>
-	
-	
-	
  
         <!-- Copy Target -->
         <target name="copy_to_test351" description="copy target">
@@ -59,108 +56,108 @@
 
                 
         	
-                <copy file="${src}/plugins/payment_moneybookers/languages/en-GB.plg_mymuse_payment_moneybookers.ini"
+                <copy file="${src}/plugins/payment_moneybookers/language/en-GB/en-GB.plg_mymuse_payment_moneybookers.ini"
                         todir="${test}/administrator/language/en-GB" />    
-        		<copy file="${src}/plugins/payment_moneybookers/languages/en-GB.plg_mymuse_payment_moneybookers.sys.ini"
+        		<copy file="${src}/plugins/payment_moneybookers/language/en-GB/en-GB.plg_mymuse_payment_moneybookers.sys.ini"
         	             todir="${test}/administrator/language/en-GB" /> 
-                <copy file="${src}/plugins/payment_paypal/languages/en-GB.plg_mymuse_payment_paypal.ini"
+                <copy file="${src}/plugins/payment_paypal/language/en-GB/en-GB.plg_mymuse_payment_paypal.ini"
                         todir="${test}/administrator/language/en-GB" />
-                <copy file="${src}/plugins/payment_monsterpay/languages/en-GB.plg_mymuse_payment_monsterpay.ini"
+                <copy file="${src}/plugins/payment_monsterpay/language/en-GB/en-GB.plg_mymuse_payment_monsterpay.ini"
                         todir="${test}/administrator/language/en-GB" />
-        		<copy file="${src}/plugins/payment_monsterpay/languages/en-GB.plg_mymuse_payment_monsterpay.sys.ini"
+        		<copy file="${src}/plugins/payment_monsterpay/language/en-GB/en-GB.plg_mymuse_payment_monsterpay.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />
-                <copy file="${src}/plugins/payment_payfast/languages/en-GB.plg_mymuse_payment_payfast.ini"
+                <copy file="${src}/plugins/payment_payfast/language/en-GB/en-GB.plg_mymuse_payment_payfast.ini"
                         todir="${test}/administrator/language/en-GB" />
-                <copy file="${src}/plugins/payment_offline/languages/en-GB.plg_mymuse_payment_offline.ini"
+                <copy file="${src}/plugins/payment_offline/language/en-GB/en-GB.plg_mymuse_payment_offline.ini"
                         todir="${test}/administrator/language/en-GB" />
-                <copy file="${src}/plugins/payment_pesapal/languages/en-GB.plg_mymuse_payment_pesapal.ini"
+                <copy file="${src}/plugins/payment_pesapal/language/en-GB/en-GB.plg_mymuse_payment_pesapal.ini"
                         todir="${test}/administrator/language/en-GB" />
-        		<copy file="${src}/plugins/payment_virtualmerchant/languages/en-GB.plg_mymuse_payment_virtualmerchant.ini"
+        		<copy file="${src}/plugins/payment_virtualmerchant/language/en-GB/en-GB.plg_mymuse_payment_virtualmerchant.ini"
         	        	todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/payment_virtualmerchant/languages/en-GB.plg_mymuse_payment_virtualmerchant.sys.ini"
+        	    <copy file="${src}/plugins/payment_virtualmerchant/language/en-GB/en-GB.plg_mymuse_payment_virtualmerchant.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" />
         	
-                <copy file="${src}/plugins/shipping_standard/languages/en-GB.plg_mymuse_shipping_standard.ini"
+                <copy file="${src}/plugins/shipping_standard/language/en-GB/en-GB.plg_mymuse_shipping_standard.ini"
                         todir="${test}/administrator/language/en-GB" />
-                <copy file="${src}/plugins/shipping_price/languages/en-GB.plg_mymuse_shipping_price.ini"
+                <copy file="${src}/plugins/shipping_price/language/en-GB/en-GB.plg_mymuse_shipping_price.ini"
                         todir="${test}/administrator/language/en-GB" />
-                <copy file="${src}/plugins/shoppergroupview/languages/en-GB.plg_mymuse_shoppergroupview.ini"
+                <copy file="${src}/plugins/shoppergroupview/language/en-GB/en-GB.plg_mymuse_shoppergroupview.ini"
                         todir="${test}/administrator/language/en-GB" />
         	
-        		<copy file="${src}/plugins/audio_html5/languages/en-GB.plg_mymuse_audio_html5.ini"
+        		<copy file="${src}/plugins/audio_html5/language/en-GB/en-GB.plg_mymuse_audio_html5.ini"
         	        	todir="${test}/administrator/language/en-GB" /> 
-        		<copy file="${src}/plugins/audio_html5/languages/en-GB.plg_mymuse_audio_html5.sys.ini"
+        		<copy file="${src}/plugins/audio_html5/language/en-GB/en-GB.plg_mymuse_audio_html5.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" /> 
 
-                <copy file="${src}/plugins/mp3player_dewplayer/languages/en-GB.plg_mymuse_mp3player_dewplayer.ini"
+                <copy file="${src}/plugins/mp3player_dewplayer/language/en-GB/en-GB.plg_mymuse_mp3player_dewplayer.ini"
                         todir="${test}/administrator/language/en-GB" />
-        		<copy file="${src}/plugins/mp3player_dewplayer/languages/en-GB.plg_mymuse_mp3player_dewplayer.sys.ini"
+        		<copy file="${src}/plugins/mp3player_dewplayer/language/en-GB/en-GB.plg_mymuse_mp3player_dewplayer.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />
-                <copy file="${src}/plugins/mp3player_flowplayer/languages/en-GB.plg_mymuse_mp3player_flowplayer.ini"
+                <copy file="${src}/plugins/mp3player_flowplayer/language/en-GB/en-GB.plg_mymuse_mp3player_flowplayer.ini"
                         todir="${test}/administrator/language/en-GB" />
-        		<copy file="${src}/plugins/mp3player_flowplayer/languages/en-GB.plg_mymuse_mp3player_flowplayer.sys.ini"
+        		<copy file="${src}/plugins/mp3player_flowplayer/language/en-GB/en-GB.plg_mymuse_mp3player_flowplayer.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />
                 
-                <copy file="${src}/plugins/vidplayer_dewplayer/languages/en-GB.plg_mymuse_vidplayer_dewplayer.ini"
+                <copy file="${src}/plugins/vidplayer_dewplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_dewplayer.ini"
                         todir="${test}/administrator/language/en-GB" />
-        		<copy file="${src}/plugins/vidplayer_dewplayer/languages/en-GB.plg_mymuse_vidplayer_dewplayer.sys.ini"
+        		<copy file="${src}/plugins/vidplayer_dewplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_dewplayer.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />
         	
-                <copy file="${src}/plugins/vidplayer_flowplayer/languages/en-GB.plg_mymuse_vidplayer_flowplayer.ini"
+                <copy file="${src}/plugins/vidplayer_flowplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_flowplayer.ini"
                         todir="${test}/administrator/language/en-GB" />    
-        		<copy file="${src}/plugins/vidplayer_flowplayer/languages/en-GB.plg_mymuse_vidplayer_flowplayer.sys.ini"
+        		<copy file="${src}/plugins/vidplayer_flowplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_flowplayer.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />  
-                <copy file="${src}/plugins/vidplayer_html5/languages/en-GB.plg_mymuse_vidplayer_html5.ini"
+                <copy file="${src}/plugins/vidplayer_html5/language/en-GB/en-GB.plg_mymuse_vidplayer_html5.ini"
                         todir="${test}/administrator/language/en-GB" />
-        		<copy file="${src}/plugins/vidplayer_html5/languages/en-GB.plg_mymuse_vidplayer_html5.sys.ini"
+        		<copy file="${src}/plugins/vidplayer_html5/language/en-GB/en-GB.plg_mymuse_vidplayer_html5.sys.ini"
         	             todir="${test}/administrator/language/en-GB" />
         	
-        		<copy file="${src}/plugins/mymuse_socialshare/languages/en-GB.plg_mymuse_mymuse_socialshare.ini"
+        		<copy file="${src}/plugins/mymuse_socialshare/language/en-GB/en-GB.plg_mymuse_mymuse_socialshare.ini"
         	        	todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/mymuse_socialshare/languages/en-GB.plg_mymuse_mymuse_socialshare.sys.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
-        	
-        		<copy file="${src}/plugins/searchmymuse/languages/en-GB.plg_search_searchmymuse.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/searchmymuse/languages/en-GB.plg_search_searchmymuse.sys.ini"
+        	    <copy file="${src}/plugins/mymuse_socialshare/language/en-GB/en-GB.plg_mymuse_mymuse_socialshare.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" />
         	
-                <copy file="${src}/plugins/user_mymuse/languages/en-GB.plg_user_mymuse.ini"
+        		<copy file="${src}/plugins/searchmymuse/language/en-GB/en-GB.plg_search_searchmymuse.ini"
+        	        	todir="${test}/administrator/language/en-GB" />
+        	    <copy file="${src}/plugins/searchmymuse/language/en-GB/en-GB.plg_search_searchmymuse.sys.ini"
+        	        	todir="${test}/administrator/language/en-GB" />
+        	
+                <copy file="${src}/plugins/user_mymuse/language/en-GB/en-GB.plg_user_mymuse.ini"
                         todir="${test}/administrator/language/en-GB" />
-                <copy file="${src}/plugins/user_mymuse/languages/en-GB.plg_user_mymuse.sys.ini"
+                <copy file="${src}/plugins/user_mymuse/language/en-GB/en-GB.plg_user_mymuse.sys.ini"
                         todir="${test}/administrator/language/en-GB" />
         	
-        		<copy file="${src}/plugins/mymuse_vote/languages/en-GB.plg_mymuse_mymuse_vote.ini"
+        		<copy file="${src}/plugins/mymuse_vote/language/en-GB/en-GB.plg_mymuse_mymuse_vote.ini"
         	            todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/mymuse_vote/languages/en-GB.plg_mymuse_mymuse_vote.sys.ini"
+        	    <copy file="${src}/plugins/mymuse_vote/language/en-GB/en-GB.plg_mymuse_mymuse_vote.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />
         	
-        		<copy file="${src}/plugins/user_redirectonlogin/languages/en-GB.plg_user_redirectonlogin.ini"
+        		<copy file="${src}/plugins/user_redirectonlogin/language/en-GB/en-GB.plg_user_redirectonlogin.ini"
         	        	todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/user_redirectonlogin/languages/en-GB.plg_user_redirectonlogin.sys.ini"
+        	    <copy file="${src}/plugins/user_redirectonlogin/language/en-GB/en-GB.plg_user_redirectonlogin.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" />
         	
-        		<copy file="${src}/plugins/user_mymusenoreg/languages/en-GB.plg_user_mymusenoreg.ini"
+        		<copy file="${src}/plugins/user_mymusenoreg/language/en-GB/en-GB.plg_user_mymusenoreg.ini"
         	            todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/user_mymusenoreg/languages/en-GB.plg_user_mymusenoreg.sys.ini"
+        	    <copy file="${src}/plugins/user_mymusenoreg/language/en-GB/en-GB.plg_user_mymusenoreg.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />
         	
         	
         	
-        		<copy file="${src}/plugins/finder_mymuse/languages/en-GB.plg_finder_mymuse.ini"
+        		<copy file="${src}/plugins/finder_mymuse/language/en-GB/en-GB.plg_finder_mymuse.ini"
         	        	 todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/finder_mymuse/languages/en-GB.plg_finder_mymuse.sys.ini"
+        	    <copy file="${src}/plugins/finder_mymuse/language/en-GB/en-GB.plg_finder_mymuse.sys.ini"
         	        	 todir="${test}/administrator/language/en-GB" />
         	
         	
         	
-                <copy file="${src}/modules/mod_mymuse_minicart/languages/en-GB.mod_mymuse_minicart.ini"
+                <copy file="${src}/modules/mod_mymuse_minicart/language/en-GB/en-GB.mod_mymuse_minicart.ini"
                         todir="${test}/language/en-GB" />
-        		<copy file="${src}/modules/mod_mymuse_minicart/languages/en-GB.mod_mymuse_minicart.sys.ini"
+        		<copy file="${src}/modules/mod_mymuse_minicart/language/en-GB/en-GB.mod_mymuse_minicart.sys.ini"
         	            todir="${test}/language/en-GB" />
-                <copy file="${src}/modules/mod_mymuse_latest/languages/en-GB.mod_mymuse_latest.ini"
+                <copy file="${src}/modules/mod_mymuse_latest/language/en-GB/en-GB.mod_mymuse_latest.ini"
                         todir="${test}/language/en-GB" />
-        		<copy file="${src}/modules/mod_mymuse_latest/languages/en-GB.mod_mymuse_latest.sys.ini"
+        		<copy file="${src}/modules/mod_mymuse_latest/language/en-GB/en-GB.mod_mymuse_latest.sys.ini"
         	             todir="${test}/language/en-GB" />
 				
 				<!--  plugins -->

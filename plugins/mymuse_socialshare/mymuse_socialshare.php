@@ -23,11 +23,26 @@ defined('_JEXEC') or die('Restricted access');
 jimport( 'joomla.error.error' );
 jimport('joomla.plugin.plugin');
 jimport( 'joomla.utilities.string' );
+
 class PlgMymuseMymuse_socialshare extends JPlugin 
 {
 	var $pluginName = 'MyMuse socialshare';
 	var $pluginNameHumanReadable = 'Social share on MyMuse product items';
 	
+	/**
+	 * Load the language file on instantiation.
+	 *
+	 * @var    boolean
+	 * @since  3.1
+	 */
+	protected $autoloadLanguage = true;
+	
+	/**
+	 * Constructor
+	 *
+	 * @param   object  $subject  The object to observe
+	 * @param   array   $config   An array that holds the plugin configuration
+	 */
 	function PlgMymuseMymuse_socialshare(&$subject, $params) {
   
 		parent::__construct($subject, $params);
