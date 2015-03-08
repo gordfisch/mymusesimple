@@ -10,9 +10,9 @@
 	<version>3.0.0</version>
 	<description>MYMUSE_SHIPPING_PRICE_DESC</description>
 	
-	<languages folder="languages">
-		<language tag="en-GB">en-GB.plg_mymuse_shipping_price.ini</language>
-		<language tag="en-GB">en-GB.plg_mymuse_shipping_price.sys.ini</language>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_shipping_price.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_shipping_price.sys.ini</language>
 	</languages>
 
 	

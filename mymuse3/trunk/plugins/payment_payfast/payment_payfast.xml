@@ -15,9 +15,9 @@
 		<filename plugin="payment_payfast">payfast_common.inc</filename>
 	</files>
 
-	<languages folder="languages">
-		<language tag="en-GB">en-GB.plg_mymuse_payment_payfast.ini</language>
-		<language tag="en-GB">en-GB.plg_mymuse_payment_payfast.sys.ini</language>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_payment_payfast.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_payment_payfast.sys.ini</language>
 	</languages>
 	<config>
 	<fields  name="params">

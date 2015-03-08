@@ -14,9 +14,9 @@
 		<filename plugin="payment_paypal">payment_paypal.php</filename>
 	</files>
 
-	<languages folder="languages">
-		<language tag="en-GB">en-GB.plg_mymuse_payment_paypal.ini</language>
-		<language tag="en-GB">en-GB.plg_mymuse_payment_paypal.sys.ini</language>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_payment_paypal.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_payment_paypal.sys.ini</language>
 	</languages>
 
 	<config>

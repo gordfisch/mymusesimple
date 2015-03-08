@@ -15,9 +15,9 @@
 		<filename plugin="payment_pesapal">OAuth.php</filename>
 	</files>
 
-	<languages folder="languages">
-		<language tag="en-GB">en-GB.plg_mymuse_payment_pesapal.ini</language>
-		<language tag="en-GB">en-GB.plg_mymuse_payment_pesapal.sys.ini</language>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_payment_pesapal.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_payment_pesapal.sys.ini</language>
 	</languages>
 
 	<config>

@@ -17,9 +17,9 @@
         <folder>tmpl</folder>
         <folder>assets</folder>
 	</files>
-	<languages folder="languages">
-		<language tag="en-GB">en-GB.mod_mymuse_latest.ini</language>
-		<language tag="en-GB">en-GB.mod_mymuse_latest.sys.ini</language>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.mod_mymuse_latest.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_mymuse_latest.sys.ini</language>
 	</languages>
 	<config>
 	<fields name="params">

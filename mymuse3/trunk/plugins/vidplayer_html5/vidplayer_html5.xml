@@ -14,9 +14,9 @@
 		<filename plugin="vidplayer_html5">vidplayer_html5.php</filename>
 	</files>
 
-	<languages folder="languages">
-		<language tag="en-GB">en-GB.plg_mymuse_vidplayer_html5.ini</language>
-		<language tag="en-GB">en-GB.plg_mymuse_vidplayer_html5.sys.ini</language>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_vidplayer_html5.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_vidplayer_html5.sys.ini</language>
 	</languages>
 
 	<config>
