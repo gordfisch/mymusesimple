@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="3.0" type="plugin" group="mymuse">
-	<name>plg_mymuse_vote</name>
+<extension version="3.0" type="plugin" group="mymuse"  method="upgrade">
+	<name>PLG_MYMUSE_MYMUSE_VOTE</name>
 	<author>Arboreta</author>
 	<creationDate>Dec 2013</creationDate>
 	<copyright>Copyright (C) 2013 Arboreta Internet Services. All rights reserved.</copyright>
@@ -13,9 +13,9 @@
 		<filename plugin="mymuse_vote">mymuse_vote.php</filename>
 		<filename>index.html</filename>
 	</files>
-	<languages  folder="language">
-		<language tag="en-GB">en-GB.plg_mymuse_mymuse_vote.ini</language>
-		<language tag="en-GB">en-GB.plg_mymuse_mymuse_vote.sys.ini</language>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_mymuse_vote.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_mymuse_vote.sys.ini</language>
 	</languages>
 	<config>
 		<fields name="params">
