@@ -9,9 +9,9 @@
 	<authorUrl>www.arboreta.ca</authorUrl>
 	<version>3.1.0</version>
 	<description>MYMUSE_SHIPPING_STANDARD_DESC</description>
-	<languages folder="languages">
-		<language tag="en-GB">en-GB.plg_mymuse_shipping_standard.ini</language>
-		<language tag="en-GB">en-GB.plg_mymuse_shipping_standard.sys.ini</language>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_shipping_standard.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_shipping_standard.sys.ini</language>
 	</languages>
 	<files>
 		<filename plugin="shipping_standard">shipping_standard.php</filename>

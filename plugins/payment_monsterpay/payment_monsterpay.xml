@@ -14,9 +14,9 @@
 		<filename plugin="payment_monsterpay">payment_monsterpay.php</filename>
 	</files>
 
-	<languages folder="languages">
-		<language tag="en-GB">en-GB.plg_mymuse_payment_monsterpay.ini</language>
-		<language tag="en-GB">en-GB.plg_mymuse_payment_monsterpay.sys.ini</language>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_payment_monsterpay.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_payment_monsterpay.sys.ini</language>
 	</languages>
     <config>
 	<fields  name="params">

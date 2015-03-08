@@ -9,9 +9,9 @@
 	<authorUrl>www.arboreta.ca</authorUrl>
 	<version>3.0.0</version>
 	<description>MYMUSE_SENDS_CLIENT_TO_SPECIFIC_VIEW</description>
-	<languages folder="languages">
-		<language tag="en-GB">en-GB.plg_mymuse_shoppergroupview.ini</language>
-		<language tag="en-GB">en-GB.plg_mymuse_shoppergroupview.sys.ini</language>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_shoppergroupview.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_shoppergroupview.sys.ini</language>
 	</languages>
 	<files>
 		<filename plugin="shoppergroupview">shoppergroupview.php</filename>

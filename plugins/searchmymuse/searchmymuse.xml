@@ -13,9 +13,9 @@
 	<files>
 		<filename plugin="searchmymuse">searchmymuse.php</filename>
 	</files>
-	<languages folder="languages">
-		<language tag="en-GB">en-GB.plg_search_searchmymuse.ini</language>
-		<language tag="en-GB">en-GB.plg_search_searchmymuse.sys.ini</language>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_search_searchmymuse.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_search_searchmymuse.sys.ini</language>
 	</languages>
 	<scriptfile>searchmymuse.scriptfile.php</scriptfile>
 	

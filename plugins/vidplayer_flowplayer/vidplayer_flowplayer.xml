@@ -19,9 +19,9 @@
 		<folder plugin="vidplayer_flowplayer">images</folder>
 	</files>
 
-	<languages folder="languages">
-		<language tag="en-GB">en-GB.plg_mymuse_vidplayer_flowplayer.ini</language>
-		<language tag="en-GB">en-GB.plg_mymuse_vidplayer_flowplayer.sys.ini</language>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_vidplayer_flowplayer.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_vidplayer_flowplayer.sys.ini</language>
 	</languages>
 
 	<config>
