@@ -145,6 +145,10 @@ class myMuseViewProduct extends JViewLegacy
 		$item->text = $item->introtext." ".$item->fulltext;
 		
 		JPluginHelper::importPlugin('mymuse');
+		
+		$plugin = JPluginHelper::getPlugin('mymuse','mymuse_socialshare');
+		print_pre($plugin);
+		
 		$results = $dispatcher->trigger('onProductBeforeHeader', array ('com_mymuse.product', &$item, &$this->params, $offset));
 		$item->event->beforeDisplayHeader = trim(implode("\n", $results));
 		

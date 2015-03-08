@@ -7,7 +7,7 @@
 	<authorEmail>gord@arboreta.ca</authorEmail>
 	<authorUrl>http://www.mymuse.ca/</authorUrl>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
-	<version>3.0.1</version>
+	<version>3.2.10</version>
 	<description>PLG_MYMUSE_SOCIALSHARE_XML_DESCRIPTION</description>
 	<files>
 		<filename plugin="mymuse_socialshare">mymuse_socialshare.php</filename>
@@ -23,7 +23,7 @@
 
 	<config>
 		<fields name="params">
-			<fieldset name="basic" addfieldpath="/plugins/content/mymuse_socialshare/elements">
+			<fieldset name="basic" addfieldpath="/plugins/mymuse/mymuse_socialshare/elements">
 				
 				<field name="righttoleft" type="list" default="button" label="PLG_MYMUSE_SOCIALSHARE_DIRECTION_SUPPORT"   description="PLG_MYMUSE_SOCIALSHARE_DIRECTION_SUPPORT_DESC" >
 					   <option value="ltr">LTR_LANGUAGES</option>
