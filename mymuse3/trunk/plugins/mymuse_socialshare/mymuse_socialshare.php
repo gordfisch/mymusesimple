@@ -46,7 +46,6 @@ class PlgMymuseMymuse_socialshare extends JPlugin
 	function PlgMymuseMymuse_socialshare(&$subject, $params) {
   
 		parent::__construct($subject, $params);
-		print_pre($params);exit;
 	}
 	
 
