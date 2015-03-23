@@ -13,6 +13,28 @@ defined('_JEXEC') or die('Restricted access');
 
 $shopper 	= $this->shopper;
 $params 	= $this->params;
+if($params->get('my_registration') == "no_reg"){
+	$fields = array(
+			'first_name',
+			'last_name',
+			'email',
+			'address1',
+			'address2',
+			'city',
+			'region_name',
+			'country',
+			'postal_code',
+			'phone',
+			'mobile',
+			'tos'
+	);
+
+	foreach($fields as $field){
+		if(isset($shopper->$field) && $shopper->$field != ''){
+			$shopper->profile[$field] = $shopper->$field;
+		}
+	}
+}
 
 ?>     <!-- Begin 2 column bill-ship to -->
         <h2><?php echo JText::_('MYMUSE_SHOPPER_INFORMATION') ?></h2>
@@ -148,7 +170,7 @@ $params 	= $this->params;
         ?></td>
             <!-- End Customer Information --> 
         </tr>
-        <?php if($this->user->id){ 
+        <?php if($this->user->id && $this->params->get('my_registration') != 'no_reg'){ 
         		$url = JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$this->Itemid;
         		$return = base64_encode($url);
         	?>
