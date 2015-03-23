@@ -25,7 +25,6 @@ class myMuseViewCart extends JViewLegacy
 	{
 		$params = MyMuseHelper::getParams();
 		
-		
 		$task		= JRequest::getVar('task', '');
 		if($task == "notify"){
 			$this->notify();
