@@ -125,7 +125,7 @@
         <plugin name="mymusenoreg" folder="plugins/user_mymusenoreg">MyMuse No Registration Profile</plugin>
         <plugin name="searchmymuse" folder="plugins/searchmymuse">Search</plugin>
         
-        <!-- plugin name="mymuse" folder="plugins/finder_mymuse">Smart Search MyMuse</plugin -->
+        <plugin name="mymuse" folder="plugins/finder_mymuse">Smart Search MyMuse</plugin>
 	</plugins>
 	<modules>
         <module name="mod_mymuse_latest" folder="modules/mod_mymuse_latest" client="site">Mod MyMuse Latest</module>
