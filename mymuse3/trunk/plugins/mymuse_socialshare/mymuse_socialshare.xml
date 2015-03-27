@@ -29,6 +29,39 @@
 					   <option value="ltr">LTR_LANGUAGES</option>
 					   <option value="rtl">RTL_LANGUAGES</option>
 				</field>
+								<field name="" type="header" default="SETTINGS" label="" description=""/>	
+				
+				<field name="positiondisplay" type="list" 
+					default="2" 
+					label="PLG_MYMUSE_SOCIALSHARE_POSITION" 
+					description="PLG_MYMUSE_SOCIALSHARE_POSITION_DESC">
+						<option value="0">PLG_MYMUSE_SOCIALSHARE_ABOVE_ITEM_HEADER</option>
+						<option value="1">PLG_MYMUSE_SOCIALSHARE_BELOW_ITEM_HEADER</option>
+						<option value="2">PLG_MYMUSE_SOCIALSHARE_ABOVE_PRODUCT</option>
+						<option value="3">PLG_MYMUSE_SOCIALSHARE_ABOVE_ITEMCOMMENTS</option>
+				</field>
+
+				<field name="showcategory" type="radio" class="btn-group"
+					default="0" 
+					label="PLG_MYMUSE_SOCIALSHARE_DISPLAY_ON_CATEGORY_LAYOUT" 
+					description="PLG_MYMUSE_SOCIALSHARE_DISPLAY_ON_CATEGORY_LAYOUT_DESC" >
+					<option value="1">PLG_MYMUSE_SOCIALSHARE_YES</option>
+					<option value="0">PLG_MYMUSE_SOCIALSHARE_NO</option>
+				</field>
+				
+				<field name="ex_categories" type="text" 
+					default="" 
+					label="PLG_MYMUSE_SOCIALSHARE_EXCLUDE_CATEGORIES_ID" 
+					description="PLG_MYMUSE_SOCIALSHARE_EXCLUDE_CATEGORIES_ID_DESC" 
+				/>
+				
+				<field name="ex_articles" type="text" 
+					default="" 
+					label="PLG_MYMUSE_SOCIALSHARE_EXCLUDE_ARTICLE_ID" 
+					description="PLG_MYMUSE_SOCIALSHARE_EXCLUDE_ARTICLE_ID_DESC" 
+				/>	
+				
+				
 				<field name="" type="header" default="FACEBOOK" label="" description=""/>	
 				<field name="lang_like" type="list" default="en_US" label="Select language button Facebook" description="PLG_MYMUSE_SOCIALSHARE_LANGUAGE_DESC">
 					<option value="af_ZA">Afrikaans</option>
@@ -342,37 +375,7 @@
 					description="PLG_MYMUSE_SOCIALSHARE_VKSHARE_TEXT_DESC" 
 				/>
 				<field name="positionbuttonvkshare" type="positionbutton" default="10" label="PLG_MYMUSE_SOCIALSHARE_ORDER_VKSHARE_BUTTON" description="PLG_MYMUSE_SOCIALSHARE_ORDER_VKSHARE_BUTTON_DESC" />	
-				<field name="" type="header" default="SETTINGS" label="" description=""/>	
-				
-				<field name="positiondisplay" type="list" 
-					default="2" 
-					label="PLG_MYMUSE_SOCIALSHARE_POSITION" 
-					description="PLG_MYMUSE_SOCIALSHARE_POSITION_DESC">
-						<option value="0">PLG_MYMUSE_SOCIALSHARE_ABOVE_ITEM_HEADER</option>
-						<option value="1">PLG_MYMUSE_SOCIALSHARE_BELOW_ITEM_HEADER</option>
-						<option value="2">PLG_MYMUSE_SOCIALSHARE_ABOVE_PRODUCT</option>
-						<option value="3">PLG_MYMUSE_SOCIALSHARE_ABOVE_ITEMCOMMENTS</option>
-				</field>
-
-				<field name="showcategory" type="radio" class="btn-group"
-					default="0" 
-					label="PLG_MYMUSE_SOCIALSHARE_DISPLAY_ON_CATEGORY_LAYOUT" 
-					description="PLG_MYMUSE_SOCIALSHARE_DISPLAY_ON_CATEGORY_LAYOUT_DESC" >
-					<option value="1">PLG_MYMUSE_SOCIALSHARE_YES</option>
-					<option value="0">PLG_MYMUSE_SOCIALSHARE_NO</option>
-				</field>
-				
-				<field name="ex_categories" type="text" 
-					default="" 
-					label="PLG_MYMUSE_SOCIALSHARE_EXCLUDE_CATEGORIES_ID" 
-					description="PLG_MYMUSE_SOCIALSHARE_EXCLUDE_CATEGORIES_ID_DESC" 
-				/>
-				
-				<field name="ex_articles" type="text" 
-					default="" 
-					label="PLG_MYMUSE_SOCIALSHARE_EXCLUDE_ARTICLE_ID" 
-					description="PLG_MYMUSE_SOCIALSHARE_EXCLUDE_ARTICLE_ID_DESC" 
-				/>			
+		
 				
 			</fieldset>
 		</fields>
