@@ -170,7 +170,13 @@ if($params->get('my_registration') == "no_reg"){
         ?></td>
             <!-- End Customer Information --> 
         </tr>
-        <?php if($this->user->id && $this->params->get('my_registration') != 'no_reg'){ 
+        <?php 
+        $task		= JRequest::getVar('task', '');
+        if($this->user->id 
+        		&& $this->params->get('my_registration') != 'no_reg'
+        		&& $task != 'notify'
+        		&& $task != 'thankyou'
+        		){ 
         		$url = JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$this->Itemid;
         		$return = base64_encode($url);
         	?>
