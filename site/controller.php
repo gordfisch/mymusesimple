@@ -469,7 +469,7 @@ class MyMuseController extends JControllerLegacy
 				$q = "SELECT order_id FROM #__mymuse_order_payment WHERE
 				transaction_id='$tx'";
 				$db->setQuery($q);
-				$id = $db->loadResult();
+				$orderid = $db->loadResult();
 			}
 			
 			if(!$orderid && $pp !== 'paymentoffline' && $params->get('my_registration') == "no_reg"){
