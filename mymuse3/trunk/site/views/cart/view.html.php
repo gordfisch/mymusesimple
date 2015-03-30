@@ -592,9 +592,9 @@ class myMuseViewCart extends JViewLegacy
         	$send = $mailer->Send();
         	
         	if ( $send !== true ) {
-        		$debug = 'Error sending email to $user_email: ' . $send->message;
+        		$debug = "Error sending email to $user_email: " . $send->message;
         	} else {
-        		$debug = 'Mail sent to $user_email';
+        		$debug = "Mail sent to $user_email";
         	}
         	if($params->get('my_debug')){
         		MyMuseHelper::logMessage( $debug  );
