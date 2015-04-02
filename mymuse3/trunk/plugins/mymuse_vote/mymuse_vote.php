@@ -52,7 +52,8 @@ class plgMyMuseMymuse_Vote extends JPlugin
 			return;
 		}
 		$html = '';
-		if ($params->get('show_vote'))
+
+		if (isset($param) && $params->get('show_vote',0))
 		{
 			$rating = intval(@$row->rating);
 			$rating_count = intval(@$row->rating_count);

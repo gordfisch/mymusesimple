@@ -135,7 +135,7 @@ class mymuseModelShopper extends JModelForm
 			
 					$plugin = JPluginHelper::getPlugin('user', $my_profile_key);
     				$profile_params = new JRegistry();
-    				if($plugin->params){
+    				if(isset($plugin->params)){
     					$profile_params->loadString($plugin->params);
 
     					$fields = array_keys(json_decode($plugin->params, true));

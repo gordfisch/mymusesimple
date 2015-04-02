@@ -454,6 +454,7 @@ class MyMuseController extends JControllerLegacy
 		$st 			= JRequest::getVar('st', 0);
 		$after			= JRequest::getVar('after', 0);
 		$tx 			= JRequest::getVar('tx', 0);
+		$date 			= date('Y-m-d h:i:s');
 		
 		$pesapal_merchant_reference= JRequest::getVar('pesapal_merchant_reference', 0);
 		$pp 			= JRequest::getVar('pp', 0);
@@ -470,6 +471,10 @@ class MyMuseController extends JControllerLegacy
 				transaction_id='$tx'";
 				$db->setQuery($q);
 				$orderid = $db->loadResult();
+				if($params->get('my_debug')){
+					$debug = "$date: Got orderid from transaction: $orderid";
+					MyMuseHelper::logMessage( $debug  );
+				}
 			}
 			
 			if(!$orderid && $pp !== 'paymentoffline' && $params->get('my_registration') == "no_reg"){
@@ -478,6 +483,10 @@ class MyMuseController extends JControllerLegacy
 				notes LIKE '%". $user->get('email')  ."%' ORDER BY id DESC LIMIT 0,1";
 				$db->setQuery($q1);
 				$orderid = $db->loadResult();
+				if($params->get('my_debug')){
+					$debug = "$date: Got last orderid : $orderid";
+					MyMuseHelper::logMessage( $debug  );
+				}
 			}elseif(!$orderid && $pp !== 'paymentoffline'){
 				//get the last orderid
 				$q1 = "SELECT id from #__mymuse_order WHERE
@@ -545,13 +554,13 @@ class MyMuseController extends JControllerLegacy
 					eval($result);
 				}
 			}
-			
+		
 			if($this->MyMuseShopper->order->downloadable){
 				//print out download page
 				JRequest::setVar('task', 'downloads');
 				JRequest::setVar('id', $this->MyMuseShopper->order->order_number);
 				//$this->downloads();
-				//print_pre($this->MyMuseShopper->order);
+				
 			}
 			
 			JRequest::setVar('task', 'vieworder');
@@ -606,19 +615,21 @@ class MyMuseController extends JControllerLegacy
 			return false;
 		}
 		
-		
-		
-		JRequest::setVar('view', 'cart');
-		JRequest::setVar('layout', 'cart');
-		$this->display();
-		
 		if($this->MyMuseShopper->order->downloadable
 				&& $this->MyMuseShopper->order->order_status == "C"){
 			//print out download page
 			JRequest::setVar('task', 'downloads');
 			JRequest::setVar('id', $this->MyMuseShopper->order->order_number);
-			$this->downloads();
-		}
+			JRequest::setVar('view', 'store');
+			JRequest::setVar('layout', 'store');
+			$this->display();
+		}		
+		JRequest::setVar('task', 'vieworder');
+		JRequest::setVar('view', 'cart');
+		JRequest::setVar('layout', 'cart');
+		$this->display();
+		
+
 		
 		
 		

@@ -225,7 +225,7 @@ class plgMymusePayment_Paypal extends JPlugin
 	 */
 	function onMyMuseNotify($params)
 	{
-		global $mainframe;
+		$mainframe 	= JFactory::getApplication();
 
 		$db	= JFactory::getDBO();
 		$date = date('Y-m-d h:i:s');

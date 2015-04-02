@@ -146,9 +146,9 @@ class myMuseViewCart extends JViewLegacy
 				break;
 				
 			case "vieworder":
-				$st 		= JRequest::getVar('st', '');
-				$this->order = $order 		= $MyMuseShopper->order;
-				$order->waited = 0;
+				$st 			= JRequest::getVar('st', '');
+				$this->order 	= $order 		= $MyMuseShopper->order;
+				$order->waited 	= 0;
 
 				if($st === "Completed" && $order->order_status != "C"){
 					// waiting for IPN
@@ -226,7 +226,7 @@ class myMuseViewCart extends JViewLegacy
 
 		//display the shopper info, if we have one
 		if($heading && $user->get('id') > 0 && $user->get('name') != "Guest Buyer"){
-			parent::display("shopper_info"); //
+			parent::display("shopper_info"); 
 		}
 
 		if($task == "checkout"){
@@ -542,7 +542,7 @@ class myMuseViewCart extends JViewLegacy
         	}
         	
         	if($params->get('my_debug')){
-        		$debug = "$date Email message: $my_email_msg \n\n";
+        		$debug = "$date Extra Email message: $my_email_msg \n\n";
         		MyMuseHelper::logMessage( $debug  );
         	}
 
@@ -561,6 +561,10 @@ class myMuseViewCart extends JViewLegacy
         	 
         	$message = $header . $order->downloadlink . $contents . $footer;
         	
+        	if($params->get('my_debug')){
+        		//$debug = "$date Email message: $message \n\n";
+        		//MyMuseHelper::logMessage( $debug  );
+        	}
         	// email client $user_email, and cc store owner $mailfrom
         	// get mailer object
         	$mailer = JFactory::getMailer();
@@ -589,13 +593,17 @@ class myMuseViewCart extends JViewLegacy
         	$mailer->addRecipient($recipient);
         	$mailer->setSubject($subject);
         	$mailer->setBody($message);
-        	$send = $mailer->Send();
+        	$rs = $mailer->Send();
         	
-        	if ( $send !== true ) {
-        		$debug = "Error sending email to $user_email: " . $send->message;
+        	if ($rs instanceof Exception){
+        		$debug = "Error sending email to $user_email: " . $rs->getError();
+        		
+        	}elseif (empty($rs)){
+        		$debug = "Error sending email to $user_email: return from mailer was empty";
         	} else {
         		$debug = "Mail sent to $user_email";
         	}
+        	$debug .= print_r($mailer, true);
         	if($params->get('my_debug')){
         		MyMuseHelper::logMessage( $debug  );
         	}
