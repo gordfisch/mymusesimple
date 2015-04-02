@@ -1,5 +1,4 @@
 <?php defined('_JEXEC') or die(); 
-print_pre($data);
 
 ?>
 
@@ -16,8 +15,10 @@ print_pre($data);
 	<input type="hidden" name="PAYMENTACTION" value="<?php echo $data->PAYMENTACTION ?>" />
 	<input type="hidden" name="IPADDRESS" value="<?php echo $data->IPADDRESS ?>" />
 	<input type="hidden" name="mode" value="init" />
+	<input type="hidden" name="num_cart_items" value="<?php echo $data->ITEMS ?>" />
     
 	<input type="hidden" name="AMT" value="<?php echo $data->AMT ?>" />
+	<input type="hidden" name="CUSTOM" value="<?php echo $data->CUSTOM ?>" />
 	<input type="hidden" name="ITEMAMT" value="<?php echo $data->ITEMAMT ?>" />
 	<input type="hidden" name="TAXAMT" value="<?php echo $data->TAXAMT ?>" />
 	<input type="hidden" name="CURRENCYCODE" value="<?php echo $data->CURRENCYCODE ?>" />
@@ -41,9 +42,9 @@ print_pre($data);
 					$quant_name = 'L_QTY'. $i;
 					$amount_name = 'L_AMT'. $i;
 					?>
-					<input type="hidden" name="<?php echo $item_name; ?>" value="<?php $data->$item_name?>" />
-					<input type="hidden" name="<?php echo $quant_name; ?>" value="<?php $data->$quant_name?>" />
-					<input type="hidden" name="<?php echo $amount_name; ?>" value="<?php $data->$amount_name?>" />
+					<input type="hidden" name="<?php echo $item_name; ?>" value="<?php echo $data->$item_name?>" />
+					<input type="hidden" name="<?php echo $quant_name; ?>" value="<?php echo $data->$quant_name?>" />
+					<input type="hidden" name="<?php echo $amount_name; ?>" value="<?php echo $data->$amount_name?>" />
 				<?php 
 				}
 		
@@ -69,6 +70,15 @@ print_pre($data);
                 <input type="text" name="LASTNAME" id="LASTNAME" class="input-medium" value="<?php echo $data->LASTNAME ?>"  />
             </div>
         </div>
+        <div class="control-group">
+            <label for="EMAIL" class="control-label" style="width:140px; margin-right:5px;">
+                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_EMAIL') ?>
+            </label>
+            <div class="controls">
+                <input type="text" name="EMAIL" id="EMAIL" class="input-medium" value="<?php echo $data->EMAIL ?>" />
+            </div>
+        </div>
+        
         <div class="control-group">
             <label for="STREET" class="control-label" style="width:140px; margin-right:5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_STREET') ?>
@@ -98,7 +108,7 @@ print_pre($data);
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_STATE') ?>
             </label>
             <div class="controls">
-                <input type="text" name="LASTNAME" id="STATE" class="input-mini" value="<?php echo $data->STATE ?>"  />
+                <input type="text" name="STATE" id="STATE" class="input-mini" value="<?php echo $data->STATE ?>"  />
             </div>
         </div>
         <div class="control-group">

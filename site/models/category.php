@@ -254,7 +254,6 @@ class MyMuseModelCategory extends JModelList
 			}
 
 			$this->_pagination = $model->getPagination();
-			print_pre($this->_pagination);
 		}
 
 		return $this->_products;
