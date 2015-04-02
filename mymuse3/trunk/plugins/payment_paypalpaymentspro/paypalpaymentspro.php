@@ -72,8 +72,6 @@ class plgMymusePaypalpaymentspro extends JPlugin
 		$shopper->postal_code 	= isset($shopper->profile['postal_code'])? $shopper->profile['postal_code'] : '';
 		$shopper->first_name 	= isset($shopper->profile['first_name'])? $shopper->profile['first_name'] : '';
 		$shopper->last_name 	= isset($shopper->profile['last_name'])? $shopper->profile['last_name'] : '';
-
-
 		
 		if(!$shopper->first_name){
 			@list($shopper->first_name,$shopper->last_name) = explode(" ",$shopper->name);
@@ -196,15 +194,12 @@ class plgMymusePaypalpaymentspro extends JPlugin
 		$data->ITEMS = 0;
 		for ($i=0;$i<$order->idx;$i++) {
 			if(isset($order->items[$i]->title) && $order->items[$i]->title != ''){
-				$item_name = 'L_NAME'. $j;
-				//if($params->get('my_show_sku') || $params->get('my_saveorder') == "after"){
-				//	$item_name .= ' : '.$order->items[$i]->product_sku;
-				//}
-				$quant_name = 'L_QTY'. $j;
-				$amount_name = 'L_AMT'. $j;
+				$item_name = 'L_NAME'. $i;
+				$quant_name = 'L_QTY'. $i;
+				$amount_name = 'L_AMT'. $i;
 				
 				$data->$item_name = $order->items[$i]->title;
-				$data->$quant_name = $order->items[$i]->quantity;
+				$data->$quant_name = $order->items[$i]->product_quantity;
 				$data->$amount_name = $order->items[$i]->product_item_price;
 				$j++;
 			}
@@ -311,7 +306,6 @@ class plgMymusePaypalpaymentspro extends JPlugin
 					curl_close ( $ch );
 				}
 			}
-			$result ['message_sent'] = 1;
 			
 			// Payment Response
 			parse_str ( $responseQuery, $responseData );
@@ -323,7 +317,6 @@ class plgMymusePaypalpaymentspro extends JPlugin
 				$result ['error'] = $responseData ['L_LONGMESSAGE0'];
 				$isValid = false;
 			}
-			$result ['message_received'] = 1;
 			
 			$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalpaymentspro', false);
 			JFactory::getApplication()->redirect($thankyouUrl);
@@ -332,6 +325,8 @@ class plgMymusePaypalpaymentspro extends JPlugin
 		
 
 		} else {
+			
+			
 			// paypal IPN coming in
 			$debug = "#####################\nPayPalPaymentsPro PLUGIN IPN Response\n";
 			
@@ -349,7 +344,7 @@ class plgMymusePaypalpaymentspro extends JPlugin
 			$result ['payment_status'] = 0;
 			$result ['txn_id'] = 0;
 			$result ['error'] = '';
-			$result ['redirect'] = JURI::base () . 'index.php?option=com_mymuse&task=thankyou&pp=paypalpaymentspro&Itemid=' . $Itemid;
+			$result ['redirect'] = '';
 				
 			//if(!isset($data['ACK'])){
 				//wasn't paypalpaymentspro
@@ -373,6 +368,10 @@ class plgMymusePaypalpaymentspro extends JPlugin
 			
 			if (! $isValid){
 				$result ['error'] = 'PayPal reports transaction as invalid';
+				if($params->get('my_debug')){
+					$debug = $result ['error'];
+					MyMuseHelper::logMessage( $debug  );
+				}
 				return $result;
 			}
 			$result ['message_received'] = 1;
@@ -380,17 +379,19 @@ class plgMymusePaypalpaymentspro extends JPlugin
 			$result ['order_verified'] = 1;
 			$result ['order_completed'] = 1;
 			
-			$c = explode('&',$data['custom']);
-			foreach($c as $pair){
-				if($pair){
-					list($key,$val) = explode('=',$pair);
-					$custom[$key] = $val;
+			if(isset($data['custom'])){
+				$c = explode('&',$data['custom']);
+				foreach($c as $pair){
+					if($pair){
+						list($key,$val) = explode('=',$pair);
+						$custom[$key] = $val;
+					}
 				}
 			}
-			$result['order_number'] 		= isset($custom['order_number'])? $custom['order_number'] : '';
+			$result['order_number'] 		= $data['invoice'];
 			$result['payer_email'] 			= urldecode($data['payer_email']);
-			$result['user_email'] 			= $custom['email'];
-			$result['userid'] 				= $custom['userid'];
+			$result['user_email'] 			= @$custom['email'];
+			$result['userid'] 				= @$custom['userid'];
 			
 			$result['payment_status'] 		= $data['payment_status'];
 			$result['txn_id'] 				= trim(stripslashes($data['txn_id']));
@@ -430,12 +431,13 @@ class plgMymusePaypalpaymentspro extends JPlugin
 			$date = date('Y-m-d h:i:s');
 			$debug = "$date  4. order VERIFIED at PayPal\n\n";
 			$result['order_verified'] = 1;
-			 
+			$result['payment_status'] = "Completed";
+			
 			if($params->get('my_debug')){
 				MyMuseHelper::logMessage( $debug  );
 			}
 			
-			$result['payment_status'] = "Completed";
+			
 			 
 			 
 			// SAVE ORDER AFTER
@@ -598,7 +600,119 @@ class plgMymusePaypalpaymentspro extends JPlugin
 		
 		
 	}
+	/**
+	 * Validates the incoming data against PayPal's IPN to make sure this is not a
+	 * fraudelent request.
+	 */
+	private function isValidIPN($data)
+	{
+		$sandbox = $this->params->get('sandbox',0);
+		$hostname = $sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';
 	
+		$url = 'ssl://'.$hostname;
+		$port = 443;
+	
+		$req = 'cmd=_notify-validate';
+		foreach($data as $key => $value) {
+			$value = urlencode($value);
+			$req .= "&$key=$value";
+		}
+		$header = '';
+		$header .= "POST /cgi-bin/webscr HTTP/1.1\r\n";
+		$header .= "Host: $hostname:$port\r\n";
+		$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
+		$header .= "Content-Length: " . strlen($req) . "\r\n";
+		$header .= "Connection: Close\r\n\r\n";
+	
+	
+		$fp = fsockopen ($url, $port, $errno, $errstr, 30);
+	
+		if (!$fp) {
+			// HTTP ERROR
+			return false;
+		} else {
+			fputs ($fp, $header . $req);
+			while (!feof($fp)) {
+				$res = fgets ($fp, 1024);
+				if (stristr($res, "VERIFIED")) {
+					return true;
+				} else if (stristr($res, "INVALID")) {
+					return false;
+				}
+			}
+			fclose ($fp);
+		}
+	}
+	
+	private function getPaymentURL()
+	{
+		$sandbox = $this->params->get('sandbox',0);
+		if($sandbox) {
+			return 'https://api-3t.sandbox.paypal.com/nvp';
+		} else {
+			return 'https://api-3t.paypal.com/nvp';
+		}
+	}
+	
+	private function getMerchantUsername()
+	{
+		$sandbox = $this->params->get('sandbox',0);
+		if($sandbox) {
+			return trim($this->params->get('sb_apiuser',''));
+		} else {
+			return trim($this->params->get('apiuser',''));
+		}
+	}
+	
+	private function getMerchantPassword()
+	{
+		$sandbox = $this->params->get('sandbox',0);
+		if($sandbox) {
+			return trim($this->params->get('sb_apipw',''));
+		} else {
+			return trim($this->params->get('apipw',''));
+		}
+	}
+	
+	private function getMerchantSignature()
+	{
+		$sandbox = $this->params->get('sandbox',0);
+		if($sandbox) {
+			return trim($this->params->get('sb_apisig',''));
+		} else {
+			return trim($this->params->get('apisig',''));
+		}
+	}
+	
+	private function getApiMethod()
+	{
+		$apimethod = $this->params->get('apimethod',0);
+		if ($apimethod)
+		{
+			return 'curl';
+		}
+		else
+		{
+			return 'file_get_contents';
+		}
+	}
+	
+	public function selectExpirationDate()
+	{
+		$year = gmdate('Y');
+	
+		$options = array();
+		$options[] = JHTML::_('select.option',0,'--');
+		for($i = 0; $i <= 10; $i++) {
+			$y = sprintf('%04u', $i+$year);
+			for($j = 1; $j <= 12; $j++) {
+				$m = sprintf('%02u', $j);
+				$options[] = JHTML::_('select.option', ($m.$y), ($m.'/'.$y));
+			}
+		}
+	
+		return JHTML::_('select.genericlist', $options, 'EXPDATE', 'class="input-medium"', 'value', 'text', '', 'EXPDATE');
+	}
 	
 	
 	
@@ -994,117 +1108,5 @@ class plgMymusePaypalpaymentspro extends JPlugin
 		return true;
 	}
 
-	/**
-	 * Validates the incoming data against PayPal's IPN to make sure this is not a
-	 * fraudelent request.
-	 */
-	private function isValidIPN($data)
-	{
-		$sandbox = $this->params->get('sandbox',0);
-		$hostname = $sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';
 
-		$url = 'ssl://'.$hostname;
-		$port = 443;
-
-		$req = 'cmd=_notify-validate';
-		foreach($data as $key => $value) {
-			$value = urlencode($value);
-			$req .= "&$key=$value";
-		}
-		$header = '';
-		$header .= "POST /cgi-bin/webscr HTTP/1.1\r\n";
-		$header .= "Host: $hostname:$port\r\n";
-		$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-		$header .= "Content-Length: " . strlen($req) . "\r\n";
-		$header .= "Connection: Close\r\n\r\n";
-
-
-		$fp = fsockopen ($url, $port, $errno, $errstr, 30);
-
-		if (!$fp) {
-			// HTTP ERROR
-			return false;
-		} else {
-			fputs ($fp, $header . $req);
-			while (!feof($fp)) {
-				$res = fgets ($fp, 1024);
-				if (stristr($res, "VERIFIED")) {
-					return true;
-				} else if (stristr($res, "INVALID")) {
-					return false;
-				}
-			}
-			fclose ($fp);
-		}
-	}
-
-	private function getPaymentURL()
-	{
-		$sandbox = $this->params->get('sandbox',0);
-		if($sandbox) {
-			return 'https://api-3t.sandbox.paypal.com/nvp';
-		} else {
-			return 'https://api-3t.paypal.com/nvp';
-		}
-	}
-
-	private function getMerchantUsername()
-	{
-		$sandbox = $this->params->get('sandbox',0);
-		if($sandbox) {
-			return trim($this->params->get('sb_apiuser',''));
-		} else {
-			return trim($this->params->get('apiuser',''));
-		}
-	}
-
-	private function getMerchantPassword()
-	{
-		$sandbox = $this->params->get('sandbox',0);
-		if($sandbox) {
-			return trim($this->params->get('sb_apipw',''));
-		} else {
-			return trim($this->params->get('apipw',''));
-		}
-	}
-
-	private function getMerchantSignature()
-	{
-		$sandbox = $this->params->get('sandbox',0);
-		if($sandbox) {
-			return trim($this->params->get('sb_apisig',''));
-		} else {
-			return trim($this->params->get('apisig',''));
-		}
-	}
-
-	private function getApiMethod()
-	{
-		$apimethod = $this->params->get('apimethod',0);
-		if ($apimethod)
-		{
-			return 'curl';
-		}
-		else
-		{
-			return 'file_get_contents';
-		}
-	}
-
-	public function selectExpirationDate()
-	{
-		$year = gmdate('Y');
-
-		$options = array();
-		$options[] = JHTML::_('select.option',0,'--');
-		for($i = 0; $i <= 10; $i++) {
-			$y = sprintf('%04u', $i+$year);
-			for($j = 1; $j <= 12; $j++) {
-				$m = sprintf('%02u', $j);
-				$options[] = JHTML::_('select.option', ($m.$y), ($m.'/'.$y));
-			}
-		}
-
-		return JHTML::_('select.genericlist', $options, 'EXPDATE', 'class="input-medium"', 'value', 'text', '', 'EXPDATE');
-	}
 }
