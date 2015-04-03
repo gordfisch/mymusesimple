@@ -456,7 +456,7 @@ class MyMuseController extends JControllerLegacy
 		$tx 			= JRequest::getVar('tx', 0);
 		$date 			= date('Y-m-d h:i:s');
 		
-		$pesapal_merchant_reference= JRequest::getVar('pesapal_merchant_reference', 0);
+		$pesapal_merchant_reference = JRequest::getVar('pesapal_merchant_reference', 0);
 		$pp 			= JRequest::getVar('pp', 0);
 		
 		if($pesapal_merchant_reference){
