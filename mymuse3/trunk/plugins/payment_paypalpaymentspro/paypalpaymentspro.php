@@ -249,6 +249,7 @@ class plgMymusePaypalpaymentspro extends JPlugin
 		$date = date('Y-m-d h:i:s');
 		$debug = "#####################\nPayPalPaymentsPro notify PLUGIN\n";
 	
+		//INIT MODE
 		if(isset($data['mode']) && $data['mode'] == 'init') {
 			//User has submitted the form 
 			if ($params->get ( 'my_debug' )) {
@@ -318,7 +319,16 @@ class plgMymusePaypalpaymentspro extends JPlugin
 				$isValid = false;
 			}
 			
-			$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalpaymentspro', false);
+			$orderid = '';
+			if(isset($data['INVNUM'])){
+				$query = "SELECT id FROM `#__mymuse_order`
+                    WHERE `order_number`='".$data['INVNUM']."'";
+				$db->setQuery($query);
+				$orderid = $db->loadResult();
+			
+			}
+			sleep(8);
+			$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalpaymentspro&orderid='.$orderid, false);
 			JFactory::getApplication()->redirect($thankyouUrl);
 			return true;
 			exit ();
@@ -417,12 +427,16 @@ class plgMymusePaypalpaymentspro extends JPlugin
 						'recurring_payment',
 						'subscr_payment',
 						'express_checkout',
-						'pro_api' 
+						'pro_api',
+						'cart'
 				);
 				$isValid = in_array ( $data ['txn_type'], $validTypes );
 				
 				if (! $isValid) {
 					$result ['error'] = "Transaction type " . $data ['txn_type'] . " can't be processed by this payment plugin.";
+					if($params->get('my_debug')){
+						MyMuseHelper::logMessage( $result ['error'] );
+					}
 					return $result;
 				}
 			}
@@ -436,10 +450,7 @@ class plgMymusePaypalpaymentspro extends JPlugin
 			if($params->get('my_debug')){
 				MyMuseHelper::logMessage( $debug  );
 			}
-			
-			
-			 
-			 
+
 			// SAVE ORDER AFTER
 			if($params->get('my_saveorder') == "after"){
 				//must capture the order here
