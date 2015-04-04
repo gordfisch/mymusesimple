@@ -366,6 +366,57 @@ class com_mymuseInstallerScript
 		
 		
 		<?php
+		// see if db needs updating for country plugins
+		$db = JFactory::getDBO();
+		$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'plugin'";
+		$db->setQuery($query);
+		if(!$col = $db->loadObject()){
+			$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'zone_id'";
+			$db->setQuery($query);
+			if($col = $db->loadObject()){
+				$query = "ALTER TABLE `#__mymuse_country` CHANGE `zone_id` `plugin` TINYTEXT NOT NULL ";
+			}else{
+				$query = "ALTER TABLE `#__mymuse_country` ADD `plugin` TINYTEXT NOT NULL AFTER `id`  ";
+			}
+			$db->setQuery($query);
+			$db->query();
+			
+			$paypal_countries = '(
+			"Australia",
+			"Austria",
+			"Belgium,
+			"Bulgaria"",
+			"Canada",
+			"Croatia",
+			"Cyprus",
+			"Czech Republic",
+			"Denmark",
+			"Estonia",
+			"Finland",
+			"France",
+			"Germany",
+			"Greece",
+			"Hong Kong",
+			"Hungary",
+			"Ireland",
+			"Israel",
+			"Italy",
+			"Japan",
+			"Kenya",
+			"Latvia",
+			"Liechtenstein",
+			"Lithuania",
+			"Luxembourg",
+			"Malta",
+			"Mexico",
+			"Netherlands",
+			"New Zealand",
+			"Norway")';
+			
+			$query = "UPDATE #__mymuse_country set plugin='paypal' WHERE country_name IN $paypal_countries";
+			$db->setQuery($query);
+			$db->query();
+		}
 		
 				// DEFAULT DOWNLOAD DIRECTORY
 				$name = JText::_("MYMUSE_MAKE_DOWNLOAD_DIR");
@@ -608,6 +659,7 @@ class com_mymuseInstallerScript
 			//WAS ALREADY INSTALLED
 			//restore the css file
 			/** so different we want to overwrite 2014-03-05
+			 * */
 			$name = JText::_("MYMUSE_SAVE_CSS");
 			$myFile = JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'assets'.DS.'css'.DS.'mymuse.css';
 			if($this->css != ""){
@@ -622,7 +674,7 @@ class com_mymuseInstallerScript
 				}
 				$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 			}
-			*/
+			
 			
 		}
 		
