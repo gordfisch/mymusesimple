@@ -381,7 +381,7 @@ class com_mymuseInstallerScript
 			$db->setQuery($query);
 			$db->query();
 			
-			$paypal_countries = '(
+			$paypal_countries = '
 			"Australia",
 			"Austria",
 			"Belgium",
@@ -411,9 +411,9 @@ class com_mymuseInstallerScript
 			"Mexico",
 			"Netherlands",
 			"New Zealand",
-			"Norway")';
+			"Norway"';
 			
-			$query = "UPDATE #__mymuse_country set plugin='paypal' WHERE country_name IN $paypal_countries";
+			$query = "UPDATE #__mymuse_country set plugin='paypal' WHERE country_name IN ($paypal_countries)";
 			$db->setQuery($query);
 			$db->query();
 		}
