@@ -384,8 +384,8 @@ class com_mymuseInstallerScript
 			$paypal_countries = '(
 			"Australia",
 			"Austria",
-			"Belgium,
-			"Bulgaria"",
+			"Belgium",
+			"Bulgaria",
 			"Canada",
 			"Croatia",
 			"Cyprus",
