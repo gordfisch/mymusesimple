@@ -104,21 +104,22 @@
             </div>
         </div>
         <div class="control-group">
-            <label for="STATE" class="control-label" style="width:140px; margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_STATE') ?>
-            </label>
-            <div class="controls">
-                <input type="text" name="STATE" id="STATE" class="input-mini" value="<?php echo $data->STATE ?>"  />
-            </div>
-        </div>
-        <div class="control-group">
             <label for="COUNTRYCODE" class="control-label" style="width:140px; margin-right:5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_COUNTRYCODE') ?>
             </label>
             <div class="controls">
-                <input type="text" name="COUNTRYCODE" id="COUNTRYCODE" class="input-mini" value="<?php echo $data->COUNTRYCODE ?>"  />
+               <?php  echo $COUNTRY_SELECT_HTML ?>
             </div>
         </div>
+        <div class="control-group">
+            <label for="STATE" class="control-label" style="width:140px; margin-right:5px;">
+                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_STATE') ?>
+            </label>
+            <div class="controls">
+                <?php  echo $STATE_SELECT_HTML ?>
+            </div>
+        </div>
+        
         <div class="control-group">
             <label for="ZIP" class="control-label" style="width:140px; margin-right:5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_ZIP') ?>

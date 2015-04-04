@@ -227,7 +227,97 @@ class plgMymusePaypalpaymentspro extends JPlugin
 			$data->METHOD			= 'DoDirectPayment';
 			$data->INVNUM			= $order->order_number;
 		//}
+		
+		//make country select
+		$query = 'SELECT country_2_code as value,  country_name AS text FROM #__mymuse_country WHERE 
+		plugin LIKE "%paypal%"';
+		$db->setQuery($query);
+		$countries = $db->loadObjectList();
+	
+		$country_select_array 	= array(  JHTML::_('select.option',  '', '- '. JText::_( 'MYMUSE_SELECT_COUNTRY' ) .' -' ) );
+		foreach ( $countries as $country ) {
+			$country_select_array[] = JHTML::_('select.option',  $country->value, $country->text );
+			$country_list[] = $country->value;
+		}
+		$COUNTRY_SELECT_HTML = JHTML::_('select.genericlist',  $country_select_array, 'COUNTRYCODE', 
+				'class="inputbox" size="1" onchange="changeDynaList2(STATE, COUNTRYCODE, countrystates,0,0);"', 
+				'value', 'text', $shopper->country );
 
+		//make state/region select
+		$country_list = implode('\', \'', $country_list);
+		$query = 'SELECT #__mymuse_state.state_name as text, #__mymuse_state.id as value' .
+				' FROM #__mymuse_state,#__mymuse_country' .
+				' WHERE country_id IN ( \''.$country_list.'\' )' .
+				' AND #__mymuse_state.country_id=#__mymuse_country.id' .
+				' ORDER BY country_id,state_name';
+		
+		$db->setQuery($query);
+		$state_list = $db->loadObjectList();
+		$state_select_array = array();
+		foreach ($state_list as $state) {
+			$state_select_array[] = JHTML::_('select.option',  $state->value, $state->text );
+		}
+		
+		$STATE_SELECT_HTML = JHTML::_('select.genericlist',  $state_select_array, 'STATE', 'class="inputbox" size="1" ',
+				'value', 'text', $shopper->region );
+		
+		
+		//make javascript
+		$countrystates = $this->listCountryState($shopper->country,$shopper->region );
+		
+		
+		$javascript = '
+		var countrystates = new Array;
+		';
+		$i = 0;
+		foreach ($countrystates as $k=>$items) {
+			foreach ($items as $v) {
+				$javascript .= "countrystates[".$i++."] = new Array( '$k','".addslashes( $v->id )."','".addslashes( $v->title )."' );\n\t\t";
+			}
+		}
+		
+		$document = JFactory::getDocument();
+		$document->addScriptDeclaration($javascript);
+		
+		$js = "/**
+		* Changes a dynamically generated list
+		* @param html obj The name of the list to change
+		* @param html obj The instigator of the change
+		* @param array A javascript array of list options in the form [key,value,text]
+		* @param string The original key that was selected
+		* @param string The original item value that was selected
+		*/
+		function changeDynaList2( list, source, myarr, orig_key, orig_val) {
+		
+		var key = source.options[source.selectedIndex].value;
+		
+		// empty the list
+		for (i in list.options.length) {
+		list.options[i] = null;
+		}
+		i = 0;
+		for (x in myarr) {
+		if (myarr[x][0] == key) {
+		opt = new Option();
+		opt.value = myarr[x][1];
+		opt.text = myarr[x][2];
+		
+		if ((orig_key == key && orig_val == opt.value) || i == 0) {
+		opt.selected = true;
+		}
+		list.options[i++] = opt;
+		}
+		}
+		list.length = i;
+		}
+		
+		window.onload = function(e){
+		changeDynaList2(STATE, COUNTRYCODE, countrystates,0,0);
+		}
+		";
+		$document->addScriptDeclaration($js);
+		
+		
 		@ob_start();
 		include dirname(__FILE__).'/paypalpaymentspro/form.php';
 		$html = @ob_get_clean();
@@ -726,7 +816,72 @@ class plgMymusePaypalpaymentspro extends JPlugin
 	}
 	
 	
+	/**
+	 * listCountryState
+	 * Print a select box
+	 *
+	 * @param string $list_name
+	 * @param string $value
+	 * @return bool
+	 */
+	function listCountryState($country_select='', $state_select='', $store_country='') {
 	
+		$db	= JFactory::getDBO();
+
+		//$countries[] = JHTML::_('select.option', '0', '- '.JText::_('MYMUSE_SELECT_COUNTRY').' -');
+		$query = "SELECT id, country_2_code as value, country_name as text from #__mymuse_country 
+		WHERE plugin LIKE '%paypal%' ORDER BY country_name ASC";
+		$db->setQuery($query);
+		$dbcountries = $db->loadObjectList();
+		//$countries = array_merge($countries, $dbcountries);
+	
+	
+		foreach ($dbcountries as $country)
+		{
+			$country_list[] = (int) $country->id;
+	
+			if ($country_select != '') {
+				if ($country->value == $country_select) {
+					$contentCountry = $country->text;
+				}
+			}
+		}
+	
+		$countrystates = array ();
+		//$countrystates[-1] = array ();
+		//$countrystates[-1][] = JHTML::_('select.option', '-1', JText::_( 'MYMUSE_SELECT_COUNTRY' ), 'id', 'title');
+		$country_list = implode('\', \'', $country_list);
+	
+		$query = 'SELECT #__mymuse_state.id as code, state_name as title, #__mymuse_state.id as id, country_2_code, country_id' .
+				' FROM #__mymuse_state,#__mymuse_country' .
+				' WHERE country_id IN ( \''.$country_list.'\' )' .
+				' AND #__mymuse_state.country_id=#__mymuse_country.id' .
+				' ORDER BY country_id,state_name';
+	
+		$db->setQuery($query);
+		$state_list = $db->loadObjectList();
+	
+		foreach ($dbcountries as $country)
+		{
+	
+			$countrystates[$country->value] = array ();
+			$rows2 = array ();
+			foreach ($state_list as $state)
+			{
+				if ($state->country_2_code == $country->value) {
+					$rows2[] = $state;
+				}
+			}
+			foreach ($rows2 as $row2) {
+				$countrystates[$country->value][] = JHTML::_('select.option', $row2->id, $row2->title, 'id', 'title');
+			}
+		}
+	
+		$countrystates['-1'][] = JHTML::_('select.option', '-1', JText::_( 'MYMUSE_SELECT_STATE' ), 'id', 'title');
+	
+		return $countrystates;
+	
+	}
 	
 	
 	
