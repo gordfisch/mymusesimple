@@ -76,6 +76,10 @@
         	        	todir="${test}/administrator/language/en-GB" />
         	    <copy file="${src}/plugins/payment_virtualmerchant/language/en-GB/en-GB.plg_mymuse_payment_virtualmerchant.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" />
+        		<copy file="${src}/plugins/payment_paypalpro/language/en-GB/en-GB.plg_mymuse_payment_paypalpro.ini"
+        	        	        	todir="${test}/administrator/language/en-GB" />
+        	        	    <copy file="${src}/plugins/payment_paypalpro/language/en-GB/en-GB.plg_mymuse_payment_paypalpro.sys.ini"
+        	        	        	todir="${test}/administrator/language/en-GB" />
         	
                 <copy file="${src}/plugins/shipping_standard/language/en-GB/en-GB.plg_mymuse_shipping_standard.ini"
                         todir="${test}/administrator/language/en-GB" />
@@ -173,15 +177,24 @@
                         todir="${test}/plugins/mymuse/payment_moneybookers" />
                 <copy file="${src}/plugins/payment_moneybookers/payment_moneybookers.xml"
                         todir="${test}/plugins/mymuse/payment_moneybookers" /> 
+        	
                 <copy file="${src}/plugins/payment_offline/payment_offline.php"
                         todir="${test}/plugins/mymuse/payment_offline" />
                 <copy file="${src}/plugins/payment_offline/payment_offline.xml"
                         todir="${test}/plugins/mymuse/payment_offline" />
+        	
                 <copy file="${src}/plugins/payment_paypal/payment_paypal.php"
                         todir="${test}/plugins/mymuse/payment_paypal" />
                 <copy file="${src}/plugins/payment_paypal/payment_paypal.xml"
                         todir="${test}/plugins/mymuse/payment_paypal" />
-                        
+        	
+        		<copy file="${src}/plugins/payment_paypalpro/payment_paypalpro.php"
+        	        	todir="${test}/plugins/mymuse/payment_paypalpro" />
+        		<copy file="${src}/plugins/payment_paypalpro/payment_paypalpro.xml"
+        	            todir="${test}/plugins/mymuse/payment_paypalpro" /> 
+        		<copy file="${src}/plugins/payment_paypalpro/paypalpro/form.php"
+        	        	                        todir="${test}/plugins/mymuse/payment_paypalpro/paypalpro" />
+        	
                 <copy file="${src}/plugins/payment_pesapal/payment_pesapal.php"
                         todir="${test}/plugins/mymuse/payment_pesapal" />
                 <copy file="${src}/plugins/payment_pesapal/payment_pesapal.xml"
