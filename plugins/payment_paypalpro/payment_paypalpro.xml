@@ -21,9 +21,6 @@
 		<fields name="params">
 			<fieldset name="basic">
 				<field name="title" type="text" size="50" default="" label="PLG_MYMUSE_PAYPALPAYMENTSPRO_TITLE_LABEL" description="PLG_MYMUSE_PAYPALPAYMENTSPRO_TITLE_DESC"/>
-				<field name="ppimage" type="text" size="50" default="" label="PLG_MYMUSE_PAYPALPAYMENTSPRO_PPIMAGE_LABEL" description="PLG_MYMUSE_PAYPALPAYMENTSPRO_PPIMAGE_DESC" />
-				<field type="spacer" />
-				<field name="surcharge" type="text" size="50" default="" label="PLG_MYMUSE_COMMON_SURCHARGE_LABEL" description="PLG_MYMUSE_COMMON_SURCHARGE_DESC"/>
 				<field type="spacer" />
 				<field name="apiuser" type="text" size="50" default="" label="PLG_MYMUSE_PAYPALPAYMENTSPRO_APIUSER_LABEL" description="PLG_MYMUSE_PAYPALPAYMENTSPRO_APIUSER_DESC"/>
 				<field name="apipw" type="text" size="50" default="" label="PLG_MYMUSE_PAYPALPAYMENTSPRO_APIPW_LABEL" description="PLG_MYMUSE_PAYPALPAYMENTSPRO_APIPW_DESC"/>
