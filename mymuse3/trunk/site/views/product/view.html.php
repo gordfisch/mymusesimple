@@ -33,9 +33,11 @@ class myMuseViewProduct extends JViewLegacy
 	{
 		// Initialise variables.
 		$app		= JFactory::getApplication();
+		$jinput 	= $app->input;
 		$user		= JFactory::getUser();
 		$userId		= $user->get('id');
 		$dispatcher	= JDispatcher::getInstance();
+		
 
 		$this->item		= $this->get('Item');
 		if($this->item->parentid > 0){
@@ -44,7 +46,7 @@ class myMuseViewProduct extends JViewLegacy
 			$app->redirect($item->route);
 		}
 		
-		$this->print	= JRequest::getBool('print');
+		$this->print	= $jinput->get('print',0, 'INT');
 		$this->state	= $this->get('State');
 		$this->user		= $user;
 
@@ -136,7 +138,7 @@ class myMuseViewProduct extends JViewLegacy
 		else  {
 			$item->text = $item->introtext;
 		}
-		$this->Itemid = JRequest::getVar("Itemid",'');
+		$this->Itemid = $jinput->get("Itemid",'');
 
 		//
 		// Process the mymuse plugins.

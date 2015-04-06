@@ -634,7 +634,7 @@ class MyMuseController extends JControllerLegacy
 				//print out download page
 				$this->jinput->set('task', 'downloads');
 				$this->jinput->set('id', $this->MyMuseShopper->order->order_number);
-				//$this->downloads();
+				$this->downloads();
 				
 			}
 			

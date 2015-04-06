@@ -54,9 +54,11 @@ class MyMuseModelStore extends MyMuseModelProducts
 	protected function populateState($ordering = null, $direction = null)
 	{
 		parent::populateState($ordering, $direction);
+		$app		= JFactory::getApplication();
+		$jinput 	= $app->input;
 
 		// List state information
-		$limitstart = JRequest::getVar('limitstart', 0, '', 'int');
+		$limitstart = $jinput->get('limitstart', 0, '', 'int');
 		$this->setState('list.start', $limitstart);
 
 		$params = $this->state->params;

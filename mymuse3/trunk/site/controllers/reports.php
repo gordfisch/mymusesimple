@@ -25,7 +25,7 @@ class MymuseControllerReports extends MymuseuseController
 
 	function __construct()
 	{
-		JRequest::setVar( 'view', 'reports' );
+		JFactory::getApplication()->input->set( 'view', 'reports' );
 		parent::__construct();
 
 	}
@@ -37,15 +37,16 @@ class MymuseControllerReports extends MymuseuseController
 	function report()
 	{
 
-		$db = JFactory::getDBO();
+		$db 	= JFactory::getDBO();
 		$user   = JFactory::getUser();
         $userid = $user->get('id');
-        $query = "SELECT id FROM #__mymuse_categories WHERE params LIKE '%owner_id=$userid\n%'";
+        $query 	= "SELECT id FROM #__mymuse_categories WHERE params LIKE '%owner_id=$userid\n%'";
+        $jinput = JFactory::getApplication()->input;
         
         $db->setQuery($query);
    
         if(!$ids = $db->loadObjectList()){
-        	JRequest::setVar('not_auth','1');
+        	$jinput->set('not_auth','1');
         	//JRequest::setVar( 'layout', 'no_auth');
         }else{
 			//JRequest::setVar( 'layout', 'default');

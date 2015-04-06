@@ -28,11 +28,13 @@ class MymuseViewCategory extends JViewLegacy
 	protected $intro_items = array();
 	protected $link_items = array();
 	protected $columns = 1;
+	
 
 	function display($tpl = null)
 	{
 		$app	= JFactory::getApplication();
 		$user	= JFactory::getUser();
+		$jinput = $app->input;
 		
 		// Get some data from the models
 		$state		= $this->get('State');
@@ -45,7 +47,7 @@ class MymuseViewCategory extends JViewLegacy
 		$parent		= $this->get('Parent');
 	
 		$pagination = $this->get('Pagination');
-		$task = JRequest::getVar('task', 'notask');
+		$task = $jinput->get('task', 'notask');
 		
 		$this->total = count($items);
 		$this->limit = $params->get('display_num', 10);

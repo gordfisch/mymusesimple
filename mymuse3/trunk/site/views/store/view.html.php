@@ -35,20 +35,20 @@ class myMuseViewStore extends JViewLegacy
 	function display($tpl = null)
 	{
 		
-			
-		$task 		= JRequest::getVar('task','');
+		$jinput 	= JFactory::getApplication()->input;
+		$task 		= $jinput->get('task','');
 		$state 		= $this->get('State');
 		$store 		= $this->get('Store');
 		$params 	= $params = MyMuseHelper::getParams();
 		$this->params = $params;
 		$this->params->merge($state->params);
-		$Itemid 	= JRequest::getVar('Itemid');
+		$Itemid 	= $jinput->get('Itemid');
 
 		// Present a list of downloadable files
         if($task == "downloads"){
         	
         	// make sure we have an id
-        	$id = JRequest::getVar('id',0);
+        	$id = $jinput->get('id',0);
         	if(!$id){
         		$message = JText::_('MYMUSE_NO_DOWNLOAD_KEY');
         		$this->assignRef( 'message', $message );
@@ -87,7 +87,7 @@ class myMuseViewStore extends JViewLegacy
         	}
         	
         	//if it is a reload, update the database
-        	$item_id = JRequest::getVar('item_id',0);
+        	$item_id = $jinput->get('item_id',0);
         	if($item_id){
         		// update the database
         		$query = "SELECT * FROM #__mymuse_order_item WHERE id=$item_id";
@@ -110,8 +110,8 @@ class myMuseViewStore extends JViewLegacy
         		}
         	}
 			
-        	JRequest::setVar('layout','store');
-        	JRequest::setVar('view','store');
+        	$jinput->set('layout','store');
+        	$jinput->set('view','store');
 			$MyMuseCheckout 		=& MyMuse::getObject('checkout','helpers');
 			$MyMuseCart 			=& MyMuse::getObject('cart','helpers');
         	$MyMuseShopper->order 	= $MyMuseCheckout->getOrder($row->id);
@@ -172,7 +172,7 @@ class myMuseViewStore extends JViewLegacy
         if($task == "downloadfile"){
         	
         	// make sure we have a download key
-        	$id = JRequest::getVar('id',0);
+        	$id = $jinput->get('id',0);
         	if(!$id){
         		$message = JText::_('MYMUSE_NO_DOWNLOAD_KEY');
         		$this->assignRef( 'message', $message );
@@ -182,7 +182,7 @@ class myMuseViewStore extends JViewLegacy
         	}
         	
         	// make sure we have an order item id
-        	$item_id = JRequest::getVar('item_id',0);
+        	$item_id = $jinput->get('item_id',0);
         	if(!$item_id){
         		$message = JText::_('MYMUSE_NO_ORDERITEM_ID');
         		$this->assignRef( 'message', $message );
@@ -370,7 +370,7 @@ class myMuseViewStore extends JViewLegacy
         if($task == "downloadit")
         {
         	// make sure we have an id
-        	$id = JRequest::getVar('id',0);
+        	$id = $jinput->get('id',0);
         	$free = 0;
         	$owned = 0;
         	$db	= JFactory::getDBO();

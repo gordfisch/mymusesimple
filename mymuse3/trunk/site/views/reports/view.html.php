@@ -21,31 +21,32 @@ class myMuseViewReports extends JViewLegacy
 	protected $state;
 	
 	function display($tpl = null){
-		global $mainframe,$params, $option;
-
-		$user   = JFactory::getUser();
-        $userid = $user->get('id');
-        $profile = $user->get('profile');
-		$catid = $profile['category_owner'];
-		$this->Itemid = JRequest::getVar('Itemid');
+		global $params, $option;
+		
+		$jinput 	= JFactory::getApplication()->input;
+		$user   	= JFactory::getUser();
+        $userid 	= $user->get('id');
+        $profile 	= $user->get('profile');
+		$catid 		= $profile['category_owner'];
+		$this->Itemid = $jinput->get('Itemid');
 		
 		if(!$catid || !$userid){
-        	JRequest::setVar('not_auth','1');
-        	JRequest::setVar( 'layout', 'no_auth');
-        	JRequest::setVar( 'task', 'no_auth');
+        	$jinput->set('not_auth','1');
+        	$jinput->set( 'layout', 'no_auth');
+        	$jinput->set( 'task', 'no_auth');
         	parent::display('no_auth');
         	return;
         }else{
-			JRequest::setVar( 'layout', 'report');
+			$jinput->set( 'layout', 'report');
         }
 		
-        $task = JRequest::getVar('task', null, 'default', 'cmd');
+        $task = $jinput->get('task', null, 'default', 'cmd');
 
 		switch ($task)
 		{
 			case 'no_auth':
 			{
-				JRequest::setVar('layout', 'no_auth');
+				$jinput->set('layout', 'no_auth');
 				parent::display('no_auth');
 				return;
 				

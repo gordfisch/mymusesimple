@@ -39,9 +39,11 @@ class MymuseCategories extends JCategories
 	 */
 	protected function _load($id)
 	{
-		$db = JFactory::getDbo();
-		$app = JFactory::getApplication();
-		$user = JFactory::getUser();
+		$db 	= JFactory::getDbo();
+		$app 	= JFactory::getApplication();
+		$jinput = $app->input;
+		$user 	= JFactory::getUser();
+		
 		$extension = $this->_extension;
 		// Record that has this $id has been checked
 		$this->_checkedCategories[$id] = true;
@@ -136,7 +138,7 @@ class MymuseCategories extends JCategories
 		$db->setQuery($query);
 		$results = $db->loadObjectList('id');
 		$childrenLoaded = false;
-		$view = JRequest::getVar('view');
+		$view = $jinput->get('view');
 
 		if (count($results))
 		{
