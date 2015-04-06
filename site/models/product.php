@@ -42,12 +42,13 @@ class MyMuseModelProduct extends JModelItem
 	protected function populateState()
 	{
 		$app = JFactory::getApplication('site');
+		$jinput = $app->input;
 
 		// Load state from the request.
-		$pk = JRequest::getInt('id');
+		$pk = $jinput->get('id');
 		$this->setState('product.id', $pk);
 
-		$offset = JRequest::getUInt('limitstart');
+		$offset = $jinput->get('limitstart');
 		$this->setState('list.offset', $offset);
 
 		// Load the parameters.
@@ -699,17 +700,18 @@ class MyMuseModelProduct extends JModelItem
 	 */
 	function _loadProductParams()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
 
 		// Get the page/component configuration
-		$params = clone($mainframe->getParams('com_mymuse'));
+		$params = clone($app->getParams('com_mymuse'));
 
 		// Merge product parameters into the page configuration
 		$aparams = new JRegistry($this->_item[$pk]->attribs);
 		$params->merge($aparams);
 
 		// Set the popup configuration option based on the request
-		$pop = JRequest::getVar('pop', 0, '', 'int');
+		$pop = $jinput->get('pop', 0, '', 'int');
 		$params->set('popup', $pop);
 
 		// Are we showing introtext with the product

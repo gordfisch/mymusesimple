@@ -48,7 +48,8 @@ class MyMuseCheckout
 	 */
 
 	function save( ) {
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
 		$params = MyMuseHelper::getParams();
 
 		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
@@ -59,7 +60,7 @@ class MyMuseCheckout
 		$store 			= $MyMuseStore->getStore();
 		$cart 			= $MyMuseCart->cart;
 		$cart_order 	= $MyMuseCart->buildOrder();
-		$d 				= JRequest::get('post');
+		$d 				= $jinput->post->getArray();
 
 		// TODO stop repeat orders on reload
 		if($params->get('my_debug')){
@@ -384,7 +385,8 @@ class MyMuseCheckout
 
 	function mailOrder(&$MyMuseShopper,&$MyMuseStore){
 
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
 		$params = MyMuseHelper::getParams();
 
 		$shopper 	=& $MyMuseShopper->getShopper();
@@ -399,7 +401,7 @@ class MyMuseCheckout
 		
 		//see if there is a message
 		$dispatcher		= JDispatcher::getInstance();
-		$pp = JRequest::getVar('pp', '');
+		$pp = $jinput->get('pp', '');
 		$my_email_msg = $params->get('my_email_msg');
 		if($pp){
 			JPluginHelper::importPlugin('mymuse',$pp);

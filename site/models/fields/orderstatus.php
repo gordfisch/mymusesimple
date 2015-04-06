@@ -33,7 +33,7 @@ class JFormFieldOrderstatus extends JFormFieldSQL
 		// Initialize variables.
 		$html = array();
 		$html[] = '<select id="filter_order_status" name="filter_order_status" class="inputbox">';
-		$filter_order_status = JRequest::getVar('filter_order_status','0');
+		$filter_order_status = JFactory::getApplication()->input->get('filter_order_status','0');
 
 		// do the SQL
 		$db = JFactory::getDbo();

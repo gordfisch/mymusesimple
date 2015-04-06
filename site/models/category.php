@@ -116,7 +116,8 @@ class MyMuseModelCategory extends JModelList
 	{
 		// Initiliase variables.
 		$app	= JFactory::getApplication('site');
-		$pk		= JRequest::getInt('id');
+		$jinput = $app->input;
+		$pk		= $jinput->get('id',0,'INT');
 
 		$this->setState('category.id', $pk);
 
@@ -157,10 +158,10 @@ class MyMuseModelCategory extends JModelList
 
 
 		// Optional filter text
-		$this->setState('list.filter', JRequest::getString('filter-search'));
+		$this->setState('list.filter', $jinput->get('filter-search','','STRING'));
 
 		// filter.order
-		$itemid = JRequest::getInt('id', 0) . ':' . JRequest::getInt('Itemid', 0);
+		$itemid = $jinput->get('id', 0, 'INT') . ':' . $jinput->get('Itemid', 0, 'INT');
 		$orderCol = $app->getUserStateFromRequest('com_mymuse.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
 		if (!in_array($orderCol, $this->filter_fields)) {
 			$orderCol = 'a.ordering';
@@ -174,10 +175,10 @@ class MyMuseModelCategory extends JModelList
 		}
 		$this->setState('list.direction', $listOrder);
 
-		$this->setState('list.start', JRequest::getVar('limitstart', 0, '', 'int'));
+		$this->setState('list.start', $jinput->get('limitstart', 0, 'INT'));
 
 		// set limit for query. If list, use parameter. If blog, add blog parameters for limit.
-		if ((JRequest::getCmd('layout') == 'blog') || $params->get('layout_type') == 'blog') {
+		if (($jinput->get('layout') == 'blog') || $params->get('layout_type') == 'blog') {
 			$limit = $params->get('num_leading_articles') + $params->get('num_intro_articles') + $params->get('num_links');
 			$this->setState('list.links', $params->get('num_links'));
 		}
@@ -198,7 +199,7 @@ class MyMuseModelCategory extends JModelList
 
 		$this->setState('filter.language', $app->getLanguageFilter());
 
-		$this->setState('layout', JRequest::getCmd('layout'));
+		$this->setState('layout', $jinput->get('layout'));
 
 	}
 
@@ -213,8 +214,8 @@ class MyMuseModelCategory extends JModelList
 		$params = $this->getState()->get('params');
 		$limit = $this->getState('list.limit');
 		$app	= JFactory::getApplication('site');
-		$app	= JFactory::getApplication('site');
-		$itemid = JRequest::getInt('id', 0) . ':' . JRequest::getInt('Itemid', 0);
+		$jinput = $app->input;
+		$itemid = $jinput('id', 0, INT) . ':' . $jinput('Itemid', 0, 'INT');
 		
 		if ($this->_products === null && $category = $this->getCategory()) {
 			$model = JModelList::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
@@ -268,9 +269,10 @@ class MyMuseModelCategory extends JModelList
 	protected function _buildContentOrderBy()
 	{
 		$app		= JFactory::getApplication('site');
+		$jinput 	= $app->input;
 		$db			= $this->getDbo();
 		$params		= $this->state->params;
-		$itemid		= JRequest::getInt('id', 0) . ':' . JRequest::getInt('Itemid', 0);
+		$itemid		= $jinput('id', 0, 'INT') . ':' . $jinput('Itemid', 0, 'INT');
 		$orderCol	= $app->getUserStateFromRequest('com_mymuse.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
 		$orderDirn	= $app->getUserStateFromRequest('com_mymuse.category.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
 		$orderby	= ' ';

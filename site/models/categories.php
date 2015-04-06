@@ -48,10 +48,11 @@ class mymuseModelCategories extends JModelList
 	protected function populateState($ordering = NULL, $direction = NULL)
 	{
 		$app = JFactory::getApplication();
+		$jinput = $app->input;
 		$this->setState('filter.extension', $this->_extension);
 
 		// Get the parent id if defined.
-		$parentId = JRequest::getInt('id');
+		$parentId = $jinput->get('id');
 		$this->setState('filter.parentId', $parentId);
 
 		$params = $app->getParams();

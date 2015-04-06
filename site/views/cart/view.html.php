@@ -26,7 +26,7 @@ class myMuseViewCart extends JViewLegacy
 		$params = MyMuseHelper::getParams();
 		$jinput = JFactory::getApplication()->input;
 		
-		$task	= $jinput->get('task', '', 'CMD');
+		$this->task = $task	= $jinput->get('task', '', 'CMD');
 		
 		if($task == "notify"){
 			$this->notify();

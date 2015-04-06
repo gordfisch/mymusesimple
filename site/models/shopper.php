@@ -68,13 +68,14 @@ class mymuseModelShopper extends JModelForm
         {
         	$params = MyMuseHelper::getParams();
         	$user	= JFactory::getUser();
-        	$task = JRequest::getVar('task');
-        	$db = JFactory::getDBO();
+        	$jinput = JFactory::getApplication()->input;
+        	$task 	= $jinput->get('task');
+        	$db 	= JFactory::getDBO();
         	
         	//if this is no reg coming in for a download
         	if($params->get('my_registration') == "no_reg" && !$user->get('id') 
         			&& ($task == 'accdownloads' || $task == 'downloads') ){
-        		$id = JRequest::getVar('id','');
+        		$id = $jinput->get('id','');
         		if(!$id){
         			$this->setError(JText::_('MYMUSE_NO_DOWNLOAD_KEY'));
         			return false;
@@ -402,7 +403,7 @@ class mymuseModelShopper extends JModelForm
 		
 
 		// Get the user data.
-		$requestData = JRequest::getVar('jform', array(), 'post', 'array');
+		$requestData = $jinput->getArray('jform');
 
 		// Validate the posted data.
 		$form	= $this->getForm();
@@ -449,7 +450,7 @@ class mymuseModelShopper extends JModelForm
 		$user	= JFactory::getUser('buyer');
 		
 		//put values into user
-		$post = JRequest::get('post');
+		$post = $jinput->post->getArray();
 		if(isset($post['jform']['profile']['region']) && !isset($post['jform']['profile']['region_name']) ){
 			$db = JFactory::getDBO();
 		
@@ -562,7 +563,8 @@ class mymuseModelShopper extends JModelForm
 	*/
 	function make_no_register()
 	{
-		$mainframe = JFactory::getApplication();
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
 		$user = JFactory::getUser();
 		if($user->get('id')){
 			return true;
@@ -589,7 +591,7 @@ class mymuseModelShopper extends JModelForm
 		$options = array();
 		;
 		//preform the login action
-		$error = $mainframe->login($credentials, $options);
+		$error = $app->login($credentials, $options);
 		
 		if(!JError::isError($error)){
 			return true;

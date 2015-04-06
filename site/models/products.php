@@ -72,24 +72,25 @@ class MyMuseModelProducts extends JModelList
 	protected function populateState($ordering = 'ordering', $direction = 'ASC')
 	{
 		$app = JFactory::getApplication();
+		$jinput 	= $app->input;
 
 		// List state information
 		//$value = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
-		$value = JRequest::getUInt('limit', $app->getCfg('list_limit', 0));
+		$value = $jinput->get('limit', $app->getCfg('list_limit', 0));
 		$this->setState('list.limit', $value);
 
 		//$value = $app->getUserStateFromRequest($this->context.'.limitstart', 'limitstart', 0);
-		$value = JRequest::getUInt('limitstart', 0);
+		$value = $jinput->get('limitstart', 0);
 		$this->setState('list.start', $value);
 
-		$orderCol	= JRequest::getCmd('filter_order', 'a.ordering');
+		$orderCol	= $jinput->get('filter_order', 'a.ordering');
 
 		if (!in_array($orderCol, $this->filter_fields)) {
 			$orderCol = 'a.ordering';
 		}
 		$this->setState('list.ordering', $orderCol);
 
-		$listOrder	=  JRequest::getCmd('filter_order_Dir', 'ASC');
+		$listOrder	=  $jinput->get('filter_order_Dir', 'ASC');
 		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))) {
 			$listOrder = 'ASC';
 		}
@@ -114,7 +115,7 @@ class MyMuseModelProducts extends JModelList
 			$this->setState('filter.access', false);
 		}
 
-		$this->setState('layout', JRequest::getCmd('layout'));
+		$this->setState('layout', $jinput->get('layout'));
 	}
 
 	/**
@@ -570,7 +571,8 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 	{
 		$params = MyMuseHelper::getParams();
 		$items	= parent::getItems();
-		
+		$app = JFactory::getApplication();
+		$jinput 	= $app->input;
 		
 		$user	= JFactory::getUser();
 		$userId	= $user->get('id');
@@ -599,7 +601,7 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 			// For blogs, article params override menu item params only if menu param = 'use_article'
 			// Otherwise, menu item params control the layout
 			// If menu item is 'use_article' and there is no article param, use global
-			if ((JRequest::getString('layout') == 'blog') || (JRequest::getString('view') == 'featured')
+			if (($jinput->get('layout') == 'blog') || ($jinput->get('view') == 'featured')
 				|| ($this->getState('params')->get('layout_type') == 'blog')) {
 				// create an array of just the params set to 'use_article'
 				$menuParamsArray = $this->getState('params')->toArray();

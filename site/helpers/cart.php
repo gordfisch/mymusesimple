@@ -65,15 +65,16 @@ class MyMuseCart {
 	JPluginHelper::importPlugin('system');
 	$results = $dispatcher->trigger('onBeforeAddToCart', array (&$_POST, &$this->cart ));
 
-	$mainframe 	= JFactory::getApplication();
-    $params 	= MyMuseHelper::getParams();
+	$app 			= JFactory::getApplication();
+	$jinput 		= $app->input;
+    $params 		= MyMuseHelper::getParams();
 
-    $catid = JRequest::getVar('catid',  0, '', 'int');
-    $parentid = JRequest::getVar('parentid',  0, '', 'int');
-    $productid = JRequest::getVar('productid',  0, '', 'array');
-    $quantity = JRequest::getVar('quantity',  0, '', 'array');
-    $item_quantity = JRequest::getVar('item_quantity',  0, '', 'array');
-   // $Itemid = JRequest::getVar('Itemid',  0, '', 'int');
+    $catid 			= $jinput->get('catid',  0, 'INT');
+    $parentid 		= $jinput->get('parentid',  0, 'INT');
+    $productid 		= $jinput->getArray('productid');
+    $quantity 		= $jinput->getArray('quantity');
+    $item_quantity 	= $jinput->getArray('item_quantity');
+   // $Itemid = $jinput->get('Itemid',  0,'INT');
 
     $db	= JFactory::getDBO();   
 
@@ -218,14 +219,15 @@ class MyMuseCart {
      */ 
   	function updateCart( ) 
   	{
-		$mainframe 	= JFactory::getApplication();
+		$app 		= JFactory::getApplication();
+		$jinput 	= $app->input;
     	$params 	= MyMuseHelper::getParams();
     
-    	$catid = JRequest::getVar('catid',  0, '', 'int');
-    	$parentid = JRequest::getVar('parentid',  0, '', 'int');
-    	$productid = JRequest::getVar('productid',  0, '', 'array');
-    	$quantity = JRequest::getVar('quantity',  0, '', 'array');
-    	$Itemid = JRequest::getVar('Itemid',  0, '', 'int');
+    	$catid 		= $jinput->get('catid',  0, 'INT');
+    	$parentid 	= $jinput->get('parentid',  0, 'INT');
+    	$productid 	= $jinput->getArray('productid');
+    	$quantity 	= $jinput->getArray('quantity');
+    	$Itemid 	= $jinput->get('Itemid',  0, 'INT');
 
  
     	$db  = JFactory::getDBO();;
@@ -391,8 +393,10 @@ class MyMuseCart {
   		$db			=  JFactory::getDBO();
   		$user 		=  JFactory::getUser();
   		$user_id 	= $user->get('id');
+  		$app 		= JFactory::getApplication();
+  		$jinput 	= $app->input;
   		
-  		$coupon_value = JRequest::getVar('coupon', '');
+  		$coupon_value = $jinput->get('coupon', '');
   		$query = "SELECT * FROM #__mymuse_coupon WHERE code='$coupon_value'
   		AND state='1'";
   		$db->setQuery($query);
@@ -465,7 +469,8 @@ class MyMuseCart {
   	
   	function buildOrder($edit=true )
   	{
-		$mainframe 	= JFactory::getApplication();
+		$app 		= JFactory::getApplication();
+  		$jinput 	= $app->input;
     	$params 	= MyMuseHelper::getParams();
 		
 		$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
@@ -477,7 +482,7 @@ class MyMuseCart {
 		$user 			= JFactory::getUser();
 		
 
-		$Itemid		= JRequest::getVar('Itemid', '');
+		$Itemid		= $jinput->get('Itemid', '');
 		$db	= JFactory::getDBO();
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'product.php');
 

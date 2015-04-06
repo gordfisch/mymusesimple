@@ -18,11 +18,13 @@ class myMuseViewShopper extends JViewLegacy
 {
 	function __construct()       {
     	parent::__construct();
-        $layout = JRequest::getVar('layout', 'register');
+    	
+        $layout = JFactory::getApplication()->input->get('layout', 'register');
          parent::setLayout($layout);         
     }
         
 	function display($tpl = null){
+		$jinput 	= JFactory::getApplication()->input;
 		$mainframe = JFactory::getApplication();
 		$params = MyMuseHelper::getParams();
 		
@@ -37,7 +39,7 @@ class myMuseViewShopper extends JViewLegacy
 		$MyMuseStore  	= MyMuse::getObject('store','models');
 		$store 			= $MyMuseStore->_store;
 		$MyMuseCart  	= MyMuse::getObject('cart','helpers');
-		$return 		= JRequest::getVar('return','');
+		$return 		= $jinput->get('return','');
 		$user			= JFactory::getUser();
 		if(!$shopper->id && $user->get('id')){
 			// not a shopper but already user
@@ -51,7 +53,7 @@ class myMuseViewShopper extends JViewLegacy
 		$document		= JFactory::getDocument();
 		$dispatcher		= JDispatcher::getInstance();
 		$pathway		= $mainframe->getPathway();
-		$Itemid			= JRequest::getVar('Itemid', 0, '', 'int');
+		$Itemid			= $jinput->get('Itemid', 0, 'INT');
 		
     	$this->assignRef('Itemid', $Itemid);
 		$this->assignRef('user'  , $user);
@@ -62,7 +64,7 @@ class myMuseViewShopper extends JViewLegacy
 		
 
 		if($this->getLayout() == "thank_you"){
-			$st 		= JRequest::getVar('st', 0);
+			$st 		= $jinput->get('st', 0);
 			$heading 	= Jtext::_('MYMUSE_THANK_YOU');
 			$message 	= Jtext::_('MYMUSE_WE_HAVE_RECEIVED_YOUR_ORDER');
 

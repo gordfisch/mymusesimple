@@ -47,19 +47,20 @@ $Doc->addScript( 'components/com_mymuse/assets/javascript/mymuse.js' );
 JPluginHelper::importPlugin('mymuse');
 
 // return URL
-$return 	= JRequest::getVar('return','');
+$jinput 	= JFactory::getApplication()->input;
+$return 	= $jinput->get('return','');
 if(!$return){
 	$return = MyMuseHelper::returnURL();
-	JRequest::setVar('return',$return);
+	$jinput->get('return',$return);
 }
 $active	= JFactory::getApplication()->getMenu()->getActive();
 
 //task and controller
-$task 		= JRequest::getVar('task', null, 'default', 'cmd');
+$task 		= $jinput->get('task', null);
 if($task == 'login'){
 	$controller = '';
 }
-$controller = JRequest::getWord('controller','');
+$controller = $jinput->get('controller','');
 
 // Execute the task.
 $controller	= JControllerLegacy::getInstance('Mymuse');

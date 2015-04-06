@@ -88,22 +88,23 @@ class MyMuseModelTracks extends JModelList
 	 */
 	protected function populateState($ordering = 'category_name', $direction = 'ASC')
 	{
-		$app = JFactory::getApplication();
-		$params 	= MyMuseHelper::getParams();
+		$app 	= JFactory::getApplication();
+		$jinput = $app->input;
+		$params = MyMuseHelper::getParams();
 
 		// List state information
-        $pk		= JRequest::getInt('id');
+        $pk		= $jinput('id',0,'INT');
         $this->setState('category.id', $pk);
-        $this->setState('list.alpha', JRequest::getString('filter_alpha', ''));
-        $this->setState('list.prods', JRequest::getString('products', ''));
-        $this->setState('list.searchword', JRequest::getString('searchword',''));
+        $this->setState('list.alpha', $jinput->get('filter_alpha', '', 'STRING'));
+        $this->setState('list.prods', $jinput->get('products', '', 'STRING'));
+        $this->setState('list.searchword', $jinput->get('searchword','', 'STRING'));
         
 		//$value = $app->getUserStateFromRequest('global.list.limit', 'limit', $app->getCfg('list_limit'));
-		$value = JRequest::getUInt('limit', $params->get('display_num',$app->getCfg('list_limit', 0)));
+		$value = $jinput->get('limit', $params->get('display_num',$app->getCfg('list_limit', 0)));
 		$this->setState('list.limit', $value);
 
 		//$value = $app->getUserStateFromRequest($this->context.'.limitstart', 'limitstart', 0);
-		$value = JRequest::getUInt('limitstart', 0);
+		$value = $jinput->get('limitstart', 0);
 		$this->setState('list.start', $value);
 		
 		//listOrder
@@ -111,7 +112,7 @@ class MyMuseModelTracks extends JModelList
 		$this->setState('list.secondaryOrder','');
 		
 		//direction
-		$listOrder	=  JRequest::getCmd('filter_order_Dir', 'ASC');
+		$listOrder	=  $jinput->get('filter_order_Dir', 'ASC');
 		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))) {
 			$listOrder = 'ASC';
 		}
@@ -124,7 +125,7 @@ class MyMuseModelTracks extends JModelList
 		}
 
 		//over ride primary if we have filter request
-		$filter_order	= JRequest::getCmd('filter_order', '');
+		$filter_order	= $jinput->get('filter_order', '');
 		if ($filter_order){
 			if(!in_array($filter_order, $this->filter_fields)) {
 				$filter_order = 'category_name';
@@ -178,7 +179,7 @@ class MyMuseModelTracks extends JModelList
 			$this->setState('filter.subcategories', true);
 		}
 
-		$this->setState('layout', JRequest::getCmd('layout'));
+		$this->setState('layout', $jinput->get('layout'));
 	}
 
 	/**
@@ -745,6 +746,8 @@ class MyMuseModelTracks extends JModelList
     
 	public function getPagination()
 	{
+		$app 	= JFactory::getApplication();
+		$jinput = $app->input;
 		// Get a storage key.
 		$store = $this->getStoreId('getPagination');
 
@@ -777,11 +780,11 @@ class MyMuseModelTracks extends JModelList
         if($this->getState('list.searchword','')){
         	$page->setAdditionalUrlParam('searchword', $this->getState('list.searchword'));
         }
-        $Itemid           = JRequest::getVar('Itemid');
+        $Itemid           = $jinput->get('Itemid');
         if($Itemid){
         	$page->setAdditionalUrlParam('Itemid',$Itemid);
         }
-        $Itemid           = JRequest::getVar('Itemid');
+
         if($this->getState('list.limit')){
             $page->setAdditionalUrlParam('limit', $this->getState('list.limit'));
         }

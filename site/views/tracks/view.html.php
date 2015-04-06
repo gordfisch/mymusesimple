@@ -30,6 +30,7 @@ class mymuseViewtracks extends JViewLegacy
 		$app	= JFactory::getApplication();
 		$user	= JFactory::getUser();
 		$db     = JFactory::getDBO();
+		$jinput = $app->input;
 
 		// Get some data from the models
 		$state		= $this->get('State');
@@ -43,9 +44,9 @@ class mymuseViewtracks extends JViewLegacy
         
         $this->sortDirection    = $state->get('list.direction');
         $this->sortColumn       = $state->get('list.ordering');
-        $this->Itemid           = JRequest::getVar('Itemid');
-        $filter_alpha           = JRequest::getString('filter_alpha', '');
-        $this->task             = JRequest::getString('task', 'view');
+        $this->Itemid           = $jinput->get('Itemid');
+        $filter_alpha           = $jinput->get('filter_alpha', '', 'STRING');
+        $this->task             = $jinput->get('task', 'view', 'STRING');
 
 		// Check for layout override only if this is not the active menu item
 		// If it is the active menu item, then the view and category id will match
@@ -122,7 +123,7 @@ class mymuseViewtracks extends JViewLegacy
 				}
 			}
 			$this->assignRef ( 'alpha', $alpha );
-			$this->filterAlpha = JRequest::getVar ( 'filter_alpha', '' );
+			$this->filterAlpha = $jinput->get( 'filter_alpha', '' );
         }
 		$this->total = $this->get('Total');
 		$this->limit = $params->get('display_num', 10);
