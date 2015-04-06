@@ -41,8 +41,16 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		parent::__construct($subject, $config);
 	}
 	/**
+	 * Returns the payment form to be submitted by the user's browser.
 	 * PayPalPro Payment form
-	 * onBeforeMyMusePayment
+	 * 
+	 * @param object $shopper
+	 * @param object $store
+	 * @param object $order
+	 * @param object $params
+	 * @param int $Itemid
+	 * 
+	 * return string
 	 */
 	
 	public function onBeforeMyMusePayment($shopper, $store, $order, $params, $Itemid=1 )
@@ -155,7 +163,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			'CURRENCYCODE'		=> strtoupper($store->currency),
 			'DESC'				=> $store->title
 		);
-		
+		/**
 		$data = (object)array(
 				'URL'				=> $callbackUrl."&mode=init",
 				'NOTIFYURL'			=> $callbackUrl,
@@ -180,7 +188,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 				'CURRENCYCODE'		=> strtoupper($store->currency),
 				'DESC'				=> $store->title
 		);
-		
+		*/
 		//send individual items
 		$j = 0;
 		$data->ITEMS = 0;

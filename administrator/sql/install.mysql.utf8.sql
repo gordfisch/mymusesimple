@@ -1189,7 +1189,18 @@ INSERT IGNORE INTO `#__mymuse_state` (`id`, `country_id`, `state_name`, `state_3
 (470, 81, 'Sachsen-Anhalt', '', 'ST'),
 (471, 81, 'Schleswig-Holstein', '', 'SH'),
 (472, 81, 'Thüringen', '', 'TH'),
-(473, 82, 'Baden-Württemberg', NULL, 'BW');
+(473, 82, 'Baden-Württemberg', NULL, 'BW'),
+(474, 21, 'Antwerp', 'VAN', NULL),
+(475, 21, 'Limburg', 'VLI', NULL),
+(476, 21, 'Flemish Brabant', 'VBR', NULL),
+(477, 21, 'East Flanders', 'VOV', NULL),
+(478, 21, 'West Flanders', 'VWV', NULL),
+(479, 21, 'Hainaut', 'WHT', NULL),
+(480, 21, 'Walloon Brabant', 'WBR', NULL),
+(481, 21, 'Namur', 'WNA', NULL),
+(482, 21, 'Liège', 'WLG', NULL),
+(483, 21, 'Luxembourg', 'WLX', NULL),
+(484, 21, 'Brussels', 'BRU', NULL);
 
 -- --------------------------------------------------------
 -- 
