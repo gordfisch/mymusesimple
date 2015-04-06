@@ -24,13 +24,14 @@ class myMuseViewCart extends JViewLegacy
 	function display($tpl = null)
 	{
 		$params = MyMuseHelper::getParams();
+		$jinput = JFactory::getApplication()->input;
 		
-		$task		= JRequest::getVar('task', '');
+		$task	= $jinput->get('task', '', 'CMD');
+		
 		if($task == "notify"){
 			$this->notify();
 			exit;
 		}
-	
 		
 		if($task == "coupon"){
 			parent::display("coupon");
@@ -47,12 +48,10 @@ class myMuseViewCart extends JViewLegacy
 		$user			= JFactory::getUser();
 		$document		= JFactory::getDocument();
 		$dispatcher		= JDispatcher::getInstance();
+		
 
-		
 		$document->setTitle( JText::_('MYMUSE_SHOPPING_CART') );
-	
-		
-		$this->Itemid = JRequest::getVar("Itemid",'');
+		$this->Itemid = $jinput->get("Itemid",'');
 		
 		$this->assignRef('user'  , $user);
 		$this->assignRef('params', $params);
@@ -146,7 +145,7 @@ class myMuseViewCart extends JViewLegacy
 				break;
 				
 			case "vieworder":
-				$st 			= JRequest::getVar('st', '');
+				$st 			= $jinput->get('st', '');
 				$this->order 	= $order 		= $MyMuseShopper->order;
 				$order->waited 	= 0;
 
@@ -504,7 +503,7 @@ class myMuseViewCart extends JViewLegacy
                 $shopper->state         = $accparams->get('state');
             }
             $user_email 	= $user->email;
-			$task = JRequest::getVar('task','');
+			$task = $jinput->get('task','');
         	$this->assignRef('user'  , $user);
         	$this->assignRef('params', $params);
         	$this->assignRef('task', $task);

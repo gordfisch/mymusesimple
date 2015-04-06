@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="2.5.0" type="plugin" group="MYMUSE" method="upgrade">
+	<name>MyMuse Payment - PayPal Payments Pro (Express Checkout)</name>
+	<author>Gord Fisch</author>
+	<authorEmail>gord@arboreta.ca</authorEmail>
+	<authorUrl>http://www.arboreta.ca</authorUrl>
+	<copyright>Copyright (c)2015 Gord Fisch</copyright>
+	<license>GNU General Public License version 3, or later</license>
+	<creationDate>2015-04-05</creationDate>
+	<version>1.0</version>
+	<description>PLG_MYMUSE_PAYPALPROEXPRESS_DESCRIPTION</description>
+	<files>
+		<filename plugin="payment_paypalproexpress">payment_paypalproexpress.php</filename>
+		<folder>paypalproexpress</folder>
+	</files>
+	<languages folder="language">
+		<language tag="en-GB">en-GB/en-GB.plg_mymuse_payment_paypalproexpress.ini</language>
+		<language tag="en-GB">en-GB/en-GB.plg_mymuse_payment_paypalproexpress.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset name="basic">
+				<field name="title" type="text" size="50" default="" label="PLG_MYMUSE_PAYPALPROEXPRESS_TITLE_LABEL" description="PLG_MYMUSE_PAYPALPROEXPRESS_TITLE_DESC"/>
+				<field name="ppimage" type="text" size="50" default="" label="PLG_MYMUSE_PAYPALPROEXPRESS_PPIMAGE_LABEL" description="PLG_MYMUSE_PAYPALPROEXPRESS_PPIMAGE_DESC" />
+				<field type="spacer" />
+				<field name="surcharge" type="text" size="50" default="" label="PLG_MYMUSE_COMMON_SURCHARGE_LABEL" description="PLG_MYMUSE_COMMON_SURCHARGE_DESC"/>
+				<field type="spacer" />
+				<field name="apiuser" type="text" size="50" default="" label="PLG_MYMUSE_PAYPALPROEXPRESS_APIUSER_LABEL" description="PLG_MYMUSE_PAYPALPROEXPRESS_APIUSER_DESC"/>
+				<field name="apipw" type="text" size="50" default="" label="PLG_MYMUSE_PAYPALPROEXPRESS_APIPW_LABEL" description="PLG_MYMUSE_PAYPALPROEXPRESS_APIPW_DESC"/>
+				<field name="apisig" type="text" size="50" default="" label="PLG_MYMUSE_PAYPALPROEXPRESS_APISIG_LABEL" description="PLG_MYMUSE_PAYPALPROEXPRESS_APISIG_DESC"/>
+				<field type="spacer" />
+				<field name="sb_apiuser" type="text" size="50" default="" label="PLG_MYMUSE_PAYPALPROEXPRESS_SB_APIUSER_LABEL" description="PLG_MYMUSE_PAYPALPROEXPRESS_SB_APIUSER_DESC"/>
+				<field name="sb_apipw" type="text" size="50" default="" label="PLG_MYMUSE_PAYPALPROEXPRESS_SB_APIPW_LABEL" description="PLG_MYMUSE_PAYPALPROEXPRESS_SB_APIPW_DESC"/>
+				<field name="sb_apisig" type="text" size="50" default="" label="PLG_MYMUSE_PAYPALPROEXPRESS_SB_APISIG_LABEL" description="PLG_MYMUSE_PAYPALPROEXPRESS_SB_APISIG_DESC"/>
+				<field type="spacer" />
+				<field name="sandbox" type="radio" default="0" label="PLG_MYMUSE_PAYPALPROEXPRESS_SANDBOX_LABEL" description="PLG_MYMUSE_PAYPALPROEXPRESS_SANDBOX_DESC">
+				  <option value="0">JNo</option>
+				  <option value="1">JYes</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>

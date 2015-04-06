@@ -64,13 +64,20 @@ class plgMymuseShipping_Standard extends JPlugin
         $this->_plugin = JPluginHelper::getPlugin('mymuse', 'shipping_standard');
         $result = array();
         $j = 0;
-		for($i=1;$i<4;$i++){
+		for($i=1;$i<5;$i++){
             $param = "ship_".$i."_active";
             if($this->params->get($param)){
             	// see if countries match
             	$good = 0;
             	if($this->params->get("ship_all_countries_$i")){
-            		$good = 1;
+            		
+            		//see if there are exceptions
+            		if(isset($shopper->profile['country']) 
+            				&& in_array($shopper->profile['country'], $this->params->get("ship_countries_$i"))){
+            			//we have an exeption
+            		}else{
+            			$good = 1;
+            		}
             	}elseif(isset($shopper->profile['country']) && in_array($shopper->profile['country'], $this->params->get("ship_countries_$i"))){
             		$good = 1;
             	}
@@ -112,7 +119,7 @@ class plgMymuseShipping_Standard extends JPlugin
         $result = new JObject;
         $result->id = $shipmethodid;
         $carrier    = "ship_carrier_".$shipmethodid;
-        $method      = "ship_method_".$shipmethodid;
+        $method     = "ship_method_".$shipmethodid;
         $handling   = "ship_handling_".$shipmethodid;
         $additional = "ship_additional_".$shipmethodid;
         $result->ship_type          		= "Standard";
