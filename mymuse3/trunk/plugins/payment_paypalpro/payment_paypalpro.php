@@ -105,6 +105,9 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		}else{
 			$payer_email = $shopper->email;
 		}
+		if($payer_email == "guest@arboreta.ca"){
+			$payer_email = '';
+		}
 		
 		//custom field
 		$custom = 'custom=1&userid='.$shopper->id;
@@ -407,6 +410,8 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			if (! preg_match ( '/^Success/', $responseData ['ACK'] )) {
 				$result ['error'] = $responseData ['L_LONGMESSAGE0'];
 				$isValid = false;
+			}else{
+				$isValid = true;
 			}
 			
 			$orderid = '';
@@ -419,8 +424,14 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			}
 			sleep(8);
 		
-			$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalpaymentspro&orderid='.$orderid, false);
-			JFactory::getApplication()->redirect($thankyouUrl);
+			if(!$isValid ){
+				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalpaymentspro&orderid='.$orderid, false);
+				$msg = "Payment Failed: ".$result ['error'];
+			}else{
+				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalpaymentspro&orderid='.$orderid, false);
+				$msg = "";
+			}
+			JFactory::getApplication()->redirect($thankyouUrl, $msg);
 			return true;
 			exit ();
 		
