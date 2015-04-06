@@ -49,30 +49,29 @@ class plgMymusePreOrder extends JPlugin
 	 */
 	function onBeforeMyMuseCheckout(&$shopper, &$store, &$cart, &$params, &$Itemid )
 	{
-
-    $msg    = $this->params->get('my_msg');
-	$string = '';
-
-    if($this->params->get('which_min') == "number"){
-        if($cart['idx'] < $this->params->get('my_min')){
-            $string .= '$msg = "'.JText::_($msg).'";
-            JRequest::setVar("task","");
-            $this->setRedirect("index.php?option=com_mymuse&task=showcart", $msg);';
-        
-        }
-    }elseif($this->params->get('which_min') == "price"){
-        require_once( JPATH_COMPONENT.DS.'mymuse.class.php');
-        $MyMuseCart = MyMuse::getObject('cart','helpers');
-        $order = $MyMuseCart->buildOrder(false);
-        if($order->order_subtotal < $this->params->get('my_min')){
-            $string .= '$msg = "'.JText::_($msg).'";
-            JRequest::setVar("task","");
-            $this->setRedirect("index.php?option=com_mymuse&task=showcart", $msg);';
-        
-        }
-    }
-
-	return $string;
+		$msg = $this->params->get ( 'my_msg' );
+		$string = '';
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		
+		if ($this->params->get ( 'which_min' ) == "number") {
+			if ($cart ['idx'] < $this->params->get ( 'my_min' )) {
+				$string .= '$msg = "' . JText::_ ( $msg ) . '"';
+				$jinput->set( "task", "" );
+				$this->setRedirect( "index.php?option=com_mymuse&task=showcart", $msg );
+			}
+		} elseif ($this->params->get ( 'which_min' ) == "price") {
+			require_once (JPATH_COMPONENT . DS . 'mymuse.class.php');
+			$MyMuseCart = MyMuse::getObject ( 'cart', 'helpers' );
+			$order = $MyMuseCart->buildOrder ( false );
+			if ($order->order_subtotal < $this->params->get ( 'my_min' )) {
+				$string .= '$msg = "' . JText::_ ( $msg ) . '"';
+				$jinput->set( "task", "" );
+				$this->setRedirect( "index.php?option=com_mymuse&task=showcart", $msg );
+			}
+		}
+		
+		return $string;
 	
 	}
 } ?>

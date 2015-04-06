@@ -104,9 +104,11 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		if(preg_match('/^SUCCESS/', strtoupper($responseData['ACK']))) {
 			$data['URL'] = $this->getPaypalURL($responseData['TOKEN']);
 		} else {
-			$error_url = 'index.php?option='.JRequest::getCmd('option').
+			$jinput = JFactory::getApplication()->input;
+			
+			$error_url = 'index.php?option='.$jinput->get('option').
 				'&view=level&slug='.$level->slug.
-				'&layout='.JRequest::getCmd('layout','default');
+				'&layout='.$jinput->get('layout','default');
 			$error_url = JRoute::_($error_url,false);
 			JFactory::getApplication()->redirect($error_url,$responseData['L_LONGMESSAGE0'],'error');
 		}
