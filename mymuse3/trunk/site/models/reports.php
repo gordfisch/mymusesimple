@@ -87,17 +87,18 @@ class myMuseModelReports extends JmodelList
 	
 	function __construct(){
 		
-		$app = JFactory::getApplication();
-		$user   = JFactory::getUser();
-		$profile = $user->get('profile');
-		$catid = @$profile['category_owner'];
-		$this->_catid = (int)$catid;
-		$db	 = JFactory::getDbo();
+		$app 			= JFactory::getApplication();
+		$jinput 		= $app->input;
+		$user   		= JFactory::getUser();
+		$profile 		= $user->get('profile');
+		$catid 			= @$profile['category_owner'];
+		$this->_catid 	= (int)$catid;
+		$db	 			= JFactory::getDbo();
 		
-		$subid	= $app->getUserStateFromRequest( $this->context.'catid','catid','','int' );
+		$subid			= $app->getUserStateFromRequest( $this->context.'catid','catid','','int' );
 		
 		//what if they want a sub-cat of the parent
-		$subid = JRequest::getVar('catid',0);
+		$subid = $jinput->get('catid',0);
 		if($subid && $subid != $catid){
 			$this->_catid = $subid;
 		}

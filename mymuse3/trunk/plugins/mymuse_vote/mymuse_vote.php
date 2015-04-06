@@ -53,12 +53,15 @@ class plgMyMuseMymuse_Vote extends JPlugin
 		}
 		$html = '';
 
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
+		
 		if (isset($param) && $params->get('show_vote',0))
 		{
 			$rating = intval(@$row->rating);
 			$rating_count = intval(@$row->rating_count);
 
-			$view = JRequest::getString('view', '');
+			$view = $jinput->get('view', '', 'STRING');
 			$img = '';
 
 			// look for images in template if available

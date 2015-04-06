@@ -47,9 +47,7 @@ class MymuseControllerReports extends MymuseuseController
    
         if(!$ids = $db->loadObjectList()){
         	$jinput->set('not_auth','1');
-        	//JRequest::setVar( 'layout', 'no_auth');
-        }else{
-			//JRequest::setVar( 'layout', 'default');
+        	
         }
         
 		parent::display();

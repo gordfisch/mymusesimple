@@ -77,6 +77,8 @@ class PlgMymuseMymuse_socialshare extends JPlugin
 	function mymusesocialshare($item, $params, $limitstart) {
 		
 		$document = JFactory::getDocument();
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
 						
 		$ex_categories = $this->params->get('ex_categories', '');
 		if($ex_categories) {
@@ -121,10 +123,10 @@ class PlgMymuseMymuse_socialshare extends JPlugin
 		$document->addCustomTag( '<meta property="og:url" content="'.$link.'" />' );
 		//$document->addCustomTag( '<meta content="'.@strip_tags($item->text).'" property="og:description">' );
 		
-		$view = JRequest::getVar('view');
-		$layout = JRequest::getVar('layout');
-		$task = JRequest::getVar('task');
-		$option = JRequest::getVar('option');
+		$view = $jinput->get('view');
+		$layout = $jinput->get('layout');
+		$task = $jinput->get('task');
+		$option = $jinput->get('option');
 		
 		$righttoleft = $this->params->get('righttoleft');
 		$lang_fb = $this->params->get('lang_like');
