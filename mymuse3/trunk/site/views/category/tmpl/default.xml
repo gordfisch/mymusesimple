@@ -371,6 +371,7 @@
 				default="10"
 				description="MYMUSE_NUMBER_ITEMS_LIST_DESC"
 				label="MYMUSE_NUMBER_ITEMS_LIST_LABEL">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
 				<option value="5">J5</option>
 				<option value="10">J10</option>
 				<option value="15">J15</option>

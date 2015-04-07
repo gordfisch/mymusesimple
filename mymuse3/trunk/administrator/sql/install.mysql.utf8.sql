@@ -654,6 +654,16 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product_category_xref` (
 -- Dumping data for table `#__mymuse_product_category_xref`
 -- 
 
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `#__mymuse_product_recommend_xref`
+-- 
+CREATE TABLE IF NOT EXISTS `#__mymuse_product_recommend_xref` (
+  `product_id` int(11) NOT NULL DEFAULT '0',
+  `recommend_id` int(11) NOT NULL DEFAULT '0'
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
 
 -- --------------------------------------------------------
 

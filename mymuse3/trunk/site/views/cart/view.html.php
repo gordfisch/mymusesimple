@@ -64,8 +64,6 @@ class myMuseViewCart extends JViewLegacy
 		$footer 			= '';
 		$edit 				= true;
 		$currency 			= MyMuseHelper::getCurrency($MyMuseStore->_store->currency);
-		
-
 
 		// set the heading for the top of page
 		// find the order attached to the shopper object, or build it from session cart
@@ -192,6 +190,8 @@ class myMuseViewCart extends JViewLegacy
 				if($cart['idx'] > 0){
 					$this->order = $order 		= $MyMuseCart->buildOrder( $edit );
 					$order->show_checkout = 1;
+					$footer = $MyMuseCart->getRecommended();
+					
 				}
 				break;
 		}
