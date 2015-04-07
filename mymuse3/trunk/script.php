@@ -415,8 +415,16 @@ class com_mymuseInstallerScript
 			
 			$query = "UPDATE #__mymuse_country set plugin='paypal' WHERE country_name IN ($paypal_countries)";
 			$db->setQuery($query);
-			$db->query();
+			$db->query();	
+				
 		}
+		//add table for product recommendations
+		$query = "CREATE TABLE IF NOT EXISTS `#__mymuse_product_recommend_xref` (
+  		`product_id` int(11) NOT NULL DEFAULT '0',
+  		`recommend_id` int(11) NOT NULL DEFAULT '0'
+		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
+		$db->setQuery($query);
+		$db->query();
 		
 				// DEFAULT DOWNLOAD DIRECTORY
 				$name = JText::_("MYMUSE_MAKE_DOWNLOAD_DIR");
