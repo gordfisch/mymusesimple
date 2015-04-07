@@ -9,6 +9,29 @@
             	readonly="true" class="readonly"
              	description="JGLOBAL_FIELD_ID_DESC" 
          /> 
+         <field 
+				name="othercats" 
+				type="categorytree"
+				extension="com_mymuse"
+				label="MYMUSE_CATEGORIES_LABEL" 
+				description="JFIELD_CATEGORY_DESC"
+				class="inputbox" 	
+				multiple="true" 
+				size="8"
+				required="false"
+				
+		 />
+         
+         <field
+             	name="recommend"
+                type="producttree"
+                label="MYMUSE_PRODUCT_RECOMMEND_LABEL"
+                description="MYMUSE_PRODUCT_RECOMMEND_DESC"
+                class="inputbox"
+                size="10"
+                required="false"
+                multiple="true"
+          />
 
          <field
                 name="state"
@@ -70,18 +93,7 @@
 				multiple="false" 
 		/>
 		
-		<field 
-				name="othercats" 
-				type="categorytree"
-				extension="com_mymuse"
-				label="MYMUSE_CATEGORIES_LABEL" 
-				description="JFIELD_CATEGORY_DESC"
-				class="inputbox" 	
-				multiple="true" 
-				size="8"
-				required="false"
-				
-		/>
+
 		
 		<field
                 name="parentid"

@@ -71,9 +71,9 @@ class MyMuseCart {
 
     $catid 			= $jinput->get('catid',  0, 'INT');
     $parentid 		= $jinput->get('parentid',  0, 'INT');
-    $productid 		= $jinput->getArray('productid');
-    $quantity 		= $jinput->getArray('quantity');
-    $item_quantity 	= $jinput->getArray('item_quantity');
+    $productid 		= $jinput->get('productid',array(), 'ARRAY');
+    $quantity 		= $jinput->get('quantity',array(), 'ARRAY');
+    $item_quantity 	= $jinput->get('item_quantity',array(), 'ARRAY');
    // $Itemid = $jinput->get('Itemid',  0,'INT');
 
     $db	= JFactory::getDBO();   
@@ -225,8 +225,9 @@ class MyMuseCart {
     
     	$catid 		= $jinput->get('catid',  0, 'INT');
     	$parentid 	= $jinput->get('parentid',  0, 'INT');
-    	$productid 	= $jinput->getArray('productid');
-    	$quantity 	= $jinput->getArray('quantity');
+    	$productid 	= $jinput->get('productid',array(), 'ARRAY');
+    	$quantity 	= $jinput->get('quantity',array(), 'ARRAY');
+  
     	$Itemid 	= $jinput->get('Itemid',  0, 'INT');
 
  
@@ -689,7 +690,52 @@ class MyMuseCart {
 		return $order;
 	}
 	
-	
+	/**
+	 * getRecommended
+	 */
+	function getRecommended()
+	{
+		$db = JFactory::getDBO();
+		$prods = array();
+		$recommends = array();
+		for ($i=0;$i<$this->cart["idx"];$i++) {
+			if(isset($this->cart[$i]["coupon_id"])){
+				continue;
+			}
+			$query = "SELECT * FROM #__mymuse_product_recommend_xref 
+					WHERE product_id = '".$this->cart[$i]["product_id"]."'";
+			$db->setQuery($query);
+			if($res = $db->loadObjectList()){
+				foreach($res as $r){
+					$prods[] = $r->recommend_id;
+				}
+			}
+			for($i = 0; $i<count($prods); $i++){
+				$query = "SELECT * FROM #__mymuse_product
+					WHERE id = '".$prods[$i]."'";
+				$db->setQuery($query);
+				
+				$recommends[$i] = $db->loadObject();
+				// Build URL 
+				if($recommends[$i]->parentid){
+					$parent = new MymuseTableproduct($db);
+					$parent->load($recommends[$i]->parentid);
+					$recommends[$i]->parent = $parent;
+					$recommends[$i]->list_image = $recommends[$i]->parent->list_image;
+					$recommends[$i]->detail_image = $recommends[$i]->parent->detail_image;
+					$pid = $recommends[$i]->parentid;
+					$aid = $recommends[$i]->parent->catid;
+				} else {
+					$pid = $recommends[$i]->id;
+					$aid = $recommends[$i]->catid;
+				}
+				
+				$recommends[$i]->url = myMuseHelperRoute::getProductRoute ( $pid, $aid );
+				$recommends[$i]->cat_url = myMuseHelperRoute::getCategoryRoute ( $aid );
+			}
+		}
+		return $recommends;
+	}
 
 	
 	/**
@@ -762,5 +808,3 @@ class MyMuseCart {
 		return $row;
 	}
 }
-
-?>
