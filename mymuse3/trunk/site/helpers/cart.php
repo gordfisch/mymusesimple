@@ -710,6 +710,7 @@ class MyMuseCart {
 					$prods[] = $r->recommend_id;
 				}
 			}
+			
 			for($i = 0; $i<count($prods); $i++){
 				$query = "SELECT * FROM #__mymuse_product
 					WHERE id = '".$prods[$i]."'";
@@ -734,6 +735,7 @@ class MyMuseCart {
 				$recommends[$i]->cat_url = myMuseHelperRoute::getCategoryRoute ( $aid );
 			}
 		}
+
 		return $recommends;
 	}
 

@@ -48,7 +48,7 @@ class myMuseViewCart extends JViewLegacy
 		$user			= JFactory::getUser();
 		$document		= JFactory::getDocument();
 		$dispatcher		= JDispatcher::getInstance();
-		
+
 
 		$document->setTitle( JText::_('MYMUSE_SHOPPING_CART') );
 		$this->Itemid = $jinput->get("Itemid",'');
@@ -191,11 +191,10 @@ class myMuseViewCart extends JViewLegacy
 					$this->order = $order 		= $MyMuseCart->buildOrder( $edit );
 					$order->show_checkout = 1;
 					$footer = $MyMuseCart->getRecommended();
-					
 				}
 				break;
 		}
-
+		
 		// check for order
 		if(!isset($order->items) || !count($order->items)) {
 			//Hmm nothing to display...
@@ -203,7 +202,7 @@ class myMuseViewCart extends JViewLegacy
 			return false;
 		}
 
-		
+				
 		$this->assignRef('order', $order);
 		$this->assignRef('currency', $currency);
 		
@@ -221,8 +220,9 @@ class myMuseViewCart extends JViewLegacy
 		}
 
 		// display the cart part!
-		parent::display(); 
-
+		parent::display();
+		
+		
 		//display the shopper info, if we have one
 		if($heading && $user->get('id') > 0 && $user->get('name') != "Guest Buyer"){
 			parent::display("shopper_info"); 
@@ -294,6 +294,7 @@ class myMuseViewCart extends JViewLegacy
 		}
 	
 		// show the footer
+		
 		if($footer){
 			$this->assignRef('footer', $footer);
 			parent::display('checkout_footer');
@@ -313,6 +314,7 @@ class myMuseViewCart extends JViewLegacy
 		ini_set('log_errors', 1);
 		ini_set('error_log', JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'php_error' );
 		
+		$jinput = JFactory::getApplication()->input;
 		$params = MyMuseHelper::getParams();
 		
 
@@ -482,11 +484,13 @@ class myMuseViewCart extends JViewLegacy
         	$db	= JFactory::getDBO();
         	$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
         	$MyMuseShopper  =& MyMuse::getObject('shopper','models');
-			$query = "SELECT user_id FROM `#__mymuse_order` WHERE `order_number`='".$result['order_number']."'";
+			
+        	$query = "SELECT user_id FROM `#__mymuse_order` WHERE `order_number`='".$result['order_number']."'";
         	$db->setQuery($query);
         	$user_id = $db->loadResult();
+        	
         	$order 			= $MyMuseCheckout->getOrder($result['order_id']);
-        	$shopper 		=& $MyMuseShopper->getShopperByUser($user_id );
+        	$shopper 		= $MyMuseShopper->getShopperByUser($user_id );
         	$user 			= JFactory::getUser($user_id);
         	$currency 		= $order->order_currency;
         	$heading 		= Jtext::_('MYMUSE_THANK_YOU');
@@ -502,6 +506,7 @@ class myMuseViewCart extends JViewLegacy
                 $shopper->country       = $accparams->get('country');
                 $shopper->state         = $accparams->get('state');
             }
+           
             $user_email 	= $user->email;
 			$task = $jinput->get('task','');
         	$this->assignRef('user'  , $user);
@@ -602,10 +607,10 @@ class myMuseViewCart extends JViewLegacy
         	} else {
         		$debug = "Mail sent to $user_email";
         	}
-        	$debug .= print_r($mailer, true);
-        	if($params->get('my_debug')){
-        		MyMuseHelper::logMessage( $debug  );
-        	}
+        	//$debug .= print_r($mailer, true);
+        	//if($params->get('my_debug')){
+        	//	MyMuseHelper::logMessage( $debug  );
+        	//}
         	
             //$debug .= "user mail = $user_email\n\n";
             //$debug .= $message."\n\n";

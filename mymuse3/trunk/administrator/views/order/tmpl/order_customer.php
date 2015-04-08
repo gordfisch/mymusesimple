@@ -164,7 +164,7 @@ if($downloads && $order->order_status == "C"){
 									$shopper->region_name = $shopper->region;
 								}else{
 									$db = JFactory::getDBO();
-									$query = "SELECT * FROM #__mymuse_state WHERE $field='".$shopper->region."'";
+									$query = "SELECT * FROM #__mymuse_state WHERE id='".$shopper->region."'";
 									$db->setQuery($query);
 									if($row = $db->loadObject()){
 										$shopper->region_name = $row->state_name;

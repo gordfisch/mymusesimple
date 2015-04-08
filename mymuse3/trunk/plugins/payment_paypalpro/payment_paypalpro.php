@@ -11,8 +11,8 @@
 
 defined('_JEXEC') or die();
 
-//$Mymuseinclude = include_once JPATH_ADMINISTRATOR.'/components/com_akeebasubs/assets/Mymuse.php';
-//if(!$Mymuseinclude) { unset($Mymuseinclude); return; } else { unset($Mymuseinclude); }
+$Mymuseinclude = include_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/mymuse.php';
+if(!$Mymuseinclude) { unset($Mymuseinclude); return; } else { unset($Mymuseinclude); }
 
 class plgMyMusePayment_Paypalpro extends JPlugin
 {
@@ -291,30 +291,30 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		*/
 		function changeDynaList2( list, source, myarr, orig_key, orig_val) {
 		
-		var key = source.options[source.selectedIndex].value;
+			var key = source.options[source.selectedIndex].value;
 		
-		// empty the list
-		for (i in list.options.length) {
-		list.options[i] = null;
-		}
-		i = 0;
-		for (x in myarr) {
-		if (myarr[x][0] == key) {
-		opt = new Option();
-		opt.value = myarr[x][1];
-		opt.text = myarr[x][2];
+			// empty the list
+			for (i in list.options.length) {
+				list.options[i] = null;
+			}
+			i = 0;
+			for (x in myarr) {
+				if (myarr[x][0] == key) {
+					opt = new Option();
+					opt.value = myarr[x][1];
+					opt.text = myarr[x][2];
 		
-		if ((orig_key == key && orig_val == opt.value) || i == 0) {
-		opt.selected = true;
-		}
-		list.options[i++] = opt;
-		}
-		}
-		list.length = i;
+					if ((orig_key == key && orig_val == opt.value) || i == 0) {
+						opt.selected = true;
+					}
+					list.options[i++] = opt;
+				}
+			}
+			list.length = i;
 		}
 		
 		window.onload = function(e){
-		changeDynaList2(STATE, COUNTRYCODE, countrystates,0,0);
+			changeDynaList2(STATE, COUNTRYCODE, countrystates,0,0);
 		}
 		";
 		$document->addScriptDeclaration($js);
@@ -364,7 +364,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 						'http' => array (
 								'method' => 'POST',
 								'header' => "Connection: close\r\n" . "Content-Length: " . strlen ( $requestQuery ) . "\r\n",
-								'content' => $requestQuery 
+								'content' => $requestQuery
 						) 
 				) );
 				$responseQuery = file_get_contents ( $this->getPaymentURL (), false, $requestContext );
@@ -421,6 +421,56 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 				$orderid = $db->loadResult();
 			
 			}
+			
+			if($params->get('my_registration') == "no_reg"){
+				//update order notes
+				/**
+				 * update order
+				 [FIRSTNAME] => Gord
+				 [LASTNAME] => Fisch
+				 [EMAIL] => gord@arboreta.ca
+				 [STREET] => 5380 King Edward
+				 [STREET2] =>
+				 [CITY] => Montreal
+				 [COUNTRYCODE] => CA
+				 [STATE] => 62
+				 [ZIP] => H4V 2K1
+				 
+				 $fields = array(
+						'first_name',
+						'last_name',
+						'email',
+						'address1',
+						'address2',
+						'city',
+						'region_name',
+						'country',
+						'postal_code',
+						'phone',
+						'mobile',
+						'tos'
+				);
+				 */
+				$notes = '';
+				$notes .= "first_name=".$data['FIRSTNAME']."\n";
+				$notes .= "last_name=".$data['LASTNAME']."\n";
+				$notes .= "email=".urldecode($data['EMAIL'])."\n";
+				$notes .= "address1=".$data['STREET']."\n";
+				$notes .= "address2=".$data['STREET2']."\n";
+				$notes .= "city=".$data['CITY']."\n";
+				$notes .= "country=".$data['COUNTRYCODE']."\n";
+				$notes .= "region_name=".$data['STATE']."\n";
+				$notes .= "postal_code=".$data['ZIP']."\n";
+				
+				$query = "UPDATE #__mymuse_order SET notes='$notes' WHERE
+				order_number='".$data['INVNUM']."'";
+				$db->setQuery($query);
+				$db->query();
+			}
+			
+			
+			
+			
 			sleep(8);
 		
 			if(!$isValid ){
@@ -498,6 +548,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 						$custom[$key] = $val;
 					}
 				}
+
 			}
 			$result['order_number'] 		= $data['invoice'];
 			$result['payer_email'] 			= urldecode($data['payer_email']);
@@ -696,7 +747,8 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 				$result['order_found']  = 1;
 				$result['order_id'] 	= $this_order->id;
 				if (preg_match ("/Completed/", $result['payment_status'])) {
-					MyMuseHelper::orderStatusUpdate($result['order_id'] , "C");
+					$helper = new MyMuseHelper;
+					$helper->orderStatusUpdate($result['order_id'] , "C");
 					$date = date('Y-m-d h:i:s');
 					$debug .= "$date 5. order COMPLETED at PayPal, update in DB\n\n";
 					$result['order_completed'] = 1;

@@ -215,7 +215,7 @@ class MyMuseModelCategory extends JModelList
 		$limit = $this->getState('list.limit');
 		$app	= JFactory::getApplication('site');
 		$jinput = $app->input;
-		$itemid = $jinput('id', 0, INT) . ':' . $jinput('Itemid', 0, 'INT');
+		$itemid = $jinput->get('id', 0, INT) . ':' . $jinput->get('Itemid', 0, 'INT');
 		
 		if ($this->_products === null && $category = $this->getCategory()) {
 			$model = JModelList::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
@@ -272,7 +272,7 @@ class MyMuseModelCategory extends JModelList
 		$jinput 	= $app->input;
 		$db			= $this->getDbo();
 		$params		= $this->state->params;
-		$itemid		= $jinput('id', 0, 'INT') . ':' . $jinput('Itemid', 0, 'INT');
+		$itemid		= $jinput->get('id', 0, 'INT') . ':' . $jinput->get('Itemid', 0, 'INT');
 		$orderCol	= $app->getUserStateFromRequest('com_mymuse.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
 		$orderDirn	= $app->getUserStateFromRequest('com_mymuse.category.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
 		$orderby	= ' ';

@@ -93,7 +93,7 @@ class MyMuseModelTracks extends JModelList
 		$params = MyMuseHelper::getParams();
 
 		// List state information
-        $pk		= $jinput('id',0,'INT');
+        $pk		= $jinput->get('id',0,'INT');
         $this->setState('category.id', $pk);
         $this->setState('list.alpha', $jinput->get('filter_alpha', '', 'STRING'));
         $this->setState('list.prods', $jinput->get('products', '', 'STRING'));
