@@ -168,6 +168,14 @@ JHTML::_('behavior.tooltip');
 				<?php echo $this->form->getInput('id'); ?>
 				</div>
 			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('recommend'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('recommend'); ?>
+				</div>
+			</div>
 	</div>
 	</fieldset>
 		<fieldset class="adminform">
