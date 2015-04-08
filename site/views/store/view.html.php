@@ -192,7 +192,7 @@ class myMuseViewStore extends JViewLegacy
         	}
 
         	
-        	$db	= & JFactory::getDBO();
+        	$db	= JFactory::getDBO();
 			$query = "SELECT * FROM #__mymuse_order WHERE order_number = '$id'";
 			$db->setQuery($query);
 			$row = $db->loadObject();
@@ -358,6 +358,7 @@ class myMuseViewStore extends JViewLegacy
         	}
         	// All is good
         	$order_item->id = $order_item->product_id;
+        	$user = JFactory::getUser();
         	$this->_logDownload($user, $order_item);
 
         	exit;

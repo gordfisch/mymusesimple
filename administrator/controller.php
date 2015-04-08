@@ -85,7 +85,7 @@ class MymuseController extends JControllerLegacy
 		$store			= $MyMuseStore->getStore();
 		$params = new JRegistry( $store->params );
 	
-		$language =& JFactory::getLanguage();
+		$language = JFactory::getLanguage();
 		$extension = 'com_mymuse';
 		$base_dir = JPATH_SITE;
 

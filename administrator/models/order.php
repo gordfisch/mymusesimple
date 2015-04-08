@@ -230,6 +230,8 @@ class MymuseModelorder extends JModelAdmin
 					if($registry->get($field)){
 						$item->user->profile[$field] = $registry->get($field);
 						//echo $field." ".$registry->get($field)."<br />";
+					}else{
+						$item->user->profile[$field] = '';
 					}
 				}
 				if(isset($item->user->profile['first_name'])){

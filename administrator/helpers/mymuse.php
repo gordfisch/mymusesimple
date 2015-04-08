@@ -866,12 +866,11 @@ class MyMuseHelper extends JObject
 	 */
 	function orderStatusUpdate($id, $status="P")
 	{
-		$mainframe = JFactory::getApplication();
-		
+
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'order.php' );
 		$datenow 	= JFactory::getDate();
 		$params		= MyMuseHelper::getParams();
-		$db			=  JFactory::getDBO();
+		$db			= JFactory::getDBO();
 		$order 		= new MymuseTableorder($db);
 		$order->load( $id );
 		$order->order_status = $status;

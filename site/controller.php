@@ -182,6 +182,7 @@ class MyMuseController extends JControllerLegacy
 		}
 		$this->jinput->set('view', 'cart');
 		$this->jinput->set('layout', 'cart');
+
 		$this->display();
 	}
 	
