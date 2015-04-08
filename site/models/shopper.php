@@ -379,13 +379,14 @@ class mymuseModelShopper extends JModelForm
 	{
 		// Initialise variables.
 		$app	= JFactory::getApplication();
-		$user	=& JFactory::getUser();
+		$jinput = $app->input;
+		$user	= JFactory::getUser();
 		$fields = MyMuseHelper::getNoRegFields();
 		
 		if($user->get('id')){
 			return true;
 		}
-		$db	= & JFactory::getDBO();
+		$db	= JFactory::getDBO();
 		$query = "SELECT * FROM #__users WHERE username='buyer'";
 		$db->setQuery($query);
 		$guest = $db->loadObject();
@@ -403,7 +404,7 @@ class mymuseModelShopper extends JModelForm
 		
 
 		// Get the user data.
-		$requestData = $jinput->getArray('jform');
+		$requestData = $jinput->get('jform', array(), 'ARRAY');
 
 		// Validate the posted data.
 		$form	= $this->getForm();
