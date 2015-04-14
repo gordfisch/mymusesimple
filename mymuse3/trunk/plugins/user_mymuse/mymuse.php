@@ -313,6 +313,8 @@ class plgUserMyMuse extends JPlugin
 								SELECT id as value, state_name as region, country_id FROM #__mymuse_state 
 						ORDER by country_id, region";
 						$form->setFieldAttribute($field, 'query', $q, 'profile');
+						//$form->setFieldAttribute($field, 'data-placeholder', JText::_('MYMUSE_SELECT_REGION'), 'profile');
+						
 					}
 					if($field == 'country'){
 						//set default same as store
@@ -354,13 +356,14 @@ class plgUserMyMuse extends JPlugin
 * @param string The original item value that was selected
 */
 	function changeDynaList2( list, source, myarr, orig_key, orig_val) {
-
+		
 		var key = source.options[source.selectedIndex].value;
-
+				
 		// empty the list
 		for (i in list.options.length) {
 			list.options[i] = null;
 		}
+		list.length = 0;
 		i = 0;
 		for (x in myarr) {
 			if (myarr[x][0] == key) {
@@ -375,6 +378,9 @@ class plgUserMyMuse extends JPlugin
 			}
 		}
 		list.length = i;
+		jQuery(\"#jform_profile_region\").trigger(\"liszt:updated\");
+		jQuery(\"#jform_profile_region\").trigger(\"chosen:updated\");
+
 	}
 	
 	window.onload = function(e){ 

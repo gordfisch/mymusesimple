@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<extension version="2.5.0" type="plugin" group="MYMUSE" method="upgrade">
+<extension version="3.2.10" type="plugin" group="mymuse" method="upgrade">
 	<name>MyMuse Payment - PayPal Payments Pro (Express Checkout)</name>
 	<author>Gord Fisch</author>
 	<authorEmail>gord@arboreta.ca</authorEmail>

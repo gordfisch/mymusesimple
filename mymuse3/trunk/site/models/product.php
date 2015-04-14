@@ -457,7 +457,7 @@ class MyMuseModelProduct extends JModelItem
 								$flash .= '<!-- Begin VIDEO Player -->';
 								$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
 								
-								if(is_array($results) && $results[0] != ''){
+								if(is_array($results) && isset($results[0]) && $results[0] != ''){
 									$flash .= $results[0];
 								}
 								$flash .= '<!-- End Player -->';

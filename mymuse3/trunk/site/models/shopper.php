@@ -64,6 +64,7 @@ class mymuseModelShopper extends JModelForm
 
 		
 		// Lets load the data if it doesn't already exist
+
         if (empty( $this->_shopper ))
         {
         	$params = MyMuseHelper::getParams();
@@ -115,7 +116,7 @@ class mymuseModelShopper extends JModelForm
 				$this->_shopper->user_id = $user->get('id');
 				$this->_shopper->perms = 1;
 				$profile = $user->get('profile');
-				$this->loadProfile($user);
+				//$this->loadProfile($user);
 
 				if(!$profile){
 					//try to load their profile
@@ -452,6 +453,7 @@ class mymuseModelShopper extends JModelForm
 		
 		//put values into user
 		$post = $jinput->post->getArray();
+	
 		if(isset($post['jform']['profile']['region']) && !isset($post['jform']['profile']['region_name']) ){
 			$db = JFactory::getDBO();
 		
@@ -473,7 +475,7 @@ class mymuseModelShopper extends JModelForm
 				$user->set('name',@$post['jform']['profile']['first_name']." ".@$post['jform']['profile']['last_name']);
 			}
 		}
-		
+
 		$session = JFactory::getSession();
 		$session->set('user', $user);
 		

@@ -231,8 +231,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		//}
 		
 		//make country select
-		$query = 'SELECT country_2_code as value,  country_name AS text FROM #__mymuse_country WHERE 
-		plugin LIKE "%paypal%"';
+		$query = 'SELECT country_2_code as value,  country_name AS text FROM #__mymuse_country';
 		$db->setQuery($query);
 		$countries = $db->loadObjectList();
 	
