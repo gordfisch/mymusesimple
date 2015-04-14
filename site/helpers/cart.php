@@ -651,7 +651,7 @@ class MyMuseCart {
 		}else{
 			$order_taxable = $order->order_subtotal;
 		}
-		$order_tax = $MyMuseCheckout->calc_order_tax($order_taxable);
+		$order_tax = $MyMuseCheckout->calc_order_tax($order);
 
 		$order->tax_array = array();
 		while(list($key,$val) = each($order_tax)){
@@ -705,35 +705,39 @@ class MyMuseCart {
 			$query = "SELECT * FROM #__mymuse_product_recommend_xref 
 					WHERE product_id = '".$this->cart[$i]["product_id"]."'";
 			$db->setQuery($query);
-			if($res = $db->loadObjectList()){
+			$res = $db->loadObjectList();
+			if(count($res)){
 				foreach($res as $r){
 					$prods[] = $r->recommend_id;
 				}
 			}
 			
-			for($i = 0; $i<count($prods); $i++){
-				$query = "SELECT * FROM #__mymuse_product
+		}
+		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'product.php');
+			
+		for($i = 0; $i<count($prods); $i++){
+		
+			$query = "SELECT * FROM #__mymuse_product
 					WHERE id = '".$prods[$i]."'";
-				$db->setQuery($query);
-				
-				$recommends[$i] = $db->loadObject();
-				// Build URL 
-				if($recommends[$i]->parentid){
-					$parent = new MymuseTableproduct($db);
-					$parent->load($recommends[$i]->parentid);
-					$recommends[$i]->parent = $parent;
-					$recommends[$i]->list_image = $recommends[$i]->parent->list_image;
-					$recommends[$i]->detail_image = $recommends[$i]->parent->detail_image;
-					$pid = $recommends[$i]->parentid;
-					$aid = $recommends[$i]->parent->catid;
-				} else {
-					$pid = $recommends[$i]->id;
-					$aid = $recommends[$i]->catid;
-				}
-				
-				$recommends[$i]->url = myMuseHelperRoute::getProductRoute ( $pid, $aid );
-				$recommends[$i]->cat_url = myMuseHelperRoute::getCategoryRoute ( $aid );
+			$db->setQuery($query);
+		
+			$recommends[$i] = $db->loadObject();
+			// Build URL
+			if($recommends[$i]->parentid){
+				$parent = new MymuseTableproduct($db);
+				$parent->load($recommends[$i]->parentid);
+				$recommends[$i]->parent = $parent;
+				$recommends[$i]->list_image = $recommends[$i]->parent->list_image;
+				$recommends[$i]->detail_image = $recommends[$i]->parent->detail_image;
+				$pid = $recommends[$i]->parentid;
+				$aid = $recommends[$i]->parent->catid;
+			} else {
+				$pid = $recommends[$i]->id;
+				$aid = $recommends[$i]->catid;
 			}
+		
+			$recommends[$i]->url = myMuseHelperRoute::getProductRoute ( $pid, $aid );
+			$recommends[$i]->cat_url = myMuseHelperRoute::getCategoryRoute ( $aid );
 		}
 
 		return $recommends;

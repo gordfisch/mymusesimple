@@ -519,25 +519,40 @@ class MyMuseCheckout
 	 * @param object $store
 	 * @return array
 	 */
-	function calc_order_tax($order_subtotal) {
+	function calc_order_tax($order) {
 		 
 		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
 		$shopper 		=& $MyMuseShopper->getShopper();
 		$params 		= MyMuseHelper::getParams();
+		$order_subtotal = $order->order_subtotal;
+		$MyMuseStore  	=& MyMuse::getObject('store','models');
+		$store 			= $MyMuseStore->getStore();
 
 		$taxes = array();
-
-		// GET STORE STATE,COUNTRY
-		$store_state         = $params->get('province');
-		$store_country        = $params->get('country');
-
+	
 		// GET USER STATE,COUNTRY
 		if(!isset($shopper->profile['country'])){
 			return $taxes;
 		}
-		 
+		
+		// GET STORE STATE,COUNTRY
+		$store_state         = $params->get('province');
+		$store_country        = $params->get('country');
+
 		$user_state = isset($shopper->profile['region'])? $shopper->profile['region'] : 'unknown';
 		$user_country = isset($shopper->profile['country'])? $shopper->profile['country'] : "unkown";
+		
+		//for European taxes, break totals up into downloadable and physical
+		$total_physical = 0;
+		$total_downloadable = 0;
+		foreach($order->items as $item) {
+			if($item->product_physical){
+				$total_physical += $item->product_item_subtotal;
+			}else{
+				$total_downloadable += $item->product_item_subtotal;
+			}
+			
+		}
 
 		$taxes = array();
 		$q = "SELECT t.*, c.country_name, s.state_name FROM #__mymuse_tax_rate as t

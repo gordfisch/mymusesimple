@@ -215,7 +215,7 @@ class MyMuseModelCategory extends JModelList
 		$limit = $this->getState('list.limit');
 		$app	= JFactory::getApplication('site');
 		$jinput = $app->input;
-		$itemid = $jinput->get('id', 0, INT) . ':' . $jinput->get('Itemid', 0, 'INT');
+		$itemid = $jinput->get('id', 0, 'INT') . ':' . $jinput->get('Itemid', 0, 'INT');
 		
 		if ($this->_products === null && $category = $this->getCategory()) {
 			$model = JModelList::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
