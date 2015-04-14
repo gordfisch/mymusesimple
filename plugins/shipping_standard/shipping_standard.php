@@ -164,7 +164,7 @@ class plgMymuseShipping_Standard extends JPlugin
 			$shipping_total = sprintf("%.2f", $shipping_total);
 
 		}
-		echo $this->params->get('max_shipping');
+
 		if($this->params->get('max_shipping') > 0.00)
 			if(round($order->order_subtotal,2) > round($this->params->get('max_shipping'), 2)){ 
 			$shipping_total = 0.00; 
