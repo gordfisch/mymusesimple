@@ -63,8 +63,10 @@ class plgMymuseShipping_Standard extends JPlugin
 		// loading plugin parameters
         $this->_plugin = JPluginHelper::getPlugin('mymuse', 'shipping_standard');
         $result = array();
+
         $j = 0;
 		for($i=1;$i<5;$i++){
+
             $param = "ship_".$i."_active";
             if($this->params->get($param)){
             	// see if countries match
@@ -82,7 +84,6 @@ class plgMymuseShipping_Standard extends JPlugin
             		$good = 1;
             	}
            
-            	
             	if($good){
                 $result[$j] 	= new JObject;
 					$result [$j]->id = $i;
@@ -100,6 +101,7 @@ class plgMymuseShipping_Standard extends JPlugin
             	}
             }
         }
+ 
 		return $result;
 	
 	}
@@ -161,6 +163,11 @@ class plgMymuseShipping_Standard extends JPlugin
 			$shipping_total = $shipMethod->ship_handling_charge + $remainder * $shipMethod->ship_handling_additional;
 			$shipping_total = sprintf("%.2f", $shipping_total);
 
+		}
+		echo $this->params->get('max_shipping');
+		if($this->params->get('max_shipping') > 0.00)
+			if(round($order->order_subtotal,2) > round($this->params->get('max_shipping'), 2)){ 
+			$shipping_total = 0.00; 
 		}
 
 		return $shipping_total;

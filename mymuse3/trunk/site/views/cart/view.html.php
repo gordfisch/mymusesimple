@@ -82,7 +82,6 @@ class myMuseViewCart extends JViewLegacy
 				
 			case "shipping":
 				$this->order = $order 		= $MyMuseCart->buildOrder( $edit );
-			
 				if(isset($order->need_shipping) && $order->need_shipping){
 					$heading 	= Jtext::_('MYMUSE_SHIPPING');
 					$message 	= Jtext::_('MYMUSE_CHOOSE_SHIPPING_METHOD');
