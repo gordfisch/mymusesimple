@@ -18,6 +18,12 @@
 	</files>
 	<config>
 		<fields name="params">
+		<fieldset name="OVERALL">
+			<field name="max_shipping" type="text" size="35" default="0.00" 
+			label="MYMUSE_MAX_SHIPPING_LABEL" 
+			description="MYMUSE_MAX_SHIPPING_DESC"
+		/>
+		</fieldset>
 			<fieldset name="SHIPPER1">
 			
 		<field name="ship_1_active" type="radio" default="1" 

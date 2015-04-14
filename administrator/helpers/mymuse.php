@@ -365,6 +365,7 @@ class MyMuseHelper extends JObject
 		$str = "";
 		if($amount == 0.00 || $amount == 0){
 			$str = JText::_('-');
+			$str = '0.00';
 			return $str;
 		}
 		if($params->get('my_currency_separator') == "" || $params->get('my_currency_separator') == "space" ){
