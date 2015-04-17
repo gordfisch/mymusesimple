@@ -14,23 +14,10 @@ defined('_JEXEC') or die('Restricted access');
 $shopper 	= $this->shopper;
 $params 	= $this->params;
 if($params->get('my_registration') == "no_reg"){
-	$fields = array(
-			'first_name',
-			'last_name',
-			'email',
-			'address1',
-			'address2',
-			'city',
-			'region_name',
-			'country',
-			'postal_code',
-			'phone',
-			'mobile',
-			'tos'
-	);
+	$fields = MyMuseHelper::getNoRegFields();
 
 	foreach($fields as $field){
-		if(isset($shopper->$field) && $shopper->$field != ''){
+		if(!isset($shopper->profile[$field]) && isset($shopper->$field) && $shopper->$field != ''){
 			$shopper->profile[$field] = $shopper->$field;
 		}
 	}

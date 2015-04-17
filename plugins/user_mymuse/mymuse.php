@@ -254,19 +254,7 @@ class plgUserMyMuse extends JPlugin
 		JForm::addFormPath(dirname(__FILE__).'/profiles');
 		$form->loadFile('profile', false);
 
-		$fields = array(
-			'address1',
-			'address2',
-			'city',
-			'region',
-			'country',
-			'postal_code',
-			'phone',
-			'mobile',
-			'fax',
-			'shopper_group',
-			'category_owner'
-		);
+		$fields = MyMuseHelper::getNoRegFields();
 		
 		$tosarticle = $this->params->get('register_tos_article');
 		$tosenabled = $this->params->get('register-require_tos', 0);

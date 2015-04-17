@@ -646,11 +646,7 @@ class MyMuseCart {
 		}
 
 		//TAXES
-		if ($params->get('my_tax_shipping') && isset($order->order_shipping->cost)) {
-			$order_taxable = $order->order_subtotal + $order->order_shipping->cost;
-		}else{
-			$order_taxable = $order->order_subtotal;
-		}
+		
 		$order_tax = $MyMuseCheckout->calc_order_tax($order);
 
 		$order->tax_array = array();

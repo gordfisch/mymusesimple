@@ -197,20 +197,7 @@ class MyMuseCheckout
 		
 
 		if($params->get('my_registration') == "no_reg"){
-			$fields = array(
-					'first_name',
-					'last_name',
-					'email',
-					'address1',
-					'address2',
-					'city',
-					'region_name',
-					'country',
-					'postal_code',
-					'phone',
-					'mobile',
-					'tos'
-			);
+			$fields = MyMuseHelper::getNoRegFields();
 			$order->notes = '';
 			foreach($fields as $field){
 				if(isset($shopper->$field)){
@@ -513,10 +500,9 @@ class MyMuseCheckout
 
 	/**
 	 * calc_order_tax
+	 * Did I mention that I hate taxes?
 	 *
-	 * @param float $order_subtotal
-	 * @param object $shopper
-	 * @param object $store
+	 * @param object $order
 	 * @return array
 	 */
 	function calc_order_tax($order) {
@@ -527,10 +513,17 @@ class MyMuseCheckout
 		$order_subtotal = $order->order_subtotal;
 		$MyMuseStore  	=& MyMuse::getObject('store','models');
 		$store 			= $MyMuseStore->getStore();
+		$taxes = array();
+		
+		if ($params->get('my_tax_shipping') && isset($order->order_shipping->cost)) {
+			$order_taxable = $order->order_subtotal + $order->order_shipping->cost;
+		}else{
+			$order_taxable = $order->order_subtotal;
+		}
 
 		$taxes = array();
 	
-		// GET USER STATE,COUNTRY
+		// No profile?
 		if(!isset($shopper->profile['country'])){
 			return $taxes;
 		}
@@ -539,10 +532,20 @@ class MyMuseCheckout
 		$store_state         = $params->get('province');
 		$store_country        = $params->get('country');
 
+		// GET USER STATE,COUNTRY
 		$user_state = isset($shopper->profile['region'])? $shopper->profile['region'] : 'unknown';
 		$user_country = isset($shopper->profile['country'])? $shopper->profile['country'] : "unkown";
 		
-		//for European taxes, break totals up into downloadable and physical
+		// for European taxes, are shopper and store both in EU? Both in same country?
+		// break totals up into downloadable and physical
+		// Get country 3 code
+		$query = "SELECT country_3_code FROM #__mymuse_country WHERE 
+				country_2_code='".$store_country."'
+						AND bloc ='EU'";
+		$this->_db->setQuery($query);
+		$store_country_3_code = $this->_db->loadResult();
+		$store_country = $store_country_3_code? $store_country_3_code : $store_country;
+		
 		$total_physical = 0;
 		$total_downloadable = 0;
 		foreach($order->items as $item) {
@@ -553,8 +556,14 @@ class MyMuseCheckout
 			}
 			
 		}
-
-		$taxes = array();
+		echo "store_country = $store_country<br />user_country = $user_country<br />";
+		echo "total_physical = $total_physical<br />total_downloadable = $total_downloadable<br />";
+		
+		
+		
+		
+		
+		
 		$q = "SELECT t.*, c.country_name, s.state_name FROM #__mymuse_tax_rate as t
 		LEFT JOIN #__mymuse_country as c ON t.country = c.country_3_code
 		LEFT JOIN #__mymuse_state as s ON s.id = t.province
@@ -563,6 +572,7 @@ class MyMuseCheckout
 		$regex = TAX_REGEX;
 
 		if($tax_rates = $this->_db->loadObjectList()){
+			print_pre($tax_rates);
 			$temp_tax = 0;
 			foreach($tax_rates as $rate){
 				$name = preg_replace("/$regex/","_",$rate->tax_name);
@@ -605,24 +615,31 @@ class MyMuseCheckout
 	 * @param float price
 	 * @return mixed float on success or false
 	 */
-	function addTax($price=0)
+	static function addTax($price=0)
 	{
-		$db			= JFactory::getDBO();
+		
 		if(!$price){
 			return false;
 		}
+		$db	= JFactory::getDBO();
+		$params = MyMuseHelper::getParams();
+		$query = "SELECT country_3_code FROM #__mymuse_country WHERE country_2_code='".$params->get('country')."'";
+		$db->setQuery($query);
+		$country_3 = $db->loadResult();
 		$new_price = $price;
 		$taxes = array();
-		$q = "SELECT * FROM #__mymuse_tax_rate ORDER BY ordering";
-		$db->setQuery($q);
+		$query = "SELECT tax_rate FROM #__mymuse_tax_rate WHERE state = '1' 
+		AND country='".$country_3."'";
+		//echo $query;
+		$db->setQuery($query);
 		$regex = TAX_REGEX;
 
-		if($tax_rates = $db->loadObjectList()){
+		if($tax_rate = $db->loadResult()){
 			$temp_tax = 0;
-			foreach($tax_rates as $rate){
-				$temp_tax = $price * $rate->tax_rate;
+			
+				$temp_tax = $price * $tax_rate;
 				$new_price += $temp_tax;
-			}
+			
 		}
 		$new_price = round($new_price,2);
 		return $new_price;

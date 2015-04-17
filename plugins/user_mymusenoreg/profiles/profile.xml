@@ -113,6 +113,16 @@
 			/>
 
 			<field
+				name="vat_number"
+				type="text"
+				id="vat_number"
+				description="MYMUSE_USER_PROFILE_FIELD_VAT_NUMBER_DESC"
+				filter="string"
+				label="MYMUSE_USER_PROFILE_FIELD_VAT_NUMBER_LABEL"
+				message="MYMUSE_USER_PROFILE_FIELD_VAT_NUMBER_MESSAGE"
+				size="50"
+			/>
+			<field
 				name="phone"
 				type="tel"
 				id="phone"
