@@ -600,6 +600,7 @@ class MyMuseHelper extends JObject
 				'region_name',
 				'country',
 				'postal_code',
+				'vat_number',
 				'phone',
 				'mobile',
 				'tos'

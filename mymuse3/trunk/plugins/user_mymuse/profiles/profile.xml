@@ -78,6 +78,17 @@ UNION SELECT country_3_code as value, country_name as country FROM #__mymuse_cou
 				message="MYMUSE_USER_PROFILE_FIELD_POSTAL_CODE_MESSAGE"
 				size="30"
 			/>
+			
+			<field
+				name="vat_number"
+				type="text"
+				id="vat_number"
+				description="MYMUSE_USER_PROFILE_FIELD_VAT_NUMBER_DESC"
+				filter="string"
+				label="MYMUSE_USER_PROFILE_FIELD_VAT_NUMBER_LABEL"
+				message="MYMUSE_USER_PROFILE_FIELD_VAT_NUMBER_MESSAGE"
+				size="50"
+			/>
 
 			<field
 				name="phone"
