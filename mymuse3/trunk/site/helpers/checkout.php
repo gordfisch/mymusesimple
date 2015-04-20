@@ -511,8 +511,7 @@ class MyMuseCheckout
 		$shopper 		=& $MyMuseShopper->getShopper();
 		$params 		= MyMuseHelper::getParams();
 		$order_subtotal = $order->order_subtotal;
-		$MyMuseStore  	=& MyMuse::getObject('store','models');
-		$store 			= $MyMuseStore->getStore();
+
 		$taxes = array();
 		
 		if ($params->get('my_tax_shipping') && isset($order->order_shipping->cost)) {
@@ -528,84 +527,125 @@ class MyMuseCheckout
 			return $taxes;
 		}
 		
-		// GET STORE STATE,COUNTRY
-		$store_state         = $params->get('province');
-		$store_country        = $params->get('country');
-
-		// GET USER STATE,COUNTRY
-		$user_state = isset($shopper->profile['region'])? $shopper->profile['region'] : 'unknown';
-		$user_country = isset($shopper->profile['country'])? $shopper->profile['country'] : "unkown";
-		
-		// for European taxes, are shopper and store both in EU? Both in same country?
-		// break totals up into downloadable and physical
-		// Get country 3 code
-		$query = "SELECT country_3_code FROM #__mymuse_country WHERE 
-				country_2_code='".$store_country."'
-						AND bloc ='EU'";
-		$this->_db->setQuery($query);
-		$store_country_3_code = $this->_db->loadResult();
-		$store_country = $store_country_3_code? $store_country_3_code : $store_country;
-		
-		$total_physical = 0;
-		$total_downloadable = 0;
-		foreach($order->items as $item) {
-			if($item->product_physical){
-				$total_physical += $item->product_item_subtotal;
-			}else{
-				$total_downloadable += $item->product_item_subtotal;
-			}
-			
-		}
-		echo "store_country = $store_country<br />user_country = $user_country<br />";
-		echo "total_physical = $total_physical<br />total_downloadable = $total_downloadable<br />";
-		
-		
-		
-		
-		
-		
+		//get tax rates
 		$q = "SELECT t.*, c.country_name, s.state_name FROM #__mymuse_tax_rate as t
 		LEFT JOIN #__mymuse_country as c ON t.country = c.country_3_code
 		LEFT JOIN #__mymuse_state as s ON s.id = t.province
 		ORDER BY ordering";
 		$this->_db->setQuery($q);
 		$regex = TAX_REGEX;
-
+		
 		if($tax_rates = $this->_db->loadObjectList()){
-			print_pre($tax_rates);
-			$temp_tax = 0;
-			foreach($tax_rates as $rate){
-				$name = preg_replace("/$regex/","_",$rate->tax_name);
-				$taxes[$name] = 0;
-
-				// APPLIES TO ALL
-				if($rate->tax_applies_to == "C" &&
-						($user_country == $rate->country || strtolower($user_country) == strtolower($rate->country_name))){
-					$temp_tax = $order_subtotal * $rate->tax_rate;
-					$taxes[$name] += $temp_tax;
-				}
-
-				// APPLIES TO A STATE/REGION
-				if($rate->tax_applies_to == "S" &&
-						($user_state == $rate->province || strtolower($user_state) == strtolower($rate->state_name)) ){
-					if($rate->compounded == "1"){
-						$order_subtotal += $temp_tax;
+			//we have rates
+		}else{
+			//we have no rates
+			return $taxes;
+		}
+		
+		// GET USER STATE,COUNTRY, BLOC
+		$user_state 	= isset($shopper->profile['region'])? $shopper->profile['region'] : 'unknown';
+		$user_country 	= isset($shopper->profile['country'])? $shopper->profile['country'] : "unkown";
+		$user_bloc 		= '';
+		
+		if($user_country != 'unknown'){
+			$query = "SELECT bloc FROM #__mymuse_country WHERE country_3_code='$user_country'";
+			$this->_db->setQuery($query);
+			$user_bloc = $this->_db->loadResult();
+		}
+		
+		// GET STORE STATE,COUNTRY, BLOC
+		$store_state	= $params->get('province');
+		$store_country	= $params->get('country');
+		
+		$query = "SELECT * FROM #__mymuse_country WHERE country_2_code='$store_country'";
+		$this->_db->setQuery($query);
+		$store_country_res 		= $this->_db->loadObject();
+		$store_country_3_code 	= $store_country_res->country_3_code;
+		$store_bloc 			= $store_country_res->bloc;
+		
+		
+		
+		// for European taxes, are shopper and store both in EU? Both in same country?
+		// For digital goods, you must now charge VAT based on the buyer's country,
+		// break totals up into downloadable and physical
+		if($store_bloc == 'EU' && $user_bloc == 'EU'){
+			//do euro tax
+			//case 1: same country, always charge VAT
+			if($store_country_3_code == $user_country){
+				//same country
+				//we will use the regular calculation below
+			
+			}elseif(isset($shopper->profile['vat_number']) && $shopper->profile['vat_number'] != ''){
+				//different country within union but has VAT Number so no tax
+				$taxes['VAT Exempt'] = 0.00;
+				return($taxes);
+			}else{
+				$total_physical = 0;
+				$total_downloadable = 0;
+				foreach($order->items as $item) {
+					if($item->product_physical){
+						$total_physical += $item->product_item_subtotal;
+					}else{
+						$total_downloadable += $item->product_item_subtotal;
 					}
-					$temp_tax = $order_subtotal * $rate->tax_rate;
-					$taxes[$name] += $temp_tax;
 				}
-			}
-			 
-			reset($tax_rates);
-			foreach($tax_rates as $rate){
-				$name = preg_replace("/$regex/","_",$rate->tax_name);
-				if ($taxes[$name] == 0){
-					unset($taxes[$name]);
-				}else{
-					$taxes[$name] = round($taxes[$name],2);
+				$temp_tax = 0;
+				foreach($tax_rates as $rate){
+					$name = preg_replace("/$regex/","_",$rate->tax_name);
+					$taxes[$name] = 0;
+					if($rate->country == $user_country){
+						//downloadables
+						$temp_tax = $total_downloadable * $rate->tax_rate;
+						$taxes[$name] += $temp_tax;
+						$taxes[$name] = round($taxes[$name],2);
+					}elseif($rate->country == $store_country_3_code){
+						//physical items
+						$temp_tax = $total_physical * $rate->tax_rate;
+						$taxes[$name] += $temp_tax;
+						$taxes[$name] = round($taxes[$name],2);
+					}
+					if ($taxes[$name] == 0){
+						unset($taxes[$name]);
+					}
 				}
+				return $taxes;
 			}
 		}
+		
+		//regular calculation
+		$temp_tax = 0;
+		foreach($tax_rates as $rate){
+			$name = preg_replace("/$regex/","_",$rate->tax_name);
+			$taxes[$name] = 0;
+
+			// APPLIES TO ALL
+			if($rate->tax_applies_to == "C" &&
+					($user_country == $rate->country || strtolower($user_country) == strtolower($rate->country_name))){
+				$temp_tax = $order_subtotal * $rate->tax_rate;
+				$taxes[$name] += $temp_tax;
+			}
+
+			// APPLIES TO A STATE/REGION
+			if($rate->tax_applies_to == "S" &&
+					($user_state == $rate->province || strtolower($user_state) == strtolower($rate->state_name)) ){
+				if($rate->compounded == "1"){
+					$order_subtotal += $temp_tax;
+				}
+				$temp_tax = $order_subtotal * $rate->tax_rate;
+				$taxes[$name] += $temp_tax;
+			}
+		}
+
+		reset($tax_rates);
+		foreach($tax_rates as $rate){
+			$name = preg_replace("/$regex/","_",$rate->tax_name);
+			if ($taxes[$name] == 0){
+				unset($taxes[$name]);
+			}else{
+				$taxes[$name] = round($taxes[$name],2);
+			}
+		}
+		
 		return($taxes);
 	}
 

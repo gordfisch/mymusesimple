@@ -74,7 +74,7 @@ class myMuseViewCart extends JViewLegacy
 				$this->order = $order 		= $MyMuseCart->buildOrder( $edit );
 				$heading 	= Jtext::_('MYMUSE_CHECKOUT');
 				$message 	= Jtext::_('MYMUSE_MAKE_ANY_FINAL_CHANGES');
-				if(isset($order)){
+				if(isset($order) && is_object($order)){
 					$order->show_checkout = 0;
 					$order->show_summary  = 0;
 				}

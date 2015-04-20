@@ -410,7 +410,7 @@ class mymuseModelShopper extends JModelForm
 		// Validate the posted data.
 		$form	= $this->getForm();
 		if (!$form) {
-			JError::raiseError(500, $model->getError());
+			JError::raiseError(500, $this->getError());
 			return false;
 		}
 		// Save the data in the session.
