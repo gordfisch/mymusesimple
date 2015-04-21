@@ -698,8 +698,16 @@ class MyMuseCart {
 			if(isset($this->cart[$i]["coupon_id"])){
 				continue;
 			}
+			$query = "SELECT parentid FROM #__mymuse_product
+					WHERE id = '".$this->cart[$i]["product_id"]."'";
+			$db->setQuery($query);
+			if($p = $db->loadResult()){
+				$productid = $p;
+			}else{
+				$productid = $this->cart[$i]["product_id"];
+			}
 			$query = "SELECT * FROM #__mymuse_product_recommend_xref 
-					WHERE product_id = '".$this->cart[$i]["product_id"]."'";
+					WHERE product_id = '".$productid."'";
 			$db->setQuery($query);
 			$res = $db->loadObjectList();
 			if(count($res)){
