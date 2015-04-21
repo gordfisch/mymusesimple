@@ -305,67 +305,64 @@ class com_mymuseInstallerScript
 				}
 			}		
 			?>
-		<table cellpadding="4" cellspacing="0" border="0" width="800">
-			<tr>
-				<td valign="top" width="40%"><img
-					src="<?php echo 'components/com_mymuse/assets/images/logo325.jpg'; ?>"
-					height="325" width="190" alt="MyMuse Logo" align="left" />
-				</td>
-				<td valign="top" width="60%"><strong>MyMuse</strong><br /> <span>MyMuse
-						for Joomla! 3</span><br /> <font class="small">by <a
-						href="http://www.arboreta.ca" target="_blank">Arboreta.ca</a>
-				</font><br /> To get started
-					<ol>
-						<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE');?> <a
-						href="index.php?option=com_mymuse&view=store&layout=edit&id=1"><?php echo JText::_('STORE'); ?></a></li>
-						<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE');?> <a
-							href="index.php?option=com_plugins&view=plugins&filter_folder=mymuse"><?php echo JText::_('COM_MYMUSE_PLUGINS'); ?></a>
+<table cellpadding="4" cellspacing="0" border="0" width="800">
+	<tr>
+		<td valign="top" width="40%"><img
+			src="<?php echo 'components/com_mymuse/assets/images/logo325.jpg'; ?>"
+			height="325" width="190" alt="MyMuse Logo" align="left" /></td>
+		<td valign="top" width="60%"><strong>MyMuse</strong><br /> <span>MyMuse
+				for Joomla! 3</span><br /> <font class="small">by <a
+				href="http://www.arboreta.ca" target="_blank">Arboreta.ca</a>
+		</font><br /> To get started
+			<ol>
+				<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE');?> <a
+					href="index.php?option=com_mymuse&view=store&layout=edit&id=1"><?php echo JText::_('STORE'); ?></a></li>
+				<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE');?> <a
+					href="index.php?option=com_plugins&view=plugins&filter_folder=mymuse"><?php echo JText::_('COM_MYMUSE_PLUGINS'); ?></a>
+				</li>
+				<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE_CREATE_CATEGORY');?>
 						</li>
-						<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE_CREATE_CATEGORY');?>
+				<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE_USER_PROFILE');?>
 						</li>
-						<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE_USER_PROFILE');?>
-						</li>
-					</ol>
-				</td>
-			</tr>
-		</table>
-		<h3>
+			</ol></td>
+	</tr>
+</table>
+<h3>
 			<?php echo JText::_('Additional Extensions'); ?>
 		</h3>
-		<table class="adminlist">
-			<thead>
-				<tr>
-					<th class="title"><?php echo JText::_('Extension'); ?></th>
-					<th width="60%"><?php echo JText::_('Status'); ?></th>
-				</tr>
-			</thead>
-			<tfoot>
-				<tr>
-					<td colspan="2">&nbsp;</td>
-				</tr>
-			</tfoot>
-			<tbody>
+<table class="adminlist">
+	<thead>
+		<tr>
+			<th class="title"><?php echo JText::_('Extension'); ?></th>
+			<th width="60%"><?php echo JText::_('Status'); ?></th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<td colspan="2">&nbsp;</td>
+		</tr>
+	</tfoot>
+	<tbody>
 				<?php foreach ($extensions as $i => $ext) : ?>
 				<tr class="row<?php echo $i % 2; ?>">
-					<td class="key"><?php echo $ext['name']; ?> (<?php echo JText::_($ext['type']); ?>)</td>
-					<td align="center"><?php $style = $ext['status'] ? 'font-weight: bold; color: green;' : 'font-weight: bold; color: red;'; ?>
+			<td class="key"><?php echo $ext['name']; ?> (<?php echo JText::_($ext['type']); ?>)</td>
+			<td align="center"><?php $style = $ext['status'] ? 'font-weight: bold; color: green;' : 'font-weight: bold; color: red;'; ?>
 						<span style="<?php echo $style; ?>"><?php echo $ext['status'] ? JText::_('Installed successfully') : JText::_('NOT Installed'); ?>
-					</span>
-					</td>
-				</tr>
+					</span></td>
+		</tr>
 				<?php endforeach; ?>
 			</tbody>
-		</table>
-		
-		<h3>
+</table>
+
+<h3>
 			<?php echo JText::_('Actions'); ?>
 		</h3>
-		
-		
-		
-		
-		
-		<?php
+
+
+
+
+
+<?php
 		// see if db needs updating for country plugins
 		$db = JFactory::getDBO();
 		$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'plugin'";
@@ -418,8 +415,50 @@ class com_mymuseInstallerScript
 			$db->query();	
 				
 		}
-		//add table for product recommendations
-		$query = "CREATE TABLE IF NOT EXISTS `#__mymuse_product_recommend_xref` (
+		
+		//add EU bloc
+		$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'bloc'";
+		$db->setQuery($query);
+		if(!$col = $db->loadObject()){
+			$query = "ALTER TABLE `#__mymuse_country` ADD `bloc` TINYTEXT NOT NULL AFTER `id`  ";
+			$db->setQuery($query);
+			$db->query();
+			$eu_countries = '
+				"AUT",
+"BEL",
+"BGR",
+"HRV",
+"CYP",
+"CZE",
+"DNK",
+"EST",
+"FIN",
+"FRA",
+"DEU",
+"GRC",
+"HUN",
+"IRL",
+"ITA",
+"LVA",
+"LTU",
+"LUX",
+"MLT",
+"NLD",
+"POL",
+"PRT",
+"ROM",
+"SVK",
+"SVN",
+"ESP",
+"SWE",
+"GBR"';
+			$query = "UPDATE #__mymuse_country set bloc='EU' WHERE country_3_code IN ($eu_countries)";
+			$db->setQuery($query);
+			$db->query();
+			}
+			
+			// add table for product recommendations
+			$query = "CREATE TABLE IF NOT EXISTS `#__mymuse_product_recommend_xref` (
   		`product_id` int(11) NOT NULL DEFAULT '0',
   		`recommend_id` int(11) NOT NULL DEFAULT '0'
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
@@ -690,34 +729,33 @@ class com_mymuseInstallerScript
 
 		if(count($actions)){
 			?>
-		<table class="adminlist">
-			<thead>
-				<tr>
-					<th class="title"><?php echo JText::_('Post Install Actions'); ?></th>
-					<th class="title"><?php echo JText::_('Status'); ?></th>
-				</tr>
-			</thead>
-			<tfoot>
-				<tr>
-					<td colspan="2">&nbsp;</td>
-				</tr>
-			</tfoot>
-			<tbody>
+<table class="adminlist">
+	<thead>
+		<tr>
+			<th class="title"><?php echo JText::_('Post Install Actions'); ?></th>
+			<th class="title"><?php echo JText::_('Status'); ?></th>
+		</tr>
+	</thead>
+	<tfoot>
+		<tr>
+			<td colspan="2">&nbsp;</td>
+		</tr>
+	</tfoot>
+	<tbody>
 				<?php 
 				$i = 0;
 			foreach ($actions as $ext) : ?>
 				<tr class="row<?php echo $i % 2; $i++; ?>">
-					<td class="key"><?php echo $ext['name']; ?> (<?php echo JText::_($ext['message']); ?>)</td>
-					<td align="center"><?php $style = $ext['status'] ? 'font-weight: bold; color: green;' : 'font-weight: bold; color: red;'; ?>
+			<td class="key"><?php echo $ext['name']; ?> (<?php echo JText::_($ext['message']); ?>)</td>
+			<td align="center"><?php $style = $ext['status'] ? 'font-weight: bold; color: green;' : 'font-weight: bold; color: red;'; ?>
 						<span style="<?php echo $style; ?>"><?php echo $ext['status'] ? JText::_('Success') : JText::_('NOT Successful'); ?>
-					</span>
-					</td>
-				</tr>
+					</span></td>
+		</tr>
 				<?php endforeach; ?>
 
 			</tbody>
-		</table>
-		<?php 
+</table>
+<?php 
 		}
 	}
 }
