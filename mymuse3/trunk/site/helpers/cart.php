@@ -691,9 +691,11 @@ class MyMuseCart {
 	 */
 	function getRecommended()
 	{
-		$db = JFactory::getDBO();
-		$prods = array();
+		$db 		= JFactory::getDBO();
+		$params 	= MyMuseHelper::getParams();
+		$prods 		= array();
 		$recommends = array();
+		
 		for ($i=0;$i<$this->cart["idx"];$i++) {
 			if(isset($this->cart[$i]["coupon_id"])){
 				continue;
@@ -707,7 +709,8 @@ class MyMuseCart {
 				$productid = $this->cart[$i]["product_id"];
 			}
 			$query = "SELECT * FROM #__mymuse_product_recommend_xref 
-					WHERE product_id = '".$productid."'";
+					WHERE product_id = '".$productid."' 
+							ORDER BY RAND()";
 			$db->setQuery($query);
 			$res = $db->loadObjectList();
 			if(count($res)){
@@ -718,8 +721,10 @@ class MyMuseCart {
 			
 		}
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'product.php');
-			
-		for($i = 0; $i<count($prods); $i++){
+		$prods = array_unique($prods);
+		$num = min($params->get('my_max_recommended'),count($prods));
+
+		for($i = 0; $i<$num; $i++){
 		
 			$query = "SELECT * FROM #__mymuse_product
 					WHERE id = '".$prods[$i]."'";

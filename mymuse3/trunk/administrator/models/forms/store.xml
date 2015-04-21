@@ -686,6 +686,15 @@
         		description="MYMUSE_EMAIL_MSG_DESC" 
         />
         <field
+                name="my_max_recommended"
+                type="text"
+                label="MYMUSE_MAX_RECOMMENDED_LABEL"
+                description="MYMUSE_MAX_RECOMMENDED_DESC"
+                class="inputbox"
+                size="4"
+                default="4"
+        />
+        <field
                 name="my_show_original_price"
                 type="radio"
                 label="MYMUSE_SHOW_ORIGINAL_PRICE"
