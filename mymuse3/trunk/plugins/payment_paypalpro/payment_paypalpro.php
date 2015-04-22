@@ -892,7 +892,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 
 		//$countries[] = JHTML::_('select.option', '0', '- '.JText::_('MYMUSE_SELECT_COUNTRY').' -');
 		$query = "SELECT id, country_2_code as value, country_name as text from #__mymuse_country 
-		WHERE plugin LIKE '%paypal%' ORDER BY country_name ASC";
+		 ORDER BY country_name ASC";
 		$db->setQuery($query);
 		$dbcountries = $db->loadObjectList();
 		//$countries = array_merge($countries, $dbcountries);
