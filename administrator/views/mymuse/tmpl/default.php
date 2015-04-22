@@ -55,6 +55,9 @@
 			<li><b><a href="index.php?option=com_mymuse&view=tax_rate"><?php echo JText::_("MYMUSE_TAXES"); ?></a></b> 
 			<?php echo JText::_("MYMUSE_TAXES_DESC"); ?></li>
 			
+			<li><b><a href="index.php?option=com_mymuse&task=addEuroTax"><?php echo JText::_("MYMUSE_ADD_EURO_TAXES"); ?></a></b> 
+			</li>
+			
 			<li><b><a href="index.php?option=com_menus&task=view"><?php echo JText::_("MYMUSE_MENUS"); ?></a></b> 
 			<?php echo JText::_("MYMUSE_MENUS_DESC"); ?></li>
 	
