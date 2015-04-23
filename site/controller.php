@@ -386,6 +386,26 @@ class MyMuseController extends JControllerLegacy
         	$this->setRedirect( 'index.php?option=com_users&view='.$rpage.'&return='.$return, $msg );
             return false;
 		}else{
+			
+			JPluginHelper::importPlugin('mymuse');
+			$dispatcher		= JDispatcher::getInstance();
+			$this->order		= $this->MyMuseCart->buildOrder();
+			$results = $dispatcher->trigger('onListMyMuseShipping',
+					array($this->shopper, $this->store, $this->order, $params) );
+			if(isset($results[0])){
+				$res = $results[0];
+			}else{
+				$res = array();
+			}
+			print_pre($res);
+			if(count($res) == 1){
+				$url =  'index.php?option=com_mymuse&task=confirm&shipmethodid='.$res['0']->id;
+				$url .= '&Itemid='.$this->Itemid;
+				$msg = JText::_('MYMUSE_SHIPPING_ADDED')." ".$res['0']->ship_carrier_name." ";
+				$msg .= $res['0']->ship_method_name.": ".MyMuseHelper::printMoney($res['0']->cost);
+				$this->setRedirect( $url, $msg );
+				return false;
+			}
 			$this->jinput->set('view', 'cart');
 			$this->jinput->set('layout', 'cart');
 			$this->display();
