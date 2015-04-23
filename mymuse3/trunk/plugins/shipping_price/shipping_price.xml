@@ -22,15 +22,26 @@
 	
 	<config>
 	<fields  name="params">
-		<fieldset name="basic">
-    <field name="@spacer" type="spacer" default="First Level Shipping" label="" description="" />
+<fieldset name="BASIC">
+	<field name="ship_percent" type="radio" default="1" 
+		label="MYMUSE_SHIP_USE_LABEL" 
+		description="MYMUSE_SHIP_USE_DESC"
+		>
+	 			<option value="0">MYMUSE_SHIP_USE_AMOUNT</option>
+	 			<option value="1">MYMUSE_SHIP_USE_PERCENT</option>
+	 			
+	 	</field>
+</fieldset>
+<fieldset name="SHIPPER1">
+   
 		<field name="ship_1_active" type="radio" default="0" label="MYMUSE_SHIPACTIVE_1_LABEL" description="MYMUSE_SHIPACTIVE_1_DESC">
 	 			<option value="0">JNO</option>
 	 			<option value="1">JYES</option>
 	 	</field>
 		<field name="ship_carrier_1" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
 		<field name="ship_method_1" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
-<field name="@spacer" type="spacer" default="" label="" description="" />
+
+
 		<field name="ship_minimum_11" type="text" size="20" default="0.00" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
 		<field name="ship_maximum_11" type="text" size="20" default="100.00" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_11" type="text" size="20" default="6" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
@@ -47,9 +58,9 @@
 		<field name="ship_maximum_14" type="text" size="20" default="0" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_14" type="text" size="20" default="1" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
 	
+</fieldset>
+<fieldset name="SHIPPER2">
 
-
-<field name="@spacer" type="spacer" default="Second Level Shipping" label="" description="" />
 		<field name="ship_2_active" type="radio" default="0" label="MYMUSE_SHIPACTIVE_1_LABEL" description="MYMUSE_SHIPACTIVE_1_DESC">
 	 			<option value="0">JNO</option>
 	 			<option value="1">JYES</option>

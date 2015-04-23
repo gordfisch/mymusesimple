@@ -139,8 +139,8 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		
 		
 		//$callbackUrl = JURI::base().'index.php?option=com_akeebasubs&view=callback&paymentmethod=paypalpaymentspro';
-		$callbackUrl = JURI::base().'index.php?option=com_mymuse&task=notify';
-		
+		$callbackUrl = JURI::base().'index.php?option=com_mymuse&task=notify&Itemid='.$Itemid;
+	
 		$data = (object)array(
 			'URL'				=> $callbackUrl."&mode=init",
 			'NOTIFYURL'			=> $callbackUrl,
@@ -246,13 +246,13 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 
 		//make state/region select
 		$country_list = implode('\', \'', $country_list);
-		$query = 'SELECT #__mymuse_state.state_name as text, #__mymuse_state.id as value' .
+		$query = 'SELECT #__mymuse_state.state_name as text, #__mymuse_state.state_2_code as value' .
 				' FROM #__mymuse_state,#__mymuse_country' .
-				' WHERE country_id IN ( \''.$country_list.'\' )' .
-				' AND #__mymuse_state.country_id=#__mymuse_country.id' .
+				' WHERE  #__mymuse_state.country_id=#__mymuse_country.id' .
 				' ORDER BY country_id,state_name';
 		
 		$db->setQuery($query);
+		
 		$state_list = $db->loadObjectList();
 		$state_select_array = array();
 		foreach ($state_list as $state) {
@@ -306,6 +306,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 					if ((orig_key == key && orig_val == opt.value) || i == 0) {
 						opt.selected = true;
 					}
+			
 					list.options[i++] = opt;
 				}
 			}
@@ -313,7 +314,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		}
 		
 		window.onload = function(e){
-			changeDynaList2(STATE, COUNTRYCODE, countrystates,0,0);
+			changeDynaList2(STATE, COUNTRYCODE, countrystates,".$shopper->country.",".$shopper->region.");
 		}
 		";
 		$document->addScriptDeclaration($js);
@@ -473,10 +474,10 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			sleep(8);
 		
 			if(!$isValid ){
-				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalpaymentspro&orderid='.$orderid, false);
+				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalpaymentspro&orderid='.$orderid.'&Itemid='.$Itemid, false);
 				$msg = "Payment Failed: ".$result ['error'];
 			}else{
-				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalpaymentspro&orderid='.$orderid, false);
+				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalpaymentspro&orderid='.$orderid.'&Itemid='.$Itemid, false);
 				$msg = "";
 			}
 			JFactory::getApplication()->redirect($thankyouUrl, $msg);
@@ -914,7 +915,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		//$countrystates[-1][] = JHTML::_('select.option', '-1', JText::_( 'MYMUSE_SELECT_COUNTRY' ), 'id', 'title');
 		$country_list = implode('\', \'', $country_list);
 	
-		$query = 'SELECT #__mymuse_state.id as code, state_name as title, #__mymuse_state.id as id, country_2_code, country_id' .
+		$query = 'SELECT #__mymuse_state.id as code, state_name as title, #__mymuse_state.state_2_code as id, country_2_code, country_id' .
 				' FROM #__mymuse_state,#__mymuse_country' .
 				' WHERE country_id IN ( \''.$country_list.'\' )' .
 				' AND #__mymuse_state.country_id=#__mymuse_country.id' .

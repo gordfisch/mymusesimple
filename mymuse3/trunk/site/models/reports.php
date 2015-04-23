@@ -311,7 +311,7 @@ class myMuseModelReports extends JmodelList
     	//filter by date
     	$start_date = $this->getState('filter.start_date');
     	$end_date = $this->getState('filter.end_date');
-    	$datenow =& JFactory::getDate();
+    	$datenow = JFactory::getDate();
     	$now = $datenow->format("%Y-%m-%d");
     
     	if($start_date== $now && $end_date == $now ){
@@ -371,7 +371,7 @@ class myMuseModelReports extends JmodelList
 		$end_date 		= $this->getState('filter.end_date');
 		$order_status 	= $this->getState('filter.order_status');
 	
-		$datenow =& JFactory::getDate();
+		$datenow = JFactory::getDate();
 		$now = $datenow->format("%Y-%m-%d");
 		if($start_date == $now && $end_date == $now ){
 			$start_date = '';

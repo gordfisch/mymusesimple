@@ -7,6 +7,8 @@
 
 defined('_JEXEC') or die();
 
+$Mymuseinclude = include_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/mymuse.php';
+if(!$Mymuseinclude) { unset($Mymuseinclude); return; } else { unset($Mymuseinclude); }
 
 class plgMyMusePayment_Paypalproexpress extends JPlugin
 {
@@ -23,8 +25,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 	{
 		$config = array_merge($config, array(
 			'ppName'		=> 'paypalproexpress',
-			'ppKey'			=> 'PLG_MYMUSE_PAYPALPROEXPRESS_TITLE',
-			'ppImage'		=> rtrim(JURI::base(),'/').'/media/com_akeebasubs/images/frontend/btn_xpressCheckout.png'
+			'ppKey'			=> 'PLG_MYMUSE_PAYPALPROEXPRESS_TITLE'
 		));
 
 		parent::__construct($subject, $config);
@@ -34,7 +35,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 	 * Returns the payment form to be submitted by the user's browser. The form must have an ID of
 	 * "paymentForm" and a visible submit button.
 	 *
-* PayPalPro Payment form
+* PayPalProExpress Payment form
 	 * 
 	 * @param object $shopper
 	 * @param object $store
@@ -46,7 +47,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 	 */
 	public function onBeforeMyMusePayment($shopper, $store, $order, $params, $Itemid=1 )
 	{
-		if($paymentmethod != $this->ppName) return false;
+
 
 		$slug = F0FModel::getTmpInstance('Levels','AkeebasubsModel')
 				->setId($subscription->akeebasubs_level_id)
@@ -59,30 +60,32 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			$rootURL = substr($rootURL, 0, -1 * strlen($subpathURL));
 		}
 
-		$callbackUrl = JURI::base().'index.php?option=com_akeebasubs&view=callback&paymentmethod=paypalproexpress&sid='.$subscription->akeebasubs_subscription_id.'&mode=init';
-		$cancelUrl = $rootURL.str_replace('&amp;','&',JRoute::_('index.php?option=com_akeebasubs&view=message&slug='.$slug.'&layout=cancel&subid='.$subscription->akeebasubs_subscription_id));
+		$callbackUrl = JURI::base().'index.php?option=com_mymuse&task=notify&mode=init';
+		$cancelUrl = JURI::base().'index.php?option=com_mymuse&task=paycancel';
 		$requestData = (object)array(
 			'METHOD'							=> 'SetExpressCheckout',
 			'USER'								=> $this->getMerchantUsername(),
 			'PWD'								=> $this->getMerchantPassword(),
 			'SIGNATURE'							=> $this->getMerchantSignature(),
-			'VERSION'							=> '85.0',
+			'VERSION'							=> '93',
 			'RETURNURL'							=> $callbackUrl,
 			'CANCELURL'							=> $cancelUrl,
-			'PAYMENTREQUEST_0_AMT'				=> sprintf('%.2f',$subscription->gross_amount),
-			'PAYMENTREQUEST_0_TAXAMT'			=> sprintf('%.2f',$subscription->tax_amount),
+			'PAYMENTREQUEST_0_AMT'				=> $order->order_total,
+			'PAYMENTREQUEST_0_PAYMENTACTION'	=> 'SALE',
+			'PAYMENTREQUEST_0_CURRENCYCODE'		=> strtoupper($store->currency),
+			'PAYMENTREQUEST_0_TAXAMT'			=> $order->tax_total,
+			'PAYMENTREQUEST_0_ITEMAMT'			=> $order->order_subtotal,	
+		);
+		/*
+		 * do we need this?
+		 * 'PAYMENTREQUEST_0_TAXAMT'			=> sprintf('%.2f',$subscription->tax_amount),
 			'PAYMENTREQUEST_0_ITEMAMT'			=> sprintf('%.2f',$subscription->net_amount),
-			'PAYMENTREQUEST_0_PAYMENTACTION'	=> 'Sale',
-			'PAYMENTREQUEST_0_CURRENCYCODE'		=> strtoupper(AkeebasubsHelperCparams::getParam('currency','EUR')),
 			'L_PAYMENTREQUEST_0_NAME0'			=> $level->title,
 			'L_PAYMENTREQUEST_0_QTY0'			=> 1,
 			'L_PAYMENTREQUEST_0_AMT0'			=> sprintf('%.2f',$subscription->net_amount)
-		);
+			
+		 */
 
-		if($level->recurring) {
-			$requestData->L_BILLINGTYPE0 = 'RecurringPayments';
-			$requestData->L_BILLINGAGREEMENTDESCRIPTION0 = $level->title;
-		}
 
 		$requestQuery = http_build_query($requestData);
 		$requestContext = stream_context_create(array(

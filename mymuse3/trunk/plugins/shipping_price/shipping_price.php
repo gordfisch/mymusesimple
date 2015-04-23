@@ -154,7 +154,11 @@ class plgMymuseShipping_Price extends JPlugin
 			}
 		}
 
-		$shipping_total = $order->order_subtotal * $shipMethod->ship_percent[$level] / 100;
+		if($this->params->get('ship_percent')){
+			$shipping_total = $order->order_subtotal * $shipMethod->ship_percent[$level] / 100;
+		}else{
+			$shipping_total = $shipMethod->ship_percent[$level];
+		}
 		
 		return $shipping_total;
 	}

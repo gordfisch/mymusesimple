@@ -248,6 +248,8 @@ class myMuseViewCart extends JViewLegacy
             }else{
             	$res = array();
             }
+         
+            
 			$this->assignRef('shipMethods', $res);
 			$button = JText::_("MYMUSE_SHIPPING_BUTTON");
 			$this->assignRef('button', $button);
@@ -314,6 +316,7 @@ class myMuseViewCart extends JViewLegacy
 		ini_set('error_log', JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'php_error' );
 		
 		$jinput = JFactory::getApplication()->input;
+		$this->Itemid = $jinput->get("Itemid",'');
 		$params = MyMuseHelper::getParams();
 		
 
@@ -327,7 +330,7 @@ class myMuseViewCart extends JViewLegacy
 		// see if any plugins wants to deal with notification
 		// plugin should run MyMuseHelper::orderStatusUpdate
 		$dispatcher		= JDispatcher::getInstance();
-     	$results 		= $dispatcher->trigger('onMyMuseNotify', array($params) );
+     	$results 		= $dispatcher->trigger('onMyMuseNotify', array($params, $this->Itemid) );
      	foreach($results as $r){
             if($params->get('my_debug')){
      			$debug = "Result from Plugin\n" . print_r( $r, true ). "\n\n";
