@@ -69,7 +69,8 @@
 				value_field="value"
 				label="MYMUSE_SHIPCOUNTRY_1_LABEL"
 				message="MYMUSE_SHIPCOUNTRY_1_MESSAGE"
-				query="SELECT country_3_code as ship_countries_1, country_name as value FROM #__mymuse_country 
+				query="SELECT  '' as ship_countries_1 ,' none' as value UNION 
+				SELECT country_3_code as ship_countries_1, country_name as value FROM #__mymuse_country 
 				ORDER by value"
 			/>
 		
@@ -120,7 +121,8 @@
 				value_field="value"
 				label="MYMUSE_SHIPCOUNTRY_1_LABEL"
 				message="MYMUSE_SHIPCOUNTRY_1_MESSAGE"
-				query="SELECT country_3_code as ship_countries_2, country_name as value FROM #__mymuse_country 
+				query="SELECT  '' as ship_countries_2 ,' none' as value UNION 
+				SELECT country_3_code as ship_countries_2, country_name as value FROM #__mymuse_country 
 				ORDER by value"
 			/>
 			
@@ -170,7 +172,8 @@
 				value_field="value"
 				label="MYMUSE_SHIPCOUNTRY_1_LABEL"
 				message="MYMUSE_SHIPCOUNTRY_1_MESSAGE"
-				query="SELECT country_3_code as ship_countries_3, country_name as value FROM #__mymuse_country 
+				query="SELECT  '' as ship_countries_3 ,' none' as value UNION 
+				SELECT country_3_code as ship_countries_3, country_name as value FROM #__mymuse_country 
 				ORDER by value"
 			/>
 			

@@ -397,7 +397,7 @@ class MyMuseController extends JControllerLegacy
 			}else{
 				$res = array();
 			}
-			print_pre($res);
+			//if we only have one shipping, add it to the order
 			if(count($res) == 1){
 				$url =  'index.php?option=com_mymuse&task=confirm&shipmethodid='.$res['0']->id;
 				$url .= '&Itemid='.$this->Itemid;
@@ -406,6 +406,8 @@ class MyMuseController extends JControllerLegacy
 				$this->setRedirect( $url, $msg );
 				return false;
 			}
+			
+			//show shipping options
 			$this->jinput->set('view', 'cart');
 			$this->jinput->set('layout', 'cart');
 			$this->display();

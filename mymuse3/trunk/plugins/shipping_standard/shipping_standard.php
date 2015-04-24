@@ -85,7 +85,7 @@ class plgMymuseShipping_Standard extends JPlugin
             	}
            
             	if($good){
-                $result[$j] 	= new JObject;
+                	$result[$j] 	= new JObject;
 					$result [$j]->id = $i;
 					$carrier = "ship_carrier_" . $i;
 					$method = "ship_method_" . $i;
