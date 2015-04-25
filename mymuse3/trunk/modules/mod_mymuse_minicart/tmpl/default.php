@@ -67,7 +67,9 @@ $i = 0;
 		
 		<?php // TAXES
 		if(@$order->tax_array){
-		    while(list($key,$val) = each($order->tax_array)){ ?>
+		    while(list($key,$val) = each($order->tax_array)){ 
+		    	$key = preg_replace("/_/"," ", $key);
+		    	?>
 		        <tr>
 		        <td class="mytaxname" colspan="2"><?php echo $key; ?></td>
 		        <td><?php echo MyMuseHelper::printMoney($val); ?></td>
