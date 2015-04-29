@@ -64,29 +64,48 @@ class plgMymuseShipping_Price extends JPlugin
         //var_dump($this->params); exit;
         $result = array();
         $j = 0;
-		for($i=1;$i<3;$i++){
+		for($i=1;$i<13;$i++){
             $param = "ship_".$i."_active";
-            if($this->params->get($param)){
-                $result[$j] = new JObject;
-                $result[$j]->id = $i;
-                $carrier    = "ship_carrier_".$i;
-                $method       = "ship_method_".$i;
-                $result[$j]->ship_carrier_name          = $this->params->get($carrier);
-                $result[$j]->ship_method_name           = $this->params->get($method);
-                
-                for($k=1;$k<5;$k++){
-                	$min   = "ship_minimum_".$i.$k;
-                	$max = "ship_maximum_".$i.$k;
-                	$percent = "ship_percent_".$i.$k;	
-              
-                	$result[$j]->ship_mimimum[$k]    = $this->params->get($min);
-                	$result[$j]->ship_maximum[$k]    = $this->params->get($max);
-                	$result[$j]->ship_percent[$k]    = $this->params->get($percent);
-                	
-                }
-                $result[$j]->cost                = $this->calculateShipping($order,$result[$j]);
+            //is it active?
+            if($this->params->get($param, 0)){
+            	$good = 0;
+            	//is all countries set?
+            	if($this->params->get("ship_all_countries_$i")){
+            	
+            		//yes see if there are exceptions to exlude
+            		if(isset($shopper->profile['country'])
+            				&& in_array($shopper->profile['country'], $this->params->get("ship_countries_$i"))){
+            			//we have an exeption
+            		}else{
+            			$good = 1;
+            		}
+            	// not 'all countries' but in the list of accepted
+            	}elseif(isset($shopper->profile['country']) && in_array($shopper->profile['country'], $this->params->get("ship_countries_$i"))){
+            		$good = 1;
+            	}
+            	 
+            	if($good){
+                	$result [$j] = new JObject ();
+					$result [$j]->id = $i;
+					$carrier = "ship_carrier_" . $i;
+					$method = "ship_method_" . $i;
+					$result [$j]->ship_carrier_name = $this->params->get ( $carrier );
+					$result [$j]->ship_method_name = $this->params->get ( $method );
+					
+					for($k = 0; $k < 9; $k ++) {
+						$min = "ship_minimum_" . $i . $k;
+						$max = "ship_maximum_" . $i . $k;
+						$percent = "ship_percent_" . $i . $k;
+						
+						$result [$j]->ship_mimimum [$k] = $this->params->get ( $min );
+						$result [$j]->ship_maximum [$k] = $this->params->get ( $max );
+						$result [$j]->ship_percent [$k] = $this->params->get ( $percent );
+					}
+					$result [$j]->cost = $this->calculateShipping ( $order, $result [$j] );
+					$j ++;
+            	}
             }
-            $j++;
+            
         }
 
 		return $result;
@@ -115,7 +134,8 @@ class plgMymuseShipping_Price extends JPlugin
         $result->ship_method_name           = $this->params->get($method);
         $result->ship_method_code 			= $this->params->get($method);
         $result->tracking_id 				= '';
-     	for($k=1;$k<5;$k++){
+        
+     	for($k=0;$k<12;$k++){
             $min   = "ship_minimum_".$shipmethodid.$k;
             $max = "ship_maximum_".$shipmethodid.$k;
             $percent = "ship_percent_".$shipmethodid.$k;	
@@ -144,13 +164,16 @@ class plgMymuseShipping_Price extends JPlugin
 		$shipping_total = 0.00;
 		// find the level based on sub_total
 		$level = 1;
-		for($k=1;$k<5;$k++){
+		for($k=0;$k<12;$k++){
 			if(!$shipMethod->ship_maximum[$k]){
 				$shipMethod->ship_maximum[$k] = 1000000000;
 			}
 			if($order->order_subtotal >= $shipMethod->ship_mimimum[$k] 
 			&& $order->order_subtotal <= $shipMethod->ship_maximum[$k]){
 				$level = $k;
+			}
+			if($shipMethod->ship_maximum[$k] == 1000000000){
+				break;
 			}
 		}
 
