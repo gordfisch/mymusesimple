@@ -609,6 +609,9 @@ class myMuseViewCart extends JViewLegacy
         	} else {
         		$debug = "Mail sent to $user_email";
         	}
+        	if($params->get('my_debug')){
+        		MyMuseHelper::logMessage( $debug  );
+        	}
         	//$debug .= print_r($mailer, true);
         	//if($params->get('my_debug')){
         	//	MyMuseHelper::logMessage( $debug  );

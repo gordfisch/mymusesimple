@@ -23,22 +23,73 @@
 	<config>
 	<fields  name="params">
 <fieldset name="BASIC">
-	<field name="ship_percent" type="radio" default="1" 
+	<field name="ship_percent" type="radio" default="" 
 		label="MYMUSE_SHIP_USE_LABEL" 
 		description="MYMUSE_SHIP_USE_DESC"
 		>
 	 			<option value="0">MYMUSE_SHIP_USE_AMOUNT</option>
 	 			<option value="1">MYMUSE_SHIP_USE_PERCENT</option>
 	 			
-	 	</field>
+	 </field>
+<field name="@spacer10" type="spacer" default="" label="MYMUSE_DEFINE_RANGES" description="" />
+		<field name="ship_minimum_1" type="text" size="20" default="0.00" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_1" type="text" size="20" default="100.00" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+
+<field name="@spacer11" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_2" type="text" size="20" default="100.01" label="MYMUSE_SHIPMIMIMUM_2_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_2" type="text" size="20" default="500.00" label="MYMUSE_SHIPMAXIMUM_2_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+
+<field name="@spacer12" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_3" type="text" size="20" default="500.01" label="MYMUSE_SHIPMIMIMUM_3_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_3" type="text" size="20" default="1000.00" label="MYMUSE_SHIPMAXIMUM_3_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+
+<field name="@spacer13" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_4" type="text" size="20" default="1000.01" label="MYMUSE_SHIPMIMIMUM_4_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_4" type="text" size="20" default="0" label="MYMUSE_SHIPMAXIMUM_4_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+
+<field name="@spacer14" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_5" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_5_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_5" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_5_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+
+<field name="@spacer15" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_6" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_6_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_6" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_6_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+
+<field name="@spacer16" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_7" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_7_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_7" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_7_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+
+<field name="@spacer17" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_8" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_8_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_8" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_8_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+
+<field name="@spacer18" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_9" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_9_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_9" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_9_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+
+<field name="@spacer19" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_10" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_10_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_10" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_10_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+
+<field name="@spacer110" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_11" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_11_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_11" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_11_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+
+<field name="@spacer111" type="spacer" default="" label="" description="" />
+		<field name="ship_minimum_12" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_12_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
+		<field name="ship_maximum_12" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_12_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+
 </fieldset>
 <fieldset name="SHIPPER1">
+   
+   		<field name="ship_carrier_1" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
+		<field name="ship_method_1" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
    
 		<field name="ship_1_active" type="radio" default="0" label="MYMUSE_SHIPACTIVE_1_LABEL" description="MYMUSE_SHIPACTIVE_1_DESC">
 	 			<option value="0">JNO</option>
 	 			<option value="1">JYES</option>
 	 	</field>
-	 	<field name="ship_all_countries_1" type="radio" default="1" 
+	 	<field name="ship_all_countries_1" type="radio" default="" 
 		label="MYMUSE_SHIPALLCOUNTRIES_1_LABEL" 
 		description="MYMUSE_SHIPALLCOUNTRIES_1_DESC">
 	 			<option value="0">JNO</option>
@@ -60,65 +111,31 @@
 				ORDER by value"
 			/>
 		
-		<field name="ship_carrier_1" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
-		<field name="ship_method_1" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
 
-<field name="@spacer10" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_10" type="text" size="20" default="0.00" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_10" type="text" size="20" default="100.00" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_10" type="text" size="20" default="6" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer11" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_11" type="text" size="20" default="100.01" label="MYMUSE_SHIPMIMIMUM_2_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_11" type="text" size="20" default="500.00" label="MYMUSE_SHIPMAXIMUM_2_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_11" type="text" size="20" default="4" label="MYMUSE_SHIPPERCENT_2_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer12" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_12" type="text" size="20" default="500.01" label="MYMUSE_SHIPMIMIMUM_3_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_12" type="text" size="20" default="1000.00" label="MYMUSE_SHIPMAXIMUM_3_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_12" type="text" size="20" default="2" label="MYMUSE_SHIPPERCENT_3_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer13" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_13" type="text" size="20" default="1000.01" label="MYMUSE_SHIPMIMIMUM_4_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_13" type="text" size="20" default="0" label="MYMUSE_SHIPMAXIMUM_4_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_13" type="text" size="20" default="1" label="MYMUSE_SHIPPERCENT_4_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer14" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_14" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_5_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_14" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_5_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+	<field name="@spacer10" type="spacer" default="" label="" description="" />
+		<field name="ship_percent_10" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_11" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_2_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_12" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_3_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_13" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_4_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
 		<field name="ship_percent_14" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_5_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer15" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_15" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_6_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_15" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_6_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_15" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_6_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer16" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_16" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_7_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_16" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_7_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_16" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_7_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer17" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_17" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_8_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_17" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_8_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_17" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_8_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer18" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_18" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_9_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_18" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_9_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_18" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_9_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer19" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_19" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_10_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_19" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_10_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_19" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_10_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer110" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_110" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_11_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_110" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_11_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_110" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_11_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer111" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_111" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_12_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_111" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_12_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_111" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_12_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>		
 </fieldset>
 
 <fieldset name="SHIPPER2">
+		<field name="ship_carrier_2" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
+		<field name="ship_method_2" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
+
 		<field name="ship_2_active" type="radio" default="0" label="MYMUSE_SHIPACTIVE_1_LABEL" description="MYMUSE_SHIPACTIVE_1_DESC">
 	 			<option value="0">JNO</option>
 	 			<option value="1">JYES</option>
 	 	</field>
-	 	<field name="ship_all_countries_2" type="radio" default="1" 
+	 	<field name="ship_all_countries_2" type="radio" default="" 
 		label="MYMUSE_SHIPALLCOUNTRIES_1_LABEL" 
 		description="MYMUSE_SHIPALLCOUNTRIES_1_DESC">
 	 			<option value="0">JNO</option>
@@ -140,65 +157,31 @@
 				ORDER by value"
 			/>
 		
-		<field name="ship_carrier_2" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
-		<field name="ship_method_2" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
 
 <field name="@spacer20" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_20" type="text" size="20" default="0.00" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_20" type="text" size="20" default="100.00" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_20" type="text" size="20" default="6" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer21" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_21" type="text" size="20" default="100.01" label="MYMUSE_SHIPMIMIMUM_2_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_21" type="text" size="20" default="500.00" label="MYMUSE_SHIPMAXIMUM_2_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_21" type="text" size="20" default="4" label="MYMUSE_SHIPPERCENT_2_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer22" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_22" type="text" size="20" default="500.01" label="MYMUSE_SHIPMIMIMUM_3_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_22" type="text" size="20" default="1000.00" label="MYMUSE_SHIPMAXIMUM_3_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_22" type="text" size="20" default="2" label="MYMUSE_SHIPPERCENT_3_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer23" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_23" type="text" size="20" default="1000.01" label="MYMUSE_SHIPMIMIMUM_4_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_23" type="text" size="20" default="0" label="MYMUSE_SHIPMAXIMUM_4_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_23" type="text" size="20" default="1" label="MYMUSE_SHIPPERCENT_4_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer24" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_24" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_5_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_24" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_5_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+		<field name="ship_percent_20" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_21" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_2_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_22" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_3_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_23" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_4_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
 		<field name="ship_percent_24" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_5_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer25" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_25" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_6_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_25" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_6_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_25" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_6_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer26" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_26" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_7_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_26" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_7_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_26" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_7_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer27" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_27" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_8_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_27" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_8_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_27" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_8_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer28" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_28" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_9_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_28" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_9_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_28" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_8_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer29" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_29" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_10_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_29" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_10_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_29" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_10_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer210" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_210" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_11_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_210" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_11_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_210" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_11_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer211" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_211" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_12_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_211" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_12_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_211" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_12_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
 </fieldset>
 
 <fieldset name="SHIPPER3">
+		<field name="ship_carrier_3" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
+		<field name="ship_method_3" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
+
 		<field name="ship_3_active" type="radio" default="0" label="MYMUSE_SHIPACTIVE_1_LABEL" description="MYMUSE_SHIPACTIVE_1_DESC">
 	 			<option value="0">JNO</option>
 	 			<option value="1">JYES</option>
 	 	</field>
-	 	<field name="ship_all_countries_3" type="radio" default="1" 
+	 	<field name="ship_all_countries_3" type="radio" default="" 
 		label="MYMUSE_SHIPALLCOUNTRIES_1_LABEL" 
 		description="MYMUSE_SHIPALLCOUNTRIES_1_DESC">
 	 			<option value="0">JNO</option>
@@ -220,66 +203,31 @@
 				ORDER by value"
 			/>
 		
-		<field name="ship_carrier_3" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
-		<field name="ship_method_3" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
 
 <field name="@spacer30" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_30" type="text" size="20" default="0.00" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_30" type="text" size="20" default="100.00" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_30" type="text" size="20" default="6" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer31" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_31" type="text" size="20" default="100.01" label="MYMUSE_SHIPMIMIMUM_2_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_31" type="text" size="20" default="500.00" label="MYMUSE_SHIPMAXIMUM_2_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_31" type="text" size="20" default="4" label="MYMUSE_SHIPPERCENT_2_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer32" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_32" type="text" size="20" default="500.01" label="MYMUSE_SHIPMIMIMUM_3_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_32" type="text" size="20" default="1000.00" label="MYMUSE_SHIPMAXIMUM_3_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_32" type="text" size="20" default="2" label="MYMUSE_SHIPPERCENT_3_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer33" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_33" type="text" size="20" default="1000.01" label="MYMUSE_SHIPMIMIMUM_4_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_33" type="text" size="20" default="0" label="MYMUSE_SHIPMAXIMUM_4_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_33" type="text" size="20" default="1" label="MYMUSE_SHIPPERCENT_4_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer34" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_34" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_5_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_34" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_5_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+		<field name="ship_percent_30" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_31" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_2_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_32" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_3_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_33" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_4_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
 		<field name="ship_percent_34" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_5_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer35" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_35" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_6_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_35" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_6_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_35" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_6_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer36" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_36" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_7_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_36" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_7_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_36" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_7_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer37" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_37" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_8_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_37" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_8_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_37" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_8_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer38" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_38" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_9_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_38" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_9_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_38" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_9_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer39" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_39" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_10_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_39" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_10_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_39" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_10_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer310" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_310" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_11_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_310" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_11_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_310" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_11_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer311" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_311" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_12_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_311" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_12_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_311" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_12_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
 </fieldset>
 
 <fieldset name="SHIPPER4">
+   		<field name="ship_carrier_4" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
+		<field name="ship_method_4" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
    
 		<field name="ship_4_active" type="radio" default="0" label="MYMUSE_SHIPACTIVE_1_LABEL" description="MYMUSE_SHIPACTIVE_1_DESC">
 	 			<option value="0">JNO</option>
 	 			<option value="1">JYES</option>
 	 	</field>
-	 	<field name="ship_all_countries_4" type="radio" default="1" 
+	 	<field name="ship_all_countries_4" type="radio" default="" 
 		label="MYMUSE_SHIPALLCOUNTRIES_1_LABEL" 
 		description="MYMUSE_SHIPALLCOUNTRIES_1_DESC">
 	 			<option value="0">JNO</option>
@@ -301,66 +249,31 @@
 				ORDER by value"
 			/>
 		
-		<field name="ship_carrier_4" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
-		<field name="ship_method_4" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
 
 <field name="@spacer40" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_40" type="text" size="20" default="0.00" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_40" type="text" size="20" default="100.00" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_40" type="text" size="20" default="6" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer41" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_41" type="text" size="20" default="100.01" label="MYMUSE_SHIPMIMIMUM_2_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_41" type="text" size="20" default="500.00" label="MYMUSE_SHIPMAXIMUM_2_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_41" type="text" size="20" default="4" label="MYMUSE_SHIPPERCENT_2_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer42" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_42" type="text" size="20" default="500.01" label="MYMUSE_SHIPMIMIMUM_3_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_42" type="text" size="20" default="1000.00" label="MYMUSE_SHIPMAXIMUM_3_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_42" type="text" size="20" default="2" label="MYMUSE_SHIPPERCENT_3_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer43" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_43" type="text" size="20" default="1000.01" label="MYMUSE_SHIPMIMIMUM_4_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_43" type="text" size="20" default="0" label="MYMUSE_SHIPMAXIMUM_4_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_43" type="text" size="20" default="1" label="MYMUSE_SHIPPERCENT_4_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer44" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_44" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_5_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_44" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_5_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+		<field name="ship_percent_40" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_41" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_2_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_42" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_3_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_43" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_4_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
 		<field name="ship_percent_44" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_5_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer45" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_45" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_6_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_45" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_6_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_45" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_6_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer46" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_46" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_7_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_46" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_7_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_46" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_7_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer47" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_47" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_8_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_47" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_8_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_47" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_8_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer48" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_48" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_9_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_48" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_9_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_48" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_9_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer49" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_49" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_10_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_49" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_10_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_49" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_10_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer410" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_410" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_11_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_410" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_11_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_410" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_11_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer411" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_411" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_12_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_411" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_12_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_411" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_12_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
 </fieldset>
 
 <fieldset name="SHIPPER5">
+   		<field name="ship_carrier_5" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
+		<field name="ship_method_5" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
    
 		<field name="ship_5_active" type="radio" default="0" label="MYMUSE_SHIPACTIVE_1_LABEL" description="MYMUSE_SHIPACTIVE_1_DESC">
 	 			<option value="0">JNO</option>
 	 			<option value="1">JYES</option>
 	 	</field>
-	 	<field name="ship_all_countries_5" type="radio" default="1" 
+	 	<field name="ship_all_countries_5" type="radio" default="" 
 		label="MYMUSE_SHIPALLCOUNTRIES_1_LABEL" 
 		description="MYMUSE_SHIPALLCOUNTRIES_1_DESC">
 	 			<option value="0">JNO</option>
@@ -382,67 +295,32 @@
 				ORDER by value"
 			/>
 		
-		<field name="ship_carrier_5" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
-		<field name="ship_method_5" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
 
 <field name="@spacer50" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_50" type="text" size="20" default="0.00" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_50" type="text" size="20" default="100.00" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_50" type="text" size="20" default="6" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer51" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_51" type="text" size="20" default="100.01" label="MYMUSE_SHIPMIMIMUM_2_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_51" type="text" size="20" default="500.00" label="MYMUSE_SHIPMAXIMUM_2_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_51" type="text" size="20" default="4" label="MYMUSE_SHIPPERCENT_2_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer52" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_52" type="text" size="20" default="500.01" label="MYMUSE_SHIPMIMIMUM_3_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_52" type="text" size="20" default="1000.00" label="MYMUSE_SHIPMAXIMUM_3_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_52" type="text" size="20" default="2" label="MYMUSE_SHIPPERCENT_3_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer53" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_53" type="text" size="20" default="1000.01" label="MYMUSE_SHIPMIMIMUM_4_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_53" type="text" size="20" default="0" label="MYMUSE_SHIPMAXIMUM_4_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_53" type="text" size="20" default="1" label="MYMUSE_SHIPPERCENT_4_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer54" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_54" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_5_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_54" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_5_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+		<field name="ship_percent_50" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_51" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_2_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_52" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_3_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_53" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_4_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
 		<field name="ship_percent_54" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_5_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer55" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_55" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_6_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_55" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_6_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_55" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_6_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer56" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_56" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_7_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_56" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_7_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_56" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_7_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer57" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_57" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_8_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_57" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_8_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_57" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_8_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer58" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_58" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_9_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_58" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_9_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_58" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_9_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer59" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_59" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_10_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_59" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_10_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_59" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_10_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer510" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_510" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_11_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_510" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_11_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_510" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_11_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer511" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_511" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_12_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_511" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_12_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_511" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_12_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
 </fieldset>
 
 
 <fieldset name="SHIPPER6">
+   		<field name="ship_carrier_6" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
+		<field name="ship_method_6" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
    
 		<field name="ship_6_active" type="radio" default="0" label="MYMUSE_SHIPACTIVE_1_LABEL" description="MYMUSE_SHIPACTIVE_1_DESC">
 	 			<option value="0">JNO</option>
 	 			<option value="1">JYES</option>
 	 	</field>
-	 	<field name="ship_all_countries_6" type="radio" default="1" 
+	 	<field name="ship_all_countries_6" type="radio" default="" 
 		label="MYMUSE_SHIPALLCOUNTRIES_1_LABEL" 
 		description="MYMUSE_SHIPALLCOUNTRIES_1_DESC">
 	 			<option value="0">JNO</option>
@@ -464,66 +342,31 @@
 				ORDER by value"
 			/>
 		
-		<field name="ship_carrier_6" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
-		<field name="ship_method_6" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
 
 <field name="@spacer60" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_60" type="text" size="20" default="0.00" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_60" type="text" size="20" default="100.00" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_60" type="text" size="20" default="6" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer61" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_61" type="text" size="20" default="100.01" label="MYMUSE_SHIPMIMIMUM_2_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_61" type="text" size="20" default="500.00" label="MYMUSE_SHIPMAXIMUM_2_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_61" type="text" size="20" default="4" label="MYMUSE_SHIPPERCENT_2_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer62" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_62" type="text" size="20" default="500.01" label="MYMUSE_SHIPMIMIMUM_3_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_62" type="text" size="20" default="1000.00" label="MYMUSE_SHIPMAXIMUM_3_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_62" type="text" size="20" default="2" label="MYMUSE_SHIPPERCENT_3_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer63" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_63" type="text" size="20" default="1000.01" label="MYMUSE_SHIPMIMIMUM_4_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_63" type="text" size="20" default="0" label="MYMUSE_SHIPMAXIMUM_4_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_63" type="text" size="20" default="1" label="MYMUSE_SHIPPERCENT_4_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer64" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_64" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_5_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_64" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_5_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+		<field name="ship_percent_60" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_61" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_2_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_62" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_3_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_63" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_4_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
 		<field name="ship_percent_64" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_5_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer65" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_65" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_6_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_65" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_6_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_65" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_6_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer66" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_66" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_7_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_66" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_7_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_66" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_7_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer67" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_67" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_8_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_67" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_8_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_67" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_8_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer68" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_68" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_9_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_68" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_9_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_68" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_9_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer69" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_69" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_10_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_69" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_10_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_69" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_10_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer610" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_610" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_11_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_610" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_11_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_610" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_11_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer611" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_611" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_12_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_611" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_12_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_611" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_12_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
 </fieldset>
 
 <fieldset name="SHIPPER7">
+ 		<field name="ship_carrier_7" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
+		<field name="ship_method_7" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
    
 		<field name="ship_7_active" type="radio" default="0" label="MYMUSE_SHIPACTIVE_1_LABEL" description="MYMUSE_SHIPACTIVE_1_DESC">
 	 			<option value="0">JNO</option>
 	 			<option value="1">JYES</option>
 	 	</field>
-	 	<field name="ship_all_countries_7" type="radio" default="1" 
+	 	<field name="ship_all_countries_7" type="radio" default="" 
 		label="MYMUSE_SHIPALLCOUNTRIES_1_LABEL" 
 		description="MYMUSE_SHIPALLCOUNTRIES_1_DESC">
 	 			<option value="0">JNO</option>
@@ -545,66 +388,31 @@
 				ORDER by value"
 			/>
 		
-		<field name="ship_carrier_7" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
-		<field name="ship_method_7" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
 
 <field name="@spacer70" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_70" type="text" size="20" default="0.00" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_70" type="text" size="20" default="100.00" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_70" type="text" size="20" default="6" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer71" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_71" type="text" size="20" default="100.01" label="MYMUSE_SHIPMIMIMUM_2_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_71" type="text" size="20" default="500.00" label="MYMUSE_SHIPMAXIMUM_2_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_71" type="text" size="20" default="4" label="MYMUSE_SHIPPERCENT_2_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer72" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_72" type="text" size="20" default="500.01" label="MYMUSE_SHIPMIMIMUM_3_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_72" type="text" size="20" default="1000.00" label="MYMUSE_SHIPMAXIMUM_3_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_72" type="text" size="20" default="2" label="MYMUSE_SHIPPERCENT_3_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer73" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_73" type="text" size="20" default="1000.01" label="MYMUSE_SHIPMIMIMUM_4_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_73" type="text" size="20" default="0" label="MYMUSE_SHIPMAXIMUM_4_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_73" type="text" size="20" default="1" label="MYMUSE_SHIPPERCENT_4_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer74" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_74" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_5_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_74" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_5_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+		<field name="ship_percent_70" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_71" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_2_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_72" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_3_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_73" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_4_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
 		<field name="ship_percent_74" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_5_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer75" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_75" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_6_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_75" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_6_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_75" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_6_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer76" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_76" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_7_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_76" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_7_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_76" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_7_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer77" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_77" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_8_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_77" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_8_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_77" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_8_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer78" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_78" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_9_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_78" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_9_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_78" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_9_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer79" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_79" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_10_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_79" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_10_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_79" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_10_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer710" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_710" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_11_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_710" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_11_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_710" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_11_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer711" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_711" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_12_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_711" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_12_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_711" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_12_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
 </fieldset>
 
 <fieldset name="SHIPPER8">
+   		<field name="ship_carrier_8" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
+		<field name="ship_method_8" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
    
 		<field name="ship_8_active" type="radio" default="0" label="MYMUSE_SHIPACTIVE_1_LABEL" description="MYMUSE_SHIPACTIVE_1_DESC">
 	 			<option value="0">JNO</option>
 	 			<option value="1">JYES</option>
 	 	</field>
-	 	<field name="ship_all_countries_8" type="radio" default="1" 
+	 	<field name="ship_all_countries_8" type="radio" default="" 
 		label="MYMUSE_SHIPALLCOUNTRIES_1_LABEL" 
 		description="MYMUSE_SHIPALLCOUNTRIES_1_DESC">
 	 			<option value="0">JNO</option>
@@ -626,56 +434,19 @@
 				ORDER by value"
 			/>
 		
-		<field name="ship_carrier_8" type="text" size="35" default="Shipper" label="MYMUSE_SHIPCARRIER_1_LABEL" description="MYMUSE_SHIPCARRIER_1_DESC"/>
-		<field name="ship_method_8" type="text" size="35" default="Ground" label="MYMUSE_SHIPMETHOD_1_LABEL" description="MYMUSE_SHIPMETHOD_1_DESC"/>
 
 <field name="@spacer80" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_80" type="text" size="20" default="0.00" label="MYMUSE_SHIPMIMIMUM_1_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_80" type="text" size="20" default="100.00" label="MYMUSE_SHIPMAXIMUM_1_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_80" type="text" size="20" default="6" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer81" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_81" type="text" size="20" default="100.01" label="MYMUSE_SHIPMIMIMUM_2_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_81" type="text" size="20" default="500.00" label="MYMUSE_SHIPMAXIMUM_2_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_81" type="text" size="20" default="4" label="MYMUSE_SHIPPERCENT_2_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer82" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_82" type="text" size="20" default="500.01" label="MYMUSE_SHIPMIMIMUM_3_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_82" type="text" size="20" default="1000.00" label="MYMUSE_SHIPMAXIMUM_3_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_82" type="text" size="20" default="2" label="MYMUSE_SHIPPERCENT_3_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer83" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_83" type="text" size="20" default="1000.01" label="MYMUSE_SHIPMIMIMUM_4_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_83" type="text" size="20" default="0" label="MYMUSE_SHIPMAXIMUM_4_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
-		<field name="ship_percent_83" type="text" size="20" default="1" label="MYMUSE_SHIPPERCENT_4_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer84" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_84" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_5_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_84" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_5_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
+		<field name="ship_percent_80" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_1_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_81" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_2_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_82" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_3_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
+		<field name="ship_percent_83" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_4_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
 		<field name="ship_percent_84" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_5_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer85" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_85" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_6_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_85" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_6_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_85" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_6_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer86" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_86" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_7_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_86" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_7_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_86" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_7_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer87" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_87" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_8_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_87" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_8_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_87" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_8_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer88" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_88" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_9_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_88" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_9_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_88" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_9_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer89" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_89" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_10_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_89" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_10_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_89" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_10_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer810" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_810" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_11_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_810" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_11_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_810" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_11_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
-<field name="@spacer811" type="spacer" default="" label="" description="" />
-		<field name="ship_minimum_811" type="text" size="20" default="" label="MYMUSE_SHIPMIMIMUM_12_LABEL" description="MYMUSE_SHIPMIMIMUM_1_DESC"/>
-		<field name="ship_maximum_811" type="text" size="20" default="" label="MYMUSE_SHIPMAXIMUM_12_LABEL" description="MYMUSE_SHIPMAXIMUM_1_DESC"/>
 		<field name="ship_percent_811" type="text" size="20" default="" label="MYMUSE_SHIPPERCENT_12_LABEL" description="MYMUSE_SHIPPERCENT_1_DESC"/>
 </fieldset>
 	</fields>
