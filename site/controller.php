@@ -99,6 +99,7 @@ class MyMuseController extends JControllerLegacy
             $view = $this->getView( 'store', 'html' );
             $view->setModel( $this->getModel( 'category', 'MyMuseModel' ), false );
         }
+        $this->Itemid = $this->jinput->get('Itemid', '');
 	}
 
 	
