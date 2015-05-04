@@ -425,7 +425,10 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 		if ($this->params->get('my_use_shipping') && $this->item->order_shipping > 0) { 
 			$string .= '
 		    <tr>
-		    <td colspan="'.$colspan.'" align="right">' .JText::_('MYMUSE_SHIPPING'). ':</td>
+		    <td colspan="'.$colspan.'" align="right">' .JText::_('MYMUSE_SHIPPING'). ': '
+							.$this->item->order_shipments[0]->ship_carrier_name.': '
+							.$this->item->order_shipments[0]->ship_method_name.'
+		    </td>
 		    <td colspan="1" align="right">'. MyMuseHelper::printMoney($this->item->order_shipping). '
 		    </td>
 		    <td></td>

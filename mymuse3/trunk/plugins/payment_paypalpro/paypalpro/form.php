@@ -23,6 +23,8 @@
 	<input type="hidden" name="TAXAMT" value="<?php echo $data->TAXAMT ?>" />
 	<input type="hidden" name="CURRENCYCODE" value="<?php echo $data->CURRENCYCODE ?>" />
 	<input type="hidden" name="DESC" value="<?php echo $data->DESC ?>" />
+	<input type="hidden" name="SHIPPINGAMT" value="<?php echo $data->SHIPPINGAMT ?>" />
+	
 	<?php if(! empty($data->INVNUM)) { ?>
 	<input type="hidden" name="INVNUM" value="<?php echo $data->INVNUM ?>" />
 	<?php } ?>

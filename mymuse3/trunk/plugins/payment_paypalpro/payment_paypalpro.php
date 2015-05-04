@@ -109,17 +109,20 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		}
 		
 		//custom field
-		$custom = 'custom=1&userid='.$shopper->id;
+		$custom = 'userid='.$shopper->id;
 		//if($params->get('my_registration') == "no_reg"){
-			foreach($shopper->profile as $key=>$val){
-				$custom .= '&'.$key.'='.$val;
-			}
+			//foreach($shopper->profile as $key=>$val){
+				//$custom .= '&'.$key.'='.$val;
+			//}
 		//}
 		if(isset($order->order_number)){
 			$custom .= '&order_number='.$order->order_number.'&email='.$shopper->email;
 		}
 		if($params->get('my_use_shipping') && isset($order->order_shipping->id)){
 			$custom .= '&order_shipping_id='.$order->order_shipping->id;
+		}
+		if(!isset($order->order_shipping->cost)){
+			$order->order_shipping->cost = 0.00;
 		}
 		
 		//does this order have reservation fees? How much is the "Pay_now" field?
@@ -161,6 +164,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			'ZIP'				=> trim($shopper->postal_code),
 			'AMT'				=> $order->order_total,
 			'ITEMAMT'			=> $order->order_subtotal,
+			'SHIPPINGAMT'		=> $order->order_shipping->cost,
 			'TAXAMT'			=> $order->tax_total,
 			'CURRENCYCODE'		=> strtoupper($store->currency),
 			'DESC'				=> $store->title
