@@ -583,6 +583,30 @@ class MyMuseHelper extends JObject
 	}
 	
 	/**
+	 * Get fields for registration
+	 *
+	 * @return array
+	 */
+	static function getRegFields()
+	{
+		$fields = array(
+				'address1',
+				'address2',
+				'city',
+				'region',
+				'country',
+				'postal_code',
+				'vat_number',
+				'phone',
+				'mobile',
+				'fax',
+				'shopper_group',
+				'category_owner'
+		);
+	
+		return $fields;
+	}
+	/**
 	 * Get fields for no registration
 	 * 
 	 * @return array
@@ -604,6 +628,19 @@ class MyMuseHelper extends JObject
 				'phone',
 				'mobile',
 				'tos'
+		);
+		$fields = array(
+				'address1',
+				'address2',
+				'city',
+				'region',
+				'country',
+				'postal_code',
+				'phone',
+				'mobile',
+				'fax',
+				'shopper_group',
+				'category_owner'
 		);
 		
 		return $fields;

@@ -38,8 +38,9 @@ class plgMymuseShipping_Price extends JPlugin
 	 * @param   array   $config   An array that holds the plugin configuration
 	 */
 	function plgMymuseShipping_Price(&$subject, $config)  {
-		parent::__construct($subject, $config);
 		
+		$db = JFactory::getDBO();
+		parent::__construct($subject, $config);
 
 	}
 		
@@ -74,7 +75,7 @@ class plgMymuseShipping_Price extends JPlugin
             	
             		//yes see if there are exceptions to exlude
             		if(isset($shopper->profile['country'])
-            				&& in_array($shopper->profile['country'], $this->params->get("ship_countries_$i"))){
+            				&& in_array($shopper->profile['country'], $this->params->get("ship_countries_$i", array()))){
             			//we have an exeption
             		}else{
             			$good = 1;
@@ -149,6 +150,7 @@ class plgMymuseShipping_Price extends JPlugin
      * @return int
      */
 	function calculateShipping($order, $shipMethod){
+
 
 		$shipping_total = 0.00;
 		// find the level based on sub_total

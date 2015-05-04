@@ -80,7 +80,7 @@ class plgMymuseShipping_Standard extends JPlugin
             		}else{
             			$good = 1;
             		}
-            	}elseif(isset($shopper->profile['country']) && in_array($shopper->profile['country'], $this->params->get("ship_countries_$i"))){
+            	}elseif(isset($shopper->profile['country']) && in_array($shopper->profile['country'], $this->params->get("ship_countries_$i", array()))){
             		$good = 1;
             	}
            
