@@ -669,7 +669,7 @@ class MyMuseController extends JControllerLegacy
 			
 		}else{
 			$this->jinput->set('view', 'shopper');
-			$this->jinput->set('layout', 'thank_you');
+			$this->jinput->set('layout', 'waiting');
 			$this->display();
 		}
 	}

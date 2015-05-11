@@ -33,6 +33,7 @@ class myMuseHelperRoute
 	 */
 	public static function getProductRoute($id, $catid = 0, $language = 0)
 	{
+	
 		$needles = array(
 			'product'  => array((int) $id)
 		);
@@ -57,6 +58,7 @@ class myMuseHelperRoute
 				$link .= '&catid='.$catid;
 			}
 		}
+		/*
 			if ($language && $language != "*" && JLanguageMultilang::isEnabled()) {
 				$db		= JFactory::getDBO();
 				$query	= $db->getQuery(true);
@@ -73,7 +75,14 @@ class myMuseHelperRoute
 					}
 				}
 			}
-
+			*/
+			if ($language && $language != "*" && JLanguageMultilang::isEnabled())
+			{
+				$link .= '&lang=' . $language;
+				$needles['language'] = $language;
+			}
+			
+			
 		if ($item = self::_findItem($needles)) {
 			$link .= '&Itemid='.$item;
 		}
@@ -142,8 +151,10 @@ class myMuseHelperRoute
 	{
 		$app		= JFactory::getApplication();
 		$menus		= $app->getMenu('site');
+		$language = isset($needles['language']) ? $needles['language'] : '*';
 
 		// Prepare the reverse lookup array.
+		/*
 		if (self::$lookup === null)
 		{
 			self::$lookup = array();
@@ -164,7 +175,52 @@ class myMuseHelperRoute
 				}
 			}
 		}
-
+	*/
+		
+		// Prepare the reverse lookup array.
+		if (!isset(self::$lookup[$language]))
+		{
+			self::$lookup[$language] = array();
+		
+			$component  = JComponentHelper::getComponent('com_mymuse');
+		
+			$attributes = array('component_id');
+			$values     = array($component->id);
+		
+			if ($language != '*')
+			{
+				$attributes[] = 'language';
+				$values[]     = array($needles['language'], '*');
+			}
+		
+			$items = $menus->getItems($attributes, $values);
+		
+			foreach ($items as $item)
+			{
+				if (isset($item->query) && isset($item->query['view']))
+				{
+					$view = $item->query['view'];
+		
+					if (!isset(self::$lookup[$language][$view]))
+					{
+						self::$lookup[$language][$view] = array();
+					}
+		
+					if (isset($item->query['id']))
+					{
+						/**
+						 * Here it will become a bit tricky
+						 * language != * can override existing entries
+						 * language == * cannot override existing entries
+						 */
+						if (!isset(self::$lookup[$language][$view][$item->query['id']]) || $item->language != '*')
+						{
+							self::$lookup[$language][$view][$item->query['id']] = $item->id;
+						}
+					}
+				}
+			}
+		}
 		if ($needles)
 		{
 			foreach ($needles as $view => $ids)

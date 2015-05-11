@@ -629,19 +629,7 @@ class MyMuseHelper extends JObject
 				'mobile',
 				'tos'
 		);
-		$fields = array(
-				'address1',
-				'address2',
-				'city',
-				'region',
-				'country',
-				'postal_code',
-				'phone',
-				'mobile',
-				'fax',
-				'shopper_group',
-				'category_owner'
-		);
+
 		
 		return $fields;
 	}

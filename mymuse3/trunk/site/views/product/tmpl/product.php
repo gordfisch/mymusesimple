@@ -28,7 +28,8 @@ $return_link = 'index.php?option=com_mymuse&view=product&task=product&id='.$prod
 $canEdit	= $this->item->params->get('access-edit',0);
 $items_select 	= $this->params->get('product_item_selectbox',0);
 $document 	= JFactory::getDocument();
-
+$lang = JFactory::getLanguage();
+$langtag = $lang->getTag();
 
 // get the count of all products, items and tracks
 if($product->product_physical){
@@ -307,11 +308,11 @@ endif; ?>
 <!-- END RECORDING DETAILS -->
 
 
-<form method="post" action="<?php echo JURI::base() ?>index.php?Itemid=<?php echo $Itemid; ?>" onsubmit="return hasProduct(this,<?php echo $count; ?>);" name="mymuseform">
+<form method="post" action="<?php JRoute::_('index.php?lang='.$langtag) ?>" onsubmit="return hasProduct(this,<?php echo $count; ?>);" name="mymuseform">
 <input type="hidden" name="option" value="com_mymuse" />
 <input type="hidden" name="task" value="addtocart" />
 <input type="hidden" name="catid" value="<?php echo $product->catid; ?>" />
-
+<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
 <!-- IMAGE INTROTEXT -->
 
 <?php 

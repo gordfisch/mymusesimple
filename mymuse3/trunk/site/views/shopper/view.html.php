@@ -95,7 +95,7 @@ class myMuseViewShopper extends JViewLegacy
 			if($Itemid){
 				$link 		.= "&Itemid=$Itemid";
 			}
-			$link 		.= "&st=5";
+			$link 		.= "&st=10";
 			$message 	= '<a href="'.$link.'">'.Jtext::_('MYMUSE_CHECK_ORDER_WAITING').'</a>';
 				
 			$this->assignRef('heading', $heading);

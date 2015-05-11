@@ -42,9 +42,10 @@ class myMuseViewProduct extends JViewLegacy
 		$this->item		= $this->get('Item');
 		if($this->item->parentid > 0){
 			//send them to the parent
-			$item->route = MyMuseHelperRoute::getProductRoute($item->id, $item->catid, $item->language);
+			$item->route = MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language);
 			$app->redirect($item->route);
 		}
+	
 		
 		$this->print	= $jinput->get('print',0, 'INT');
 		$this->state	= $this->get('State');
