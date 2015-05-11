@@ -436,6 +436,10 @@ class mymuseModelShopper extends JModelForm
 			}
 		}
 
+		//save the currrent cart
+		$MyMuseCart = MyMuse::getObject('cart','helpers');
+		$currentCart = $MyMuseCart->cart;
+		
 		//perform the login action
 		$credentials = array();
 		$credentials['username'] = 'buyer';
@@ -449,6 +453,12 @@ class mymuseModelShopper extends JModelForm
 			$this->setError(JText::_($error->code));
 			return false;
 		}
+		
+		//put the cart back in
+		$session = JFactory::getSession();
+		$session->set("cart",$currentCart);
+		$MyMuseCart->cart = $currentCart;
+		
 		$user	= JFactory::getUser('buyer');
 		
 		//put values into user

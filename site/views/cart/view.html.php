@@ -23,6 +23,7 @@ class myMuseViewCart extends JViewLegacy
         
 	function display($tpl = null)
 	{
+
 		$params = MyMuseHelper::getParams();
 		$jinput = JFactory::getApplication()->input;
 		

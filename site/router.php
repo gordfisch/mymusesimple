@@ -38,7 +38,7 @@ function MymuseBuildRoute(&$query)
 		$menuItem = $menu->getItem($query['Itemid']);
 		$menuItemGiven = true;
 	}
-
+echo $query['Itemid']."<br />";
 	if (isset($query['view'])) {
 		$view = $query['view'];
 	}

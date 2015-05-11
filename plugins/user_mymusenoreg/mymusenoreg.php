@@ -256,7 +256,7 @@ class plgUserMyMusenoreg extends JPlugin
 		$form->loadFile('profile', false);
 
 		$fields = MyMuseHelper::getNoRegFields();
-		
+	
 		$tosarticle = $this->params->get('register_tos_article');
 		$tosenabled = $this->params->get('register-require_tos', 0);
 		

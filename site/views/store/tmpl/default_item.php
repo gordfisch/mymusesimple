@@ -16,7 +16,7 @@ $canEdit	= $this->item->params->get('access-edit');
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
 JHtml::_('behavior.tooltip');
 JHtmlBehavior::framework();
-
+$lang = JFactory::getLanguage();
 ?>
 
 <?php if ($this->item->state == 0) : ?>
@@ -27,7 +27,7 @@ JHtmlBehavior::framework();
 	<div class="feature-title">
 	<h3>
 		<?php if ($params->get('category_product_link_titles') && $params->get('access-view')) : ?>
-			<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid)); ?>">
+			<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $lang->getTag())); ?>">
 			<?php echo $this->escape($this->item->title); ?></a>
 		<?php else : ?>
 			<?php echo $this->escape($this->item->title); ?>
@@ -39,7 +39,7 @@ JHtmlBehavior::framework();
 
 <?php if ($params->get('category_show_product_image') && $this->item->list_image): ?>
 <div class="list_image">
-<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid)); ?>"
+<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $lang->getTag())); ?>"
 ><img src="<?php echo $this->item->list_image; ?>" 
 alt="<?php echo htmlspecialchars($this->item->list_image); ?>" border="0" 
 <?php if ($params->get('category_product_image_height')) : ?>
