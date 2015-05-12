@@ -274,7 +274,7 @@ class plgMymusePayment_Paypal extends JPlugin
 			}
 		}
 		$result['order_number'] 		= isset($custom['order_number'])? $custom['order_number'] : '';
-		$result['order_id']				= $_POST['item_number'])
+		$result['order_id']				= $_POST['item_number'];
 		$result['payer_email'] 			= urldecode($_POST['payer_email']);
 		$result['user_email'] 			= $custom['email'];
 		$result['userid'] 				= $custom['userid'];
