@@ -155,6 +155,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		
 		<input type="hidden" name="upload"          value="1" />
 		<input type="hidden" name="currency_code"   value="'. $store->currency.'" />
+		<input type="hidden" name="invoice"     	value="'. $order->id.'" />
 		<input type="hidden" name="item_name"       value="'. $store->title.'" />
 		<input type="hidden" name="item_number"     value="'. $order->id.'" />
 		<input type="hidden" name="first_name"      value="'. $shopper->first_name.'" />
@@ -274,7 +275,7 @@ class plgMymusePayment_Paypal extends JPlugin
 			}
 		}
 		$result['order_number'] 		= isset($custom['order_number'])? $custom['order_number'] : '';
-		$result['order_id']				= $_POST['item_number'];
+		$result['order_id']				= $_POST['invoice'];
 		$result['payer_email'] 			= urldecode($_POST['payer_email']);
 		$result['user_email'] 			= $custom['email'];
 		$result['userid'] 				= $custom['userid'];
