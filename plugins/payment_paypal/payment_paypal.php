@@ -156,7 +156,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		<input type="hidden" name="upload"          value="1" />
 		<input type="hidden" name="currency_code"   value="'. $store->currency.'" />
 		<input type="hidden" name="item_name"       value="'. $store->title.'" />
-		<input type="hidden" name="item_number"     value="'. $order->order_number.'" />
+		<input type="hidden" name="item_number"     value="'. $order->id.'" />
 		<input type="hidden" name="first_name"      value="'. $shopper->first_name.'" />
 		<input type="hidden" name="last_name"       value="'. $shopper->last_name.'" />
 		<input type="hidden" name="address_street"  value="'. $shopper->address1." ".$shopper->address2.'" />
@@ -274,6 +274,7 @@ class plgMymusePayment_Paypal extends JPlugin
 			}
 		}
 		$result['order_number'] 		= isset($custom['order_number'])? $custom['order_number'] : '';
+		$result['order_id']				= $_POST['item_number'])
 		$result['payer_email'] 			= urldecode($_POST['payer_email']);
 		$result['user_email'] 			= $custom['email'];
 		$result['userid'] 				= $custom['userid'];
@@ -486,7 +487,7 @@ class plgMymusePayment_Paypal extends JPlugin
         		// Get the Order Details from the database
         		
         		$query = "SELECT * FROM `#__mymuse_order`
-                    WHERE `order_number`='".$result['order_number']."'";
+                    WHERE `id`='".$result['order_id']."'";
         		$date = date('Y-m-d h:i:s');
         		$debug = "$date  4.1 $query \n\n";
         		
@@ -503,6 +504,7 @@ class plgMymusePayment_Paypal extends JPlugin
         			// update the payment status
         			$result['order_found']  = 1;
         			$result['order_id'] 	= $this_order->id;
+        			$result['order_number'] = $this_order->order_number;
         			if (preg_match ("/Completed/", $result['payment_status'])) {
                 		MyMuseHelper::orderStatusUpdate($result['order_id'] , "C");
                 		$date = date('Y-m-d h:i:s');
