@@ -52,7 +52,7 @@ if($params->get('my_registration') == "no_reg"){
                 	<td class="myphone"><?php echo $shopper->profile['phone'] ?></td>
                 </tr>
               <?php } ?>
-              <?php if(isset($shopper->profile['address1']) && $shopper->profile['address1']){ ?> 
+              <?php if(isset($shopper->profile['address1']) && $shopper->profile['address1'] !=''){ ?> 
                 <tr>
                 	<td class="mobile-hide"><?php echo JText::_('MYMUSE_ADDRESS') ?>:</td>
                 	<td class="myaddress">

@@ -317,6 +317,8 @@ class myMuseViewCart extends JViewLegacy
 		ini_set('error_log', JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'php_error' );
 		
 		$jinput = JFactory::getApplication()->input;
+				
+		
 		$this->Itemid = $jinput->get("Itemid",'');
 		$params = MyMuseHelper::getParams();
 		
@@ -501,13 +503,30 @@ class myMuseViewCart extends JViewLegacy
             
             if($order->notes && $params->get('my_registration') == "no_reg" ){
                 $accparams = new JRegistry( $order->notes);
+                /*
+                first_name=Gord
+                last_name=Fisch
+                email=gord@arboreta.ca
+                address1=5380 King Edward
+                address2=
+                city=Montreal
+                country=CA
+                region_name=QC
+                postal_code=H4V 2K1
+
+                */
+
                 $user->set('email',$accparams->get('email'));
                 $user->set('name',$accparams->get('first_name')." ".$accparams->get('last_name'));
                 $shopper->email         = $accparams->get('email');
                 $shopper->first_name    = $accparams->get('first_name');
                 $shopper->last_name     = $accparams->get('last_name');
+                $shopper->address1 		= $accparams->get('address1');
+                $shopper->address2 		= $accparams->get('address2');
+                $shopper->city 		= $accparams->get('city');
+                $shopper->postal_code 		= $accparams->get('postal_code');
                 $shopper->country       = $accparams->get('country');
-                $shopper->state         = $accparams->get('state');
+                $shopper->region_name         = $accparams->get('region_name');
             }
            
             $user_email 	= $user->email;

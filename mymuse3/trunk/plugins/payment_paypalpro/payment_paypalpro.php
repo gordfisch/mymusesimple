@@ -475,7 +475,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			
 			
 			
-			sleep(8);
+			sleep(15);
 		
 			if(!$isValid ){
 				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalpaymentspro&orderid='.$orderid.'&Itemid='.$Itemid, false);
