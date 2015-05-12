@@ -246,7 +246,6 @@ class plgMymusePayment_Paypal extends JPlugin
 		$result['txn_id']				= 0;
 		$result['error']				= '';
 
-	
 		if(!isset($_POST['notify_version'])){
 			//wasn't paypal
 			$debug .= "Was not PayPal. \n";

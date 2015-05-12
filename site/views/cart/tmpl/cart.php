@@ -138,7 +138,9 @@ $task		= $this->task;
 		if ($params->get("my_use_shipping") && @$order->order_shipping->cost > 0) { ?>
 		    <tr>
 		    <td class="mobile-hide myshipping" colspan="<?php echo $order->colspan; ?>"><b><?php echo JText::_('MYMUSE_SHIPPING') ?>:</b></td>
-		    <td class="myshipping" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->order_shipping->cost); ?>
+		    <td class="myshipping" colspan="<?php echo $order->colspan2; ?>">
+		    <?php echo $order->order_shipping->ship_carrier_name ?> <?php echo $order->order_shipping->ship_method_name ?> 
+		    <?php echo MyMuseHelper::printMoney($order->order_shipping->cost); ?>
 		    </td>
 		    <?php if(@$order->do_html){ ?>
 		        <td>&nbsp;</td>
