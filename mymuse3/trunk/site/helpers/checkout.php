@@ -520,7 +520,16 @@ class MyMuseCheckout
 			$order_taxable = $order->order_subtotal;
 		}
 
-		$taxes = array();
+		$total_physical = 0;
+		$total_downloadable = 0;
+		foreach($order->items as $item) {
+			if($item->product_physical){
+				$total_physical += $item->product_item_subtotal;
+			}else{
+				$total_downloadable += $item->product_item_subtotal;
+			}
+		}
+		
 	
 		// No profile?
 		if(!isset($shopper->profile['country'])){
@@ -544,7 +553,7 @@ class MyMuseCheckout
 		
 		// GET USER STATE,COUNTRY, BLOC
 		$user_state 	= isset($shopper->profile['region'])? $shopper->profile['region'] : 'unknown';
-		$user_country 	= isset($shopper->profile['country'])? $shopper->profile['country'] : "unkown";
+		$user_country 	= isset($shopper->profile['country'])? $shopper->profile['country'] : "unknown";
 		$user_bloc 		= '';
 		
 		if($user_country != 'unknown'){
@@ -580,15 +589,7 @@ class MyMuseCheckout
 				$taxes['VAT Exempt'] = 0.00;
 				return($taxes);
 			}else{
-				$total_physical = 0;
-				$total_downloadable = 0;
-				foreach($order->items as $item) {
-					if($item->product_physical){
-						$total_physical += $item->product_item_subtotal;
-					}else{
-						$total_downloadable += $item->product_item_subtotal;
-					}
-				}
+				
 				$temp_tax = 0;
 				foreach($tax_rates as $rate){
 					$name = preg_replace("/$regex/","_",$rate->tax_name);
@@ -626,7 +627,17 @@ class MyMuseCheckout
 			}
 
 			// APPLIES TO A STATE/REGION
+			
+			//first is Californian
 			if($rate->tax_applies_to == "S" &&
+				($user_state == $rate->province || strtolower($user_state) == strtolower($rate->state_name)) &&
+				$rate->state_name == "California" ){
+				//only phisical items in California
+				$temp_tax = $total_physical * $rate->tax_rate;
+				$taxes[$name] += $temp_tax;
+				
+				// now all other states
+			}elseif($rate->tax_applies_to == "S" &&
 					($user_state == $rate->province || strtolower($user_state) == strtolower($rate->state_name)) ){
 				if($rate->compounded == "1"){
 					$order_subtotal += $temp_tax;
