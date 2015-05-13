@@ -206,26 +206,44 @@ class myMuseViewCart extends JViewLegacy
 		$this->assignRef('order', $order);
 		$this->assignRef('currency', $currency);
 		
-	
+		//START CAPTURING THE DISPLAY PARTS
+		
 		// show the heading
 		if($heading){
 			$this->assignRef('heading', $heading);
 			$this->assignRef('message', $message);
+			ob_start();
 			parent::display('checkout_header');
+			$checkout_header = ob_get_contents();
+			ob_end_clean();
+			$this->assignRef('checkout_header', $checkout_header);
 		}
 		
 		// do we need an order summary? Only if we already have a saved order
 		if($task == "makepayment" || $task == "vieworder"){
+			ob_start();
 			parent::display('order_summary');
+			$order_summary = ob_get_contents();
+			ob_end_clean();
+			$this->assignRef('order_summary', $order_summary);
+			
 		}
 
 		// display the cart part!
-		parent::display();
+		ob_start();
+		parent::display('cart');
+		$cart_display = ob_get_contents();
+		ob_end_clean();
+		$this->assignRef('cart_display', $cart_display);
 		
 		
 		//display the shopper info, if we have one
 		if($heading && $user->get('id') > 0 && $user->get('name') != "Guest Buyer"){
-			parent::display("shopper_info"); 
+			ob_start();
+			parent::display('shopper_info'); 
+			$shopper_info = ob_get_contents();
+			ob_end_clean();
+			$this->assignRef('shopper_info', $shopper_info);
 		}
 
 		if($task == "checkout"){
@@ -237,7 +255,11 @@ class myMuseViewCart extends JViewLegacy
 				$button  = JText::_("MYMUSE_CONFIRM_BUTTON");
 			}
 			$this->assignRef('button', $button);
+			ob_start();
 			parent::display("next_form");
+			$next_form = ob_get_contents();
+			ob_end_clean();
+			$this->assignRef('next_form', $next_form);
 			
 		}elseif($task== "shipping"){
 
@@ -254,7 +276,11 @@ class myMuseViewCart extends JViewLegacy
 			$this->assignRef('shipMethods', $res);
 			$button = JText::_("MYMUSE_SHIPPING_BUTTON");
 			$this->assignRef('button', $button);
+			ob_start();
 			parent::display("shipping_form");
+			$shipping_form = ob_get_contents();
+			ob_end_clean();
+			$this->assignRef('shipping_form', $shipping_form);
 			
 		}elseif($task == "confirm" || $task == "paycancel" || 
 		($task == "vieworder" && $this->order->order_status == "P") ){
@@ -263,14 +289,22 @@ class myMuseViewCart extends JViewLegacy
 				$task = "thankyou";
 				$button = JText::_("MYMUSE_ACCEPT");
 				$this->assignRef('button', $button);
+				ob_start();
 				parent::display("next_form");
+				$next_form = ob_get_contents();
+				ob_end_clean();
+				$this->assignRef('thankyou_form', $thankyou_form);
 			}
 			
 			elseif($params->get('my_shop_test')){
 				$task = "makepayment";
 				$button = JText::_("MYMUSE_TEST_STORE");
 				$this->assignRef('button', $button);
+				ob_start();
 				parent::display("next_form");
+				$next_form = ob_get_contents();
+				ob_end_clean();
+				$this->assignRef('makepayment_form', $makepaymen_form);
 			}
 			
 			else{
@@ -290,7 +324,12 @@ class myMuseViewCart extends JViewLegacy
 				array($this->shopper, $this->store, $this->order, $params, $this->Itemid) );
 			
 				$this->assignRef('results', $results);
+				
+				ob_start();
 				parent::display("payment_form");
+				$payment_form= ob_get_contents();
+				ob_end_clean();
+				$this->assignRef('payment_form', $payment_form);
 
 			}
 		}
@@ -299,10 +338,16 @@ class myMuseViewCart extends JViewLegacy
 		
 		if($footer){
 			$this->assignRef('footer', $footer);
+			
+			ob_start();
 			parent::display('checkout_footer');
+			$checkout_footer = ob_get_contents();
+			ob_end_clean();
+			$this->assignRef('checkout_footer', $checkout_footer);
+			
 		}
 	
-
+		parent::display();
 	}
 	
 	/**
