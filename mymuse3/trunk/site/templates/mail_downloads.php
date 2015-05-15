@@ -26,9 +26,9 @@ foreach($order->items as $item){
  	}
 } 
 if($params->get('my_registration') == "no_reg"){
-	$link = JURI::root()."index.php?option=com_mymuse&task=accdownloads&id=".$order->order_number;
+	$link = JURI::root()."index.php?option=com_mymuse&task=accdownloads&id=".$order->order_number."&Itemid=".$Itemid;
 }else{
-	$link = JURI::root()."index.php?option=com_mymuse&task=downloads&id=".$order->order_number;
+	$link = JURI::root()."index.php?option=com_mymuse&task=downloads&id=".$order->order_number."&Itemid=".$Itemid;
 }
 $download_header .= '
 		</ul>
