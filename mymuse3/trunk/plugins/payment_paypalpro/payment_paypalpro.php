@@ -323,11 +323,12 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		";
 		$document->addScriptDeclaration($js);
 		
-		
+		$path = JPluginHelper::getLayoutPath('mymuse', 'payment_paypalpro');
 		@ob_start();
-		include dirname(__FILE__).'/paypalpro/form.php';
+		//include dirname(__FILE__).'/paypalpro/form.php';
+		include $path;
 		$html = @ob_get_clean();
-
+		
 		return $html;
 	}
 
