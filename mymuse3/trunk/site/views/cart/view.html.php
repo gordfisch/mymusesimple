@@ -26,7 +26,7 @@ class myMuseViewCart extends JViewLegacy
 
 		$params = MyMuseHelper::getParams();
 		$jinput = JFactory::getApplication()->input;
-		
+		$this->Itemid = $jinput->get("Itemid",'');
 		$this->task = $task	= $jinput->get('task', '', 'CMD');
 		
 		if($task == "notify"){
@@ -52,7 +52,7 @@ class myMuseViewCart extends JViewLegacy
 
 
 		$document->setTitle( JText::_('MYMUSE_SHOPPING_CART') );
-		$this->Itemid = $jinput->get("Itemid",'');
+		
 		
 		$this->assignRef('user'  , $user);
 		$this->assignRef('params', $params);
