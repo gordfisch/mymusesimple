@@ -426,6 +426,10 @@ class MyMuseCheckout
 			$link_message .= JText::_('MYMUSE_DOWNLOAD_LINK')." ";
 			$link_message .= $link;
 			$contents .= $link_message;
+			
+			$jinput = JFactory::getApplication()->input;
+			$Itemid = $jinput->get("Itemid",'');
+		
 			include_once( JPATH_COMPONENT.DS.'templates'.DS.'mail_downloads.php' );
 			$order->downloadlink = $link_message;
 		}
@@ -868,6 +872,8 @@ class MyMuseCheckout
 			}
 		}
 		if($downloadable){
+			$jinput = JFactory::getApplication()->input;
+			$Itemid = $jinput->get("Itemid",'');
 			$download_header = '';
 			include_once( JPATH_COMPONENT.DS.'templates'.DS.'mail_downloads.php' );
 			$order->downloadlink = $download_header;
