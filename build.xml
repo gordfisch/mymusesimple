@@ -192,8 +192,8 @@
         	        	todir="${test}/plugins/mymuse/payment_paypalpro" />
         		<copy file="${src}/plugins/payment_paypalpro/payment_paypalpro.xml"
         	            todir="${test}/plugins/mymuse/payment_paypalpro" /> 
-        		<copy file="${src}/plugins/payment_paypalpro/paypalpro/form.php"
-        	        	                        todir="${test}/plugins/mymuse/payment_paypalpro/paypalpro" />
+        		<copy file="${src}/plugins/payment_paypalpro/tmpl/default.php"
+        	        	todir="${test}/plugins/mymuse/payment_paypalpro/tmpl" />
         	
                 <copy file="${src}/plugins/payment_pesapal/payment_pesapal.php"
                         todir="${test}/plugins/mymuse/payment_pesapal" />

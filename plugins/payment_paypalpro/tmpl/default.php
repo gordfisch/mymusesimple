@@ -1,11 +1,14 @@
 <?php defined('_JEXEC') or die(); 
-
+/**
+ * @version		$Id$
+ * @package		mymuse
+ * @copyright	Copyright © 2015 - Arboreta Internet Services - All rights reserved.
+ * @license		GNU/GPL
+ * @author		Gordon Fisch
+ * @author mail	info@mymuse.ca
+ * @website		http://www.mymuse.ca
+ */
 ?>
-
-<h3><?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_HEADER') ?></h3>
-<div class="row-fluid">
-<div class="span12">
-<br />
 <form action="<?php echo $data->URL ?>" method="post" class="form form-horizontal">
 	<input type="hidden" name="METHOD" value="<?php echo $data->METHOD ?>" />
 	<input type="hidden" name="USER" value="<?php echo $data->USER ?>" />
@@ -56,129 +59,187 @@
 <div id="container" style="width:100%; ">
     
     <div style="float:left;width:45%;">
-        <div class="control-group">
-            <label for="FIRSTNAME" class="control-label" style="width:140px; margin-right:5px;">
+		<h4><?php echo JText::_('MYMUSE_BILLING_ADDRESS'); ?></h4>
+		<table>
+        <tr>
+            <td><label for="FIRSTNAME" class="control-label" style="margin-right:5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_FIRSTNAME') ?>
-            </label>
-            <div class="controls">
-                <input type="text" name="FIRSTNAME" id="FIRSTNAME" class="input-medium" value="<?php echo $data->FIRSTNAME ?>" />
-            </div>
-        </div>
-        <div class="control-group">
-            <label for="LASTNAME" class="control-label" style="width:140px; margin-right:5px;">
+            </label></td>
+        
+        </tr>
+        <tr>
+           <td><div class="">
+                <input type="text" name="FIRSTNAME" id="FIRSTNAME" size="10" value="<?php echo $data->FIRSTNAME ?>" />
+            </div></td>
+        
+        </tr>
+        </tr>
+            <td colspan="2">
+            <label for="LASTNAME" class="control-label" style="margin-right:5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_LASTNAME') ?>
-            </label>
-            <div class="controls">
-                <input type="text" name="LASTNAME" id="LASTNAME" class="input-medium" value="<?php echo $data->LASTNAME ?>"  />
-            </div>
-        </div>
-        <div class="control-group">
-            <label for="EMAIL" class="control-label" style="width:140px; margin-right:5px;">
+            </label></td>
+         </tr>    
+         
+        
+        </tr>
+            <td colspan="2"><div class="">
+                <input type="text" name="LASTNAME" id="LASTNAME"   size="10" value="<?php echo $data->LASTNAME ?>"  />
+            </div></td>
+        
+        </tr>
+        
+        </tr>
+            <td colspan="2"><label for="EMAIL" class="control-label" style="smargin-right:5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_EMAIL') ?>
-            </label>
-            <div class="controls">
-                <input type="text" name="EMAIL" id="EMAIL" class="input-medium" value="<?php echo $data->EMAIL ?>" />
-            </div>
-        </div>
+            </label></td>
+        </tr>
+        </tr>
+            <td colspan="2">
+            
+            
+            <div class="">
+                <input type="text" name="EMAIL" id="EMAIL"  value="<?php echo $data->EMAIL ?>" />
+            </div></td>
+        </tr>
         
-        <div class="control-group">
-            <label for="STREET" class="control-label" style="width:140px; margin-right:5px;">
+        <tr>
+            <td colspan="2"><label for="STREET" class="control-label" style="width:110px; margin-right:5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_STREET') ?>
-            </label>
-            <div class="controls">
-                <input type="text" name="STREET" id="STREET" class="input-medium" value="<?php echo $data->STREET ?>"  />
-            </div>
-        </div>
-        <div class="control-group">
-            <label for="STREET2" class="control-label" style="width:140px; margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_STREET2') ?>
-            </label>
-            <div class="controls">
-                <input type="text" name="STREET2" id="STREET2" class="input-medium" value="<?php echo $data->STREET2 ?>"  />
-            </div>
-        </div>
-        <div class="control-group">
-            <label for="CITY" class="control-label" style="width:140px; margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_CITY') ?>
-            </label>
-            <div class="controls">
-                <input type="text" name="CITY" id="CITY" class="input-medium" value="<?php echo $data->CITY ?>"  />
-            </div>
-        </div>
-        <div class="control-group">
-            <label for="COUNTRYCODE" class="control-label" style="width:140px; margin-right:5px;">
+            </label></td>
+        </tr>
+        </tr>
+            <td colspan="2">
+            <div class="">
+                <input type="text" name="STREET" id="STREET"  value="<?php echo $data->STREET ?>"  />
+            </div></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+				 <div class="">
+                <input type="text" name="STREET2" id="STREET2" value="<?php echo $data->STREET2 ?>"  />
+            </div></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+            <label for="COUNTRYCODE" class="control-label" style="width:110px; margin-right:5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_COUNTRYCODE') ?>
-            </label>
-            <div class="controls">
+            </label></td>
+        </tr>
+        <tr> 
+            <td colspan="2">
+            <div class="">
                <?php  echo $COUNTRY_SELECT_HTML ?>
-            </div>
-        </div>
-        <div class="control-group">
-            <label for="STATE" class="control-label" style="width:140px; margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_STATE') ?>
-            </label>
-            <div class="controls">
-                <?php  echo $STATE_SELECT_HTML ?>
-            </div>
-        </div>
+            </div></td>
+        </tr>
+        <tr> 
+            <td colspan="2">
+            <label for="CITY" class="control-label" style="width:110px; margin-right:5px;">
+                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_CITY') ?>
+            </label></td>
+        </tr>
+            
+        <tr> 
+            <td colspan="2">
+            <div class="">
+                <input type="text" name="CITY" id="CITY" class="input-medium" value="<?php echo $data->CITY ?>"  />
+            </div></td>
+        </tr>
         
-        <div class="control-group">
-            <label for="ZIP" class="control-label" style="width:140px; margin-right:5px;">
+        <tr> 
+            <td colspan="2">
+            <label for="STATE" class="control-label" style="width:110px; margin-right:5px;">
+                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_STATE') ?>
+            </label></td>
+        </tr>
+        <tr> 
+            <td colspan="2">
+            <div class="">
+                <?php  echo $STATE_SELECT_HTML ?>
+            </div></td>
+        </tr>
+        <tr> 
+            <td colspan="2">
+            <label for="ZIP" class="control-label" style="width:110px; margin-right:5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_ZIP') ?>
-            </label>
-            <div class="controls">
+            </label></td>
+        </tr>
+        <tr> 
+            <td colspan="2">
+            <div class="">
                 <input type="text" name="ZIP" id="ZIP" class="input-mini" value="<?php echo $data->ZIP ?>"  />
-            </div>
-        </div>
+            </div></td>
+        </tr>
+        </table>
         
     </div>
+    
     <div style="float:right;width:45%;">
-        <div class="control-group">
+		<h4><?php echo JText::_('MYMUSE_PAYMENT_METHOD'); ?></h4>
+        <table>
+        <tr>
+            <td>
             <label for="CREDITCARDTYPE" class="control-label" style="width: 170px; margin-right: 5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_CCTYPE') ?>
-            </label>
-            <div class="controls">
+            </label></td>
+       </tr>
+        <tr> 
+            <td colspan="2">
+            <div class="">
                 <select id="CREDITCARDTYPE" name="CREDITCARDTYPE" class="input-medium">
                     <option value="Visa">Visa</option>
                     <option value="MasterCard">Master Card</option>
                     <option value="Discover">Discover</option>
                     <option value="Amex">American Express</option>
                 </select>
-            </div>
-        </div>
-        <div class="control-group">
-            <label for="ACCT" class="control-label" style="width:140px; margin-right:5px;">
+            </div></td>
+       </tr>
+        <tr> 
+            <td colspan="2"><label for="ACCT" class="control-label" style="width:110px; margin-right:5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_CC') ?>
-            </label>
-            <div class="controls">
+            </label></td>
+       </tr>
+        <tr> 
+            <td colspan="2">
+            <div class="">
                 <input type="text" name="ACCT" id="ACCT" class="input-medium" />
-            </div>
-        </div>
-        <div class="control-group">
-            <label for="EXPDATE" class="control-label" style="width:140px; margin-right:5px;">
+            </div></td>
+       </tr>
+        <tr> 
+            <td colspan="2"><label for="EXPDATE" class="control-label" style="width:110px; margin-right:5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_EXPDATE') ?>
-            </label>
-            <div class="controls">
+            </label></td>
+       </tr>
+        <tr> 
+            <td colspan="2">
+            <div class="">
                 <?php echo $this->selectExpirationDate() ?>
-            </div>
-        </div>
-        <div class="control-group">
-            <label for="CVV2" class="control-label" style="width:140px; margin-right:5px;">
+            </div></td>
+       </tr>
+        <tr> 
+            <td colspan="2">
+            <label for="CVV2" class="control-label" style="width:110px; margin-right:5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_CVV') ?>
-            </label>
-            <div class="controls">
+            </label></td>
+       </tr>
+        <tr> 
+            <td colspan="2">
+            <div class="">
                 <input type="text" name="CVV2" id="CVV2" class="input-mini" />
-            </div>
-        </div>
-        <div class="control-group">
-            <label for="CVV2" class="control-label" style="width:140px; margin-right:5px;">
-            </label>
-            <div class="controls">
+            </div></td>
+       </tr>
+        <tr> 
+            <td colspan="2"> <label for="CVV2" class="control-label" style="width:110px; margin-right:5px;">
+            </label></td>
+       </tr>
+        <tr> 
+            <td colspan="2">
+            <div class="">
                 <input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" style="width:68px; height:23px;" border="0" name="submit" alt="Paypal Payments Pro" />
-            </div>
-        </div>
+            </div></td>
+       </tr>
+        </table>
     </div>
 </div>
 </form>
-</div>
-</div>
+
+
