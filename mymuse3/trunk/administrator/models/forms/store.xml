@@ -68,6 +68,8 @@
            <field name="checked_out" type="hidden" filter="unset" />
            <field name="checked_out_time" type="hidden" filter="unset" />
            
+           
+		  
            <field
 				name="metadesc"
 				type="textarea"
@@ -676,6 +678,14 @@
                 size="40"
                 default="d F Y H:i"
         />
+        <field 
+		  		name="my_default_itemid" 
+		  		type="text" 
+		  		label="MYMUSE_DEFAULT_ITEMID_LABEL"
+				description="MYMUSE_DEFAULT_ITEMID_DESC" 
+				class="inputbox"
+				size="4"
+				/>
         <field 
         		name="my_email_msg" 
         		type="textarea"  

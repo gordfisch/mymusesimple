@@ -428,7 +428,7 @@ class MyMuseCheckout
 			$contents .= $link_message;
 			
 			$jinput = JFactory::getApplication()->input;
-			$Itemid = $jinput->get("Itemid",'');
+			$Itemid = $jinput->get("Itemid",$params->get('mymuse_default_itemid'));
 		
 			include_once( JPATH_COMPONENT.DS.'templates'.DS.'mail_downloads.php' );
 			$order->downloadlink = $link_message;
@@ -873,7 +873,7 @@ class MyMuseCheckout
 		}
 		if($downloadable){
 			$jinput = JFactory::getApplication()->input;
-			$Itemid = $jinput->get("Itemid",'');
+			$Itemid = $jinput->get("Itemid",$params->get('mymuse_default_itemid'));
 			$download_header = '';
 			include_once( JPATH_COMPONENT.DS.'templates'.DS.'mail_downloads.php' );
 			$order->downloadlink = $download_header;
