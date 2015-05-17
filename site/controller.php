@@ -542,6 +542,8 @@ class MyMuseController extends JControllerLegacy
 		
 		
 		$params = MyMuseHelper::getParams();
+		
+		$Itemid = $this->jinput->get("Itemid",$params->get('mymuse_default_itemid'));
 		//get order
 		$db 			= JFactory::getDBO();
 		$user			= JFactory::getUser();
