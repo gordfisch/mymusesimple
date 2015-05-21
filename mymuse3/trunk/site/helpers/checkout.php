@@ -534,12 +534,12 @@ class MyMuseCheckout
 			}
 		}
 		
-	
+
 		// No profile?
-		if(!isset($shopper->profile['country'])){
+		if(!isset($shopper->profile['country']) && !$params->get('my_add_taxes')){
 			return $taxes;
 		}
-		
+	
 		//get tax rates
 		$q = "SELECT t.*, c.country_name, s.state_name FROM #__mymuse_tax_rate as t
 		LEFT JOIN #__mymuse_country as c ON t.country = c.country_3_code
@@ -577,11 +577,11 @@ class MyMuseCheckout
 		$store_bloc 			= $store_country_res->bloc;
 		
 		
-		
 		// for European taxes, are shopper and store both in EU? Both in same country?
 		// For digital goods, you must now charge VAT based on the buyer's country,
 		// break totals up into downloadable and physical
-		if($store_bloc == 'EU' && $user_bloc == 'EU'){
+		if(($store_bloc == 'EU' && $user_bloc == 'EU') || $params->get('my_add_taxes')){
+					
 			//do euro tax
 			//case 1: same country, always charge VAT
 			if($store_country_3_code == $user_country){

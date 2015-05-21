@@ -626,7 +626,7 @@ class myMuseViewCart extends JViewLegacy
         	parent::display('checkout_header');
         	parent::display('order_summary');
         	parent::display('shopper_info');
-        	parent::display();
+        	parent::display('cart');
         	$contents .= ob_get_contents();
         	ob_end_clean();
         	 
