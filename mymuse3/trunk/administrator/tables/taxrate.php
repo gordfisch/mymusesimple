@@ -194,7 +194,7 @@ class MymuseTabletaxrate extends JTable
     	$db->setQuery($query);
     	$name = $db->loadResult();
     	
-    	$query = "ALTER TABLE `vl6xc_mymuse_order` DROP `$name`";
+    	$query = "ALTER TABLE `#__mymuse_order` DROP `$name`";
     	$db->setQuery($query);
     	$db->execute();
     	

@@ -115,10 +115,11 @@ class MyMuseController extends JControllerLegacy
 		if ( !$this->jinput->get( 'view','' ) ) {
 			$this->jinput->set('view', 'store');
 		}
-		// View caching logic -- simple... are we logged in?
+		// View caching logic -- simple... are we logged in? or in the cart?
+		
 		$user = JFactory::getUser();
-
-		if ($user->get('id')) {
+		$view = $this->jinput->get( 'view' ) ;
+		if ($user->get('id') || $view == "cart") {
 			parent::display(false);
 		} else {
 			parent::display(true);
