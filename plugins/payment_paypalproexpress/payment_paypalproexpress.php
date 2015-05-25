@@ -24,18 +24,14 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 	public function __construct(&$subject, $config = array())
 	{
 		$config = array_merge($config, array(
-			'ppName'		=> 'paypalproexpress',
-			'ppKey'			=> 'PLG_MYMUSE_PAYPALPROEXPRESS_TITLE'
+			'pp'		=> 'paypalproexpress'
 		));
 
 		parent::__construct($subject, $config);
 	}
 
 	/**
-	 * Returns the payment form to be submitted by the user's browser. The form must have an ID of
-	 * "paymentForm" and a visible submit button.
-	 *
-* PayPalProExpress Payment form
+	 * PayPalProExpress Payment form
 	 * 
 	 * @param object $shopper
 	 * @param object $store
@@ -47,12 +43,6 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 	 */
 	public function onBeforeMyMusePayment($shopper, $store, $order, $params, $Itemid=1 )
 	{
-
-
-		$slug = F0FModel::getTmpInstance('Levels','AkeebasubsModel')
-				->setId($subscription->akeebasubs_level_id)
-				->getItem()
-				->slug;
 
 		$rootURL = rtrim(JURI::base(),'/');
 		$subpathURL = JURI::base(true);
@@ -109,15 +99,14 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		} else {
 			$jinput = JFactory::getApplication()->input;
 			
-			$error_url = 'index.php?option='.$jinput->get('option').
-				'&view=level&slug='.$level->slug.
-				'&layout='.$jinput->get('layout','default');
+			$error_url = 'index.php?option=com_mymuse&view=cart&layout=cart&Itemid='.$Itemid;
 			$error_url = JRoute::_($error_url,false);
 			JFactory::getApplication()->redirect($error_url,$responseData['L_LONGMESSAGE0'],'error');
 		}
 
+		$path = JPluginHelper::getLayoutPath('mymuse', 'payment_paypalproexpress');
 		@ob_start();
-		include dirname(__FILE__).'/paypalproexpress/form.php';
+		include $path;
 		$html = @ob_get_clean();
 
 		return $html;

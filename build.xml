@@ -80,6 +80,11 @@
         	        	        	todir="${test}/administrator/language/en-GB" />
         	        	    <copy file="${src}/plugins/payment_paypalpro/language/en-GB/en-GB.plg_mymuse_payment_paypalpro.sys.ini"
         	        	        	todir="${test}/administrator/language/en-GB" />
+        	        	        	
+        	    <copy file="${src}/plugins/payment_paypalproexpress/language/en-GB/en-GB.plg_mymuse_payment_paypalproexpress.ini"
+        	        	        	todir="${test}/administrator/language/en-GB" />
+        	        	    <copy file="${src}/plugins/payment_paypalpro/language/en-GB/en-GB.plg_mymuse_payment_paypalproexpress.sys.ini"
+        	        	        	todir="${test}/administrator/language/en-GB" />
         	
                 <copy file="${src}/plugins/shipping_standard/language/en-GB/en-GB.plg_mymuse_shipping_standard.ini"
                         todir="${test}/administrator/language/en-GB" />
@@ -194,6 +199,13 @@
         	            todir="${test}/plugins/mymuse/payment_paypalpro" /> 
         		<copy file="${src}/plugins/payment_paypalpro/tmpl/default.php"
         	        	todir="${test}/plugins/mymuse/payment_paypalpro/tmpl" />
+        	        	
+        	    <copy file="${src}/plugins/payment_paypalproexpress/payment_paypalproexpress.php"
+        	        	todir="${test}/plugins/mymuse/payment_paypalproexpress" />
+        		<copy file="${src}/plugins/payment_paypalproexpress/payment_paypalproexpress.xml"
+        	            todir="${test}/plugins/mymuse/payment_paypalproexpress" /> 
+        		<copy file="${src}/plugins/payment_paypalproexpress/tmpl/default.php"
+        	        	todir="${test}/plugins/mymuse/payment_paypalproexpress/tmpl" />
         	
                 <copy file="${src}/plugins/payment_pesapal/payment_pesapal.php"
                         todir="${test}/plugins/mymuse/payment_pesapal" />
