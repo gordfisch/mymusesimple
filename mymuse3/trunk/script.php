@@ -465,6 +465,15 @@ class com_mymuseInstallerScript
 		$db->setQuery($query);
 		$db->query();
 		
+		//see if mymuse_downloads table need updating
+		$query = "SHOW COLUMNS FROM #__mymuse_downloads LIKE 'order_id'";
+		$db->setQuery($query);
+		if(!$col = $db->loadObject()){
+			$query = "ALTER TABLE `#__mymuse_downloads` ADD `order_id` INT( 11 ) NOT NULL AFTER `user_email`";
+			$db->setQuery($query);
+			$db->query();
+		}
+		
 				// DEFAULT DOWNLOAD DIRECTORY
 				$name = JText::_("MYMUSE_MAKE_DOWNLOAD_DIR");
 				$download_dir =  JPATH_ROOT.DS."images".DS."A_MyMuseDownloads";

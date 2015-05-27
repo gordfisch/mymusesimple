@@ -205,7 +205,7 @@ class myMuseViewStore extends JViewLegacy
         		parent::display($tpl);
         		return false;
         	}
-        	
+	
         	// make sure it's the same person who ordered!
         	$MyMuseShopper 	=& MyMuse::getObject('shopper','models');
 
@@ -233,7 +233,7 @@ class myMuseViewStore extends JViewLegacy
 			$MyMuseCart 	=& MyMuse::getObject('cart','helper');
 			
         	$order = $MyMuseCheckout->getOrder($row->id);
-        
+     
         	for($i = 0; $i < count($order->items); $i++){
         		if($order->items[$i]->id == $item_id){
         			$order_item = $order->items[$i];
@@ -359,7 +359,10 @@ class myMuseViewStore extends JViewLegacy
         	// All is good
         	$order_item->id = $order_item->product_id;
         	$user = JFactory::getUser();
-        	$this->_logDownload($user, $order_item);
+        	if(isset($user->first_name) && isset($user->last_name) ){
+        		$user->set('name', $user->first_name.' '.$user->last_name);
+        	}
+        	$this->_logDownload($user, $order_item, $order->id);
 
         	exit;
         	
@@ -662,7 +665,7 @@ class myMuseViewStore extends JViewLegacy
 	 * log download to database
 	 */
 
-	protected  function _logDownload($user, $product)
+	protected  function _logDownload($user, $product, $order_id = '')
 	{
 		$db = JFactory::getDBO();
 		$user_id = $user->get('id');
@@ -671,9 +674,9 @@ class myMuseViewStore extends JViewLegacy
 		$product_id = $product->id;
 		$product_filename = $product->file_name;
 		$date = JFactory::getDate()->format('Y-m-d H:i:s');
-		$query = "INSERT INTO #__mymuse_downloads (`user_id`,`user_name`,`user_email`,`date`,`product_id`,`product_filename`)
-				VALUES ('$user_id','$user_name','$user_email','$date','$product_id','$product_filename')";
-		
+		$query = "INSERT INTO #__mymuse_downloads (`user_id`,`user_name`,`user_email`,`order_id`,`date`,`product_id`,`product_filename`)
+				VALUES ('$user_id','$user_name','$user_email','$order_id', '$date','$product_id','$product_filename')";
+		MyMuseHelper::logMessage( $query  );
 		$db->setQuery($query);
 		if($db->execute()){
 			return true;

@@ -261,6 +261,16 @@ class MyMuseHelper extends JObject
 
 	}
 	
+	
+	static function getStore($id=1)
+	{
+		$db = JFactory::getDBO();
+		$query = "SELECT * from `#__mymuse_store` WHERE id='1'";
+		$db->setQuery($query);
+		$store = $db->loadObject();
+		return $store;
+	}
+	
 
 	/**
 	 * Log a message. Should only be done when SHOP_TEST is on

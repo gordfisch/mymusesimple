@@ -139,6 +139,13 @@ class MymuseModelorder extends JModelAdmin
   				}else{
   					$item->downloadlink = JURI::root()."index.php?option=com_mymuse&task=downloads&id=".$item->order_number;
   				}
+  				//load any downloads
+  				$query = "SELECT * FROM #__mymuse_downloads
+  				WHERE order_id=".$item->id;
+  				
+  				$db = JFActory::getDBO();
+  				$db->setQuery( $query );
+  				$item->downloads = $db->loadObjectList();
   			}
   			
   		

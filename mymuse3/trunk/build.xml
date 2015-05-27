@@ -77,14 +77,14 @@
         	    <copy file="${src}/plugins/payment_virtualmerchant/language/en-GB/en-GB.plg_mymuse_payment_virtualmerchant.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" />
         		<copy file="${src}/plugins/payment_paypalpro/language/en-GB/en-GB.plg_mymuse_payment_paypalpro.ini"
-        	        	        	todir="${test}/administrator/language/en-GB" />
-        	        	    <copy file="${src}/plugins/payment_paypalpro/language/en-GB/en-GB.plg_mymuse_payment_paypalpro.sys.ini"
-        	        	        	todir="${test}/administrator/language/en-GB" />
+        	        	todir="${test}/administrator/language/en-GB" />
+        	    <copy file="${src}/plugins/payment_paypalpro/language/en-GB/en-GB.plg_mymuse_payment_paypalpro.sys.ini"
+        	        	todir="${test}/administrator/language/en-GB" />
         	        	        	
         	    <copy file="${src}/plugins/payment_paypalproexpress/language/en-GB/en-GB.plg_mymuse_payment_paypalproexpress.ini"
-        	        	        	todir="${test}/administrator/language/en-GB" />
-        	        	    <copy file="${src}/plugins/payment_paypalpro/language/en-GB/en-GB.plg_mymuse_payment_paypalproexpress.sys.ini"
-        	        	        	todir="${test}/administrator/language/en-GB" />
+        	        	todir="${test}/administrator/language/en-GB" />
+        	    <copy file="${src}/plugins/payment_paypalproexpress/language/en-GB/en-GB.plg_mymuse_payment_paypalproexpress.sys.ini"
+        	        	todir="${test}/administrator/language/en-GB" />
         	
                 <copy file="${src}/plugins/shipping_standard/language/en-GB/en-GB.plg_mymuse_shipping_standard.ini"
                         todir="${test}/administrator/language/en-GB" />
