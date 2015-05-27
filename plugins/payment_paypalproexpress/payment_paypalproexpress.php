@@ -50,7 +50,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			$rootURL = substr($rootURL, 0, -1 * strlen($subpathURL));
 		}
 
-		$callbackUrl = JURI::base().'index.php?option=com_mymuse&task=notify&mode=init';
+		$callbackUrl = JURI::base().'index.php?option=com_mymuse&task=notify&mode=init&orderid='.$order->id;
 		$cancelUrl = JURI::base().'index.php?option=com_mymuse&task=paycancel';
 		$requestData = (object)array(
 			'METHOD'							=> 'SetExpressCheckout',
@@ -60,7 +60,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			'VERSION'							=> '93',
 			'RETURNURL'							=> $callbackUrl,
 			'CANCELURL'							=> $cancelUrl,
-			'PAYMENTREQUEST_0_AMT'				=> $order->order_total,
+			'PAYMENTREQUEST_0_AMT'				=> sprintf('%.2f',$order->order_total),
 			'PAYMENTREQUEST_0_PAYMENTACTION'	=> 'SALE',
 			'PAYMENTREQUEST_0_CURRENCYCODE'		=> strtoupper($store->currency),
 			'PAYMENTREQUEST_0_TAXAMT'			=> $order->tax_total,
@@ -116,8 +116,10 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 	public function onMyMuseNotify($params, $Itemid = 1)
 	{
 
+		//http://test.joomlamymuse.com/index.php?option=com_mymuse&task=notify&
+		//mode=init&token=EC-9XF8801684577273P&PayerID=DBYA4BH44DMTQ
 		$jinput = JFactory::getApplication()->input;
-		$data = $jinput->post->getArray();
+		$data = $jinput->get->getArray();
 		
 		$db	= JFactory::getDBO();
 		$date = date('Y-m-d h:i:s');
@@ -136,45 +138,34 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		JLoader::import('joomla.utilities.date');
 		$isValid = true;
 
-		// Load the relevant subscription row
-		if($isValid) {
-			$id = $data['sid'];
-			$subscription = null;
-			if($id > 0) {
-				$subscription = F0FModel::getTmpInstance('Subscriptions','AkeebasubsModel')
-					->setId($id)
-					->getItem();
-				if( ($subscription->akeebasubs_subscription_id <= 0) || ($subscription->akeebasubs_subscription_id != $id) ) {
-					$subscription = null;
-					$isValid = false;
-				}
-			} else {
-				$isValid = false;
-			}
-			if(!$isValid) $responseData['akeebasubs_failure_reason'] = 'The subscription ID is invalid';
-		}
 
-		if($isValid && isset($data['token']) && isset($data['PayerID'])) {
-			$level = F0FModel::getTmpInstance('Levels','AkeebasubsModel')
-				->setId($subscription->akeebasubs_level_id)
-				->getItem();
-
+		if($isValid && isset($data['token']) && isset($data['PayerID']) && isset($data['orderid']) ) {
+			require_once( JPATH_COMPONENT.DS.'mymuse.class.php');
+			$MyMuseCheckout 	= MyMuse::getObject('checkout','helpers');
+			$order = $MyMuseCheckout->getOrder($data['orderid']);
+			//print_r($order);
+			
+			$store = MyMuseHelper::getStore();
+				
+			$total = $order->order_subtotal + $order->order_shipping->cost + $order->tax_total;
 			$requestData = (object)array(
-				'METHOD'							=> 'DoExpressCheckoutPayment',
-				'USER'								=> $this->getMerchantUsername(),
-				'PWD'								=> $this->getMerchantPassword(),
-				'SIGNATURE'							=> $this->getMerchantSignature(),
-				'VERSION'							=> '85.0',
-				'TOKEN'								=> $data['token'],
-				'PAYERID'							=> $data['PayerID'],
-				'PAYMENTREQUEST_0_PAYMENTACTION'	=> 'Sale',
-				'PAYMENTREQUEST_0_AMT'				=> sprintf('%.2f',$subscription->gross_amount),
-				'PAYMENTREQUEST_0_CURRENCYCODE'		=> strtoupper(AkeebasubsHelperCparams::getParam('currency','EUR')),
-				'PAYMENTREQUEST_0_INVNUM'			=> $subscription->akeebasubs_subscription_id,
-				'PAYMENTREQUEST_0_DESC'				=> '[' . $subscription->akeebasubs_subscription_id . '] ' . $level->title,
-				'IPADDRESS'							=> $_SERVER['REMOTE_ADDR']
+					'METHOD'							=> 'DoExpressCheckoutPayment',
+					'USER'								=> $this->getMerchantUsername(),
+					'PWD'								=> $this->getMerchantPassword(),
+					'SIGNATURE'							=> $this->getMerchantSignature(),
+					'VERSION'							=> '85.0',
+					'TOKEN'								=> $data['token'],
+					'PAYERID'							=> $data['PayerID'],
+					'PAYMENTREQUEST_0_PAYMENTACTION'	=> 'Sale',
+					'PAYMENTREQUEST_0_AMT'				=> sprintf('%.2f',$order->order_total),
+					'PAYMENTREQUEST_0_CURRENCYCODE'		=> strtoupper($store->currency),
+					'PAYMENTREQUEST_0_INVNUM'			=> $data['orderid'],
+					'PAYMENTREQUEST_0_DESC'				=> $store->title,
+					'IPADDRESS'							=> $_SERVER['REMOTE_ADDR']
 			);
-
+			
+			
+			//print_r($requestData); exit;
 			$requestQuery = http_build_query($requestData);
 			$requestContext = stream_context_create(array(
 				'http' => array (
@@ -193,12 +184,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			parse_str($responseQuery, $responseData);
 			if(! preg_match('/^SUCCESS/', strtoupper($responseData['ACK']))) {
 				$isValid = false;
-                $level = F0FModel::getTmpInstance('Levels','AkeebasubsModel')
-                    ->setId($subscription->akeebasubs_level_id)
-                    ->getItem();
-				$error_url = 'index.php?option='.JRequest::getCmd('option').
-					'&view=level&slug='.$level->slug.
-					'&layout='.JRequest::getCmd('layout','default');
+                $error_url = 'index.php?option=com_mymuse&view=cart&layout=cart';
 				$error_url = JRoute::_($error_url,false);
 				JFactory::getApplication()->redirect($error_url,$responseData['L_LONGMESSAGE0'],'error');
 			} else if(! preg_match('/^SUCCESS/', strtoupper($responseData['PAYMENTINFO_0_ACK']))) {

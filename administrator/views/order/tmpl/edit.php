@@ -515,7 +515,7 @@ method="post" name="adminForm" id="order-form" class="form-validate">
         	</fieldset>
 
         	<?php if($this->item->downloadlink){ ?>
-		<table>
+		 <table cellpadding="4">
  		<tr>
             <td>
             <fieldset class="adminform">
@@ -534,9 +534,32 @@ href="index.php?option=com_mymuse&view=order&layout=edit&task=resetDownloads&id=
         		</td>
         		</tr>
         	  </table>
-        </fieldset>
-        </td>
+        	</fieldset>
+        	</td>
         </tr>
+        </table>
+        <br />
+        
+        <?php if($this->item->downloads){ ?>
+        <table cellpadding="4">
+        <tr>
+        	<th>Name</th>
+        	<th>Email</th>
+        	<th>Date</th>
+        	<th>Filename</th>
+        </tr>
+        <?php foreach($this->item->downloads as $d){ ?>
+        <tr>
+        	<td><?php echo $d->user_name; ?></td>
+        	<td><?php echo $d->user_email; ?></td>
+        	<td><?php echo $d->date; ?></td>
+        	<td><?php echo $d->product_filename; ?></td>
+        </tr>
+        <?php } ?>
+        
+        
+        
+        <?php }?>
 <?php }?>
  </table>
 
