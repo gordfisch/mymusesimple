@@ -52,6 +52,12 @@ class plgMymusePayment_Payunity extends JPlugin
 		$mainframe 	= JFactory::getApplication();
 		$db			= JFactory::getDBO();
 		
+		$date = date('Y-m-d h:i:s');
+		$debug = "#####################\nPayUnity PLUGIN onBeforeMyMusePayment\n";
+		if($params->get('my_debug')){
+			MyMuseHelper::logMessage( $debug  );
+		}
+		
 		if(isset($shopper->profile['country'])){
 			// PayUnity wants the country_2_code
 			$query = "SELECT country_2_code from #__mymuse_country WHERE country_3_code='".$shopper->profile['country']."'";
@@ -79,19 +85,19 @@ class plgMymusePayment_Payunity extends JPlugin
 		if($this->params->get('test'))
 		{
 			$url = "https://test.payunity.com/frontend/payment.prc";
-			$parameters['SECURITY.SENDER'] = $this->params->get('sender');
-			$parameters['USER.LOGIN'] = $this->params->get('user_login');
-			$parameters['USER.PWD'] = $this->params->get('user_pwd');
-			$parameters['TRANSACTION.CHANNEL'] = $this->params->get('channel');
+			$parameters['SECURITY.SENDER'] = $this->params->get('test_sender');
+			$parameters['USER.LOGIN'] = $this->params->get('test_user_login');
+			$parameters['USER.PWD'] = $this->params->get('test_user_pwd');
+			$parameters['TRANSACTION.CHANNEL'] = $this->params->get('test_channel');
 			$parameters['TRANSACTION.MODE'] = "INTEGRATOR_TEST";
 		}
 		else
 		{
 			$url = "https://payunity.com/frontend/payment.prc";
-			$parameters['SECURITY.SENDER'] = $this->params->get('test_sender');
-			$parameters['USER.LOGIN'] = $this->params->get('test_user_login');
-			$parameters['USER.PWD'] = $this->params->get('test_user_pwd');
-			$parameters['TRANSACTION.CHANNEL'] = $this->params->get('test_channel');
+			$parameters['SECURITY.SENDER'] = $this->params->get('sender');
+			$parameters['USER.LOGIN'] = $this->params->get('user_login');
+			$parameters['USER.PWD'] = $this->params->get('user_pwd');
+			$parameters['TRANSACTION.CHANNEL'] = $this->params->get('channel');
 			$parameters['TRANSACTION.MODE'] = "LIVE";
 		
 		}
@@ -115,6 +121,10 @@ class plgMymusePayment_Payunity extends JPlugin
 		$parameters['PRESENTATION.AMOUNT'] = sprintf("%.2f", $order->order_total);
 		$parameters['PRESENTATION.CURRENCY'] = $store->currency;
 		
+		$debug = "parameters\n".print_r($parameters, TRUE);
+		if($params->get('my_debug')){
+			MyMuseHelper::logMessage( $debug  );
+		}
 		//building the postparameter string to send into the WPF
 		foreach (array_keys($parameters) AS $key)
 		{
@@ -149,7 +159,7 @@ class plgMymusePayment_Payunity extends JPlugin
 		//print "$curlresultURL";
 		// parse results
 		
-		$debug = $curlresultURL;
+		$debug = "curlResultURL\n".$curlresultURL."\n";
 		if($params->get('my_debug')){
 			MyMuseHelper::logMessage( $debug  );
 		}
@@ -165,7 +175,7 @@ class plgMymusePayment_Payunity extends JPlugin
 			//print "<br>var: $postatt - value: $postvar<br>";
 		}
 		
-		$debug = $returnvalue;
+		$debug = print_r($returnvalue, true);
 		if($params->get('my_debug')){
 			MyMuseHelper::logMessage( $debug  );
 		}
