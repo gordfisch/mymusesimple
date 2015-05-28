@@ -168,7 +168,7 @@ class plgMymusePayment_Payunity extends JPlugin
 		foreach($r_arr AS $buf)
 		{
 			$temp=urldecode($buf);
-			$temp=split("=",$temp,2);
+			$temp=explode("=",$temp,2);
 			$postatt=$temp[0];
 			$postvar=$temp[1];
 			$returnvalue[$postatt]=$postvar;
@@ -191,13 +191,19 @@ class plgMymusePayment_Payunity extends JPlugin
 			}
 			else // error-code is returned ... failure
 			{
-				header("Location: ".JURI::base().'index.php?option=com_mymuse&task=thankyou&pp=payunity&Itemid='.$Itemid);
+			
+				//header("Location: ".JURI::base().'index.php?option=com_mymuse&task=thankyou&pp=payunity&Itemid='.$Itemid);
+				$msg = JText::_('ERROR')." code:".$processingresult;
+				JFactory::getApplication()->enqueueMessage($msg, 'warning');
+				return;
 			}
 		}// there is a connection-problem to the ctpe server ... redirect to error page
 		//(change the URL to YOUR error page)
 		else
-		{
-		header("Location: ".JURI::base().'index.php?msg=error');
+		{	
+			$msg = JText::_('ERROR')." code:".$processingresult;
+			JFactory::getApplication()->enqueueMessage($msg, 'warning');
+			return;
 		}
 
 	}
