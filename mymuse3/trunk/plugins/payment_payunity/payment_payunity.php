@@ -148,6 +148,12 @@ class plgMymusePayment_Payunity extends JPlugin
 		//integration transactions documentation for help)
 		//print "$curlresultURL";
 		// parse results
+		
+		$debug = $curlresultURL;
+		if($params->get('my_debug')){
+			MyMuseHelper::logMessage( $debug  );
+		}
+		
 		$r_arr=explode("&",$curlresultURL);
 		foreach($r_arr AS $buf)
 		{
@@ -157,6 +163,11 @@ class plgMymusePayment_Payunity extends JPlugin
 			$postvar=$temp[1];
 			$returnvalue[$postatt]=$postvar;
 			//print "<br>var: $postatt - value: $postvar<br>";
+		}
+		
+		$debug = $returnvalue;
+		if($params->get('my_debug')){
+			MyMuseHelper::logMessage( $debug  );
 		}
 		$processingresult=$returnvalue['POST.VALIDATION'];
 		$redirectURL=$returnvalue['FRONTEND.REDIRECT_URL'];
@@ -170,13 +181,13 @@ class plgMymusePayment_Payunity extends JPlugin
 			}
 			else // error-code is returned ... failure
 			{
-				header("Location: ".JURI::base().'index.php?option=com_mymuse&task=thankyou&pp=unity&Itemid='.$Itemid);
+				header("Location: ".JURI::base().'index.php?option=com_mymuse&task=thankyou&pp=payunity&Itemid='.$Itemid);
 			}
 		}// there is a connection-problem to the ctpe server ... redirect to error page
 		//(change the URL to YOUR error page)
 		else
 		{
-		header("Location: http://www.merchant.com/error.html");
+		header("Location: ".JURI::base().'index.php?msg=error');
 		}
 
 	}

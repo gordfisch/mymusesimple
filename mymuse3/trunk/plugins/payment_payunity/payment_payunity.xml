@@ -2,7 +2,7 @@
 <extension version="3.2.10" type="plugin" group="mymuse" method="upgrade">
 	<name>MyMuse Payments - PayUnity</name>
 	<author>Gord Fisch</author>
-	<authorEmail>gord@aarboreta.ca</authorEmail>
+	<authorEmail>gord@arboreta.ca</authorEmail>
 	<authorUrl>http://www.joomlamymuse.ca</authorUrl>
 	<copyright>Copyright (c)2015 Arboreta Internet Services</copyright>
 	<license>GNU General Public License version 3, or later</license>
@@ -11,7 +11,6 @@
 	<description>PLG_MYMUSE_PAYUNITY_DESCRIPTION</description>
 	<files>
 		<filename plugin="payment_payunity">payment_payunity.php</filename>
-		<folder>paypalpro</folder>
 	</files>
 	<languages folder="language">
 		<language tag="en-GB">en-GB/en-GB.plg_mymuse_payment_payunity.ini</language>
