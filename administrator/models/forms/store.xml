@@ -495,6 +495,18 @@
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
         </field>
+        my_add_shipping_auto
+        <field
+                name="my_add_shipping_auto"
+                type="radio"
+                label="MYMUSE_ADD_SHIPPING_AUTO_LABEL"
+                description="MYMUSE_ADD_SHIPPING_AUTO_DESC"
+                class="btn-group"
+                default="0">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>
+        </field>
+        
         <field
                 name="my_use_stock"
                 type="radio"

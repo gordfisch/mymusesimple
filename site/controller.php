@@ -400,7 +400,7 @@ class MyMuseController extends JControllerLegacy
 				$res = array();
 			}
 			//if we only have one shipping, add it to the order
-			if(count($res) == 1){
+			if(count($res) == 1 && $params->get('my_add_shipping_auto',0)){
 				$url =  'index.php?option=com_mymuse&task=confirm&shipmethodid='.$res['0']->id;
 				$url .= '&Itemid='.$this->Itemid;
 				$msg = JText::_('MYMUSE_SHIPPING_ADDED')." ".$res['0']->ship_carrier_name." ";

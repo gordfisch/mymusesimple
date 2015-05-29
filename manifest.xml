@@ -110,6 +110,8 @@
         <plugin name="payment_offline" folder="plugins/payment_offline">Payment Offline</plugin>
         <plugin name="payment_payfast" folder="plugins/payment_payfast">Payfast</plugin>
         <plugin name="payment_paypal" folder="plugins/payment_paypal">Paypal</plugin>
+        <plugin name="payment_paypal" folder="plugins/payment_paypalpro">PayPal Pros</plugin>
+        <plugin name="payment_paypal" folder="plugins/payment_payunity">PayUnity</plugin>
         <plugin name="payment_pesapal" folder="plugins/payment_pesapal">Payfast</plugin>
 		<plugin name="payment_virtualmerchant" folder="plugins/payment_virtualmerchant">Virtual Payment</plugin>
 		
