@@ -104,7 +104,7 @@ class plgMymusePayment_Payunity extends JPlugin
 		$parameters['REQUEST.VERSION'] = "1.0";
 		$parameters['IDENTIFICATION.TRANSACTIONID'] = $order->id;
 		$parameters['FRONTEND.ENABLED'] = "true";
-		$parameters['FRONTEND.POPUP'] = "true";
+		$parameters['FRONTEND.POPUP'] = "false";
 		$parameters['FRONTEND.MODE'] = "DEFAULT";
 		$parameters['FRONTEND.LANGUAGE'] = "en";
 		$parameters['PAYMENT.CODE'] = "CC.DB";
@@ -215,21 +215,49 @@ class plgMymusePayment_Payunity extends JPlugin
 	 */
 	function onMyMuseNotify($params)
 	{
-		$mainframe 	= JFactory::getApplication();
 	
+		if(!defined('DS')){
+			define('DS',DIRECTORY_SEPARATOR);
+		}
+		
+		if(!defined('MYMUSE_ADMIN_PATH')){
+			define('MYMUSE_ADMIN_PATH',JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_mymuse'.DS);
+		}
+		if(!defined('MYMUSE_PATH')){
+			define('MYMUSE_PATH',JPATH_SITE.DS.'components'.DS.'com_mymuse'.DS);
+		}
+		require_once( MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php' );
+		
+		$Helper = new MyMuseHelper;
+		
 		$db	= JFactory::getDBO();
 		$date = date('Y-m-d h:i:s');
+		$jinput = JFactory::getApplication()->input;
+		$data = $jinput->post->getArray();
+		
+		
 		$debug = "#####################\nPayUnity notify PLUGIN\n";
-		$debug .= print_pre($_POST);
-		if($params->get('my_debug')){
-			MyMuseHelper::logMessage( $debug  );
+		if(!isset($_POST['PROCESSING_RESULT'])){
+			//wasn't payunity
+			$debug .= "Was not PayUnity. \n";
+			$debug .= "-------END-------";
+			if($params->get('my_debug')){
+        		MyMuseHelper::logMessage( $debug  );
+  			}
+  			return $result;
+		}else{
+			if($params->get('my_debug')){
+				$debug .= "1. POSt\N".print_r($data, true);
+        		MyMuseHelper::logMessage( $debug  );
+  			}
 		}
+		
 	
 		$result = array();
-		$result['plugin'] 				= "payment_paypal";
-		$result['myorder'] 				= 0; //must be >0 to trigger that it was this plugin
-		$result['message_sent'] 		= 0; //must be >0 or tiggers error
-		$result['message_received'] 	= 0; //must be >0 or tiggers error
+		$result['plugin'] 				= "payment_payunity";
+		$result['myorder'] 				= 1; //must be >0 to trigger that it was this plugin
+		$result['message_sent'] 		= 1; //must be >0 or tiggers error
+		$result['message_received'] 	= 1; //must be >0 or tiggers error
 		$result['order_found']			= 0; //must be >0 or tiggers error
 		$result['order_verified'] 		= 0; //must be >0 or tiggers error
 		$result['order_completed'] 		= 0; //must be >0 or tiggers error
@@ -239,6 +267,81 @@ class plgMymusePayment_Payunity extends JPlugin
 		$result['payment_status']		= 0;
 		$result['txn_id']				= 0;
 		$result['error']				= '';
+		
+		
+		if(!isset($data['PROCESSING_RESULT'])){
+			$debug = "2. !!!!Error No processing result: \n\n";
+			$debug .= "-------END-------";
+			if($params->get('my_debug')){
+				MyMuseHelper::logMessage( $debug  );
+			}
+			$result['error'] = "No processing result";
+			return $result;
+		}
+		$result['payment_status'] = $data['PROCESSING_RESULT'];
+		
+		if(!isset($data['IDENTIFICATION_TRANSACTIONID'])){
+			$debug = "2. !!!!Error No order id: \n\n";
+			$debug .= "-------END-------";
+			if($params->get('my_debug')){
+				MyMuseHelper::logMessage( $debug  );
+			}
+			$result['error'] = "No order id";
+			return $result;
+			
+		}
+		$result['order_id'] = $data['IDENTIFICATION_TRANSACTIONID'];
+
+		// Get the Order Details from the database
+		$query = "SELECT * FROM `#__mymuse_order`
+                    WHERE `id`='".$result['order_id']."'";
+		$date = date('Y-m-d h:i:s');
+		$debug = "$date  2. $query \n\n";
+		
+		$db->setQuery($query);
+		if(!$this_order = $db->loadObject()){
+			$debug .= "3. !!!!Error no order object: ".$db->_errorMsg."\n\n";
+			$debug .= "-------END-------";
+			if($params->get('my_debug')){
+				MyMuseHelper::logMessage( $debug  );
+			}
+			$result['error'] = $debug;
+			return $result;
+		}else{
+			// update the payment status
+			$result['order_found']  = 1;
+			$result['order_id'] 	= $this_order->id;
+			$result['order_number'] = $this_order->order_number;
+			if (preg_match ("/ACK/", $result['payment_status'])) {
+				$Helper->orderStatusUpdate($result['order_id'] , "C");
+				$date = date('Y-m-d h:i:s');
+				$debug .= "$date 4. order COMPLETED at PayUnity, update in DB\n\n";
+				$result['order_completed'] = 1;
+				$result['order_verified'] = 1;
+			}else{
+				// not completed, set order status to
+				$Helper->orderStatusUpdate($result['order_id'] , "I");
+			}
+		}
+		
+		$result['payment_status'] 		= $data['PROCESSING_RESULT'];
+		$result['amountin'] 			= $data['CLEARING_AMOUNT'];
+		$result['currency'] 			= $data['CLEARING_CURRENCY'];
+		$result['rate'] 				= $data['CLEARING_FXRATE'];
+		$result['txn_id'] 				= $data['IDENTIFICATION_UNIQUEID'];
+		$result['transaction_id'] 		= $data['IDENTIFICATION_UNIQUEID'];
+		$result['transaction_status'] 	= $data['PROCESSING_RESULT'];
+		$result['description'] 			= $data['PROCESSING_RETURN'];
+		$result['fees']					= '';
+		
+		$result['payer_email'] 			= $data['CONTACT_EMAIL'];
+		
+		$date = date('Y-m-d h:i:s');
+		$debug .= "$date Finished talking to PayUnity \n\n";
+		$debug .= "-------END PLUGIN-------";
+		if($params->get('my_debug')){
+			MyMuseHelper::logMessage( $debug  );
+		}
 		
 		return $result;
 		

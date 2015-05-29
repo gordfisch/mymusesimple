@@ -598,8 +598,8 @@ class myMuseViewCart extends JViewLegacy
         	$contents  = '';
         	
         	//see if there is a message
-        	$my_email_msg = $params->get('my_email_msg');
-        	$dispatcher		=& JDispatcher::getInstance();
+        	$my_email_msg 	= $params->get('my_email_msg');
+        	$dispatcher		= JDispatcher::getInstance();
         	if($result['plugin']){
         		JPluginHelper::importPlugin('mymuse',$result['plugin']);
         		$results = $dispatcher->trigger('onAfterMyMusePayment', array() );
@@ -771,6 +771,13 @@ class myMuseViewCart extends JViewLegacy
             $debug .= "-------END NOTIFY FUNCTION-------";
         	MyMuseHelper::logMessage( $debug  );
   		}
+  		//PAYUNITY SEND THE THANK YOU URL
+  		if($result['plugin'] == "payment_payunity"){
+  			echo JURI::base()."index.php?option=com_mymuse&task=thankyou&orderid=".$order->id;
+  			exit;
+  		}
+  		
+  		
         if(isset($result['redirect']) && $result['redirect'] != ""){
         	header( 'Location: '.$result['redirect'] ) ;
         }
