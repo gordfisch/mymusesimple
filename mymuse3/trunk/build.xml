@@ -212,7 +212,9 @@
         		<copy file="${src}/plugins/payment_paypalproexpress/tmpl/default.php"
         	        	todir="${test}/plugins/mymuse/payment_paypalproexpress/tmpl" />
         	        	
-        	   <copy file="${src}/plugins/payment_payunity/payment_payunity.php"
+        	    <copy file="${src}/plugins/payment_payunity/payment_payunity.php"
+        	        	todir="${test}/plugins/mymuse/payment_payunity" />
+        	    <copy file="${src}/plugins/payment_payunity/payment_payunity.xml"
         	        	todir="${test}/plugins/mymuse/payment_payunity" />
         	
                 <copy file="${src}/plugins/payment_pesapal/payment_pesapal.php"
