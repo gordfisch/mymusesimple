@@ -52,6 +52,10 @@ class plgMymusePayment_Payunity extends JPlugin
 		$mainframe 	= JFactory::getApplication();
 		$db			= JFactory::getDBO();
 		
+		$uri = JURI::getInstance();
+		$lang = $uri->getVar('lang', $this->params->get('default_lang'));
+
+		
 		$date = date('Y-m-d h:i:s');
 		$debug = "#####################\nPayUnity PLUGIN onBeforeMyMusePayment\n";
 		if($params->get('my_debug')){
@@ -85,41 +89,50 @@ class plgMymusePayment_Payunity extends JPlugin
 		if($this->params->get('test'))
 		{
 			$url = "https://test.payunity.com/frontend/payment.prc";
-			$parameters['SECURITY.SENDER'] = $this->params->get('test_sender');
-			$parameters['USER.LOGIN'] = $this->params->get('test_user_login');
-			$parameters['USER.PWD'] = $this->params->get('test_user_pwd');
-			$parameters['TRANSACTION.CHANNEL'] = $this->params->get('test_channel');
-			$parameters['TRANSACTION.MODE'] = "INTEGRATOR_TEST";
+			$parameters['SECURITY.SENDER'] 		= $this->params->get('test_sender');
+			$parameters['USER.LOGIN'] 			= $this->params->get('test_user_login');
+			$parameters['USER.PWD'] 			= $this->params->get('test_user_pwd');
+			$parameters['TRANSACTION.CHANNEL'] 	= $this->params->get('test_channel');
+			$parameters['TRANSACTION.MODE'] 	= "INTEGRATOR_TEST";
 		}
 		else
 		{
 			$url = "https://payunity.com/frontend/payment.prc";
-			$parameters['SECURITY.SENDER'] = $this->params->get('sender');
-			$parameters['USER.LOGIN'] = $this->params->get('user_login');
-			$parameters['USER.PWD'] = $this->params->get('user_pwd');
-			$parameters['TRANSACTION.CHANNEL'] = $this->params->get('channel');
-			$parameters['TRANSACTION.MODE'] = "LIVE";
+			$parameters['SECURITY.SENDER'] 		= $this->params->get('sender');
+			$parameters['USER.LOGIN'] 			= $this->params->get('user_login');
+			$parameters['USER.PWD'] 			= $this->params->get('user_pwd');
+			$parameters['TRANSACTION.CHANNEL'] 	= $this->params->get('channel');
+			$parameters['TRANSACTION.MODE'] 	= "LIVE";
 		
 		}
-		$parameters['REQUEST.VERSION'] = "1.0";
+		$parameters['REQUEST.VERSION'] 				= "1.0";
 		$parameters['IDENTIFICATION.TRANSACTIONID'] = $order->id;
-		$parameters['FRONTEND.ENABLED'] = "true";
-		$parameters['FRONTEND.POPUP'] = "false";
-		$parameters['FRONTEND.MODE'] = "DEFAULT";
-		$parameters['FRONTEND.LANGUAGE'] = "en";
-		$parameters['PAYMENT.CODE'] = "CC.DB";
+		$parameters['FRONTEND.ENABLED'] 			= "true";
+		$parameters['FRONTEND.POPUP'] 				= "false";
+		$parameters['FRONTEND.MODE'] 				= "DEFAULT";
+		$parameters['FRONTEND.LANGUAGE'] 			= $lang;
+		$parameters['FRONTEND.SHOP_NAME'] 			= $store->title;
+		$parameters['PAYMENT.CODE'] 				= "CC.DB";
 		
-		$parameters['FRONTEND.RESPONSE_URL'] = JURI::base()."index.php?option=com_mymuse&task=notify";
+		$parameters['FRONTEND.RESPONSE_URL'] 		= JURI::base()."index.php?option=com_mymuse&task=notify";
 				
-		$parameters['NAME.GIVEN'] = $shopper->first_name;
-		$parameters['NAME.FAMILY'] = $shopper->last_name;
-		$parameters['ADDRESS.STREET'] = $shopper->address1." ".$shopper->address2;
-		$parameters['ADDRESS.ZIP'] = $shopper->postal_code;
-		$parameters['ADDRESS.CITY'] = $shopper->city;
-		$parameters['ADDRESS.COUNTRY'] = $shopper->country;
-		$parameters['CONTACT.EMAIL'] = $shopper->email;
-		$parameters['PRESENTATION.AMOUNT'] = sprintf("%.2f", $order->order_total);
-		$parameters['PRESENTATION.CURRENCY'] = $store->currency;
+		$parameters['NAME.GIVEN'] 					= $shopper->first_name;
+		$parameters['NAME.FAMILY'] 					= $shopper->last_name;
+		$parameters['ADDRESS.STREET'] 				= $shopper->address1." ".$shopper->address2;
+		$parameters['ADDRESS.ZIP'] 					= $shopper->postal_code;
+		$parameters['ADDRESS.CITY'] 				= $shopper->city;
+		$parameters['ADDRESS.COUNTRY'] 				= $shopper->country;
+		$parameters['CONTACT.EMAIL'] 				= $shopper->email;
+		$parameters['PRESENTATION.AMOUNT'] 			= sprintf("%.2f", $order->order_total);
+		$parameters['PRESENTATION.CURRENCY'] 		= $store->currency;
+		
+		
+		if($this->params->get('css_file', 0)){
+			$parameters["FRONTEND.CSS_PATH"] = $this->params->get('css_file');
+		}
+		if($this->params->get('js_file', 0)){
+			$parameters["FRONTEND.JSCRIPT_PATH"] = $this->params->get('js_file');
+		}
 		
 		$debug = "parameters\n".print_r($parameters, TRUE);
 		if($params->get('my_debug')){

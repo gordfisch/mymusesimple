@@ -34,6 +34,37 @@
 				  <option value="0">JNo</option>
 				  <option value="1">JYes</option>
 				</field>
+				<field type="spacer" />
+				<field name="default_lang" type="select" 
+				default="en" 
+				label="PLG_MYMUSE_PAYUNITY_DEFAULT_LANG_LABEL" 
+				description="PLG_MYMUSE_PAYUNITY_DEFAULT_LANG_DESC">
+				<option value="de">Deutsch</option>
+				<option value="en">English</option>
+				<option value="it">Italiano</option>
+				<option value="es">Español</option>
+				<option value="fr">Francais</option>
+				<option value="nl">Nederlands</option>
+				<option value="fi">Suomeksi</option>
+				<option value="sl">Slovenscina</option>
+				<option value="pt">Português</option>
+				<option value="pl">Polski</option>
+				<option value="se">Svenska</option>
+				<option value="sk">Slovencina</option>
+				<option value="cz">Cesky</option>
+				<option value="hu">Magyar Nyelv</option>
+				<option value="jp">Japanese</option>
+				<option value="bg">Bulgarian</option>
+				<option value="ro">România</option>
+				<option value="no">Norway</option>
+				<option value="dk">Denmark</option>
+				</field>
+				<field name="css_file" type="text" size="50" 
+				default="" 
+				label="PLG_MYMUSE_PAYUNITY_CSS_LABEL" description="PLG_MYMUSE_PAYUNITY_CSS_DESC"/>
+				<field name="js_file" type="text" size="50" 
+				default="" 
+				label="PLG_MYMUSE_PAYUNITY_JS_LABEL" description="PLG_MYMUSE_PAYUNITY_JS_DESC"/>
 			</fieldset>
 		</fields>
 	</config>
