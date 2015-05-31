@@ -85,7 +85,8 @@ class MymuseTablestore extends JTable
     	
     	//save the css file
     	$jinput = JFactory::getApplication()->input;
-    	$mymuse_css = $jinput->get('mymuse_css','');
+    	$mymuse_css = $jinput->get('mymuse_css','', 'RAW');
+
     	if($mymuse_css){
     		$myFile = JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'assets'.DS.'css'.DS.'mymuse.css';
     		if(!JFILE::write($myFile, $mymuse_css)){

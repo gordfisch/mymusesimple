@@ -76,7 +76,11 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			
 		 */
 
-
+		$debug = "#####################\nPayPalPro Express PLUGIN onBeforeMyMusePayment\n";
+		$debug .= print_r($requestData,true);
+		if($params->get('my_debug')){
+			MyMuseHelper::logMessage( $debug  );
+		}
 		$requestQuery = http_build_query($requestData);
 		$requestContext = stream_context_create(array(
 			'http' => array (
@@ -103,7 +107,10 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			$error_url = JRoute::_($error_url,false);
 			JFactory::getApplication()->redirect($error_url,$responseData['L_LONGMESSAGE0'],'error');
 		}
-
+		$debug = print_r($data,true);
+		if($params->get('my_debug')){
+			MyMuseHelper::logMessage( $debug  );
+		}
 		$path = JPluginHelper::getLayoutPath('mymuse', 'payment_paypalproexpress');
 		@ob_start();
 		include $path;
@@ -124,7 +131,10 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		$db	= JFactory::getDBO();
 		$date = date('Y-m-d h:i:s');
 		$debug = "#####################\nPayPalProExpress notify PLUGIN\n";
-		
+		$debug .= "Incoming data = \n".print_r($data,true);
+		if($params->get('my_debug')){
+			MyMuseHelper::logMessage( $debug  );
+		}
 		
 		if($data['mode'] == 'init') {
 			return $this->formCallback($data);
@@ -142,7 +152,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		if($isValid && isset($data['token']) && isset($data['PayerID']) && isset($data['orderid']) ) {
 			require_once( JPATH_COMPONENT.DS.'mymuse.class.php');
 			$MyMuseCheckout 	= MyMuse::getObject('checkout','helpers');
-			$order = $MyMuseCheckout->getOrder($data['orderid']);
+			$order 				= $MyMuseCheckout->getOrder($data['orderid']);
 			//print_r($order);
 			
 			$store = MyMuseHelper::getStore();
@@ -164,8 +174,11 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 					'IPADDRESS'							=> $_SERVER['REMOTE_ADDR']
 			);
 			
-			
-			//print_r($requestData); exit;
+			$debug = "FormCallBack requestData = \n".print_r(requestData,true);
+			if($params->get('my_debug')){
+				MyMuseHelper::logMessage( $debug  );
+			}
+		
 			$requestQuery = http_build_query($requestData);
 			$requestContext = stream_context_create(array(
 				'http' => array (
@@ -189,7 +202,11 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 				JFactory::getApplication()->redirect($error_url,$responseData['L_LONGMESSAGE0'],'error');
 			} else if(! preg_match('/^SUCCESS/', strtoupper($responseData['PAYMENTINFO_0_ACK']))) {
 				$isValid = false;
-				$responseData['akeebasubs_failure_reason'] = "PayPal error code: " . $responseData['PAYMENTINFO_0_ERRORCODE'];
+				$responseData['error'] = "PayPal error code: " . $responseData['PAYMENTINFO_0_ERRORCODE'];
+			}
+			$debug = print_r($responseData,true);
+			if($params->get('my_debug')){
+				MyMuseHelper::logMessage( $debug  );
 			}
 
 			if($level->recurring) {

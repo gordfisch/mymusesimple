@@ -102,7 +102,7 @@ class MymuseModelcoupon extends JModelAdmin
 	 *
 	 * @since	1.6
 	 */
-	protected function prepareTable(&$table)
+	protected function prepareTable($table)
 	{
 		jimport('joomla.filter.output');
 
@@ -138,13 +138,13 @@ class MymuseModelcoupon extends JModelAdmin
     		
     	$products[] = JHTML::_('select.option', '0', '- '.JText::_('MYMUSE_SELECT_PRODUCT').' -');
     	$query = "SELECT id as value, CONCAT(title,': ',product_sku) as text from #__mymuse_product
-			WHERE parentid='0' ORDER BY ordering ASC";
+			WHERE parentid='0' ORDER BY title ASC";
     	$this->_db->setQuery($query);
     	$parents = $this->_db->loadObjectList();
     	foreach($parents as $parent){
     		$products[] = $parent;
     		$query = "SELECT id as value, CONCAT('&nbsp;-&nbsp;',title,': ',product_sku) as text from #__mymuse_product
-				WHERE parentid='".$parent->value."' ORDER BY ordering ASC";
+				WHERE parentid='".$parent->value."' ORDER BY title ASC";
     		$this->_db->setQuery($query);
     		$children = $this->_db->loadObjectList();
     		foreach($children as $child){
