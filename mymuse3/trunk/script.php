@@ -465,6 +465,28 @@ class com_mymuseInstallerScript
 		$db->setQuery($query);
 		$db->query();
 		
+		//see if mymuse downloads table exists
+		$query = "SHOW TABLES LIKE '#__mymuse_downloads'";
+		$db->setQuery($query);
+		if(!$db->loadResult()){
+			//add the table
+			$query = "CREATE TABLE IF NOT EXISTS `#__mymuse_downloads` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL DEFAULT '1',
+  `user_name` varchar(64) DEFAULT NULL,
+  `user_email` varchar(255) NOT NULL,
+  `order_id` int(11) NOT NULL DEFAULT '',
+  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `product_id` int(11) NOT NULL DEFAULT '1',
+  `product_filename` varchar(255) NOT NULL DEFAULT '',
+  PRIMARY KEY (`id`),
+  KEY `idx_product_filename` (`product_filename`)
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Download records';";
+			$db->setQuery($query);
+			$db->query();
+			
+		}
+		
 		//see if mymuse_downloads table need updating
 		$query = "SHOW COLUMNS FROM #__mymuse_downloads LIKE 'order_id'";
 		$db->setQuery($query);
