@@ -475,7 +475,7 @@ class com_mymuseInstallerScript
   `user_id` int(11) NOT NULL DEFAULT '1',
   `user_name` varchar(64) DEFAULT NULL,
   `user_email` varchar(255) NOT NULL,
-  `order_id` int(11) NOT NULL DEFAULT '',
+  `order_id` int(11) NOT NULL,
   `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `product_id` int(11) NOT NULL DEFAULT '1',
   `product_filename` varchar(255) NOT NULL DEFAULT '',
