@@ -170,6 +170,7 @@ class MyMuseModelProducts extends JModelList
 			$this->getState(
 				'list.select',
 				'a.id, a.title, a.alias, a.title_alias, a.introtext, ' .
+					'a.metakey, a.metadesc, a.access, a.hits, a.metadata,' .
 				'a.checked_out, a.checked_out_time, a.list_image, a.detail_image, a.price,' .
 				'a.product_discount, a.catid, a.created, a.created_by, a.created_by_alias, ' .
 				// use created if modified is 0

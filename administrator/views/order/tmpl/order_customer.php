@@ -214,7 +214,7 @@ if($downloads && $order->order_status == "C"){
         
             <td width=50%>
         <?php 
-        if($params->get('my_use_shipping') && isset($shopper->shipto)){
+        if($params->get('my_use_shipping') && $order->order_shipping > 0){
         ?>
             <table width=100% cellspacing=0 cellpadding=2 border=0>
                 <tr class="sectiontableheader mymuse_cart_top">
@@ -222,53 +222,38 @@ if($downloads && $order->order_status == "C"){
                 </tr>
                 <tr>
                 <td><?php echo JText::_('MYMUSE_COMPANY') ?>:</td>
-                <td><?php echo $shopper->shipto->company ?></td>
+                <td><?php echo @$shopper->profile['shipping_company'] ?></td>
                 </tr>
                 <tr>
                 <td><?php echo JText::_('MYMUSE_FULL_NAME') ?>:</td>
                 <td>
-                <?php echo $shopper->shipto->first_name ?>
-        
-                <?php echo $shopper->shipto->middle_name ?>
-        
-                <?php echo $shopper->shipto->last_name ?>
+                <?php echo $shopper->profile['shipping_first_name'] ?>
+                <?php echo $shopper->profile['shipping_last_name'] ?>
                 </td>
                 </tr>
                 <tr VALIGN=TOP>
                 <td><?php echo JText::_('MYMUSE_ADDRESS') ?>:</td>
                 <td>
-                <?php echo $shopper->shipto->address_1 ?>
+                <?php echo $shopper->profile['shipping_address1'] ?>
                 <BR>
-                <?php echo $shopper->shipto->address_2 ?>
+                <?php echo $shopper->profile['shipping_address2'] ?>
                 </td>
                 </tr>
                 <tr>
                 <td><?php echo JText::_('MYMUSE_CITY') ?>:</td>
-                <td><?php echo $shopper->shipto->city ?></td>
+                <td><?php echo $shopper->profile['shipping_city'] ?></td>
                 </tr>
                 <tr>
                 <td><?php echo JText::_('MYMUSE_STATE') ?>:</td>
-                <td><?php echo $shopper->shipto->state ?></td>
+                <td><?php echo $shopper->profile['shipping_region_name'] ?></td>
                 </tr>
                 <tr>
                 <td><?php echo JText::_('MYMUSE_ZIP') ?>:</td>
-                <td><?php echo $shopper->shipto->zip ?></td>
+                <td><?php echo $shopper->profile['shipping_postal_code'] ?></td>
                 </tr>
                 <tr>
                 <td><?php echo JText::_('MYMUSE_COUNTRY') ?>:</td>
-                <td><?php echo $shopper->shipto->country ?></td>
-                </tr>
-                <tr>
-                <td><?php echo JText::_('MYMUSE_PHONE') ?>:</td>
-                <td><?php echo $shopper->shipto->phone_1 ?></td>
-                </tr>
-                <tr>
-                <td><?php echo JText::_('MYMUSE_FAX') ?>:</td>
-                <td><?php echo $shopper->shipto->fax ?></td>
-                </tr>
-                <tr>
-                <td><?php echo JText::_('MYMUSE_EMAIL') ?>:</td>
-                <td><?php echo $shopper->shipto->email ?></td>
+                <td><?php echo $shopper->profile['shipping_country'] ?></td>
                 </tr>
             </table>
             <!-- End ShipTo -->

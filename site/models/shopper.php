@@ -473,6 +473,17 @@ class mymuseModelShopper extends JModelForm
 				$post['jform']['profile']['region_name'] = $row->state_name;
 			}
 		}
+		
+		if(isset($post['jform']['profile']['shipping_region']) && !isset($post['jform']['profile']['shipping_region_name']) ){
+			$db = JFactory::getDBO();
+		
+			$query = "SELECT * FROM #__mymuse_state WHERE id='".$post['jform']['profile']['shipping_region']."'";
+			$db->setQuery($query);
+			if($row = $db->loadObject()){
+				$post['jform']['profile']['shipping_region_name'] = $row->state_name;
+			}
+		}
+		
 		if(isset($post['jform'])){
 			$user->set('profile',$post['jform']['profile']);
 			foreach($fields as $field){

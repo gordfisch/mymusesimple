@@ -64,6 +64,13 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		}else{
 			$shopper->country = '';
 		}
+		if(isset($shopper->profile['shipping_country'])){
+			// Paypal wants the country_2_code
+			$query = "SELECT country_2_code from #__mymuse_country WHERE country_3_code='".$shopper->profile['shipping_country']."'";
+			$db->setQuery($query);
+			$shopper->shipping_country = $db->loadResult();
+		}
+		
 		$shopper->address1 		= isset($shopper->profile['address1'])? $shopper->profile['address1'] : ''; 
 		$shopper->address2 		= isset($shopper->profile['address2'])? $shopper->profile['address2'] : '';
 		$shopper->city 			= isset($shopper->profile['city'])? $shopper->profile['city'] : '';
@@ -85,6 +92,12 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			$query = "SELECT state_2_code from #__mymuse_state WHERE id='".$shopper->profile['region']."'";
 			$db->setQuery($query);
 			$shopper->region = $db->loadResult();
+		}
+		if(isset($shopper->profile['shipping_region'])){
+			// Paypal wants the state_2_code
+			$query = "SELECT state_2_code from #__mymuse_state WHERE id='".$shopper->profile['shipping_region']."'";
+			$db->setQuery($query);
+			$shopper->shipping_region = $db->loadResult();
 		}
 		
 		//PayPal Account Email
@@ -169,32 +182,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			'CURRENCYCODE'		=> strtoupper($store->currency),
 			'DESC'				=> $store->title
 		);
-		/**
-		$data = (object)array(
-				'URL'				=> $callbackUrl."&mode=init",
-				'NOTIFYURL'			=> $callbackUrl,
-				'USER'				=> $this->getMerchantUsername(),
-				'PWD'				=> $this->getMerchantPassword(),
-				'SIGNATURE'			=> $this->getMerchantSignature(),
-				'VERSION'			=> '85.0',
-				'PAYMENTACTION'		=> 'Sale',
-				'IPADDRESS'			=> $_SERVER['REMOTE_ADDR'],
-				'FIRSTNAME'			=> 'Gordon',
-				'LASTNAME'			=> 'Fisch',
-				'EMAIL'				=> 'buyertest@gordfisch.net',
-				'STREET'			=> '5380 Kind Edward',
-				'STREET2'			=> trim($shopper->address2),
-				'CITY'				=> 'Montreal',
-				'STATE'				=> 'QC',
-				'COUNTRYCODE'		=> 'CA',
-				'ZIP'				=> 'H4V 2K1',
-				'AMT'				=> $order->order_total,
-				'ITEMAMT'			=> $order->order_subtotal,
-				'TAXAMT'			=> $order->tax_total,
-				'CURRENCYCODE'		=> strtoupper($store->currency),
-				'DESC'				=> $store->title
-		);
-		*/
+
 		//send individual items
 		$j = 0;
 		$data->ITEMS = 0;
@@ -219,8 +207,14 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 	
 		
 		if($params->get('my_use_shipping') && isset($order->order_shipping->cost) && $order->order_shipping->cost > 0){
-			$data->SHIPPINGAMT = $order->order_shipping->cost;
-					
+			$data->SHIPPINGAMT 		= $order->order_shipping->cost;
+			$data->SHIPTONAME 		= $shopper->profile['shipping_first_name']." ".$shopper->profile['shipping_last_name'];
+			$data->SHIPTOSTREET 	= $shopper->profile['shipping_address1'];
+			$data->SHIPTOSTREET2 	= $shopper->profile['shipping_address2'];
+			$data->SHIPTOCITY 		= $shopper->profile['shipping_city'];
+			$data->SHIPTOSTATE 		= $shopper->profile['shipping_region'];
+			$data->SHIPTOZIP 		= $shopper->profile['shipping_postal_code'];
+			$data->SHIPTOCOUNTRY 	= $shopper->profile['shipping_country'];		
 		}
 		
 
@@ -266,7 +260,13 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		$STATE_SELECT_HTML = JHTML::_('select.genericlist',  $state_select_array, 'STATE', 'class="inputbox" size="1" ',
 				'value', 'text', $shopper->region );
 		
-		
+		if($params->get('my_use_shipping') && isset($order->order_shipping->cost) && $order->order_shipping->cost > 0){
+			$SHIPPING_COUNTRY_SELECT_HTML = JHTML::_('select.genericlist',  $country_select_array, 'SHIPTOCOUNTRY',
+					'class="inputbox" size="1" onchange="changeDynaList2(SHIPTOSTATE, SHIPTOCOUNTRY, countrystates,0,0);"',
+					'value', 'text', $shopper->shipping_country );
+			$SHIPPING_STATE_SELECT_HTML = JHTML::_('select.genericlist',  $state_select_array, 'SHIPTOSTATE', 'class="inputbox" size="1" ',
+					'value', 'text', $shopper->shipping_region );
+		}
 		//make javascript
 		$countrystates = $this->listCountryState($shopper->country,$shopper->region );
 		

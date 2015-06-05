@@ -162,11 +162,25 @@ class plgUserMyMusenoreg extends JPlugin
 							$val = $this->_getStateName($val);
 						}
 					}
+					if($k == "shipping_region"){
+						if(!isset($_REQUEST['layout'])){
+							$val = $this->_getStateName($val);
+						}
+					}
 					$data->profile[$k] = $val;
 					
 					if ($data->profile[$k] === null)
 					{
 						if($k == "region"){
+							if(!isset($_REQUEST['layout'])){
+								$v[1] = $this->_getStateName($v[1]);
+							}
+						}
+						$data->profile[$k] = $v[1];
+					}
+					if ($data->profile[$k] === null)
+					{
+						if($k == "shipping_region"){
 							if(!isset($_REQUEST['layout'])){
 								$v[1] = $this->_getStateName($v[1]);
 							}
@@ -358,6 +372,31 @@ class plgUserMyMusenoreg extends JPlugin
 
 		";
 						$document->addScriptDeclaration($js);
+					}
+					
+					if($field == 'shipping_region'){
+						$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_REGION')."' as shipping_region, 0 as country_id  UNION
+								SELECT id as value, state_name as shipping_region, country_id FROM #__mymuse_state
+						ORDER by country_id, shipping_region";
+						$form->setFieldAttribute($field, 'query', $q, 'profile');
+					}
+					if($field == 'shipping_country'){
+						$db = JFactory::getDBO();
+						$query = "SELECT * from `#__mymuse_store` WHERE id='1'";
+						$db->setQuery($query);
+						$store = $db->loadObject();
+						$sparams = new JRegistry($store->params);
+						$country_2_code = $sparams->get('country');
+						$query = "SELECT country_3_code FROM #__mymuse_country WHERE country_2_code='$country_2_code'";
+					
+						$db->setQuery($query);
+						$country = $db->loadResult();
+							
+						$form->setFieldAttribute($field, 'default', $country, 'profile');
+							
+						$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_COUNTRY')."' as shipping_country UNION SELECT country_3_code as value, country_name as shipping_country FROM #__mymuse_country ORDER by shipping_country";
+						//$q = "SELECT '".$country->country_3_code."' as value, '".$country->country_name."' as country UNION SELECT country_3_code as value, country_name as country FROM #__mymuse_country ORDER by country";
+						$form->setFieldAttribute($field, 'query', $q, 'profile');
 					}
 				}
 				else {
