@@ -138,11 +138,11 @@ method="post" name="adminForm" id="store-form" class="form-validate">
 		
 			  <?php echo JHtml::_('bootstrap.endTab'); ?>
 			<?php endforeach; ?>
-
-			<?php echo JHtml::_('bootstrap.addTab','myTab', 'metadata', JText::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'), true); ?>
-				<?php echo $this->loadTemplate('metadata'); ?>
-			<?php echo JHtml::_('bootstrap.endTab'); ?>
-
+<!--  
+			<?php //echo JHtml::_('bootstrap.addTab','myTab', 'metadata', JText::_('JGLOBAL_FIELDSET_METADATA_OPTIONS'), true); ?>
+				<?php //echo $this->loadTemplate('metadata'); ?>
+			<?php //echo JHtml::_('bootstrap.endTab'); ?>
+-->
 		<?php echo JHtml::_('bootstrap.endTabSet'); ?>
 		<input type="hidden" name="task" value="" />
 		<?php echo $this->form->getInput('checked_out'); ?>

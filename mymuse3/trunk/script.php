@@ -496,6 +496,17 @@ class com_mymuseInstallerScript
 			$db->query();
 		}
 		
+		//see if notes field needs updating
+		$query = "SHOW FIELDS FROM `#__mymuse_order` WHERE Field = 'notes'";
+		$db->setQuery($query);
+		$res = $db->loadObject();
+		if($res->Type != 'text')
+		
+			$query = "ALTER TABLE `#__mymuse_order` CHANGE `notes` `notes` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL";
+			$db->setQuery($query);
+			$db->query();
+		}
+		
 				// DEFAULT DOWNLOAD DIRECTORY
 				$name = JText::_("MYMUSE_MAKE_DOWNLOAD_DIR");
 				$download_dir =  JPATH_ROOT.DS."images".DS."A_MyMuseDownloads";
@@ -643,7 +654,7 @@ class com_mymuseInstallerScript
 				$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
 		
 		
-			}
+			
 				
 		if(!$this->already_installed && $type == "install"){
 	

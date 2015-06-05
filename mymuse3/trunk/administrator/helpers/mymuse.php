@@ -611,7 +611,16 @@ class MyMuseHelper extends JObject
 				'mobile',
 				'fax',
 				'shopper_group',
-				'category_owner'
+				'category_owner',
+				'tos',
+				'shipping_add_address',
+				'shipping_address1',
+				'shipping_address2',
+				'shipping_city',
+				'shipping_region',
+				'shipping_region_name',
+				'shipping_country',
+				'shipping_postal_code'
 		);
 	
 		return $fields;
@@ -637,7 +646,17 @@ class MyMuseHelper extends JObject
 				'vat_number',
 				'phone',
 				'mobile',
-				'tos'
+				'tos',
+				'shipping_first_name',
+				'shipping_last_name',
+				'shipping_add_address',
+				'shipping_address1',
+				'shipping_address2',
+				'shipping_city',
+				'shipping_region',
+				'shipping_region_name',
+				'shipping_country',
+				'shipping_postal_code'
 		);
 
 		

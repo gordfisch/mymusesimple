@@ -217,20 +217,7 @@ class MymuseModelorder extends JModelAdmin
 			
 			//if we are using no_reg
 			if($params->get('my_registration') == "no_reg"){
-				$fields = array(
-						'first_name',
-						'last_name',
-						'email',
-						'address1',
-						'address2',
-						'city',
-						'region_name',
-						'country',
-						'postal_code',
-						'phone',
-						'mobile',
-						'tos'
-				);
+				$fields = MyMuseHelper::getNoRegFields();
 				$registry = new JRegistry;
 				$registry->loadString($item->notes);
 				foreach($fields as $field){

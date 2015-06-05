@@ -182,7 +182,11 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 		<div style="clear: both;"></div>
 	    
 	    
-	<?php echo JHtml::_('form.token'); ?>
+	<?php echo JHtml::_('form.token'); 
+	
+	
+	//print_pre($this->item->user->profile);
+	?>
 	
 	<fieldset class="adminform">
 		<h2><?php echo JText::_('MYMUSE_CUSTOMER') ?></h2>
@@ -263,54 +267,43 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 				<!-- End BillTo --></td>
 
 				<td width=50%><?php 
-				if($this->params->get('my_use_shipping') && isset($this->item->user->shipto)){
+				if($this->params->get('my_use_shipping') && $this->item->order_shipping > 0){
 					?>
 				<table class="adminlist">
 					<tr>
 						<td COLSPAN=2><b><?php echo JText::_('MYMUSE_SHIPPING_ADDRESS') ?></b></td>
 					</tr>
+					<?php  if(isset($this->item->user->profile['shipping_company'])){?>
 					<tr>
 						<td><?php echo JText::_('MYMUSE_COMPANY') ?>:</td>
-						<td><?php echo $this->item->user->shipto->company ?></td>
+						<td><?php echo $this->item->user->profile['shipping_company'] ?></td>
 					</tr>
+					<?php }?>
 					<tr>
 						<td><?php echo JText::_('MYMUSE_FULL_NAME') ?>:</td>
-						<td><?php echo $this->item->user->shipto->first_name ?> <?php echo $this->item->user->shipto->middle_name ?>
-
-						<?php echo $this->item->user->shipto->last_name ?></td>
+						<td><?php echo $this->item->user->profile['shipping_first_name'] ?> 
+						<?php echo $this->item->user->profile['shipping_last_name'] ?></td>
 					</tr>
 					<tr VALIGN=TOP>
 						<td><?php echo JText::_('MYMUSE_ADDRESS') ?>:</td>
-						<td><?php echo $this->item->user->shipto->address_1 ?> <BR>
-						<?php echo $this->item->user->shipto->address_2 ?></td>
+						<td><?php echo $this->item->user->profile['shipping_address1'] ?> <BR>
+						<?php echo $this->item->user->profile['shipping_address2'] ?></td>
 					</tr>
 					<tr>
 						<td><?php echo JText::_('MYMUSE_CITY') ?>:</td>
-						<td><?php echo $this->item->user->shipto->city ?></td>
+						<td><?php echo $this->item->user->profile['shipping_city'] ?></td>
 					</tr>
 					<tr>
 						<td><?php echo JText::_('MYMUSE_STATE') ?>:</td>
-						<td><?php echo $this->item->user->shipto->state ?></td>
+						<td><?php echo $this->item->user->profile['shipping_region_name'] ?></td>
 					</tr>
 					<tr>
 						<td><?php echo JText::_('MYMUSE_ZIP') ?>:</td>
-						<td><?php echo $this->item->user->shipto->zip ?></td>
+						<td><?php echo $this->item->user->profile['shipping_postal_code'] ?></td>
 					</tr>
 					<tr>
 						<td><?php echo JText::_('MYMUSE_COUNTRY') ?>:</td>
-						<td><?php echo $this->item->user->shipto->country ?></td>
-					</tr>
-					<tr>
-						<td><?php echo JText::_('MYMUSE_PHONE') ?>:</td>
-						<td><?php echo $this->item->user->shipto->phone_1 ?></td>
-					</tr>
-					<tr>
-						<td><?php echo JText::_('MYMUSE_FAX') ?>:</td>
-						<td><?php echo $this->item->user->shipto->fax ?></td>
-					</tr>
-					<tr>
-						<td><?php echo JText::_('MYMUSE_EMAIL') ?>:</td>
-						<td><?php echo $this->item->user->shipto->email ?></td>
+						<td><?php echo $this->item->user->profile['shipping_country'] ?></td>
 					</tr>
 				</table>
 				<!-- End ShipTo --> <?php } ?></td>

@@ -536,6 +536,8 @@ class myMuseViewStore extends JViewLegacy
         	exit;
         }
 
+        
+        //JUST VIEW THE STORE
 		// Initialise variables.
 		$user = JFactory::getUser();
 		$app = JFactory::getApplication();

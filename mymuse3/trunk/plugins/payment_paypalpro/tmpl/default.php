@@ -170,7 +170,100 @@
             </div></td>
         </tr>
         </table>
+
+     <?php if($data->SHIPPINGAMT > 0){ ?>   
         
+        		<h4><?php echo JText::_('MYMUSE_SHIPPING_ADDRESS'); ?></h4>
+		<table>
+        <tr>
+            <td><label for="SHIPTONAME" class="control-label" style="margin-right:5px;">
+                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_SHIPPING_NAME') ?>
+            </label></td>
+        
+        </tr>
+        <tr>
+           <td><div class="">
+                <input type="text" name="SHIPTONAME" id="SHIPTONAME" size="40" 
+                value="<?php echo $data->SHIPTONAME ?>" />
+            </div></td>
+        
+        </tr>
+        
+        <tr>
+            <td colspan="2"><label for="SHIPTOSTREET" class="control-label" 
+            style="width:110px; margin-right:5px;">
+                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_SHIPPING_STREET') ?>
+            </label></td>
+        </tr>
+        </tr>
+            <td colspan="2">
+            <div class="">
+                <input type="text" name="SHIPTOSTREET" id="SHIPTOSTREET"  
+                value="<?php echo $data->SHIPTOSTREET ?>"  />
+            </div></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+				 <div class="">
+                <input type="text" name="SHIPTOSTREET2" id="SHIPTOSTREET2" 
+                value="<?php echo $data->SHIPTOSTREET2 ?>"  />
+            </div></td>
+        </tr>
+        <tr>
+            <td colspan="2">
+            <label for="SHIPTOCOUNTRY" class="control-label" style="width:110px; margin-right:5px;">
+                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_SHIPPING_COUNTRYCODE') ?>
+            </label></td>
+        </tr>
+        <tr> 
+            <td colspan="2">
+            <div class="">
+               <?php  echo $SHIPPING_COUNTRY_SELECT_HTML ?>
+            </div></td>
+        </tr>
+        <tr> 
+            <td colspan="2">
+            <label for="SHIPTOCITY" class="control-label" style="width:110px; margin-right:5px;">
+                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_SHIPPING_CITY') ?>
+            </label></td>
+        </tr>
+            
+        <tr> 
+            <td colspan="2">
+            <div class="">
+                <input type="text" name="SHIPTOCITY" id="SHIPTOCITY" class="input-medium" 
+                value="<?php echo $data->SHIPTOCITY ?>"  />
+            </div></td>
+        </tr>
+        
+        <tr> 
+            <td colspan="2">
+            <label for="STATE" class="control-label" style="width:110px; margin-right:5px;">
+                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_SHIPPING_STATE') ?>
+            </label></td>
+        </tr>
+        <tr> 
+            <td colspan="2">
+            <div class="">
+                <?php  echo $SHIPPING_STATE_SELECT_HTML ?>
+            </div></td>
+        </tr>
+        <tr> 
+            <td colspan="2">
+            <label for="SHIPTOZIP" class="control-label" style="width:110px; margin-right:5px;">
+                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_SHIPPING_ZIP') ?>
+            </label></td>
+        </tr>
+        <tr> 
+            <td colspan="2">
+            <div class="">
+                <input type="text" name="SHIPTOZIP" id="SHIPTOZIP" class="input-mini" 
+                value="<?php echo $data->SHIPTOZIP ?>"  />
+            </div></td>
+        </tr>
+        </table>
+        
+        <?php } ?>
     </div>
     
     <div style="float:right;width:45%;">
