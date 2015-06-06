@@ -47,8 +47,12 @@ class plgMymuseAudio_html5 extends JPlugin
 		$app = JFactory::getApplication('site');
 		
 		if($this->params->get('my_include_jquery', 0)){
-			//load same jquery as Joomla, 1.8.3
-			$js_path = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js";
+			//load same jquery ui
+			if(preg_match("/https/", JURI::base())){
+				$js_path = "https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js";
+			}else{
+				$js_path = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js";
+			}
 			//$document->addScript( $js_path );
 			JHtml::_('script',$js_path, false, true, false, false);
 		}
@@ -66,11 +70,19 @@ class plgMymuseAudio_html5 extends JPlugin
         
         // ui js and css
         if (!$app->isAdmin()) {
-        	$js_path = 'http://code.jquery.com/ui/1.11.2/jquery-ui.min.js';
+        	if(preg_match("/https/", JURI::base())){
+        		$js_path = 'https://code.jquery.com/ui/1.11.2/jquery-ui.min.js';
+        	}else{
+        		$js_path = 'http://code.jquery.com/ui/1.11.2/jquery-ui.min.js';
+        	}
         	JHtml::_('script',$js_path, false, true, false, false);
         	
         }
-        $document->addStyleSheet('http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
+        if(preg_match("/https/", JURI::base())){
+        	$document->addStyleSheet('https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
+        }else{
+        	$document->addStyleSheet('http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
+        }
         
 	}
 

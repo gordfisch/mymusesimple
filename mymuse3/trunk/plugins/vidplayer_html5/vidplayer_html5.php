@@ -65,11 +65,19 @@ class plgMymuseVidplayer_html5 extends JPlugin
         
 		// ui js and css
         if (!$app->isAdmin()) {
-        	$js_path = 'http://code.jquery.com/ui/1.11.2/jquery-ui.min.js';
+        	if(preg_match("/https/", JURI::base())){
+        		$js_path = 'https://code.jquery.com/ui/1.11.2/jquery-ui.min.js';
+        	}else{
+        		$js_path = 'http://code.jquery.com/ui/1.11.2/jquery-ui.min.js';
+        	}
         	JHtml::_('script',$js_path, false, true, false, false);
         	
         }
-        $document->addStyleSheet('http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
+        if(preg_match("/https/", JURI::base())){
+        	$document->addStyleSheet('https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
+        }else{
+        	$document->addStyleSheet('http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
+        }
         
        
 
