@@ -231,7 +231,7 @@
 
 					description="MYMUSE_USER_PROFILE_FIELD_SHIPPING_ADDRESS1_DESC"
 					label="MYMUSE_USER_PROFILE_FIELD_SHIPPING_ADDRESS1_LABEL"
-					default="0"
+					default="1"
 				>
 					<option value="2">JOPTION_REQUIRED</option>
 					<option value="1">JOPTION_OPTIONAL</option>
@@ -242,7 +242,7 @@
 
 					description="MYMUSE_USER_PROFILE_FIELD_SHIPPING_ADDRESS2_DESC"
 					label="MYMUSE_USER_PROFILE_FIELD_SHIPPING_ADDRESS2_LABEL"
-					default="0"
+					default="1"
 				>
 					<option value="2">JOPTION_REQUIRED</option>
 					<option value="1">JOPTION_OPTIONAL</option>
@@ -253,7 +253,7 @@
 
 					description="MYMUSE_USER_PROFILE_FIELD_SHIPPING_CITY_DESC"
 					label="MYMUSE_USER_PROFILE_FIELD_SHIPPING_CITY_LABEL"
-					default="0"
+					default="1"
 				>
 					<option value="2">JOPTION_REQUIRED</option>
 					<option value="1">JOPTION_OPTIONAL</option>
@@ -275,7 +275,7 @@
 
 					description="MYMUSE_USER_PROFILE_FIELD_SHIPPING_COUNTRY_DESC"
 					label="MYMUSE_USER_PROFILE_FIELD_SHIPPING_COUNTRY_LABEL"
-					default="2"
+					default="1"
 				>
 					<option value="2">JOPTION_REQUIRED</option>
 					<option value="1">JOPTION_OPTIONAL</option>
@@ -287,7 +287,7 @@
 
 					description="MYMUSE_USER_PROFILE_FIELD_SHIPPING_POSTAL_CODE_DESC"
 					label="MYMUSE_USER_PROFILE_FIELD_SHIPPING_POSTAL_CODE_LABEL"
-					default="0"
+					default="1"
 				>
 					<option value="2">JOPTION_REQUIRED</option>
 					<option value="1">JOPTION_OPTIONAL</option>

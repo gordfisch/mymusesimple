@@ -318,7 +318,8 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		}
 		
 		window.onload = function(e){
-			changeDynaList2(STATE, COUNTRYCODE, countrystates,".$shopper->country.",".$shopper->region.");
+			changeDynaList2(STATE, COUNTRYCODE, countrystates,'".$shopper->country."','".$shopper->region."');
+			changeDynaList2(SHIPTOSTATE, SHIPTOCOUNTRY, countrystates,'".$shopper->country."','".$shopper->region."');
 		}
 		";
 		$document->addScriptDeclaration($js);
@@ -429,33 +430,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			
 			if($params->get('my_registration') == "no_reg"){
 				//update order notes
-				/**
-				 * update order
-				 [FIRSTNAME] => Gord
-				 [LASTNAME] => Fisch
-				 [EMAIL] => gord@arboreta.ca
-				 [STREET] => 5380 King Edward
-				 [STREET2] =>
-				 [CITY] => Montreal
-				 [COUNTRYCODE] => CA
-				 [STATE] => 62
-				 [ZIP] => H4V 2K1
-				 
-				 $fields = array(
-						'first_name',
-						'last_name',
-						'email',
-						'address1',
-						'address2',
-						'city',
-						'region_name',
-						'country',
-						'postal_code',
-						'phone',
-						'mobile',
-						'tos'
-				);
-				 */
+
 				$notes = '';
 				$notes .= "first_name=".$data['FIRSTNAME']."\n";
 				$notes .= "last_name=".$data['LASTNAME']."\n";
@@ -466,6 +441,28 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 				$notes .= "country=".$data['COUNTRYCODE']."\n";
 				$notes .= "region_name=".$data['STATE']."\n";
 				$notes .= "postal_code=".$data['ZIP']."\n";
+				if(isset($data->SHIPTONAME)){
+					list($first,$last) = explode(" ",$data['SHIPTONAME']);
+					$notes .= "shipping_first_name=".$first."\n";
+					$notes .= "shipping_last_name=".$last."\n";
+				}
+				if(isset($data->SHIPTOSTREET)){
+					$notes .= "shipping_address1=".$data['SHIPTOSTREET']."\n";
+					$notes .= "shipping_address2=".$data['SHIPTOSTREET2']."\n";
+				}
+				if(isset($data->SHIPTOCITY)){
+					$notes .= "shipping_city=".$data['SHIPTOCITY']."\n";
+				}
+				if(isset($data->SHIPTOSTATE)){
+					$notes .= "shipping_region=".$data['SHIPTOSTATE']."\n";
+				}
+				if(isset($data->SHIPTOCOUNTRY)){
+					$notes .= "shipping_country=".$data['SHIPTOCOUNTRY']."\n";
+				}
+				if(isset($data->SHIPTOZIPY)){
+					$notes .= "shipping_postal_code=".$data['SHIPTOZIP']."\n";
+				}
+				
 				
 				$query = "UPDATE #__mymuse_order SET notes='$notes' WHERE
 				order_number='".$data['INVNUM']."'";
@@ -476,7 +473,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			
 			
 			
-			sleep(15);
+			//sleep(15);
 		
 			if(!$isValid ){
 				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalpaymentspro&orderid='.$orderid.'&Itemid='.$Itemid, false);

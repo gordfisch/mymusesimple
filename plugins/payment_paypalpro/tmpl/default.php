@@ -21,7 +21,7 @@
 	<input type="hidden" name="num_cart_items" value="<?php echo $data->ITEMS ?>" />
     
 	<input type="hidden" name="AMT" value="<?php echo $data->AMT ?>" />
-	<input type="hidden" name="CUSTOM" value="<?php echo $data->CUSTOM ?>" />
+	
 	<input type="hidden" name="ITEMAMT" value="<?php echo $data->ITEMAMT ?>" />
 	<input type="hidden" name="TAXAMT" value="<?php echo $data->TAXAMT ?>" />
 	<input type="hidden" name="CURRENCYCODE" value="<?php echo $data->CURRENCYCODE ?>" />
@@ -68,12 +68,12 @@
         
         </tr>
         <tr>
-           <td><div class="">
+           <td colspan="2"><div>
                 <input type="text" name="FIRSTNAME" id="FIRSTNAME" size="10" value="<?php echo $data->FIRSTNAME ?>" />
             </div></td>
         
         </tr>
-        </tr>
+        <tr>
             <td colspan="2">
             <label for="LASTNAME" class="control-label" style="margin-right:5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_LASTNAME') ?>
@@ -195,7 +195,7 @@
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_SHIPPING_STREET') ?>
             </label></td>
         </tr>
-        </tr>
+        <tr>
             <td colspan="2">
             <div class="">
                 <input type="text" name="SHIPTOSTREET" id="SHIPTOSTREET"  
@@ -281,8 +281,6 @@
                 <select id="CREDITCARDTYPE" name="CREDITCARDTYPE" class="input-medium">
                     <option value="Visa">Visa</option>
                     <option value="MasterCard">Master Card</option>
-                    <option value="Discover">Discover</option>
-                    <option value="Amex">American Express</option>
                 </select>
             </div></td>
        </tr>
