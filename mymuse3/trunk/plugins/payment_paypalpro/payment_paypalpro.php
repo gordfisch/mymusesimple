@@ -55,7 +55,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 	
 	public function onBeforeMyMusePayment($shopper, $store, $order, $params, $Itemid=1 )
 	{
-	print_pre($shopper->profile);
+		//print_pre($shopper->profile);
 		$db			= JFactory::getDBO();
 		if(isset($shopper->profile['country'])){
 			// Paypal wants the country_2_code
@@ -213,7 +213,17 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			$data->SHIPTOSTREET 	= $shopper->profile['shipping_address1'];
 			$data->SHIPTOSTREET2 	= $shopper->profile['shipping_address2'];
 			$data->SHIPTOCITY 		= $shopper->profile['shipping_city'];
-			$data->SHIPTOSTATE 		= $shopper->profile['shipping_region'];
+			if(!is_numeric($shopper->profile['shipping_region'])){
+				$shopper->profile['shipping_region'] = $shopper->profile['shipping_region'];
+			}else{
+				$db = JFactory::getDBO();
+				$query = "SELECT * FROM #__mymuse_state WHERE id='".$shopper->profile['shipping_region']."'";
+				$db->setQuery($query);
+				if($row = $db->loadObject()){
+					$shopper->profile['shipping_region_name'] = $row->state_2_code;
+				}
+			}
+			$data->SHIPTOSTATE 		= $shopper->profile['shipping_region_name'];
 			$data->SHIPTOZIP 		= $shopper->profile['shipping_postal_code'];
 			$data->SHIPTOCOUNTRY 	= $shopper->profile['shipping_country'];		
 		}
@@ -324,7 +334,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		}
 		";
 		$document->addScriptDeclaration($js);
-		 print_pre($data);
+		// print_pre($data);
 		$path = JPluginHelper::getLayoutPath('mymuse', 'payment_paypalpro');
 		@ob_start();
 		//include dirname(__FILE__).'/paypalpro/form.php';
