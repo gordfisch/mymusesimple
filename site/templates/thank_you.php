@@ -75,7 +75,7 @@ defined('_JEXEC') or die('Restricted access');
 		
 		    <tr class="<?php echo $class ?>">
 		        <td align="left"> 
-		        <?php if(isset($order->items[$i]->category_name)){ ?>
+		        <?php if(isset($order->items[$i]->category_name) && $params->get('mymuse_show_category')){ ?>
 		        	 <?php echo $order->items[$i]->category_name; ?> :
 		        <?php } ?>
 		        

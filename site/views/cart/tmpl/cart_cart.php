@@ -52,9 +52,9 @@ $task		= $this->task;
 		?>
 		
 		    <tr>
-		        <td class="mytitle">
-		        <?php if(isset($order_item[$i]->category_name)){ ?>
-		        	 <?php echo $order_item[$i]->category_name; ?> :
+		        <td class="mytitle">arrrrrrr
+		        <?php if(isset($order_item[$i]->category_name) && $params->get('mymuse_show_category')){ ?>
+		        	 <?php echo $order_item[$i]->category_name; ?> : 
 		        <?php } ?>
 		        
 		        <?php if(isset($order_item[$i]->parent->title)){ ?>

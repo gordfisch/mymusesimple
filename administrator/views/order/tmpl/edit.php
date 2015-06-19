@@ -18,7 +18,7 @@ JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 jimport ('joomla.html.html.bootstrap');
 
-print_pre($this->item->user->profile);
+
 $print = JRequest::getVar('print',0);
 if($print){
 	
@@ -290,10 +290,10 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 							?></td>
 					</tr>
 					<?php }?>
-					<?php if(isset($this->item->user->profile['shipping_first_name'] )){?>
+					<?php if(isset($this->item->user->profile['shipping_address1'] )){?>
 					<tr>
 						<td><?php echo JText::_('MYMUSE_ADDRESS') ?>:</td>
-						<td><?php echo $this->item->user->profile['shipping_address2'] ?> <BR>
+						<td><?php echo $this->item->user->profile['shipping_address1'] ?> <BR>
 						<?php echo $this->item->user->profile['shipping_address2'] ?></td>
 					</tr>
 					<?php }?>
@@ -307,23 +307,23 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 					<?php if(isset($this->item->user->profile['shipping_region']) || isset($this->item->user->profile['shipping_region_name'])){ 
 							
 								if(!is_numeric($this->item->user->profile['shipping_region'])){
-									$this->item->user->profile['shipping_region_name'] = $this->item->user->profile['region'];
+									$this->item->user->profile['shipping_region_name'] = $this->item->user->profile['shipping_region'];
 								}else{
 									$db = JFactory::getDBO();
-									$query = "SELECT * FROM #__mymuse_state WHERE id='".$this->item->user->profile['region']."'";
+									$query = "SELECT * FROM #__mymuse_state WHERE id='".$this->item->user->profile['shipping_region']."'";
 									$db->setQuery($query);
 									if($row = $db->loadObject()){
-										$this->item->user->profile['region'] = $row->id;
-										$this->item->user->profile['region_name'] = $row->state_2_code;
+									
+										$this->item->user->profile['shipping_region_name'] = $row->state_2_code;
 									}
 								}
 							
 						?>
 					<tr>
-					?>
+					
 					<tr>
 						<td><?php echo JText::_('MYMUSE_STATE') ?>:</td>
-						<td><?php echo $this->item->user->profile['shipping_region'] ?></td>
+						<td><?php echo $this->item->user->profile['shipping_region_name'] ?></td>
 					</tr>
 					<?php }?>
 					<?php if(isset($this->item->user->profile['shipping_postal_code'] )){?>
@@ -384,7 +384,7 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 			$string .= '
 		    <tr class="'.$class .'">
 		        <td>';
-		    if($this->item->items[$i]->category_name != ''){
+		    if($this->item->items[$i]->category_name != '' && $this->params->get('mymuse_show_category')){
 		    	$string .= $this->item->items[$i]->category_name .' : ';
 		    }
 		    if($this->item->items[$i]->parent_name != ''){
