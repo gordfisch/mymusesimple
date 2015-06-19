@@ -738,6 +738,17 @@
         </field>
         
         <field
+                name="my_show_category_name"
+                type="list"
+                label="MYMUSE_SHOW_CATEGORY_NAME_LABEL"
+                description="MYMUSE_SHOW_CATEGORY_NAMEDESC"
+                class="btn-group"
+                default="1">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>>
+        </field>
+        
+        <field
                 name="my_default_shopper_group_id"
                 type="text"
                 label="MYMUSE_DEFAULT_SHOPPER_GROUP_LABEL"

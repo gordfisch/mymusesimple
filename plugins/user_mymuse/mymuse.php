@@ -59,7 +59,10 @@ class plgUserMyMuse extends JPlugin
 	{
 
 		$instance = $this->_getUser($user, $options);
-		
+		if($instance->block == 1){
+			return false;
+		}
+
 		// Load the profile data from the database.
 		$app = JFactory::getApplication();
 		$myparams = MyMuseHelper::getParams();

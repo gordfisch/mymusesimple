@@ -625,6 +625,7 @@ class MyMuseHelper extends JObject
 	
 		return $fields;
 	}
+	
 	/**
 	 * Get fields for no registration
 	 * 
