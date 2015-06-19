@@ -49,6 +49,7 @@ foreach ($this->form->getFieldsets() as $fieldset)
 		</div><div style="float: left; margin-left: 20px;"><h4><?php echo JText::_('MYMUSE_SHIPPING');?></h4>
 	<?php endif; ?>
 	
+	
 		<fieldset>
 		<?php if (isset($fieldset->label)):// If the fieldset has a label set, display it as the legend.
 		?>

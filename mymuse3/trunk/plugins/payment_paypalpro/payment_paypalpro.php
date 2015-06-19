@@ -55,6 +55,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 	
 	public function onBeforeMyMusePayment($shopper, $store, $order, $params, $Itemid=1 )
 	{
+	print_pre($shopper->profile);
 		$db			= JFactory::getDBO();
 		if(isset($shopper->profile['country'])){
 			// Paypal wants the country_2_code
@@ -323,7 +324,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		}
 		";
 		$document->addScriptDeclaration($js);
-		
+		 print_pre($data);
 		$path = JPluginHelper::getLayoutPath('mymuse', 'payment_paypalpro');
 		@ob_start();
 		//include dirname(__FILE__).'/paypalpro/form.php';

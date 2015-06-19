@@ -18,7 +18,7 @@ JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 jimport ('joomla.html.html.bootstrap');
 
-//print_pre($this->item);
+print_pre($this->item->user->profile);
 $print = JRequest::getVar('print',0);
 if($print){
 	
@@ -217,7 +217,7 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 					</tr>
 					<?php }?>
 					<?php if(isset($this->item->user->profile['region']) || isset($this->item->user->profile['region_name'])){ 
-							if(!isset($this->item->user->profile['region_name'])){
+							
 								if(!is_numeric($this->item->user->profile['region'])){
 									$this->item->user->profile['region_name'] = $this->item->user->profile['region'];
 								}else{
@@ -226,10 +226,10 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 									$db->setQuery($query);
 									if($row = $db->loadObject()){
 										$this->item->user->profile['region'] = $row->id;
-										$this->item->user->profile['region_name'] = $row->state_name;
+										$this->item->user->profile['region_name'] = $row->state_2_code;
 									}
 								}
-							}
+							
 						?>
 					<tr>
 						<td><?php echo JText::_('MYMUSE_STATE') ?>:</td>
@@ -279,32 +279,65 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 						<td><?php echo $this->item->user->profile['shipping_company'] ?></td>
 					</tr>
 					<?php }?>
+					<?php if(isset($this->item->user->profile['shipping_first_name'] )){?>
 					<tr>
 						<td><?php echo JText::_('MYMUSE_FULL_NAME') ?>:</td>
 						<td><?php echo $this->item->user->profile['shipping_first_name'] ?> 
-						<?php echo $this->item->user->profile['shipping_last_name'] ?></td>
+						<?php 
+						if(isset($this->item->user->profile['shipping_last_name'])){
+							echo $this->item->user->profile['shipping_last_name']; 
+						}
+							?></td>
 					</tr>
-					<tr VALIGN=TOP>
+					<?php }?>
+					<?php if(isset($this->item->user->profile['shipping_first_name'] )){?>
+					<tr>
 						<td><?php echo JText::_('MYMUSE_ADDRESS') ?>:</td>
-						<td><?php echo $this->item->user->profile['shipping_address1'] ?> <BR>
+						<td><?php echo $this->item->user->profile['shipping_address2'] ?> <BR>
 						<?php echo $this->item->user->profile['shipping_address2'] ?></td>
 					</tr>
+					<?php }?>
+					<?php if(isset($this->item->user->profile['shipping_city'] )){?>
 					<tr>
 						<td><?php echo JText::_('MYMUSE_CITY') ?>:</td>
 						<td><?php echo $this->item->user->profile['shipping_city'] ?></td>
 					</tr>
+					<?php }?>
+					
+					<?php if(isset($this->item->user->profile['shipping_region']) || isset($this->item->user->profile['shipping_region_name'])){ 
+							
+								if(!is_numeric($this->item->user->profile['shipping_region'])){
+									$this->item->user->profile['shipping_region_name'] = $this->item->user->profile['region'];
+								}else{
+									$db = JFactory::getDBO();
+									$query = "SELECT * FROM #__mymuse_state WHERE id='".$this->item->user->profile['region']."'";
+									$db->setQuery($query);
+									if($row = $db->loadObject()){
+										$this->item->user->profile['region'] = $row->id;
+										$this->item->user->profile['region_name'] = $row->state_2_code;
+									}
+								}
+							
+						?>
+					<tr>
+					?>
 					<tr>
 						<td><?php echo JText::_('MYMUSE_STATE') ?>:</td>
-						<td><?php echo $this->item->user->profile['shipping_region_name'] ?></td>
+						<td><?php echo $this->item->user->profile['shipping_region'] ?></td>
 					</tr>
+					<?php }?>
+					<?php if(isset($this->item->user->profile['shipping_postal_code'] )){?>
 					<tr>
 						<td><?php echo JText::_('MYMUSE_ZIP') ?>:</td>
 						<td><?php echo $this->item->user->profile['shipping_postal_code'] ?></td>
 					</tr>
+					<?php }?>
+					<?php if(isset($this->item->user->profile['shipping_country'] )){?>
 					<tr>
 						<td><?php echo JText::_('MYMUSE_COUNTRY') ?>:</td>
 						<td><?php echo $this->item->user->profile['shipping_country'] ?></td>
 					</tr>
+					<?php } ?>
 				</table>
 				<!-- End ShipTo --> <?php } ?></td>
 			</tr>
@@ -376,6 +409,15 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 		       ';
 	 	} 
 
+	$string .= '
+			<tr class="'.$class .'">
+		    	<td colspan="'.$colspan.'" align="right">'.JText::_('MYMUSE_SUBTOTAL').':</td>
+		        <td align="right">'.MyMuseHelper::printMoney($this->item->order_subtotal).'</td>
+		        <td>&nbsp;</td>
+				<td>&nbsp;</td>
+		    </tr>
+		   '; 
+		    
 		if($this->item->discount > 0.00){
 			$string .= '
 			<tr class="'.$class .'">

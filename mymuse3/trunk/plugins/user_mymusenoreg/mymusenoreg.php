@@ -285,7 +285,7 @@ class plgUserMyMusenoreg extends JPlugin
 			// Push the TOS article ID into the TOS field.
 			$form->setFieldAttribute('tos', 'article', $tosarticle, 'profile');
 		}
-		
+	
  
 		foreach ($fields as $field) {
 
@@ -391,7 +391,7 @@ class plgUserMyMusenoreg extends JPlugin
 					
 						$db->setQuery($query);
 						$country = $db->loadResult();
-							
+
 						$form->setFieldAttribute($field, 'default', $country, 'profile');
 							
 						$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_COUNTRY')."' as shipping_country UNION SELECT country_3_code as value, country_name as shipping_country FROM #__mymuse_country ORDER by shipping_country";
