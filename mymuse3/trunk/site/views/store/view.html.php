@@ -43,6 +43,7 @@ class myMuseViewStore extends JViewLegacy
 		$this->params = $params;
 		$this->params->merge($state->params);
 		$Itemid 	= $jinput->get('Itemid');
+		$user 		= JFactory::getUser();
 
 		// Present a list of downloadable files
         if($task == "downloads"){
@@ -218,6 +219,28 @@ class myMuseViewStore extends JViewLegacy
         		return false;
         	}
         	
+        	//are we using no-registration?
+        	if($params->get('my_registration') == "no_reg"){
+				$fields = MyMuseHelper::getNoRegFields();
+				
+				$registry = new JRegistry;
+				$registry->loadString($row->notes);
+				foreach($fields as $field){
+					if($registry->get($field)){
+						$user->profile[$field] = $registry->get($field);
+						echo $field." ".$registry->get($field)."<br />";
+					}else{
+						$user->profile[$field] = '';
+					}
+				}
+				if(isset($user->profile['first_name'])){
+					$user->name = $user->profile['first_name']." ".@$user->profile['last_name'];
+				}
+				if($user->profile['email']){
+					$user->email = $user->profile['email'];
+				}
+			}
+			
         	//make sure the order is confirmed
         	if(! $row->order_status == $this->params->get('my_download_enable_status'))
         	{
@@ -358,7 +381,7 @@ class myMuseViewStore extends JViewLegacy
         	}
         	// All is good
         	$order_item->id = $order_item->product_id;
-        	$user = JFactory::getUser();
+        	
         	if(isset($user->first_name) && isset($user->last_name) ){
         		$user->set('name', $user->first_name.' '.$user->last_name);
         	}

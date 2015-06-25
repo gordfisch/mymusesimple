@@ -128,6 +128,7 @@ class myMuseHelperRoute
 				$link = 'index.php?option=com_mymuse&view=category&id='.$id;
 				if($category)
 				{
+					//echo "category path = "; print_pre($category->getPath());
 					$catids = array_reverse($category->getPath());
 					$needles = array(
 						'category' => $catids,
@@ -194,7 +195,7 @@ class myMuseHelperRoute
 			}
 		
 			$items = $menus->getItems($attributes, $values);
-		
+	
 			foreach ($items as $item)
 			{
 				if (isset($item->query) && isset($item->query['view']))
@@ -221,15 +222,21 @@ class myMuseHelperRoute
 				}
 			}
 		}
+	//print_pre(self::$lookup); echo "needles "; print_pre($needles);	
 		if ($needles)
 		{
 			foreach ($needles as $view => $ids)
 			{
-				if (isset(self::$lookup[$view]))
+				if (isset(self::$lookup['*'][$view]))
 				{
 					foreach($ids as $id)
 					{
+						if(preg_match("/:/", $id)){
+							list($id,$alias) = explode(":",$id);
+						}
+						//echo "id = $id";
 						if (isset(self::$lookup[$view][(int)$id])) {
+							echo "view = $view lookup = ".self::$lookup[$view]; exit;
 							return self::$lookup[$view][(int)$id];
 						}
 					}
