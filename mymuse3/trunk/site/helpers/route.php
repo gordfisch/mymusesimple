@@ -222,22 +222,20 @@ class myMuseHelperRoute
 				}
 			}
 		}
-	//print_pre(self::$lookup); echo "needles "; print_pre($needles);	
+		
 		if ($needles)
 		{
 			foreach ($needles as $view => $ids)
 			{
-				if (isset(self::$lookup['*'][$view]))
+				if (isset(self::$lookup[$language][$view]))
 				{
 					foreach($ids as $id)
 					{
 						if(preg_match("/:/", $id)){
 							list($id,$alias) = explode(":",$id);
 						}
-						//echo "id = $id";
-						if (isset(self::$lookup[$view][(int)$id])) {
-							echo "view = $view lookup = ".self::$lookup[$view]; exit;
-							return self::$lookup[$view][(int)$id];
+						if (isset(self::$lookup[$language][$view][(int)$id])) {
+							return self::$lookup[$language][$view][(int)$id];
 						}
 					}
 				}
