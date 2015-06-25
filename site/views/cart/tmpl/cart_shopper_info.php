@@ -108,7 +108,7 @@ if($params->get('my_registration') == "no_reg"){
         
             <td>
         <?php 
-        if($params->get('my_use_shipping') && isset($shopper->profile['shipping_address1'])){
+        if($params->get('my_use_shipping') && isset($this->order->need_shipping) && $this->order->need_shipping){
         ?>
             <table class="mymuse_cart">
                 <tr class="mymuse_cart_top">
