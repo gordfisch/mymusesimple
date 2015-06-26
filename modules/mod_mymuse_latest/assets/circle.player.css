@@ -129,6 +129,10 @@
 	background:url("controls.jpg") -50px -50px no-repeat;
 }
 
+.cp-horizontal {
+	margin-left: 30px;
+
+}
 .cp-jplayer {
 	width:0;
 	height:0;

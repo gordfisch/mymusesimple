@@ -138,6 +138,23 @@ $task		= $this->task;
 		    </tr>
 		<?php } ?>
 				
+
+		
+		<?php // TAXES
+		if(@$order->tax_array){
+		    while(list($key,$val) = each($order->tax_array)){ 
+		    	$key = preg_replace("/_/"," ", $key);
+		    	?>
+		        <tr>
+		        <td class="mytaxname" colspan="<?php echo $order->colspan; ?>"><?php echo $key; ?></td>
+		        <td class="mytax" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($val); ?></td>
+		        <?php if(@$order->do_html){ ?>
+		        <td>&nbsp;</td>
+		        <?php  } ?>
+		        </tr>
+		<?php  } 
+		} ?>
+		
 		<?php // SHIPPING
 		if ($params->get("my_use_shipping") && @$order->order_shipping->cost > 0) { ?>
 		    <tr>
@@ -151,23 +168,6 @@ $task		= $this->task;
 		        <?php } ?>
 		    </tr>
 		<?php } ?>
-		
-		<?php // TAXES
-		if(@$order->tax_array){
-		    while(list($key,$val) = each($order->tax_array)){ 
-		    	$key = preg_replace("/_/"," ", $key);
-		    	?>
-		        <tr>
-		        <td class="mytaxname" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('Tax'); ?> <?php echo $key; ?></td>
-		        <td class="mytax" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($val); ?></td>
-		        <?php if(@$order->do_html){ ?>
-		        <td>&nbsp;</td>
-		        <?php  } ?>
-		        </tr>
-		<?php  } 
-		} ?>
-		
-		
 		<tr>
 		    <td class="textbox2 mobile-hide" colspan="<?php echo $order->colspan; ?>"><b><?php echo JText::_('MYMUSE_CART_TOTAL') ?>:</b></td>
 		    <td class="textbox2 mytotal" colspan="<?php echo $order->colspan2; ?>"><b><?php echo MyMuseHelper::printMoney($order->order_total); ?>

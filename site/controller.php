@@ -876,6 +876,7 @@ class MyMuseController extends JControllerLegacy
 
 	}
 	
+	
 	/**
 	 * rate
 	 * Store a vote on a product
