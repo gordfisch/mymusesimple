@@ -3,6 +3,14 @@ defined('_JEXEC') or die('Restricted access');
 $height 	= $params->get('product_image_height',0);
 ?>
 
+
+
+
+
+<?php if(count($list)):?>	
+<div id="mod_mymuse_latest_<?php echo $params->get('module_number'); ?>">
+<?php if($params->get('display')){  //vertical ?>
+
 <?php 
 if($params->get('type_shown') == "tracks" && $params->get('show_track_preview')){
 	?>
@@ -32,10 +40,6 @@ if($params->get('type_shown') == "tracks" && $params->get('show_track_preview'))
 			<?php 
 }
 ?>
-
-<?php if(count($list)):?>	
-<div id="mod_mymuse_latest_<?php echo $params->get('module_number'); ?>">
-<?php if($params->get('display')){  //vertical ?>
 <ul class="mymuse_latest<?php echo $params->get('moduleclass_sfx'); ?>">
 <?php foreach ($list as $item) : ?>
 	<li class="mymuse_latest<?php echo $params->get('moduleclass_sfx'); ?>">
@@ -81,17 +85,51 @@ if($params->get('type_shown') == "tracks" && $params->get('show_track_preview'))
 <?php endforeach; ?>
 </ul>
 <?php }else{ //horizontal ?>
-<table>
+
+<table cellpadding="5">
 <tr class="mymuse_latest<?php echo $params->get('moduleclass_sfx'); ?>">
+	<td valign="top">
+	<?php 
+if($params->get('type_shown') == "tracks" && $params->get('show_track_preview')){
+	?>
+	<!-- The jPlayer div must not be hidden. Keep it at the root of the body element to avoid any such problems. -->
+			<div id="jquery_jplayer_m" class="cp-jplayer"></div>
+
+			<!-- The container for the interface can go where you want to display it. Show and hide it as you need. -->
+
+			<div id="cp_container_1" class="cp-container">
+				<div class="cp-buffer-holder"> <!-- .cp-gt50 only needed when buffer is > than 50% -->
+					<div class="cp-buffer-1"></div>
+					<div class="cp-buffer-2"></div>
+				</div>
+				<div class="cp-progress-holder"> <!-- .cp-gt50 only needed when progress is > than 50% -->
+					<div class="cp-progress-1"></div>
+					<div class="cp-progress-2"></div>
+				</div>
+				<div class="cp-circle-control"></div>
+				<ul class="cp-controls cp-horizontal">
+					<li><a class="cp-play" tabindex="1">play</a></li>
+					<li><a class="cp-pause" style="display:none;" tabindex="1">pause</a></li> <!-- Needs the inline style here, or jQuery.show() uses display:inline instead of display:block -->
+				</ul>
+			</div>
+
+
+			<div id="jplayer_inspector_m"></div>
+			<?php 
+}
+?>
+	</td>
+	
 <?php foreach ($list as $item) : ?>
 	
+
 	<td>
-	<?php if ($params->get('show_product_image') && $item->image) : ?>
+	<?php if ($params->get('show_product_image') && $item->list_image) : ?>
 	    <a href="<?php echo $item->product_link; ?>" class="mymuse_latest<?php echo $params->get('moduleclass_sfx'); ?>">
 			<img
 			height="<?php echo $height; ?>"
-			src="images/stories/albums/<?php echo $item->image;?>"
-			hspace="6" border="0" alt="<?php echo $item->image;?>" /></a><br />
+			src="<?php echo $item->list_image;?>"
+			hspace="6" border="0" alt="<?php echo $item->list_image;?>" /></a><br />
 	<?php endif; ?>
 	<?php if ($params->get('show_artist_name') && $item->artist_name) : ?>
 			<?php echo JText::_('MYMUSE_ARTIST'); ?> : <a href="<?php echo $item->artist_link; ?>" class="mymuse_latest<?php echo $params->get('moduleclass_sfx'); ?>">

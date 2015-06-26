@@ -322,7 +322,9 @@ class plgUserMyMuse extends JPlugin
 						$form->setFieldAttribute($field, 'default', $country, 'profile');
 						
 						
-						$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_COUNTRY')."' as country UNION SELECT country_3_code as value, country_name as country FROM #__mymuse_country ORDER by country";
+						$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_COUNTRY')."' as country, 0 as ordering 
+								UNION SELECT country_3_code as value, country_name as country, ordering 
+								FROM #__mymuse_country ORDER by ordering";
 						$form->setFieldAttribute($field, 'query', $q, 'profile');
 						
 						$countrystates = $this->listCountryState();

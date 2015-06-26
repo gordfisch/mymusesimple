@@ -17,15 +17,16 @@ class modMyMuseLatestHelper
 
 	static function getResults($params)
 	{
-		$db = JFactory::getDBO();
+		$db 			= JFactory::getDBO();
 		$jnow			= JFactory::getDate();
 		$now			= $jnow->toSql();
 		$nullDate		= $db->getNullDate();
 		$results 		= array();
 		$MyMuseStore	=& MyMuse::getObject('store','models');
 		$player 		=  $params->get('track_player');
-		$root = JPATH_ROOT;
+		$root 			= JPATH_ROOT;
 		$MyMuseHelper 	= new MyMuseHelper;
+		$document 		= JFactory::getDocument();
 
 		$type = $params->get('type_shown','tracks');
 		$maximum_shown = $params->get('maximum_shown',5);
@@ -92,7 +93,7 @@ class modMyMuseLatestHelper
 			
 			if($params->get('type_shown') == "tracks" && $results[$i]->file_preview){
 				
-				$document = JFactory::getDocument();
+				
 				$artist_alias = MyMuseHelper::getArtistAlias($results[$i]->parentid,'1');
 				$album_alias = MyMuseHelper::getAlbumAlias($results[$i]->parentid);
 				
@@ -118,9 +119,10 @@ class modMyMuseLatestHelper
 				$id = $results[$i]->id;
 
 				$results[$i]->flash .= 	 '<ul>
-				<li id="mod_track_play_li_'.$id.'" class="jp-play ui-state-default ui-corner-all"><a id="mod_track_play_'.$id.'" href="javascript:;" class="jp-play ui-icon ui-icon-play" tabindex="1" title="play">'.JText::_('MYMUSE_PLAY').'</a></li>
+				
 				<li id="mod_track_pause_li_'.$id.'" class="jp-pause ui-state-default ui-corner-all"><a id="mod_track_pause_'.$id.'" href="javascript:;" class="jp-pause ui-icon ui-icon-pause" tabindex="1" title="pause">'.JText::_('MYMUSE_PAUSE').'</a></li>
-				</ul>';
+				<li id="mod_track_play_li_'.$id.'" class="jp-play ui-state-default ui-corner-all"><a id="mod_track_play_'.$id.'" href="javascript:;" class="jp-play ui-icon ui-icon-play" tabindex="1" title="play">'.JText::_('MYMUSE_PLAY').'</a></li>
+						</ul>';
 
 				$supplied = array();
 				$trs[0]['src'] = $results[$i]->path;
