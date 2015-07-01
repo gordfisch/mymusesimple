@@ -586,8 +586,8 @@ class myMuseViewCart extends JViewLegacy
         	$this->assignRef('heading', $heading);
         	$this->assignRef('message', $message);
 
-
-        	$subject = $shopper->first_name." ".$shopper->last_name." ".Jtext::_('MYMUSE_ORDER')." ".$result['payment_status']." ".$store->title;
+//".$result['payment_status']."
+        	$subject = $shopper->first_name." ".$shopper->last_name." ".Jtext::_('MYMUSE_ORDER')."  ".$store->title;
         	$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
         	$download_header = '';
         	
@@ -630,7 +630,12 @@ class myMuseViewCart extends JViewLegacy
         	$contents .= ob_get_contents();
         	ob_end_clean();
         	 
-        	$message = $header . $order->downloadlink . $contents . $footer;
+        	//make sure the payment status is Completed
+        	if($result['payment_status'] == "Completed"){
+        		$message = $header . $order->downloadlink . $contents . $footer;
+        	}else{
+        		$message = $header . $contents . $footer;
+        	}
         	
         	if($params->get('my_debug')){
         		//$debug = "$date Email message: $message \n\n";
