@@ -359,7 +359,7 @@ class plgMymusePayment_Paypal extends JPlugin
         			MyMuseHelper::logMessage( $debug  );
   				}
   				
-  				$result['payment_status'] = "Completed";
+  				//$result['payment_status'] = "Completed";
             	
             	
   				// SAVE ORDER AFTER
@@ -513,8 +513,14 @@ class plgMymusePayment_Paypal extends JPlugin
                 		$result['order_completed'] = 1;
         			}else{
         				// not completed, set order status to 
-        				MyMuseHelper::orderStatusUpdate($result['order_id'] , "I");
+        				
+                		$date = date('Y-m-d h:i:s');
+                		$debug .= "$date 5. order COMPLETED at PayPal, but still has status".$result['payment_status']."\n\n";
+                		$result['order_completed'] = 1;
         			}
+        		}
+        		if($params->get('my_debug')){
+        			MyMuseHelper::logMessage( $debug  );
         		}
 
         	}else{

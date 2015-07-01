@@ -485,7 +485,7 @@ class MyMuseModelTracks extends JModelList
             $product_model = JModelLegacy::getInstance('Product', 'MyMuseModel', array('ignore_request' => true));
             $tracks[$i]->price = $product_model->getPrice($track);
 			if($params->get('my_add_taxes')){
-				$tracks[$i]->price = MyMuseCheckout::addTax($item->price);
+				$tracks[$i]->price["product_price"] = MyMuseCheckout::addTax($tracks[$i]->price["product_price"]);
 			}
 			$track->params = clone $this->getState('params');
 			
