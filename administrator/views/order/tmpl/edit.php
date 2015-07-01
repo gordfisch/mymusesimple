@@ -218,7 +218,7 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 					<?php }?>
 					<?php if(isset($this->item->user->profile['region']) || isset($this->item->user->profile['region_name'])){ 
 							
-								if(!is_numeric($this->item->user->profile['region'])){
+								if($this->item->user->profile['region'] && !is_numeric($this->item->user->profile['region'])){
 									$this->item->user->profile['region_name'] = $this->item->user->profile['region'];
 								}else{
 									$db = JFactory::getDBO();
