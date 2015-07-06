@@ -27,8 +27,8 @@ if($params->get('my_registration') == "no_reg"){
 ?>     <!-- Begin 2 column bill-ship to -->
         <h2><?php echo JText::_('MYMUSE_SHOPPER_INFORMATION') ?></h2>
 		<table class="mymuse_cart">
-        <tr VALIGN=top>
-            <td> <!-- Begin BillTo -->
+        <tr>
+            <td style="vertical-align:top"> <!-- Begin BillTo -->
 
             <table class="mymuse_cart" >
                 <tr class="mymuse_cart_top">
@@ -106,7 +106,7 @@ if($params->get('my_registration') == "no_reg"){
             </table>
             <!-- End BillTo --> </td>
         
-            <td>
+            <td style="vertical-align:top">
         <?php 
         if($params->get('my_use_shipping') && isset($this->order->need_shipping) && $this->order->need_shipping){
         ?>
