@@ -204,6 +204,12 @@ if($downloads && $order->order_status == "C"){
                 <td><?php echo $shopper->mobile ?></td>
                 </tr>
                 <?php }?>
+                <?php if($shopper->fax){?>
+                <tr>
+                <td><?php echo JText::_('MYMUSE_FAX') ?>:</td>
+                <td><?php echo $shopper->fax ?></td>
+                </tr>
+                <?php }?>
 
                 <tr>
                 <td><?php echo JText::_('MYMUSE_EMAIL') ?>:</td>
