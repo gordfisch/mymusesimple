@@ -20,10 +20,6 @@ $i = 0;
 	</tr>
 <?php }?>
 
-	<tr>
-		 <td class="mobile-hide" colspan="2"><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?>:</td>
-		 <td class="myoriginalsubtotal"><?php echo MyMuseHelper::printMoney($order->discount + $order->order_subtotal); ?></td>
-	</tr>
 		
 		<?php 
 		if($order->discount > 0.00){ 
