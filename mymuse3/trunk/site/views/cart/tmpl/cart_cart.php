@@ -129,7 +129,7 @@ $task		= $this->task;
 		<?php //COUPONS
 		if($params->get("my_use_coupons") && @$order->coupon->id){ ?>
 		    <tr>
-		    	<td><?php echo JText::_('MYMUSE_YOUR_COUPON'); ?> : <?php echo $order->coupon->title ?></td>
+		    	<td class="mobile-hide"><?php echo JText::_('MYMUSE_YOUR_COUPON'); ?> : <?php echo $order->coupon->title ?></td>
 		    	<td class="mobile-hide" colspan="<?php echo $order->colspan -1; ?>">&nbsp;</td>
 		        <td class="mycoupon" colspan="<?php echo $order->colspan2; ?>" align="right">-<?php echo MyMuseHelper::printMoney($order->coupon->discount); ?> </td>
 		        <?php if(@$order->do_html){ ?>
