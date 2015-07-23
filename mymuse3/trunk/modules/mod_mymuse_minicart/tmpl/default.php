@@ -20,27 +20,20 @@ $i = 0;
 	</tr>
 <?php }?>
 
+	<!--  original subtotal -->
+			<tr>
+		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?>:</td>
+		        <td class="myoriginalsubtotal" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->subtotal_before_discount); ?></td>
+		    </tr>
 		
 		<?php 
 		if($order->discount > 0.00){ 
 			//for shopper group discount
-			
 			?>
-			
-		    
-		    <tr class="mymuse_cart">
-		    	<td class="mobile-hide" colspan="2"><?php echo JText::_('MYMUSE_CART_ORIGINAL_SUBTOTAL'); ?>:
-		    	<?php echo $order->shopper_group_name; ?> <?php echo $order->shopper_group_discount; ?> %</td>
-		        <td class="myoriginalsubtotal"><?php echo MyMuseHelper::printMoney($order->discount + $order->order_subtotal); ?></td>
-
-		    </tr>
-		    
 		    <tr class="mymuse_cart">
 		    	<td class="mobile-hide" colspan="2"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:</td>
-		        <td class="myshoppergroupdiscount"><?php echo MyMuseHelper::printMoney($order->discount); ?></td>
-
+		        <td class="myshoppergroupdiscount">(<?php echo MyMuseHelper::printMoney($order->discount); ?>)</td>
 		    </tr>
-		
 		<?php } ?>
 		
 		

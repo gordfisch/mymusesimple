@@ -908,6 +908,7 @@ class MyMuseCheckout
 		//add more to the order object for printing
 		$order->idx = count($order->items);
 		$order->status_name = MyMuseHelper::getStatusName($order->order_status );
+		$order->subtotal_before_discount = $order->order_subtotal  + @$order->coupon->discount;
 		$order->order_total = $order->order_subtotal + $order->order_shipping->cost + $order->tax_total;
 		$order->order_currency = MyMuseHelper::getCurrency($MyMuseStore->_store->currency);
 		if($params->get("my_show_sku",0) >0){

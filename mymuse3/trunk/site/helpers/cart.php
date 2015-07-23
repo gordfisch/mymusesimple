@@ -347,7 +347,7 @@ class MyMuseCart {
   		$j = 0;
   		for ($i=0;$i<$this->cart["idx"];$i++) {
 
-  			if ($this->cart[$i]['product_id'] != $product_id) {
+  			if (isset($this->cart[$i]['product_id']) && $this->cart[$i]['product_id'] != $product_id) {
   				$temp[$j++] = $this->cart[$i];
   			}
   		}
@@ -606,6 +606,7 @@ class MyMuseCart {
 		
 		
 		} //end of cart items
+		$order->subtotal_before_discount = $order->order_subtotal;
 		
 		// TEST OF DISCOUNT
 		//$order->order_subtotal = $order->order_subtotal - $order->discount; 
