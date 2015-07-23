@@ -306,7 +306,7 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount, td.myshippi
 	td.myphone, td.myaddress, td.mycity, td.myzip,
 	td.myregion, td.mycountry, td.mycompany , td.myfax, 
 	td.myColour
-	 { 
+	{ 
 		clear:both;
 	}
 	td.mytotal:before, td.mytotal {

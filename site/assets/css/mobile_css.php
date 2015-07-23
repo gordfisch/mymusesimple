@@ -18,8 +18,9 @@ $mobile_style = '
 	 TODO: mytaxname mytax
 	*/
 
+	
 	td.myselect:before { content: "'.JText::_('MYMUSE_SELECT').'";}
-	td.mytitle:before { content: "'.JText::_('MYMUSE_NAME').'";}
+	td.mytitle:before { content: "'.JText::_('MYMUSE_TITLE').'";}
 	td.mytime:before { content: "'.JText::_('MYMUSE_TIME').'";}
 	td.myfilesize:before { content: "'.JText::_('MYMUSE_FILE_SIZE').'";}
 	td.mydownloads:before { content: "'.JText::_('MYMUSE_DOWNLOADS').'";}
@@ -58,19 +59,45 @@ $mobile_style = '
 	td.mydate:before { content: "'.JText::_('MYMUSE_DATE').'";}
 	td.myorderstatus:before { content: "'.JText::_('MYMUSE_ORDER_STATUS').'";}
 	
-	td.myfullname:before { content: "'.JText::_('MYMUSE_FULL_NAME').'"; }
-	td.myemail:before { content: "'.JText::_('MYMUSE_EMAIL').'"; }
-	td.myphone:before { content: "'.JText::_('MYMUSE_PHONE').'"; }
-	td.myaddress:before { content: "'.JText::_('MYMUSE_ADDRESS').'"; }
-	td.mycity:before { content: "'.JText::_('MYMUSE_CITY').'"; }
-	td.myzip:before { content: "'.JText::_('MYMUSE_ZIP').'"; }
-	td.myregion:before { content: "'.JText::_('MYMUSE_STATE').'"; }
-	td.mycountry:before { content: "'.JText::_('MYMUSE_COUNTRY').'"; }
-	td.mycompany:before { content: "'.JText::_('MYMUSE_COMPANY').'"; }
-	td.myfax:before { content: "'.JText::_('MYMUSE_FAX').'"; }
+	td.myfullname:before { content: "'.JText::_('MYMUSE_FULL_NAME').'";}
+	td.myemail:before { content: "'.JText::_('MYMUSE_EMAIL').'";}
+	td.myphone:before { content: "'.JText::_('MYMUSE_PHONE').'";}
+	td.myaddress:before { content: "'.JText::_('MYMUSE_ADDRESS').'";}
+	td.mycity:before { content: "'.JText::_('MYMUSE_CITY').'";}
+	td.myzip:before { content: "'.JText::_('MYMUSE_ZIP').'";}
+	td.myregion:before { content: "'.JText::_('MYMUSE_STATE').'";}
+	td.mycountry:before { content: "'.JText::_('MYMUSE_COUNTRY').'";}
+	td.mycompany:before { content: "'.JText::_('MYMUSE_COMPANY').'";}
+	td.myfax:before { content: "'.JText::_('MYMUSE_FAX').'";}
 			
-	td.mychoose:before { content: "'.JText::_('MYMUSE_CHOOSE').'"; }
-	td.myshipmethod:before { content: "'.JText::_('MYMUSE_SHIP_METHOD').'"; }
+	td.mychoose:before { content: "'.JText::_('MYMUSE_CHOOSE').'";}
+	td.myshipmethod:before { content: "'.JText::_('MYMUSE_SHIP_METHOD').'";}
+';
+//Grab taxes
+require_once( MYMUSE_PATH.'mymuse.class.php');
+$MyMuseCart 	=& MyMuse::getObject('cart','helpers');
+$cart 			=& $MyMuseCart->cart;
+$order 			= $MyMuseCart->buildOrder( 0 );
 
+if(@$order->tax_array){
+	while(list($key,$val) = each($order->tax_array)){
+		$mobile_style .= 'td.'.strtolower(preg_replace("/_/","", $key)).':before { 
+				content: "'.JText::_(preg_replace("/_/"," ", $key)).'";  
+				white-space: nowrap;
+				padding-right: 7%;
+				margin-right: 7%;
+				width: 23%;
+				display: inline-block;
+				border-right: 1px solid #ccc;
+				}
+				td.'.strtolower(preg_replace("/_/","", $key)).'
+				{ 
+					clear:both;
+				}
+				';
+	}
+}
+	
+$mobile_style .= '
 }
 ';

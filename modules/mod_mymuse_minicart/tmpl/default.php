@@ -7,16 +7,16 @@ $i = 0;
 <table class="mymuse_cart">
 <thead>
 <tr class="mymuse_cart">
-	<th class="mytitle"><?php echo JText::_('MYMUSE_TITLE') ?></th>
-	<th class="myquantity"><?php echo JText::_('MYMUSE_CART_QUANTITY') ?></th>
-	<th class="mysubtotal"><?php echo JText::_('MYMUSE_CART_SUBTOTAL') ?></th>
+	<th class="mytitle mylabel"><?php echo JText::_('MYMUSE_TITLE') ?></th>
+	<th class="myquantity mylabel"><?php echo JText::_('MYMUSE_CART_QUANTITY') ?></th>
+	<th class="mysubtotal mylabel"><?php echo JText::_('MYMUSE_CART_SUBTOTAL') ?></th>
 </tr>
 </thead>
 <?php foreach($order->items as $item) { ?>
-	<tr>
-		<td class="mytitle"><?php echo $item->title; ?></td>
-		<td class="myquantity"><?php echo $item->quantity; ?></td>
-		<td class="myprice"><?php echo MyMuseHelper::printMoney($item->product_item_subtotal); ?></td>
+	<tr class="mymuse_cart">
+		<td class="mytitle myvalue"><?php echo $item->title; ?></td>
+		<td class="myquantity myvalue"><?php echo $item->quantity; ?></td>
+		<td class="mysubtotal myvalue"><?php echo MyMuseHelper::printMoney($item->product_item_subtotal); ?></td>
 	</tr>
 <?php }?>
 
@@ -28,14 +28,14 @@ $i = 0;
 			?>
 			
 		    
-		    <tr>
+		    <tr class="mymuse_cart">
 		    	<td class="mobile-hide" colspan="2"><?php echo JText::_('MYMUSE_CART_ORIGINAL_SUBTOTAL'); ?>:
 		    	<?php echo $order->shopper_group_name; ?> <?php echo $order->shopper_group_discount; ?> %</td>
 		        <td class="myoriginalsubtotal"><?php echo MyMuseHelper::printMoney($order->discount + $order->order_subtotal); ?></td>
 
 		    </tr>
 		    
-		    <tr>
+		    <tr class="mymuse_cart">
 		    	<td class="mobile-hide" colspan="2"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:</td>
 		        <td class="myshoppergroupdiscount"><?php echo MyMuseHelper::printMoney($order->discount); ?></td>
 
@@ -47,7 +47,7 @@ $i = 0;
 		
 		<?php //COUPONS
 		if($params->get("my_use_coupons") && @$order->coupon->id){ ?>
-		    <tr>
+		    <tr class="mymuse_cart">
 		    	<td class="mobile-hide" colspan="2"><?php echo JText::_('MYMUSE_YOUR_COUPON'); ?> : <?php echo $order->coupon->title ?></td>
 		        <td class="mycoupon">-<?php echo MyMuseHelper::printMoney($order->coupon->discount); ?> </td>
 
@@ -56,7 +56,7 @@ $i = 0;
 				
 		<?php // SHIPPING
 		if ($params->get("my_use_shipping") && @$order->order_shipping->cost > 0) { ?>
-		    <tr>
+		    <tr class="mymuse_cart">
 		    	<td  class="mobile-hide" colspan="2" align="right"><b><?php echo JText::_('MYMUSE_SHIPPING') ?>:</b></td>
 		    	<td class="myshipping" align="right"><?php echo MyMuseHelper::printMoney($order->order_shipping->cost); ?>
 		    </td>
@@ -66,11 +66,12 @@ $i = 0;
 		<?php // TAXES
 		if(@$order->tax_array){
 		    while(list($key,$val) = each($order->tax_array)){ 
+		    	$pre_key = preg_replace("/_/","", $key);
 		    	$key = preg_replace("/_/"," ", $key);
 		    	?>
-		        <tr>
-		        <td class="mytaxname" colspan="2"><?php echo $key; ?></td>
-		        <td><?php echo MyMuseHelper::printMoney($val); ?></td>
+		        <tr class="mymuse_cart">
+		        <td class="mobile-hide" colspan="2"><?php echo $key; ?></td>
+		        <td class="<?php echo strtolower($pre_key); ?>"><?php echo MyMuseHelper::printMoney($val); ?></td>
 				</tr>
 		<?php  } 
 		} ?>
