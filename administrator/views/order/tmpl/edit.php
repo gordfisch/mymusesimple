@@ -408,11 +408,11 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 		       </tr>
 		       ';
 	 	} 
-
+//end of items
 	$string .= '
 			<tr class="'.$class .'">
 		    	<td colspan="'.$colspan.'" align="right">'.JText::_('MYMUSE_SUBTOTAL').':</td>
-		        <td align="right">'.MyMuseHelper::printMoney($this->item->order_subtotal).'</td>
+		        <td align="right">'.MyMuseHelper::printMoney($this->item->order_subtotal + @$this->item->coupon_discount).'</td>
 		        <td>&nbsp;</td>
 				<td>&nbsp;</td>
 		    </tr>
@@ -435,19 +435,14 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 				<td>&nbsp;</td>
 		    </tr>
 		    
-		    <tr>
-		    	<td colspan="'.$colspan.'" align="right">'.JText::_('MYMUSE_CART_NEW_SUBTOTAL').':</td>
-		        <td align="right">'.MyMuseHelper::printMoney($this->item->order_subtotal).'</td>
-		        <td>&nbsp;</td>
-				<td>&nbsp;</td>
-		    </tr>
+		    
 		';
 		}
 
 		if($this->params->get('my_use_coupons') && $this->item->coupon_name){
 			$string .= '
 		    <tr>
-		    <td colspan="'.$colspan.'">'.JText::_("MYMUSE_COUPON")." : ". $this->item->coupon_name. ':
+		    <td  align="right" colspan="'.$colspan.'">'.JText::_("MYMUSE_COUPON")." : ". $this->item->coupon_name. ':
 		        </td>
 		        <td colspan="1" align="right"> - '. MyMuseHelper::printMoney($this->item->coupon_discount) .'
 		        </td>
@@ -456,6 +451,12 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 		    </tr>
 		    ';
 		}
+		$string .= '<tr>
+		    	<td colspan="'.$colspan.'" align="right">'.JText::_('MYMUSE_CART_NEW_SUBTOTAL').':</td>
+		        <td align="right">'.MyMuseHelper::printMoney($this->item->order_subtotal).'</td>
+		        <td>&nbsp;</td>
+				<td>&nbsp;</td>
+		    </tr>';
 	
 		if ($this->params->get('my_use_shipping') && $this->item->order_shipping > 0) { 
 			$string .= '

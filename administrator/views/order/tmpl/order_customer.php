@@ -32,6 +32,8 @@ defined('_JEXEC') or die('Restricted access');
 		<td>
 		<ul>
 ';
+	
+	
 @list($shopper->first_name,$shopper->last_name) = explode(" ",$shopper->name);
 $shopper->address1 		= isset($shopper->profile['address1'])? $shopper->profile['address1'] : '';
 $shopper->address2 		= isset($shopper->profile['address2'])? $shopper->profile['address2'] : '';
@@ -40,9 +42,9 @@ $shopper->region 		= isset($shopper->profile['region'])? $shopper->profile['regi
 $shopper->region 		= isset($shopper->profile['region_name'])? $shopper->profile['region_name'] : $shopper->region;
 $shopper->postal_code 	= isset($shopper->profile['postal_code'])? $shopper->profile['postal_code'] : '';
 $shopper->country		= isset($shopper->profile['country'])? $shopper->profile['country'] : '';
-$shopper->phone		= isset($shopper->profile['phone'])? $shopper->profile['phone'] : '';
+$shopper->phone			= isset($shopper->profile['phone'])? $shopper->profile['phone'] : '';
 $shopper->mobile		= isset($shopper->profile['mobile'])? $shopper->profile['mobile'] : '';
-
+$shopper->fax			= isset($shopper->profile['fax'])? $shopper->profile['fax'] : '';
 
 
 foreach($order->items as $item){ 
@@ -220,7 +222,10 @@ if($downloads && $order->order_status == "C"){
         
             <td width=50%>
         <?php 
-        if($params->get('my_use_shipping') && $order->order_shipping > 0){
+        if($params->get('my_use_shipping') 
+        		&& $order->order_shipping > 0
+        		&& isset($shopper->profile['shipping_first_name'])
+        		){
         ?>
             <table width=100% cellspacing=0 cellpadding=2 border=0>
                 <tr class="sectiontableheader mymuse_cart_top">
@@ -315,15 +320,34 @@ if($downloads && $order->order_status == "C"){
 		       </tr>
 		<?php } ?>
 		
-		
-		
-		
-		
-		<?php if($params->get("my_use_coupons") && @$coupon_id){ ?>
+		<!--  original subtotal -->
+			<tr>
+		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><b><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?>:</b></td>
+		        <td align="right" class="myoriginalsubtotal" colspan="<?php echo $order->colspan2; ?>"><b><?php echo MyMuseHelper::printMoney($order->order_subtotal + @$order->coupon_discount); ?></b></td>
+		        
+		    </tr>
 		    <tr>
-		    <td colspan="<?php echo $order->colspan; ?>" align="right"><?php echo $order->coupon_name ?>:
+		    	<td colspan="<?php echo $order->colspan + $order->colspan2; ?>"><hr style="width: 100%"></td>
+		    </tr>
+		    
+		    
+		<?php //for shopper group discount
+		if($order->discount > 0.00){ ?>
+		    <tr>
+		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:
+		    	<?php echo $order->user->shopper_group_name; ?> <?php echo $order->user->shopper_group_discount; ?> %</td>
+		        <td align="right" class="myshoppergroupdiscount" colspan="<?php echo $order->colspan2; ?>">(<?php echo MyMuseHelper::printMoney($order->discount); ?>)</td>
+		     
+		    </tr>
+		<?php } ?>
+		
+		
+		
+		<?php if(isset($order->coupon_discount)){ ?>
+		    <tr>
+		    	<td colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_YOUR_COUPON'); ?> : <?php echo $order->coupon_name ?>:
 		        </td>
-		        <td colspan="<?php echo $order->colspan2; ?>"><?php echo $order->coupon_discount; ?> %
+		        <td align="right" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->coupon_discount); ?>
 		        </td>
 
 		    </tr>
@@ -331,7 +355,7 @@ if($downloads && $order->order_status == "C"){
 				
 		<?php if ($params->get("my_use_shipping") && $order->order_shipping > 0) { ?>
 		    <tr>
-		    <td colspan="<?php echo $order->colspan; ?>" align="right"><b><?php echo JText::_('MYMUSE_SHIPPING') ?>:</b></td>
+		    <td colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_SHIPPING') ?>:</td>
 		    <td colspan="<?php echo $order->colspan2; ?>" align="right"><?php echo MyMuseHelper::printMoney($order->order_shipping); ?>
 		    </td>
 		    </tr>
@@ -341,7 +365,7 @@ if($downloads && $order->order_status == "C"){
 		if(@$order->tax_array){
 		    while(list($key,$val) = each($order->tax_array)){ ?>
 		        <tr>
-		        <td colspan="<?php echo $order->colspan; ?>" align="right"><?php echo $key; ?></td>
+		        <td colspan="<?php echo $order->colspan; ?>"><?php echo $key; ?></td>
 		        <td colspan="<?php echo $order->colspan2; ?>" align="right"><?php echo MyMuseHelper::printMoney($val); ?></td>
 		        </tr>
 		<?php  } 
@@ -349,7 +373,7 @@ if($downloads && $order->order_status == "C"){
 		
 		
 		<tr>
-		    <td colspan="<?php echo $order->colspan; ?>" class="textbox2" align="right"><b><?php echo JText::_('MYMUSE_CART_TOTAL') ?>:</b></td>
+		    <td colspan="<?php echo $order->colspan; ?>" class="textbox2"><b><?php echo JText::_('MYMUSE_CART_TOTAL') ?>:</b></td>
 		    <td colspan="<?php echo $order->colspan2; ?>" class="textbox2" align="right"><b><?php echo MyMuseHelper::printMoney($order->order_total); ?>
 		    <?php echo $order->order_currency; ?></b></td>
 
@@ -358,18 +382,18 @@ if($downloads && $order->order_status == "C"){
 		
 		<?php  if($order->reservation_fee > 0){ ?>
 		<tr>
-		    <td colspan="<?php echo $order->colspan; ?>" align="right"><b><?php echo JText::_('MYMUSE_RESERVATION_FEE') ?>:</b></td>
+		    <td colspan="<?php echo $order->colspan; ?>"><b><?php echo JText::_('MYMUSE_RESERVATION_FEE') ?>:</b></td>
 		    <td colspan="<?php echo $order->colspan2; ?>" align="right"><b><?php echo MyMuseHelper::printMoney($order->reservation_fee); ?></b>
 		    </td>
 		</tr>
 			<?php  if($order->non_res_total > 0){ ?>
 			<tr>
-		    	<td colspan="<?php echo $order->colspan; ?>" align="right"><b><?php echo JText::_('MYMUSE_OTHER_CHARGES') ?>:</b></td>
+		    	<td colspan="<?php echo $order->colspan; ?>"><b><?php echo JText::_('MYMUSE_OTHER_CHARGES') ?>:</b></td>
 		    	<td colspan="<?php echo $order->colspan2; ?>" align="right"><b><?php echo MyMuseHelper::printMoney($order->non_res_total); ?></b>
 		    	</td>
 			</tr>
 			<tr>
-		    	<td colspan="<?php echo $order->colspan; ?>" align="right"><b><?php echo JText::_('MYMUSE_PAYNOW') ?>:</b></td>
+		    	<td colspan="<?php echo $order->colspan; ?>"><b><?php echo JText::_('MYMUSE_PAYNOW') ?>:</b></td>
 		    	<td colspan="<?php echo $order->colspan2; ?>" align="right"><b><?php echo MyMuseHelper::printMoney($order->must_pay_now); ?></b>
 		    	</td>
 

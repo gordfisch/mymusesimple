@@ -107,8 +107,10 @@ if($params->get('my_registration') == "no_reg"){
             <!-- End BillTo --> </td>
         
             <td style="vertical-align:top">
+    
         <?php 
-        if($params->get('my_use_shipping') && isset($this->order->need_shipping) && $this->order->need_shipping){
+        if($params->get('my_use_shipping') && isset($this->order->need_shipping) 
+        		&& $this->order->need_shipping && isset($shopper->profile['shipping_first_name'])){
         ?>
             <table class="mymuse_cart">
                 <tr class="mymuse_cart_top">
@@ -156,7 +158,7 @@ if($params->get('my_registration') == "no_reg"){
         		&& $this->params->get('my_registration') != 'no_reg'
         		&& $this->task != 'notify'
         		&& $this->task != 'thankyou'
-        		
+        		&& $this->task != 'confirm'
         		){ 
         		$url = JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$this->Itemid;
         		$return = base64_encode($url);

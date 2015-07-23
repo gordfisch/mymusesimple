@@ -66,7 +66,7 @@ $task		= $this->task;
 		    <?php if($params->get("my_show_sku")){ ?>
 		        <td class="mysku"><?php echo $order_item[$i]->product_sku; ?></td>
 		    <?php } ?>
-		        <td class="mysku"> <?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_price); ?></td>
+		        <td class="myprice"> <?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_price); ?></td>
 		        
 		   <?php if($order->do_html && $order_item[$i]->quantity){ ?>
 		        <td class="myquantity"> <input class="inputbox" type="text" size="4" maxlength="4" name="quantity[<?php echo $order_item[$i]->id ?>]"
@@ -80,7 +80,7 @@ $task		= $this->task;
 		        ?></td>
 		    <?php } ?>
 		        
-		        <td class="myprice"><?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_subtotal); ?></td>
+		        <td class="mysubtotal"><?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_subtotal); ?></td>
 		        
 		    <?php if($order->do_html){ ?>
 		        <td class="myaction"><a href="<?php echo $order_item[$i]->delete_url; ?>"><?php echo JText::_('MYMUSE_DELETE'); ?></a></td>
@@ -88,52 +88,37 @@ $task		= $this->task;
 		       </tr>
 		<?php } ?>
 		
+		<!--  original subtotal -->
 			<tr>
 		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?>:</td>
-		        <td class="myoriginalsubtotal" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->order_subtotal); ?></td>
+		        <td class="myoriginalsubtotal" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->subtotal_before_discount); ?></td>
 		        <?php if(@$order->do_html){ ?>
 		        <td class="mobile-hide">&nbsp;</td>
 		        <?php } ?>
 		    </tr>
 		    
 		    
-		<?php 
-		if($order->discount > 0.00){ 
-			//for shopper group discount
-			
-			?>
-			<tr>
-		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_CART_ORIGINAL_SUBTOTAL'); ?>:</td>
-		        <td class="myoriginalsubtotal" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->discount + $order->order_subtotal); ?></td>
-		        <?php if(@$order->do_html){ ?>
-		        <td class="mobile-hide">&nbsp;</td>
-		        <?php } ?>
-		    </tr>
-		    
+		<?php //for shopper group discount
+		if($order->discount > 0.00){ ?>
 		    <tr>
 		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:
 		    	<?php echo $order->shopper_group_name; ?> <?php echo $order->shopper_group_discount; ?> %</td>
-		        <td class="myshoppergroupdiscount" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->discount); ?></td>
+		        <td class="myshoppergroupdiscount" colspan="<?php echo $order->colspan2; ?>">(<?php echo MyMuseHelper::printMoney($order->discount); ?>)</td>
 		        <?php if(@$order->do_html){ ?>
 		        <td class="mobile-hide">&nbsp;</td>
 		        <?php } ?>
 		    </tr>
-		    
-		    
-		
 		<?php } ?>
 		
-			
-		
-		
+
 		<?php //COUPONS
 		if($params->get("my_use_coupons") && @$order->coupon->id){ ?>
 		    <tr>
 		    	<td class="mobile-hide"><?php echo JText::_('MYMUSE_YOUR_COUPON'); ?> : <?php echo $order->coupon->title ?></td>
 		    	<td class="mobile-hide" colspan="<?php echo $order->colspan -1; ?>">&nbsp;</td>
-		        <td class="mycoupon" colspan="<?php echo $order->colspan2; ?>" align="right">-<?php echo MyMuseHelper::printMoney($order->coupon->discount); ?> </td>
+		        <td class="mycoupon" colspan="<?php echo $order->colspan2; ?>">- <?php echo MyMuseHelper::printMoney($order->coupon->discount); ?> </td>
 		        <?php if(@$order->do_html){ ?>
-		        <td>&nbsp;</td>
+		        <td class="mobile-hide">&nbsp;</td>
 		        <?php } ?>
 		    </tr>
 		<?php } ?>
@@ -143,13 +128,14 @@ $task		= $this->task;
 		<?php // TAXES
 		if(@$order->tax_array){
 		    while(list($key,$val) = each($order->tax_array)){ 
+		    	$pre_key = preg_replace("/_/","", $key);
 		    	$key = preg_replace("/_/"," ", $key);
 		    	?>
 		        <tr>
-		        <td class="mytaxname" colspan="<?php echo $order->colspan; ?>"><?php echo $key; ?></td>
-		        <td class="mytax" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($val); ?></td>
+		        <td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo $key; ?></td>
+		        <td class="<?php echo strtolower($pre_key); ?>" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($val); ?></td>
 		        <?php if(@$order->do_html){ ?>
-		        <td>&nbsp;</td>
+		        <td class="mobile-hide">&nbsp;</td>
 		        <?php  } ?>
 		        </tr>
 		<?php  } 

@@ -23,7 +23,7 @@ class MymuseControllerOrder extends JControllerForm
         parent::__construct();
     }
     
-	function save()
+	function save($key = NULL, $urlVar = NULL)
 	{
     
 		$form = JRequest::getVar('jform',array(),'post');

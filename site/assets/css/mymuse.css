@@ -281,7 +281,8 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount, td.myshippi
 	td.mydate:before, td.myorderstatus:before, td.myfullname:before, td.myemail:before,
 	td.myphone:before, td.myaddress:before, td.mycity:before, td.myzip:before,
 	td.myregion:before, td.mycountry:before, td.mycompany:before , td.myfax:before, 
-	td.myColour:before, td.myshipmethod:before
+	td.myColour:before, td.myshipmethod:before, td.myordernumber:before,
+	td.myorderdate:before, td.mypaid:before
 	 { 
 		white-space: nowrap;
 		padding-right: 7%;
@@ -305,11 +306,12 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount, td.myshippi
 	td.mydate, td.myorderstatus, td.myfullname, td.myemail,
 	td.myphone, td.myaddress, td.mycity, td.myzip,
 	td.myregion, td.mycountry, td.mycompany , td.myfax, 
-	td.myColour
+	td.myColour, td.myshipmethod, td.myordernumber,
+	td.myorderdate, td.mypaid
 	{ 
 		clear:both;
 	}
-	td.mytotal:before, td.mytotal {
+	td.mytotal:before, td.mytotal, td.myoriginalsubtotal:before, td.myoriginalsubtotal {
 		font-weight: bold;
 	}
 	

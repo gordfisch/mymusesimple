@@ -95,27 +95,27 @@ defined('_JEXEC') or die('Restricted access');
 		<?php } ?>
 		
 		
-		
-		<?php if(isset($order->discount) && $order->discount > 0){ ?>
-
 			<tr class="'.$class .'">
 		    	<td colspan="3" align="right"><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?>:</td>
-		        <td align="right"><?php echo MyMuseHelper::printMoney($order->discount + $order->order_subtotal); ?></td>
+		        <td align="right"><?php echo MyMuseHelper::printMoney($order->subtotal_before_discount); ?></td>
 		    </tr>
-		    
+			<tr>
+		    	<td colspan="<?php echo $order->colspan + $order->colspan2; ?>"><hr style="width: 100%"></td>
+		    </tr>
+		
+		<?php //SHOPPER GROUP
+		if(isset($order->discount) && $order->discount > 0){ ?>
+
 		    <tr>
 		    	<td colspan="3" align="right"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:
 		    	<?php echo $shopper->shopper_group_name.' '.$shopper->discount; ?> %</td>
 		        <td align="right"><?php echo MyMuseHelper::printMoney($order->discount); ?></td>
 		    </tr>
-		    
-		    <tr>
-		    	<td colspan="3" align="right"><?php echo JText::_('MYMUSE_CART_NEW_SUBTOTAL'); ?>:</td>
-		        <td align="right"><?php echo MyMuseHelper::printMoney($order->order_subtotal); ?></td>
-		    </tr>
+
 		<?php } ?>
 		
-		<?php if($params->get("my_use_coupons") && isset($order->coupon_discount) && $order->coupon_discount > 0){ ?>
+		<?php //COUPONS
+		if($params->get("my_use_coupons") && isset($order->coupon_discount) && $order->coupon_discount > 0){ ?>
 		    <tr>
 		    	<td colspan="3" align="right"><?php echo $order->coupon_name ?>:
 		        </td>
@@ -124,23 +124,13 @@ defined('_JEXEC') or die('Restricted access');
 		    </tr>
 		<?php } ?>
 				
-		<?php if ($params->get("my_use_shipping") && 
-				isset($order->order_shipping) &&
-				@$order->order_shipping->cost > 0) { ?>
-		    <tr>
-		    	<td colspan="3" align="right">Shipping:</td>
-		    	<td align="right"><?php echo  MyMuseHelper::printMoney($order->order_shipping->cost); ?>
-		    </td>
-		    </tr>
-		<?php } ?>
-		
 		<?php // TAXES
 		if(@$order->tax_array){
 		    while(list($key,$val) = each($order->tax_array)){ 
 		    	$key = preg_replace("/_/"," ", $key);
 		    	?>
 		        <tr>
-		        <td colspan="3" align="right"><?php echo $key; ?></td>
+		        <td colspan="3"><?php echo $key; ?></td>
 		        <td align="right"><?php echo MyMuseHelper::printMoney($val); ?></td>
 		        <?php if(@$order->do_html){ ?>
 		        <td>&nbsp;</td>
@@ -149,9 +139,19 @@ defined('_JEXEC') or die('Restricted access');
 		<?php  } 
 		} ?>
 		
+		<?php //SHIPPING
+		if ($params->get("my_use_shipping") && 
+				isset($order->order_shipping) &&
+				@$order->order_shipping->cost > 0) { ?>
+		    <tr>
+		    	<td colspan="3">Shipping:</td>
+		    	<td align="right"><?php echo  MyMuseHelper::printMoney($order->order_shipping->cost); ?>
+		    </td>
+		    </tr>
+		<?php } ?>
 		
 		<tr>
-		    <td colspan="3" class="textbox2" align="right"><b><?php echo JText::_('MYMUSE_CART_TOTAL') ?>:</b></td>
+		    <td colspan="3" class="textbox2"><b><?php echo JText::_('MYMUSE_CART_TOTAL') ?>:</b></td>
 		    <td align="right"><b><?php echo MyMuseHelper::printMoney($order->order_total); ?>
 		    </b></td>
 		</tr>

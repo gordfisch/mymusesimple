@@ -58,6 +58,9 @@ $mobile_style = '
 	td.myorderid:before { content: "'.JText::_('MYMUSE_ORDER_ID').'";}
 	td.mydate:before { content: "'.JText::_('MYMUSE_DATE').'";}
 	td.myorderstatus:before { content: "'.JText::_('MYMUSE_ORDER_STATUS').'";}
+	td.myordernumber:before { content: "'.JText::_('MYMUSE_ORDER_NUMBER').'";}
+	td.myorderdate:before  { content: "'.JText::_('MYMUSE_ORDER_DATE').'";}
+	td.mypaid:before  { content: "'.JText::_('MYMUSE_PAID').'";}
 	
 	td.myfullname:before { content: "'.JText::_('MYMUSE_FULL_NAME').'";}
 	td.myemail:before { content: "'.JText::_('MYMUSE_EMAIL').'";}
@@ -72,6 +75,8 @@ $mobile_style = '
 			
 	td.mychoose:before { content: "'.JText::_('MYMUSE_CHOOSE').'";}
 	td.myshipmethod:before { content: "'.JText::_('MYMUSE_SHIP_METHOD').'";}
+			
+	
 ';
 //Grab taxes
 require_once( MYMUSE_PATH.'mymuse.class.php');

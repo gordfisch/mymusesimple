@@ -18,6 +18,10 @@ if(isset($this->checkout_header)){
 	echo $this->checkout_header;
 }
 
+if(isset($this->shipping_form)){
+	echo $this->shipping_form;
+}
+
 if(isset($this->order_summary)){
 	echo $this->order_summary;
 }
@@ -32,10 +36,6 @@ if(isset($this->shopper_info)){
 
 if(isset($this->next_form)){
 	echo $this->next_form;
-}
-
-if(isset($this->shipping_form)){
-	echo $this->shipping_form;
 }
 
 if(isset($this->thankyou_form)){
