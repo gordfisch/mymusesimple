@@ -11,8 +11,8 @@
 	<description>MYMUSE_DISCOUNT_DESC</description>
 	
 	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_discount.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_discount.sys.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_mymuse_discount.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_mymuse_discount.sys.ini</language>
 	</languages>
 
 	

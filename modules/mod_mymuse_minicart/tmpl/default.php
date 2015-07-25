@@ -20,12 +20,14 @@ $i = 0;
 	</tr>
 <?php }?>
 
+	<?php if($order->discount > 0.00 || ($params->get("my_use_coupons") && @$order->coupon->id)
+		|| count($order->tax_array) > 0){ ?>
 	<!--  original subtotal -->
 			<tr>
-		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?>:</td>
+		    	<td class="mobile-hide" colspan="2"><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?>:</td>
 		        <td class="myoriginalsubtotal" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->subtotal_before_discount); ?></td>
 		    </tr>
-		
+	<?php } ?>	
 		<?php 
 		if($order->discount > 0.00){ 
 			//for shopper group discount

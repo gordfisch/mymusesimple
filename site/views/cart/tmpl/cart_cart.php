@@ -88,6 +88,8 @@ $task		= $this->task;
 		       </tr>
 		<?php } ?>
 		
+		<?php if($order->discount > 0.00 || ($params->get("my_use_coupons") && @$order->coupon->id)
+		|| count($order->tax_array) > 0){ ?>
 		<!--  original subtotal -->
 			<tr>
 		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?>:</td>
@@ -97,7 +99,7 @@ $task		= $this->task;
 		        <?php } ?>
 		    </tr>
 		    
-		    
+		<?php } ?>
 		<?php //for shopper group discount
 		if($order->discount > 0.00){ ?>
 		    <tr>
