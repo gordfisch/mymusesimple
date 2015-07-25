@@ -130,6 +130,11 @@
         	        	todir="${test}/administrator/language/en-GB" />
         	    <copy file="${src}/plugins/mymuse_socialshare/language/en-GB/en-GB.plg_mymuse_mymuse_socialshare.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" />
+        	        	
+        	    <copy file="${src}/plugins/mymuse_discount/language/en-GB/en-GB.plg_mymuse_mymuse_discount.ini"
+        	        	todir="${test}/administrator/language/en-GB" />
+        	    <copy file="${src}/plugins/mymuse_socialshare/language/en-GB/en-GB.plg_mymuse_mymuse_discount.sys.ini"
+        	        	todir="${test}/administrator/language/en-GB" />
         	
         		<copy file="${src}/plugins/searchmymuse/language/en-GB/en-GB.plg_search_searchmymuse.ini"
         	        	todir="${test}/administrator/language/en-GB" />
@@ -248,6 +253,11 @@
         	              todir="${test}/plugins/mymuse/mymuse_socialshare/elements" /> 
         	    <copy file="${src}/plugins/mymuse_socialshare/elements/positionbutton.php"
         	            todir="${test}/plugins/mymuse/mymuse_socialshare/elements" />
+        	            
+        	    <copy file="${src}/plugins/mymuse_discount/mymuse_discount.php"
+        	            todir="${test}/plugins/mymuse/mymuse_discount" />
+        	    <copy file="${src}/plugins/mymuse_discount/mymuse_discount.xml"
+        	              todir="${test}/plugins/mymuse/mymuse_discount" />
         	    
         	
                 <copy file="${src}/plugins/searchmymuse/searchmymuse.php"
