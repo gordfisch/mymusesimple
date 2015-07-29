@@ -96,7 +96,7 @@ defined('_JEXEC') or die('Restricted access');
 		
 		
 			<tr class="'.$class .'">
-		    	<td colspan="3" align="right"><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?>:</td>
+		    	<td colspan="3" align="right"><b><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?></b></td>
 		        <td align="right"><?php echo MyMuseHelper::printMoney($order->subtotal_before_discount); ?></td>
 		    </tr>
 			<tr>
@@ -107,7 +107,7 @@ defined('_JEXEC') or die('Restricted access');
 		if(isset($order->discount) && $order->discount > 0){ ?>
 
 		    <tr>
-		    	<td colspan="3" align="right"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:
+		    	<td colspan="3" align="right"><b><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?></b>
 		    	<?php echo $shopper->shopper_group_name.' '.$shopper->discount; ?> %</td>
 		        <td align="right"><?php echo MyMuseHelper::printMoney($order->shopper_group_discount); ?></td>
 		    </tr>
@@ -118,7 +118,7 @@ defined('_JEXEC') or die('Restricted access');
 		if(isset($order->discount) && $order->discount > 0){ ?>
 
 		    <tr>
-		    	<td colspan="3" align="right"><?php echo JText::_('MYMUSE_DISCOUNT'); ?></td>
+		    	<td colspan="3" align="right"><b><?php echo JText::_('MYMUSE_DISCOUNT'); ?></b></td>
 		        <td align="right"><?php echo MyMuseHelper::printMoney($order->discount); ?></td>
 		    </tr>
 
@@ -127,7 +127,7 @@ defined('_JEXEC') or die('Restricted access');
 		<?php //COUPONS
 		if($params->get("my_use_coupons") && isset($order->coupon_discount) && $order->coupon_discount > 0){ ?>
 		    <tr>
-		    	<td colspan="3" align="right"><?php echo $order->coupon_name ?>:
+		    	<td colspan="3" align="right"><b><?php echo $order->coupon_name ?></b>
 		        </td>
 		        <td align="right">- <?php echo MyMuseHelper::printMoney($order->coupon_discount); ?> 
 		        </td>
@@ -140,7 +140,7 @@ defined('_JEXEC') or die('Restricted access');
 		    	$key = preg_replace("/_/"," ", $key);
 		    	?>
 		        <tr>
-		        <td colspan="3"><?php echo $key; ?></td>
+		        <td colspan="3"><b><?php echo $key; ?></b></td>
 		        <td align="right"><?php echo MyMuseHelper::printMoney($val); ?></td>
 		        <?php if(@$order->do_html){ ?>
 		        <td>&nbsp;</td>

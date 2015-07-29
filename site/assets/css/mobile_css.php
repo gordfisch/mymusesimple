@@ -9,7 +9,24 @@
  * @website		http://www.mymuse.ca
  */
 
-$mobile_style = '
+//Grab taxes
+require_once( MYMUSE_PATH.'mymuse.class.php');
+$MyMuseCart 	=& MyMuse::getObject('cart','helpers');
+$cart 			=& $MyMuseCart->cart;
+$order 			= $MyMuseCart->buildOrder( 1,0 );
+$mobile_style 	= '';
+
+if(@$order->tax_array){
+	reset($order->tax_array);
+	while(list($key,$val) = each($order->tax_array)){
+		$mobile_style .= 'td.'.strtolower(preg_replace("/_/","", $key)).' {
+				align: right;
+				}
+				';
+	}
+}
+
+$mobile_style .= '
 /* Only Phones */
 @media (max-width: 767px) {
 	/*
@@ -75,14 +92,11 @@ $mobile_style = '
 			
 	td.mychoose:before { content: "'.JText::_('MYMUSE_CHOOSE').'";}
 	td.myshipmethod:before { content: "'.JText::_('MYMUSE_SHIP_METHOD').'";}
+	td.mysummarytotal:before { content: "'.JText::_('MYMUSE_TOTAL').'";}
 			
 	
 ';
-//Grab taxes
-require_once( MYMUSE_PATH.'mymuse.class.php');
-$MyMuseCart 	=& MyMuse::getObject('cart','helpers');
-$cart 			=& $MyMuseCart->cart;
-$order 			= $MyMuseCart->buildOrder( 0 );
+
 
 if(@$order->tax_array){
 	while(list($key,$val) = each($order->tax_array)){

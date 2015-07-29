@@ -59,7 +59,7 @@ class MyMuseCheckout
 		$shopper 		=& $MyMuseShopper->getShopper();
 		$store 			= $MyMuseStore->getStore();
 		$cart 			= $MyMuseCart->cart;
-		$cart_order 	= $MyMuseCart->buildOrder();
+		$cart_order 	= $MyMuseCart->buildOrder(0,1);
 		$d 				= $jinput->post->getArray();
 
 		// TODO stop repeat orders on reload
@@ -716,91 +716,7 @@ class MyMuseCheckout
 
 	}
 
-	/**
-	 * processPayment
-	 *
-	 * @param object $store
-	 * @param object $shopper
-	 * @param object $order
-	 * @return array
-	 */
-	function processPayment( $store, $shopper, $order )
-	{
-		//THIS FUNCTION IS UNDER DEVELOPMENT; to post with curl to paypal
-		//print_pre($order);
-		if(PAY_PAL_ENABLE){
-			/**
-			 if(PAY_PAL_TEST){
-			 //get a login going
-			 $postfields = "login_email=gord@ecohosting.com&login_password=1banana2&cmd=_login-submit";
-			 $postfields .= "&login_cmd=&login_params=&submit=Log+In&cb_auto_login=1";
-			 $ch = curl_init();    // initialize curl handle
-			 curl_setopt($ch, CURLOPT_URL,"https://developer.paypal.com/cgi-bin/devscr?__track=_home:login/main:_login-submit"); // set url to post to PAYMENT_URL
-			 //curl_setopt($ch, CURLOPT_FAILONERROR, 1);
-			 curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);// allow redirects
-			 curl_setopt($ch, CURLOPT_RETURNTRANSFER,1); // return into a variable
-			 curl_setopt($ch, CURLOPT_TIMEOUT, 20); // times out after 46s
-			 curl_setopt($ch, CURLOPT_POST, 1); // set POST method
-			 curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields); // add POST fields
-			 curl_setopt($ch, CURLOPT_COOKIEJAR, "/var/www/html/singsong/components/com_mymuse/cookie.txt");
-			 $result = curl_exec($ch); // run the whole process
-			 $error = curl_error($ch);
-			 curl_close($ch);
-			 //echo $result."<br />".$error. "<BR />done with test"; exit;
-			 	
-			 }
-			 */
-			$postfields = "";
-			$postfields .= "first_name=".urlencode($shopper->first_name);
-			$postfields .= "&last_name=".urlencode($shopper->last_name);
-			$postfields .= "&address_street=".urlencode($shopper->address_1)." ".urlencode($shopper->address_2);
-			$postfields .= "&address_city=".urlencode($shopper->city);
-			$postfields .= "&address_state=".urlencode($shopper->state);
-			$postfields .= "&address_country=".urlencode($shopper->country);
-			$postfields .= "&address_zip=".urlencode($shopper->zip);
-			$postfields .= "&payer_email=".$shopper->email;
-			$postfields .= "&cmd=_cart";
-			$postfields .= "&business=".MERCHANTID;
-			$postfields .= "&custom=".session_id();
-			$postfields .= "&upload=1";
-			//$postfields .= "&charset=UTF-8";
-			$postfields .= "&amount=".$order->order_total;
-			$postfields .= "&currency_code=".$store->currency;
-			//$postfields .= "&item_name=".$store->title;
-			//$postfields .= "&item_number=".$order->order_number;
-			if($order->tax_total > 0){
-				$postfields .= "&tax_cart=".$order->tax_total;
-			}
-			for ($i=1; $i <= count($order->items); $i++) {
-				$postfields .= "&item_name_$i=".urlencode($order->items[$i]->title);
-				$postfields .= "&quantity_$i=".$order->items[$i]->product_quantity;
-				$postfields .= "&amount_$i=".$order->items[$i]->subtotal;
-			}
-			$postfields .= "&return=".JURI::base()."index.php?option=com_mymuse&task=thankyou";
-			$postfields .= "&cancel_return=".JURI::base()."index.php?option=com_mymuse&task=paypalcancel";
-			$postfields .= "&notify_url=".JURI::base()."index.php?option=com_mymuse&task=notify";
-				
-			echo $postfields; echo "<br />".PAYMENT_URL;
-			 
 
-			$ch = curl_init();    // initialize curl handle
-			curl_setopt($ch, CURLOPT_URL,PAYMENT_URL); // set url to post to PAYMENT_URL
-			curl_setopt($ch, CURLOPT_FAILONERROR, 1);
-			curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);// allow redirects
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER,1); // return into a variable
-			curl_setopt($ch, CURLOPT_TIMEOUT, 20); // times out after 46s
-			curl_setopt($ch, CURLOPT_POST, 1); // set POST method
-			//curl_setopt($ch, CURLOPT_COOKIEFILE, "/var/www/html/singsong/components/com_mymuse/cookie.txt");
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields); // add POST fields
-			$result = curl_exec($ch); // run the whole process
-			$error = curl_error($ch);
-			curl_close($ch);
-			echo $result;
-			echo $error;
-			exit;
-		}
-
-	}
 
 	function getOrder($id=0){
 		$mainframe 	= JFactory::getApplication();
@@ -871,8 +787,6 @@ class MyMuseCheckout
 
 				
 			$order->items[$i]->url = myMuseHelperRoute::getProductRoute($pid, $catid);
-			//print_pre($order->items[$i]->product);
-			//echo "catid = $catid, secid = $secid <br />"; print_pre($params); exit;
 			$order->items[$i]->cat_url = myMuseHelperRoute::getCategoryRoute($catid);
 			$query = "SELECT * FROM #__categories WHERE id='".$catid."'";
 			$db->setQuery($query);

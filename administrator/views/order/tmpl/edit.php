@@ -141,6 +141,14 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 			</div>
 			<div class="control-group">
 				<div class="control-label">
+					<?php echo $this->form->getLabel('shopper_group_discount'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('shopper_group_discount'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
 					<?php echo $this->form->getLabel('created'); ?>
 				</div>
 				<div class="controls">
@@ -418,24 +426,36 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 		    </tr>
 		   '; 
 		    
-		if($this->item->discount > 0.00){
-			$string .= '
-			<tr class="'.$class .'">
-		    	<td colspan="'.$colspan.'" align="right">'.JText::_('MYMUSE_CART_ORIGINAL_SUBTOTAL').':</td>
-		        <td align="right">'.MyMuseHelper::printMoney($this->item->discount + $this->item->order_subtotal).'</td>
-		        <td>&nbsp;</td>
-				<td>&nbsp;</td>
-		    </tr>
-		    
+	if($this->item->discount > 0.00){
+		$string .= '
 		    <tr>
-		    	<td colspan="'.$colspan.'" align="right">'.JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT').':
-		    	'.$this->item->user->shopper_group_name.' '.$this->item->user->shopper_group_discount.' %</td>
+		    	<td colspan="'.$colspan.'" align="right">'.JText::_('MYMUSE_DISCOUNT').':
+		    	</td>
 		        <td align="right">'.MyMuseHelper::printMoney($this->item->discount).'</td>
 		        <td>&nbsp;</td>
 				<td>&nbsp;</td>
 		    </tr>
-		    
-		    
+	
+		';
+	}
+	
+		if($this->item->shopper_group_discount > 0.00){
+			$string .= '
+			<tr class="'.$class .'">
+		    	<td colspan="'.$colspan.'" align="right">'.JText::_('MYMUSE_CART_ORIGINAL_SUBTOTAL').':</td>
+		        <td align="right">'.MyMuseHelper::printMoney($this->item->shopper_group_discount + $this->item->order_subtotal).'</td>
+		        <td>&nbsp;</td>
+				<td>&nbsp;</td>
+		    </tr>
+
+		    <tr>
+		    	<td colspan="'.$colspan.'" align="right">'.JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT').':
+		    	'.$this->item->user->shopper_group_name.' '.$this->item->user->shopper_group_discount.' %</td>
+		        <td align="right">'.MyMuseHelper::printMoney($this->item->shopper_group_discount).'</td>
+		        <td>&nbsp;</td>
+				<td>&nbsp;</td>
+		    </tr>
+ 
 		';
 		}
 
@@ -451,13 +471,18 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 		    </tr>
 		    ';
 		}
-		$string .= '<tr>
+		if($this->item->discount > 0.00 || 
+				($this->params->get('my_use_coupons') && $this->item->coupon_name) || 
+				$this->item->shopper_group_discount > 0.00){
+			$string .= '<tr>
 		    	<td colspan="'.$colspan.'" align="right">'.JText::_('MYMUSE_CART_NEW_SUBTOTAL').':</td>
 		        <td align="right">'.MyMuseHelper::printMoney($this->item->order_subtotal).'</td>
 		        <td>&nbsp;</td>
 				<td>&nbsp;</td>
 		    </tr>';
-	
+		}
+		
+		
 		if ($this->params->get('my_use_shipping') && $this->item->order_shipping > 0) { 
 			$string .= '
 		    <tr>

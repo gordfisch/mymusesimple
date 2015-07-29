@@ -55,6 +55,7 @@ if(!$return){
 }
 $active	= JFactory::getApplication()->getMenu()->getActive();
 
+
 //task and controller
 $task 		= $jinput->get('task', null);
 if($task == 'login'){

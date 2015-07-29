@@ -334,17 +334,17 @@ if($downloads && $order->order_status == "C"){
 		<?php //for shopper group discount
 		if($order->shopper_group_discount > 0.00){ ?>
 		    <tr>
-		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:
+		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><b><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?></b>
 		    	<?php echo $order->user->shopper_group_name; ?> <?php echo $order->user->shopper_group_discount; ?> %</td>
 		        <td align="right" class="myshoppergroupdiscount" colspan="<?php echo $order->colspan2; ?>">(<?php echo MyMuseHelper::printMoney($order->shopper_group); ?>)</td>
 		     
 		    </tr>
 		<?php } ?>
 		
-		<?php //for regulardiscount
+		<?php //for regular discount
 		if($order->discount > 0.00){ ?>
 		    <tr>
-		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_DISCOUNT'); ?>:
+		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><b><?php echo JText::_('MYMUSE_DISCOUNT'); ?></b>
 		    	</td>
 		        <td align="right" class="mydiscount" colspan="<?php echo $order->colspan2; ?>">(<?php echo MyMuseHelper::printMoney($order->discount); ?>)</td>
 		     
@@ -355,7 +355,7 @@ if($downloads && $order->order_status == "C"){
 		
 		<?php if(isset($order->coupon_discount)){ ?>
 		    <tr>
-		    	<td colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_YOUR_COUPON'); ?> : <?php echo $order->coupon_name ?>:
+		    	<td colspan="<?php echo $order->colspan; ?>"><b><?php echo JText::_('MYMUSE_YOUR_COUPON'); ?></b> : <?php echo $order->coupon_name ?>:
 		        </td>
 		        <td align="right" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->coupon_discount); ?>
 		        </td>
@@ -365,7 +365,7 @@ if($downloads && $order->order_status == "C"){
 				
 		<?php if ($params->get("my_use_shipping") && $order->order_shipping > 0) { ?>
 		    <tr>
-		    <td colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_SHIPPING') ?>:</td>
+		    <td colspan="<?php echo $order->colspan; ?>"><b><?php echo JText::_('MYMUSE_SHIPPING') ?></b></td>
 		    <td colspan="<?php echo $order->colspan2; ?>" align="right"><?php echo MyMuseHelper::printMoney($order->order_shipping); ?>
 		    </td>
 		    </tr>
@@ -375,7 +375,7 @@ if($downloads && $order->order_status == "C"){
 		if(@$order->tax_array){
 		    while(list($key,$val) = each($order->tax_array)){ ?>
 		        <tr>
-		        <td colspan="<?php echo $order->colspan; ?>"><?php echo $key; ?></td>
+		        <td colspan="<?php echo $order->colspan; ?>"><b><?php echo $key; ?></b></td>
 		        <td colspan="<?php echo $order->colspan2; ?>" align="right"><?php echo MyMuseHelper::printMoney($val); ?></td>
 		        </tr>
 		<?php  } 

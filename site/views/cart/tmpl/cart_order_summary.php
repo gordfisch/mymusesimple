@@ -34,7 +34,7 @@ $params 	= $this->params;
         </tr>
         <tr>
             <td class="mobile-hide"><?php echo JText::_('MYMUSE_ORDER_TOTAL') ?>:</td>
-            <td class="mytotal"><?php echo MyMuseHelper::printMoney($order->order_total)." ".$order->order_currency['currency_code'] ?></td>
+            <td class="mysummarytotal"><?php echo MyMuseHelper::printMoney($order->order_total)." ".$order->order_currency['currency_code'] ?></td>
         </tr>
     <?php if($order->reservation_fee > 0){ ?>
         <tr>
