@@ -30,15 +30,22 @@ class MyMuseCart {
 	}
 	
 	/**
-	 * cart
+	 * @var cart
 	 *
 	 * array
 	 */
 	var $cart = null;
 	
+	/**
+	 * order object
+	 *
+	 * @var    order
+	 */
+	var $order = null;
+	
 	
     /**
-    * var error
+    * @var error
     */
  	var $error = null;
  	
@@ -204,7 +211,7 @@ class MyMuseCart {
     	$fixed['extra'] = $this->cart['extra'];
     }
     $this->cart = $fixed;
-
+    $this->buildOrder(1,1);
     return true; 
   }
 
@@ -316,6 +323,7 @@ class MyMuseCart {
         		unset($this->cart[$i]["coupon_id"]);
         		continue;
         	}
+
         	$fixed[$j]["quantity"] = $this->cart[$i]["quantity"];
         	$fixed[$j]["product_id"] = $this->cart[$i]["product_id"];
         	$fixed[$j]["catid"] = $this->cart[$i]["catid"];
@@ -331,7 +339,7 @@ class MyMuseCart {
         	$fixed['extra'] = $this->cart['extra'];
         }
         $this->cart = $fixed;
-
+        $this->buildOrder(1,1);
         return True;
   	}
   
@@ -353,6 +361,7 @@ class MyMuseCart {
   		}
   		$temp["idx"] = $j;
   		$this->cart = $temp;
+  		$this->buildOrder(1,1);
   		return True;
   	}
 
@@ -463,12 +472,30 @@ class MyMuseCart {
   		// put it in the cart 
   		$this->cart[$this->cart["idx"]]["coupon_id"] = $coupon->id;
         $this->cart["idx"]++;
-
+		$this->buildOrder(1,1);
   		return true;
   	}
   	
   	
-  	function buildOrder($edit=true )
+  	/**
+  	 * Get a order object.
+  	 *
+  	 * Returns the global order object, only creating it if it doesn't already exist.
+  	 *
+  	 * @return  order object
+  	 *
+  	 */
+  	public  function buildOrder($edit = true, $new = false)
+  	{
+  		if (!$this->order || $new)
+  		{
+  			$this->order = $this->_buildOrder($edit);
+  		}
+  	
+  		return $this->order;
+  	}
+  	
+  	protected function _buildOrder($edit =  true )
   	{
 		$app 		= JFactory::getApplication();
   		$jinput 	= $app->input;
@@ -644,7 +671,8 @@ class MyMuseCart {
 				$order->order_shipping = $this->cart['shipping'];
 		}
 		
-		//Discounts from plugins
+		//DISCOUNTS FROM PLUGINS
+		JPluginHelper::importPlugin('mymuse');
 		$dispatcher	= JDispatcher::getInstance();
 		$result = $dispatcher->trigger('onAfterBuildOrder', array(&$order, &$this->cart));
 		if(count($result)){
@@ -684,11 +712,6 @@ class MyMuseCart {
 		if(@$order->do_html){
 			$order->colspan2 = 1;
 		}
-
-		
-		
-		
-		
 
 		return $order;
 	}

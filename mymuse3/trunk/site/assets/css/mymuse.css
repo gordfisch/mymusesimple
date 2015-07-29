@@ -219,8 +219,8 @@ span.discount {
 
 }
 td.myprice, td.mytotal, td.myoriginalsubtotal, td.myshoppergroupdiscount,
-td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount, td.myshipping,
-td.mysubtotal, td.mytax
+td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount, 
+ td.mytax, td.myshipping, td.mysubtotal, td.mycoupon
 {
 	text-align: right;
 } 
@@ -240,7 +240,8 @@ td.mysubtotal, td.mytax
 	td.myselect, td.myprice, td.myfilesize, td.mytotal,
 	td.myoriginalsubtotal, td.myshoppergroupdiscount,
 	td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal,
-	td.mydiscount, td.myshipping, td.myshipmethod
+	td.mydiscount, td.myshipping, td.myshipmethod, td.mysummarytotal, 
+	td.mysubtotal, td.mycoupon
 	{
 		text-align: left;
 	}
@@ -283,7 +284,7 @@ td.mysubtotal, td.mytax
 	td.myphone:before, td.myaddress:before, td.mycity:before, td.myzip:before,
 	td.myregion:before, td.mycountry:before, td.mycompany:before , td.myfax:before, 
 	td.myColour:before, td.myshipmethod:before, td.myordernumber:before,
-	td.myorderdate:before, td.mypaid:before
+	td.myorderdate:before, td.mypaid:before, td.mysummarytotal:before
 	 { 
 		white-space: nowrap;
 		padding-right: 7%;
@@ -312,7 +313,8 @@ td.mysubtotal, td.mytax
 	{ 
 		clear:both;
 	}
-	td.mytotal:before, td.mytotal, td.myoriginalsubtotal:before, td.myoriginalsubtotal {
+	td.mytotal:before, td.mytotal, td.myoriginalsubtotal:before, td.myoriginalsubtotal,
+	td.mydiscount:before, td.mydiscount, td.myshipping:before, td.myshipping {
 		font-weight: bold;
 	}
 	

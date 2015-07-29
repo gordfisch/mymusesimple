@@ -58,7 +58,6 @@ class plgMymuseMymuse_discount extends JPlugin
 	 */
 	function onAfterBuildOrder($order, $cart)
 	{
-
 		$this_discount = 0;
 		$quantity = 0;
 		if($this->params->get('discount_based_on')){
@@ -79,11 +78,8 @@ class plgMymuseMymuse_discount extends JPlugin
         $j = 0;
 		for($i=1;$i<13;$i++){
             $param = "discount_minimum_".$i;
-            echo "param $param <br />";
-            
             if($this->params->get($param, 0)){
 				$min = $this->params->get($param);
-				echo "$i $target $min <br />";
 				if($target >= $min){
 					$discount = $this->params->get('discount_'.$i);
 					if($this->params->get('discount_type')){
@@ -93,7 +89,7 @@ class plgMymuseMymuse_discount extends JPlugin
 						//amount
 						$this_discount = $discount;
 					}
-					echo "this_discount = ".$this_discount."<br />";
+
 				}
             } 
         }

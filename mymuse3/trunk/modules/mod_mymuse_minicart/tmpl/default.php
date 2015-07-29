@@ -1,5 +1,4 @@
 <?php // no direct access
-
 defined('_JEXEC') or die('Restricted access'); 
 if(isset($order->items) && count($order->items)){
 $i = 0;
@@ -24,7 +23,7 @@ $i = 0;
 		|| count($order->tax_array) > 0){ ?>
 	<!--  original subtotal -->
 			<tr>
-		    	<td class="mobile-hide" colspan="2"><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?>:</td>
+		    	<td class="mobile-hide" colspan="2"><b><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?></b></td>
 		        <td class="myoriginalsubtotal" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->subtotal_before_discount); ?></td>
 		    </tr>
 	<?php } ?>	
@@ -34,7 +33,7 @@ $i = 0;
 			//for shopper group discount
 			?>
 		    <tr class="mymuse_cart">
-		    	<td class="mobile-hide" colspan="2"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:</td>
+		    	<td class="mobile-hide" colspan="2"><b><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?></b></td>
 		        <td class="myshoppergroupdiscount">(<?php echo MyMuseHelper::printMoney($order->shopper_group_discount); ?>)</td>
 		    </tr>
 		<?php } ?>
@@ -43,8 +42,8 @@ $i = 0;
 			//for regular discount
 			?>
 		    <tr class="mymuse_cart">
-		    	<td class="mobile-hide" colspan="2"><?php echo JText::_('MYMUSE_DISCOUNT'); ?>:</td>
-		        <td class="mydiscount">(<?php echo MyMuseHelper::printMoney($order->discount); ?>)</td>
+		    	<td class="mobile-hide" colspan="2"><b><?php echo JText::_('MYMUSE_DISCOUNT'); ?></b></td>
+		        <td class="mydiscount">- <?php echo MyMuseHelper::printMoney($order->discount); ?></td>
 		    </tr>
 		<?php } ?>
 		
@@ -53,7 +52,7 @@ $i = 0;
 		<?php //COUPONS
 		if($params->get("my_use_coupons") && @$order->coupon->id){ ?>
 		    <tr class="mymuse_cart">
-		    	<td class="mobile-hide" colspan="2"><?php echo JText::_('MYMUSE_YOUR_COUPON'); ?> : <?php echo $order->coupon->title ?></td>
+		    	<td class="mobile-hide" colspan="2"><b><?php echo JText::_('MYMUSE_YOUR_COUPON'); ?></b> <?php echo $order->coupon->title ?></td>
 		        <td class="mycoupon">-<?php echo MyMuseHelper::printMoney($order->coupon->discount); ?> </td>
 
 		    </tr>
@@ -62,21 +61,21 @@ $i = 0;
 		<?php // SHIPPING
 		if ($params->get("my_use_shipping") && @$order->order_shipping->cost > 0) { ?>
 		    <tr class="mymuse_cart">
-		    	<td  class="mobile-hide" colspan="2" align="right"><b><?php echo JText::_('MYMUSE_SHIPPING') ?>:</b></td>
+		    	<td  class="mobile-hide" colspan="2"><b><?php echo JText::_('MYMUSE_SHIPPING') ?></b></td>
 		    	<td class="myshipping" align="right"><?php echo MyMuseHelper::printMoney($order->order_shipping->cost); ?>
 		    </td>
 
 		<?php } ?>
 		
 		<?php // TAXES
-		if(@$order->tax_array){
-		    while(list($key,$val) = each($order->tax_array)){ 
+		if(isset($order->tax_array)  && count($order->tax_array)){
+		    foreach($order->tax_array as $key=>$val){
 		    	$pre_key = preg_replace("/_/","", $key);
 		    	$key = preg_replace("/_/"," ", $key);
 		    	?>
 		        <tr class="mymuse_cart">
-		        <td class="mobile-hide" colspan="2"><?php echo $key; ?></td>
-		        <td class="<?php echo strtolower($pre_key); ?>"><?php echo MyMuseHelper::printMoney($val); ?></td>
+		       		<td class="mobile-hide" colspan="2"><b><?php echo $key; ?></b></td>
+		        	<td class="mytax <?php echo strtolower($pre_key); ?>"><?php echo MyMuseHelper::printMoney($val); ?></td>
 				</tr>
 		<?php  } 
 		} ?>

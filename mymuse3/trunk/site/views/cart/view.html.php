@@ -116,7 +116,7 @@ class myMuseViewCart extends JViewLegacy
 					// this is the after payment option
 					$heading 	= Jtext::_('MYMUSE_CONFIRM');
 					$message 	= Jtext::_('MYMUSE_CHOOSE_PAYMENT_METHOD');
-					$this->order = $order 		= $MyMuseCart->buildOrder( 0 );
+					$this->order = $order 		= $MyMuseCart->buildOrder( 0, 1 );
 
 					/**
 					$order->order_number 		= session_id();

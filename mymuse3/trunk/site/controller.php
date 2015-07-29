@@ -450,7 +450,7 @@ class MyMuseController extends JControllerLegacy
 				$this->setRedirect( 'index.php?option=com_mymuse&task=shipping', $msg );
 				return false;
 			}else{
-                $order 		= $this->MyMuseCart->buildOrder( 0 );
+                $order 		= $this->MyMuseCart->buildOrder( 0, 1 );
                 $this->MyMuseCart->cart['shipmethodid'] = $shipmethodid;
                 $dispatcher		= JDispatcher::getInstance();
                 JPluginHelper::importPlugin('mymuse');
