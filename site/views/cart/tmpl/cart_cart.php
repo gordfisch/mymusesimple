@@ -100,18 +100,30 @@ $task		= $this->task;
 		    </tr>
 		    
 		<?php } ?>
-		<?php //for shopper group discount
-		if($order->discount > 0.00){ ?>
+		<?php //for shopper group discount 
+		if($order->shopper_group_discount > 0.00){ ?>
 		    <tr>
 		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:
 		    	<?php echo $order->shopper_group_name; ?> <?php echo $order->shopper_group_discount; ?> %</td>
-		        <td class="myshoppergroupdiscount" colspan="<?php echo $order->colspan2; ?>">(<?php echo MyMuseHelper::printMoney($order->discount); ?>)</td>
+		        <td class="myshoppergroupdiscount" colspan="<?php echo $order->colspan2; ?>">(<?php echo MyMuseHelper::printMoney($order->shopper_group_discount); ?>)</td>
 		        <?php if(@$order->do_html){ ?>
 		        <td class="mobile-hide">&nbsp;</td>
 		        <?php } ?>
 		    </tr>
 		<?php } ?>
 		
+		<?php //for regular discount
+		if($order->discount > 0.00){ ?>
+		    <tr>
+		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_DISCOUNT'); ?>:
+		    	</td>
+		        <td class="mydiscount" colspan="<?php echo $order->colspan2; ?>">- <?php echo MyMuseHelper::printMoney($order->discount); ?></td>
+		        <?php if(@$order->do_html){ ?>
+		        <td class="mobile-hide">&nbsp;</td>
+		        <?php } ?>
+		    </tr>
+		<?php } ?>
+				
 
 		<?php //COUPONS
 		if($params->get("my_use_coupons") && @$order->coupon->id){ ?>
@@ -135,7 +147,7 @@ $task		= $this->task;
 		    	?>
 		        <tr>
 		        <td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo $key; ?></td>
-		        <td class="<?php echo strtolower($pre_key); ?>" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($val); ?></td>
+		        <td class="mytax <?php echo strtolower($pre_key); ?>" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($val); ?></td>
 		        <?php if(@$order->do_html){ ?>
 		        <td class="mobile-hide">&nbsp;</td>
 		        <?php  } ?>

@@ -160,22 +160,23 @@ class MyMuseCheckout
 		$date 		= JFactory::getDate('now', $tzoffset);
 		
 		// We used to keep separate shopper,user id's
-		$order->user_id 			= $shopper->id;
-		$order->order_number 		= md5(time().mt_rand());
-		$order->store_id 			= $store->id;
-		$order->shopper_id 			= $shopper->id;
-		$order->order_subtotal 		= $cart_order->order_subtotal;
-		$order->ship_info_id 		= $d["ship_info_id"];
-		$order->order_shipping 		= @$cart_order->order_shipping->cost;
-		$order->order_currency 		= $MyMuseStore->_store->currency;
-		$order->order_status 		= $order_status;
-		$order->coupon_id 			= 0;
-		$order->coupon_name 		= '';
-		$order->coupon_discount 	= 0;
-		$order->created 			= $date->toSql(true);
-		$order->modified 			= $date->toSql(true);
-		$order->discount 			= $cart_order->discount;
-		$order->notes 				= @$cart['notes'];
+		$order->user_id 				= $shopper->id;
+		$order->order_number 			= md5(time().mt_rand());
+		$order->store_id 				= $store->id;
+		$order->shopper_id 				= $shopper->id;
+		$order->order_subtotal 			= $cart_order->order_subtotal;
+		$order->ship_info_id 			= $d["ship_info_id"];
+		$order->order_shipping 			= @$cart_order->order_shipping->cost;
+		$order->order_currency 			= $MyMuseStore->_store->currency;
+		$order->order_status 			= $order_status;
+		$order->coupon_id 				= 0;
+		$order->coupon_name 			= '';
+		$order->coupon_discount 		= 0;
+		$order->created 				= $date->toSql(true);
+		$order->modified 				= $date->toSql(true);
+		$order->discount 				= $cart_order->discount;
+		$order->shopper_group_discount 	= $cart_order->shopper_group_discount;
+		$order->notes 					= @$cart['notes'];
 
 		//check coupons
 		if($params->get('my_use_coupons') && $coupon_id){
@@ -518,26 +519,15 @@ class MyMuseCheckout
 
 		$taxes = array();
 		
+		// No profile?
+		if(!isset($shopper->profile['country']) && !$params->get('my_add_taxes')){
+			return $taxes;
+		}
+		
 		if ($params->get('my_tax_shipping') && isset($order->order_shipping->cost)) {
 			$order_taxable = $order->order_subtotal + $order->order_shipping->cost;
 		}else{
 			$order_taxable = $order->order_subtotal;
-		}
-
-		$total_physical = 0;
-		$total_downloadable = 0;
-		foreach($order->items as $item) {
-			if($item->product_physical){
-				$total_physical += $item->product_item_subtotal;
-			}else{
-				$total_downloadable += $item->product_item_subtotal;
-			}
-		}
-		
-
-		// No profile?
-		if(!isset($shopper->profile['country']) && !$params->get('my_add_taxes')){
-			return $taxes;
 		}
 	
 		//get tax rates
@@ -583,6 +573,31 @@ class MyMuseCheckout
 		if(($store_bloc == 'EU' && $user_bloc == 'EU') || $params->get('my_add_taxes')){
 					
 			//do euro tax
+			$total_physical = 0;
+			$total_downloadable = 0;
+			foreach($order->items as $item) {
+				if($item->product_physical){
+					$total_physical += $item->product_item_subtotal;
+				}else{
+					$total_downloadable += $item->product_item_subtotal;
+				}
+			}
+			
+			//how to apply any discount
+			if(!$total_physical){ //all downloads
+				$total_downloadable = $total_downloadable - $order->discount;
+			}
+			if(!$total_downloadable){ //all physical
+				$total_physical = $total_physical - $order->discount;
+			}
+			if($total_physical && $total_downloadable){ //it's a mix, take the highest one
+				if($total_physical > $total_downloadable){
+					$total_physical = $total_physical - $order->discount;
+				}else{
+					$total_downloadable = $total_downloadable - $order->discount;
+				}
+			}
+			
 			//case 1: same country, always charge VAT
 			if($store_country_3_code == $user_country){
 				//same country
@@ -908,7 +923,7 @@ class MyMuseCheckout
 		//add more to the order object for printing
 		$order->idx = count($order->items);
 		$order->status_name = MyMuseHelper::getStatusName($order->order_status );
-		$order->subtotal_before_discount = $order->order_subtotal  + @$order->coupon->discount;
+		$order->subtotal_before_discount = $order->order_subtotal  + @$order->coupon->discount + @$order->discount;
 		$order->order_total = $order->order_subtotal + $order->order_shipping->cost + $order->tax_total;
 		$order->order_currency = MyMuseHelper::getCurrency($MyMuseStore->_store->currency);
 		if($params->get("my_show_sku",0) >0){

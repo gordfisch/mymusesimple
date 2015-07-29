@@ -402,6 +402,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_order` (
   `created` datetime DEFAULT '0000-00-00 00:00:00',
   `modified` datetime DEFAULT '0000-00-00 00:00:00',
   `discount` decimal(10,2) DEFAULT NULL,
+  `shopper_group_discount` decimal(10,2) NOT NULL DEFAULT '0.00',
   `notes` text DEFAULT NULL,
   `reservation_fee` float(10,2) NOT NULL DEFAULT '0.00',
   `non_res_total` float(10,2) NOT NULL DEFAULT '0.00',

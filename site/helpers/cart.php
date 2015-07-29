@@ -381,7 +381,7 @@ class MyMuseCart {
 
   		$shipping_needed = false;
   		for ($i=0;$i<$this->cart["idx"];$i++) {
-  			if(@$this->cart[$i]["coupon_id"]){ continue;}
+  			if(!isset($this->cart[$i]["product_id"]) ){ continue;}
   			if($this->cart[$i]['product_physical']){
   				$shipping_needed = true;
   			}
@@ -505,6 +505,7 @@ class MyMuseCart {
 		$order->need_shipping 			= 0;
 		$order->order_total 			= 0.00;
 		$order->discount	 			= 0.00;
+		$order->shopper_group_discount  = 0.00;
 		
 
 		$order->idx 			= $this->cart["idx"];
@@ -521,6 +522,10 @@ class MyMuseCart {
 		for ($i=0;$i<$this->cart["idx"];$i++) {
 			if(isset($this->cart[$i]["coupon_id"])){
 				$coupon_id = $this->cart[$i]["coupon_id"];
+				continue;
+			}
+			if(isset($this->cart[$i]["discount"])){
+				$order->discount = $this->cart[$i]["discount"];
 				continue;
 			}
 
@@ -567,13 +572,8 @@ class MyMuseCart {
 			
 			// shopper group discount
 			if($price["product_shopper_group_discount_amount"] > 0){
-				$order->discount += $price["product_shopper_group_discount_amount"] * $order->items[$i]->quantity;
+				$order->shopper_group_discount += $price["product_shopper_group_discount_amount"] * $order->items[$i]->quantity;
 			}
-			
-			//TEST OF DISCOUNT
-			//if($order->items[$i]->quantity >= 5){
-			//	$order->discount += 2.00 * $order->items[$i]->quantity;
-			//}
 			
 			
 			// add to order sub_total
@@ -638,17 +638,23 @@ class MyMuseCart {
 		
 		//SHOPPER GROUP DISCOUNTS
 		$order->shopper_group_name = isset($shopper->shopper_group_name)? $shopper->shopper_group_name : 'default';
-		if(isset($shopper->discount) && $shopper->discount > 0){
-			$order->shopper_group_discount = $shopper->discount;
-		}
 
 		// SHIPPING
 		if ($params->get('my_use_shipping') && isset($this->cart['shipping'])) {
 				$order->order_shipping = $this->cart['shipping'];
 		}
+		
+		//Discounts from plugins
+		$dispatcher	= JDispatcher::getInstance();
+		$result = $dispatcher->trigger('onAfterBuildOrder', array(&$order, &$this->cart));
+		if(count($result)){
+			foreach($result as $res){
+				$order->discount += $res;
+			}
+		}
+		$order->order_subtotal = $order->order_subtotal - $order->discount;
 
 		//TAXES
-		
 		$order_tax = $MyMuseCheckout->calc_order_tax($order);
 
 		$order->tax_array = array();
@@ -679,11 +685,10 @@ class MyMuseCart {
 			$order->colspan2 = 1;
 		}
 
-		$dispatcher	= JDispatcher::getInstance();
-		$result = $dispatcher->trigger('onAfterBuildOrder', array(&$order, &$this->cart));
-		if(count($result)){
-			$order = $result[0];
-		}
+		
+		
+		
+		
 
 		return $order;
 	}

@@ -412,7 +412,7 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 	$string .= '
 			<tr class="'.$class .'">
 		    	<td colspan="'.$colspan.'" align="right">'.JText::_('MYMUSE_SUBTOTAL').':</td>
-		        <td align="right">'.MyMuseHelper::printMoney($this->item->order_subtotal + @$this->item->coupon_discount).'</td>
+		        <td align="right">'.MyMuseHelper::printMoney($this->item->order_subtotal + @$this->item->coupon_discount + @$this->item->discount).'</td>
 		        <td>&nbsp;</td>
 				<td>&nbsp;</td>
 		    </tr>

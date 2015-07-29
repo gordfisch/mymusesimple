@@ -496,6 +496,16 @@ class com_mymuseInstallerScript
 			$db->query();
 		}
 		
+		
+		//see if mymuse_orders table need updating
+		$query = "SHOW COLUMNS FROM #__mymuse_order LIKE 'shopper_group_discount'";
+		$db->setQuery($query);
+		if(!$col = $db->loadObject()){
+			$query = "ALTER TABLE `#__mymuse_order` ADD `shopper_group_discount` decimal(10,2) NOT NULL DEFAULT '0.00' AFTER `discount`";
+			$db->setQuery($query);
+			$db->query();
+		}
+		
 		//see if notes field needs updating
 		$query = "SHOW FIELDS FROM `#__mymuse_order` WHERE Field = 'notes'";
 		$db->setQuery($query);
