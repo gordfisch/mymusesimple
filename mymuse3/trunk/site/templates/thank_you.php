@@ -109,6 +109,16 @@ defined('_JEXEC') or die('Restricted access');
 		    <tr>
 		    	<td colspan="3" align="right"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:
 		    	<?php echo $shopper->shopper_group_name.' '.$shopper->discount; ?> %</td>
+		        <td align="right"><?php echo MyMuseHelper::printMoney($order->shopper_group_discount); ?></td>
+		    </tr>
+
+		<?php } ?>
+		
+		<?php //DISCOUNT
+		if(isset($order->discount) && $order->discount > 0){ ?>
+
+		    <tr>
+		    	<td colspan="3" align="right"><?php echo JText::_('MYMUSE_DISCOUNT'); ?></td>
 		        <td align="right"><?php echo MyMuseHelper::printMoney($order->discount); ?></td>
 		    </tr>
 

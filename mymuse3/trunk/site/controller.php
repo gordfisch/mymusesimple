@@ -340,6 +340,18 @@ class MyMuseController extends JControllerLegacy
             return false;
 		}
 
+		// see if any plugins want to check the cart
+		$Itemid		= $this->jinput->get('Itemid', 0);
+		$dispatcher	= JDispatcher::getInstance();
+		$results 	= $dispatcher->trigger('onBeforeMyMuseCheckout',
+				array(&$this->shopper, &$this->store, &$this->MyMuseCart->cart, &$params, &$Itemid) );
+		
+		if(is_array($results)){
+			foreach($results as $result){
+				eval($result);
+			}
+		}
+		
 		
 		if($this->params->get('my_use_shipping') 
 		&& !isset($this->MyMuseCart->cart['ship_method_id'])
@@ -350,18 +362,7 @@ class MyMuseController extends JControllerLegacy
 			return true;
 		}
 		
-		// see if any plugins want to check the order
-		$Itemid		= $this->jinput->get('Itemid', 0);
-		$dispatcher	= JDispatcher::getInstance();
-     	$results 	= $dispatcher->trigger('onBeforeMyMuseCheckout', 
-				array(&$this->shopper, &$this->store, &$this->MyMuseCart->cart, &$params, &$Itemid) );
-				
-		if(is_array($results)){
-			foreach($results as $result){
-				eval($result);
-			}
-		}
-		
+
 		//See if we want to skip the confirm page
 		if($params->get('my_checkout','regular') == "skip_confirm"){
 			$this->jinput->set('task','confirm');

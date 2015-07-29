@@ -323,7 +323,7 @@ if($downloads && $order->order_status == "C"){
 		<!--  original subtotal -->
 			<tr>
 		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><b><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?>:</b></td>
-		        <td align="right" class="myoriginalsubtotal" colspan="<?php echo $order->colspan2; ?>"><b><?php echo MyMuseHelper::printMoney($order->order_subtotal + @$order->coupon_discount); ?></b></td>
+		        <td align="right" class="myoriginalsubtotal" colspan="<?php echo $order->colspan2; ?>"><b><?php echo MyMuseHelper::printMoney($order->order_subtotal + @$order->coupon_discount +@$order->discount); ?></b></td>
 		        
 		    </tr>
 		    <tr>
@@ -332,11 +332,21 @@ if($downloads && $order->order_status == "C"){
 		    
 		    
 		<?php //for shopper group discount
-		if($order->discount > 0.00){ ?>
+		if($order->shopper_group_discount > 0.00){ ?>
 		    <tr>
 		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>:
 		    	<?php echo $order->user->shopper_group_name; ?> <?php echo $order->user->shopper_group_discount; ?> %</td>
-		        <td align="right" class="myshoppergroupdiscount" colspan="<?php echo $order->colspan2; ?>">(<?php echo MyMuseHelper::printMoney($order->discount); ?>)</td>
+		        <td align="right" class="myshoppergroupdiscount" colspan="<?php echo $order->colspan2; ?>">(<?php echo MyMuseHelper::printMoney($order->shopper_group); ?>)</td>
+		     
+		    </tr>
+		<?php } ?>
+		
+		<?php //for regulardiscount
+		if($order->discount > 0.00){ ?>
+		    <tr>
+		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_DISCOUNT'); ?>:
+		    	</td>
+		        <td align="right" class="mydiscount" colspan="<?php echo $order->colspan2; ?>">(<?php echo MyMuseHelper::printMoney($order->discount); ?>)</td>
 		     
 		    </tr>
 		<?php } ?>
