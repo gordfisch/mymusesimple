@@ -55,7 +55,6 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 	
 	public function onBeforeMyMusePayment($shopper, $store, $order, $params, $Itemid=1 )
 	{
-		//print_pre($shopper->profile);
 		$db			= JFactory::getDBO();
 		if(isset($shopper->profile['country'])){
 			// Paypal wants the country_2_code
@@ -124,11 +123,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		
 		//custom field
 		$custom = 'userid='.$shopper->id;
-		//if($params->get('my_registration') == "no_reg"){
-			//foreach($shopper->profile as $key=>$val){
-				//$custom .= '&'.$key.'='.$val;
-			//}
-		//}
+
 		if(isset($order->order_number)){
 			$custom .= '&order_number='.$order->order_number.'&email='.$shopper->email;
 		}
@@ -155,7 +150,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 
 		
 		
-		//$callbackUrl = JURI::base().'index.php?option=com_akeebasubs&view=callback&paymentmethod=paypalpaymentspro';
+		
 		$callbackUrl = JURI::base().'index.php?option=com_mymuse&task=notify&Itemid='.$Itemid;
 	
 		$data = (object)array(
@@ -181,7 +176,8 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			'SHIPPINGAMT'		=> $order->order_shipping->cost,
 			'TAXAMT'			=> $order->tax_total,
 			'CURRENCYCODE'		=> strtoupper($store->currency),
-			'DESC'				=> $store->title
+			'DESC'				=> $store->title,
+			'BUTTONSOURCE'		=> 'Arboreta_SP'
 		);
 
 		//send individual items
@@ -229,15 +225,10 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		}
 		
 
-		//if($level->recurring) {
-		//	$data->METHOD			= 'CreateRecurringPaymentsProfile';
-		//	$data->PROFILEREFERENCE	= $subscription->akeebasubs_subscription_id;
-		//	$data->BILLINGPERIOD	= 'Day';
-		//	$data->BILLINGFREQUENCY	= $level->duration;
-		//} else {
-			$data->METHOD			= 'DoDirectPayment';
-			$data->INVNUM			= $order->order_number;
-		//}
+
+		$data->METHOD			= 'DoDirectPayment';
+		$data->INVNUM			= $order->order_number;
+
 		
 		//make country select
 		$query = 'SELECT country_2_code as value,  country_name AS text FROM #__mymuse_country';
@@ -337,7 +328,6 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		// print_pre($data);
 		$path = JPluginHelper::getLayoutPath('mymuse', 'payment_paypalpro');
 		@ob_start();
-		//include dirname(__FILE__).'/paypalpro/form.php';
 		include $path;
 		$html = @ob_get_clean();
 		
