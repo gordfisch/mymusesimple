@@ -172,6 +172,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		<input type="hidden" name="country" 		value="'. $shopper->country.'" />
 		<input type="hidden" name="zip"     		value="'. $shopper->postal_code.'" />
 		<input type="hidden" name="payer_email"     value="'. $payer_email.'" />
+		<input type="hidden" name="bn"     			value="Arboreta_SP" />
 		
 		';
 		

@@ -20,6 +20,8 @@
 	<input type="hidden" name="PAYMENTACTION" value="<?php echo $data->PAYMENTACTION ?>" />
 	<input type="hidden" name="IPADDRESS" value="<?php echo $data->IPADDRESS ?>" />
 	<input type="hidden" name="mode" value="init" />
+	<input type="hidden" name="BUTTONSOURCE" value="<?php echo $data->BUTTONSOURCE ?>" />
+	
 	<input type="hidden" name="num_cart_items" value="<?php echo $data->ITEMS ?>" />
     
 	<input type="hidden" name="AMT" value="<?php echo $data->AMT ?>" />
