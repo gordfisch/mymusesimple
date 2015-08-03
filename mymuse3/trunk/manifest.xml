@@ -7,7 +7,7 @@
     <author>Arboreta</author>
 	<authorEmail>gord@arboreta.ca</authorEmail>
 	<authorUrl>http://www.mymuse.ca</authorUrl>
-	<version>3.3.1</version>
+	<version>3.3.2</version>
 	<description>Sell your CD's and tracks online. Visit http://www.mymuse.ca for more info.</description>
 
 	<media destination="com_mymuse" folder="media">
@@ -120,7 +120,7 @@
         <plugin name="shipping_standard" folder="plugins/shipping_standard">Shipping Standard</plugin>
         <plugin name="shoppergroupview" folder="plugins/shoppergroupview">Shopper group</plugin>
 		<plugin name="mymuse_vote" folder="plugins/mymuse_vote">MyMuse Vote</plugin>
-		
+		<plugin name="mymuse_discount" folder="plugins/mymuse_discount">MyMuse Discount</plugin>
 		
 		<plugin name="redirectonlogin" folder="plugins/user_redirectonlogin">MyMuse Redirect on Log In</plugin>
         <plugin name="mymuse" folder="plugins/user_mymuse">MyMuse User Profile</plugin>
