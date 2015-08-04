@@ -363,8 +363,16 @@ class com_mymuseInstallerScript
 
 
 <?php
-		// see if db needs updating for country plugins
+		// see if db needs updating
 		$db = JFactory::getDBO();
+		$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'ordering'";
+		$db->setQuery($query);
+		if(!$col = $db->loadObject()){
+			$query = "ALTER TABLE `#__mymuse_country` ADD `ordering` int(11) NOT NULL AFTER `country_2_code`  ";
+			$db->setQuery($query);
+			$db->query();
+		}
+		
 		$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'plugin'";
 		$db->setQuery($query);
 		if(!$col = $db->loadObject()){
