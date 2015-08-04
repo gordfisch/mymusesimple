@@ -309,15 +309,18 @@ class plgUserMyMusenoreg extends JPlugin
 					$store = $db->loadObject();
 					$sparams = new JRegistry($store->params);
 					$country_2_code = $sparams->get('country');
-					$query = "SELECT country_3_code FROM #__mymuse_country WHERE country_2_code='$country_2_code'";
+					$query = "SELECT country_3_code FROM #__mymuse_country WHERE 
+					country_2_code='$country_2_code'";
 		
 					$db->setQuery($query);
 					$country = $db->loadResult();
 					
 					$form->setFieldAttribute($field, 'default', $country, 'profile');
 					
-					$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_COUNTRY')."' as country UNION SELECT country_3_code as value, country_name as country FROM #__mymuse_country ORDER by country";
-					//$q = "SELECT '".$country->country_3_code."' as value, '".$country->country_name."' as country UNION SELECT country_3_code as value, country_name as country FROM #__mymuse_country ORDER by country";
+					$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_COUNTRY')."' as country, 0 as ordering 
+								UNION SELECT country_3_code as value, country_name as country, ordering 
+								FROM #__mymuse_country ORDER by ordering";
+					
 					$form->setFieldAttribute($field, 'query', $q, 'profile');
 			
 						
@@ -394,8 +397,11 @@ class plgUserMyMusenoreg extends JPlugin
 
 						$form->setFieldAttribute($field, 'default', $country, 'profile');
 							
-						$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_COUNTRY')."' as shipping_country UNION SELECT country_3_code as value, country_name as shipping_country FROM #__mymuse_country ORDER by shipping_country";
-						//$q = "SELECT '".$country->country_3_code."' as value, '".$country->country_name."' as country UNION SELECT country_3_code as value, country_name as country FROM #__mymuse_country ORDER by country";
+						$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_COUNTRY')."' as 
+								shipping_country UNION SELECT country_3_code as value, 
+								country_name as shipping_country FROM #__mymuse_country 
+								ORDER by shipping_country";
+						
 						$form->setFieldAttribute($field, 'query', $q, 'profile');
 					}
 				}
