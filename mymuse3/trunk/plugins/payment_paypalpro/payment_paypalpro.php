@@ -159,7 +159,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			'USER'				=> $this->getMerchantUsername(),
 			'PWD'				=> $this->getMerchantPassword(),
 			'SIGNATURE'			=> $this->getMerchantSignature(),
-			'VERSION'			=> '85.0',
+			'VERSION'			=> '124.0',
 			'PAYMENTACTION'		=> 'Sale',
 			'IPADDRESS'			=> $_SERVER['REMOTE_ADDR'],
 			'FIRSTNAME'			=> $shopper->first_name,
