@@ -20,7 +20,7 @@ jimport( 'joomla.plugin.plugin');
 * @package 		MyMuse
 * @subpackage	mymuse
 */
-class plgMymuseMymuse_shortcode extends JPlugin
+class plgContentMymuse_shortcode extends JPlugin
 {
 	
 	/**
@@ -60,7 +60,7 @@ class plgMymuseMymuse_shortcode extends JPlugin
 		{
 			return true;
 		}
-	
+
 		if (is_object($row))
 		{
 			return $this->_parse($row->text, $params);
@@ -82,7 +82,30 @@ class plgMymuseMymuse_shortcode extends JPlugin
 	{
 		if (JString::strpos($text, '{mymuseaddtocart') !== false)
 		{
-			echo "we have a match";
+			$string = '';
+			$pattern = '/{mymuseaddtocart[\s]*id=([\d]+)[\s]?}/i';
+			
+			
+			$app		= JFactory::getApplication();
+			$jinput 	= $app->input;
+			$Itemid 	= $jinput->get("Itemid",'');
+			
+			while(preg_match($pattern, $text, $matches, PREG_OFFSET_CAPTURE)){
+				//print_r($matches);
+				$id 		= $matches[1][0];
+				$string = '
+				<form method="post" action="index.php" name="mymuseform_'.$id.'">
+				<input type="hidden" name="option" value="com_mymuse" />
+				<input type="hidden" name="task" value="addtocart" />
+				
+				<input type="hidden" name="Itemid" value="'.$Itemid.'" />
+				<input type="hidden" name="productid[]" value='.$id.' />
+				<input class="button" type="submit" value="'.JText::_('MYMUSE_ADD_TO_CART').'"
+				title="'.JText::_('MYMUSE_ADD_TO_CART').'" />
+				</form>
+				';
+				$text = substr_replace($text, $string, $matches[0][1], strlen($matches[0][0]));
+			}
 		}
 		return true;
 	}
