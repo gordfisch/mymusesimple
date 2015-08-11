@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0"  type="plugin" group="content">
+	<name>PLG_MYMUSE_SHORTCODE</name>
+	<author>Arboreta</author>
+	<creationDate>Aug 2015</creationDate>
+	<copyright>Copyright (C) 2015 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>3.3.0</version>
+	<description>MYMUSE_SHORTCODE_DESC</description>
+	
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_content_mymuse_shortcode.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_content_mymuse_shortcode.sys.ini</language>
+	</languages>
+
+	
+	<files>
+		<filename plugin="mymuse_shortcode">mymuse_shortcode.php</filename>
+	</files>
+	
+	<config>
+	<fields  name="params">
+<fieldset name="BASIC">
+
+</fieldset>
+
+	</fields>
+	</config>
+</extension>

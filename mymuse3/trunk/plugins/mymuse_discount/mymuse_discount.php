@@ -14,8 +14,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin');
 
-/**
-* MyMuse Shipping Price plugin
+/** MyMuse Discount plugin
 *
 * @package 		MyMuse
 * @subpackage	mymuse
