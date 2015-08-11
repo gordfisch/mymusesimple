@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$$
+ * @version		$Id$
  * @package		mymuse
  * @copyright	Copyright © 2015 - Arboreta Internet Services - All rights reserved.
  * @license		GNU/GPL
