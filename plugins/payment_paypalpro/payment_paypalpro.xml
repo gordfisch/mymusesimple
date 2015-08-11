@@ -7,7 +7,7 @@
 	<copyright>Copyright (c)2015 Arboreta Internet Services</copyright>
 	<license>GNU General Public License version 3, or later</license>
 	<creationDate>2015-04-01</creationDate>
-	<version>3.2.10</version>
+	<version>3.3.0</version>
 	<description>PLG_MYMUSE_PAYPALPAYMENTSPRO_DESCRIPTION</description>
 	<files>
 		<filename plugin="payment_paypalpro">payment_paypalpro.php</filename>
