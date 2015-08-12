@@ -178,6 +178,11 @@
                         todir="${test}/language/en-GB" />
         		<copy file="${src}/modules/mod_mymuse_latest/language/en-GB/en-GB.mod_mymuse_latest.sys.ini"
         	             todir="${test}/language/en-GB" />
+        	            
+        	    <copy file="${src}/plugins/mymuse_shortcode/language/en-GB/en-GB.plg_content_mymuse_shortcode.ini"
+        	            todir="${test}/administrator/language/en-GB" />
+        	    <copy file="${src}/plugins/mymuse_shortcode/language/en-GB/en-GB.plg_content_mymuse_shortcode.sys.ini"
+        	            todir="${test}/administrator/language/en-GB" />
 				
 				<!--  plugins -->
                 <copy file="${src}/plugins/payment_payfast/payment_payfast.php"
@@ -404,7 +409,11 @@
         	        	todir="${test}/plugins/finder/mymuse" /> 
         	    <copy file="${src}/plugins/finder_mymuse/mymuse.php"
         	        	todir="${test}/plugins/finder/mymuse" />
-        	
+        	        	
+        	    <copy file="${src}/plugins/mymuse_shortcode/mymuse_shortcode.php"
+        	            todir="${test}/plugins/content/mymuse_shortcode" />
+        	    <copy file="${src}/plugins/mymuse_shortcode/mymuse_shortcode.xml"
+        	              todir="${test}/plugins/content/mymuse_shortcode" /> 
         	
                 <!--  modules -->
                 <copy todir="${test}/modules/mod_mymuse_minicart">

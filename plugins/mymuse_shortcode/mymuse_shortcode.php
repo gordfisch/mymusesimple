@@ -82,6 +82,37 @@ class plgContentMymuse_shortcode extends JPlugin
 	{
 		if (JString::strpos($text, '{mymuseaddtocart') !== false)
 		{
+			echo '
+<style>
+.btn
+{
+color: #FFF;
+padding: 9px 20px;
+font-size: 18px;
+line-height: 18px;
+text-shadow: none;
+background-image: none;
+border: 0px solid;
+box-shadow: none;
+border-radius: 5px;
+font-weight: normal;
+background-color: #33747A;
+}
+.btn:hover {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  -webkit-transition-duration: 0.2s;
+  -moz-transition-duration: 0.2s;
+  -o-transition-duration: 0.2s;
+  -ms-transition-duration: 0.2s;
+  transition-duration: 0.2s;
+  -webkit-transition-property: background-color;
+  -moz-transition-property: background-color;
+  -o-transition-property: background-color;
+  -ms-transition-property: background-color;
+  transition-property: background-color;
+}
+</style>
+';
 			$string = '';
 			$pattern = '/{mymuseaddtocart[\s]*id=([\d]+)[\s]?}/i';
 			
@@ -100,7 +131,7 @@ class plgContentMymuse_shortcode extends JPlugin
 				
 				<input type="hidden" name="Itemid" value="'.$Itemid.'" />
 				<input type="hidden" name="productid[]" value='.$id.' />
-				<input class="button" type="submit" value="'.JText::_('MYMUSE_ADD_TO_CART').'"
+				<input class="button btn" type="submit" value="'.JText::_('MYMUSE_ADD_TO_CART').'"
 				title="'.JText::_('MYMUSE_ADD_TO_CART').'" />
 				</form>
 				';
