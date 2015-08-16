@@ -534,6 +534,7 @@ class MyMuseCheckout
 		$q = "SELECT t.*, c.country_name, s.state_name FROM #__mymuse_tax_rate as t
 		LEFT JOIN #__mymuse_country as c ON t.country = c.country_3_code
 		LEFT JOIN #__mymuse_state as s ON s.id = t.province
+				WHERE t.state = 1
 		ORDER BY ordering";
 		$this->_db->setQuery($q);
 		$regex = TAX_REGEX;
