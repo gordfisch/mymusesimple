@@ -13,7 +13,11 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 $category = $this->category;
 ?>
-
+<style type="text/css">
+.cat-items li {
+	display: block;
+}
+</style>
 <?php  echo $category->event->beforeDisplayHeader; ?>
 
 <div class="category-list<?php echo $this->pageclass_sfx;?>">

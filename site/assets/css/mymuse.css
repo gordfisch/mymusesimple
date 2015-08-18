@@ -145,7 +145,7 @@ div.cat-items div.items-row{
 	margin:0;
 	padding:0;
 }
-table.mymuse_cart {
+table.mymuse_cart, div.mymuse_cart {
 	background-color: #FFFFFF;
 	margin: 1px;
 	padding: 0px;
@@ -175,7 +175,7 @@ table.mymuse_cart_inner {
 }
 
 
-table.mymuse_cart td, table.mymuse_cart th {
+table.mymuse_cart td, table.mymuse_cart th, div.mymuse_cart {
 	padding: 4px;
 	vertical-align: middle;
 	border: 1px solid #CCCCCC;
@@ -207,6 +207,27 @@ div.mymuse_button a {
 
 }
 
+.mymuse-wrap {
+	background-color: #eee;
+	margin: 0px 0px 20px 0px;
+	padding: 0px;
+	border: 1px solid #ccc;
+	border-spacing: 0px;
+    width: 100%;
+}
+.mymuse-button-left{
+	width: 47%;
+}
+
+.mymuse-button-right{
+	width: 47%;
+	text-align: right;
+}
+
+.mymuse-wrap .button{
+	margin: 3px 3px 3px 3px;
+}
+
 span.discount {
 	text-decoration: line-through;
 	color: red;
@@ -232,7 +253,7 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount,
 /* Only Phones */  
 @media (max-width: 767px) { 
 	
-	
+
 	.product-image{
 		width:100%;
 		clear: both;

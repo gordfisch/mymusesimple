@@ -182,9 +182,11 @@ class plgMymusePayment_Monsterpay extends JPlugin
 		}
 
 		$string .= '
-		<div id="monsterpay_form">
-		<input type="submit" class="button" name="monsterpay" value="'. JText::_('MYMUSE_PAY_AT_MONSTERPAY').'">
+			<div id="monsterpay_form" class="pull-left">
+			<button class="button uk-button " 
+			type="submit" >'. JText::_('MYMUSE_PAY_AT_MONSTERPAY').'</button>
 		</div>
+
 		</form>
 		';
 		

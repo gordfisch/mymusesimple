@@ -365,7 +365,7 @@ INSERT IGNORE INTO `#__mymuse_currency` (`id`, `currency_name`, `currency_code`,
 -- --------------------------------------------------------
 
 -- 
--- Table structure for table `#__mymuse_dowmloads`
+-- Table structure for table `#__mymuse_downloads`
 --
 CREATE TABLE IF NOT EXISTS `#__mymuse_downloads` (
   `id` int(11) NOT NULL AUTO_INCREMENT,

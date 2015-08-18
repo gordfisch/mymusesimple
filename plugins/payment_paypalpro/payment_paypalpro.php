@@ -69,6 +69,8 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			$query = "SELECT country_2_code from #__mymuse_country WHERE country_3_code='".$shopper->profile['shipping_country']."'";
 			$db->setQuery($query);
 			$shopper->shipping_country = $db->loadResult();
+		}else{
+			$shopper->shipping_country = '';
 		}
 		
 		$shopper->address1 		= isset($shopper->profile['address1'])? $shopper->profile['address1'] : ''; 
@@ -98,6 +100,8 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			$query = "SELECT state_2_code from #__mymuse_state WHERE id='".$shopper->profile['shipping_region']."'";
 			$db->setQuery($query);
 			$shopper->shipping_region = $db->loadResult();
+		}else{
+			$shopper->shipping_region = '';
 		}
 		
 		//PayPal Account Email
@@ -205,23 +209,35 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		
 		if($params->get('my_use_shipping') && isset($order->order_shipping->cost) && $order->order_shipping->cost > 0){
 			$data->SHIPPINGAMT 		= $order->order_shipping->cost;
+			if(!isset($shopper->profile['shipping_first_name'])){
+				$shopper->profile['shipping_first_name'] = '';
+			}
+			if(!isset($shopper->profile['shipping_last_name'])){
+				$shopper->profile['shipping_last_name'] = '';
+			}
+			
 			$data->SHIPTONAME 		= $shopper->profile['shipping_first_name']." ".$shopper->profile['shipping_last_name'];
-			$data->SHIPTOSTREET 	= $shopper->profile['shipping_address1'];
-			$data->SHIPTOSTREET2 	= $shopper->profile['shipping_address2'];
-			$data->SHIPTOCITY 		= $shopper->profile['shipping_city'];
-			if(!is_numeric($shopper->profile['shipping_region'])){
-				$shopper->profile['shipping_region'] = $shopper->profile['shipping_region'];
-			}else{
-				$db = JFactory::getDBO();
-				$query = "SELECT * FROM #__mymuse_state WHERE id='".$shopper->profile['shipping_region']."'";
-				$db->setQuery($query);
-				if($row = $db->loadObject()){
-					$shopper->profile['shipping_region_name'] = $row->state_2_code;
+			$data->SHIPTOSTREET 	= @$shopper->profile['shipping_address1'];
+			$data->SHIPTOSTREET2 	= @$shopper->profile['shipping_address2'];
+			$data->SHIPTOCITY 		= @$shopper->profile['shipping_city'];
+			if(isset($shopper->profile['shipping_region'])){
+				if (! is_numeric ( $shopper->profile ['shipping_region'] )) {
+					$shopper->profile ['shipping_region'] = $shopper->profile ['shipping_region'];
+				} else {
+					$db = JFactory::getDBO ();
+					$query = "SELECT * FROM #__mymuse_state WHERE id='" . $shopper->profile ['shipping_region'] . "'";
+					$db->setQuery ( $query );
+					if ($row = $db->loadObject ()) {
+						$shopper->profile ['shipping_region_name'] = $row->state_2_code;
+					}
 				}
+			}else{
+				$shopper->profile['shipping_region_name'] = '';
+				$shopper->profile['shipping_region'] = '';
 			}
 			$data->SHIPTOSTATE 		= $shopper->profile['shipping_region_name'];
-			$data->SHIPTOZIP 		= $shopper->profile['shipping_postal_code'];
-			$data->SHIPTOCOUNTRY 	= $shopper->profile['shipping_country'];		
+			$data->SHIPTOZIP 		= @$shopper->profile['shipping_postal_code'];
+			$data->SHIPTOCOUNTRY 	= @$shopper->profile['shipping_country'];		
 		}
 		
 
