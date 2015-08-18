@@ -22,7 +22,8 @@ defined('_JEXEC') or die('Restricted access');
 	</tr>
 	<tr>
 		<td><input type="text" class="input" name="coupon" value="" size="50"></td>
-		<td><input type="submit" class="button" name="confirm" value="<?php echo JText::_('MYMUSE_SUBMIT'); ?>"></td>
+		<td><div class="pull-left"><button class="button uk-button " 
+			type="submit" ><?php echo JText::_('MYMUSE_SUBMIT'); ?></button></div></td>
 	</tr>
 </table>
 </form>

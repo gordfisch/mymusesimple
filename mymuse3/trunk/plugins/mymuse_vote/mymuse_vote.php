@@ -56,7 +56,7 @@ class plgMyMuseMymuse_Vote extends JPlugin
 		$app = JFactory::getApplication();
 		$jinput = $app->input;
 		
-		if (isset($param) && $params->get('show_vote',0))
+		if (isset($params) && $params->get('show_vote',0))
 		{
 			$rating = intval(@$row->rating);
 			$rating_count = intval(@$row->rating_count);
@@ -92,7 +92,9 @@ class plgMyMuseMymuse_Vote extends JPlugin
 				$html .= '<input type="radio" title="'.JText::sprintf('PLG_MYMUSE_VOTE_VOTE', '4').'" name="user_rating" value="4" />';
 				$html .= '<input type="radio" title="'.JText::sprintf('PLG_MYMUSE_VOTE_VOTE', '5').'" name="user_rating" value="5" checked="checked" />';
 				$html .= JText::_( 'PLG_MYMUSE_VOTE_BEST' );
-				$html .= '&#160;<input class="button" type="submit" name="submit_vote" value="'. JText::_( 'PLG_MYMUSE_VOTE_RATE' ) .'" />';
+				$html .= '&#160;<button class="button uk-button "
+						type="submit" >'. JText::_('PLG_MYMUSE_VOTE_RATE').'</button>';
+
 				$html .= '<input type="hidden" name="task" value="rate" />';
 				$html .= '<input type="hidden" name="productid" value="'. $row->id  .'" />';
 				$html .= '<input type="hidden" name="hitcount" value="0" />';

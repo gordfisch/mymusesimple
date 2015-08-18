@@ -45,7 +45,12 @@ $params 	= $this->params;
 <?php } ?>
 
 	<tr>
-		<td colspan="3"><input type="submit" class="button" name="confirm" value="<?php echo $this->button; ?>"></td>
+		<td colspan="3">
+		<div class="pull-left mymuse_button_left">
+		<button class="button uk-button" type="submit" >
+		<?php echo $this->button; ?>
+		</button></div>
+		</td>
 	</tr>
 </table>
 

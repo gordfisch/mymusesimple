@@ -193,8 +193,9 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
 		}
 
 		$string .= '
-		<div id="virtualmerchant_form">
-		<input type="submit" class="button" name="virtualmerchant" value="'. JText::_('MYMUSE_PAY_AT_VIRTUALMERCHANT').'">
+		<div id="virtualmerchant_form" class="pull-left">
+			<button class="button uk-button " 
+			type="submit" >'. JText::_('MYMUSE_PAY_AT_VIRTUALMERCHANT').'</button>
 		</div>
 		</form>
 		';

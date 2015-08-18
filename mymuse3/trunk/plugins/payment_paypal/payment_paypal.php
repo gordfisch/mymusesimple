@@ -211,8 +211,9 @@ class plgMymusePayment_Paypal extends JPlugin
 			';
 		}
 		$string .= '
-		<div id="paypal_form">
-		<input type="submit" class="button" name="paypal" value="'. JText::_('MYMUSE_PAY_AT_PAYPAL').'">
+		<div id="paypal_form" class="pull-left">
+			<button class="button uk-button " 
+			type="submit" >'. JText::_('MYMUSE_PAY_AT_PAYPAL').'</button>
 		</div>
 		</form>
 		';

@@ -179,9 +179,12 @@ $task		= $this->task;
 		
 		<?php if($order->do_html){ ?>
 		<tr>
-		    <td class="textbox2 mobile-hide" colspan="<?php echo $order->colspan; ?>"  align="left"></td>
-		    <td class="textbox2 myupdate" colspan="<?php echo $order->colspan2; ?>"><input type="submit" name="submit" 
-		    value="<?php echo JText::_('MYMUSE_UPDATE_CART'); ?>" class="button" /></td>
+		    <td class="" colspan="<?php echo $order->colspan; ?>">
+		    <div class="pull-right myupdate"><button class="button uk-button " 
+				type="submit" >
+				<?php echo JText::_('MYMUSE_UPDATE_CART'); ?></button></div>
+		    </td>
+		    <td colspan="<?php echo $order->colspan2; ?>"> </td>
 		    <td class="mobile-hide">&nbsp;</td>
 		</tr>
 		    
@@ -224,25 +227,20 @@ $task		= $this->task;
 		if(isset($order->show_checkout) && $order->show_checkout){ 
 		    // add the checkout link
 		?> 
+		<div class="mymuse-wrap">
+	  			
+				<div class="pull-left mymuse-button-left"><button class="button uk-button" 
+				type="button" 
+				onclick="location.href='index.php?option=com_mymuse&task=checkout&Itemid=<?php echo $Itemid; ?>'">
+				<?php echo JText::_('MYMUSE_CHECKOUT'); ?></button></div>
+				
+				<div class="pull-right  mymuse-button-right"><button class="button uk-button" 
+				type="button" 
+				onclick="location.href='<?php echo $params->get('my_continue_shopping'); ?>'">
+				<?php echo JText::_('MYMUSE_CONTINUE_SHOPPING'); ?></button></div>
+	  		<div style="clear: both;"></div>
+		</div>
 
-		<table class="mymuse_cart">
-			<tr>
-				<td align="center"><form>
-				<input type="button" class="button" 
-				onclick="location.href='index.php?option=com_mymuse&task=checkout&Itemid=<?php echo $Itemid; ?>'"
-				value="<?php echo JText::_('MYMUSE_CHECKOUT'); ?>"
-				/></form>
-				
-				</td>
-				
-				<td align="right"><form>
-				<input type="button" class="button" 
-				onclick="location.href='<?php echo $params->get('my_continue_shopping'); ?>'"
-				value="<?php echo JText::_('MYMUSE_CONTINUE_SHOPPING'); ?>"
-				/></form>
-				</td>
-			</tr>
-		</table>
 	
 		<?php } 
 		if(isset($order->waited)){

@@ -146,8 +146,9 @@ class plgMymusePayment_Moneybookers extends JPlugin
 			';
 
 		$string .= '
-		<div id="moneybookers_form">
-		<input type="submit" class="button" name="moneybookers" value="'. JText::_('MYMUSE_PAY_AT_MONEYBOOKERS').'">
+				<div id="moneybookers_form" class="pull-left">
+			<button class="button uk-button " 
+			type="submit" >'. JText::_('MYMUSE_PAY_AT_MONEYBOOKERS').'</button>
 		</div>
 		</form>
 		';

@@ -382,16 +382,16 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 			<?php endif; ?>
 			</tr>
 		</table>
-		<table class="mymuse_cart">
-	  		<tr>	
-				<td width="30%"><input class="button" type="submit" value="<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?>"
-				title="<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?>" />&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td width="30%"><input class="button" type="button" value="<?php echo JText::_('MYMUSE_CANCEL');; ?>" 
-				title="<?php echo JText::_('MYMUSE_CANCEL'); ?>" onclick="window.location='<?php echo htmlentities($return_link); ?>'" /></td>
-	  		</tr>
-		</table>
-		<br />
-		<br />
+		<div class="mymuse-wrap">
+				<div class="pull-left mymuse-button-left"><button class="button uk-button" type="submit" >
+				<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?></button></div>
+				<div class="pull-right mymuse-button-right"><button 
+				class="button uk-button" 
+				type="button" 
+				onclick="window.location='<?php echo htmlentities($return_link); ?>'"
+				><?php echo JText::_('MYMUSE_CANCEL'); ?></button></div>
+	  		<div style="clear: both;"></div>
+		</div>
 		<?php } ?>
 <!-- END PRODUCT PHYSICAL -->	
 		
@@ -460,16 +460,16 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
       				</tr>
       		<?php  } ?>
 		</table>
-		<table class="mymuse_cart">
-	  		<tr>	
-				<td width="30%"><input class="button" type="submit" value="<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?>"
-				title="<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?>" />&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td width="30%"><input class="button" type="button" value="<?php echo JText::_('MYMUSE_CANCEL');; ?>" 
-				title="<?php echo JText::_('MYMUSE_CANCEL'); ?>" onclick="window.location='<?php echo htmlentities($return_link); ?>'" /></td>
-	  		</tr>
-		</table>
-		<br />
-		<br />
+		<div class="mymuse-wrap">
+				<div class="pull-left mymuse-button-left"><button class="button uk-button" type="submit" >
+				<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?></button></div>
+				<div class="pull-right mymuse-button-right"><button 
+				class="button uk-button" 
+				type="button" 
+				onclick="window.location='<?php echo htmlentities($return_link); ?>'"
+				><?php echo JText::_('MYMUSE_CANCEL'); ?></button></div>
+	  		<div style="clear: both;"></div>
+		</div>
 	<?php } ?>
 
 	<?php 
@@ -505,7 +505,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
       	    <?php endif; ?>
       		</tr>
       		</thead>
-      	<?php foreach($items as $item){ ?>
+      	<?php foreach($items as $item) : ?>
       		<tr>
       			<td class="mytitle"><?php echo $item->title; ?></td>
       			<td class="myselect"><?php echo $item->select; ?></td>
@@ -517,19 +517,19 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 						/> 
 						</td>
 				<?php endif; ?>
-      		</tr>
-      	<?php } ?>
+     		</tr>
+     	<?php endforeach; ?>
 		</table>
-		<table class="mymuse_cart">
-	  		<tr>	
-				<td width="30%"><input class="button" type="submit" value="<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?>"
-				title="<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?>" />&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td width="30%"><input class="button" type="button" value="<?php echo JText::_('MYMUSE_CANCEL');; ?>" 
-				title="<?php echo JText::_('MYMUSE_CANCEL'); ?>" onclick="window.location='<?php echo htmlentities($return_link); ?>'" /></td>
-	  		</tr>
-		</table>
-		<br />
-		<br />
+		<div class="mymuse-wrap">
+				<div class="pull-left mymuse-button-left"><button class="button uk-button" type="submit" >
+				<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?></button></div>
+				<div class="pull-right mymuse-button-right"><button 
+				class="button uk-button" 
+				type="button" 
+				onclick="window.location='<?php echo htmlentities($return_link); ?>'"
+				><?php echo JText::_('MYMUSE_CANCEL'); ?></button></div>
+	  		<div style="clear: both;"></div>
+		</div>
 <?php } ?>
 <!--  END ITEMS -->
 
@@ -686,14 +686,16 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 <div style="clear: both"></div>
 	<?php } ?>
 		<?php if($params->get('product_show_cartadd')){ ?>
-		<table class="mymuse_cart">
-	  		<tr>	
-				<td width="30%"><input class="button" type="submit" value="<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?>"
-				title="<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?>" />&nbsp;&nbsp;&nbsp;&nbsp;</td>
-				<td width="30%"><input class="button" type="button" value="<?php echo JText::_('MYMUSE_CANCEL');; ?>" 
-				title="<?php echo JText::_('MYMUSE_CANCEL'); ?>" onclick="window.location='<?php echo htmlentities($return_link); ?>'" /></td>
-	  		</tr>
-		</table>
+		<div class="mymuse-wrap">
+				<div class="pull-left mymuse-button-left"><button class="button uk-button" type="submit" >
+				<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?></button></div>
+				<div class="pull-right mymuse-button-right"><button 
+				class="button uk-button" 
+				type="button" 
+				onclick="window.location='<?php echo htmlentities($return_link); ?>'"
+				><?php echo JText::_('MYMUSE_CANCEL'); ?></button></div>
+	  		<div style="clear: both;"></div>
+		</div>
 		<?php } ?>
 
 <?php } ?>

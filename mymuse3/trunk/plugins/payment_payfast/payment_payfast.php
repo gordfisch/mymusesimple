@@ -135,7 +135,11 @@ class plgMymusePayment_Payfast extends JPlugin
 		$output .= '<input type="hidden" name="'.$name.'" value="'. htmlspecialchars( $value ) .'">'."\n";
 
 		$output .= $data['amount']." ".$this->params->get('currency')."<br />";
-		$output .= '<input type="submit" class="button" name="payfaster" value="'.JText::_('MYMUSE_PAY_AT_PAYFAST').'" />';
+		
+		$output .= '<div id="payfast_form" class="pull-left">
+			<button class="button uk-button " 
+			type="submit" >'. JText::_('MYMUSE_PAY_AT_PAYFAST').'</button>
+		</div>';
 		$output .= '</form>';
 
 		return( $output );

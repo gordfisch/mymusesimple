@@ -5,6 +5,10 @@
 <p align="center">
 <form action="<?php echo $data['URL'] ?>" method="post" id="paymentForm" >
 	<input type="submit" class="btn" />
+	<div id="paypalproexpress_form" class="pull-left">
+			<button class="button uk-button " 
+			type="submit" >'. JText::_('PLG_MYMUSE_PAYPALPROEXPRESS_TITLE').'</button>
+		</div>
 </form>
 </p>
 </div>
