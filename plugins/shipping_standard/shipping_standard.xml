@@ -18,13 +18,21 @@
 	</files>
 	<config>
 		<fields name="params">
-		<fieldset name="OVERALL">
+		<fieldset name="MYMUSE_SHIPSTANDARD_OPTIONS">
 			<field name="max_shipping" type="text" size="35" default="0.00" 
 			label="MYMUSE_MAX_SHIPPING_LABEL" 
 			description="MYMUSE_MAX_SHIPPING_DESC"
 		/>
+		<field name="translate" type="radio" default="0" 
+		label="MYMUSE_SHIPSTANDARD_TRANSLATE_LABEL" 
+		description="MYMUSE_SHIPSTANDARD_TRANSLATE_DESC">
+	 			<option value="0">JNO</option>
+	 			<option value="1">JYES</option>
+	 	</field>
 		</fieldset>
-			<fieldset name="SHIPPER1">
+		
+		
+		<fieldset name="SHIPPER1">
 			
 		<field name="ship_1_active" type="radio" default="1" 
 		label="MYMUSE_SHIPACTIVE_1_LABEL" 
