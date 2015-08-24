@@ -63,7 +63,7 @@ class plgMymuseShipping_Standard extends JPlugin
 		// loading plugin parameters
         $this->_plugin = JPluginHelper::getPlugin('mymuse', 'shipping_standard');
         $result = array();
-
+		$translate = $this->params->get('translate');
         $j = 0;
 		for($i=1;$i<5;$i++){
 
@@ -92,8 +92,14 @@ class plgMymuseShipping_Standard extends JPlugin
 					$handling = "ship_handling_" . $i;
 					$additional = "ship_additional_" . $i;
 					
-					$result [$j]->ship_carrier_name = $this->params->get ( $carrier );
-					$result [$j]->ship_method_name = $this->params->get ( $method );
+					if($translate){
+						$result [$j]->ship_carrier_name =  JText::_($this->params->get ( $carrier ));
+						$result [$j]->ship_method_name = JText::_($this->params->get ( $method ));
+					}else{
+						$result [$j]->ship_carrier_name =  $this->params->get ( $carrier );
+						$result [$j]->ship_method_name = $this->params->get ( $method );
+					}
+					
 					$result [$j]->ship_handling_charge = $this->params->get ( $handling );
 					$result [$j]->ship_handling_additional = $this->params->get ( $additional );
 					$result [$j]->cost = $this->calculateShipping ( $order, $result [$j] );
@@ -125,6 +131,17 @@ class plgMymuseShipping_Standard extends JPlugin
         $handling   = "ship_handling_".$shipmethodid;
         $additional = "ship_additional_".$shipmethodid;
         $result->ship_type          		= "Standard";
+        if($translate){
+        	$result->ship_carrier_name          = JText::_($this->params->get($carrier));
+        	$result->ship_carrier_code 			= JText::_($this->params->get($carrier));
+        	$result->ship_method_name           = JText::_($this->params->get($method));
+        	$result->ship_method_code 			= JText::_($this->params->get($method));
+        }else{
+        	$result->ship_carrier_name          = $this->params->get($carrier);
+        	$result->ship_carrier_code 			= $this->params->get($carrier);
+        	$result->ship_method_name           = $this->params->get($method);
+        	$result->ship_method_code 			= $this->params->get($method);
+        }
         $result->ship_carrier_name          = $this->params->get($carrier);
         $result->ship_carrier_code 			= $this->params->get($carrier);
         $result->ship_method_name           = $this->params->get($method);
