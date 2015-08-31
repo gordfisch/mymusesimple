@@ -24,7 +24,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 	public function __construct(&$subject, $config = array())
 	{
 		$config = array_merge($config, array(
-			'pp'		=> 'paypalproexpress'
+			'pppe'		=> 'paypalproexpress'
 		));
 
 		parent::__construct($subject, $config);
@@ -57,28 +57,58 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			'USER'								=> $this->getMerchantUsername(),
 			'PWD'								=> $this->getMerchantPassword(),
 			'SIGNATURE'							=> $this->getMerchantSignature(),
-			'VERSION'							=> '93',
+			'VERSION'							=> '124.0',
 			'RETURNURL'							=> $callbackUrl,
 			'CANCELURL'							=> $cancelUrl,
 			'PAYMENTREQUEST_0_AMT'				=> sprintf('%.2f',$order->order_total),
 			'PAYMENTREQUEST_0_PAYMENTACTION'	=> 'SALE',
 			'PAYMENTREQUEST_0_CURRENCYCODE'		=> strtoupper($store->currency),
 			'PAYMENTREQUEST_0_TAXAMT'			=> $order->tax_total,
-			'PAYMENTREQUEST_0_ITEMAMT'			=> $order->order_subtotal,	
+			'PAYMENTREQUEST_0_ITEMAMT'			=> $order->order_subtotal,
+			'BUTTONSOURCE'						=> 'Arboreta_SP'
 		);
 		/*
 		 * do we need this?
-		 * 'PAYMENTREQUEST_0_TAXAMT'			=> sprintf('%.2f',$subscription->tax_amount),
-			'PAYMENTREQUEST_0_ITEMAMT'			=> sprintf('%.2f',$subscription->net_amount),
+		 * 
 			'L_PAYMENTREQUEST_0_NAME0'			=> $level->title,
 			'L_PAYMENTREQUEST_0_QTY0'			=> 1,
 			'L_PAYMENTREQUEST_0_AMT0'			=> sprintf('%.2f',$subscription->net_amount)
 			
 		 */
+		$j = 0;
+		$data->ITEMS = 0;
+		for ($i=0;$i<$order->idx;$i++) {
+			if(isset($order->items[$i]->title) && $order->items[$i]->title != ''){
+				$item_name = 'L_PAYMENTREQUEST_0_NAME'. $i;
+				$quant_name = 'L_PAYMENTREQUEST_0_QTY'. $i;
+				$amount_name = 'L_PAYMENTREQUEST_0_AMT'. $i;
+		
+				$data->$item_name = $order->items[$i]->title;
+				$data->$quant_name = $order->items[$i]->product_quantity;
+				$data->$amount_name = $order->items[$i]->product_item_price;
+				$j++;
+			}
+			$data->ITEMS = $j;
+		}
+		if(isset($order->coupon_discount)){
+			$custom .= "&coupon_id=".$order->coupon_id;
+			$data->discount_amount_cart = sprintf("%.2f", $order->coupon_discount);
+		}
+		$data->CUSTOM = $custom;
+		
+		if($params->get('my_use_shipping') && isset($order->order_shipping->cost) && $order->order_shipping->cost > 0){
+			$data->PAYMENTREQUEST_0_SHIPPINGAMT 		= $order->order_shipping->cost;
+		
+		}
+		
+		
+		
+		
 
-		$debug = "#####################\nPayPalPro Express PLUGIN onBeforeMyMusePayment\n";
-		$debug .= print_r($requestData,true);
+		
 		if($params->get('my_debug')){
+			$debug = "#####################\nPayPalPro Express PLUGIN onBeforeMyMusePayment\n";
+			$debug .= print_r($requestData,true);
 			MyMuseHelper::logMessage( $debug  );
 		}
 		$requestQuery = http_build_query($requestData);
@@ -130,7 +160,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		
 		$db	= JFactory::getDBO();
 		$date = date('Y-m-d h:i:s');
-		$debug = "#####################\nPayPalProExpress notify PLUGIN\n";
+		$debug = "$date #####################\nPayPalProExpress notify PLUGIN\n";
 		$debug .= "Incoming data = \n".print_r($data,true);
 		if($params->get('my_debug')){
 			MyMuseHelper::logMessage( $debug  );
@@ -163,7 +193,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 					'USER'								=> $this->getMerchantUsername(),
 					'PWD'								=> $this->getMerchantPassword(),
 					'SIGNATURE'							=> $this->getMerchantSignature(),
-					'VERSION'							=> '85.0',
+					'VERSION'							=> '124.0',
 					'TOKEN'								=> $data['token'],
 					'PAYERID'							=> $data['PayerID'],
 					'PAYMENTREQUEST_0_PAYMENTACTION'	=> 'Sale',
@@ -171,7 +201,8 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 					'PAYMENTREQUEST_0_CURRENCYCODE'		=> strtoupper($store->currency),
 					'PAYMENTREQUEST_0_INVNUM'			=> $data['orderid'],
 					'PAYMENTREQUEST_0_DESC'				=> $store->title,
-					'IPADDRESS'							=> $_SERVER['REMOTE_ADDR']
+					'IPADDRESS'							=> $_SERVER['REMOTE_ADDR'],
+					'BUTTONSOURCE'						=> 'Arboreta_SP'
 			);
 			
 			$debug = "FormCallBack requestData = \n".print_r(requestData,true);
@@ -204,405 +235,305 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 				$isValid = false;
 				$responseData['error'] = "PayPal error code: " . $responseData['PAYMENTINFO_0_ERRORCODE'];
 			}
+			
 			$debug = print_r($responseData,true);
 			if($params->get('my_debug')){
 				MyMuseHelper::logMessage( $debug  );
 			}
 
-			if($level->recurring) {
-				// Create recurring payment profile
-				$nextPayment = new JDate("+$level->duration day");
-				$callbackUrl = JURI::base().'index.php?option=com_akeebasubs&view=callback&paymentmethod=paypalproexpress&sid='.$subscription->akeebasubs_subscription_id;
-				$recurringRequestData = (object)array(
-					'METHOD'			=> 'CreateRecurringPaymentsProfile',
-					'NOTIFYURL'			=> $callbackUrl,
-					'USER'				=> $this->getMerchantUsername(),
-					'PWD'				=> $this->getMerchantPassword(),
-					'SIGNATURE'			=> $this->getMerchantSignature(),
-					'VERSION'			=> '85.0',
-					'PAYMENTACTION'		=> 'Sale',
-					'TOKEN'				=> $data['token'],
-					'PAYERID'			=> $data['PayerID'],
-					'IPADDRESS'			=> $_SERVER['REMOTE_ADDR'],
-					'AMT'				=> sprintf('%.2f',$subscription->gross_amount),
-					'TAXAMT'			=> sprintf('%.2f',$subscription->tax_amount),
-					'CURRENCYCODE'		=> strtoupper(AkeebasubsHelperCparams::getParam('currency','EUR')),
-					'DESC'				=> $level->title,
-					'PROFILEREFERENCE'	=> $subscription->akeebasubs_subscription_id,
-					'PROFILESTARTDATE'	=> $nextPayment->toISO8601(),
-					'BILLINGPERIOD'		=> 'Day',
-					'BILLINGFREQUENCY'	=> $level->duration
-				);
 
-				$recurringRequestQuery = http_build_query($recurringRequestData);
-				$recurringRequestContext = stream_context_create(array(
-					'http' => array (
-						'method' => 'POST',
-						'header' => "Connection: close\r\n".
-									"Content-Length: " . strlen($recurringRequestQuery) . "\r\n",
-						'content'=> $recurringRequestQuery)
-					));
-				$recurringResponseQuery = file_get_contents(
-						$this->getPaymentURL(),
-						false,
-						$recurringRequestContext);
-
-				// Response of payment profile
-				$recurringResponseData = array();
-				parse_str($recurringResponseQuery, $recurringResponseData);
-				if(! preg_match('/^SUCCESS/', strtoupper($recurringResponseData['ACK']))) {
-					$isValid = false;
-					$error_url = 'index.php?option='.JRequest::getCmd('option').
-						'&view=level&slug='.$level->slug.
-						'&layout='.JRequest::getCmd('layout','default');
-					$error_url = JRoute::_($error_url,false);
-					JFactory::getApplication()->redirect($error_url,$recurringResponseData['L_LONGMESSAGE0'],'error');
-				} else {
-					$recurringCheckData = (object)array(
-						'METHOD'	=> 'GetRecurringPaymentsProfileDetails',
-						'USER'		=> $this->getMerchantUsername(),
-						'PWD'		=> $this->getMerchantPassword(),
-						'SIGNATURE'	=> $this->getMerchantSignature(),
-						'VERSION'	=> '85.0',
-						'PROFILEID'	=> $recurringResponseData['PROFILEID'],
-					);
-
-					$recurringCheckQuery = http_build_query($recurringCheckData);
-					$recurringCheckContext = stream_context_create(array(
-						'http' => array (
-							'method' => 'POST',
-							'header' => "Connection: close\r\n".
-										"Content-Length: " . strlen($recurringCheckQuery) . "\r\n",
-							'content'=> $recurringCheckQuery)
-						));
-					$recurringCheckQuery = file_get_contents(
-							$this->getPaymentURL(),
-							false,
-							$recurringCheckContext);
-
-					// Response of payment profile
-					$recurringCheckData = array();
-					parse_str($recurringCheckQuery, $recurringCheckData);
-					if(! preg_match('/^SUCCESS/', strtoupper($recurringCheckData['ACK']))) {
-						$isValid = false;
-						$error_url = 'index.php?option='.JRequest::getCmd('option').
-							'&view=level&slug='.$level->slug.
-							'&layout='.JRequest::getCmd('layout','default');
-						$error_url = JRoute::_($error_url,false);
-						JFactory::getApplication()->redirect($error_url,$recurringCheckData['L_LONGMESSAGE0'],'error');
-					}
-					if(strtoupper($responseData['PAYMENTINFO_0_CURRENCYCODE']) !== strtoupper($recurringCheckData['CURRENCYCODE'])) {
-						$isValid = false;
-						$responseData['akeebasubs_failure_reason'] = "Currency code doesn't match.";
-					}
-					if(strtoupper($responseData['PAYMENTINFO_0_AMT']) !== strtoupper($recurringCheckData['AMT'])) {
-						$isValid = false;
-						$responseData['akeebasubs_failure_reason'] = "Amount doesn't match.";
-					}
-					if(strtoupper($recurringCheckData['BILLINGPERIOD']) !== "DAY") {
-						$isValid = false;
-						$responseData['akeebasubs_failure_reason'] = "Recurring period doesn't match.";
-					}
-					if($recurringCheckData['BILLINGFREQUENCY'] != $level->duration) {
-						$isValid = false;
-						$responseData['akeebasubs_failure_reason'] = "Recurring duration doesn't match";
-					}
-				}
-			}
 		}
 
-		if($isValid && !is_null($subscription)) {
-			if($subscription->processor_key == $responseData['PAYMENTINFO_0_TRANSACTIONID']) {
-				$isValid = false;
-				$responseData['akeebasubs_failure_reason'] = "I will not process the same TRANSACTIONID " . $responseData['PAYMENTINFO_0_TRANSACTIONID'] . " twice";
-			}
-		}
-
-		if($isValid) {
-			if(strtoupper(AkeebasubsHelperCparams::getParam('currency','EUR')) != strtoupper($responseData['PAYMENTINFO_0_CURRENCYCODE'])) {
-				$isValid = false;
-				$responseData['akeebasubs_failure_reason'] = "Currency code doesn't match.";
-			}
-		}
-
-		// Check that amount is correct
-		$isPartialRefund = false;
-		if($isValid && !is_null($subscription)) {
-			$mc_gross = floatval($responseData['PAYMENTINFO_0_AMT']);
-			$gross = $subscription->gross_amount;
-			if($mc_gross > 0) {
-				// A positive value means "payment". The prices MUST match!
-				// Important: NEVER, EVER compare two floating point values for equality.
-				$isValid = ($gross - $mc_gross) < 0.01;
-			} else {
-				$isPartialRefund = false;
-				$temp_mc_gross = -1 * $mc_gross;
-				$isPartialRefund = ($gross - $temp_mc_gross) > 0.01;
-			}
-			if(!$isValid) $responseData['akeebasubs_failure_reason'] = 'Paid amount does not match the subscription amount';
-		}
-
-		// Log the IPN data
-		$this->logIPN($responseData, $isValid);
 
 		// Fraud attempt? Do nothing more!
-		if(!$isValid) {
-			$error_url = 'index.php?option='.JRequest::getCmd('option').
-				'&view=level&slug='.$level->slug.
-				'&layout='.JRequest::getCmd('layout','default');
-			$error_url = JRoute::_($error_url,false);
-			JFactory::getApplication()->redirect($error_url,$responseData['akeebasubs_failure_reason'],'error');
-			return false;
-		}
-
-		// Check the payment_status
-		switch($responseData['PAYMENTINFO_0_PAYMENTSTATUS'])
-		{
-			case 'Canceled_Reversal':
-			case 'Completed':
-				$newStatus = 'C';
-				break;
-
-			case 'Created':
-			case 'Pending':
-			case 'Processed':
-				$newStatus = 'P';
-				break;
-
-			case 'Denied':
-			case 'Expired':
-			case 'Failed':
-			case 'Refunded':
-			case 'Reversed':
-			case 'Voided':
-			default:
-				// Partial refunds can only by issued by the merchant. In that case,
-				// we don't want the subscription to be cancelled. We have to let the
-				// merchant adjust its parameters if needed.
-				if($isPartialRefund) {
-					$newStatus = 'C';
-				} else {
-					$newStatus = 'X';
-				}
-				break;
-		}
-
-		// Update subscription status (this also automatically calls the plugins)
-		$updates = array(
-				'akeebasubs_subscription_id'	=> $id,
-				'processor_key'					=> $responseData['PAYMENTINFO_0_TRANSACTIONID'],
-				'state'							=> $newStatus,
-				'enabled'						=> 0
-		);
-		JLoader::import('joomla.utilities.date');
-		if($newStatus == 'C') {
-			$this->fixDates($subscription, $updates);
-		}
-		$subscription->save($updates);
-
-		// Run the onAKAfterPaymentCallback events
-		JLoader::import('joomla.plugin.helper');
-		JPluginHelper::importPlugin('akeebasubs');
-		$app = JFactory::getApplication();
-		$jResponse = $app->triggerEvent('onAKAfterPaymentCallback',array(
-			$subscription
-		));
-
-		// Redirect the user to the "thank you" page
-		$thankyouUrl = JRoute::_('index.php?option=com_akeebasubs&view=message&slug='.$level->slug.'&layout=order&subid='.$subscription->akeebasubs_subscription_id, false);
-		JFactory::getApplication()->redirect($thankyouUrl);
-		return true;
+			if(!$isValid ){
+				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=paycancel&pp=paypalexpresscheckout&orderid='.$orderid.'&Itemid='.$Itemid, false);
+				$msg = "Payment Failed: ".$result ['error'];
+			}else{
+				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalexpresscheckout&orderid='.$orderid.'&Itemid='.$Itemid, false);
+				$msg = "";
+			}
+			JFactory::getApplication()->redirect($thankyouUrl, $msg);
+			return true;
 	}
 
 	private function IPNCallback($data)
 	{
 		JLoader::import('joomla.utilities.date');
 
-		// Check IPN data for validity (i.e. protect against fraud attempt)
-		$isValid = $this->isValidIPN($data);
-		if(!$isValid) $data['akeebasubs_failure_reason'] = 'PayPal reports transaction as invalid';
-
-		// Check txn_type; we only accept web_accept transactions with this plugin
-		if($isValid) {
-			// This is required to process some IPNs, such as Reversed and Canceled_Reversal
-			if (!array_key_exists('txn_type', $data))
-			{
-				$data['txn_type'] = 'workaround_to_missing_txn_type';
-			}
-
-			$validTypes = array('workaround_to_missing_txn_type', 'web_accept','recurring_payment','subscr_payment','express_checkout');
-			$isValid = in_array($data['txn_type'], $validTypes);
-
-			if(!$isValid)
-			{
-				$data['akeebasubs_failure_reason'] = "Transaction type ".$data['txn_type']." can't be processed by this payment plugin.";
-			}
-			else
-			{
-				$recurring = ($data['txn_type'] == 'recurring_payment');
-			}
-		}
-
-		// Load the relevant subscription row
-		if($isValid) {
-			$id = $recurring ? $data['rp_invoice_id'] : $data['invoice'];
-			$subscription = null;
-			if($id > 0) {
-				$subscription = F0FModel::getTmpInstance('Subscriptions','AkeebasubsModel')
-					->setId($id)
-					->getItem();
-				if( ($subscription->akeebasubs_subscription_id <= 0) || ($subscription->akeebasubs_subscription_id != $id) ) {
-					$subscription = null;
-					$isValid = false;
+				// paypal IPN coming in
+			$debug = "#####################\nPayPalPaymentsPro PLUGIN IPN Response\n";
+			
+			$result = array ();
+			$result ['plugin'] = "paypalpaymentspro";
+			$result ['myorder'] = 0; // must be >0 to trigger that it was this plugin
+			$result ['message_sent'] = 0; // must be >0 or tiggers error
+			$result ['message_received'] = 0; // must be >0 or tiggers error
+			$result ['order_found'] = 0; // must be >0 or tiggers error
+			$result ['order_verified'] = 0; // must be >0 or tiggers error
+			$result ['order_completed'] = 0; // must be >0 or tiggers error
+			$result ['order_number'] = 0; // must be >0 or tiggers error
+			$result ['order_id'] = 0; // must be >0 or tiggers error
+			$result ['payer_email'] = 0;
+			$result ['payment_status'] = 0;
+			$result ['txn_id'] = 0;
+			$result ['error'] = '';
+			$result ['redirect'] = '';
+				
+			//if(!isset($data['ACK'])){
+				//wasn't paypalpaymentspro
+				//$debug .= "Was not paypalpaymentspro. \n";
+				//$debug .= "-------END-------";
+				//if($params->get('my_debug')){
+				//	MyMuseHelper::logMessage( $debug  );
+				//}
+				//return $result;
+			//}else{
+				if($params->get('my_debug')){
+					$debug .= "IPN Mode Data : " . print_r ( $data, true );
+					MyMuseHelper::logMessage( $debug  );
 				}
-			} else {
-				$isValid = false;
+				$result ['myorder'] = 1;
+			//}
+			
+			// Check IPN data for validity (i.e. protect against fraud attempt)
+			$isValid = $this->isValidIPN ( $data );
+			$result ['message_sent'] = 1;
+			
+			if (! $isValid){
+				$result ['error'] = 'PayPal reports transaction as invalid';
+				if($params->get('my_debug')){
+					$debug = $result ['error'];
+					MyMuseHelper::logMessage( $debug  );
+				}
+				return $result;
 			}
-			if(!$isValid) $data['akeebasubs_failure_reason'] = 'The referenced subscription ID ("custom" field) is invalid';
-		}
+			$result ['message_received'] = 1;
+			$result ['order_found'] = 1;
+			$result ['order_verified'] = 1;
+			$result ['order_completed'] = 1;
+			
+			if(isset($data['custom'])){
+				$c = explode('&',$data['custom']);
+				foreach($c as $pair){
+					if($pair){
+						list($key,$val) = explode('=',$pair);
+						$custom[$key] = $val;
+					}
+				}
 
-		// Check that mc_gross is correct
-		$isPartialRefund = false;
-		if($isValid && !is_null($subscription)) {
-			$mc_gross = floatval($data['mc_gross']);
-			$gross = $subscription->gross_amount;
-			if($mc_gross > 0) {
-				// A positive value means "payment". The prices MUST match!
-				// Important: NEVER, EVER compare two floating point values for equality.
-				$isValid = ($gross - $mc_gross) < 0.01;
-			} else {
-				$isPartialRefund = false;
-				$temp_mc_gross = -1 * $mc_gross;
-				$isPartialRefund = ($gross - $temp_mc_gross) > 0.01;
 			}
-			if(!$isValid) $data['akeebasubs_failure_reason'] = 'Paid amount does not match the subscription amount';
-		}
-
-		// Check that txn_id has not been previously processed
-		if($isValid && !is_null($subscription) && !$isPartialRefund) {
-			if($subscription->processor_key == $data['txn_id']) {
-				if($subscription->state == 'C') {
-					$isValid = false;
-					$data['akeebasubs_failure_reason'] = "I will not process the same txn_id twice";
+			$result['order_number'] 		= $data['invoice'];
+			$result['payer_email'] 			= urldecode($data['payer_email']);
+			$result['user_email'] 			= @$custom['email'];
+			$result['userid'] 				= @$custom['userid'];
+			
+			$result['payment_status'] 		= $data['payment_status'];
+			$result['txn_id'] 				= trim(stripslashes($data['txn_id']));
+			$result['amountin'] 			= $data['mc_gross'];
+			$result['currency'] 			= $data['mc_currency'];
+			$result['rate'] 				= @$data['rate'];
+			$result['fees'] 				= @$data['mc_fee'];
+			$result['transaction_id'] 		= $data['txn_id'];
+			$result['transaction_status'] 	= $data['payment_status'];
+			$result['description'] 			= @$data['note'];
+			
+			
+			// Check txn_type; we only accept web_accept transactions with this plugin
+			if ($isValid) {
+				// This is required to process some IPNs, such as Reversed and Canceled_Reversal
+				if (! array_key_exists ( 'txn_type', $data )) {
+					$data ['txn_type'] = 'workaround_to_missing_txn_type';
+				}
+				
+				$validTypes = array (
+						'workaround_to_missing_txn_type',
+						'web_accept',
+						'recurring_payment',
+						'subscr_payment',
+						'express_checkout',
+						'pro_api',
+						'cart'
+				);
+				$isValid = in_array ( $data ['txn_type'], $validTypes );
+				
+				if (! $isValid) {
+					$result ['error'] = "Transaction type " . $data ['txn_type'] . " can't be processed by this payment plugin.";
+					if($params->get('my_debug')){
+						MyMuseHelper::logMessage( $result ['error'] );
+					}
+					return $result;
 				}
 			}
-		}
-
-		// Check that mc_currency is correct
-		if($isValid && !is_null($subscription)) {
-			$mc_currency = strtoupper($data['mc_currency']);
-			$currency = strtoupper(AkeebasubsHelperCparams::getParam('currency','EUR'));
-			if($mc_currency != $currency) {
-				$isValid = false;
-				$data['akeebasubs_failure_reason'] = "Invalid currency; expected $currency, got $mc_currency";
+			
+			//order was verified!
+			$date = date('Y-m-d h:i:s');
+			$debug = "$date  4. order VERIFIED at PayPal\n\n";
+			$result['order_verified'] = 1;
+			$result['payment_status'] = "Completed";
+			
+			if($params->get('my_debug')){
+				MyMuseHelper::logMessage( $debug  );
 			}
-		}
 
-		// Log the IPN data
-		$this->logIPN($data, $isValid);
-
-		// Fraud attempt? Do nothing more!
-		if(!$isValid) return false;
-
-		// Check the payment_status
-		switch($data['payment_status'])
-		{
-			case 'Canceled_Reversal':
-			case 'Completed':
-				$newStatus = 'C';
-				break;
-
-			case 'Created':
-			case 'Pending':
-			case 'Processed':
-				$newStatus = 'P';
-				break;
-
-			case 'Denied':
-			case 'Expired':
-			case 'Failed':
-			case 'Refunded':
-			case 'Reversed':
-			case 'Voided':
-			default:
-				// Partial refunds can only by issued by the merchant. In that case,
-				// we don't want the subscription to be cancelled. We have to let the
-				// merchant adjust its parameters if needed.
-				if($isPartialRefund) {
-					$newStatus = 'C';
-				} else {
-					$newStatus = 'X';
+			// SAVE ORDER AFTER
+			if($params->get('my_saveorder') == "after"){
+				//must capture the order here
+			
+				$MyMuseCart		=& MyMuse::getObject('cart','helpers');
+				$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
+				$MyMuseShopper 	=& MyMuse::getObject('shopper','models');
+				$debug = "4.0.0 We have a post:".print_r($_POST,true)."\n\n";
+				$debug .= "We have custom:".print_r($custom,true)."\n\n";
+				if($params->get('my_debug')){
+					MyMuseHelper::logMessage( $debug  );
 				}
-				break;
-		}
-
-		// Update subscription status (this also automatically calls the plugins)
-		$updates = array(
-			'akeebasubs_subscription_id'	=> $id,
-			'processor_key'					=> $data['txn_id'],
-			'state'							=> $newStatus,
-			'enabled'						=> 0
-		);
-		JLoader::import('joomla.utilities.date');
-		if($newStatus == 'C') {
-			$this->fixDates($subscription, $updates);
-		}
-		// In the case of a successful recurring payment, fetch the old subscription's data
-		if($recurring && ($newStatus == 'C') && ($subscription->state == 'C')) {
-			$jNow = new JDate();
-			$jStart = new JDate($subscription->publish_up);
-			$jEnd = new JDate($subscription->publish_down);
-			$now = $jNow->toUnix();
-			$start = $jStart->toUnix();
-			$end = $jEnd->toUnix();
-			// Create a new record for the old subscription
-			$oldData = $subscription->getData();
-			$oldData['akeebasubs_subscription_id'] = 0;
-			$oldData['publish_down'] = $jNow->toSql();
-			$oldData['enabled'] = 0;
-			$oldData['contact_flag'] = 3;
-			$oldData['notes'] = "Automatically renewed subscription on ".$jNow->toSql();
-
-			// Calculate new start/end time for the subscription
-			$allSubs = F0FModel::getTmpInstance('Subscriptions', 'AkeebasubsModel')
-				->paystate('C')
-				->level($subscription->akeebasubs_level_id)
-				->user_id($subscription->user_id);
-			$max_expire = 0;
-			if(count($allSubs)) foreach($allSubs as $aSub) {
-				$jExpire = new JDate($aSub->publish_down);
-				$expire = $jExpire->toUnix();
-				if($expire > $max_expire) $max_expire = $expire;
+					
+				if($params->get('my_registration') == "no_reg"){
+					//it's the guest user
+					$q = "SELECT u.id FROM #__users as u
+  						WHERE
+  						u.username='buyer'";
+				}else{
+					$q = "SELECT u.id from #__users as u
+  						WHERE
+  						u.id='".$result['userid']."'";
+				}
+				$db->setQuery($q);
+				$user_id = $db->loadResult();
+				if(!$user_id){
+					$debug = "4.0.1 We do not have a user id! Must exit. ";
+					$result['error'] = $debug;
+					$debug .= "\n $q \nEmails were \npayer ".$data['payer_email']." user ".$result['user_email']."\n";
+					$debug .= "-------END-------";
+					if($params->get('my_debug')){
+						MyMuseHelper::logMessage( $debug  );
+					}
+					$result['error'] = $debug;
+					return $result;
+				}
+					
+				$cart = array();
+				$cart['idx'] = $data['num_cart_items'];
+				$j=0;
+				for($i=0;$i<$cart['idx']; $i++){
+					$j++;
+					$cart[$i]['quantity'] = $_POST['quantity'.$j];
+					list($name,$sku) = explode(" : ",$_POST['item_name'.$j]);
+					$q = "SELECT * FROM #__mymuse_product WHERE product_sku='$sku'";
+					$db->setQuery($q);
+					$p = $db->loadObject();
+					$cart[$i]['product_id']= $p->id;
+					$cart[$i]['catid']= $p->catid;
+					$cart[$i]['product_physical']= $p->product_physical;
+				}
+				//coupon discount
+				if(isset($custom['coupon_id'])){
+					$cart[$i]['coupon_id']= $custom['coupon_id'];
+					$cart['idx']++;
+				}
+				//shipping?
+				if (isset($custom['order_shipping_id'])){
+					$cart_order = $MyMuseCart->buildOrder( 0 );
+					$cart['ship_method_id'] = $custom['order_shipping_id'];
+					$dispatcher	= JDispatcher::getInstance();
+					$res = $dispatcher->trigger('onCaclulateMyMuseShipping', array($cart_order, $cart['ship_method_id'] ));
+					$MyMuseCart->cart['shipping'] = $res[0];
+				}
+					
+				//save the cart in the session
+				$MyMuseCart->cart = $cart;
+				$session = JFactory::getSession();
+				$session->set("cart",$MyMuseCart->cart);
+			
+			
+				if($params->get('my_debug')){
+					$debug = "4.0.2 We have created a cart: $q  ".print_r($MyMuseCart->cart,true)."\n\n";
+					MyMuseHelper::logMessage( $debug  );
+					$debug = '';
+				}
+					
+				// Shopper
+				$user = JFactory::getUser($user_id);
+				$shopper = $MyMuseShopper->getShopperByUser($user_id);
+				if($params->get('my_registration') == "no_reg"){
+					$shopper->profile = $custom;
+					foreach($custom as $field => $val){
+						$debug = "Assign $val to $field";
+						if($params->get('my_debug')){
+							MyMuseHelper::logMessage( $debug  );
+						}
+						if(!$shopper->set($field,$val)){
+							$debug = $shopper->getError();
+							MyMuseHelper::logMessage( $debug  );
+						}
+					}
+					if(isset($custom['first_name']) || isset($custom['last_name']) ){
+						$shopper->set('name',@$custom['first_name']." ".@$custom['last_name']);
+					}
+				}
+					
+				$session->set("user",$shopper);
+				$debug = "4.0.1 We have created a shopper in the session: $user_id  ".print_r($shopper,true)."\n\n";
+				if($params->get('my_debug')){
+					MyMuseHelper::logMessage( $debug  );
+				}
+					
+				//let's save the order at checkout
+				if(!$order = $MyMuseCheckout->save( )){
+					$msg = $MyMuseCheckout->error;
+					$debug = "4.0.3 !!!!Could not save order after: ".$msg."\n\n";
+					$debug .= "-------END-------";
+					if($params->get('my_debug')){
+						MyMuseHelper::logMessage( $debug  );
+					}
+					$result['error'] = $debug;
+					return $result;
+				}
+				$result['order_number'] = $order->order_number;
+				$debug = "4.0.4 Order saved:  ".$order->order_number."\n\n";
+				if($params->get('my_debug')){
+					MyMuseHelper::logMessage( $debug  );
+				}
+			
+			
 			}
+			
+			// Get the Order Details from the database
+			
+			$query = "SELECT * FROM `#__mymuse_order`
+                    WHERE `order_number`='".$result['order_number']."'";
+			$date = date('Y-m-d h:i:s');
+			$debug = "$date  4.1 $query \n\n";
+			
+			$db->setQuery($query);
+			if(!$this_order = $db->loadObject()){
+				$debug .= "5. !!!!Error no order object: ".$db->_errorMsg."\n\n";
+				$debug .= "-------END-------";
+				if($params->get('my_debug')){
+					MyMuseHelper::logMessage( $debug  );
+				}
+				$result['error'] = $debug;
+				return $result;
+			}else{
+				// update the payment status
+				$result['order_found']  = 1;
+				$result['order_id'] 	= $this_order->id;
+				if (preg_match ("/Completed/", $result['payment_status'])) {
+					$helper = new MyMuseHelper;
+					$helper->orderStatusUpdate($result['order_id'] , "C");
+					$date = date('Y-m-d h:i:s');
+					$debug .= "$date 5. order COMPLETED at PayPal, update in DB\n\n";
+					$result['order_completed'] = 1;
+				}else{
+					// not completed, set order status to
+					MyMuseHelper::orderStatusUpdate($result['order_id'] , "I");
+				}
+			}
+				
+			
+			return $result;
 
-			$duration = $end - $start;
-			$start = max($now, $max_expire);
-			$end = $start + $duration;
-			$jStart = new JDate($start);
-			$jEnd = new JDate($end);
-
-			$updates['publish_up'] = $jStart->toSql();
-			$updates['publish_down'] = $jEnd->toSql();
-
-			// Save the record for the old subscription
-			$table = F0FModel::getTmpInstance('Subscriptions', 'AkeebasubsModel')
-				->getTable();
-			$table->reset();
-			$table->bind($oldData);
-			$table->store();
-		}
-		// Save the changes
-		$subscription->save($updates);
-
-		// Run the onAKAfterPaymentCallback events
-		JLoader::import('joomla.plugin.helper');
-		JPluginHelper::importPlugin('akeebasubs');
-		$app = JFactory::getApplication();
-		$jResponse = $app->triggerEvent('onAKAfterPaymentCallback',array(
-			$subscription
-		));
-
-		return true;
 	}
 
 	/**
