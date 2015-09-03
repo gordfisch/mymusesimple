@@ -44,13 +44,19 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 	public function onBeforeMyMusePayment($shopper, $store, $order, $params, $Itemid=1 )
 	{
 
+		if($params->get('my_debug')){
+			$debug = "#####################\nPayPalPro Express PLUGIN onBeforeMyMusePayment\n";
+			//$debug .= print_r($order,true);
+			MyMuseHelper::logMessage( $debug  );
+		}
+		
 		$rootURL = rtrim(JURI::base(),'/');
 		$subpathURL = JURI::base(true);
 		if(!empty($subpathURL) && ($subpathURL != '/')) {
 			$rootURL = substr($rootURL, 0, -1 * strlen($subpathURL));
 		}
 
-		$callbackUrl = JURI::base().'index.php?option=com_mymuse&task=notify&mode=init&orderid='.$order->id;
+		$callbackUrl = JURI::base().'index.php?option=com_mymuse&task=notify&orderid='.$order->id;
 		$cancelUrl = JURI::base().'index.php?option=com_mymuse&task=paycancel';
 		$requestData = (object)array(
 			'METHOD'							=> 'SetExpressCheckout',
@@ -67,34 +73,44 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			'PAYMENTREQUEST_0_ITEMAMT'			=> $order->order_subtotal,
 			'BUTTONSOURCE'						=> 'Arboreta_SP'
 		);
-		/*
-		 * do we need this?
-		 * 
-			'L_PAYMENTREQUEST_0_NAME0'			=> $level->title,
-			'L_PAYMENTREQUEST_0_QTY0'			=> 1,
-			'L_PAYMENTREQUEST_0_AMT0'			=> sprintf('%.2f',$subscription->net_amount)
-			
-		 */
+
 		$j = 0;
-		$data->ITEMS = 0;
+		$requestData->ITEMS = 0;
 		for ($i=0;$i<$order->idx;$i++) {
 			if(isset($order->items[$i]->title) && $order->items[$i]->title != ''){
 				$item_name = 'L_PAYMENTREQUEST_0_NAME'. $i;
 				$quant_name = 'L_PAYMENTREQUEST_0_QTY'. $i;
 				$amount_name = 'L_PAYMENTREQUEST_0_AMT'. $i;
 		
-				$data->$item_name = $order->items[$i]->title;
-				$data->$quant_name = $order->items[$i]->product_quantity;
-				$data->$amount_name = $order->items[$i]->product_item_price;
+				$requestData->$item_name = $order->items[$i]->title;
+				$requestData->$quant_name = $order->items[$i]->product_quantity;
+				$requestData->$amount_name = $order->items[$i]->product_item_price;
 				$j++;
 			}
-			$data->ITEMS = $j;
+			
 		}
-		if(isset($order->coupon_discount)){
-			$custom .= "&coupon_id=".$order->coupon_id;
-			$data->discount_amount_cart = sprintf("%.2f", $order->coupon_discount);
+		//coupon discount
+		//sprintf("%.2f", $order->coupon_discount);
+			
+		//other discount
+		if(isset($order->discount) && $order->discount > 0){
+		
+			$item_name = 'L_PAYMENTREQUEST_0_NAME'. $i;
+			$quant_name = 'L_PAYMENTREQUEST_0_QTY'. $i;
+			$amount_name = 'L_PAYMENTREQUEST_0_AMT'. $i;
+			$requestData->$item_name = JText::_('MYMUSE_DISCOUNT');
+			$requestData->$quant_name = 1;
+			$requestData->$amount_name = -sprintf("%.2f", $order->discount);
+			$j++;
 		}
-		$data->CUSTOM = $custom;
+			
+		$requestData->ITEMS = $j;
+		
+		//if(isset($order->coupon_discount)){
+		//	$custom .= "&coupon_id=".$order->coupon_id;
+		//	$requestData->discount_amount_cart = sprintf("%.2f", $order->coupon_discount);
+		//}
+		//$requestData->CUSTOM = $custom;
 		
 		if($params->get('my_use_shipping') && isset($order->order_shipping->cost) && $order->order_shipping->cost > 0){
 			$data->PAYMENTREQUEST_0_SHIPPINGAMT 		= $order->order_shipping->cost;
@@ -102,12 +118,8 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		}
 		
 		
-		
-		
-
-		
 		if($params->get('my_debug')){
-			$debug = "#####################\nPayPalPro Express PLUGIN onBeforeMyMusePayment\n";
+			$debug = "\nrequestData\n";
 			$debug .= print_r($requestData,true);
 			MyMuseHelper::logMessage( $debug  );
 		}
@@ -115,7 +127,8 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		$requestContext = stream_context_create(array(
 			'http' => array (
 				'method' => 'POST',
-				'header' => "Connection: close\r\n".
+				'header' => "Content-Type: application/x-www-form-urlencoded\r\n".
+							"Connection: close\r\n".
 							"Content-Length: " . strlen($requestQuery) . "\r\n",
 				'content'=> $requestQuery)
 			));
@@ -126,8 +139,17 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 
 		// Payment Response
 		$responseData = array();
-		$data = array();
+		$requestData = array();
 		parse_str($responseQuery, $responseData);
+		
+		
+		if($params->get('my_debug')){
+			$debug = "\nResponse Data \n";
+			$debug .= print_r($responseData,true);
+			MyMuseHelper::logMessage( $debug  );
+		}
+		
+		
 		if(preg_match('/^SUCCESS/', strtoupper($responseData['ACK']))) {
 			$data['URL'] = $this->getPaypalURL($responseData['TOKEN']);
 		} else {
@@ -137,10 +159,8 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			$error_url = JRoute::_($error_url,false);
 			JFactory::getApplication()->redirect($error_url,$responseData['L_LONGMESSAGE0'],'error');
 		}
-		$debug = print_r($data,true);
-		if($params->get('my_debug')){
-			MyMuseHelper::logMessage( $debug  );
-		}
+		
+		
 		$path = JPluginHelper::getLayoutPath('mymuse', 'payment_paypalproexpress');
 		@ob_start();
 		include $path;
@@ -156,27 +176,35 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		//http://test.joomlamymuse.com/index.php?option=com_mymuse&task=notify&
 		//mode=init&token=EC-9XF8801684577273P&PayerID=DBYA4BH44DMTQ
 		$jinput = JFactory::getApplication()->input;
-		$data = $jinput->get->getArray();
-		
+		$data = $jinput->post->getArray();
+		$get = $jinput->get->getArray();
+		$data = array_merge($data, $get);
 		$db	= JFactory::getDBO();
-		$date = date('Y-m-d h:i:s');
-		$debug = "$date #####################\nPayPalProExpress notify PLUGIN\n";
-		$debug .= "Incoming data = \n".print_r($data,true);
+		
 		if($params->get('my_debug')){
+			$date = date('Y-m-d h:i:s');
+			$debug = "$date #####################\nPayPalProExpress onMyMuseNotify PLUGIN\n";
+			$debug .= "Incoming data = \n".print_r($data,true);
 			MyMuseHelper::logMessage( $debug  );
 		}
 		
-		if($data['mode'] == 'init') {
-			return $this->formCallback($data);
+		if(isset($data['mc_gross'])) {
+			return $this->IPNCallback($data, $params);
 		} else {
-			return $this->IPNCallback($data);
+			return $this->formCallback($data, $params);
 		}
 	}
 
-	private function formCallback($data)
+	private function formCallback($data, $params)
 	{
 		JLoader::import('joomla.utilities.date');
 		$isValid = true;
+		
+		if($params->get('my_debug')){
+			$date = date('Y-m-d h:i:s');
+			$debug = "$date \n#####################\nPayPalProExpress notify FORMCALLBACK\n";
+			MyMuseHelper::logMessage( $debug  );
+		}
 
 
 		if($isValid && isset($data['token']) && isset($data['PayerID']) && isset($data['orderid']) ) {
@@ -205,8 +233,9 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 					'BUTTONSOURCE'						=> 'Arboreta_SP'
 			);
 			
-			$debug = "FormCallBack requestData = \n".print_r(requestData,true);
+			
 			if($params->get('my_debug')){
+				$debug = "FormCallBack requestData = \n".print_r($requestData,true);			
 				MyMuseHelper::logMessage( $debug  );
 			}
 		
@@ -226,6 +255,13 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			// Payment Response
 			$responseData = array();
 			parse_str($responseQuery, $responseData);
+			
+			if($params->get('my_debug')){
+				$debug = "FormCallBack responseData = \n".print_r($responseData,true);
+				MyMuseHelper::logMessage( $debug  );
+			}
+			
+			//errors
 			if(! preg_match('/^SUCCESS/', strtoupper($responseData['ACK']))) {
 				$isValid = false;
                 $error_url = 'index.php?option=com_mymuse&view=cart&layout=cart';
@@ -235,10 +271,10 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 				$isValid = false;
 				$responseData['error'] = "PayPal error code: " . $responseData['PAYMENTINFO_0_ERRORCODE'];
 			}
+
 			
-			$debug = print_r($responseData,true);
-			if($params->get('my_debug')){
-				MyMuseHelper::logMessage( $debug  );
+			if($responseData['PAYMENTINFO_0_PAYMENTSTATUS'] == "Completed" ){
+				MyMuseHelper::orderStatusUpdate($data['orderid'] , "C");
 			}
 
 
@@ -257,15 +293,18 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			return true;
 	}
 
-	private function IPNCallback($data)
+	private function IPNCallback($data, $params)
 	{
 		JLoader::import('joomla.utilities.date');
+		
+		$db	= JFactory::getDBO();
+		$date = date('Y-m-d h:i:s');
 
 				// paypal IPN coming in
-			$debug = "#####################\nPayPalPaymentsPro PLUGIN IPN Response\n";
+			$debug = "#####################\nPayPalProExpress PLUGIN IPN Response\n";
 			
 			$result = array ();
-			$result ['plugin'] = "paypalpaymentspro";
+			$result ['plugin'] = "paypalproexpress";
 			$result ['myorder'] = 0; // must be >0 to trigger that it was this plugin
 			$result ['message_sent'] = 0; // must be >0 or tiggers error
 			$result ['message_received'] = 0; // must be >0 or tiggers error
@@ -323,7 +362,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 				}
 
 			}
-			$result['order_number'] 		= $data['invoice'];
+			$result['order_id'] 			= $data['invoice'];
 			$result['payer_email'] 			= urldecode($data['payer_email']);
 			$result['user_email'] 			= @$custom['email'];
 			$result['userid'] 				= @$custom['userid'];
@@ -367,150 +406,35 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			}
 			
 			//order was verified!
-			$date = date('Y-m-d h:i:s');
-			$debug = "$date  4. order VERIFIED at PayPal\n\n";
 			$result['order_verified'] = 1;
-			$result['payment_status'] = "Completed";
+			//$result['payment_status'] = "Completed";
 			
 			if($params->get('my_debug')){
+				$date = date('Y-m-d h:i:s');
+				$debug = "$date  4. order VERIFIED at PayPal\n\n";
+				$debug .= print_r($result, true);
 				MyMuseHelper::logMessage( $debug  );
 			}
 
-			// SAVE ORDER AFTER
-			if($params->get('my_saveorder') == "after"){
-				//must capture the order here
 			
-				$MyMuseCart		=& MyMuse::getObject('cart','helpers');
-				$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
-				$MyMuseShopper 	=& MyMuse::getObject('shopper','models');
-				$debug = "4.0.0 We have a post:".print_r($_POST,true)."\n\n";
-				$debug .= "We have custom:".print_r($custom,true)."\n\n";
-				if($params->get('my_debug')){
-					MyMuseHelper::logMessage( $debug  );
-				}
-					
-				if($params->get('my_registration') == "no_reg"){
-					//it's the guest user
-					$q = "SELECT u.id FROM #__users as u
-  						WHERE
-  						u.username='buyer'";
-				}else{
-					$q = "SELECT u.id from #__users as u
-  						WHERE
-  						u.id='".$result['userid']."'";
-				}
-				$db->setQuery($q);
-				$user_id = $db->loadResult();
-				if(!$user_id){
-					$debug = "4.0.1 We do not have a user id! Must exit. ";
-					$result['error'] = $debug;
-					$debug .= "\n $q \nEmails were \npayer ".$data['payer_email']." user ".$result['user_email']."\n";
-					$debug .= "-------END-------";
-					if($params->get('my_debug')){
-						MyMuseHelper::logMessage( $debug  );
-					}
-					$result['error'] = $debug;
-					return $result;
-				}
-					
-				$cart = array();
-				$cart['idx'] = $data['num_cart_items'];
-				$j=0;
-				for($i=0;$i<$cart['idx']; $i++){
-					$j++;
-					$cart[$i]['quantity'] = $_POST['quantity'.$j];
-					list($name,$sku) = explode(" : ",$_POST['item_name'.$j]);
-					$q = "SELECT * FROM #__mymuse_product WHERE product_sku='$sku'";
-					$db->setQuery($q);
-					$p = $db->loadObject();
-					$cart[$i]['product_id']= $p->id;
-					$cart[$i]['catid']= $p->catid;
-					$cart[$i]['product_physical']= $p->product_physical;
-				}
-				//coupon discount
-				if(isset($custom['coupon_id'])){
-					$cart[$i]['coupon_id']= $custom['coupon_id'];
-					$cart['idx']++;
-				}
-				//shipping?
-				if (isset($custom['order_shipping_id'])){
-					$cart_order = $MyMuseCart->buildOrder( 0 );
-					$cart['ship_method_id'] = $custom['order_shipping_id'];
-					$dispatcher	= JDispatcher::getInstance();
-					$res = $dispatcher->trigger('onCaclulateMyMuseShipping', array($cart_order, $cart['ship_method_id'] ));
-					$MyMuseCart->cart['shipping'] = $res[0];
-				}
-					
-				//save the cart in the session
-				$MyMuseCart->cart = $cart;
-				$session = JFactory::getSession();
-				$session->set("cart",$MyMuseCart->cart);
-			
-			
-				if($params->get('my_debug')){
-					$debug = "4.0.2 We have created a cart: $q  ".print_r($MyMuseCart->cart,true)."\n\n";
-					MyMuseHelper::logMessage( $debug  );
-					$debug = '';
-				}
-					
-				// Shopper
-				$user = JFactory::getUser($user_id);
-				$shopper = $MyMuseShopper->getShopperByUser($user_id);
-				if($params->get('my_registration') == "no_reg"){
-					$shopper->profile = $custom;
-					foreach($custom as $field => $val){
-						$debug = "Assign $val to $field";
-						if($params->get('my_debug')){
-							MyMuseHelper::logMessage( $debug  );
-						}
-						if(!$shopper->set($field,$val)){
-							$debug = $shopper->getError();
-							MyMuseHelper::logMessage( $debug  );
-						}
-					}
-					if(isset($custom['first_name']) || isset($custom['last_name']) ){
-						$shopper->set('name',@$custom['first_name']." ".@$custom['last_name']);
-					}
-				}
-					
-				$session->set("user",$shopper);
-				$debug = "4.0.1 We have created a shopper in the session: $user_id  ".print_r($shopper,true)."\n\n";
-				if($params->get('my_debug')){
-					MyMuseHelper::logMessage( $debug  );
-				}
-					
-				//let's save the order at checkout
-				if(!$order = $MyMuseCheckout->save( )){
-					$msg = $MyMuseCheckout->error;
-					$debug = "4.0.3 !!!!Could not save order after: ".$msg."\n\n";
-					$debug .= "-------END-------";
-					if($params->get('my_debug')){
-						MyMuseHelper::logMessage( $debug  );
-					}
-					$result['error'] = $debug;
-					return $result;
-				}
-				$result['order_number'] = $order->order_number;
-				$debug = "4.0.4 Order saved:  ".$order->order_number."\n\n";
-				if($params->get('my_debug')){
-					MyMuseHelper::logMessage( $debug  );
-				}
-			
-			
-			}
 			
 			// Get the Order Details from the database
 			
 			$query = "SELECT * FROM `#__mymuse_order`
-                    WHERE `order_number`='".$result['order_number']."'";
-			$date = date('Y-m-d h:i:s');
-			$debug = "$date  4.1 $query \n\n";
+                    WHERE `id`='".$result['order_id']."'";
 			
+			
+			if($params->get('my_debug')){
+				$date = date('Y-m-d h:i:s');
+				$debug = "$date  4.1 $query \n\n";
+				MyMuseHelper::logMessage( $debug  );
+			}
 			$db->setQuery($query);
 			if(!$this_order = $db->loadObject()){
-				$debug .= "5. !!!!Error no order object: ".$db->_errorMsg."\n\n";
-				$debug .= "-------END-------";
+				
 				if($params->get('my_debug')){
+					$debug = "5. !!!!Error no order object: ".$db->_errorMsg."\n\n";
+					$debug .= "-------END-------";
 					MyMuseHelper::logMessage( $debug  );
 				}
 				$result['error'] = $debug;
@@ -519,6 +443,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 				// update the payment status
 				$result['order_found']  = 1;
 				$result['order_id'] 	= $this_order->id;
+				$result['order_number'] 	= $this_order->order_number;
 				if (preg_match ("/Completed/", $result['payment_status'])) {
 					$helper = new MyMuseHelper;
 					$helper->orderStatusUpdate($result['order_id'] , "C");

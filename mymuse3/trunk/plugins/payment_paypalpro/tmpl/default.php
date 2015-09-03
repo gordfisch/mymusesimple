@@ -58,219 +58,30 @@
 				}
 		
 	} ?>
-	<input type="hidden" name="NOTIFYURL" value="<?php echo $data->NOTIFYURL ?>" />
+	<input type="hidden" name="NOTIFYURL" 	id="NOTIFYURL" 		value="<?php echo $data->NOTIFYURL ?>" />
+    <input type="hidden" name="FIRSTNAME" 	id="FIRSTNAME" 		value="<?php echo $data->FIRSTNAME ?>" />
+    <input type="hidden" name="LASTNAME" 	id="LASTNAME"    	value="<?php echo $data->LASTNAME ?>"  />
+    <input type="hidden" name="EMAIL" 		id="EMAIL"  		value="<?php echo $data->EMAIL ?>" />
+    <input type="hidden" name="STREET" 		id="STREET"  		value="<?php echo $data->STREET ?>"  />
+    <input type="hidden" name="STREET2" 	id="STREET2" 		value="<?php echo $data->STREET2 ?>"  />
+    <input type="hidden" name="COUNTRYCODE" id="COUNTRYCODE" 	value="<?php echo $data->COUNTRYCODE ?>"  />
+    <input type="hidden" name="CITY" 		id="CITY" 			value="<?php echo $data->CITY ?>"  />
+    <input type="hidden" name="STATE" 		id="STATE" 			value="<?php echo $data->STATE ?>"  />
+    <input type="hidden" name="ZIP" 		id="ZIP" 			value="<?php echo $data->ZIP ?>"  />
     
-<div id="container" style="width:100%; ">
-    
-    <div style="float:left;width:45%;">
-		<h4><?php echo JText::_('MYMUSE_BILLING_ADDRESS'); ?></h4>
-		<table>
-        <tr>
-            <td><label for="FIRSTNAME" class="control-label" style="margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_FIRSTNAME') ?>
-            </label></td>
-        
-        </tr>
-        <tr>
-           <td colspan="2"><div>
-                <input type="text" name="FIRSTNAME" id="FIRSTNAME" size="10" value="<?php echo $data->FIRSTNAME ?>" />
-            </div></td>
-        
-        </tr>
-        <tr>
-            <td colspan="2">
-            <label for="LASTNAME" class="control-label" style="margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_LASTNAME') ?>
-            </label></td>
-         </tr>    
-         
-        
-        </tr>
-            <td colspan="2"><div class="">
-                <input type="text" name="LASTNAME" id="LASTNAME"   size="10" value="<?php echo $data->LASTNAME ?>"  />
-            </div></td>
-        
-        </tr>
-        
-        </tr>
-            <td colspan="2"><label for="EMAIL" class="control-label" style="smargin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_EMAIL') ?>
-            </label></td>
-        </tr>
-        </tr>
-            <td colspan="2">
-            
-            
-            <div class="">
-                <input type="text" name="EMAIL" id="EMAIL"  value="<?php echo $data->EMAIL ?>" />
-            </div></td>
-        </tr>
-        
-        <tr>
-            <td colspan="2"><label for="STREET" class="control-label" style="width:110px; margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_STREET') ?>
-            </label></td>
-        </tr>
-        </tr>
-            <td colspan="2">
-            <div class="">
-                <input type="text" name="STREET" id="STREET"  value="<?php echo $data->STREET ?>"  />
-            </div></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-				 <div class="">
-                <input type="text" name="STREET2" id="STREET2" value="<?php echo $data->STREET2 ?>"  />
-            </div></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-            <label for="COUNTRYCODE" class="control-label" style="width:110px; margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_COUNTRYCODE') ?>
-            </label></td>
-        </tr>
-        <tr> 
-            <td colspan="2">
-            <div class="">
-               <?php  echo $COUNTRY_SELECT_HTML ?>
-            </div></td>
-        </tr>
-        <tr> 
-            <td colspan="2">
-            <label for="CITY" class="control-label" style="width:110px; margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_CITY') ?>
-            </label></td>
-        </tr>
-            
-        <tr> 
-            <td colspan="2">
-            <div class="">
-                <input type="text" name="CITY" id="CITY" class="input-medium" value="<?php echo $data->CITY ?>"  />
-            </div></td>
-        </tr>
-        
-        <tr> 
-            <td colspan="2">
-            <label for="STATE" class="control-label" style="width:110px; margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_STATE') ?>
-            </label></td>
-        </tr>
-        <tr> 
-            <td colspan="2">
-            <div class="">
-                <?php  echo $STATE_SELECT_HTML ?>
-            </div></td>
-        </tr>
-        <tr> 
-            <td colspan="2">
-            <label for="ZIP" class="control-label" style="width:110px; margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_ZIP') ?>
-            </label></td>
-        </tr>
-        <tr> 
-            <td colspan="2">
-            <div class="">
-                <input type="text" name="ZIP" id="ZIP" class="input-mini" value="<?php echo $data->ZIP ?>"  />
-            </div></td>
-        </tr>
-        </table>
 
-     <?php if($data->SHIPPINGAMT > 0){ ?>   
-        
-        		<h4><?php echo JText::_('MYMUSE_SHIPPING_ADDRESS'); ?></h4>
-		<table>
-        <tr>
-            <td><label for="SHIPTONAME" class="control-label" style="margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_SHIPPING_NAME') ?>
-            </label></td>
-        
-        </tr>
-        <tr>
-           <td><div class="">
-                <input type="text" name="SHIPTONAME" id="SHIPTONAME" size="40" 
-                value="<?php echo $data->SHIPTONAME ?>" />
-            </div></td>
-        
-        </tr>
-        
-        <tr>
-            <td colspan="2"><label for="SHIPTOSTREET" class="control-label" 
-            style="width:110px; margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_SHIPPING_STREET') ?>
-            </label></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-            <div class="">
-                <input type="text" name="SHIPTOSTREET" id="SHIPTOSTREET"  
-                value="<?php echo $data->SHIPTOSTREET ?>"  />
-            </div></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-				 <div class="">
-                <input type="text" name="SHIPTOSTREET2" id="SHIPTOSTREET2" 
-                value="<?php echo $data->SHIPTOSTREET2 ?>"  />
-            </div></td>
-        </tr>
-        <tr>
-            <td colspan="2">
-            <label for="SHIPTOCOUNTRY" class="control-label" style="width:110px; margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_SHIPPING_COUNTRYCODE') ?>
-            </label></td>
-        </tr>
-        <tr> 
-            <td colspan="2">
-            <div class="">
-               <?php  echo $SHIPPING_COUNTRY_SELECT_HTML ?>
-            </div></td>
-        </tr>
-        <tr> 
-            <td colspan="2">
-            <label for="SHIPTOCITY" class="control-label" style="width:110px; margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_SHIPPING_CITY') ?>
-            </label></td>
-        </tr>
-            
-        <tr> 
-            <td colspan="2">
-            <div class="">
-                <input type="text" name="SHIPTOCITY" id="SHIPTOCITY" class="input-medium" 
-                value="<?php echo $data->SHIPTOCITY ?>"  />
-            </div></td>
-        </tr>
-        
-        <tr> 
-            <td colspan="2">
-            <label for="STATE" class="control-label" style="width:110px; margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_SHIPPING_STATE') ?>
-            </label></td>
-        </tr>
-        <tr> 
-            <td colspan="2">
-            <div class="">
-                <?php  echo $SHIPPING_STATE_SELECT_HTML ?>
-            </div></td>
-        </tr>
-        <tr> 
-            <td colspan="2">
-            <label for="SHIPTOZIP" class="control-label" style="width:110px; margin-right:5px;">
-                <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_SHIPPING_ZIP') ?>
-            </label></td>
-        </tr>
-        <tr> 
-            <td colspan="2">
-            <div class="">
-                <input type="text" name="SHIPTOZIP" id="SHIPTOZIP" class="input-mini" 
-                value="<?php echo $data->SHIPTOZIP ?>"  />
-            </div></td>
-        </tr>
-        </table>
-        
-        <?php } ?>
-    </div>
+<?php if($data->SHIPPINGAMT > 0){ ?>   
+    <input type="hidden" name="SHIPTONAME" 		id="SHIPTONAME" 	value="<?php echo $data->SHIPTONAME ?>" />
+    <input type="hidden" name="SHIPTOSTREET" 	id="SHIPTOSTREET"  	value="<?php echo $data->SHIPTOSTREET ?>" />
+    <input type="hidden" name="SHIPTOSTREET2" 	id="SHIPTOSTREET2"  value="<?php echo $data->SHIPTOSTREET2?>"  />
+    <input type="hidden" name="SHIPTOCITY" 		id="SHIPTOCITY" 	value="<?php echo $data->SHIPTOCITY ?>"  />
+    <input type="hidden" name="SHIPTOSTATE" 	id="SHIPTOSTATE" 	value="<?php echo $data->SHIPTOSTATE ?>"  />
+    <input type="hidden" name="SHIPTOZIP" 		id="SHIPTOZIP" 		value="<?php echo $data->SHIPTOZIP ?>"  />
+    <input type="hidden" name="SHIPTOCOUNTRY" 	id="SHIPTOCOUNTRY" 	value="<?php echo $data->SHIPTOCOUNTRY ?>"  />
+    <input type="hidden" name="ZIP" 			id="ZIP" 			value="<?php echo $data->ZIP ?>"  />
+ <?php } ?>
     
-    <div style="float:right;width:45%;">
+    <div style="float:left;width:80%;">
 		<h4><?php echo JText::_('MYMUSE_PAYMENT_METHOD'); ?></h4>
         <table>
         <tr>
@@ -278,9 +89,8 @@
             <label for="CREDITCARDTYPE" class="control-label" style="width: 170px; margin-right: 5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_CCTYPE') ?>
             </label></td>
-       </tr>
-        <tr> 
-            <td colspan="2">
+
+            <td>
             <div class="">
                 <select id="CREDITCARDTYPE" name="CREDITCARDTYPE" class="input-medium">
                     <option value="Visa">Visa</option>
@@ -289,47 +99,40 @@
             </div></td>
        </tr>
         <tr> 
-            <td colspan="2"><label for="ACCT" class="control-label" style="width:110px; margin-right:5px;">
+            <td><label for="ACCT" class="control-label" style="width:110px; margin-right:5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_CC') ?>
             </label></td>
-       </tr>
-        <tr> 
-            <td colspan="2">
+    
+            <td>
             <div class="">
                 <input type="text" name="ACCT" id="ACCT" class="input-medium" />
             </div></td>
        </tr>
         <tr> 
-            <td colspan="2"><label for="EXPDATE" class="control-label" style="width:110px; margin-right:5px;">
+            <td><label for="EXPDATE" class="control-label" style="width:110px; margin-right:5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_EXPDATE') ?>
             </label></td>
-       </tr>
-        <tr> 
-            <td colspan="2">
+            <td>
             <div class="">
                 <?php echo $this->selectExpirationDate() ?>
             </div></td>
        </tr>
         <tr> 
-            <td colspan="2">
+            <td>
             <label for="CVV2" class="control-label" style="width:110px; margin-right:5px;">
                 <?php echo JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_FORM_CVV') ?>
             </label></td>
-       </tr>
-        <tr> 
-            <td colspan="2">
+            <td>
             <div class="">
                 <input type="text" name="CVV2" id="CVV2" class="input-mini" />
             </div></td>
        </tr>
         <tr> 
-            <td colspan="2"> <label for="CVV2" class="control-label" style="width:110px; margin-right:5px;">
-            </label></td>
-       </tr>
-        <tr> 
-            <td colspan="2">
+            <td></td>
+  
+            <td>
             <div class="">
-                <input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" style="width:68px; height:23px;" border="0" name="submit" alt="Paypal Payments Pro" />
+                <input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" style="width:68px; height:23px;" name="submit" alt="Paypal Payments Pro" />
             </div></td>
        </tr>
         </table>

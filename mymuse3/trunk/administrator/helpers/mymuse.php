@@ -265,9 +265,13 @@ class MyMuseHelper extends JObject
 	static function getStore($id=1)
 	{
 		$db = JFactory::getDBO();
-		$query = "SELECT * from `#__mymuse_store` WHERE id='1'";
+		$query = "SELECT * from `#__mymuse_store` WHERE id='$id'";
 		$db->setQuery($query);
 		$store = $db->loadObject();
+		
+		$params = MyMuseHelper::getParams();
+		$store->currency = $params->get('currency');
+		
 		return $store;
 	}
 	
