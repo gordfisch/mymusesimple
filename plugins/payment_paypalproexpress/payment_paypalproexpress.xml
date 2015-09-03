@@ -7,7 +7,7 @@
 	<copyright>Copyright (c)2015 Gord Fisch</copyright>
 	<license>GNU General Public License version 3, or later</license>
 	<creationDate>2015-04-05</creationDate>
-	<version>1.0</version>
+	<version>3.2.2</version>
 	<description>PLG_MYMUSE_PAYPALPROEXPRESS_DESCRIPTION</description>
 	<files>
 		<filename plugin="payment_paypalproexpress">payment_paypalproexpress.php</filename>

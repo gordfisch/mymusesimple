@@ -438,16 +438,19 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			
 			$orderid = '';
 			if(isset($data['INVNUM'])){
-				$query = "SELECT id FROM `#__mymuse_order`
+				$query = "SELECT * FROM `#__mymuse_order`
                     WHERE `order_number`='".$data['INVNUM']."'";
 				$db->setQuery($query);
-				$orderid = $db->loadResult();
+				$order = $db->loadObject();
+				$orderid = $order->id;
+				$notes = $order->notes;
 			
 			}
 			
 			if($params->get('my_registration') == "no_reg"){
 				//update order notes
-
+				// let's leave this for now
+				/**
 				$notes = '';
 				$notes .= "first_name=".$data['FIRSTNAME']."\n";
 				$notes .= "last_name=".$data['LASTNAME']."\n";
@@ -458,25 +461,27 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 				$notes .= "country=".$data['COUNTRYCODE']."\n";
 				$notes .= "region_name=".$data['STATE']."\n";
 				$notes .= "postal_code=".$data['ZIP']."\n";
-				if(isset($data->SHIPTONAME)){
+				if(isset($data['SHIPTONAME'])){
 					list($first,$last) = explode(" ",$data['SHIPTONAME']);
 					$notes .= "shipping_first_name=".$first."\n";
 					$notes .= "shipping_last_name=".$last."\n";
 				}
-				if(isset($data->SHIPTOSTREET)){
+				if(isset($data['SHIPTOSTREET'])){
 					$notes .= "shipping_address1=".$data['SHIPTOSTREET']."\n";
+				}
+				if(isset($data['SHIPTOSTREET2'])){
 					$notes .= "shipping_address2=".$data['SHIPTOSTREET2']."\n";
 				}
-				if(isset($data->SHIPTOCITY)){
+				if(isset($data['SHIPTOCITY'])){
 					$notes .= "shipping_city=".$data['SHIPTOCITY']."\n";
 				}
-				if(isset($data->SHIPTOSTATE)){
+				if(isset($data['SHIPTOSTATE'])){
 					$notes .= "shipping_region=".$data['SHIPTOSTATE']."\n";
 				}
-				if(isset($data->SHIPTOCOUNTRY)){
+				if(isset($data['SHIPTOCOUNTRY'])){
 					$notes .= "shipping_country=".$data['SHIPTOCOUNTRY']."\n";
 				}
-				if(isset($data->SHIPTOZIPY)){
+				if(isset($data['SHIPTOZIP'])){
 					$notes .= "shipping_postal_code=".$data['SHIPTOZIP']."\n";
 				}
 				
@@ -485,6 +490,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 				order_number='".$data['INVNUM']."'";
 				$db->setQuery($query);
 				$db->query();
+				*/
 			}
 			
 			
@@ -493,7 +499,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			//sleep(15);
 		
 			if(!$isValid ){
-				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalpaymentspro&orderid='.$orderid.'&Itemid='.$Itemid, false);
+				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=paycancel&pp=paypalpaymentspro&orderid='.$orderid.'&Itemid='.$Itemid, false);
 				$msg = "Payment Failed: ".$result ['error'];
 			}else{
 				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalpaymentspro&orderid='.$orderid.'&Itemid='.$Itemid, false);
@@ -616,7 +622,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			$date = date('Y-m-d h:i:s');
 			$debug = "$date  4. order VERIFIED at PayPal\n\n";
 			$result['order_verified'] = 1;
-			$result['payment_status'] = "Completed";
+			//$result['payment_status'] = "Completed";
 			
 			if($params->get('my_debug')){
 				MyMuseHelper::logMessage( $debug  );
