@@ -104,7 +104,7 @@ $task		= $this->task;
 		if($order->shopper_group_discount > 0.00){ ?>
 		    <tr>
 		    	<td class="mobile-hide" colspan="<?php echo $order->colspan; ?>"><b><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?></b>
-		    	<?php echo $order->shopper_group_name; ?> <?php echo $order->shopper_group_discount; ?> %</td>
+		    	<?php echo $order->shopper_group_name; ?> <?php echo $user->shopper_group->discount; ?> %</td>
 		        <td class="myshoppergroupdiscount" colspan="<?php echo $order->colspan2; ?>">(<?php echo MyMuseHelper::printMoney($order->shopper_group_discount); ?>)</td>
 		        <?php if(@$order->do_html){ ?>
 		        <td class="mobile-hide">&nbsp;</td>
@@ -231,7 +231,7 @@ $task		= $this->task;
 	  			
 				<div class="pull-left mymuse-button-left"><button class="button uk-button" 
 				type="button" 
-				onclick="location.href='index.php?option=com_mymuse&task=checkout&Itemid=<?php echo $Itemid; ?>'">
+				onclick="location.href='<?php echo JURI::root(); ?>index.php?option=com_mymuse&task=checkout&Itemid=<?php echo $Itemid; ?>'">
 				<?php echo JText::_('MYMUSE_CHECKOUT'); ?></button></div>
 				
 				<div class="pull-right  mymuse-button-right"><button class="button uk-button" 
@@ -246,4 +246,5 @@ $task		= $this->task;
 		if(isset($order->waited)){
 			echo "<!-- waited:".$order->waited." -->";
 		}
+		
 		?>

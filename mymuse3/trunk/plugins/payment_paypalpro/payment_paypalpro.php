@@ -198,13 +198,27 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 				$data->$amount_name = $order->items[$i]->product_item_price;
 				$j++;
 			}
-			$data->ITEMS = $j;
+			
 		}
 		if(isset($order->coupon_discount)){
 			$custom .= "&coupon_id=".$order->coupon_id;
 			$data->discount_amount_cart = sprintf("%.2f", $order->coupon_discount);	
+			$data->$item_name = JText::_('MYMUSE_DISCOUNT');
+			$data->$quant_name = 1;
+			$data->$amount_name = -sprintf("%01.2f", $order->coupon_discount);
+			$j++;
+			$i++;
+		}
+		//plugin discount
+		if(isset($order->discount) && $order->discount > 0){
+			$data->discount_amount_cart = sprintf("%.2f", $order->discount);
+			$data->$item_name = JText::_('MYMUSE_DISCOUNT');
+			$data->$quant_name = 1;
+			$data->$amount_name = -sprintf("%01.2f", $order->discount);
+			$j++;
 		}
 		$data->CUSTOM = $custom;
+		$data->ITEMS = $j;
 	
 		
 		if($params->get('my_use_shipping') && isset($order->order_shipping->cost) && $order->order_shipping->cost > 0){

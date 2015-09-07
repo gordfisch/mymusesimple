@@ -238,7 +238,7 @@ span.discount {
 	text-align: center;
 
 }
-td.myprice, td.mytotal, td.myoriginalsubtotal, td.myshoppergroupdiscount,
+td.myprice, td.myquantity,td.mytotal, td.myoriginalsubtotal, td.myshoppergroupdiscount,
 td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount, 
  td.mytax, td.myshipping, td.mysubtotal, td.mycoupon
 {
