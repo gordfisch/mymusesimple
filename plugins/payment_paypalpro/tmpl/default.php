@@ -32,6 +32,9 @@
 	<input type="hidden" name="DESC" value="<?php echo $data->DESC ?>" />
 	<input type="hidden" name="SHIPPINGAMT" value="<?php echo $data->SHIPPINGAMT ?>" />
 	
+	<?php if(! empty($data->CUSTOM)) { ?>
+	<input type="hidden" name="CUSTOM" value="<?php echo $data->CUSTOM ?>" />
+	<?php } ?>
 	<?php if(! empty($data->INVNUM)) { ?>
 	<input type="hidden" name="INVNUM" value="<?php echo $data->INVNUM ?>" />
 	<?php } ?>

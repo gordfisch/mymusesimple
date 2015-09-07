@@ -90,9 +90,19 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			
 		}
 		//coupon discount
-		//sprintf("%.2f", $order->coupon_discount);
+		if(isset($order->coupon_discount) && $order->coupon_discount > 0){
+		
+			$item_name = 'L_PAYMENTREQUEST_0_NAME'. $i;
+			$quant_name = 'L_PAYMENTREQUEST_0_QTY'. $i;
+			$amount_name = 'L_PAYMENTREQUEST_0_AMT'. $i;
+			$requestData->$item_name = JText::_('MYMUSE_DISCOUNT');
+			$requestData->$quant_name = 1;
+			$requestData->$amount_name = -sprintf("%01.2f", $order->coupon_discount);
+			$j++;
+			$i++;
+		}
 			
-		//other discount
+		//plugin discount
 		if(isset($order->discount) && $order->discount > 0){
 		
 			$item_name = 'L_PAYMENTREQUEST_0_NAME'. $i;
@@ -100,9 +110,12 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			$amount_name = 'L_PAYMENTREQUEST_0_AMT'. $i;
 			$requestData->$item_name = JText::_('MYMUSE_DISCOUNT');
 			$requestData->$quant_name = 1;
-			$requestData->$amount_name = -sprintf("%.2f", $order->discount);
+			$requestData->$amount_name = -sprintf("%01.2f", $order->discount);
 			$j++;
+			$i++;
 		}
+		//shopper_group_discount is figured in price for each item
+
 			
 		$requestData->ITEMS = $j;
 		
