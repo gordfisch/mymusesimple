@@ -195,13 +195,20 @@ class plgMymusePayment_Paypal extends JPlugin
 				$j++;
 			}
 		}
-		if(isset($order->coupon_discount)){
+		//coupon discount
+		if(isset($order->coupon_discount) && $order->coupon_discount > 0){
 			$custom .= "&coupon_id=".$order->coupon_id;
 			$string .= '
 			<input type="hidden" name="discount_amount_cart"
-			value="'. sprintf("%.2f", $order->coupon_discount).'" />
+			value="'. sprintf("%01.2f", $order->coupon_discount).'" />
 			';
-			
+		}
+		//plugin discount
+		if(isset($order->discount) && $order->discount > 0){
+			$string .= '
+			<input type="hidden" name="discount_amount_cart"
+			value="'. sprintf("%01.2f", $order->discount).'" />
+			';
 		}
 		$string .= '<input type="hidden" name="custom" value=\''. $custom.'\' />
 		';
