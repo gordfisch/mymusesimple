@@ -142,6 +142,12 @@ class MyMuseController extends JControllerLegacy
 			$this->setRedirect( 'index.php?option=com_mymuse&task=showcart&Itemid='.$Itemid, $msg );
 			return false;
 		}
+		if($this->jinput->get('return','')){
+			$return = base64_decode($this->jinput->get('return'));
+			$msg = JText::_("MYMUSE_ADDED_TO_CART");
+			$this->setRedirect( $return, $msg);
+			return true;
+		}
 		if($this->params->get('my_use_coupons')){
 			$this->jinput->set('task', 'coupon');
 		}

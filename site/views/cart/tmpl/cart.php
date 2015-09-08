@@ -53,5 +53,5 @@ if(isset($this->payment_form)){
 if(isset($this->checkout_footer)){
 	echo $this->checkout_footer;
 }
-print_pre($this->user);
-print_pre($this->order);
+//print_pre($this->user);
+//print_pre($this->order);
