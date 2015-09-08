@@ -189,9 +189,9 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		$data->ITEMS = 0;
 		for ($i=0;$i<$order->idx;$i++) {
 			if(isset($order->items[$i]->title) && $order->items[$i]->title != ''){
-				$item_name = 'L_NAME'. $i;
-				$quant_name = 'L_QTY'. $i;
-				$amount_name = 'L_AMT'. $i;
+				$item_name = 'L_NAME'. $j;
+				$quant_name = 'L_QTY'. $j;
+				$amount_name = 'L_AMT'. $j;
 				
 				$data->$item_name = $order->items[$i]->title;
 				$data->$quant_name = $order->items[$i]->product_quantity;
@@ -200,9 +200,14 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			}
 			
 		}
-		if(isset($order->coupon_discount)){
+		//coupon discount
+		if(isset($order->coupon_discount) && $order->coupon_discount > 0){
 			$custom .= "&coupon_id=".$order->coupon_id;
-			$data->discount_amount_cart = sprintf("%.2f", $order->coupon_discount);	
+			$data->discount_amount_cart = sprintf("%01.2f", $order->coupon_discount);	
+			
+			$item_name = 'L_NAME'. $j;
+			$quant_name = 'L_QTY'. $j;
+			$amount_name = 'L_AMT'. $j;
 			$data->$item_name = JText::_('MYMUSE_DISCOUNT');
 			$data->$quant_name = 1;
 			$data->$amount_name = -sprintf("%01.2f", $order->coupon_discount);
@@ -212,6 +217,10 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 		//plugin discount
 		if(isset($order->discount) && $order->discount > 0){
 			$data->discount_amount_cart = sprintf("%.2f", $order->discount);
+			
+			$item_name = 'L_NAME'. $j;
+			$quant_name = 'L_QTY'. $j;
+			$amount_name = 'L_AMT'. $j;
 			$data->$item_name = JText::_('MYMUSE_DISCOUNT');
 			$data->$quant_name = 1;
 			$data->$amount_name = -sprintf("%01.2f", $order->discount);
@@ -510,7 +519,7 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			
 			
 			
-			//sleep(15);
+			sleep(5);
 		
 			if(!$isValid ){
 				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=paycancel&pp=paypalpaymentspro&orderid='.$orderid.'&Itemid='.$Itemid, false);
