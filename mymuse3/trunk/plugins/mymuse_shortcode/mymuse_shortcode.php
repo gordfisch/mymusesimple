@@ -82,6 +82,7 @@ class plgContentMymuse_shortcode extends JPlugin
 	{
 		if (JString::strpos($text, '{mymuseaddtocart') !== false)
 		{
+			/*
 			echo '
 <style>
 .btn
@@ -113,6 +114,16 @@ background-color: #33747A;
 }
 </style>
 ';
+*/
+			
+			echo '
+					<style>
+					form {
+						margin: 5px 0px;
+					}
+					</style>
+					';
+			
 			$string = '';
 			$pattern = '/{mymuseaddtocart[\s]*id=([\d]+)[\s]?}/i';
 			
@@ -125,15 +136,21 @@ background-color: #33747A;
 				//print_r($matches);
 				$id 		= $matches[1][0];
 				$string = '
-				<form method="post" action="index.php" name="mymuseform_'.$id.'">
+				<form method="post" action="index.php" id="mymuseform_'.$id.'">
 				<input type="hidden" name="option" value="com_mymuse" />
 				<input type="hidden" name="task" value="addtocart" />
 				
 				<input type="hidden" name="Itemid" value="'.$Itemid.'" />
 				<input type="hidden" name="productid[]" value='.$id.' />
-				<input class="button btn" type="submit" value="'.JText::_('MYMUSE_ADD_TO_CART').'"
-				title="'.JText::_('MYMUSE_ADD_TO_CART').'" />
+				<input type="hidden" name="return" value="'.base64_encode(JURI::current()).'" />
 				</form>
+				<button class="btn-primary btn" 
+						type="submit" 
+						form="mymuseform_'.$id.'"
+						value="'.JText::_('MYMUSE_ADD_TO_CART').'"
+				title="'.JText::_('MYMUSE_ADD_TO_CART').'">
+						'.JText::_('MYMUSE_ADD_TO_CART').'</button>
+				
 				';
 				$text = substr_replace($text, $string, $matches[0][1], strlen($matches[0][0]));
 			}
