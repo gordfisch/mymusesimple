@@ -72,15 +72,15 @@ class plgMymuseShipping_Standard extends JPlugin
             	// see if countries match
             	$good = 0;
             	if($this->params->get("ship_all_countries_$i")){
-            		
+            		print_pre($this->params->get("ship_countries_$i"));
             		//see if there are exceptions
-            		if(isset($shopper->profile['country']) 
-            				&& in_array($shopper->profile['country'], $this->params->get("ship_countries_$i"))){
+            		if(isset($shopper->profile['country'])
+            				&& in_array($shopper->profile['country'], (array)$this->params->get("ship_countries_$i"))){
             			//we have an exeption
             		}else{
             			$good = 1;
             		}
-            	}elseif(isset($shopper->profile['country']) && in_array($shopper->profile['country'], $this->params->get("ship_countries_$i", array()))){
+            	}elseif(isset($shopper->profile['country']) && in_array($shopper->profile['country'], (array)$this->params->get("ship_countries_$i"))){
             		$good = 1;
             	}
            
@@ -121,7 +121,7 @@ class plgMymuseShipping_Standard extends JPlugin
      {
         // loading plugin parameters
         $this->_plugin = JPluginHelper::getPlugin('mymuse', 'shipping_standard');
-
+		$translate = $this->params->get ( 'translate' );
         $cost = 0.00;
 
         $result = new JObject;

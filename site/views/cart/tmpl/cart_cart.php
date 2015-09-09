@@ -1,6 +1,6 @@
 <?php 
 /**
- * @version		$Id:$
+ * @version		$Id$
  * @package		mymuse
  * @copyright	Copyright © 2010 - Arboreta Internet Services - All rights reserved.
  * @license		GNU/GPL
@@ -220,7 +220,10 @@ $task		= $this->task;
 			<?php } ?>
 		
 		<?php } ?>
+		
+		<?php if($order->do_html){ ?>
 		</form>
+		<?php } ?>
 	</table>
 
 		<?php 

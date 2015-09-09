@@ -126,7 +126,8 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		//$requestData->CUSTOM = $custom;
 		
 		if($params->get('my_use_shipping') && isset($order->order_shipping->cost) && $order->order_shipping->cost > 0){
-			$data->PAYMENTREQUEST_0_SHIPPINGAMT 		= $order->order_shipping->cost;
+
+			$requestData->PAYMENTREQUEST_0_SHIPPINGAMT 		= sprintf("%01.2f", $order->order_shipping->cost);
 		
 		}
 		
@@ -566,5 +567,15 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		} else {
 			return trim($this->params->get('apisig',''));
 		}
+	}
+	
+	function onAfterMyMusePayment()
+	{
+		$email_msg = '';
+		if($this->params->get('email_msg')){
+			$email_msg = "Payment PayPalPro:".preg_replace("/\\n/","<br />",$this->params->get('email_msg'));
+		}
+		return $email_msg;
+	
 	}
 }
