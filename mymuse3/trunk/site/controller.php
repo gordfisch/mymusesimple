@@ -461,7 +461,6 @@ class MyMuseController extends JControllerLegacy
                 $dispatcher		= JDispatcher::getInstance();
                 JPluginHelper::importPlugin('mymuse');
                 $results = $dispatcher->trigger('onCaclulateMyMuseShipping', array($order, $shipmethodid ));
-
 				$this->MyMuseCart->cart['shipping'] = $results[0];
 
 			}

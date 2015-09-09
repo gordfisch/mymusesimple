@@ -39,6 +39,16 @@
 				  <option value="0">file_get_contents</option>
 				  <option value="1">curl</option>
 				</field>
+				
+				<field name="email_msg" 
+        type="editor" 
+        filter="raw" 
+        width="200px"
+        rows="35" 
+        cols="35" 
+        default="" 
+        label="MYMUSE_MSG_LABEL" 
+        description="MYMUSE_MSG_DESC" />
 			</fieldset>
 		</fields>
 	</config>

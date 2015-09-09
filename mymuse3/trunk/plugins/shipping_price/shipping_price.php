@@ -188,7 +188,6 @@ class plgMymuseShipping_Price extends JPlugin
 		}else{
 			$shipping_total = $amount;
 		}
-		
 		return $shipping_total;
 	}
 } ?>

@@ -207,7 +207,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		if(isset($order->discount) && $order->discount > 0){
 			$string .= '
 			<input type="hidden" name="discount_amount_cart"
-			value="'. sprintf("%01.2f", $order->discount).'" />
+			value="'. sprintf("%01.2f", $order->discount ).'" />
 			';
 		}
 		$string .= '<input type="hidden" name="custom" value=\''. $custom.'\' />
