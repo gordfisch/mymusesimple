@@ -7,7 +7,7 @@
 	<copyright>Copyright (c)2015 Arboreta Internet Services</copyright>
 	<license>GNU General Public License version 3, or later</license>
 	<creationDate>2015-04-01</creationDate>
-	<version>3.3.1</version>
+	<version>3.3.2</version>
 	<description>PLG_MYMUSE_PAYPALPAYMENTSPRO_DESCRIPTION</description>
 	<files>
 		<filename plugin="payment_paypalpro">payment_paypalpro.php</filename>
@@ -52,4 +52,8 @@
 			</fieldset>
 		</fields>
 	</config>
+<updateservers>
+    <server type="extension" priority="1"
+        name="Plug MyMuse Payment PayPalPro">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=71</server>
+</updateservers>
 </extension>
