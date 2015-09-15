@@ -116,22 +116,34 @@ class mymuseViewCategories extends JViewLegacy
 	}
 	
 	function _getProductCount($item){
+		$catid[] = $item->id;
+		$children = $item->getChildren();
+		foreach($children as $child){
+			$catid[] = $child->id;
+		}
+		$catids = implode(",",$catid);
+
 		$db = JFactory::getDBO();
 		$nullDate	= $db->Quote($db->getNullDate());
 		$nowDate	= $db->Quote(JFactory::getDate()->toSql());
 		
-		$query = "SELECT count(*) as total from #__mymuse_product as p
+		$query = "SELECT  p.title from #__mymuse_product as p
 		LEFT JOIN #__mymuse_product_category_xref as x
 		ON p.id=x.product_id
 		WHERE
-		x.catid=".$item->id." AND
+		(x.catid IN ($catids) OR p.catid IN ($catids) )
+		
+		AND
 		(p.publish_up = ".$nullDate." OR p.publish_up <= ".$nowDate.")
 		AND (p.publish_down = ".$nullDate." OR p.publish_down >= ".$nowDate.")
-		AND p.parentid=0
+		AND p.parentid=0 GROUP BY p.id
 		";
+
 	
 		$db->setQuery($query);
-		$total = $db->loadResult();
+		$res = $db->loadObjectList();
+		//print_pre($res); 
+		$total = count($res);
 		return $total;
 		
 	}

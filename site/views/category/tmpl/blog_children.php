@@ -74,7 +74,7 @@ if(!$total_shown){
 			<br />
 			<?php if ( $this->params->get('show_cat_num_articles', 1)) : ?>
 			<span class="item_products">
-					<?php echo JText::_('MYMUSE_NUM_ITEMS') ; ?> <?php echo $child->getNumItems(true); ?>
+					<?php echo JText::_('MYMUSE_NUM_ITEMS') ; ?> <?php echo $child->product_total; ?>
 			</span>
 			<?php endif ; ?>
 
