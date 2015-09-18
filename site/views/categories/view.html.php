@@ -116,6 +116,7 @@ class mymuseViewCategories extends JViewLegacy
 	}
 	
 	function _getProductCount($item){
+
 		$catid[] = $item->id;
 		$children = $item->getChildren();
 		foreach($children as $child){
@@ -144,6 +145,7 @@ class mymuseViewCategories extends JViewLegacy
 		$res = $db->loadObjectList();
 		//print_pre($res); 
 		$total = count($res);
+
 		return $total;
 		
 	}
