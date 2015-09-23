@@ -54,6 +54,7 @@
 			<option value="p.product_made_date">MYMUSE_PRODUCT_MADE_DATE</option>
 			<option value="p.file_downloads">MYMUSE_MOST_DOWNLOADS</option>
 			<option value="pa.hits">MYMUSE_MOST_HITS</option>
+			<option value="p.featured">MYMUSE_FEATURED</option>
 			<option value="s.sales">MYMUSE_MOST_SALES_ORDER</option>
 			<option value="rand()">MYMUSE_RANDOM</option>
 		</field>
