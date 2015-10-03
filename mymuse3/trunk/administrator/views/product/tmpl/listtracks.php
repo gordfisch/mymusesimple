@@ -169,7 +169,7 @@ Joomla.orderTable = function()
 	if(count($this->tracks) > 0){ 
 
 		?>
-		<table id="articleList" class="table table-striped">
+		<table id="articleList" class="table table-striped" border="1">
 			<thead>
 				<tr>
 
@@ -280,8 +280,7 @@ Joomla.orderTable = function()
 					
 					<td><div id="product_player"><?php echo $file->stream; ?></div></td>
 					<td  align="center">
-						<?php echo stripslashes($file->file_name); 
-						echo $params->get('my_encode_filenames',0)?>
+						<?php echo stripslashes($file->file_name); ?>
 						<?php if($params->get('my_encode_filenames',0)){ ?>
 						<p class="smallsub">
 						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($file->title_alias));?></p>
