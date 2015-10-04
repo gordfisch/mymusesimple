@@ -168,10 +168,10 @@ class myMuseViewProduct extends JViewLegacy
 		}
 		
 		// process the text with content plugins. You have to use $item->text in the template
-		
+		$item->text = $item->introtext; 
 		JPluginHelper::importPlugin('content');
 		$dispatcher->trigger('onContentPrepare', array ('com_content.article', &$item, &$this->params, $offset));
-		
+		$item->introtext = $item->text;
 
 		//Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($this->item->params->get('pageclass_sfx'));
