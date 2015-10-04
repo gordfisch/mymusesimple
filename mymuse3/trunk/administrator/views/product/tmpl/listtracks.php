@@ -169,7 +169,7 @@ Joomla.orderTable = function()
 	if(count($this->tracks) > 0){ 
 
 		?>
-		<table id="articleList" class="table table-striped" border="1">
+		<table id="articleList" class="table table-striped">
 			<thead>
 				<tr>
 

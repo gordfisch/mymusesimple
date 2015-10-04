@@ -50,6 +50,10 @@ div.cat-items ul {
 	padding: 0 0 0 20px;
 	margin: 5px 0 5px 0;
 }
+/* some templates force all list items to have display: inline" */
+div.cat-items ul li {
+    display: block;
+}
 
 /* blog layouts */
 .blog {
