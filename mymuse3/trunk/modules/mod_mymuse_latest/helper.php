@@ -29,10 +29,59 @@ class modMyMuseLatestHelper
 		$document 		= JFactory::getDocument();
 
 		$type = $params->get('type_shown','tracks');
+		$product_ids = $params->get('product_ids', 0);
 		$maximum_shown = $params->get('maximum_shown',5);
 		$datenow = JFactory::getDate();
 		$search = $params->get('type_search');
-		if($type =="albums"){
+		
+		if($product_ids && $type =="albums"){
+			$query = 'SELECT p.id, p.title as product_name, 
+					p.list_image, p.parentid, p.hits,
+			c.id as artist_id, c.title as artist_name, s.sales as sales
+			from #__mymuse_product as p
+			LEFT JOIN #__categories as c on c.id=p.catid
+			
+			LEFT JOIN (SELECT sum(quantity) as sales, x.product_name, x.product_id FROM
+			(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
+			i.product_name, CASE WHEN parentid > 0 THEN parentid ELSE product_id END as all_id
+			FROM #__mymuse_order_item as i
+			LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
+			GROUP BY i.product_id )
+			as x GROUP BY x.all_id) as s ON s.product_id = p.id
+			
+			WHERE c.published=1
+			AND p.state=1
+			AND ( p.publish_up = '.$db->Quote($nullDate).' OR p.publish_up <= '.$db->Quote($now).' )
+			AND ( p.publish_down = '.$db->Quote($nullDate).' OR p.publish_down >= '.$db->Quote($now).' )
+			AND p.id IN('.$product_ids.')';
+			
+		}elseif($product_ids && $type =="tracks"){
+			
+			//type = tracks
+			$query = 'SELECT p.id, p.title, p.file_preview, p.file_preview_2, p.file_preview_3, p.parentid, p.file_downloads, p.file_type,
+			pa.title as product_name, pa.list_image, pa.hits,
+			c.id as artist_id, c.title as artist_name, s.sales as sales
+			from #__mymuse_product as p
+			LEFT JOIN #__categories as c on c.id=p.catid
+			LEFT JOIN #__mymuse_product as pa on pa.id=p.parentid
+			
+			LEFT JOIN (SELECT sum(i.product_quantity) as sales, i.product_id, p.parentid,
+			i.product_name, CASE WHEN parentid > 0 THEN parentid ELSE product_id END as all_id
+			FROM #__mymuse_order_item as i
+			LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
+			GROUP BY i.product_id ) as s ON s.product_id = p.id
+			
+			WHERE c.published=1
+			AND p.product_downloadable=1
+			AND p.state=1
+			AND ( p.publish_up = '.$db->Quote($nullDate).' OR p.publish_up <= '.$db->Quote($now).' )
+			AND ( p.publish_down = '.$db->Quote($nullDate).' OR p.publish_down >= '.$db->Quote($now).' )
+			AND p.parentid > 0
+			AND pa.state=1
+			AND p.id IN('.$product_ids.');
+			';
+			
+		}elseif($type =="albums"){
 			if($search == "pa.hits"){
 				$search = "p.hits";
 			}
@@ -89,7 +138,7 @@ class modMyMuseLatestHelper
 					
 			ORDER BY '.$search.' DESC, artist_name ASC LIMIT 0,'.$maximum_shown;
 		}
-		//echo $query;
+		echo $query;
 		$db->setQuery($query);
 		if(!$results = $db->loadObjectList()){
 			return $results;

@@ -58,6 +58,12 @@
 			<option value="s.sales">MYMUSE_MOST_SALES_ORDER</option>
 			<option value="rand()">MYMUSE_RANDOM</option>
 		</field>
+		<field name="product_ids" 
+			type="text" 
+			default="" 
+			label="MYMUSE_PRODUCT_IDS" 
+			description="MYMUSE_PRODUCT_IDS_DESC" />
+		
 		<field name="show_number" type="list" default="0" label="PARAM_TRACK_SHOW_NUMBER" description="PARAM_TRACK_SHOW_NUMBER_DESC">
 			<option value="1">JYES</option>
 			<option value="0">JNO</option>
