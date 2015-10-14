@@ -138,7 +138,7 @@ class modMyMuseLatestHelper
 					
 			ORDER BY '.$search.' DESC, artist_name ASC LIMIT 0,'.$maximum_shown;
 		}
-		echo $query;
+		//echo $query;
 		$db->setQuery($query);
 		if(!$results = $db->loadObjectList()){
 			return $results;
