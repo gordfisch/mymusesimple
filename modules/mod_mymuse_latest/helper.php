@@ -151,7 +151,7 @@ class modMyMuseLatestHelper
 			$results[$i]->flash = '';
 			
 			if($params->get('type_shown') == "tracks" && $results[$i]->file_preview){
-				
+				$trs = array();
 				
 				$artist_alias = MyMuseHelper::getArtistAlias($results[$i]->parentid,'1');
 				$album_alias = MyMuseHelper::getAlbumAlias($results[$i]->parentid);
