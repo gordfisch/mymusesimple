@@ -217,10 +217,15 @@ class plgMymusePayment_Paypal extends JPlugin
 			$string .= '<input type="hidden" name="shipping_1" value="'. $order->order_shipping->cost.'" />
 			';
 		}
+		if($params->get('my_use_image', 0)){
+			$button_string = '<img src="https://www.paypalobjects.com/webstatic/en_US/i/buttons/buy-logo-large.png" alt="Buy now with PayPal" />';
+		}else{
+			$button_string = JText::_('MYMUSE_PAY_AT_PAYPAL');
+		}
 		$string .= '
 		<div id="paypal_form" class="pull-left">
 			<button class="button uk-button " 
-			type="submit" >'. JText::_('MYMUSE_PAY_AT_PAYPAL').'</button>
+			type="submit" >'. $button_string.'</button>
 		</div>
 		</form>
 		';

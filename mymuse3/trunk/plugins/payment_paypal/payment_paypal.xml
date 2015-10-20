@@ -57,6 +57,15 @@
         <field name="my_paypal_sandbox_email" type="text" size="35" default="" label="MYMUSE_PAYPAL_SANDBOX_EMAIL_LABEL" description="MYMUSE_PAYPAL_SANDBOX_EMAIL_DESC"/>
         <field name="my_paypal_sandbox_customer_email" type="text" size="35" default="" label="MYMUSE_PAYPAL_SANDBOX_CUSTOMER_EMAIL_LABEL" description="MYMUSE_PAYPAL_SANDBOX_CUSTOMER_EMAIL_DESC"/>
         <field type="spacer" />
+        <field name="my_use_image" 
+        	type="radio" 
+        	default="0" 
+        	label="MYMUSE_PAYPAL_USE_IMAGE" 
+        	description="MYMUSE_PAYPAL_USE_IMAGE_DESC">
+		  <option value="0">JNO</option>
+		  <option value="1">JYES</option>
+		</field>
+        <field type="spacer" />
         <field name="email_msg" 
         type="editor" 
         filter="raw" 
