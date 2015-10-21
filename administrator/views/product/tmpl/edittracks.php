@@ -110,6 +110,22 @@ JHTML::_('behavior.tooltip');
 				</div>
 			</div>
 		<?php } ?>
+		
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('price'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('price'); ?>
+				</div>
+			</div>
+				
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('product_discount'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('product_discount'); ?>
+				</div>
+			</div>
 				
 
 			
@@ -263,21 +279,7 @@ JHTML::_('behavior.tooltip');
 				</div>
 			</div>
 				
-			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('price'); ?>
-				</div>
-				<div class="controls">
-				<?php echo $this->form->getInput('price'); ?>
-				</div>
-			</div>
-				
-			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('product_discount'); ?>
-				</div>
-				<div class="controls">
-				<?php echo $this->form->getInput('product_discount'); ?>
-				</div>
-			</div>
+
 		</fieldset>
 <?php echo JHtml::_('bootstrap.endTab'); ?>
 

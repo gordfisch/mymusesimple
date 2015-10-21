@@ -530,6 +530,18 @@ INSERT IGNORE INTO `#__mymuse_order_status` (`id`, `code`, `name`, `ordering`) V
 (5, 'I', 'Invalid', 5);
 
 -- --------------------------------------------------------
+CREATE TABLE IF NOT EXISTS `#__mymuse_product_file` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `product_id` int(11) NOT NULL DEFAULT '0',
+  `file_length` varchar(32) NOT NULL,
+  `file_time` varchar(32) NOT NULL,
+  `file_name` varchar(255) NOT NULL,
+  `file_downloads` int(11) NOT NULL DEFAULT '0',
+  `file_type` varchar(32) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_name` (`file_name`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
 
 -- 
 -- Table structure for table `#__mymuse_product`

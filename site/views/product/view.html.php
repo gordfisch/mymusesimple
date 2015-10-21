@@ -177,6 +177,18 @@ class myMuseViewProduct extends JViewLegacy
 		$this->pageclass_sfx = htmlspecialchars($this->item->params->get('pageclass_sfx'));
 
 		$this->_prepareDocument();
+		
+		$recommends = $this->get('Recommended');
+		if($recommends){
+			$this->assignRef('recommends', $recommends);
+				
+			ob_start();
+			parent::display('recommends');
+			$recommends_display = ob_get_contents();
+			ob_end_clean();
+			$this->assignRef('recommends_display', $recommends_display);
+				
+		}
 
 		parent::display($tpl);
 	}

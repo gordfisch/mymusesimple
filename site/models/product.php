@@ -957,4 +957,59 @@ class MyMuseModelProduct extends JModelItem
   		JError::raiseWarning( 'SOME_ERROR_CODE', JText::sprintf('MYMUSE_INVALID_RATING', $rate), "MyMuseModelProduct::storeVote($rate)");
   		return false;
   	}
+  	
+  	/**
+  	 * getRecommended
+  	 */
+  	function getRecommended()
+  	{
+  		$db 		= JFactory::getDBO();
+  		$params 	= MyMuseHelper::getParams();
+  		$prods 		= array();
+  		$recommends = array();
+  		$productid = $this->getState('product.id');
+ 
+  		$query = "SELECT * FROM #__mymuse_product_recommend_xref
+				WHERE product_id = '".$productid."'
+						ORDER BY RAND()";
+  		$db->setQuery($query);
+  		$res = $db->loadObjectList();
+  		if(count($res)){
+  			foreach($res as $r){
+  				$prods[] = $r->recommend_id;
+  			}
+  		}
+  				
+
+  		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'product.php');
+  		$prods = array_unique($prods);
+  		$num = min($params->get('my_max_recommended'),count($prods));
+  	
+  		for($i = 0; $i<$num; $i++){
+  	
+  			$query = "SELECT * FROM #__mymuse_product
+					WHERE id = '".$prods[$i]."'";
+  			$db->setQuery($query);
+  	
+  			$recommends[$i] = $db->loadObject();
+  			// Build URL
+  			if($recommends[$i]->parentid){
+  				$parent = new MymuseTableproduct($db);
+  				$parent->load($recommends[$i]->parentid);
+  				$recommends[$i]->parent = $parent;
+  				$recommends[$i]->list_image = $recommends[$i]->parent->list_image;
+  				$recommends[$i]->detail_image = $recommends[$i]->parent->detail_image;
+  				$pid = $recommends[$i]->parentid;
+  				$aid = $recommends[$i]->parent->catid;
+  			} else {
+  				$pid = $recommends[$i]->id;
+  				$aid = $recommends[$i]->catid;
+  			}
+  	
+  			$recommends[$i]->url = myMuseHelperRoute::getProductRoute ( $pid, $aid );
+  			$recommends[$i]->cat_url = myMuseHelperRoute::getCategoryRoute ( $aid );
+  		}
+  		return $recommends;
+  	}
+  	 
 }
