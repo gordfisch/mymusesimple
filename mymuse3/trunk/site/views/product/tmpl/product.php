@@ -713,6 +713,14 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 <div style="clear: both"></div>
 <!--END FULL TEXT -->
 
+<?php if($this->recommends_display){ ?>
+<!-- START RECOMMENDS -->
+
+<?php echo $this->recommends_display; ?>
+
+<!-- END RECOMMENDS -->
+<?php } ?>
+
 <?php echo $this->item->event->afterDisplayProduct; ?>
 
 <!-- COMMENTS -->

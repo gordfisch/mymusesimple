@@ -151,6 +151,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		<input type="hidden" name="notify_url"      value="'. JURI::base().'index.php?option=com_mymuse&task=notify" />
 		
 		<input type="hidden" name="cmd"             value="_cart" />
+		<input type="hidden" name="upload"          value="1" />
 		<input type="hidden" name="business"        value="'. $merchant_email.'" />
 		
 		<input type="hidden" name="upload"          value="1" />
