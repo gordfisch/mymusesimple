@@ -83,6 +83,10 @@ defined('_JEXEC') or die('Restricted access');
 		        	 <?php echo $order->items[$i]->parent->title; ?> :
 		        <?php } ?>
 		        <?php echo $order->items[$i]->title; ?>
+		        
+		        <?php if(isset($order_items[$i]->file_name)){ ?>
+		        	 :<br /><?php echo $order_items[$i]->file_name; ?> 
+		        <?php } ?>
 				
 				</td>
 		        <?php if($params->get("my_show_sku")){ ?>

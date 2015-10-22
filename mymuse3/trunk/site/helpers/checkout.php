@@ -246,8 +246,12 @@ class MyMuseCheckout
 			$this->_db->setQuery($query);
 			$prod = $this->_db->loadObject();
 			$parentid = $prod->parentid;
-				
-				
+			
+			$jason = json_decode($cart[$i]['product']->file_name);
+			if(is_array($jason)){
+				$cart[$i]['product']->file_name = $jason[$cart[$i]["variation"]]->file_name;
+			}
+		
 			$order->items[$i] = new MymuseTableorderitem( $this->_db );
 			$order->idx++;
 			$order->items[$i]->order_id = $order->id;
@@ -272,13 +276,14 @@ class MyMuseCheckout
 				if($cart[$i]['product']->file_name != ''){
 					$downloadable++;
 				}
-
 			}
+		
 			// Store the item to the database
 			if (!$order->items[$i]->store()) {
 				JError::raiseError( 500, $this->_db->stderr() );
 				return false;
 			}
+
 			// more fields for printing
 			$order->items[$i]->product_sku = $prod->product_sku;
 			$order->items[$i]->title = $cart[$i]['product']->title;

@@ -400,7 +400,14 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 		    }
 		        
 
-			$string .= $this->item->items[$i]->product_name .'</td>
+			$string .= $this->item->items[$i]->product_name;
+		
+			if($this->item->items[$i]->file_name){
+				$string .= ":<br />".$this->item->items[$i]->file_name;
+			}
+		
+		
+			$string .=	'</td>
 		        ';
 		    if($this->params->get("my_show_sku")){ 
                 $string .= '

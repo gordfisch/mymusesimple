@@ -211,7 +211,7 @@ JHTML::_('behavior.tooltip');
 
 	<legend><?php echo JText::_('MYMUSE_TRACKS'); ?></legend>
 	<div class="pull-left span5">
-
+		<!--  
 			<div class="control-group">
 				<div class="control-label">
 				<?php echo JText::_( 'MYMUSE_UPLOAD_NEW_FILE' ); ?>
@@ -223,7 +223,8 @@ JHTML::_('behavior.tooltip');
 				
 				</div>
 			</div>
-		<?php //if(!$this->params->get('my_encode_filenames')){ ?>
+		-->
+	
 			<div class="control-group">
 				<div class="control-label">
 				<?php echo JText::_( 'MYMUSE_SELECT_FILE' ); ?>
@@ -234,7 +235,7 @@ JHTML::_('behavior.tooltip');
 				<?php echo $lists['select_file']; ?>
 				</div>
 			</div>
-		<?php //} ?>
+	
 		
 
 			<div class="control-group">
@@ -278,8 +279,20 @@ JHTML::_('behavior.tooltip');
 				<?php echo $this->form->getInput('file_downloads'); ?>
 				</div>
 			</div>
-				
-
+			<input type="hidden" name="current_title_alias[0]" value="<?php echo stripslashes($item->title_alias) ?>" />
+			
+			VARIATION
+			<div class="control-group">
+				<div class="control-label">
+				<?php echo JText::_( 'MYMUSE_SELECT_FILE' ); ?>
+				</div>
+				<div class="controls">
+				</div>
+				<div class="controls">
+				<?php echo $lists['select_file']; ?>
+				</div>
+			</div>
+			
 		</fieldset>
 <?php echo JHtml::_('bootstrap.endTab'); ?>
 
@@ -367,7 +380,7 @@ JHTML::_('behavior.tooltip');
 		<input type="hidden" name="current_preview" value="<?php echo stripslashes($item->file_preview) ?>" />
 		<input type="hidden" name="current_preview_2" value="<?php echo stripslashes($item->file_preview_2) ?>" />
 		<input type="hidden" name="current_preview_3" value="<?php echo stripslashes($item->file_preview_3) ?>" />
-		<input type="hidden" name="current_title_alias" value="<?php echo stripslashes($item->title_alias) ?>" />
+		
 		<input type="hidden" name="view" value="product" />
 		<input type="hidden" name="id" value="<?php echo $item->id; ?>" />
 		<input type="hidden" name="jform[version]" value="<?php echo $item->version; ?>" />

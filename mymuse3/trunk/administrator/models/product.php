@@ -865,7 +865,7 @@ class MymuseModelproduct extends JModelAdmin
 				$myfiles[] = JHTML::_('select.option',  $file, stripslashes($file) );
 		}
 		$current = $this->_item->file_name;
-		$lists['select_file'] = JHTML::_('select.genericlist',  $myfiles, 'select_file', 'class="inputbox" size="1" ', 'value', 'text', $current);
+		$lists['select_file'] = JHTML::_('select.genericlist',  $myfiles, 'select_file[]', 'class="inputbox" size="1" ', 'value', 'text', $current);
 		
 		// for display purposes
 		$lists['preview_dir'] = ($this->_params->get('my_use_s3')? '' : JPATH_ROOT.DS).$this->_params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
