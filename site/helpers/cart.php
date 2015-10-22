@@ -80,6 +80,7 @@ class MyMuseCart {
     $parentid 		= $jinput->get('parentid',  0, 'INT');
     $productid 		= $jinput->get('productid',array(), 'ARRAY');
     $quantity 		= $jinput->get('quantity',array(), 'ARRAY');
+    $variation 		= $jinput->get('variation',array(), 'ARRAY');
     $item_quantity 	= $jinput->get('item_quantity',array(), 'ARRAY');
    // $Itemid = $jinput->get('Itemid',  0,'INT');
 
@@ -117,7 +118,7 @@ class MyMuseCart {
     }
     reset($productid);
 
-    // FOR EACH PRODUCT  IN ARRAY
+    // FOR EACH PRODUCT IN ARRAY
 
     while(list($key,$val)=each($productid)) {
     	if(!$val){ continue; }
@@ -126,7 +127,6 @@ class MyMuseCart {
      	if(!isset($quantity[$val])){
          	$quantity[$val] =1;
      	}
-
      	
      	$quant = $quantity[$val];
      	$category_id = $catid[$val];
@@ -167,9 +167,10 @@ class MyMuseCart {
         }
 
         $updated = 0;
-        // Check for duplicate and do not add to current quantity
+        // Check for duplicate and add to current quantity
         for ($i=0;$i<$this->cart["idx"];$i++) {
-              if (@$this->cart[$i]["product_id"] == $product_id) {
+              if (@$this->cart[$i]["product_id"] == $product_id && 
+              		@$variation[$product_id] == @$this->cart[$i]["variation"]) {
                     $updated = 1;
                     $this->cart[$i]["quantity"] += $quantity[$val];
               }
@@ -181,6 +182,8 @@ class MyMuseCart {
             $this->cart[$this->cart["idx"]]["product_id"] = $product_id;
             $this->cart[$this->cart["idx"]]["catid"] = $category_id;
             $this->cart[$this->cart["idx"]]["product_physical"] = $product_physical;
+            $this->cart[$this->cart["idx"]]["variation"] = (isset($variation[$product_id]))? $variation[$product_id] : '';
+            
             $this->cart["idx"]++;
         }
     } // end of while loop
@@ -200,6 +203,7 @@ class MyMuseCart {
             $fixed[$j]["product_id"] = $this->cart[$i]["product_id"];
             $fixed[$j]["catid"] = $this->cart[$i]["catid"];
             $fixed[$j]["product_physical"] = @$this->cart[$i]["product_physical"];
+            $fixed[$j]["variation"] = $this->cart[$i]["variation"];
             $j++;
             $fixed['idx']++;
     }
@@ -234,6 +238,7 @@ class MyMuseCart {
     	$parentid 	= $jinput->get('parentid',  0, 'INT');
     	$productid 	= $jinput->get('productid',array(), 'ARRAY');
     	$quantity 	= $jinput->get('quantity',array(), 'ARRAY');
+    	$variation 	= $jinput->get('variation',array(), 'ARRAY');
   
     	$Itemid 	= $jinput->get('Itemid',  0, 'INT');
 
@@ -328,6 +333,7 @@ class MyMuseCart {
         	$fixed[$j]["product_id"] = $this->cart[$i]["product_id"];
         	$fixed[$j]["catid"] = $this->cart[$i]["catid"];
         	$fixed[$j]["product_physical"] = $this->cart[$i]["product_physical"];
+        	$fixed[$j]["variation"] = $this->cart[$i]["variation"];
         	$j++;
         	$fixed['idx']++;
         }
@@ -497,6 +503,7 @@ class MyMuseCart {
   	
   	protected function _buildOrder($edit =  true )
   	{
+
 		$app 		= JFactory::getApplication();
   		$jinput 	= $app->input;
     	$params 	= MyMuseHelper::getParams();
@@ -557,7 +564,10 @@ class MyMuseCart {
 			}
 
 			$order->items[$i] = $this->getProduct($this->cart[$i]['product_id']);
-	
+			$jason = json_decode($order->items[$i]->file_name);
+			if(is_array($jason)){
+				$order->items[$i]->file_name = $jason[$this->cart[$i]["variation"]]->file_name;
+			}
 			$order->items[$i]->product_id = $order->items[$i]->id;
 			$order->items[$i]->order_item_total = 0.00;
 			$order->items[$i]->not_in_total = 0;

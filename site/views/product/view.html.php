@@ -40,6 +40,7 @@ class myMuseViewProduct extends JViewLegacy
 		
 
 		$this->item		= $this->get('Item');
+		//print_pre($this->item);
 		if($this->item->parentid > 0){
 			//send them to the parent
 			$item->route = MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language);
@@ -175,7 +176,20 @@ class myMuseViewProduct extends JViewLegacy
 
 		//Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($this->item->params->get('pageclass_sfx'));
-
+		
+		//if multiple variations, create select box
+		for($i=0; $i < count($item->tracks); $i++){
+			if(is_array($item->tracks[$i]->file_name)){
+				$item->tracks[$i]->variation_select = '<select name="variation['.$item->tracks[$i]->id.']" 
+						id = "variation_'.$item->tracks[$i]->id.'_id">
+								';
+				for($j = 0; $j < count($item->tracks[$i]->file_name); $j++){
+					$item->tracks[$i]->variation_select .= '<option value="'.$j.'">'
+					.$item->tracks[$i]->file_name[$j]->file_ext.'</option>'."\n";
+				}		
+				$item->tracks[$i]->variation_select .= "</select>";
+			}
+		}
 		$this->_prepareDocument();
 		
 		$recommends = $this->get('Recommended');

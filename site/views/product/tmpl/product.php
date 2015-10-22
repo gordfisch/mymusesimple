@@ -609,6 +609,12 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
         				<span class="mycheckbox"><input type="checkbox" name="productid[]" 
         				value="<?php echo $track->id; ?>" id="box<?php echo $check; $check++; ?>" />
       						</span>
+      					<?php if(isset($track->variation_select)){
+      							echo $track->variation_select;
+      						}
+      					?>
+      						
+      						
       					<?php  endif; ?>
       					</td>
       				<?php } ?>	

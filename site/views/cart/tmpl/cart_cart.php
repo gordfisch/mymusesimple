@@ -62,6 +62,10 @@ $task		= $this->task;
 		        <?php } ?>
 		        <?php echo $order_item[$i]->title; ?>
 		        
+		        <?php if(isset($order_item[$i]->file_name)){ ?>
+		        	 :<br /><?php echo $order_item[$i]->file_name; ?> 
+		        <?php } ?>
+		        
 		        </td>
 		    <?php if($params->get("my_show_sku")){ ?>
 		        <td class="mysku"><?php echo $order_item[$i]->product_sku; ?></td>

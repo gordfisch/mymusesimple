@@ -313,7 +313,13 @@ if($downloads && $order->order_status == "C"){
 		        }
 		        ?>
 		        
-		        <?php echo $order_item[$i]->product_name; ?></td>
+		        <?php echo $order_item[$i]->product_name; ?>
+		        
+		        <?php if(isset($order_item[$i]->file_name)){ ?>
+		        	 :<br /><?php echo $order_item[$i]->file_name; ?> 
+		        <?php } ?>
+
+		        <td>
 		        <td align="right"> <?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_price); ?></td>
 		        <td align="center"><?php echo $order_item[$i]->product_quantity; ?></td>
 		        <td align="right"><?php echo MyMuseHelper::printMoney($order_item[$i]->subtotal); ?></td>

@@ -139,6 +139,7 @@ class MymuseControllerProduct extends JControllerForm
 					break;
 				}
 			}else {
+				//print_pre($db); exit;
         		$this->msg = JText::_( 'MYMUSE_ERROR_SAVING_FILE' ).": ".$table->getError();
         	
         		JFactory::getApplication()->enqueueMessage($this->msg, 'notice');
@@ -152,6 +153,7 @@ class MymuseControllerProduct extends JControllerForm
  
 		//save an item
 		}elseif ($this->save()) {
+			
 			//get the product id
 			$query = "SELECT id FROM #__mymuse_product WHERE product_sku='".$this->product_sku."'";
 			$db->setQuery($query);

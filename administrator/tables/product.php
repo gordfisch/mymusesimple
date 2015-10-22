@@ -194,17 +194,18 @@ class MymuseTableproduct extends JTable
 		require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_mymuse'.DS.'helpers'.DS.'mp3file.php');
 		$post 			= JRequest::get('post');
 		$form 			= JRequest::getVar('jform', array());
-
-		if(!isset($this->id)){
-        	$this->id 	= $this->_id	= isset($form['id'])? $form['id'] : '' ;
-		}
-
-		$subtype 		= JRequest::getVar('subtype'); 
+		$subtype 		= JRequest::getVar('subtype');
 		$date			= JFactory::getDate();
 		$user			= JFactory::getUser();
 		jimport('joomla.filesystem.file');
 		jimport('joomla.filesystem.folder');
 		$db = JFactory::getDBO();
+		
+
+		if(!isset($this->id)){
+        	$this->id = $this->_id	= isset( $form['id'] )? $form['id'] : '' ;
+		}
+		
 		$this->file_preview = isset($post['current_preview'])? $post['current_preview'] : $this->file_preview;
 		$this->file_preview_2 = isset($post['current_preview_2'])? $post['current_preview_2'] : $this->file_preview_2;
 		$this->file_preview_3 = isset($post['current_preview_3'])? $post['current_preview_3'] : $this->file_preview_3;
@@ -243,6 +244,7 @@ class MymuseTableproduct extends JTable
  
 		// Uploaded product file
 		$new = 0;
+		/**
 		if(isset($_FILES['product_file']['name']) && $_FILES['product_file']['name'] != ""){
 			
 			if(isset($_FILES['product_file']['error']) && $_FILES['product_file']['error'])
@@ -284,69 +286,70 @@ class MymuseTableproduct extends JTable
 				}
 			}
 		}
-		
-
+		*/
+		$current_files = array();
+		if(!$isNew){
+			$current_files = json_decode($this->file_name);
+		}
 		// if they selected a file from drop down
-		$select_file = isset($post['select_file'])? $post['select_file']: '';
-		if($select_file && !$new && $select_file != $form['file_name']){
-			$new = 1;
-			// tidy up name and copy it to the download dir
-			$ext = MyMuseHelper::getExt($select_file);
-			$name = preg_replace("/$ext$/","",$select_file);
-			$this->file_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
-			if($params->get('my_encode_filenames') ){
-				$name = md5($select_file . time()).'.'.$ext;
-				$this->title_alias = $name;
-				$new_file = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
-			}else{
-				$new_file = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$this->file_name;
-			}
-			
-			$old_file = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$select_file;
-			$this->file_length = $this->fileFilesize($old_file);
-
-			if($old_file != $new_file){
-				// DO we put a limit on size?
-				//if($params->get('my_use_s3') && $this->file_length > 10240000){ // over 10 megs
-				//	$this->file_name = $select_file;
-				//	JFactory::getApplication()->enqueueMessage(JText::sprintf('MYMUSE_S3_FILE_TOO_LARGE_TO_COPY', $old_file, $new_file), 'warning');
-				//}else{
-					if(!$this->fileCopy($old_file, $new_file)){
-						return false;
+		$select_files = isset( $post['select_file'] )? $post['select_file']: '';
+		if(is_array( $select_files )){
+			for( $i = 0; $i < count($select_files); $i++ ){
+				//rename if necessary
+				$select_file = $select_files[$i];
+				if($select_file &&  $select_file != @$current_files[$i]){
+					// tidy up name and copy it to the download dir
+					$ext = MyMuseHelper::getExt($select_file);
+					$name = preg_replace("/$ext$/","",$select_file);
+					$file_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
+					
+					if($params->get('my_encode_filenames') ){
+						$name = md5($select_file . time()).'.'.$ext;
+						$this->title_alias = $name;
+						$new_file = $post['download_dir'].DS.$name;
+					}else{
+						$new_file = $post['download_dir'].DS.$file_name;
 					}
-					if(!$this->fileDelete($old_file)){
-						return false;
-					}
-				//}
-			}
-		}
-		
-		if(!$this->file_length && $this->file_name){
-			$file = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$this->file_name;
-			$this->file_length = $this->fileFilesize($file);
-		}
-	
-		// TODO: get this to work with s3
-		if(isset($new_file) && is_file($new_file) 
-				&& strtolower(pathinfo($new_file, PATHINFO_EXTENSION)) == "mp3"){
-			$m = new mp3file($new_file);
-			$a = $m->get_metadata();
-			if ($a['Encoding']=='VBR' || $a['Encoding']=='CBR'){
-				$this->file_time = $a["Length mm:ss"];
-			}
-		}
-
-		// see if there is an old file to delete
-		if($this->parentid  && $new){
-
-			if(isset($post['current_title_alias']) && $post['current_title_alias'] != "" && $post['current_title_alias'] != $this->file_name){
-				$old = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$post['current_title_alias'];
-				if($this->fileExists($old)){
-					if(!$this->fileDelete($old)){
-						$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old);
+						
+					$old_file = $post['download_dir'].DS.$select_file;
+				
+					if($old_file != $new_file){
+						// DO we put a limit on size?
+						//if($params->get('my_use_s3') && $this->file_length > 10240000){ // over 10 megs
+						//	$this->file_name = $select_file;
+						//	JFactory::getApplication()->enqueueMessage(JText::sprintf('MYMUSE_S3_FILE_TOO_LARGE_TO_COPY', $old_file, $new_file), 'warning');
+						//}else{
+						if(!$this->fileCopy($old_file, $new_file)){
+							return false;
+						}
+						if(!$this->fileDelete($old_file)){
+							return false;
+						}
 					}
 				}
+				
+				$file_length = $this->fileFilesize($new_file);
+				
+				// TODO: get this to work with s3
+				$file_time = '';
+				if(isset($new_file) && is_file($new_file)
+						&& strtolower(pathinfo($new_file, PATHINFO_EXTENSION)) == "mp3"){
+					$m = new mp3file($new_file);
+					$a = $m->get_metadata();
+					if ($a['Encoding']=='VBR' || $a['Encoding']=='CBR'){
+						$file_time = $a["Length mm:ss"];
+					}
+				}
+				//  save this to the file_name
+				$current_files[$i] = array(
+						'file_name' => $file_name,
+						'file_length' => $file_length,
+						'file_time' => $file_time,
+						'file_ext' => $ext
+				);
 			}
+			
+			$this->file_name = json_encode($current_files);
 		}
 		
 	
@@ -393,7 +396,7 @@ class MymuseTableproduct extends JTable
 
         // if it is the parent. Parentid will be 0
         if(!isset($this->parentid) || !$this->parentid){
-
+			//must be  a track or item
         	// get artist alias
         	$artist_alias = MyMuseHelper::getArtistAlias($this->catid);
         	$artistdir = $params->get('my_download_dir').DS.$artist_alias;

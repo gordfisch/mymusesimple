@@ -533,9 +533,9 @@ INSERT IGNORE INTO `#__mymuse_order_status` (`id`, `code`, `name`, `ordering`) V
 CREATE TABLE IF NOT EXISTS `#__mymuse_product_file` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `product_id` int(11) NOT NULL DEFAULT '0',
+  `file_name` varchar(255) NOT NULL,
   `file_length` varchar(32) NOT NULL,
   `file_time` varchar(32) NOT NULL,
-  `file_name` varchar(255) NOT NULL,
   `file_downloads` int(11) NOT NULL DEFAULT '0',
   `file_type` varchar(32) NOT NULL,
   PRIMARY KEY (`id`),

@@ -326,6 +326,10 @@ class MyMuseModelProduct extends JModelItem
 						$tracks[$i]->price["product_price"] = MyMuseCheckout::addTax($tracks[$i]->price["product_price"]);
 					}
 					
+					$jason = json_decode($track->file_name);
+					if(is_array($jason)){
+						$track->file_name = $jason;
+					}
 					
 					if($params->get('my_encode_filenames')){
 						$track->download_name = $track->title_alias;
@@ -334,7 +338,7 @@ class MyMuseModelProduct extends JModelItem
 					}
 					
 					//get download file NOTE NOT available while using Amazon s3
-					if(!$params->get('my_use_s3',0)){
+					if(!$params->get('my_use_s3',0) && !is_array($track->file_name)){
 						$down_dir = str_replace($root,'',$params->get('my_download_dir'));
 						$track->download_path = JURI::base().'/'.$down_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->download_name;
 						$track->download_real_path = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$track->download_name;
