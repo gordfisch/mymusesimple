@@ -242,16 +242,16 @@ JHTML::_('behavior.tooltip');
 				<div class="control-label"><?php echo $this->form->getLabel('file_name'); ?>
 				</div>
 				<div class="controls">
-				<?php echo $this->form->getInput('file_name'); ?>
+				<input id="jform_file_name_0" class="readonly" type="text" size="40" value="<?php echo $item->file_name[0]->file_name; ?>" name="file_name_0">
 				</div>
 			</div>
 				
-		<?php if($item->title_alias != ""){ ?>
+		<?php if(isset($item->file_name[0]->file_alias) && $item->file_name[0]->file_alias != ""){ ?>
 			<div class="control-group">
 				<div class="control-label"><?php echo JText::_("MYMUSE_FILE_ALIAS")?>
 				</div>
 				<div class="controls">
-				<input id="jform_file_alias" class="readonly" type="text" size="40" value="<?php echo $item->title_alias; ?>" name="jform[file_alias]">
+				<input id="jform_file_alias_0" class="readonly" type="text" size="40" value="<?php echo $item->file_name[0]->file_alias; ?>" name="file_alias_0">
 				</div>
 			</div>
 		<?php }?>
@@ -260,7 +260,7 @@ JHTML::_('behavior.tooltip');
 				<div class="control-label"><?php echo $this->form->getLabel('file_length'); ?>
 				</div>
 				<div class="controls">
-				<?php echo $this->form->getInput('file_length'); ?>
+				<input id="jform_file_length_0" class="readonly" type="text" size="40" value="<?php echo $item->file_name[0]->file_length; ?>" name="file_length_0">
 				</div>
 			</div>
 				
@@ -268,7 +268,7 @@ JHTML::_('behavior.tooltip');
 				<div class="control-label"><?php echo $this->form->getLabel('file_time'); ?>
 				</div>
 				<div class="controls">
-				<?php echo $this->form->getInput('file_time'); ?>
+				<input id="jform_file_time_0" class="readonly" type="text" size="40" value="<?php echo $item->file_name[0]->file_time; ?>" name="file_time_0">
 				</div>
 			</div>
 				
@@ -279,7 +279,8 @@ JHTML::_('behavior.tooltip');
 				<?php echo $this->form->getInput('file_downloads'); ?>
 				</div>
 			</div>
-			<input type="hidden" name="current_title_alias[0]" value="<?php echo stripslashes($item->title_alias) ?>" />
+			<input type="hidden" name="current_title_alias[0]" value="<?php 
+			echo isset($item->file_name[0]->file_alias)? stripslashes($item->file_name[0]->file_alias): ''; ?>" />
 			
 			VARIATION
 			<div class="control-group">

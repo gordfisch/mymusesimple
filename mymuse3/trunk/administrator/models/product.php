@@ -447,6 +447,13 @@ class MymuseModelproduct extends JModelAdmin
     			}
     			
     			//main file
+    			$jason = json_decode($track->file_name);
+    			if(is_array($jason)){
+    				$track->file_name = '';
+    				foreach($jason as $j){
+    					$track->file_name .= $j->file_name."<br />";
+    				}
+    			}
     			if($this->_params->get('my_encode_filenames')){
     				$name = $track->title_alias;
     			}else{

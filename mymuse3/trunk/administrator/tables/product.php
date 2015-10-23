@@ -305,10 +305,11 @@ class MymuseTableproduct extends JTable
 					
 					if($params->get('my_encode_filenames') ){
 						$name = md5($select_file . time()).'.'.$ext;
-						$this->title_alias = $name;
+						$file_alias = $name;
 						$new_file = $post['download_dir'].DS.$name;
 					}else{
 						$new_file = $post['download_dir'].DS.$file_name;
+						$file_alias = '';
 					}
 						
 					$old_file = $post['download_dir'].DS.$select_file;
@@ -345,7 +346,8 @@ class MymuseTableproduct extends JTable
 						'file_name' => $file_name,
 						'file_length' => $file_length,
 						'file_time' => $file_time,
-						'file_ext' => $ext
+						'file_ext' => $ext,
+						'file_alias'=> $file_alias
 				);
 			}
 			

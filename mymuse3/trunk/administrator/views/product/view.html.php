@@ -52,6 +52,7 @@ class MymuseViewProduct extends JViewLegacy
 		//setlayout
 		$layout = $input->get('layout', 'edit');
 		
+		//listtracks
 		if($layout == "listtracks"){
 			$this->tracks 	= $this->get('Tracks');
 			//See if there is an all files zip
@@ -125,7 +126,7 @@ class MymuseViewProduct extends JViewLegacy
         	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'item');
         	
         }
- 
+
         //upload screen
         elseif($task == "uploadtrack" || $task == "uploadpreview" ){
         	
@@ -182,7 +183,12 @@ class MymuseViewProduct extends JViewLegacy
         	parent::display($tpl);
         	return true;
         }
-       
+        
+        $jason = json_decode($this->item->file_name);
+        if(is_array($jason)){
+        	$this->item->file_name = $jason;
+        }
+    
         //It's the parent, set the user state
         if($this->item->id && $this->item->parentid == 0){
         	$app = JFactory::getApplication();
