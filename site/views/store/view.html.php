@@ -89,28 +89,7 @@ class myMuseViewStore extends JViewLegacy
         	
         	//if it is a reload, update the database
         	$item_id = $jinput->get('item_id',0);
-        	if($item_id){
-        		// update the database
-        		$query = "SELECT * FROM #__mymuse_order_item WHERE id=$item_id";
-        		$db->setQuery($query);
-        		$item = $db->loadObject();
-   		
-        		if($item->downloads == 0 && !$params->get('my_use_s3')){
-        			$query = "UPDATE #__mymuse_product SET file_downloads = file_downloads +1 WHERE id=".$item->product_id;
-        			$db->setQuery($query);
-        			$db->execute();
-        		}
-        		if($params->get('my_use_s3')){
-        			// update the database
-        			$query = "UPDATE #__mymuse_order_item SET downloads = downloads +1 WHERE id=$item_id";
-        			$db->setQuery($query);
-        			$db->execute();
-        			$query = "UPDATE #__mymuse_product SET file_downloads = file_downloads +1 WHERE id=".$item->product_id;
-        			$db->setQuery($query);
-        			$db->execute();
-        		}
-        	}
-			
+
         	$jinput->set('layout','store');
         	$jinput->set('view','store');
 			$MyMuseCheckout 		=& MyMuse::getObject('checkout','helpers');
@@ -128,68 +107,13 @@ class myMuseViewStore extends JViewLegacy
         				unset($MyMuseShopper->order->items[$i]);
         			}
         		}
-        		if($params->get('my_use_s3',0)){
-        			require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
-        			$s3 = MyMuseHelperAmazons3::getInstance();
-        			$query = "SELECT * FROM #__mymuse_product WHERE id = '".$MyMuseShopper->order->items[$i]->product_id."'";
-        			$db->setQuery($query);
-        			$product = $db->loadObject();
-        			$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
-        			$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
-        			//$realname = $product->file_name;
-        			$realname = $MyMuseShopper->order->items[$i]->file_name;
-        			if($params->get('my_encode_filenames')){
-        				$jason = json_decode($product->file_name);
-        				if(is_array($jason)){
-        					foreach($jason as $j){
-        						if($j->file_name == $realname){
-        							$filename = $j->file_alias;
-        						}
-        					}
-        				}
-        				 
-        			}else{
-        				
-        				$filename = $MyMuseShopper->order->items[$i]->file_name;
-        			}
-        			$bucket = $params->get('my_download_dir');
-        			$uri = $artist_alias.DS.$album_alias.DS.$filename;
-        			$lifetime = $params->get('my_s3time');
-        			//getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false, $realname = '')
-        			$MyMuseShopper->order->items[$i]->s3URL = $s3->getAuthenticatedURL($bucket, $uri, $lifetime, false, false, $realname);
-        			
-        			// update the order_item
-        			$query = "UPDATE #__mymuse_order_item SET downloads = downloads +1 WHERE id=$item_id";
-        			$db->setQuery($query);
-        			$db->execute();
-        			//update the product
-        			$query = "UPDATE #__mymuse_product SET file_downloads = file_downloads +1 WHERE id=".$product->id;
-        			$db->setQuery($query);
-        			$db->execute();
-        			//update the product file_name json entry
-        			$jason = json_decode($product->file_name);
-        			if(is_array($jason)){
-        				for($i = 0; $i < count($jason); $i++){
-        					if($jason[$i]->file_name == $filename){
-        						$jason[$i]->file_downloads = $jason[$i]->file_downloads + 1;
-        					}
-        				}
-        				$file_name = json_encode($jason);
-        				$query = "UPDATE #__mymuse_product SET file_name='$file_name' WHERE id=".$product->id;
-        				$db->setQuery($query);
-        				$db->execute();
-        			}
-        		}
         	}
-        	
         	$uri = JFactory::getURI();
         	if($params->get('my_registration') == "no_reg"){
         		$current =  $uri->current()."?option=com_mymuse&task=accdownloads&id=".$id."&item_id=";
         	}else{
 				$current =  $uri->current()."?option=com_mymuse&task=downloads&id=".$id."&item_id=";
         	}
-			
-			
 			
 			$this->assignRef( 'current', $current );
         	$this->assignRef( 'order', $MyMuseShopper->order );
@@ -200,6 +124,7 @@ class myMuseViewStore extends JViewLegacy
         	parent::display($tpl);
         	return true;
         }
+        
         
         // trying to download a file!!
         if($task == "downloadfile"){
@@ -241,6 +166,12 @@ class myMuseViewStore extends JViewLegacy
 	
         	// make sure it's the same person who ordered!
         	$MyMuseShopper 	=& MyMuse::getObject('shopper','models');
+        	$user = JFactory::getUser($MyMuseShopper->_shopper->user_id);
+        	$user_id = $user->get('id');
+
+        	if(isset($user->first_name) && isset($user->last_name) ){
+        		$user->set('name', $user->first_name.' '.$user->last_name);
+        	}
 
         	if($row->user_id != $MyMuseShopper->_shopper->user_id){
         		$message = JText::_('MYMUSE_USER_ORDER_OWNER_MISMATCH');
@@ -260,7 +191,7 @@ class myMuseViewStore extends JViewLegacy
 				foreach($fields as $field){
 					if($registry->get($field)){
 						$user->profile[$field] = $registry->get($field);
-						echo $field." ".$registry->get($field)."<br />";
+						//echo $field." ".$registry->get($field)."<br />";
 					}else{
 						$user->profile[$field] = '';
 					}
@@ -295,9 +226,6 @@ class myMuseViewStore extends JViewLegacy
         		}
         	}
 
-        
-        	$filename = stripslashes($order_item->file_name);
-
         	// check number of downloads
         	if($params->get('my_download_max') && intval($order_item->downloads) >= $params->get('my_download_max')){
         		$message = JText::_('MYMUSE_MAX_NUMBER_OF_DOWNLOADS_REACHED');
@@ -318,12 +246,52 @@ class myMuseViewStore extends JViewLegacy
         		return false;
         	}
 
+        	//get product and other vars
 			$query = "SELECT * FROM #__mymuse_product WHERE id = '".$order_item->product_id."'";
 			$db->setQuery($query);
 			$product = $db->loadObject();
-
+			$jason = json_decode($product->file_name);
+			$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
+			$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
+			$realname = stripslashes($order_item->file_name);
+		
+			if(is_array($jason)){
+				foreach($jason as $j){
+					if($j->file_name == $realname){
+						if($params->get('my_encode_filenames')){
+							$filename = $j->file_alias;
+						}else{
+							$filename = $realname;
+						}
+					}
+			
+				}
+			}else{
+				$filename = $realname;
+			}
+			$product->realname = $realname;
+			
         	$object	=& MyMuse::getObject('httpdownload','helpers');
         	
+        	//is it s3? redirect
+        	if($params->get('my_use_s3',0)){
+        		
+        		 require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
+        		 $s3 = MyMuseHelperAmazons3::getInstance();
+
+        		 $bucket = $params->get('my_download_dir');
+        		 $uri = $artist_alias.DS.$album_alias.DS.$filename;
+        		 $lifetime = $params->get('my_s3time');
+        		 //getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false, $realname = '')
+        		 $s3URL = $s3->getAuthenticatedURL($bucket, $uri, $lifetime, false, false, $realname);
+        		 $app = JFactory::getApplication();
+        		 
+        		 //log and redirect
+        		 $this->_logDownload($user, $product, $order_item);
+        		 $app->redirect($s3URL);
+        		 exit;
+        		 
+        	}
         	// download data from the database
         	if($params->get('my_use_database')){
         		if(!$object->set_bydata($product->file_contents)){
@@ -363,29 +331,15 @@ class myMuseViewStore extends JViewLegacy
         			parent::display($tpl);
         			return false;
         		}
-				$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
-				$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
-        	    if($params->get('my_encode_filenames')){
-        	    	$jason = json_decode($product->file_name);
-        	    	if(is_array($jason)){
-        	    		foreach($jason as $j){
-        	    			if($j->file_name == $filename){
-        	    				$name = $j->file_alias;
-        	    			}
-        	    		}
-        	    	}
-        			
-        		}else{
-        			$name = $filename;
-        		}
+				
        
-        		$full_filename = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
+        		$full_filename = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$filename;
         		$full_filename1 = $full_filename;
         		//echo $full_filename;
         		
         		if(!file_exists($full_filename)){
         			//try with the root
-        			$full_filename = JPATH_ROOT.DS.$params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
+        			$full_filename = JPATH_ROOT.DS.$params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$filename;
         		}
         		if(!file_exists($full_filename)){
         			$message = JText::_('MYMUSE_NO_FILE_FOUND')." ";
@@ -409,42 +363,14 @@ class myMuseViewStore extends JViewLegacy
         			return false;
         		}else{
         			$object->use_resume = true; //Enable Resume Mode
-        			
-        			
-        			// update the order_item
-        			$query = "UPDATE #__mymuse_order_item SET downloads = downloads +1 WHERE id=$item_id";
-        			$db->setQuery($query);
-        			$db->execute();
-        			//update the product
-        			$query = "UPDATE #__mymuse_product SET file_downloads = file_downloads +1 WHERE id=".$product->id;
-        			$db->setQuery($query);
-        			$db->execute();
-        			//update the product file_name json entry
-        			$jason = json_decode($product->file_name);
-        			if(is_array($jason)){
-        				for($i = 0; $i < count($jason); $i++){
-        					if($jason[$i]->file_name == $filename){
-        						$jason[$i]->file_downloads = $jason[$i]->file_downloads + 1;
-        					}
-        				}
-        				$file_name = json_encode($jason);
-        				$query = "UPDATE #__mymuse_product SET file_name='$file_name' WHERE id=".$product->id;
-        				$db->setQuery($query);
-        				$db->execute();
-        			}
-        
-        			
-        			
         			$object->download(); //Download File
         		}
         	}
-        	// All is good
-        	$order_item->id = $order_item->product_id;
         	
-        	if(isset($user->first_name) && isset($user->last_name) ){
-        		$user->set('name', $user->first_name.' '.$user->last_name);
-        	}
-        	$this->_logDownload($user, $order_item, $order->id);
+        	// All is good
+        	
+        	
+        	$this->_logDownload($user, $product, $order_item);
 
         	exit;
         	
@@ -452,6 +378,8 @@ class myMuseViewStore extends JViewLegacy
 
         /*
          * Download a free or purchased file
+         * the link will appear on product pages
+         * May have an order item or it may be free
          */
         if($task == "downloadit")
         {
@@ -475,26 +403,59 @@ class myMuseViewStore extends JViewLegacy
         	$query = "SELECT * FROM #__mymuse_product WHERE id = '".$id."'";
         	$db->setQuery($query);
         	$product = $db->loadObject();
-        	
-        	// See if it is free
-        	if($product->price == 0.00 || $product->price == '' || !$product->price){
-        		$free = 1;
-        	}
+        	$jason = json_decode($product->file_name);
+        	$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
+        	$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
   	
         	// see if it is owned
-        	if(!$free){
-        		
-        		$query = "SELECT o.order_status FROM #__mymuse_order as o, #__mymuse_order_item as i
+        	$query = "SELECT o.order_status as status, i.file_name FROM #__mymuse_order as o, #__mymuse_order_item as i
         		WHERE i.product_id=$id 
         		AND i.order_id=o.id 
         		AND o.user_id=$user_id
         		AND o.order_status='C'";
-        		$db->setQuery($query);
-        		$status = $db->loadResult();
-        		if($status == "C"){
-        			$owned = 1;
+        	$db->setQuery($query);
+        	$res = $db->loadObject();
+        	if($res->status == "C"){
+        		$owned = 1;
+        		$realname = $res->file_name;
+        		if(is_array($jason)){
+        			foreach($jason as $j){
+        				if($j->file_name == $realname){
+        					if($params->get('my_encode_filenames')){
+        						$filename = $j->file_alias;
+        					}else{
+        						$filename = $realname;
+        					}
+        				}
+        				
+        			}
+        		}else{
+        			$filename = $realname;
         		}
+        	}
         		
+        	if(!owned){
+        		// See if it is free
+        		if($product->price == 0.00 || $product->price == '' || !$product->price){
+        			$free = 1;
+        			if(is_array($jason)){
+        				if($params->get('my_encode_filenames')){
+        					$filename = $jason[0]->file_alias;
+        					$realname = $jason[0]->file_name;
+        				}else{
+        					$filename = $jason[0]->file_name;
+        					$realname = $jason[0]->file_name;
+        				}
+        			}else{
+        				if($params->get('my_encode_filenames')){
+        					$filename = $product->title_alias;
+        					$realname = $product->file_name;
+        				}else{
+        					$filename = $product->file_name;
+        					$realname = $product->file_name;
+        				}
+        			}
+        		}
         	}
   
         	if(!$free && !$owned){
@@ -506,22 +467,13 @@ class myMuseViewStore extends JViewLegacy
         	}
         	
         	
-        	
+        	$product->realname = $realname;
         	$object	=& MyMuse::getObject('httpdownload','helpers');
-        	$filename = $product->file_name;
         	 
         	if($params->get('my_use_s3',0)){
         		require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
         		$s3 = MyMuseHelperAmazons3::getInstance();
-        		
-        		$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
-        		$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
-        		$realname = $product->file_name;
-        		if($params->get('my_encode_filenames')){
-        			$filename = $product->title_alias;
-        		}else{
-        			$filename = $product->file_name;
-        		}
+
         		$bucket = $params->get('my_download_dir');
         		$uri = $artist_alias.DS.$album_alias.DS.$filename;
         		$lifetime = $params->get('my_s3time');
@@ -547,7 +499,7 @@ class myMuseViewStore extends JViewLegacy
         		}else{
         	
         			$object->use_resume = true; //Enable Resume Mode
-        			$object->set_filename(stripslashes($product->file_name)); //Set download name
+        			$object->set_filename(stripslashes($realname)); //Set download name
         			//$mime = $product->file_type;
         			if($product->product_allfiles == '1'){
         				$mime = "application/zip";
@@ -571,19 +523,14 @@ class myMuseViewStore extends JViewLegacy
         			parent::display($tpl);
         			return false;
         		}
-        		$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
-        		$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
-        		if($params->get('my_encode_filenames')){
-        			$name = $product->title_alias;
-        		}else{
-        			$name = $filename;
-        		}
+        		
+
         		 
-        		$full_filename = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
+        		$full_filename = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$filename;
         		$full_filename1 = $full_filename;
         		if(!file_exists($full_filename)){
         			//try with the root
-        			$full_filename = JPATH_ROOT.DS.$params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
+        			$full_filename = JPATH_ROOT.DS.$params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$filename;
         		}
         		if(!file_exists($full_filename)){
         			$message = JText::_('MYMUSE_NO_FILE_FOUND')." ";
@@ -608,15 +555,13 @@ class myMuseViewStore extends JViewLegacy
         		}else{
         			$object->use_resume = true; //Enable Resume Mode
         			$object->download(); //Download File
-        			$query = "UPDATE #__mymuse_product SET file_downloads = file_downloads +1 WHERE id=".$product->id;
-        			$db->setQuery($query);
-        			$db->execute();
+        			
         		}
         	}
         	// All is good
         	$this->_logDownload($user, $product);
         	exit;
-        }
+        } // end of downloadit
 
         
         //JUST VIEW THE STORE
@@ -749,17 +694,45 @@ class myMuseViewStore extends JViewLegacy
 	 * log download to database
 	 */
 
-	protected  function _logDownload($user, $product, $order_id = '')
+	protected  function _logDownload($user, $product, $order_item = '')
 	{
 		$db = JFactory::getDBO();
 		$user_id = $user->get('id');
 		$user_name = $user->get('name');
 		$user_email = $user->get('email');
 		$product_id = $product->id;
-		$product_filename = $product->file_name;
+		$filename = $product->realname;
 		$date = JFactory::getDate()->format('Y-m-d H:i:s');
+		$order_id = (isset($order_item->order_id))? $order_item->order_id : '';
+		
+		//update the product
+		$query = "UPDATE #__mymuse_product SET file_downloads = file_downloads +1 WHERE id=".$product->id;
+		$db->setQuery($query);
+		$db->execute();
+		
+		// update the order_item
+		if($order_item){
+			$query = "UPDATE #__mymuse_order_item SET downloads = downloads +1 WHERE id=".$order_item->id;
+			$db->setQuery($query);
+			$db->execute();
+		}
+		//update the product file_name json entry
+		$jason = json_decode($product->file_name);
+		if(is_array($jason)){
+			for($i = 0; $i < count($jason); $i++){
+				if($jason[$i]->file_name == $filename){
+					$jason[$i]->file_downloads = $jason[$i]->file_downloads + 1;
+				}
+			}
+			$file_name = json_encode($jason);
+			$query = "UPDATE #__mymuse_product SET file_name='$file_name' WHERE id=".$product->id;
+			$db->setQuery($query);
+			$db->execute();
+		}
+		
+		//add to downloads table
 		$query = "INSERT INTO #__mymuse_downloads (`user_id`,`user_name`,`user_email`,`order_id`,`date`,`product_id`,`product_filename`)
-				VALUES ('$user_id','$user_name','$user_email','$order_id', '$date','$product_id','$product_filename')";
+				VALUES ('$user_id','$user_name','$user_email','$order_id', '$date','$product_id','$filename')";
 		MyMuseHelper::logMessage( $query  );
 		$db->setQuery($query);
 		if($db->execute()){

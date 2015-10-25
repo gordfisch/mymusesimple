@@ -205,7 +205,6 @@ class MymuseTableproduct extends JTable
 		jimport('joomla.filesystem.file');
 		jimport('joomla.filesystem.folder');
 		$db = JFactory::getDBO();
-		echo $task;
 
 		if(!isset($this->id)){
         	$this->id = $this->_id	= isset( $form['id'] )? $form['id'] : '' ;
@@ -305,22 +304,23 @@ class MymuseTableproduct extends JTable
 	
 		// if they selected a file from drop down
 		$select_files = isset( $post['select_file'] )? $post['select_file']: '';
+		
 		//removing one of the variations
 		if($task == 'deletevariation'){
 			$variationid = $input->get('variation','');
-			if($variationid){
-				$new_current = array();
-				$new_select = array();
+			
+			$new_current = array();
+			$new_select = array();
 					
-				for( $i = 0; $i < count($select_files); $i++ ){
-					if($variationid != $i && isset($current_files[$i]) && $select_files[$i]){
-						$new_select[] = $select_files[$i];
-						$new_current[] = $current_files[$i];
-					}
+			for( $i = 0; $i < count($select_files); $i++ ){
+				if($i != $variationid && isset($current_files[$i]) && $select_files[$i]){
+					$new_select[] = $select_files[$i];
+					$new_current[] = $current_files[$i];
 				}
-				$select_files = $new_select;
-				$current_files = $new_current;
 			}
+			$select_files = $new_select;
+			$current_files = $new_current;
+			
 		}
 
 
