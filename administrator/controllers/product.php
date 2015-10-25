@@ -58,6 +58,8 @@ class MymuseControllerProduct extends JControllerForm
 		$this->registerTask( 'uploadtrack', 'uploadscreen' );
 		$this->registerTask( 'uploadpreview', 'uploadscreen' );
 		
+		$this->registerTask( 'deletevariation', 'saveitem' );
+		
 		$cid = $input->get( 'cid', array(0));
 		if($cid[0] > 0){
 			$input->set('id',$cid[0]);
@@ -76,8 +78,8 @@ class MymuseControllerProduct extends JControllerForm
 	 */
     function saveitem()
     { 
-    	
-        $post = JRequest::get('post');
+    	$input 				= JFactory::getApplication()->input;
+        $post 				= JRequest::get('post');
      
         $this->id 			= isset($post['id'])? $post['id'] : null ;
         $this->parentid 	= isset($post['parentid'])? $post['parentid'] : 0;
@@ -139,7 +141,9 @@ class MymuseControllerProduct extends JControllerForm
 					break;
 				}
 			}else {
-				//print_pre($db); exit;
+				echo $table->getError();
+				echo "failed"; 
+				print_pre($db); exit;
         		$this->msg = JText::_( 'MYMUSE_ERROR_SAVING_FILE' ).": ".$table->getError();
         	
         		JFactory::getApplication()->enqueueMessage($this->msg, 'notice');

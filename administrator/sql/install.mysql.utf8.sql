@@ -597,7 +597,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `product_package` tinyint(1) NOT NULL DEFAULT '0',
   `file_length` varchar(32) NOT NULL,
   `file_time` varchar(32) NOT NULL,
-  `file_name` varchar(255) NOT NULL,
+  `file_name` text NOT NULL,
   `file_downloads` int(11) NOT NULL DEFAULT '0',
   `file_contents` longblob NOT NULL,
   `file_type` varchar(32) NOT NULL,

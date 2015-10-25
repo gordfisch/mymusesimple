@@ -568,7 +568,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 			<thead>
 		    <tr>
 		    <?php  if($params->get('product_show_select_column', 1)){?>
-		    	<th class="mymuse_cart_top myselect" align="left" width="5%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
+		    	<th class="mymuse_cart_top myselect" align="left" width="10%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
         	<?php } ?>
         	
         	<th class="mymuse_cart_top mytitle" align="center" width="40%"><?php echo JText::_('MYMUSE_NAME'); ?></th>
@@ -604,16 +604,16 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 			  		<tr>
 			  		<!--  SELECT COLUMN -->
 			  		<?php  if($params->get('product_show_select_column', 1)){?>
-        				<td class="myselect">
+        				<td class="myselect" nowrap>
         				<?php if($track->file_name || $track->product_allfiles) :?>
         				<span class="mycheckbox"><input type="checkbox" name="productid[]" 
         				value="<?php echo $track->id; ?>" id="box<?php echo $check; $check++; ?>" />
-      						</span>
+      						
       					<?php if(isset($track->variation_select)){
       							echo $track->variation_select;
       						}
       					?>
-      						
+      					</span>
       						
       					<?php  endif; ?>
       					</td>
@@ -719,7 +719,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 <div style="clear: both"></div>
 <!--END FULL TEXT -->
 
-<?php if($this->recommends_display){ ?>
+<?php if(isset($this->recommends_display)){ ?>
 <!-- START RECOMMENDS -->
 
 <?php echo $this->recommends_display; ?>

@@ -239,7 +239,19 @@ class MymuseModelproduct extends JModelAdmin
 					$parentid= $mainframe->getUserStateFromRequest( "com_mymuse.parentid", 'id', 0 );
 				}
 				$item->flash_type = '';
+				
+				$jason = json_decode($item->file_name);
+				if(is_array($jason)){
+					$item->file_name = $jason;
+				}elseif($item->file_name != ''){
+					$jason = (object) array('file_name' => $item->file_name);
+					$item->file_name = array();
+					$item->file_name[] = $jason;
+				}
+					
+			
 			}
+			
 			$this->_item = $item;
 	
 		}
@@ -808,7 +820,8 @@ class MymuseModelproduct extends JModelAdmin
     function getFileLists()
     {
     	$input = JFactory::getApplication()->input;
-    	$parentid= $input->get('parentid','');
+    	$parentid = $this->_item->parentid;
+
  		// file lists for albums
  		$artist_alias = MyMuseHelper::getArtistAlias($parentid,'1');
 		$album_alias = MyMuseHelper::getAlbumAlias($parentid);
@@ -849,7 +862,7 @@ class MymuseModelproduct extends JModelAdmin
 		$files = array();
 		if($this->_params->get('my_use_s3')){
 			$folder = $artist_alias.'/'.$album_alias;
-			echo $this->_params->get('my_download_dir')." ".$folder;
+			//echo $this->_params->get('my_download_dir')." ".$folder;
 			$everything = $s3->listS3Contents($folder, $this->_params->get('my_download_dir'));
 			$folder = trim($folder,'/');
 			$dirLength = strlen($folder);
@@ -871,9 +884,20 @@ class MymuseModelproduct extends JModelAdmin
 		foreach($files as $file){
 				$myfiles[] = JHTML::_('select.option',  $file, stripslashes($file) );
 		}
-		$current = $this->_item->file_name;
-		$lists['select_file'] = JHTML::_('select.genericlist',  $myfiles, 'select_file[]', 'class="inputbox" size="1" ', 'value', 'text', $current);
 		
+		$current = $this->_item->file_name;
+
+		$i = 0;
+		if($current){
+			for($i = 0; $i < count($current); $i++){
+				$lists['select_file'][$i] = JHTML::_('select.genericlist',  $myfiles, "select_file[$i]", 'class="inputbox" size="1" ', 'value', 'text', $current[$i]->file_name);
+			}
+		}else{
+			$lists['select_file'][0] = JHTML::_('select.genericlist',  $myfiles, "select_file[0]", 'class="inputbox" size="1" ', 'value', 'text','');
+		}
+		for($i = $i++; $i < 9; $i++){
+			$lists['select_file'][$i] = JHTML::_('select.genericlist',  $myfiles, "select_file[$i]", 'class="inputbox" size="1" ', 'value', 'text','');
+		}
 		// for display purposes
 		$lists['preview_dir'] = ($this->_params->get('my_use_s3')? '' : JPATH_ROOT.DS).$this->_params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
 		$lists['download_dir'] = $this->_params->get('my_download_dir').DS.$artist_alias.DS.$album_alias;

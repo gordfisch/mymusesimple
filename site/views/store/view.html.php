@@ -136,17 +136,49 @@ class myMuseViewStore extends JViewLegacy
         			$product = $db->loadObject();
         			$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
         			$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
-        			$realname = $product->file_name;
+        			//$realname = $product->file_name;
+        			$realname = $MyMuseShopper->order->items[$i]->file_name;
         			if($params->get('my_encode_filenames')){
-        				$filename = $product->title_alias;
+        				$jason = json_decode($product->file_name);
+        				if(is_array($jason)){
+        					foreach($jason as $j){
+        						if($j->file_name == $realname){
+        							$filename = $j->file_alias;
+        						}
+        					}
+        				}
+        				 
         			}else{
-        				$filename = $product->file_name;
+        				
+        				$filename = $MyMuseShopper->order->items[$i]->file_name;
         			}
         			$bucket = $params->get('my_download_dir');
         			$uri = $artist_alias.DS.$album_alias.DS.$filename;
         			$lifetime = $params->get('my_s3time');
         			//getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false, $realname = '')
         			$MyMuseShopper->order->items[$i]->s3URL = $s3->getAuthenticatedURL($bucket, $uri, $lifetime, false, false, $realname);
+        			
+        			// update the order_item
+        			$query = "UPDATE #__mymuse_order_item SET downloads = downloads +1 WHERE id=$item_id";
+        			$db->setQuery($query);
+        			$db->execute();
+        			//update the product
+        			$query = "UPDATE #__mymuse_product SET file_downloads = file_downloads +1 WHERE id=".$product->id;
+        			$db->setQuery($query);
+        			$db->execute();
+        			//update the product file_name json entry
+        			$jason = json_decode($product->file_name);
+        			if(is_array($jason)){
+        				for($i = 0; $i < count($jason); $i++){
+        					if($jason[$i]->file_name == $filename){
+        						$jason[$i]->file_downloads = $jason[$i]->file_downloads + 1;
+        					}
+        				}
+        				$file_name = json_encode($jason);
+        				$query = "UPDATE #__mymuse_product SET file_name='$file_name' WHERE id=".$product->id;
+        				$db->setQuery($query);
+        				$db->execute();
+        			}
         		}
         	}
         	
@@ -334,7 +366,15 @@ class myMuseViewStore extends JViewLegacy
 				$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
 				$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
         	    if($params->get('my_encode_filenames')){
-        			$name = $product->title_alias;
+        	    	$jason = json_decode($product->file_name);
+        	    	if(is_array($jason)){
+        	    		foreach($jason as $j){
+        	    			if($j->file_name == $filename){
+        	    				$name = $j->file_alias;
+        	    			}
+        	    		}
+        	    	}
+        			
         		}else{
         			$name = $filename;
         		}
@@ -369,14 +409,33 @@ class myMuseViewStore extends JViewLegacy
         			return false;
         		}else{
         			$object->use_resume = true; //Enable Resume Mode
-        			$object->download(); //Download File
-        			// update the database
+        			
+        			
+        			// update the order_item
         			$query = "UPDATE #__mymuse_order_item SET downloads = downloads +1 WHERE id=$item_id";
         			$db->setQuery($query);
         			$db->execute();
+        			//update the product
         			$query = "UPDATE #__mymuse_product SET file_downloads = file_downloads +1 WHERE id=".$product->id;
         			$db->setQuery($query);
         			$db->execute();
+        			//update the product file_name json entry
+        			$jason = json_decode($product->file_name);
+        			if(is_array($jason)){
+        				for($i = 0; $i < count($jason); $i++){
+        					if($jason[$i]->file_name == $filename){
+        						$jason[$i]->file_downloads = $jason[$i]->file_downloads + 1;
+        					}
+        				}
+        				$file_name = json_encode($jason);
+        				$query = "UPDATE #__mymuse_product SET file_name='$file_name' WHERE id=".$product->id;
+        				$db->setQuery($query);
+        				$db->execute();
+        			}
+        
+        			
+        			
+        			$object->download(); //Download File
         		}
         	}
         	// All is good
