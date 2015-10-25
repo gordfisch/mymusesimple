@@ -566,6 +566,9 @@ class MyMuseCart {
 			$order->items[$i] = $this->getProduct($this->cart[$i]['product_id']);
 			$jason = json_decode($order->items[$i]->file_name);
 			if(is_array($jason)){
+				if(!$this->cart[$i]["variation"]){
+					$this->cart[$i]["variation"] = 0;
+				}
 				$order->items[$i]->file_name = $jason[$this->cart[$i]["variation"]]->file_name;
 			}
 			$order->items[$i]->product_id = $order->items[$i]->id;

@@ -41,6 +41,25 @@ JHTML::_('behavior.tooltip');
 				submitform( pressbutton );
 			}
 		}
+
+		var variation = <?php  echo count($item->file_name); ?>;
+		function addvariation()
+		{
+			
+			row_number = "#row_"+variation;
+			jQuery(row_number).removeClass('hidden');
+			variation++;
+			
+			
+		}
+
+		function deletevariation (variationid){
+			var form = document.adminForm;
+			form.variation.value = variationid;
+			//alert(variationid);
+			submitform( 'product.deletevariation' );
+
+		}
 		//-->
 		</script>
 		<h2><?php echo empty($this->item->id) ? JText::_('MYMUSE_NEW_TRACK') : JText::_('MYMUSE_EDIT_TRACK'); ?> <?php echo $item->title; ?></h2>
@@ -124,6 +143,14 @@ JHTML::_('behavior.tooltip');
 				</div>
 				<div class="controls">
 				<?php echo $this->form->getInput('product_discount'); ?>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('file_downloads'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('file_downloads'); ?>
 				</div>
 			</div>
 				
@@ -210,7 +237,7 @@ JHTML::_('behavior.tooltip');
 <fieldset class="adminform">
 
 	<legend><?php echo JText::_('MYMUSE_TRACKS'); ?></legend>
-	<div class="pull-left span5">
+	<div class="pull-left span10">
 		<!--  
 			<div class="control-group">
 				<div class="control-label">
@@ -224,75 +251,61 @@ JHTML::_('behavior.tooltip');
 				</div>
 			</div>
 		-->
-	
-			<div class="control-group">
-				<div class="control-label">
-				<?php echo JText::_( 'MYMUSE_SELECT_FILE' ); ?>
-				</div>
-				<div class="controls">
-				</div>
-				<div class="controls">
-				<?php echo $lists['select_file']; ?>
-				</div>
-			</div>
-	
-		
 
-			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('file_name'); ?>
-				</div>
-				<div class="controls">
-				<input id="jform_file_name_0" class="readonly" type="text" size="40" value="<?php echo $item->file_name[0]->file_name; ?>" name="file_name_0">
-				</div>
-			</div>
+		
+		
+		<table class="table table-striped" id="articleList">
+				<thead>
+					<tr>
+						<th class="title"><?php echo JText::_( 'MYMUSE_SELECT_FILE' ); ?>
+						</th>
+						<th class="title"><?php echo JText::_( 'MYMUSE_FILE_NAME' ); ?>
+						</th>
+						<th class="title"><?php echo JText::_("MYMUSE_FILE_ALIAS")?>
+						</th>
+						<th class="title"><?php echo JText::_( 'MYMUSE_FILE_LENGTH' ); ?>
+						</th>
+						<th class="title"><?php echo JText::_( 'MYMUSE_FILE_TIME' ); ?>
+						</th>
+						<th class="title"><?php echo JText::_( 'MYMUSE_NUMBER_DOWNLOADS' ); ?>
+						</th>
+						<th class="title"><?php echo JText::_( 'MYMUSE_DELETE_ITEM' ); ?>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+				<?php for($i = 0; $i < count($lists['select_file']); $i++){ 
+					$class = '';
+					if($i >= count($item->file_name)){
+						$class = "hidden";
+					}
+					?>
+					<tr class="<?php echo $class;?>" id="row_<?php echo $i; ?>">
+						<td><?php echo $lists['select_file'][$i]; ?>
+						</td>
+						<td><?php echo isset($item->file_name[$i]->file_name)? $item->file_name[$i]->file_name: ''; ?>
+						</td>
+						<td><?php echo isset($item->file_name[$i]->file_alias)? $item->file_name[$i]->file_alias: ''; ?>
+						</td>
+						<td><?php echo isset($item->file_name[$i]->file_length)? $item->file_name[$i]->file_length: ''; ?>
+						</td>
+						<td><?php echo isset($item->file_name[$i]->file_time)? $item->file_name[$i]->file_time: ''; ?>
+						</td>
+						<td><?php echo isset($item->file_name[$i]->file_downloads)? $item->file_name[$i]->file_downloads: ''; ?>
+						</td>
+						<td><a href="javascript:deletevariation(<?php echo $i; ?>)"><?php echo JText::_( 'MYMUSE_DELETE_ITEM' ); ?></a>
+						</td>
+					</tr>
+				<?php } ?>
+					<tr>
+						<td colspan="7"><a href="javascript:addvariation();">Add Variation</a></td>
+					</tr>
 				
-		<?php if(isset($item->file_name[0]->file_alias) && $item->file_name[0]->file_alias != ""){ ?>
-			<div class="control-group">
-				<div class="control-label"><?php echo JText::_("MYMUSE_FILE_ALIAS")?>
-				</div>
-				<div class="controls">
-				<input id="jform_file_alias_0" class="readonly" type="text" size="40" value="<?php echo $item->file_name[0]->file_alias; ?>" name="file_alias_0">
-				</div>
-			</div>
-		<?php }?>
-				
-			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('file_length'); ?>
-				</div>
-				<div class="controls">
-				<input id="jform_file_length_0" class="readonly" type="text" size="40" value="<?php echo $item->file_name[0]->file_length; ?>" name="file_length_0">
-				</div>
-			</div>
-				
-			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('file_time'); ?>
-				</div>
-				<div class="controls">
-				<input id="jform_file_time_0" class="readonly" type="text" size="40" value="<?php echo $item->file_name[0]->file_time; ?>" name="file_time_0">
-				</div>
-			</div>
-				
-			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('file_downloads'); ?>
-				</div>
-				<div class="controls">
-				<?php echo $this->form->getInput('file_downloads'); ?>
-				</div>
-			</div>
-			<input type="hidden" name="current_title_alias[0]" value="<?php 
-			echo isset($item->file_name[0]->file_alias)? stripslashes($item->file_name[0]->file_alias): ''; ?>" />
-			
-			VARIATION
-			<div class="control-group">
-				<div class="control-label">
-				<?php echo JText::_( 'MYMUSE_SELECT_FILE' ); ?>
-				</div>
-				<div class="controls">
-				</div>
-				<div class="controls">
-				<?php echo $lists['select_file']; ?>
-				</div>
-			</div>
+				</tbody>
+			</table>
+					
+					
+	
 			
 		</fieldset>
 <?php echo JHtml::_('bootstrap.endTab'); ?>
@@ -387,9 +400,10 @@ JHTML::_('behavior.tooltip');
 		<input type="hidden" name="jform[version]" value="<?php echo $item->version; ?>" />
 		<input type="hidden" name="jform[product_downloadable]" value="1" />
 		<input type="hidden" name="subtype" value="file" />
-		<input type="hidden" name="layout" value="listtracks" />
+		<input type="hidden" name="layout" value="edittracks" />
 		<input type="hidden" name="option" value="com_mymuse" />
 		<input type="hidden" name="task" value="" />
+		<input type="hidden" name="variation" value="" />
 
 		<?php echo JHTML::_( 'form.token' ); ?>
 		</form>

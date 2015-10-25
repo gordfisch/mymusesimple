@@ -37,8 +37,6 @@ class MymuseViewProduct extends JViewLegacy
 		$this->item		= $this->get('Item');
 		$this->form		= $this->get('Form');
 		$this->lists 	= $this->get('Lists');
-		 
-
 		$this->params 	= MyMuseHelper::getParams();
 
 		$app 			= JFactory::getApplication();
@@ -78,6 +76,7 @@ class MymuseViewProduct extends JViewLegacy
 			if($task == "addfile"){
 				$input->set('id','0');
 			}
+
 			$layout = 'edittracks';
         	$this->setLayout('edittracks');
         	$filelists = $this->get('FileLists');
@@ -183,18 +182,13 @@ class MymuseViewProduct extends JViewLegacy
         	parent::display($tpl);
         	return true;
         }
-        
-        $jason = json_decode($this->item->file_name);
-        if(is_array($jason)){
-        	$this->item->file_name = $jason;
-        }
-    
+
         //It's the parent, set the user state
         if($this->item->id && $this->item->parentid == 0){
         	$app = JFactory::getApplication();
         	$parentid = $app->getUserStateFromRequest("com_mymuse.parentid", 'parentid', $this->item->id);
         }
-        if(!$this->item->id  && $this->item->parentid == 0 && $this->item->parentid == 0){
+        if(!$this->item->id  && $this->item->parentid == 0){
         	$subtype = "details";
         }
         

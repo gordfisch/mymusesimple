@@ -103,7 +103,7 @@ class MymuseController extends JControllerLegacy
 	
 		$order = $model->getItem($id);
 	
-		$user 			=& JFactory::getUser($order->user_id);;
+		$user 			= JFactory::getUser($order->user_id);;
 		$user_email 	= $user->email;
 	
 		// SEND MAIL TO BUYER
@@ -121,7 +121,7 @@ class MymuseController extends JControllerLegacy
 		$mailer->setBody($message);
 		$send = $mailer->Send();
 		if ( $send !== true ) {
-			echo 'Error sending email: ' . $send->message;
+			echo 'Error sending email: ' . $send->getError();
 		}
 		
 		//redirect to edit page

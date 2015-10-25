@@ -55,6 +55,7 @@ function mydownload(url,item_id){
 			</tr>
 			<?php 
 			foreach($order->items as $item){ 
+				//print_pre($item);
 				if($item->product->product_downloadable){
 				?>
 			<tr>
@@ -73,6 +74,10 @@ function mydownload(url,item_id){
 				<?php } ?>
 				
 				<?php echo $item->product_name; ?>
+				<?php if($item->file_name){
+					echo ": <br />".$item->file_name;
+				}
+					?>
 				<?php 
 				if($item->downloads < $my_download_max && $end_date > time()){ ?></a><?php } ?></td>
 				
