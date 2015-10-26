@@ -248,8 +248,7 @@ class MymuseModelproduct extends JModelAdmin
 					$item->file_name = array();
 					$item->file_name[] = $jason;
 				}
-					
-			
+				
 			}
 			
 			$this->_item = $item;

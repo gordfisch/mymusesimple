@@ -71,7 +71,7 @@ class MyMuseModelProduct extends JModelItem
 	/**
 	 * Method to get product data.
 	 *
-	 * @param	integer	The id of the article.
+	 * @param	integer	The id of the product.
 	 *
 	 * @return	mixed	Menu item data object on success, false on failure.
 	 */
@@ -207,7 +207,7 @@ class MyMuseModelProduct extends JModelItem
 				// Compute selected asset permissions.
 				$user	= JFactory::getUser();
 
-				// Technically guest could edit an article, but lets not check that to improve performance a little.
+				// Technically guest could edit a product, but lets not check that to improve performance a little.
 				if (!$user->get('guest')) {
 					$userId	= $user->get('id');
 					$asset	= 'com_mymuse_product.article.'.$data->id;
@@ -971,7 +971,9 @@ class MyMuseModelProduct extends JModelItem
   		$params 	= MyMuseHelper::getParams();
   		$prods 		= array();
   		$recommends = array();
-  		$productid = $this->getState('product.id');
+  		$productid 	= $this->getState('product.id');
+  		$product 	= $this->_item[$productid];
+  		$cats[]		= $product->catid;
  
   		$query = "SELECT * FROM #__mymuse_product_recommend_xref
 				WHERE product_id = '".$productid."'
@@ -980,9 +982,24 @@ class MyMuseModelProduct extends JModelItem
   		$res = $db->loadObjectList();
   		if(count($res)){
   			foreach($res as $r){
-  				$prods[] = $r->recommend_id;
+  				$cats[] = $r->recommend_id;
   			}
   		}
+  		
+  		//other cats
+  		$query = "SELECT * FROM #__mymuse_product_category_xref
+				WHERE product_id = '".$productid."'
+						ORDER BY RAND()";
+  		$db->setQuery($query);
+  		$res = $db->loadObjectList();
+  		if(count($res)){
+  			foreach($res as $r){
+  				$cats[] = $r->catid;
+  			}
+  		}
+  		$cats = array_unique($cats);
+  		
+  		
   				
 
   		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'product.php');
