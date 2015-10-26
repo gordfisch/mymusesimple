@@ -524,55 +524,10 @@ class MymuseTableproduct extends JTable
         				$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").' '.$preview_dir);
         			}
         		}
-        	}
+        	}	
 
-
-        	// other categories
-        	if(isset($form['othercats'])  && !$this->parentid && $this->id){
-        		// clear product_category_xref
-        		$query = "DELETE FROM #__mymuse_product_category_xref WHERE product_id=".$this->id;
-        		$db->setQuery($query);
-        		$db->execute();
-        		if(!in_array($form['catid'], $form['othercats'])){
-        			$form['othercats'][] = $form['catid'];
-        		}
-        		foreach($form['othercats'] as $catid){
-        			$query = "INSERT INTO #__mymuse_product_category_xref
-        			(catid,product_id) VALUES (".$catid.",".$this->id.")";
-        			$db->setQuery($query);
-
-        			if(!$db->execute()){
-        				$this->setError(JText::_('MYMUSE_COULD_NOT_SAVE_PRODUCTCAT_XREF').$db->getErrorMsg());
-        				return false;
-        			}
-        			 
-        		}
-        	}
-        	
-        	// other recommends
-        	if(isset($form['recommended']) && $this->id){
-        		
-        		// clear product_recommend_xref
-        		$query = "DELETE FROM #__mymuse_product_recommend_xref WHERE product_id=".$this->id;
-        		$db->setQuery($query);
-        		$db->execute();
-        		
-        		foreach($form['recommended'] as $recommend_id){
-        			$query = "INSERT INTO #__mymuse_product_recommend_xref
-        			(product_id, recommend_id) VALUES (".$this->id.",".$recommend_id.")";
-        			$db->setQuery($query);
-        	
-        			if(!$db->execute()){
-        				$this->setError(JText::_('MYMUSE_COULD_NOT_SAVE_PRODUCT_RECOMMEND_XREF').$db->getErrorMsg());
-        				return false;
-        			}
-        	
-        		}
-        	}
-        	
-
-        }
-        print_pre($this);        
+        } // end of if parent
+       
 		$this->checkin();
 		if($this->parentid){
 			$this->checkin($this->parentid);
@@ -580,6 +535,51 @@ class MymuseTableproduct extends JTable
 
 		$result = parent::store($updateNulls);
 		if($result){
+			
+
+			// other categories
+			if(isset($form['othercats'])  && !$this->parentid && $this->id){
+				// clear product_category_xref
+				$query = "DELETE FROM #__mymuse_product_category_xref WHERE product_id=".$this->id;
+				$db->setQuery($query);
+				$db->execute();
+				if(!in_array($form['catid'], $form['othercats'])){
+					$form['othercats'][] = $form['catid'];
+				}
+				foreach($form['othercats'] as $catid){
+					$query = "INSERT INTO #__mymuse_product_category_xref
+        			(catid,product_id) VALUES (".$catid.",".$this->id.")";
+					$db->setQuery($query);
+			
+					if(!$db->execute()){
+						$this->setError(JText::_('MYMUSE_COULD_NOT_SAVE_PRODUCTCAT_XREF').$db->getErrorMsg());
+						return false;
+					}
+			
+				}
+			}
+			
+			// recommends
+			if(isset($form['recommend']) && $this->id){
+			
+				// clear product_recommend_xref
+				$query = "DELETE FROM #__mymuse_product_recommend_xref WHERE product_id=".$this->id;
+				$db->setQuery($query);
+				$db->execute();
+			
+				foreach($form['recommend'] as $recommend_id){
+					$query = "INSERT INTO #__mymuse_product_recommend_xref
+        			(product_id, recommend_id) VALUES (".$this->id.",".$recommend_id.")";
+					$db->setQuery($query);
+					 
+					if(!$db->execute()){
+						$this->setError(JText::_('MYMUSE_COULD_NOT_SAVE_PRODUCT_RECOMMEND_XREF').$db->getErrorMsg());
+						return false;
+					}
+					 
+				}
+			}
+			
 			// onMymuseAfterSave  onFinderAfterSave
 			$dispatcher = JEventDispatcher::getInstance();
 			JPluginHelper::importPlugin('finder');

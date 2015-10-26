@@ -24,11 +24,12 @@
          
          <field
              	name="recommend"
-                type="producttree"
+                type="recommendtree"
+                extension="com_mymuse"
                 label="MYMUSE_PRODUCT_RECOMMEND_LABEL"
                 description="MYMUSE_PRODUCT_RECOMMEND_DESC"
                 class="inputbox"
-                size="10"
+                size="8"
                 required="false"
                 multiple="true"
           />
