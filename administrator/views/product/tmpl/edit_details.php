@@ -51,6 +51,9 @@
 					<?php echo $this->form->getInput('product_sku'); ?>
 				</div>
 			</div>
+			
+			
+		
 			<div class="control-group">
 				<div class="control-label">
 					<?php echo $this->form->getLabel('product_physical'); ?>

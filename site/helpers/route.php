@@ -34,19 +34,36 @@ class myMuseHelperRoute
 	public static function getProductRoute($id, $catid = 0, $language = 0)
 	{
 	
-		$needles = array(
-			'product'  => array((int) $id)
-		);
-		$db = JFactory::getDBO();
+		
+		$db 	= JFactory::getDBO();
+		$params = MyMuseHelper::getParams();
+		
+		//make sure we link to the parent
 		$q = "SELECT parentid from #__mymuse_product WHERE id ='".$id."'";
 		$db->setQuery($q);
 		$parentid = $db->loadResult();
 		if($parentid > 0){
 			$id = $parentid;
 		}
-				
+		// now we can link to the parent
+		$needles = array(
+				'product'  => array((int) $id)
+		);
+		
+		if($params->get('my_use_alias')){
+			$q = "SELECT catid, alias from #__mymuse_product WHERE id ='".$id."'";
+			$db->setQuery($q);
+			$res = $db->loadObject();
+			if(!$catid){
+				$catid = $res->catid;
+			}
+			$alias = $res->alias;
+			$link = "store/$alias";
+			return  $link;
+		}
 		//Create the link
 		$link = 'index.php?option=com_mymuse&view=product&id='. $id;
+		
 		if ((int)$catid > 1)
 		{
 			$categories = JCategories::getInstance('mymuse');
@@ -97,6 +114,8 @@ class myMuseHelperRoute
 
 	public static function getCategoryRoute($catid)
 	{
+		$db 	= JFactory::getDBO();
+		$params = MyMuseHelper::getParams();
 		if ($catid instanceof JCategoryNode)
 		{
 			$id = $catid->id;
@@ -106,6 +125,15 @@ class myMuseHelperRoute
 		{
 			$id = (int) $catid;
 			$category = JCategories::getInstance('mymuse')->get($id);
+		}
+		
+		if($params->get('my_use_alias')){
+			$q = "SELECT alias from #__categories WHERE id ='".$id."'";
+			$db->setQuery($q);
+			if($alias = $db->loadResult()){
+				$link = "store/$alias";
+				return  $link;
+			}
 		}
 
 		if($id < 1)

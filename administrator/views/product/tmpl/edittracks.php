@@ -109,6 +109,26 @@ JHTML::_('behavior.tooltip');
 				<?php echo $this->form->getInput('product_sku'); ?>
 				</div>
 			</div>
+			
+<?php
+
+
+// JLayout for standard handling of metadata fields in the administrator content edit screens.
+$fieldSets = $this->form->getFieldsets('attribs');
+?>
+
+<?php foreach ($fieldSets as $name => $fieldSet) : ?>
+
+	<?php
+
+	foreach ($this->form->getFieldset($name) as $field)
+	{
+		if ($field->name != 'jform[metadata][tags][]')
+		{
+			echo $field->renderField();
+		}
+	} ?>
+<?php endforeach; ?>
 				
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('ordering'); ?>

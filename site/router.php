@@ -189,10 +189,34 @@ function MymuseParseRoute($segments)
 		return $vars;
 	}
 
-	// if there is only one segment, then it points to either an product or a category
+	// if there is only one segment, then it points to either a product or a category
 	// we test it first to see if it is a category.  If the id and alias match a category
 	// then we assume it is a category.  If they don't we assume it is an product
 	if ($count == 1) {
+		
+		if($params->get('my_use_alias')){
+			//check if this is a product alias.
+			$query = 'SELECT id,catid from #__mymuse_product WHERE alias="'.$segments[0].'"';
+
+			$db->setQuery($query);
+			if($product = $db->loadObject()){
+				$vars['view'] = 'product';
+				$vars['id'] = (int)$product->id;
+				$vars['catid'] = (int)$product->catid;
+				return $vars;
+			}
+			
+			//check if this is a category alias.
+			$query = 'SELECT id from #__categories WHERE alias="'.$segments[0].'"';
+			
+			$db->setQuery($query);
+			if($category = $db->loadObject()){
+				$vars['view'] = 'category';
+				$vars['id'] = (int)$category->id;
+				return $vars;
+			}
+		}
+		
 		// we check to see if an alias is given.  If not, we assume it is an product
 		if (strpos($segments[0], ':') === false) {
 			$vars['view'] = 'product';
@@ -229,7 +253,7 @@ function MymuseParseRoute($segments)
 
 	// if there was more than one segment, then we can determine where the URL points to
 	// because the first segment will have the target category id prepended to it.  If the
-	// last segment has a number prepended, it is an product, otherwise, it is a category.
+	// last segment has a number prepended, it is a product, otherwise, it is a category.
 	if (!$advanced) {
 		$cat_id = (int)$segments[0];
 

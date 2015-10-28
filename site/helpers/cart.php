@@ -694,12 +694,18 @@ class MyMuseCart {
 			}
 		}
 		$order->order_subtotal = $order->order_subtotal - $order->discount;
+		if($order->order_subtotal < 0){
+			$order->order_subtotal = 0.00;
+		}
 
 		//TAXES
 		$order_tax = $MyMuseCheckout->calc_order_tax($order);
 
 		$order->tax_array = array();
 		while(list($key,$val) = each($order_tax)){
+			if($val< 0){
+				$val = 0.00;
+			}
 			$val = round($val,2);
 			$order->tax_total += $val;
 			$order->tax_array[$key] = $val;
@@ -713,6 +719,9 @@ class MyMuseCart {
 		//the big total
 		$order->order_total  = $order->order_subtotal + @$order->tax_total + 
 		@$order->order_shipping->cost;
+		if($order->order_total < 0){
+			$order->order_total = 0.00;
+		}
 
 		if(!$edit){
 			$order->do_html = 0;

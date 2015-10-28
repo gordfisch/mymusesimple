@@ -47,4 +47,6 @@
 				<?php echo $this->form->getInput('product_studio'); ?>
 			</div>
 		</div>
-	</div>
+	
+
+</div>

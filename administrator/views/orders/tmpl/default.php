@@ -151,7 +151,11 @@ window.addEvent('domready', function() {Calendar.setup({
 					<?php echo $item->status_name; ?>
 				</td>
 				<td class="center">
-					<?php echo $item->order_subtotal; ?>
+					<?php if($item->order_subtotal < 0.00){
+						echo '-';
+					}else{
+						echo $item->order_subtotal; 
+					}?>
 				</td>
 			</tr>
 			<?php endforeach; ?>
