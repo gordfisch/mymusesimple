@@ -34,8 +34,8 @@
           <field 
           		name="alias" 
           		type="text" 
-          		label="MYMUSE_ALIAS_LABEL"
-				description="MYMUSE_ALIAS_DESC" 
+          		label="MYMUSE_USE_ALIAS_LABEL"
+				description="MYMUSE_USE_ALIAS_DESC" 
 				class="inputbox" size="45" />
            
           <field 
