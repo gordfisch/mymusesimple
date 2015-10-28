@@ -21,7 +21,7 @@ if(count($this->recommends)){
 	
 	<h3><?php echo JText::_('MYMUSE_RELATED_ITEMS'); ?></h3>
 	<?php foreach($this->recommends as $item){ ?>
-		<div width="<?php echo $percent; ?>%" style="float: left; margin: 10px;">
+		<div  style="float: left; margin: 10px; width: "<?php echo $percent; ?>%">
 		<a href="<?php echo $item->url; ?>"><img src="<?php echo $item->list_image; ?>"></a>
 			<div>
 			<a href="<?php echo $item->url; ?>"><?php  echo $item->title; ?></a>

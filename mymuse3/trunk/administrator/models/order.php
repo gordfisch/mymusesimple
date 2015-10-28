@@ -169,6 +169,9 @@ class MymuseModelorder extends JModelAdmin
 
 			$item->order_total	= $item->order_subtotal
 			+ $item->order_shipping + $item->tax_total;
+			if($item->order_total < 0){
+				$item->order_total = 0;
+			}
 			$item->order_total = sprintf("%.2f", $item->order_total);
 			
 			// get payment history

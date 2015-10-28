@@ -21,7 +21,7 @@
 				required="false"
 				
 		 />
-         
+     
          <field
              	name="recommend"
                 type="recommendtree"
@@ -55,6 +55,7 @@
                 size="45"
                 required="true"
           />
+
 
           <field 
           		name="alias" 
@@ -540,6 +541,20 @@
 		<field name="xreference" type="text"
 			label="MYMUSE_FIELD_XREFERENCE_LABEL" description="MYMUSE_FIELD_XREFERENCE_DESC"
 			class="inputbox" size="20" />
+		</fieldset>
+	</fields>
+	
+	<fields name="attribs">
+		<fieldset name="attribs" label="MYMUSE_PARAMETERS_ATTRIBUTES">
+		<field
+                name="isrc_code"
+                type="text"
+                label="MYMUSE_ISRC_LABEL"
+                description="MYMUSE_ISRC_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
 		</fieldset>
 	</fields>
 </form>

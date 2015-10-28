@@ -308,8 +308,11 @@ class MyMuseCheckout
 			}
 		} // end of item insertion
 
+		
 		$order->order_total = $order->order_subtotal + $order->order_shipping + $total_tax;
-
+		if($cart_order->order_total == 0.00){
+			$order->order_total = 0.00;
+		}
 		 
 		// if the total is zero, change the order status to confirmed
 		if($order->order_total == 0.00 || $order->order_total < 0.00){
@@ -845,6 +848,9 @@ class MyMuseCheckout
 		$order->status_name = MyMuseHelper::getStatusName($order->order_status );
 		$order->subtotal_before_discount = $order->order_subtotal  + @$order->coupon->discount + @$order->discount;
 		$order->order_total = $order->order_subtotal + $order->order_shipping->cost + $order->tax_total;
+		if($order->order_total < 0){
+			$order->order_total = 0.00;
+		}
 		$order->order_currency = MyMuseHelper::getCurrency($MyMuseStore->_store->currency);
 		if($params->get("my_show_sku",0) >0){
 			$order->colspan=4;
