@@ -14,7 +14,6 @@ div#mod_mymuse_latest_1 {
 }
 .mymuse_latest li{
 	border-bottom : 1px solid #cccccc;
-    padding-top: 5px;
 	font-weight: bold;
 	float: left;
 	list-style-type:none;

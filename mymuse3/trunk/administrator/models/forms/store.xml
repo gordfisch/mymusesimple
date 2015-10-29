@@ -34,9 +34,11 @@
           <field 
           		name="alias" 
           		type="text" 
-          		label="MYMUSE_USE_ALIAS_LABEL"
-				description="MYMUSE_USE_ALIAS_DESC" 
+          		label="MYMUSE_ALIAS_LABEL"
+				description="MYMUSE_ALIAS_DESC" 
 				class="inputbox" size="45" />
+				
+
            
           <field 
           		name="description" 
@@ -603,13 +605,23 @@
         <field
                 name="my_use_alias"
                 type="radio"
-                label="MYMUSE_USE_ALIAS"
+                label="MYMUSE_USE_ALIAS_LABEL"
                 description="MYMUSE_USE_ALIAS_DESC"
                 class="btn-group"
                 default="0">
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>>
         </field>
+        
+        <field
+                name="top_menu_item"
+                type="menuitem"
+                label="MYMUSE_TOP_MENU_LABEL"
+                description="MYMUSE_TOP_MENU_DESC"
+                class="inputbox"
+            
+                required="false"
+                />
         
         <field
                 name="my_registration"
