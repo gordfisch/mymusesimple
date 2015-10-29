@@ -167,13 +167,23 @@ function MymuseBuildRoute(&$query)
  */
 function MymuseParseRoute($segments)
 {
+	
 	$vars = array();
-
+	if(!defined('DS')){
+		define('DS',DIRECTORY_SEPARATOR);
+	}
+	
+	if(!defined('MYMUSE_ADMIN_PATH')){
+		define('MYMUSE_ADMIN_PATH',JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_mymuse'.DS);
+	}
+	require_once( MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php' );
 	//Get the active menu item.
 	$app	= JFactory::getApplication();
+	$jinput = $app->input;
+	$jinput->set('option', 'com_mymuse');
 	$menu	= $app->getMenu();
 	$item	= $menu->getActive();
-	$params = JComponentHelper::getParams('com_mymuse');
+	$params = MyMuseHelper::getParams();
 	$advanced = $params->get('sef_advanced_link', 0);
 	$db = JFactory::getDBO();
 
@@ -200,6 +210,7 @@ function MymuseParseRoute($segments)
 
 			$db->setQuery($query);
 			if($product = $db->loadObject()){
+				$vars['option'] = 'com_mymuse';
 				$vars['view'] = 'product';
 				$vars['id'] = (int)$product->id;
 				$vars['catid'] = (int)$product->catid;
@@ -211,12 +222,13 @@ function MymuseParseRoute($segments)
 			
 			$db->setQuery($query);
 			if($category = $db->loadObject()){
+				$vars['option'] = 'com_mymuse';
 				$vars['view'] = 'category';
 				$vars['id'] = (int)$category->id;
 				return $vars;
 			}
 		}
-		
+				
 		// we check to see if an alias is given.  If not, we assume it is an product
 		if (strpos($segments[0], ':') === false) {
 			$vars['view'] = 'product';
