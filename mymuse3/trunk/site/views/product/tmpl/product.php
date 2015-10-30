@@ -31,6 +31,12 @@ $document 	= JFactory::getDocument();
 $lang = JFactory::getLanguage();
 $langtag = $lang->getTag();
 
+$url = "index.php?option=com_mymuse&task=ajaxtogglecart";
+$products = array();
+for ($i=0;$i<$this->cart["idx"];$i++) {
+	$products[] = $this->cart[$i]['product_id'];
+}
+
 // get the count of all products, items and tracks
 if($product->product_physical){
 	$count++;
@@ -42,7 +48,7 @@ if(count($items) && !$items_select){
 if(count($tracks)){ 
 	$count += count($tracks);
 }
-/* coming soon 
+
 //add javascript for updating the cart by ajax
 $js = '';
 $url = "index.php?option=com_mymuse&task=ajaxtogglecart";
@@ -51,11 +57,19 @@ foreach($tracks as $track){
 	$js .= '
 jQuery(document).ready(function($){
 		$("#box_'.$track->id.'").click(function(e){
-
+			if(typeof document.mymuseform.variation_'.$track->id.'_id !== "undefined"){	
+					
+				myvariation = document.mymuseform.variation_'.$track->id.'_id.value;
+				alert("variation "+myvariation);
+			}else{
+				myvariation = "";
+			}
             //alert("'.$url.'");
             $.post("'.$url.'",
             {
-                productid:"'.$track->id.'"
+                productid:"'.$track->id.'",
+                variation:"variation"
+                		
             },
             function(data,status)
             {
@@ -87,9 +101,44 @@ jQuery(document).ready(function($){
 ';
 }
 $document->addScriptDeclaration($js);
-*/
-?>
 
+?>
+<style>
+/* to hide the player, uncomment this commented sction
+#product_player {
+  top: -1000px;
+  position: absolute;
+  z-index:2000000;
+}
+
+.tracks a.jp-play,
+.tracks a.jp-pause {
+	width:40px;
+	height:40px;
+    display:block;
+    overflow: hidden;
+    text-indent: -9999px;
+}
+
+.tracks a.jp-play {
+	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") 0 0 no-repeat;
+}
+#main  .tracks a.jp-play:hover {
+	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") -41px 0 no-repeat;
+	
+}
+.tracks a.jp-pause {
+	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") 0 -42px no-repeat;
+}
+*/
+
+#carttop {
+    width: 200px;
+    border: 1px solid;
+    height: 50px;
+    margin-bottom:10px;
+}
+</style>
 <script type="text/javascript">
 function hasProduct(that, count){
 	<?php if($items_select && count($items)){ ?>
@@ -123,6 +172,25 @@ function tableOrdering( order, dir, task )
 }
 
 </script>
+	<?php if($this->params->get('show_minicart')) :?>
+<!--  the cart box  -->
+<div id='carttop'>
+<img src="components/com_mymuse/assets/images/cart.png" align="left"><span id="carttop1"><?php
+if($this->cart['idx']){
+    echo $this->cart['idx']." ".JText::_('MYMUSE_PRODUCTS');
+}
+?></span><br />
+<span id="carttop2"><?php
+if($this->cart['idx']){
+    echo '<a href="'.JRoute::_('index.php?option=com_mymuse&view=cart&layout=cart').'">'.JText::_('MYMUSE_VIEW_CART').'</a>';
+}else{
+    echo JText::_('MYMUSE_YOUR_CART_IS_EMPTY');
+}
+?></span>
+</div>
+<div class="clear"></div>
+<?php  endif; ?>
+	
 <!--  START PRODUCT VIEW -->	
 <!--  HEADING TITLE ICONS -->
 <div class="mymuse">
@@ -568,7 +636,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 			<thead>
 		    <tr>
 		    <?php  if($params->get('product_show_select_column', 1)){?>
-		    	<th class="mymuse_cart_top myselect" align="left" width="10%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
+		    	<th class="mymuse_cart_top myselect" align="left" width="20%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
         	<?php } ?>
         	
         	<th class="mymuse_cart_top mytitle" align="center" width="40%"><?php echo JText::_('MYMUSE_NAME'); ?></th>
@@ -614,6 +682,21 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
       						}
       					?>
       					</span>
+      					
+      					
+                    <!--  SELECT COLUMN -->	
+                        
+        				<?php if($track->file_name || $track->product_allfiles) :?>
+                        <a href="javascript:void(0)" id="box_<?php echo $track->id; ?>"><img id="img_<?php echo $track->id; ?>" src="<?php
+                            if(in_array($track->id, $products)){
+                                echo "components/com_mymuse/assets/images/cart.png";
+                            }else{
+                                echo "components/com_mymuse/assets/images/checkbox.png";
+                            }
+                        ?>"></a>
+      					<?php  endif; ?>
+      					
+    
       						
       					<?php  endif; ?>
       					</td>

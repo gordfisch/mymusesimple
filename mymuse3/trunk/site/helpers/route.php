@@ -65,6 +65,8 @@ class myMuseHelperRoute
 			$link = "en/$menu_alias/$alias";
 			return  $link;
 		}
+		
+		//if not use alias
 		//Create the link
 		$link = 'index.php?option=com_mymuse&view=product&id='. $id;
 		

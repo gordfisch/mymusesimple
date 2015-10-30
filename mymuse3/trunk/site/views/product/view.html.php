@@ -28,6 +28,7 @@ class myMuseViewProduct extends JViewLegacy
 	protected $print;
 	protected $state;
 	protected $user;
+	protected $cart;
 
 	function display($tpl = null)
 	{
@@ -37,7 +38,8 @@ class myMuseViewProduct extends JViewLegacy
 		$user		= JFactory::getUser();
 		$userId		= $user->get('id');
 		$dispatcher	= JDispatcher::getInstance();
-		
+		$MyMuseCart =& MyMuse::getObject('cart','helpers');
+		$this->cart =& $MyMuseCart->cart;
 
 		$this->item		= $this->get('Item');
 		//print_pre($this->item);

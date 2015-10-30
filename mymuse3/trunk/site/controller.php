@@ -990,10 +990,15 @@ class MyMuseController extends JControllerLegacy
 	{
 		$jinput = JFactory::getApplication()->input;
 		$productid  = $jinput->get('productid', '', 'int');
+		$variationid  = $jinput->get('variationid', '', 'int');
 		
 		if(!$productid ){
 			$data = array();
 		}else{
+			if($variationid){
+				$jinput->set('variation['.$productid.']',$variationid);
+			}
+			
 			$db = JFactory::getDBO();
 			$query = "SELECT title from #__mymuse_product WHERE id =$productid";
 			$db->setQuery($query);
