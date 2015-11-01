@@ -274,6 +274,16 @@
                 
            />
            <field
+                name="my_download_dir_format"
+                type="list"
+                label="MYMUSE_DOWNLOAD_DIR_FORMAT_LABEL"
+                description="MYMUSE_DOWNLOAD_DIR_FORMAT_DESC"
+                class="btn-group"
+                default="0">
+                <option value="0">MYMUSE_ARIST_PRODUCT</option>
+				<option value="1">MYMUSE_BY_FORMAT</option>
+            </field>
+           <field
                 name="my_preview_dir"
                 type="text"
                 label="MYMUSE_DOWNLOADS_PREVIEW_DIR_LABEL"
@@ -282,6 +292,26 @@
                 default="images/A_MyMusePreviews"
                 size="40"
             />
+            <field
+                name="my_previews_in_one_dir"
+                type="radio"
+                label="MYMUSE_PREVIEWS_IN_ON_DIR_LABEL"
+                description="MYMUSE_PREVIEWS_IN_ON_DIR_DESC"
+                class="btn-group"
+                default="0">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>
+            </field>
+            <field
+                name="my_use_sring_url_safe"
+                type="radio"
+                label="MYMUSE_STR_URL_SAFE_LABEL"
+                description="MYMUSE_STR_URL_SAFE_DESC"
+                class="btn-group"
+                default="1">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>
+            </field>
         <field
                 name="my_use_s3"
                 type="radio"

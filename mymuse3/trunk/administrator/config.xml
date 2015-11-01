@@ -83,6 +83,16 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
           	</field>
+          	
+          	<field name="show_minicart" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_SHOW_MINICART_DESC"
+				label="MYMUSE_SHOW_MINICART_LABEL"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
           			
 	<field type="spacer" name="spacerdownload" label="MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" />
 	

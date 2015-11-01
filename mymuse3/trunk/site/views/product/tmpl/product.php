@@ -77,7 +77,7 @@ jQuery(document).ready(function($){
                 idx = res.idx;
                 msg = res.msg;
                 action = res.action;
-                alert(res.msg + "\nStatus: " + status);
+                alert(res.msg);
                 if(action == "deleted"){
                     $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/checkbox.png");
                 }else{

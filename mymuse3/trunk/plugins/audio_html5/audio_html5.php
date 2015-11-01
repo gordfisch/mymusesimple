@@ -41,7 +41,7 @@ class plgMymuseAudio_html5 extends JPlugin
 	 */
 	function plgMymuseAudio_html5(&$subject, $config)  {
 		parent::__construct($subject, $config);
-		
+			
 		JHtml::_('jquery.framework',  true, true);
 		$document = JFactory::getDocument();
 		$app = JFactory::getApplication('site');
@@ -92,7 +92,7 @@ class plgMymuseAudio_html5 extends JPlugin
 	 */
 	function onPrepareMyMuseMp3Player(&$track, $type='single', $height=0, $width=0, $index=0, $count=0)
 	{
-		
+	
 		$document = JFactory::getDocument();
 		$match = 0;
 		$site_url = preg_replace("#administrator/#","",JURI::base());
@@ -350,8 +350,14 @@ jQuery(document).ready(function(){
 });
 ';
 
-        
+      
 			$document->addScriptDeclaration($js);
+			
+			
+			$headData = $document->getHeadData();
+			$scripts = $headData['scripts'];
+			//print_pre($headData);
+			
 			
 			$text = '
 		<section>

@@ -323,7 +323,7 @@ class MymuseTableproduct extends JTable
 			
 		}
 
-
+		$download_path = MyMuseHelper::getdownloadPath($this->id,'1');
 		if(is_array( $select_files )){
 			for( $i = 0; $i < count($select_files); $i++ ){
 				//rename if necessary
@@ -332,19 +332,32 @@ class MymuseTableproduct extends JTable
 					// tidy up name and copy it to the download dir
 					$ext = MyMuseHelper::getExt($select_file);
 					$name = preg_replace("/$ext$/","",$select_file);
-					$file_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
+					if($params->get('my_use_sring_url_safe')){
+						$file_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
+					}else{
+						$file_name = $select_file;
+					}
+					
+					if($params->get('my_download_dir_format') == 1){
+						//by format
+						if($ext == "mp3"){
+							$download_path .= "320";
+						}else{
+							$download_path .= $ext;
+						}
+					}
 					
 					if($params->get('my_encode_filenames') ){
 						$name = md5($select_file . time()).'.'.$ext;
 						$file_alias = $name;
-						$new_file = $post['download_dir'].DS.$name;
+						$new_file = $download_path.DS.$name;
 					}else{
-						$new_file = $post['download_dir'].DS.$file_name;
+						$new_file = $download_path.DS.$file_name;
 						$file_alias = '';
 					}
-						
-					$old_file = $post['download_dir'].DS.$select_file;
-				
+					
+					$old_file = $download_path.DS.$select_file;
+
 					if($old_file != $new_file){
 						
 						// DO we put a limit on size?
@@ -361,9 +374,10 @@ class MymuseTableproduct extends JTable
 					}
 
 					$file_length = $this->fileFilesize($new_file);
-					
+
 					// TODO: get this to work with s3
 					$file_time = '';
+					
 					if(isset($new_file) && is_file($new_file)
 							&& strtolower(pathinfo($new_file, PATHINFO_EXTENSION)) == "mp3"){
 						$m = new mp3file($new_file);
@@ -372,6 +386,7 @@ class MymuseTableproduct extends JTable
 							$file_time = $a["Length mm:ss"];
 						}
 					}
+					
 					$file_downloads = @$current[$i]->file_downloads;
 					//  save this to the file_name
 					$current_files[$i] = array(
@@ -386,7 +401,7 @@ class MymuseTableproduct extends JTable
 			}
 			$this->file_name = json_encode($current_files);
 		}
-	
+		print_pre($this->file_name); exit;
 		// Previews
 		//check for errors with upload previews
 		if(isset($_FILES['product_preview']['name']) && $_FILES['product_preview']['name'] != ""){
@@ -634,7 +649,12 @@ class MymuseTableproduct extends JTable
 		if(isset($_FILES[$preview_name]) && $_FILES[$preview_name]['size'] >  0){
 			$ext = MyMuseHelper::getExt($_FILES[$preview_name]['name']);
 			$_FILES[$preview_name]['name'] = preg_replace("/$ext$/","",$_FILES[$preview_name]['name']);
-			$this->$file_preview_name = JFilterOutput::stringURLSafe($_FILES[$preview_name]['name']).'.'.$ext;
+			if($params->get('my_use_sring_url_safe')){
+				$this->$file_preview_name = JFilterOutput::stringURLSafe($_FILES[$preview_name]['name']).'.'.$ext;
+			}else{
+				$this->$file_preview_name = $_FILES[$preview_name]['name'].'.'.$ext;
+			}
+			
 			$tmpName2  = $_FILES[$preview_name]['tmp_name'];
 			 
 			$new = $path.$this->$file_preview_name;
@@ -656,7 +676,12 @@ class MymuseTableproduct extends JTable
 			 
 			$ext = MyMuseHelper::getExt($file_preview);
 			$name = preg_replace("/$ext$/","",$file_preview);
-			$this->$file_preview_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
+			if($params->get('my_use_sring_url_safe')){
+				$this->$file_preview_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
+			}else{
+				$this->$file_preview_name = $name.'.'.$ext;
+			}
+
 			$old_file = $path.$file_preview;
 			$new_file = $path.$this->$file_preview_name;
 			
