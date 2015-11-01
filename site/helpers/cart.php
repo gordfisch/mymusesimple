@@ -355,13 +355,17 @@ class MyMuseCart {
      * @return bool
      */    
   	function delete($product_id) {
-
+  		$jinput = JFactory::getApplication()->input;
+  		$variationid  = $jinput->get('variationid', '', 'int');
   		$temp = array();
-
+//print_pre($this->cart);
   		$j = 0;
   		for ($i=0;$i<$this->cart["idx"];$i++) {
 
-  			if (isset($this->cart[$i]['product_id']) && $this->cart[$i]['product_id'] != $product_id) {
+  			if (isset($this->cart[$i]['product_id']) 
+  					&& $this->cart[$i]['product_id'] != $product_id
+  					&& $this->cart[$i]['variationid'] != $variationid
+  					) {
   				$temp[$j++] = $this->cart[$i];
   			}
   		}

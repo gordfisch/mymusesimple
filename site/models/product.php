@@ -306,12 +306,8 @@ class MyMuseModelProduct extends JModelItem
 			$db->setQuery($track_query);
 			$tracks = $db->loadObjectList();
 		
-			$artist_alias = MyMuseHelper::getArtistAlias($pk,'1');
-			$album_alias = MyMuseHelper::getAlbumAlias($pk);
-			
-			$site_url = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base()); 
-    		$site_url .= $params->get('my_use_s3')? '' :  $params->get('my_preview_dir');
-    		$site_url .=  '/'.$artist_alias.'/'.$album_alias.'/';
+			$site_url = MyMuseHelper::getSiteUrl($pk,'1');
+			$site_path = MyMuseHelper::getSitePath($pk,'1');
 			// set up flash previews and streams
 
 	
@@ -337,6 +333,7 @@ class MyMuseModelProduct extends JModelItem
 						$track->download_name = $track->file_name;
 					}
 					
+					//TO DO work with formats
 					//get download file NOTE NOT available while using Amazon s3
 					if(!$params->get('my_use_s3',0) && !is_array($track->file_name)){
 						$down_dir = str_replace($root,'',$params->get('my_download_dir'));
@@ -372,6 +369,7 @@ class MyMuseModelProduct extends JModelItem
 					}else{
 						$track->flash= '';
 					}
+
 					
 				}
 
@@ -388,15 +386,15 @@ class MyMuseModelProduct extends JModelItem
 
 							
 							$track->path = $site_url.$track->file_preview;
-							$track->real_path = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview;
+							$track->real_path = $site_path.$track->file_preview;
 							
 							if($track->file_preview_2){
 								$track->path_2 = $site_url.$track->file_preview_2;
-								$track->real_path_2 = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview_2;
+								$track->real_path_2 = $site_path.$track->file_preview_2;
 							}
 							if($track->file_preview_3){
 								$track->path_3 = $site_url.$track->file_preview_3;
-								$track->real_path_3 = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview_3;
+								$track->real_path_3 = $site_path.$track->file_preview_3;
 							}
 							
 							//should we use the real download file? Not available in AmazonS3
@@ -446,8 +444,7 @@ class MyMuseModelProduct extends JModelItem
 				
 				if(count($preview_tracks) && $params->get('product_player_type') == "single"){
 					// make a controller for the play/pause buttons
-					$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$preview_tracks) );
-					
+					$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$preview_tracks) );					
 				
 					//get the player itself
 					reset($preview_tracks);

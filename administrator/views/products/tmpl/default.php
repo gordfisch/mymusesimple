@@ -107,6 +107,9 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 					Ordering
 				</th>
 				<th width="25%">
+					<?php echo JHtml::_('grid.sort', 'MYMUSE_SKU', 'a.product_sku', $listDirn, $listOrder); ?>
+				</th>
+				<th width="25%">
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%">
@@ -180,6 +183,9 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 				</td>
 				<td class="center">
 					<?php echo $item->ordering; ?>
+				</td>
+				<td class="center">
+					<?php echo $item->product_sku; ?>
 				</td>
 				<td>
 					<?php if ($item->checked_out) : ?>

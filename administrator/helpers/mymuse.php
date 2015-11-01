@@ -89,6 +89,7 @@ class MyMuseHelper extends JObject
 	function __construct()
 	{
 		$this->_fh = fopen(JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'log.txt', "a");
+		$this->_params = self::getParams();
 	}
 	
 	/**
@@ -541,6 +542,70 @@ class MyMuseHelper extends JObject
 		return $alias;
 		
 	}
+	
+	/**
+	 * getSiteUrl get url for previews/downloads
+	 *
+	 * @param $id int
+	 * @return string
+	 */
+	static function getSiteUrl($id, $parent=0)
+	{
+		$params = self::$_params;
+		if(1 == $params->get('my_previews_in_one_dir')){
+			$site_url = preg_replace("#administrator/#","",JURI::base());
+			$site_url .= $params->get('my_preview_dir').'/';
+		}else{
+			$artist_alias = MyMuseHelper::getArtistAlias($id,'1');
+			$album_alias = MyMuseHelper::getAlbumAlias($id);
+				
+			$site_url = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base());
+			$site_url .= $params->get('my_use_s3')? '' :  $params->get('my_preview_dir');
+			$site_url .=  '/'.$artist_alias.'/'.$album_alias.'/';
+		}
+		return $site_url;
+	}
+	
+	/**
+	 * getSitePath get path for previews/downloads
+	 *
+	 * @param $id int
+	 * @return string
+	 */
+	static function getSitePath($id, $parent=0)
+	{
+		$params = self::$_params;
+
+		if(1 == $params->get('my_previews_in_one_dir')){
+			$site_path = JPATH_ROOT.DS.$params->get('my_preview_dir').DS;
+		}else{
+			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
+			$album_alias = MyMuseHelper::getAlbumAlias($id);	
+			$site_path =JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS;
+		}
+		return $site_path;
+	}
+	
+	/**
+	 * getSitePath get path for previews/downloads
+	 *
+	 * @param $id int
+	 * @return string
+	 */
+	static function getDownloadPath($id, $parent=0)
+	{
+		$params = self::$_params;
+		
+		if(1 == $params->get('my_download_dir_format')){
+			$site_path = $params->get('my_download_dir').DS;
+		}else{
+			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
+			$album_alias = MyMuseHelper::getAlbumAlias($id);
+			$site_path =$params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS;
+		}
+
+		return $site_path;
+	}	
 
 	/**
 	 * sortObjectsByProperty sort array of objects by a property

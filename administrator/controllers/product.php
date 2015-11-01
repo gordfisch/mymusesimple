@@ -86,6 +86,7 @@ class MymuseControllerProduct extends JControllerForm
         $form 				= $post['jform'];
 		$this->product_sku 	= $form['product_sku'];
 		$db 				= JFactory::getDBO();
+		
 		$input 				= JFactory::getApplication()->input;
 
 		$subtype 			= $post['subtype'];
@@ -141,9 +142,7 @@ class MymuseControllerProduct extends JControllerForm
 					break;
 				}
 			}else {
-				echo $table->getError();
-				echo "failed"; 
-				print_pre($db); exit;
+
         		$this->msg = JText::_( 'MYMUSE_ERROR_SAVING_FILE' ).": ".$table->getError();
         	
         		JFactory::getApplication()->enqueueMessage($this->msg, 'notice');

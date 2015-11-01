@@ -333,9 +333,23 @@ class myMuseViewStore extends JViewLegacy
         		}
 				
        
-        		$full_filename = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$filename;
+        		$download_path = MyMuseHelper::getDownloadPath($order_item->product_id, 1);
+        		if($params->get('my_download_dir_format') == 1){
+        			//by format
+        			$ext = MyMuseHelper::getExt($filename);
+        			if($ext == "mp3"){
+        				$download_path .= "320";
+        			}else{
+        				$download_path .= $ext;
+        			}
+        		}
+        		
+        		$full_filename = $download_path.DS.$filename;
         		$full_filename1 = $full_filename;
         		//echo $full_filename;
+        		
+        		
+        		
         		
         		if(!file_exists($full_filename)){
         			//try with the root

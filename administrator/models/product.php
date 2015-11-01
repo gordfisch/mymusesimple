@@ -406,8 +406,7 @@ class MymuseModelproduct extends JModelAdmin
 
     	$limit 				= $this->getState('list.limit');
     	$id 				= $input->get('id');
-    	$artist_alias 		= MyMuseHelper::getArtistAlias($this->_item->catid);
-    	$album_alias 		= MyMuseHelper::getAlbumAlias($this->_item->id);
+    	
 
     	$root = JPATH_ROOT;
   
@@ -447,6 +446,14 @@ class MymuseModelproduct extends JModelAdmin
     		$this->_trackPagination = $model->getPagination();
     	}
   
+    	$artist_alias 		= MyMuseHelper::getArtistAlias($this->_item->catid);
+    	$album_alias 		= MyMuseHelper::getAlbumAlias($this->_item->id);
+    	 
+    	$site_url = MyMuseHelper::getSiteUrl($this->_item->id,'1');
+    	$site_path = MyMuseHelper::getSitePath($this->_item->id,'1');
+    	$download_path = MyMuseHelper::getdownloadPath($this->_item->id,'1');
+    	
+    	
     	if(count($this->_tracks)){
     		
     		//need count minus any alltracks minus any missing files
@@ -470,13 +477,22 @@ class MymuseModelproduct extends JModelAdmin
     			}else{
     				$name = $track->file_name;
     			}
-    			$full_filename = $filename = $this->_params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
+    			if($this->_params->get('my_download_dir_format') == 1){
+    				//by format
+    				$ext = MyMuseHelper::getExt($name);
+    				if($ext == "mp3"){
+    					$download_path .= "320".DS;
+    				}else{
+    					$download_path .= $ext.DS;
+    				}
+    			}
+    			$full_filename = $filename = $site_path.$name;
     			if(!$this->_params->get('my_use_s3') && file_exists($full_filename) ){
     				$i++;
     			}
     			
     			//preview
-    			$path = ($this->_params->get('my_use_s3')? $artist_alias.DS.$album_alias.DS : JPATH_ROOT.DS . $this->_params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS);
+    			$path = ($this->_params->get('my_use_s3')? $artist_alias.DS.$album_alias.DS : $site_path);
     			$preview_full_filename = $path.$track->file_preview;
     			
     			if(!$this->_params->get('my_use_s3')  && file_exists($preview_full_filename)
@@ -540,10 +556,6 @@ class MymuseModelproduct extends JModelAdmin
     			if($track->file_preview){
     				$ext = MyMuseHelper::getExt($track->file_preview);
     				
-
-    				$site_url = $this->_params->get('my_use_s3')? $this->_params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base()); 
-    				$site_url .= $this->_params->get('my_use_s3')? '' :  $this->_params->get('my_preview_dir');
-    				$site_url .=  DS.$artist_alias.DS.$album_alias.DS;
     				
     				$track->path = $site_url.$track->file_preview;
     				$track->real_path = ($this->_params->get('my_use_s3')? '' : JPATH_ROOT.DS) . $this->_params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview;
@@ -627,7 +639,7 @@ class MymuseModelproduct extends JModelAdmin
     						$ext = MyMuseHelper::getExt($name);
     						$site_url = preg_replace("#administrator/#","",JURI::base());
     						$track->path = $site_url.str_replace($root,'',$download_dir);
-    						$track->path .= "/".$artist_alias."/".$album_alias."/".$name;
+    						$track->path .= "/".$name;
     						$track->oldid = $track->id;
     						$track->id = "m".$track->id;
     						$track->file_preview_2 = '';
@@ -824,7 +836,9 @@ class MymuseModelproduct extends JModelAdmin
  		// file lists for albums
  		$artist_alias = MyMuseHelper::getArtistAlias($parentid,'1');
 		$album_alias = MyMuseHelper::getAlbumAlias($parentid);
-		
+		$site_url = MyMuseHelper::getSiteUrl($this->_item->id,'1');
+		$site_path = MyMuseHelper::getSitePath($this->_item->id,'1');
+		$download_path = MyMuseHelper::getdownloadPath($this->_item->id,'1');
 
 		$files = array();
 		// get the preview lists
@@ -845,8 +859,7 @@ class MymuseModelproduct extends JModelAdmin
 			}
 		}else{
 			
-			$directory = JPATH_ROOT.DS.$this->_params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
-			$files = JFolder::files( $directory );
+			$files = JFolder::files( $site_path );
 		}
 
 		$previews 	= array(  JHTML::_('select.option',  '', '- '. JText::_( 'MYMUSE_SELECT_FILE' ) .' -' ) );
@@ -875,8 +888,15 @@ class MymuseModelproduct extends JModelAdmin
 				}
 			}
 		}else{
-			$directory = $this->_params->get('my_download_dir').DS.$artist_alias.DS.$album_alias;
-			$files = JFolder::files( $directory );
+			$directory = MyMuseHelper::getDownloadPath($this->_item->id,'1');
+			if($this->_params->get('my_download_dir_format')){
+				//by format
+				$files1 = JFolder::files( $directory.DS.'320' );
+				$files2 = JFolder::files( $directory.DS.'wav' );
+				$files = array_merge($files1,$files2);
+			}else{
+				$files = JFolder::files( $directory );
+			}
 		}
 		
 		$myfiles = array(  JHTML::_('select.option',  '', '- '. JText::_( 'MYMUSE_SELECT_FILE' ) .' -' ) );
@@ -897,9 +917,11 @@ class MymuseModelproduct extends JModelAdmin
 		for($i = $i++; $i < 9; $i++){
 			$lists['select_file'][$i] = JHTML::_('select.genericlist',  $myfiles, "select_file[$i]", 'class="inputbox" size="1" ', 'value', 'text','');
 		}
+		
 		// for display purposes
-		$lists['preview_dir'] = ($this->_params->get('my_use_s3')? '' : JPATH_ROOT.DS).$this->_params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
-		$lists['download_dir'] = $this->_params->get('my_download_dir').DS.$artist_alias.DS.$album_alias;
+		$lists['preview_dir'] = $site_path;
+		$lists['download_dir'] = $download_path;
+
 	
 		return $lists;
     	

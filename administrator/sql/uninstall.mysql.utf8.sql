@@ -20,6 +20,7 @@
 DROP TABLE IF EXISTS `#__mymuse_country`;
 DROP TABLE IF EXISTS `#__mymuse_coupon`;
 DROP TABLE IF EXISTS `#__mymuse_currency`;
+DROP TABLE IF EXISTS `#__mymuse_downloads`;
 DROP TABLE IF EXISTS `#__mymuse_order`;
 DROP TABLE IF EXISTS `#__mymuse_order_item`;
 DROP TABLE IF EXISTS `#__mymuse_order_status`;
@@ -30,6 +31,8 @@ DROP TABLE IF EXISTS `#__mymuse_product`;
 DROP TABLE IF EXISTS `#__mymuse_product_attribute`;
 DROP TABLE IF EXISTS `#__mymuse_product_attribute_sku`;
 DROP TABLE IF EXISTS `#__mymuse_product_category_xref`;
+DROP TABLE IF EXISTS `#__mymuse_product_recommend_xref`;
+DROP TABLE IF EXISTS `#__mymuse_product_file`;
 DROP TABLE IF EXISTS `#__mymuse_product_rating`;
 DROP TABLE IF EXISTS `#__mymuse_shopper`;
 DROP TABLE IF EXISTS `#__mymuse_shopper_group`;
