@@ -42,7 +42,7 @@ if($rtl){
 	$Doc->addStyleSheet( 'components/com_mymuse/assets/css/mymuse_rtl.css' );
 }
 
-$Doc->addScript( 'components/com_mymuse/assets/javascript/mymuse.js' );
+//$Doc->addScript( 'components/com_mymuse/assets/javascript/mymuse.js' );
 
 JPluginHelper::importPlugin('mymuse');
 

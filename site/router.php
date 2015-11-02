@@ -206,6 +206,9 @@ function MymuseParseRoute($segments)
 		
 		if($params->get('my_use_alias')){
 			//check if this is a product alias.
+			if(strpos($segments[0],':')){
+				$segments[0] = preg_replace('/:/',"-",$segments[0]);
+			}
 			$query = 'SELECT id,catid from #__mymuse_product WHERE alias="'.$segments[0].'"';
 
 			$db->setQuery($query);

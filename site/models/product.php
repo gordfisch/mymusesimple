@@ -1012,6 +1012,7 @@ class MyMuseModelProduct extends JModelItem
   			$recommends[$i]->url = myMuseHelperRoute::getProductRoute ( $recommends[$i]->id, $recommends[$i]->catid );
   			$recommends[$i]->cat_url = myMuseHelperRoute::getCategoryRoute ( $recommends[$i]->catid  );
   		}
+
   		return $recommends;
   	}
   	 
