@@ -62,7 +62,7 @@ class myMuseHelperRoute
 				$catid = $res->catid;
 			}
 			$alias = $res->alias;
-			$link = "en/$menu_alias/$alias";
+			$link = "$menu_alias/$alias";
 			return  $link;
 		}
 		
