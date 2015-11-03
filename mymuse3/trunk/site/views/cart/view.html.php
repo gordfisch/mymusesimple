@@ -200,6 +200,91 @@ class myMuseViewCart extends JViewLegacy
 			//Hmm nothing to display...
 			parent::display('empty');
 			return false;
+		}else{
+			//get tracks
+			// TRACKS
+			if($count = count($order->items)){
+				$count = count($order->items);
+				$j = 0;
+				while (list($i,$track) = each( $order->items)){
+					$site_url = MyMuseHelper::getSiteUrl($track->id,'1');
+					$site_path = MyMuseHelper::getSitePath($track->id,'1');
+					$flash = '';
+					if($track->file_preview){
+						$track->path = $site_url.$track->file_preview;
+						$track->real_path = $site_path.$track->file_preview;
+			
+						if($track->file_preview_2){
+							$track->path_2 = $site_url.$track->file_preview_2;
+							$track->real_path_2 = $site_path.$track->file_preview_2;
+						}
+						if($track->file_preview_3){
+							$track->path_3 = $site_url.$track->file_preview_3;
+							$track->real_path_3 = $site_path.$track->file_preview_3;
+						}
+							
+						if(substr_count($track->file_type,"video")){
+							//movie
+							$flash = '<!-- Begin Player -->';
+							$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,'single',0,0,$j) );
+							if(is_array($results) && isset($results[0]) && $results[0] != ''){
+								$flash .= $results[0];
+							}
+							$flash .= '<!-- End Player -->';
+						}elseif(substr_count($track->file_type,"audio")){
+							//audio
+							$flash = '<!-- Begin Player -->';
+							$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,'single',0,0,$j));
+							if(is_array($results) && isset($results[0]) && $results[0] != ''){
+								$flash .= $results[0];
+							}
+							$flash .= '<!-- End Player -->';
+						}
+			
+						$order->items[$i]->flash = $flash;
+						$j++;
+					}
+			
+				}
+			}
+			// make a controller for the play/pause buttons
+			$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$order->items) );
+			
+			//get the player itself
+			reset($order->items);
+			$flash = '';
+			$audio = 0;
+			$video = 0;
+			foreach($order->items as $track){
+				if($track->file_preview){
+					if(substr_count($track->file_type,"video") && !$video){
+						//movie
+						$flash .= '<!-- Begin VIDEO Player -->';
+						$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
+			
+						if(is_array($results) && isset($results[0]) && $results[0] != ''){
+							$flash .= $results[0];
+						}
+						$flash .= '<!-- End Player -->';
+						$video = 1;
+							
+					}elseif(substr_count($track->file_type,"audio") && !$audio){
+						//audio
+						$flash .= '<!-- Begin AUDIO Player -->';
+						$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
+			
+						if(is_array($results) && isset($results[0]) && $results[0] != ''){
+							$flash .= $results[0];
+						}
+						$flash .= '<!-- End Player -->';
+						$audio = 1;
+					}
+					$order->flash = $flash;
+					$order->flash_id = $track->id;
+					break;
+
+				}
+			}
 		}
 
 				

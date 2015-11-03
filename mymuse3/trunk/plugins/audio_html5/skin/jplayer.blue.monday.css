@@ -107,7 +107,7 @@ li.jp-unmute,
 	}
 	.jp-gui ul li {
 		position: relative;
-		float: left;
+		float: right;
 		list-style: none;
 		margin: 2px;
 		padding: 4px 0;

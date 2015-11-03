@@ -401,7 +401,7 @@ class MymuseTableproduct extends JTable
 			}
 			$this->file_name = json_encode($current_files);
 		}
-		print_pre($this->file_name); exit;
+		
 		// Previews
 		//check for errors with upload previews
 		if(isset($_FILES['product_preview']['name']) && $_FILES['product_preview']['name'] != ""){

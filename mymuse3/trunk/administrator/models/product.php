@@ -233,6 +233,7 @@ class MymuseModelproduct extends JModelAdmin
 					$this->_db->setQuery($q);
 					$this->_parent = $this->_db->loadObject();
 					$item->parent = $this->_parent;
+					$item->catid = $item->parent->catid;
 				}else{
 					//set the parent id for the tracks and items
 					$mainframe = JFactory::getApplication();
@@ -836,6 +837,7 @@ class MymuseModelproduct extends JModelAdmin
  		// file lists for albums
  		$artist_alias = MyMuseHelper::getArtistAlias($parentid,'1');
 		$album_alias = MyMuseHelper::getAlbumAlias($parentid);
+		
 		$site_url = MyMuseHelper::getSiteUrl($this->_item->id,'1');
 		$site_path = MyMuseHelper::getSitePath($this->_item->id,'1');
 		$download_path = MyMuseHelper::getdownloadPath($this->_item->id,'1');

@@ -50,11 +50,71 @@ if(count($tracks)){
 }
 
 //add javascript for updating the cart by ajax
-$js = '';
+$js = '
+		var my_my_modal = (function(){
+    var 
+    method = {}
+
+    // Center the my_my_modal in the viewport
+    method.center = function () {
+		var top, left;
+
+    	top = Math.max(jQuery(window).height() - jQuery("#my_modal").outerHeight(), 0) / 2;
+    	left = Math.max(jQuery(window).width() - jQuery("#my_modal").outerWidth(), 0) / 2;
+
+    	jQuery("#my_modal").css({
+        	top:top + jQuery(window).scrollTop(), 
+        	left:left + jQuery(window).scrollLeft()
+    	});
+	};
+
+    // Open the my_modal
+    method.open = function (settings) {
+		
+		jQuery("#my_content").empty().append(settings.content);
+
+    	jQuery("#my_modal").css({
+        	width: settings.width || "auto", 
+        	height: settings.height || "auto"
+   		})
+
+    	method.center();
+
+    	jQuery(window).bind(\'resize.my_modal\', method.center);
+    	jQuery("#my_overlay").show();
+		jQuery("#my_modal").show();
+		jQuery("#my_modal").fadeOut(6000,method.close);
+	};
+		
+
+    // Close the my_modal
+    method.close = function () {
+		jQuery("#my_modal").hide();
+    	jQuery("#my_overlay").hide();
+    	jQuery("#my_content").empty();
+    	jQuery(window).unbind(\'resize.my_modal\');
+	};
+	
+	;
+
+    return method;
+}());
+
+jQuery(document).ready(function($){
+	$("#my_modal").hide();
+	$("#my_overlay").hide();
+	jQuery("#my_close").click(function(e){
+		e.preventDefault();
+		my_modal.close();
+	})
+});
+';
 $url = "index.php?option=com_mymuse&task=ajaxtogglecart";
 foreach($tracks as $track){
 
 	$js .= '
+
+    			
 jQuery(document).ready(function($){
 		$("#box_'.$track->id.'").click(function(e){
 			if(typeof document.mymuseform.variation_'.$track->id.'_id !== "undefined"){	
@@ -64,7 +124,6 @@ jQuery(document).ready(function($){
 			}else{
 				myvariation = "";
 			}
-            //alert("'.$url.'");
             $.post("'.$url.'",
             {
                 productid:"'.$track->id.'",
@@ -77,22 +136,24 @@ jQuery(document).ready(function($){
                 idx = res.idx;
                 msg = res.msg;
                 action = res.action;
-                alert(res.msg);
+          
                 if(action == "deleted"){
-                    $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/checkbox.png");
+                    $("#img_'.$track->id.'").attr("src","'.JURI::root().'components/com_mymuse/assets/images/checkbox.png");
                 }else{
-                    $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/cart.png");
+                    $("#img_'.$track->id.'").attr("src","'.JURI::root().'components/com_mymuse/assets/images/cart.png");
                 }
                 if(idx){
                     txt = idx+" "+"'.JText::_('MYMUSE_PRODUCTS').'";
                     link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&view=cart&layout=cart').'">'.JText::_('MYMUSE_VIEW_CART').'</a>\';
                     $("#carttop1").html(txt);
                     $("#carttop2").html(link);
+                    
                 }else{
 
                     $("#carttop1").html(" ");
                     $("#carttop2").html("'.JText::_('MYMUSE_YOUR_CART_IS_EMPTY').'");
                 }
+                my_my_modal.open({content: msg+"<br />"+link, width: 400 });
             });
 
 		});
@@ -103,42 +164,6 @@ jQuery(document).ready(function($){
 $document->addScriptDeclaration($js);
 
 ?>
-<style>
-/* to hide the player, uncomment this commented sction
-#product_player {
-  top: -1000px;
-  position: absolute;
-  z-index:2000000;
-}
-
-.tracks a.jp-play,
-.tracks a.jp-pause {
-	width:40px;
-	height:40px;
-    display:block;
-    overflow: hidden;
-    text-indent: -9999px;
-}
-
-.tracks a.jp-play {
-	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") 0 0 no-repeat;
-}
-#main  .tracks a.jp-play:hover {
-	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") -41px 0 no-repeat;
-	
-}
-.tracks a.jp-pause {
-	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") 0 -42px no-repeat;
-}
-*/
-
-#carttop {
-    width: 200px;
-    border: 1px solid;
-    height: 50px;
-    margin-bottom:10px;
-}
-</style>
 <script type="text/javascript">
 function hasProduct(that, count){
 	<?php if($items_select && count($items)){ ?>
@@ -172,15 +197,18 @@ function tableOrdering( order, dir, task )
 }
 
 </script>
-	<?php if($this->params->get('show_minicart')) :?>
+	
+
+
+<?php if($this->params->get('show_minicart')) :?>
 <!--  the cart box  -->
 <div id='carttop'>
-<img src="components/com_mymuse/assets/images/cart.png" align="left"><span id="carttop1"><?php
+	<img src="components/com_mymuse/assets/images/cart.png" align="left"><span
+		id="carttop1"><?php
 if($this->cart['idx']){
     echo $this->cart['idx']." ".JText::_('MYMUSE_PRODUCTS');
 }
-?></span><br />
-<span id="carttop2"><?php
+?></span><br /> <span id="carttop2"><?php
 if($this->cart['idx']){
     echo '<a href="'.JRoute::_('index.php?option=com_mymuse&view=cart&layout=cart').'">'.JText::_('MYMUSE_VIEW_CART').'</a>';
 }else{
@@ -190,8 +218,9 @@ if($this->cart['idx']){
 </div>
 <div class="clear"></div>
 <?php  endif; ?>
-	
-<!--  START PRODUCT VIEW -->	
+
+
+<!--  START PRODUCT VIEW -->
 <!--  HEADING TITLE ICONS -->
 <div class="mymuse">
 
@@ -252,14 +281,14 @@ endif; ?>
 
 <!--  END HEADING -->
 
-<!-- PRODUCT ATTRIBUTES -->
+	<!-- PRODUCT ATTRIBUTES -->
 <?php $useDefList = (($params->get('show_author')) or ($params->get('show_category')) or ($params->get('show_parent_category'))
 	or ($params->get('show_create_date')) or ($params->get('show_modify_date')) or ($params->get('show_publish_date'))
 	or ($params->get('show_hits'))); ?>
 
 <?php if ($useDefList) : ?>
 	<dl class="article-info">
-	<dt class="article-info-term"><?php  echo JText::_('MYMUSE_PRODUCT_INFO'); ?></dt>
+		<dt class="article-info-term"><?php  echo JText::_('MYMUSE_PRODUCT_INFO'); ?></dt>
 <?php endif; ?>
 <?php if ($params->get('show_parent_category') && $this->item->parent_slug != '1:root') : ?>
 	<dd class="parent-category-name">
@@ -324,13 +353,13 @@ endif; ?>
 <?php endif; ?>
 <!-- END ATTRIBUTES -->
 
-<!-- RECORDING DETAILS -->
+	<!-- RECORDING DETAILS -->
 <?php $useRecList = ($params->get('show_recording_details') && ($this->item->product_made_date or $this->item->product_full_time or $this->item->product_country
 	or $this->item->product_publisher or $this->item->product_producer or $this->item->product_studio)); ?>
 	
 <?php if ($useRecList) : ?>
 	<dl class="article-info">
-	<dt class="article-info-term"><?php  echo JText::_('MYMUSE_RECORDING_DETAILS'); ?></dt>
+		<dt class="article-info-term"><?php  echo JText::_('MYMUSE_RECORDING_DETAILS'); ?></dt>
 
 <?php if ($this->item->product_made_date && $this->item->product_made_date > 0) : ?>
 	<dd class="product_made_date">
@@ -373,29 +402,29 @@ endif; ?>
 <?php endif; ?>
 <div style="clear: both"></div>
 
-<!-- END RECORDING DETAILS -->
+	<!-- END RECORDING DETAILS -->
 
 
-<form method="post" action="<?php JRoute::_('index.php?lang='.$langtag) ?>" onsubmit="return hasProduct(this,<?php echo $count; ?>);" name="mymuseform">
-<input type="hidden" name="option" value="com_mymuse" />
-<input type="hidden" name="task" value="addtocart" />
-<input type="hidden" name="catid" value="<?php echo $product->catid; ?>" />
-<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
-<!-- IMAGE INTROTEXT -->
+	<form method="post"
+		action="<?php JRoute::_('index.php?lang='.$langtag) ?>"
+		onsubmit="return hasProduct(this,<?php echo $count; ?>);"
+		name="mymuseform">
+		<input type="hidden" name="option" value="com_mymuse" /> <input
+			type="hidden" name="task" value="addtocart" /> <input type="hidden"
+			name="catid" value="<?php echo $product->catid; ?>" /> <input
+			type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
+		<!-- IMAGE INTROTEXT -->
 
 <?php 
 
 if( ($params->get('product_show_product_image') && $product->detail_image) || $params->get('show_intro')) :?>
 
    <?php if ($params->get('product_show_product_image') && $product->detail_image) : ?>
-		<div class="product-image"><img
-			<?php if($height) : ?>
-			height="<?php echo $height; ?>"
-			<?php endif; ?>
-			src="<?php echo $product->detail_image;?>"
-			alt="<?php echo $product->title;?>" 
-			title="<?php echo $product->title;?>" 
-			/>
+		<div class="product-image">
+			<img <?php if($height) : ?> height="<?php echo $height; ?>"
+				<?php endif; ?> src="<?php echo $product->detail_image;?>"
+				alt="<?php echo $product->title;?>"
+				title="<?php echo $product->title;?>" />
 		</div>
 		
 	<?php endif; ?>
@@ -417,53 +446,53 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 		</div>
 <?php endif; ?>
 <!-- END IMAGE INTROTEXT -->
-<div style="clear: both"></div>
-<!--  PRODUCT PHYSICAL -->
+		<div style="clear: both"></div>
+		<!--  PRODUCT PHYSICAL -->
 
 		<?php if($product->product_physical){  ?>
-		<h3><?php echo JText::_('MYMUSE_PRODUCT'); ?></h3> 
+		<h3><?php echo JText::_('MYMUSE_PRODUCT'); ?></h3>
 		<table class="mymuse_cart">
 			<thead>
-		    <tr>
-		    	<th class="myselect" align="left" width="5%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>  
-        		<th class="mytitle" align="left" width="55%" ><?php echo JText::_('MYMUSE_NAME'); ?></th>
-       			<th class="myprice" align="center" width="20%"><?php echo JText::_('MYMUSE_COST'); ?></th>
+				<tr>
+					<th class="myselect" align="left" width="5%"><?php echo JText::_('MYMUSE_SELECT'); ?></th>
+					<th class="mytitle" align="left" width="55%"><?php echo JText::_('MYMUSE_NAME'); ?></th>
+					<th class="myprice" align="center" width="20%"><?php echo JText::_('MYMUSE_COST'); ?></th>
        		<?php if ($params->get('product_show_quantity')) :?>
         		<th class="myquantity" align="left" width="20%"><?php echo JText::_('MYMUSE_QUANTITY'); ?></th>
       	    <?php endif; ?>
       		</tr>
-      		</thead>
+			</thead>
 			<tr>
-				<td class="myselect"><span class="mycheckbox"><input type="checkbox" name="productid[]" 
-				value="<?php echo $product->id; ?>" id="box<?php echo $check; $check++; ?>" 
-				<?php if($count == 1){ ?>
-				CHECKED="CHECKED"
-				<?php } ?>
-				/></span></td>
-				<td class="mytitle" ><?php echo $product->title; ?></td>
+				<td class="myselect"><span class="mycheckbox"><input type="checkbox"
+						name="productid[]" value="<?php echo $product->id; ?>"
+						id="box<?php echo $check; $check++; ?>" <?php if($count == 1){ ?>
+						CHECKED="CHECKED" <?php } ?> /></span></td>
+				<td class="mytitle"><?php echo $product->title; ?></td>
 				<td class="myprice"><?php  echo MyMuseHelper::printMoneyPublic($product->price);
 				?></td>
 			<?php if ($params->get('product_show_quantity')) :?>
-				<td class="myquantity"><input class="inputbox" type="text" name="quantity[<?php echo $product->id; ?>]" size="2" value="1" /> 
+				<td class="myquantity"><input class="inputbox" type="text"
+					name="quantity[<?php echo $product->id; ?>]" size="2" value="1" />
 				</td>
 
 			<?php endif; ?>
 			</tr>
 		</table>
 		<div class="mymuse-wrap">
-				<div class="pull-left mymuse-button-left"><button class="button uk-button" type="submit" >
-				<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?></button></div>
-				<div class="pull-right mymuse-button-right"><button 
-				class="button uk-button" 
-				type="button" 
-				onclick="window.location='<?php echo htmlentities($return_link); ?>'"
-				><?php echo JText::_('MYMUSE_CANCEL'); ?></button></div>
-	  		<div style="clear: both;"></div>
+			<div class="pull-left mymuse-button-left">
+				<button class="button uk-button" type="submit">
+				<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?></button>
+			</div>
+			<div class="pull-right mymuse-button-right">
+				<button class="button uk-button" type="button"
+					onclick="window.location='<?php echo htmlentities($return_link); ?>'"><?php echo JText::_('MYMUSE_CANCEL'); ?></button>
+			</div>
+			<div style="clear: both;"></div>
 		</div>
 		<?php } ?>
-<!-- END PRODUCT PHYSICAL -->	
-		
-			
+<!-- END PRODUCT PHYSICAL -->
+
+
 <!-- ITEMS   ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS -->
 	<?php if(count($items) && !$items_select){  ?>
 
@@ -601,8 +630,7 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 <?php } ?>
 <!--  END ITEMS -->
 
-
-<!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
+		<!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
 <?php if(count($tracks)){ ?>
 		<h3><?php echo JText::_('MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
 
@@ -614,29 +642,29 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 			><?php echo $product->flash; ?>
 			</div>
 			<?php if($product->flash){ ?>
-			<div><?php echo JText::_('MYMUSE_NOW_PLAYING');?> <span id="jp-title-li"></span></div>
+			<div><span id="jp-title-div"><?php echo JText::_('MYMUSE_NOW_PLAYING');?></span> 
+			<span id="jp-title-li"></span>
+			</div>
 			<?php } ?>
 		<?php } ?>
 		<?php if($params->get('product_player_type') == "playlist"){ ?>
-			<div id="product_player" ><?php echo $product->flash; ?>
+			<div id="product_player"><?php echo $product->flash; ?>
 			</div>
 			
 		<?php } ?>
 		<div style="clear: both"></div>
-		
-		<div class="clips petrol" 
-		<?php if($params->get('product_player_type') == "each"){ ?>
-		id="product_player"
-		<?php } ?>
-		>
+
+		<div class="clips petrol"
+			<?php if($params->get('product_player_type') == "each"){ ?>
+			id="product_player" <?php } ?>>
 		
 		
 <?php if($params->get('product_show_tracks',1)){ ?>
 		<table class="mymuse_cart tracks">
-			<thead>
-		    <tr>
+				<thead>
+					<tr>
 		    <?php  if($params->get('product_show_select_column', 1)){?>
-		    	<th class="mymuse_cart_top myselect" align="left" width="20%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
+		    	<th class="mymuse_cart_top myselect" align="left" width="20%"><?php echo JText::_('MYMUSE_SELECT'); ?></th>
         	<?php } ?>
         	
         	<th class="mymuse_cart_top mytitle" align="center" width="40%"><?php echo JText::_('MYMUSE_NAME'); ?></th>
@@ -646,7 +674,8 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
        		<?php } ?>
        		
        		<?php  if($params->get('product_show_filesize', 0)){?>
-       			<th class="mymuse_cart_top myfilesize" align="center" width="10%"><?php echo JText::_('MYMUSE_FILE_SIZE'); ?></th>
+       			<th class="mymuse_cart_top myfilesize" align="center"
+							width="10%"><?php echo JText::_('MYMUSE_FILE_SIZE'); ?></th>
        		<?php } ?>
        		
        		<?php if($params->get('product_show_sales', 0)){ ?>
@@ -654,7 +683,8 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
       		<?php } ?>
       		
       		<?php if($params->get('product_show_downloads', 0)){ ?>
-        		<th class="mymuse_cart_top mydownloads" align="left" width="10%"><?php echo JText::_('MYMUSE_DOWNLOADS'); ?></th>
+        		<th class="mymuse_cart_top mydownloads" align="left"
+							width="10%"><?php echo JText::_('MYMUSE_DOWNLOADS'); ?></th>
       		<?php } ?>
        		
        		<?php  if($params->get('product_show_cost_column', 1)){?>
@@ -662,32 +692,34 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
        		<?php } ?>
 
        		<?php if($params->get('product_show_preview_column', 1) && $params->get('product_player_type') != "playlist"){ ?>
-        		<th class="mymuse_cart_top mypreviews" align="left" width="10%"><?php echo JText::_('MYMUSE_PREVIEWS'); ?></th>
+        		<th class="mymuse_cart_top mypreviews" align="left"
+							width="10%"><?php echo JText::_('MYMUSE_PREVIEWS'); ?></th>
       		<?php } ?>
       		</tr>
-      		</thead>
+				</thead>
 
       		
       		<?php foreach($tracks as $track){ ?>
 			  		<tr>
-			  		<!--  SELECT COLUMN -->
+					<!--  SELECT COLUMN -->
 			  		<?php  if($params->get('product_show_select_column', 1)){?>
         				<td class="myselect" nowrap>
         				<?php if($track->file_name || $track->product_allfiles) :?>
-        				<span class="mycheckbox"><input type="checkbox" name="productid[]" 
-        				value="<?php echo $track->id; ?>" id="box<?php echo $check; $check++; ?>" />
+        				<span class="mycheckbox"><input type="checkbox"
+							name="productid[]" value="<?php echo $track->id; ?>"
+							id="box<?php echo $check; $check++; ?>" />
       						
       					<?php if(isset($track->variation_select)){
       							echo $track->variation_select;
       						}
       					?>
-      					</span>
-      					
-      					
-                    <!--  SELECT COLUMN -->	
+      					</span> <!--  SELECT COLUMN -->	
                         
         				<?php if($track->file_name || $track->product_allfiles) :?>
-                        <a href="javascript:void(0)" id="box_<?php echo $track->id; ?>"><img id="img_<?php echo $track->id; ?>" src="<?php
+                        <a href="javascript:void(0)"
+						id="box_<?php echo $track->id; ?>"><img
+							id="img_<?php echo $track->id; ?>"
+							src="<?php
                             if(in_array($track->id, $products)){
                                 echo "components/com_mymuse/assets/images/cart.png";
                             }else{
@@ -702,8 +734,8 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
       					</td>
       				<?php } ?>	
       					
-      				<!--  TITLE COLUMN -->	
-						<td class="mytitle"><?php echo $track->title; ?> 
+      				<!--  TITLE COLUMN -->
+					<td class="mytitle"><?php echo $track->title; ?> 
       						<?php  if($track->product_allfiles == "1"){ 
 								echo "(".JText::_("MYMUSE_ALL_TRACKS").")";
 					 		} ?>
@@ -711,8 +743,8 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
 					 			echo "<br />".$track->introtext;
 							}?>
       					</td>
-      					
-      				<!--  TIME COLUMN -->
+
+					<!--  TIME COLUMN -->
         			<?php  if($params->get('product_show_filetime', 0)){?>	
         				<td class="mytime">
         				<?php echo $track->file_time ?>
@@ -748,9 +780,10 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
         				<td class="myprice">
         				<?php if($params->get('my_free_downloads') || $params->get('my_downloads_enable')){
         				if(isset($track->free_download) && $track->free_download){ ?>
-        					<a class="free_download_link" 
-        				
-        					href="<?php echo $track->free_download_link; ?>"><img src="components/com_mymuse/assets/images/download_dark.png" border="0" /></a>
+        					<a class="free_download_link"
+						href="<?php echo $track->free_download_link; ?>"><img
+							src="components/com_mymuse/assets/images/download_dark.png"
+							border="0" /></a>
         				<?php }else{ 
 							echo MyMuseHelper::printMoneyPublic($track->price); 
         					 } 
@@ -769,38 +802,40 @@ if( ($params->get('product_show_product_image') && $product->detail_image) || $p
       				</tr>
       		<?php  } ?>
 		</table>
-	</div>
-<!--  END TRACKS -->
+		</div>
+		<!--  END TRACKS -->
 
-<div style="clear: both"></div>
+		<div style="clear: both"></div>
 	<?php } ?>
 		<?php if($params->get('product_show_cartadd')){ ?>
 		<div class="mymuse-wrap">
-				<div class="pull-left mymuse-button-left"><button class="button uk-button" type="submit" >
-				<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?></button></div>
-				<div class="pull-right mymuse-button-right"><button 
-				class="button uk-button" 
-				type="button" 
-				onclick="window.location='<?php echo htmlentities($return_link); ?>'"
-				><?php echo JText::_('MYMUSE_CANCEL'); ?></button></div>
-	  		<div style="clear: both;"></div>
+			<div class="pull-left mymuse-button-left">
+				<button class="button uk-button" type="submit">
+				<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?></button>
+			</div>
+			<div class="pull-right mymuse-button-right">
+				<button class="button uk-button" type="button"
+					onclick="window.location='<?php echo htmlentities($return_link); ?>'"><?php echo JText::_('MYMUSE_CANCEL'); ?></button>
+			</div>
+			<div style="clear: both;"></div>
 		</div>
 		<?php } ?>
 
 <?php } ?>
 <!-- END TRACKS -->
-</form>
-<div style="clear: both"></div>
-<!--  FULLTEXT -->
+	</form>
+	<div style="clear: both"></div>
+	<!--  FULLTEXT -->
 <?php if($product->fulltext != ''){ ?>	
 
-	<div class="fulltext"><a name="readmore"></a>
+	<div class="fulltext">
+		<a name="readmore"></a>
 	<?php echo $product->fulltext; ?> </div>
 
 <?php } ?>
 
 <div style="clear: both"></div>
-<!--END FULL TEXT -->
+	<!--END FULL TEXT -->
 
 <?php if(isset($this->recommends_display)){ ?>
 <!-- START RECOMMENDS -->
@@ -825,4 +860,10 @@ $comments = JPATH_SITE . DS .'components' . DS . 'com_jcomments' . DS . 'jcommen
 
 
 </div>
-<!--  end PRODUCT VIEW -->	
+
+<div id='my_overlay'></div>
+<div id='my_modal'>
+    <div id='my_content'>No JavaScript Yet!</div>
+    <a href='#' id='my_close'>close</a>
+</div>
+<!--  end PRODUCT VIEW -->
