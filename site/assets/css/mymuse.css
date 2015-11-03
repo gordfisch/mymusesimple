@@ -140,7 +140,14 @@ div.cat-items div.items-row{
 	max-width: 100%;
 }
 
+/* mini-cart */
 
+#carttop {
+    width: 200px;
+    border: 1px solid;
+    height: 50px;
+    margin:10px;
+}
 /* cart */
 
 .mymuse_cart ul{
@@ -249,7 +256,65 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount,
 	text-align: right;
 } 
 	
-	
+/* to hide the player, uncomment this commented section 
+#product_player {
+  top: -1000px;
+  position: absolute;
+  z-index:2000000;
+  display: none;
+}
+#jp-title-div  {
+  display: none;
+}
+*/
+/* end of hide player */
+
+/* Add to cart Modal */
+#carttop {
+	width: 200px;
+	border: 1px solid;
+	height: 50px;
+	margin-bottom: 10px;
+}
+
+#my_overlay {
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: #000;
+	opacity: 0.5;
+	filter: alpha(opacity = 50);
+	z-index: 1000;
+}
+
+#my_modal {
+	position: absolute;
+	background: url('<?php echo JURI::root() ; ?>components/com_mymuse/assets/images/tint20.png') 0 0 repeat;
+	background: rgba(0, 0, 0, 0.2);
+	border-radius: 14px;
+	padding: 8px;
+	z-index: 1001;
+}
+
+#my_content {
+	border-radius: 8px;
+	background: #fff;
+	padding: 20px;
+	z-index: 1001;
+}
+
+#my_close {
+	position: absolute;
+	background: url('<?php echo JURI::root(); ?>components/com_mymuse/assets/images/close.png') 0 0 no-repeat;
+	width: 24px;
+	height: 27px;
+	display: block;
+	text-indent: -9999px;
+	top: -7px;
+	right: -7px;
+}	
 	
 	
 
@@ -261,11 +326,11 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount,
 		width:100%;
 		clear: both;
 	}
-	td.myselect, td.myprice, td.myfilesize, td.mytotal,
+	td.myselect, td.myprice, td.myfilesize, td.mytotal, td.myquantity,
 	td.myoriginalsubtotal, td.myshoppergroupdiscount,
 	td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal,
 	td.mydiscount, td.myshipping, td.myshipmethod, td.mysummarytotal, 
-	td.mysubtotal, td.mycoupon
+	td.mysubtotal, td.mycoupon, td.mypreview
 	{
 		text-align: left;
 	}
@@ -308,7 +373,8 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount,
 	td.myphone:before, td.myaddress:before, td.mycity:before, td.myzip:before,
 	td.myregion:before, td.mycountry:before, td.mycompany:before , td.myfax:before, 
 	td.myColour:before, td.myshipmethod:before, td.myordernumber:before,
-	td.myorderdate:before, td.mypaid:before, td.mysummarytotal:before
+	td.myorderdate:before, td.mypaid:before, td.mysummarytotal:before,
+	td.mypreview:before
 	 { 
 		white-space: nowrap;
 		padding-right: 7%;
@@ -318,6 +384,7 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount,
 		border-right: 1px solid #ccc;
 
 	}
+	
 	
 	td.myselect, td.mytitle, td.mytime,
 	td.myfilesize, td.myprice, td.mypreviews,
@@ -333,7 +400,7 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount,
 	td.myphone, td.myaddress, td.mycity, td.myzip,
 	td.myregion, td.mycountry, td.mycompany , td.myfax, 
 	td.myColour, td.myshipmethod, td.myordernumber,
-	td.myorderdate, td.mypaid
+	td.myorderdate, td.mypaid, td.mypreview
 	{ 
 		clear:both;
 	}

@@ -42,21 +42,9 @@ class plgMymuseAudio_html5 extends JPlugin
 	function plgMymuseAudio_html5(&$subject, $config)  {
 		parent::__construct($subject, $config);
 			
-		//JHtml::_('jquery.framework',  true, true);
+		JHtml::_('jquery.framework',  true, true);
 		$document = JFactory::getDocument();
 		$app = JFactory::getApplication('site');
-		
-		if($this->params->get('my_include_jquery', 0)){
-			//load same jquery ui
-			if(preg_match("/https/", JURI::base())){
-				$js_path = "https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js";
-			}else{
-				$js_path = "http://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js";
-			}
-		
-			//$document->addScript( $js_path );
-			//JHtml::_('script',$js_path, false, true, false, false);
-		}
         
         $site_url = preg_replace("#administrator/#","",JURI::base());
   
@@ -76,7 +64,7 @@ class plgMymuseAudio_html5 extends JPlugin
         	}else{
         		$js_path = 'http://code.jquery.com/ui/1.11.2/jquery-ui.min.js';
         	}
-        	//JHtml::_('script',$js_path, false, true, false, false);
+        	JHtml::_('script',$js_path, false, true, false, false);
         	
         }
         if(preg_match("/https/", JURI::base())){
@@ -93,14 +81,14 @@ class plgMymuseAudio_html5 extends JPlugin
 	 */
 	function onPrepareMyMuseMp3Player(&$track, $type='single', $height=0, $width=0, $index=0, $count=0)
 	{
-	
+
 		$document = JFactory::getDocument();
 		$match = 0;
 		$site_url = preg_replace("#administrator/#","",JURI::base());
 		
 		
 		if($this->params->get('my_include_jquery', 0)){
-			//JHtml::_('jquery.framework');
+			JHtml::_('jquery.framework');
 		}
 		
 		//load jquery.jplayer.min.js? Not if it has been added already
@@ -112,7 +100,7 @@ class plgMymuseAudio_html5 extends JPlugin
 		}
 		if(!$match){
 			$js_path = $site_url.'plugins/mymuse/audio_html5/js/jquery.jplayer.min.js';
-			//$document->addScript( $js_path );
+			$document->addScript( $js_path );
 		}
 		
 		if($this->direction == "rtl"){
@@ -122,7 +110,7 @@ class plgMymuseAudio_html5 extends JPlugin
 			//$css_path = $site_url.'plugins/mymuse/audio_html5/skin/premium-pixels.css';
 		}
 		
-	//echo "type = $type, index = $index  count = $count<br />";
+		//echo "type = $type, index = $index  count = $count<br />";
 	
 		$params 	= MyMuseHelper::getParams();
 

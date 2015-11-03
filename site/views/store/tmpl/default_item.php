@@ -23,10 +23,10 @@ $lang = JFactory::getLanguage();
 <div class="system-unpublished">
 <?php endif; ?>
 
-<?php if ($params->get('show_title')) : ?>
+<?php if ($params->get('store_show_title')) : ?>
 	<div class="feature-title">
 	<h3>
-		<?php if ($params->get('category_product_link_titles') && $params->get('access-view')) : ?>
+		<?php if ($params->get('store_link_titles') && $params->get('access-view')) : ?>
 			<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $lang->getTag())); ?>">
 			<?php echo $this->escape($this->item->title); ?></a>
 		<?php else : ?>
@@ -37,32 +37,32 @@ $lang = JFactory::getLanguage();
 <?php endif; ?>
 
 
-<?php if ($params->get('category_show_product_image') && $this->item->list_image): ?>
+<?php if ($params->get('store_show_product_image') && $this->item->list_image): ?>
 <div class="list_image">
 <a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $lang->getTag())); ?>"
 ><img src="<?php echo $this->item->list_image; ?>" 
 alt="<?php echo htmlspecialchars($this->item->list_image); ?>" border="0" 
-<?php if ($params->get('category_product_image_height')) : ?>
-style="height: <?php echo $params->get('category_product_image_height'); ?>px"
+<?php if ($params->get('store_product_image_height')) : ?>
+style="height: <?php echo $params->get('store_product_image_height'); ?>px"
 <?php endif; ?>
 /></a></div>
 <?php endif; ?>
 
 
 
-<?php if (!$params->get('category_show_intro_text')) : ?>
+<?php if (!$params->get('store_show_intro_text')) : ?>
 	<?php echo $this->item->event->afterDisplayTitle; ?>
 <?php endif; ?>
 
 <?php echo $this->item->event->beforeDisplayContent; ?>
 
 
-<?php if($params->get('category_show_intro_text')) :?>
+<?php if($params->get('store_show_intro_text')) :?>
 <?php echo $this->item->introtext; ?>
 <?php endif; ?>
 
 
-<?php if ($params->get('show_readmore') && $this->item->readmore) :
+<?php if ($params->get('store_show_readmore') && $this->item->readmore) :
 	if ($params->get('access-view')) :
 		$link = JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->slug, $this->item->catid));
 	else :
@@ -81,7 +81,7 @@ style="height: <?php echo $params->get('category_product_image_height'); ?>px"
 						echo JText::_('MYMUSE_REGISTER_TO_READ_MORE');
 					elseif ($readmore = $this->item->alternative_readmore) :
 						echo $readmore;
-						if ($params->get('show_readmore_title', 0) != 0) :
+						if ($params->get('store_show_readmore_title', 0) != 0) :
 						    echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
 						endif;
 					elseif ($params->get('show_readmore_title', 0) == 0) :

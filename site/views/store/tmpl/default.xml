@@ -7,60 +7,86 @@
 	</layout>
 <fields name="params">
 	<fieldset name="advanced" label="MYMUSE_FEATURED_LAYOUT_OPTIONS">
-
-		<field 
-				name="category_show_all_products" 
-				type="list"
-				default="1" 
-				label="MYMUSE_SHOW_ALL_PRODUCTS" 
-				description="MYMUSE_SHOW_ALL_PRODUCTS_DESC"
-			>
+						<field name="store_show_title" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_SHOW_TITLE_DESC"
+				label="MYMUSE_SHOW_TITLE_LABEL"
+				default="1"
+				>
 				<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">JHIDE</option>
+				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="category_show_product_image" 
-	 			type="list"
-	 			default="1" 
-	 			label="MYMUSE_SHOW_PRODUCT_IMAGE" 
-	 			description="MYMUSE_SHOW_PRODUCT_IMAGE_DESC"
-	 		>
-	 			<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="category_product_image_height" 
-	 			type="text" 
-	 			default="0" 
-	 			label="MYMUSE_PRODUCT_IMAGE_HEIGHT" 
-	 			description="MYMUSE_PRODUCT_IMAGE_HEIGHT"
-	 		>
-	 		</field>
-	 		
-	 		<field 
-	 			name="category_show_intro_text" 
-	 			type="list"
-	 			label="MYMUSE_SHOW_INTRO_TEXT" description="MYMUSE_SHOW_PRODUCT_INTRO_TEXT"
-	 		>
-	 			<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="category_product_link_titles" 
-	 			type="list"
+			</field>
+			<field 
+	 			name="store_link_titles" 
+	 			type="radio"
+				class="btn-group"
 	 			default="1" 
 	 			label="MYMUSE_LINK_TITLES_LABEL" description="MYMUSE_LINK_TITLES_DESC"
-	 		>
+	 			>
 	 			<option value="">JGLOBAL_USE_GLOBAL</option>
 	 			<option value="0">JNO</option>
 				<option value="1">JYES</option>
 	 		</field>
+			<field 
+				name="store_show_product_image" 
+				type="radio"
+				class="btn-group"
+				default="1" 
+				label="MYMUSE_SHOW_PRODUCT_IMAGE" 
+				description="MYMUSE_SHOW_PRODUCT_IMAGE_DESC"
+				>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">MYMUSE_HIDE</option>
+	 			<option value="1">MYMUSE_SHOW</option>
+	 		</field>
+	 		
+			<field 
+				name="store_product_image_height" 
+				type="text" 
+				default="0" 
+				label="MYMUSE_PRODUCT_IMAGE_HEIGHT" 
+				description="MYMUSE_PRODUCT_PRODUCT_IMAGE_HEIGHT_DESC">
+	 		</field>
+	 		<field 
+	 			name="store_show_intro_text" 
+	 			type="radio"
+				class="btn-group"
+	 			default="1" 
+	 			label="MYMUSE_SHOW_INTRO_TEXT" description="MYMUSE_SHOW_PRODUCT_INTRO_TEXT"
+	 			>
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+	 		</field>
+			<field
+				name="store_show_readmore"
+				type="radio"
+				class="btn-group"
+				default="0"
+				description="MYMUSE_SHOW_READMORE_DESC"
+				label="MYMUSE_SHOW_READMORE_LABEL"
+				>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field
+				name="store_show_readmore_title"
+				type="radio"
+				class="btn-group"
+				default="1"
+				label="MYMUSE_SHOW_READMORE_TITLE_LABEL"
+				description="MYMUSE_SHOW_READMORE_TITLE_DESC"
+				>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+	
 	 		
 			<field name="bloglayout" type="spacer" class="text"
 					label="JGLOBAL_SUBSLIDER_BLOG_LAYOUT_LABEL"

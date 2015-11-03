@@ -19,7 +19,16 @@ $params 	= $this->params;
 $task		= $this->task;
 
 ?>
-
+		
+			
+		<?php if($order->flash){ ?>
+			<div id="product_player"> <?php echo $order->flash; ?></div>
+			<div id="jp-title-div"><?php echo JText::_('MYMUSE_NOW_PLAYING');?> 
+			<span id="jp-title-li"></span></div>
+		<?php } ?>
+		<div style="clear: both"></div>
+		
+		
 		<?php if($order->do_html){ ?>
 			<form action="index.php?Itemid=<?php echo $Itemid; ?>" method="post" name="adminForm">
 		<?php } ?>
@@ -40,6 +49,9 @@ $task		= $this->task;
 	<?php } ?>
 		<th class="myprice"><b><?php echo JText::_('MYMUSE_CART_PRICE'); ?></b></th>
 		<th class="myquantity"><b><?php echo JText::_('MYMUSE_CART_QUANTITY'); ?></b></th>
+	<?php if($params->get("my_show_cart_preview")){ ?>  
+		<th class="mypreviews"><b><?php echo JText::_('MYMUSE_PREVIEWS'); ?></b></th>
+	<?php }?>
 		<th class="mysubtotal"><b><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?></b></th>
 		<?php if(@$order->do_html){ ?>
 		    <th class="myaction"><b><?php echo JText::_('MYMUSE_CART_ACTION'); ?></b>&nbsp;<?php echo $order->update_form; ?></th>		    
@@ -83,7 +95,10 @@ $task		= $this->task;
 		        }
 		        ?></td>
 		    <?php } ?>
-		        
+		    
+		    <?php if($params->get("my_show_cart_preview")){ ?>   
+		        <td class="mypreviews tracks ui-widget jp-gui mobile-hide" style="width: 20px;"><?php echo $order_item[$i]->flash; ?></td>
+		     <?php } ?>  
 		        <td class="mysubtotal"><?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_subtotal); ?></td>
 		        
 		    <?php if($order->do_html){ ?>

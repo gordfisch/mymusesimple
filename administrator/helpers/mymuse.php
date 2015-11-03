@@ -89,7 +89,7 @@ class MyMuseHelper extends JObject
 	function __construct()
 	{
 		$this->_fh = fopen(JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'log.txt', "a");
-		$this->_params = self::getParams();
+		self::$_params = self::getParams();
 	}
 	
 	/**
@@ -531,9 +531,15 @@ class MyMuseHelper extends JObject
 	 * @return string
 	 */
 	
-	static function getAlbumAlias($id){
+	static function getAlbumAlias($id,$parent=0){
 		
 		$db	= JFactory::getDBO();
+		if($parent){
+			$query = "SELECT parentid from #__mymuse_product
+			WHERE id ='$id'";
+			$db->setQuery($query);
+			$id = $db->loadResult();
+		}
 		$query = "SELECT alias FROM #__mymuse_product 
    			WHERE id='".$id."'";
 
@@ -556,8 +562,8 @@ class MyMuseHelper extends JObject
 			$site_url = preg_replace("#administrator/#","",JURI::base());
 			$site_url .= $params->get('my_preview_dir').'/';
 		}else{
-			$artist_alias = MyMuseHelper::getArtistAlias($id,'1');
-			$album_alias = MyMuseHelper::getAlbumAlias($id);
+			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
+			$album_alias = MyMuseHelper::getAlbumAlias($id,$parent);
 				
 			$site_url = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base());
 			$site_url .= $params->get('my_use_s3')? '' :  $params->get('my_preview_dir');
@@ -580,7 +586,7 @@ class MyMuseHelper extends JObject
 			$site_path = JPATH_ROOT.DS.$params->get('my_preview_dir').DS;
 		}else{
 			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
-			$album_alias = MyMuseHelper::getAlbumAlias($id);	
+			$album_alias = MyMuseHelper::getAlbumAlias($id,$parent);	
 			$site_path =JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS;
 		}
 		return $site_path;
@@ -600,7 +606,7 @@ class MyMuseHelper extends JObject
 			$site_path = $params->get('my_download_dir').DS;
 		}else{
 			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
-			$album_alias = MyMuseHelper::getAlbumAlias($id);
+			$album_alias = MyMuseHelper::getAlbumAlias($id,$parent);
 			$site_path =$params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS;
 		}
 

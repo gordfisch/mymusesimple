@@ -1,6 +1,84 @@
 <?xml version="1.0" encoding="utf-8"?>
 <config>
 
+<fieldset name="store"
+		label="MYMUSE_STORE_PAGES_LABEL"
+		description="MYMUSE_STORE_PAGES_DESC"
+	>
+			<field name="store_show_title" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_SHOW_TITLE_DESC"
+				label="MYMUSE_SHOW_TITLE_LABEL"
+				default="1"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			<field 
+	 			name="store_link_titles" 
+	 			type="radio"
+				class="btn-group"
+	 			default="1" 
+	 			label="MYMUSE_LINK_TITLES_LABEL" description="MYMUSE_LINK_TITLES_DESC"
+	 			>
+	 			<option value="0">JNO</option>
+				<option value="1">JYES</option>
+	 		</field>
+			<field 
+				name="store_show_product_image" 
+				type="radio"
+				class="btn-group"
+				default="1" 
+				label="MYMUSE_SHOW_PRODUCT_IMAGE" 
+				description="MYMUSE_SHOW_PRODUCT_IMAGE_DESC"
+				>
+	 			<option value="0">MYMUSE_HIDE</option>
+	 			<option value="1">MYMUSE_SHOW</option>
+	 		</field>
+	 		
+			<field 
+				name="store_product_image_height" 
+				type="text" 
+				default="0" 
+				label="MYMUSE_PRODUCT_IMAGE_HEIGHT" 
+				description="MYMUSE_PRODUCT_PRODUCT_IMAGE_HEIGHT_DESC">
+	 		</field>
+	 		<field 
+	 			name="store_show_intro_text" 
+	 			type="radio"
+				class="btn-group"
+	 			default="1" 
+	 			label="MYMUSE_SHOW_INTRO_TEXT" description="MYMUSE_SHOW_PRODUCT_INTRO_TEXT"
+	 			>
+	 			<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+	 		</field>
+			<field
+				name="store_show_readmore"
+				type="radio"
+				class="btn-group"
+				default="0"
+				description="MYMUSE_SHOW_READMORE_DESC"
+				label="MYMUSE_SHOW_READMORE_LABEL"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field
+				name="store_show_readmore_title"
+				type="radio"
+				class="btn-group"
+				default="1"
+				label="MYMUSE_SHOW_READMORE_TITLE_LABEL"
+				description="MYMUSE_SHOW_READMORE_TITLE_DESC"
+				>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+	</fieldset>
+	
 	<fieldset name="product"
 		label="MYMUSE_PRODUCT_PAGES_LABEL"
 		description="MYMUSE_PRODUCT_PAGES_DESC"

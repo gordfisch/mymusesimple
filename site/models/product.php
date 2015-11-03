@@ -337,8 +337,8 @@ class MyMuseModelProduct extends JModelItem
 					//get download file NOTE NOT available while using Amazon s3
 					if(!$params->get('my_use_s3',0) && !is_array($track->file_name)){
 						$down_dir = str_replace($root,'',$params->get('my_download_dir'));
-						$track->download_path = JURI::base().'/'.$down_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->download_name;
-						$track->download_real_path = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$track->download_name;
+						$track->download_path = $site_url.$track->download_name;
+						$track->download_real_path = $site_path.$track->download_name;
 							
 						if((!$track->price["product_price"] || $track->price["product_price"] == "FREE")
 								&& $params->get('my_play_downloads')){

@@ -358,15 +358,16 @@ class MyMuseCart {
   		$jinput = JFactory::getApplication()->input;
   		$variationid  = $jinput->get('variationid', '', 'int');
   		$temp = array();
-//print_pre($this->cart);
+
   		$j = 0;
   		for ($i=0;$i<$this->cart["idx"];$i++) {
 
-  			if (isset($this->cart[$i]['product_id']) 
-  					&& $this->cart[$i]['product_id'] != $product_id
-  					&& $this->cart[$i]['variationid'] != $variationid
-  					) {
-  				$temp[$j++] = $this->cart[$i];
+  			if (isset($this->cart[$i]['product_id']) && $this->cart[$i]['product_id'] != $product_id){
+  				if(isset($this->cart[$i]['variationid']) && $this->cart[$i]['variationid'] != $variationid){
+  					$temp[$j++] = $this->cart[$i];
+  				}elseif(!isset($this->cart[$i]['variationid']) || !$variationid){
+  					$temp[$j++] = $this->cart[$i];
+  				}
   			}
   		}
   		$temp["idx"] = $j;
@@ -519,10 +520,12 @@ class MyMuseCart {
 		$store 			= $MyMuseStore->getStore(); 
 		$MyMuseProduct 	=& MyMuse::getObject('product','models');
 		$user 			= JFactory::getUser();
-		
+		$preview_tracks = array();
+		$dispatcher		= JDispatcher::getInstance();
 
-		$Itemid		= $jinput->get('Itemid', '');
-		$db	= JFactory::getDBO();
+		$Itemid			= $jinput->get('Itemid', '');
+		$db				= JFactory::getDBO();
+		
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'product.php');
 
 		// just check that there is an order_item
@@ -555,7 +558,7 @@ class MyMuseCart {
           <input type="hidden" name="Itemid" value="'.$Itemid.'"/>
           <input type="hidden" name="ship_to_info_id" value="'.@$ship_to_info_id.'" />
           ';
-
+		
 		// FOR EACH CART ITEM
 		for ($i=0;$i<$this->cart["idx"];$i++) {
 			if(isset($this->cart[$i]["coupon_id"])){
@@ -568,6 +571,9 @@ class MyMuseCart {
 			}
 
 			$order->items[$i] = $this->getProduct($this->cart[$i]['product_id']);
+			if($order->items[$i]->product_downloadable){
+				$preview_tracks[$i] = $order->items[$i];
+			}
 			$jason = json_decode($order->items[$i]->file_name);
 			if(is_array($jason)){
 				if(!$this->cart[$i]["variation"]){
@@ -646,15 +652,13 @@ class MyMuseCart {
 
 			$order->items[$i]->url = myMuseHelperRoute::getProductRoute($pid, $aid);
 			$order->items[$i]->cat_url = myMuseHelperRoute::getCategoryRoute($aid);
-
+			$order->items[$i]->flash = '';
 		
 		
 		} //end of cart items
 		$order->subtotal_before_discount = $order->order_subtotal;
-		
-		// TEST OF DISCOUNT
-		//$order->order_subtotal = $order->order_subtotal - $order->discount; 
-		
+	
+
 		//RESERVATION FEES
 		if(count($order->reservation_fees)){
 			foreach($order->reservation_fees as $fee){
@@ -734,6 +738,9 @@ class MyMuseCart {
 		}
 
 		$order->colspan=3;
+		if($params->get("my_show_cart_preview")){
+			$order->colspan=4;
+		} 
 		$order->colspan2 = 1;
 		if(@$order->do_html){
 			$order->colspan2 = 1;

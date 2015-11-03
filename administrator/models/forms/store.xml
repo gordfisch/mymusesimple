@@ -652,7 +652,26 @@
             
                 required="false"
                 />
-        
+        <field
+                name="my_show_cart_preview"
+                type="radio"
+                label="MYMUSE_SHOW_CART_PREVIEW_LABEL"
+                description="MYMUSE_SHOW_CART_PREVIEW_DESC"
+                class="btn-group"
+                default="0">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>>
+        </field>
+        <field
+                name="my_show_cart_player"
+                type="radio"
+                label="MYMUSE_SHOW_CART_PLAYER_LABEL"
+                description="MYMUSE_SHOW_CART_PLAYER_DESC"
+                class="btn-group"
+                default="0">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>>
+        </field>
         <field
                 name="my_registration"
                 type="list"
