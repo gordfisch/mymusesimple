@@ -317,4 +317,86 @@ class MymuseControllerProducts extends JControllerAdmin
 	}
 	
 
+	function artistid()
+	{
+		$db = JFactory::getDBO();
+		$query = "SELECT x.catid, x.product_id, c.title
+FROM nxgmsc15_mymuse_product_category_xref as x, nxgmsc15_mymuse_product as p, nxgmsc15_categories as c
+WHERE x.catid != p.catid AND
+x.product_id=p.id AND c.id=x.catid";
+	
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+		foreach($res as $r){
+			$query = 'UPDATE nxgmsc15_mymuse_product SET artistid = "'.$r->catid.'" WHERE
+            id="'.$r->product_id.'"';
+			$db->setQuery($query);
+			if($db->execute()){
+				echo "updated ".$r->product_id." to have artistid ".$r->catid." ".$r->title."<br />";
+			}
+		}
+	}
+	
+	function makePlaylists()
+	{
+		jimport('joomla.filesystem.file');
+		$db = JFactory::getDBO();
+		$query = "SELECT id, alias from #__categories WHERE parent_id=30";
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+		$db->setQuery($query);
+		$all = array();
+		foreach($res as $r){
+			$filename = $r->alias.".js";
+			echo "Making list for $filename <br />";
+	
+			$arr = array();
+			$query = "SELECT p.title as name, parent.title as album, a.title as artist,
+            CONCAT('/media/audio/previews/',p.file_preview) as url,
+            CONCAT('/images/releases/180px/',parent.product_sku,'.jpg') as cover_art_url
+            FROM nxgmsc15_mymuse_product as p
+            LEFT JOIN nxgmsc15_mymuse_product as parent on p.parentid=parent.id
+            LEFT JOIN nxgmsc15_categories as a on parent.artistid=a.id
+            WHERE p.parentid>0 AND parent.catid=".$r->id;
+            $db->setQuery($query);
+	            if($tracks = $db->loadObjectList()){
+	            foreach ($tracks as $track){
+	            $arr['songs'][] = $track;
+	            $all['songs'][] = $track;
+	            }
+	
+	            $jstring = "Amplitude.init(".json_encode($arr).");";
+	            $jstring = preg_replace("~,~",",\n",$jstring);
+	            $jstring = preg_replace("~\[~","[\n",$jstring);
+	            		$jstring = preg_replace("~\{~","{\n",$jstring);
+	                $jstring = preg_replace("~\},~","\n},",$jstring);
+	                		$jstring = preg_replace("~\}\]\}\)~","\n}\n]\n})",$jstring);
+	
+	                		if($fh = fopen(JPATH_ROOT.DS.'media'.DS.'audio'.DS.'playlists'.DS.$filename, "w")){
+	                		fwrite($fh,$jstring);
+	                    fclose($fh);
+	            }
+	            		//print_pre($jstring);
+	            		//echo "<br />";
+	            		}else{
+	            		echo "No tracks for $filename <br />";
+	            		//echo $query;
+	            }
+		}
+		//one for all
+		echo "Making list for catalog.js <br />";
+		$jstring = "Amplitude.init(".json_encode($all).");";
+		$jstring = preg_replace("~,~",",\n",$jstring);
+        $jstring = preg_replace("~\[~","[\n",$jstring);
+	    $jstring = preg_replace("~\{~","{\n",$jstring);
+	    $jstring = preg_replace("~\},~","\n},",$jstring);
+	    $jstring = preg_replace("~\}\]\}\)~","\n}\n]\n})",$jstring);
+	
+	    if($fh = fopen(JPATH_ROOT.DS.'media'.DS.'audio'.DS.'playlists'.DS.'catalog.js', "w")){
+	        fwrite($fh,$jstring);
+	        fclose($fh);
+		}
+	
+	}
+	
 }

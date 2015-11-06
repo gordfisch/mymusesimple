@@ -85,6 +85,18 @@ class MyMuseHelper extends JObject
 	
 	);
 	
+	// for nexgen
+	public static $catalogs = array (
+			'30' => 'catalog.js',
+			'31' => 'affectionate-grooves.js',
+			'32' => 'migration-recordings.js',
+			'33' => 'nexgen-music.js',
+			'34' => 'orangeman-recordings.js',
+			'35' => 'sour-grapes.js'
+	);
+	public static $_playlist = null;
+
+	
 	
 	function __construct()
 	{
@@ -262,6 +274,53 @@ class MyMuseHelper extends JObject
 
 	}
 	
+	/**
+	 * getPlaylist
+	 * Gets playlist for amplitute player and creates two arrays to do indexing and printing with
+	 * loads javascript playlist for amplitude
+	 *
+	 * @return array
+	 */
+	public static function getPlaylist(){
+		if(!self::$_playlist){
+			$site_url = preg_replace("#administrator/#","",JURI::base());
+			$document = JFactory::getDocument();
+		
+			$jinput = JFactory::getApplication()->input;
+			if($jinput->get('view') == "category" && null !== $jinput->get('id')){
+				$filename = self::$catalogs[$jinput->get('id')];
+			}else{
+				$filename = "catalog.js";
+			}
+			$path = JPATH_ROOT . "/media/audio/playlists/" . $filename;
+			$js_path = $site_url . "media/audio/playlists/" . $filename;
+			if (! file_exists ( $path )) {
+				$path = JPATH_ROOT . "/media/audio/playlists/catalog.js";
+				$js_path = $site_url . "media/audio/playlists/catalog.js";
+			}
+			$document->addScript( $js_path);
+			// echo $path;
+			$playlist = file_get_contents ( $path );
+			$playlist = preg_replace ( "~.*?Amplitude.init\(~", "", $playlist );
+			$playlist = preg_replace ( "~\);$~", "", $playlist );
+			$playlist = preg_replace ( "~//.*\\n~", "", $playlist );
+			$playlist = preg_replace ( "~],~", "]", $playlist );
+			
+			$playarray = json_decode ( $playlist, true );
+			if (! $playarray) {
+				$error = self::getJsonError ();
+			}
+			
+			$new_arr = array ();
+			foreach ( $playarray ['songs'] as $index => $song ) {
+				$new_arr [$song ['url']] = $index;
+			}
+			$arr[0] = $new_arr;
+			$arr[1] = $playarray ['songs'];
+			self::$_playlist = $arr;
+		}
+		return self::$_playlist;
+	}
 	
 	static function getStore($id=1)
 	{
@@ -1409,6 +1468,7 @@ class MyMuseHelper extends JObject
 			switch (json_last_error()) {
 				case JSON_ERROR_NONE:
 					$message = 'JSON - No errors';
+					$message = '';
 					break;
 				case JSON_ERROR_DEPTH:
 					$message = 'JSON - Maximum stack depth exceeded';

@@ -372,7 +372,7 @@ class MyMuseModelProduct extends JModelItem
 
 					
 				}
-
+			
 				$dispatcher	= JDispatcher::getInstance();
 				if(count($preview_tracks) && ($params->get('product_player_type') == "each" || 
 					$params->get('product_player_type') == "single")){
@@ -413,30 +413,30 @@ class MyMuseModelProduct extends JModelItem
 							}
 							//audio or video?
 							$ext = MyMuseHelper::getExt($track->file_preview);
-		
+							$flash = '<!-- Begin Play -->';
 							if(substr_count($track->file_type,"video")){
 								//movie
-								$flash = '<!-- Begin Player -->';
+								
 								$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,$params->get('product_player_type'),0,0,$i, $count) );
 								if(is_array($results) && isset($results[0]) && $results[0] != ''){
 									$flash .= $results[0];
 								}
-								$flash .= '<!-- End Player -->';
+								
 							}elseif(substr_count($track->file_type,"audio")){
 								//audio
-								$flash = '<!-- Begin Player -->';
+								
 								$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,$params->get('product_player_type'),0,0,$i, $count));
 								if(is_array($results) && isset($results[0]) && $results[0] != ''){
 									$flash .= $results[0];
 								}
-								$flash .= '<!-- End Player -->';
+								
 							}
+							$flash .= '<!-- End Play -->';
 
 						}else{
 							$flash = '';
 						}
 						$track->flash = $flash;
-
 
 					}//end for each track
 				}
@@ -453,28 +453,28 @@ class MyMuseModelProduct extends JModelItem
 					$video = 0;
 					foreach($preview_tracks as $track){
 						if($track->file_preview){
+							$flash .= '<!-- Begin Player -->';
 							if(substr_count($track->file_type,"video") && !$video){
 								//movie
-								$flash .= '<!-- Begin VIDEO Player -->';
+
 								$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
 								
 								if(is_array($results) && isset($results[0]) && $results[0] != ''){
 									$flash .= $results[0];
 								}
-								$flash .= '<!-- End Player -->';
+							
 								$video = 1;
 									
 							}elseif(substr_count($track->file_type,"audio") && !$audio){
 								//audio
-								$flash .= '<!-- Begin AUDIO Player -->';
 								$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
 
 								if(is_array($results) && isset($results[0]) && $results[0] != ''){
 									$flash .= $results[0];
 								}
-								$flash .= '<!-- End Player -->';
 								$audio = 1;
 							}
+							$flash .= '<!-- End Player -->';
 							$this->_item[$pk]->flash = $flash;
 							$this->_item[$pk]->flash_id = $track->id;
 							if($this->_item[$pk]->flash_type != "mix"){
@@ -482,6 +482,7 @@ class MyMuseModelProduct extends JModelItem
 							}elseif($audio && $video){
 								break;
 							}
+							
 						}
 					}
 				}

@@ -261,10 +261,12 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount,
   top: -1000px;
   position: absolute;
   z-index:2000000;
-  display: none;
+
 }
 #jp-title-div  {
-  display: none;
+  top: -1000px;
+  position: absolute;
+  z-index:2000000;
 }
 */
 /* end of hide player */
@@ -275,6 +277,10 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount,
 	border: 1px solid;
 	height: 50px;
 	margin-bottom: 10px;
+	background: url('<?php echo JURI::root() ; ?>components/com_mymuse/assets/images/tint20.png') 0 0 repeat;
+	background: rgba(0, 0, 0, 0.2);
+	border-radius: 14px;
+	padding: 8px;
 }
 
 #my_overlay {
