@@ -51,7 +51,7 @@ if(count($tracks)){
 
 //add javascript for updating the cart by ajax
 $js = '
-		var my_my_modal = (function(){
+var my_modal = (function(){
     var 
     method = {}
 
@@ -153,7 +153,7 @@ jQuery(document).ready(function($){
                     $("#carttop1").html(" ");
                     $("#carttop2").html("'.JText::_('MYMUSE_YOUR_CART_IS_EMPTY').'");
                 }
-                my_my_modal.open({content: msg+"<br />"+link, width: 400 });
+                my_modal.open({content: msg+"<br />"+link, width: 400 });
             });
 
 		});
@@ -856,9 +856,6 @@ $comments = JPATH_SITE . DS .'components' . DS . 'com_jcomments' . DS . 'jcommen
   }
 ?>
 <!-- ENDCOMMENTS -->
-
-
-
 </div>
 
 <div id='my_overlay'></div>
