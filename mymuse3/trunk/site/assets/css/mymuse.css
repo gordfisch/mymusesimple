@@ -140,14 +140,7 @@ div.cat-items div.items-row{
 	max-width: 100%;
 }
 
-/* mini-cart */
 
-#carttop {
-    width: 200px;
-    border: 1px solid;
-    height: 50px;
-    margin:10px;
-}
 /* cart */
 
 .mymuse_cart ul{
@@ -277,7 +270,7 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount,
 	border: 1px solid;
 	height: 50px;
 	margin-bottom: 10px;
-	background: url('<?php echo JURI::root() ; ?>components/com_mymuse/assets/images/tint20.png') 0 0 repeat;
+	background: url('components/com_mymuse/assets/images/tint20.png') 0 0 repeat;
 	background: rgba(0, 0, 0, 0.2);
 	border-radius: 14px;
 	padding: 8px;

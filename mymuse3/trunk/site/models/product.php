@@ -806,7 +806,7 @@ class MyMuseModelProduct extends JModelItem
 			$query = "SELECT attribs FROM #__mymuse_product WHERE id='".$product->parentid."'";
 			$db->setQuery($query);
 			if(!$product->attribs = $db->loadResult()){
-				echo $query; exit;
+				$product_price = $product->price;
 			}
 			$registry = new JRegistry;
 			$registry->loadString($product->attribs);

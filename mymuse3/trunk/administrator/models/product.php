@@ -456,7 +456,7 @@ class MymuseModelproduct extends JModelAdmin
     	
     	
     	if(count($this->_tracks)){
-    		print_pre($track); exit;
+    		
     		//need count minus any alltracks minus any missing files
     		$i = 0;
     		foreach($this->_tracks as $track){
