@@ -30,7 +30,11 @@ $items_select 	= $this->params->get('product_item_selectbox',0);
 $document 	= JFactory::getDocument();
 $lang = JFactory::getLanguage();
 $langtag = $lang->getTag();
-
+$product_price_physical = array('product_price' => $this->item->attribs->get('product_price_physical'));
+$product_price_mp3      = array('product_price' => $this->item->attribs->get('product_price_mp3'));
+$product_price_mp3_all  = array('product_price' => $this->item->attribs->get('product_price_mp3_all'));
+$product_price_wav      = array('product_price' => $this->item->attribs->get('product_price_wav'));
+$product_price_wav_all  = array('product_price' => $this->item->attribs->get('product_price_wav_all'));
 $url = "index.php?option=com_mymuse&task=ajaxtogglecart";
 $products = array();
 for ($i=0;$i<$this->cart["idx"];$i++) {
@@ -51,6 +55,23 @@ if(count($tracks)){
 
 //add javascript for updating the cart by ajax
 $js = '
+function flip_price(id) {
+    alert(id);
+    var mp3_id = "#mp3_"+id;
+    var wav_id = "#wav_"+id;
+    var select_id = "#variation_"+id+"_id";
+    
+
+    if(jQuery(select_id).val() == "0") {
+        jQuery(mp3_id).show();
+        jQuery(wav_id).hide();
+    } else {
+        jQuery(wav_id).show();
+        jQuery(mp3_id).hide();
+    }
+	
+};
+		
 var my_modal = (function(){
     var 
     method = {}
