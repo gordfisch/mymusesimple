@@ -30,6 +30,14 @@
 			</div>
 			<div class="control-group">
 				<div class="control-label">
+					<?php echo $this->form->getLabel('artistid'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('artistid'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
 					<label id="jform_preview_list-lbl" for="jform_preview_list"  class="hasTip" title="<?php echo JText::_("MYMUSE_SELECT_OTHER_CATS")?>">
 				<?php echo JText::_( 'MYMUSE_SELECT_OTHER_CATS' ); ?></label>
 				</div>
@@ -72,8 +80,10 @@
 			</div>
 
 			</div>
-
+  
 			<div class="pull-right span5">
+			
+<!--
 			<div class="control-group">
 				<div class="control-label">
 					<?php echo $this->form->getLabel('price'); ?>
@@ -82,6 +92,22 @@
 					<?php echo $this->form->getInput('price'); ?>
 				</div>
 			</div>
+-->
+<?php $fieldSets = $this->form->getFieldsets('attribs'); ?>
+
+<?php foreach ($fieldSets as $name => $fieldSet) : ?>
+
+	<?php
+
+	foreach ($this->form->getFieldset($name) as $field)
+	{
+		if ($field->name != 'jform[metadata][tags][]' && preg_match("/product/",$field->name))
+		{
+			
+			echo $field->renderField();
+		}
+	} ?>
+<?php endforeach; ?>
 			<div class="control-group">
 				<div class="control-label">
 					<?php echo $this->form->getLabel('product_discount'); ?>

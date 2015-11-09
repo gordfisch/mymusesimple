@@ -196,6 +196,7 @@ class MyMuseModelProduct extends JModelItem
 				// Convert parameter fields to objects.
 				$registry = new JRegistry;
 				$registry->loadString($data->attribs);
+				$data->attribs = $registry;
 
 				$data->params = clone $this->getState('params');
 				$data->params->merge($registry);
@@ -779,7 +780,7 @@ class MyMuseModelProduct extends JModelItem
      * @param object $product
      * @return mixed Array or false: array [product_price] [special_shopper_group] [product_discount] [product_shopper_group_discount]
      */
-	static function getPrice(&$product) {
+	static function getPrice(&$product, $type='mp3') {
 
 		$params 		= MyMuseHelper::getParams();
 		$MyMuseShopper 	= MyMuse::getObject('shopper','models');
@@ -790,9 +791,30 @@ class MyMuseModelProduct extends JModelItem
 		$discount = 0;
 		$price_info = array();
 		$price_info["item"]=false;
-
 		$default_shopper_group_id = $params->get("my_default_shopper_group_id",1);
 		$product_id = $product->id;
+		// Get the product_parent_id for this product/item
+		$product_parent_id = 0;
+		if(isset($product->parentid)){
+			$product_parent_id = $product->parentid;
+			if($product_parent_id > 0){
+				$price_info["item"]=true;
+			}
+		}
+		
+		if($product->parentid > 0){
+			$query = "SELECT attribs FROM #__mymuse_product WHERE id='".$product->parentid."'";
+			$db->setQuery($query);
+			if(!$product->attribs = $db->loadResult()){
+				echo $query; exit;
+			}
+			$registry = new JRegistry;
+			$registry->loadString($product->attribs);
+			$product->attribs = $registry;
+			
+		}
+		$product->price = $product->attribs->get('product_price_'.$type);
+		
 		if(is_array($product->price)){
 			// we've been here already
 			return $product->price;

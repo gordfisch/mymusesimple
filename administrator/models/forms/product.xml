@@ -95,6 +95,17 @@
 				multiple="false" 
 		/>
 		
+		<field 
+		  		name="artistid" 
+		  		type="category" 
+		  		extension="com_mymuse"
+				label="MYMUSE_ARTIST_CATEGORY_LABEL" 
+				description="MYMUSE_ARTIST_CATEGORY_DESC"
+				class="inputbox" 
+				required="false"
+				multiple="false" 
+		/>
+		
 
 		
 		<field
@@ -546,11 +557,58 @@
 	
 	<fields name="attribs">
 		<fieldset name="attribs" label="MYMUSE_PARAMETERS_ATTRIBUTES">
+		
 		<field
                 name="isrc_code"
                 type="text"
                 label="MYMUSE_ISRC_LABEL"
                 description="MYMUSE_ISRC_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_physical"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_PHYSICAL_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_PHYSICAL_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	
+          	<field
+                name="product_price_mp3"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_MP3_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_MP3_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_mp3_all"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_MP3_ALL_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_MP3_ALL_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_wav"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_WAV_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_WAV_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_wav_all"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_WAV_ALL_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_WAV_ALL_DESC"
                 class="inputbox"
                 size="45"
                 required="false"
