@@ -194,6 +194,7 @@ class MymuseControllerProduct extends JControllerForm
         	$this->msg = JText::_( 'MYMUSE_ERROR_SAVING_ITEM' ).' : '.$this->getError();
         	$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.edit&id='.$this->parentid."&subtype=item", $this->msg );
         }
+        $this->makePlaylists();
         
 
     }
@@ -252,6 +253,7 @@ class MymuseControllerProduct extends JControllerForm
         if($layout){
         	$url .= "&layout=$layout";
         }
+        $this->makePlaylists();
         $this->setRedirect( $url,$this->msg  );
     }
 	
@@ -288,6 +290,7 @@ class MymuseControllerProduct extends JControllerForm
     	}
     
     	// Close the application
+    	$this->makePlaylists();
     	JFactory::getApplication()->close();
     }
     
@@ -544,6 +547,77 @@ class MymuseControllerProduct extends JControllerForm
     
     }
     
+    function makePlaylists()
+    {
+    	jimport('joomla.filesystem.file');
+    	$db = JFactory::getDBO();
+    	$query = "SELECT id, alias from #__categories WHERE parent_id=30";
+    	$db->setQuery($query);
+    	$res = $db->loadObjectList();
+    	$db->setQuery($query);
+    	$all = array();
+    	foreach($res as $r){
+    		$filename = $r->alias.".js";
+    		echo "Making list for $filename <br />";
+    
+    		$arr = array();
+    		$first = new StdClass;
+    		$first->name = " ";
+    		$first->artist = "PLAYER";
+    		$first->album = "READY";
+    		$first->url="/media/audio/previews/00_-_silence.mp3";
+    		$first->cover_art_url="";
+    		$arr['songs'][] = $first;
+    		$all['songs'][] = $first;
+    
+    		$query = "SELECT p.title as name, parent.title as album, a.title as artist,
+            CONCAT('/media/audio/previews/',p.file_preview) as url,
+            CONCAT('/images/releases/180px/',parent.product_sku,'_sm.jpg') as cover_art_url
+            FROM nxgmsc15_mymuse_product as p
+            LEFT JOIN nxgmsc15_mymuse_product as parent on p.parentid=parent.id
+            LEFT JOIN nxgmsc15_categories as a on parent.artistid=a.id
+            WHERE p.parentid>0 AND parent.catid=".$r->id."
+            ORDER BY parent.ordering";
+    		$db->setQuery($query);
+    
+    		if($tracks = $db->loadObjectList()){
+    			foreach ($tracks as $track){
+    				$arr['songs'][] = $track;
+    				$all['songs'][] = $track;
+    			}
+    
+    			$jstring = "Amplitude.init(".json_encode($arr).");";
+    			$jstring = preg_replace("~,~",",\n",$jstring);
+    			$jstring = preg_replace("~\[~","[\n",$jstring);
+    			$jstring = preg_replace("~\{~","{\n",$jstring);
+    			$jstring = preg_replace("~\},~","\n},",$jstring);
+    			$jstring = preg_replace("~\}\]\}\)~","\n}\n]\n})",$jstring);
+    
+    			if($fh = fopen(JPATH_ROOT.DS.'media'.DS.'audio'.DS.'playlists'.DS.$filename, "w")){
+    				fwrite($fh,$jstring);
+    				fclose($fh);
+    			}
+    			//print_pre($jstring);
+    			//echo "<br />";
+    		}else{
+    		echo "No tracks for $filename <br />";
+    		//echo $query;
+    		}
+    		}
+    		//one for all
+    		echo "Making list for catalog.js <br />";
+			$jstring = "Amplitude.init(".json_encode($all).");";
+    			$jstring = preg_replace("~,~",",\n",$jstring);
+    			$jstring = preg_replace("~\[~","[\n",$jstring);
+    					$jstring = preg_replace("~\{~","{\n",$jstring);
+    					$jstring = preg_replace("~\},~","\n},",$jstring);
+    					$jstring = preg_replace("~\}\]\}\)~","\n}\n]\n})",$jstring);
+    
+    					if($fh = fopen(JPATH_ROOT.DS.'media'.DS.'audio'.DS.'playlists'.DS.'catalog.js', "w")){
+    					fwrite($fh,$jstring);
+    					fclose($fh);
+    					}
+    }
 
 
 }

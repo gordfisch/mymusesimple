@@ -1280,11 +1280,10 @@ class MymuseModelproduct extends JModelAdmin
 	
 		// Clear the component's cache
 		$this->cleanCache();
-	
 		return true;
 	}
 	
-
+	
 	
 
 }
