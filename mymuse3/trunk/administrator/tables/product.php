@@ -399,6 +399,21 @@ class MymuseTableproduct extends JTable
 					);
 				}
 			}
+			
+			$this->file_name = json_encode($current_files);
+		}
+		
+		if(isset($post['product_allfiles']) && $post['product_allfiles'] && !$this->file_name){
+			$current_files[0] = array(
+							'file_name' => '',
+							'file_ext' => 'mp3',
+							'file_downloads'=> ''
+					);
+			$current_files[1] = array(
+					'file_name' => '',
+					'file_ext' => 'wav',
+					'file_downloads'=> ''
+			);
 			$this->file_name = json_encode($current_files);
 		}
 		

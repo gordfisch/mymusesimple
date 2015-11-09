@@ -123,8 +123,9 @@ $fieldSets = $this->form->getFieldsets('attribs');
 
 	foreach ($this->form->getFieldset($name) as $field)
 	{
-		if ($field->name != 'jform[metadata][tags][]')
+		if ($field->name != 'jform[metadata][tags][]' && !preg_match("/product/",$field->name))
 		{
+			
 			echo $field->renderField();
 		}
 	} ?>
@@ -149,7 +150,7 @@ $fieldSets = $this->form->getFieldsets('attribs');
 				</div>
 			</div>
 		<?php } ?>
-		
+		<!--  
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('price'); ?>
 				</div>
@@ -157,7 +158,7 @@ $fieldSets = $this->form->getFieldsets('attribs');
 				<?php echo $this->form->getInput('price'); ?>
 				</div>
 			</div>
-				
+		-->		
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('product_discount'); ?>
 				</div>

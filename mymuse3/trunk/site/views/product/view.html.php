@@ -183,7 +183,9 @@ class myMuseViewProduct extends JViewLegacy
 		for($i=0; $i < count($item->tracks); $i++){
 			if(is_array($item->tracks[$i]->file_name) && count($item->tracks[$i]->file_name) > 1){
 				$item->tracks[$i]->variation_select = '<select name="variation['.$item->tracks[$i]->id.']" 
-						id = "variation_'.$item->tracks[$i]->id.'_id" class="inputbox" style="width: 5em;">
+						id = "variation_'.$item->tracks[$i]->id.'_id" class="inputbox variation_select" style="width: 5em;"
+						onchange="javascript:flip_price(\''.$item->tracks[$i]->id.'\')"
+						">
 								';
 				for($j = 0; $j < count($item->tracks[$i]->file_name); $j++){
 					$item->tracks[$i]->variation_select .= '<option value="'.$j.'">'
@@ -192,6 +194,10 @@ class myMuseViewProduct extends JViewLegacy
 				$item->tracks[$i]->variation_select .= "</select>";
 			}
 		}
+		
+		
+		
+		
 		$this->_prepareDocument();
 		
 		$recommends = $this->get('Recommended');

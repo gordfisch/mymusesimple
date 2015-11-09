@@ -690,7 +690,7 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 					$item->params->set('access-view', in_array($item->access, $groups) && in_array($item->category_access, $groups));
 				}
 			}
-			
+
 			//get first track of this product
 			$query = "SELECT file_preview FROM #__mymuse_product WHERE parentid =".$item->id." ORDER BY ordering ASC";
 			$db->setQuery($query);
