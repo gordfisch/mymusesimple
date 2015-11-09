@@ -80,6 +80,7 @@ class myMuse
 			else
 			{
 				$error = JError::raiseError(500, 'Unable to load application: '.$client);
+				//$error = '';
 				return $error;
 			}
 

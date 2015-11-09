@@ -217,8 +217,8 @@ $fieldSets = $this->form->getFieldsets('attribs');
 				</div>
 				<div class="controls">
 				<?php echo $this->form->getInput('detail_image'); ?><br />
-				<?php if($this->item->list_image && file_exists(JPATH_ROOT.DS.$this->item->detail_image)){?>
-					<img src="../<?php  echo JURI::root().DS.$this->item->detail_image; ?>" />
+				<?php if($this->item->detail_image && file_exists(JPATH_ROOT.DS.$this->item->detail_image)){?>
+					<img src="<?php  echo JURI::root().DS.$this->item->detail_image; ?>" />
 				<?php } ?>
 				
 				</div>

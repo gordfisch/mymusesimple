@@ -310,7 +310,7 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 				break;
 		}
 
-		// Filter by a single or group of articles.
+		// Filter by a single or group of products.
 		$productId = $this->getState('filter.product_id');
 
 		if (is_numeric($productId)) {
@@ -570,10 +570,11 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 	 */
 	public function getItems()
 	{
-		$params = MyMuseHelper::getParams();
-		$items	= parent::getItems();
-		$app = JFactory::getApplication();
+		$params 	= MyMuseHelper::getParams();
+		$items		= parent::getItems();
+		$app 		= JFactory::getApplication();
 		$jinput 	= $app->input;
+		$db 		= JFactory::getDBO();
 		
 		$user	= JFactory::getUser();
 		$userId	= $user->get('id');
@@ -599,7 +600,7 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 
 			$item->params = clone $this->getState('params');
 
-			// For blogs, article params override menu item params only if menu param = 'use_article'
+			// For blogs, product params override menu item params only if menu param = 'use_article'
 			// Otherwise, menu item params control the layout
 			// If menu item is 'use_article' and there is no article param, use global
 			if (($jinput->get('layout') == 'blog') || ($jinput->get('view') == 'featured')
@@ -688,6 +689,13 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 				else {
 					$item->params->set('access-view', in_array($item->access, $groups) && in_array($item->category_access, $groups));
 				}
+			}
+			
+			//get first track of this product
+			$query = "SELECT file_preview FROM #__mymuse_product WHERE parentid =".$item->id." ORDER BY ordering ASC";
+			$db->setQuery($query);
+			if(!$item->preview = $db->loadResult()){
+				$item->preview = '';
 			}
 		}
 

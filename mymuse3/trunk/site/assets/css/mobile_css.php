@@ -10,13 +10,12 @@
  */
 
 //Grab taxes
-require_once( MYMUSE_PATH.'mymuse.class.php');
 $MyMuseCart 	=& MyMuse::getObject('cart','helpers');
 $cart 			=& $MyMuseCart->cart;
 $order 			= $MyMuseCart->buildOrder( 1,0 );
 $mobile_style 	= '';
 
-if(@$order->tax_array){
+if(isset($order->tax_array) && count($order->tax_array)){
 	reset($order->tax_array);
 	while(list($key,$val) = each($order->tax_array)){
 		$mobile_style .= 'td.'.strtolower(preg_replace("/_/","", $key)).' {
@@ -67,7 +66,7 @@ $mobile_style .= '
 	td.myhits:before { content: "'.JText::_('JGLOBAL_HITS').'";}
 	td.mysales:before { content: "'.JText::_('MYMUSE_SALES').'";}
 	td.mydate-modified:before { content: "'.JText::_('MYMUSE_MODIFIED_DATE').'";}
-	td.mydate-created:before { content: "'.JText::_('MYMSUE_CREATED_DATE').'";}
+	td.mydate-created:before { content: "'.JText::_('MYMUSE_CREATED_DATE').'";}
 	td.mydate-published:before { content: "'.JText::_('MYMUSE_PUBLISHED_DATE').'";}
 	td.mydate-product_made_date:before { content: "'.JText::_('MYMUSE_PRODUCT_CREATED_DATE').'";}
 	td.myartist:before { content: "'.JText::_('MYMUSE_ARTIST').'";}
@@ -98,7 +97,8 @@ $mobile_style .= '
 ';
 
 
-if(@$order->tax_array){
+if(isset($order->tax_array) && count($order->tax_array)){
+	reset($order->tax_array);
 	while(list($key,$val) = each($order->tax_array)){
 		$mobile_style .= 'td.'.strtolower(preg_replace("/_/","", $key)).':before { 
 				content: "'.JText::_(preg_replace("/_/"," ", $key)).'";  

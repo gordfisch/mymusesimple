@@ -289,9 +289,12 @@ class MyMuseHelper extends JObject
 			$jinput = JFactory::getApplication()->input;
 			if($jinput->get('view') == "category" && null !== $jinput->get('id')){
 				$filename = self::$catalogs[$jinput->get('id')];
+            }elseif($jinput->get('view') == "product" && null !== $jinput->get('id')){
+                $filename = self::$catalogs[$jinput->get('catid')];
 			}else{
 				$filename = "catalog.js";
 			}
+		//echo "Using playlist: ".$filename;
 			$path = JPATH_ROOT . "/media/audio/playlists/" . $filename;
 			$js_path = $site_url . "media/audio/playlists/" . $filename;
 			if (! file_exists ( $path )) {
@@ -299,7 +302,7 @@ class MyMuseHelper extends JObject
 				$js_path = $site_url . "media/audio/playlists/catalog.js";
 			}
 			$document->addScript( $js_path);
-			// echo $path;
+		//echo $path; exit;
 			$playlist = file_get_contents ( $path );
 			$playlist = preg_replace ( "~.*?Amplitude.init\(~", "", $playlist );
 			$playlist = preg_replace ( "~\);$~", "", $playlist );
@@ -308,7 +311,8 @@ class MyMuseHelper extends JObject
 			
 			$playarray = json_decode ( $playlist, true );
 			if (! $playarray) {
-				$error = self::getJsonError ();
+				echo "<br /><br />".self::getJsonError()."<br /><br />";
+				echo "<br /><br />".$playlist."<br /><br />";
 			}
 			
 			$new_arr = array ();
