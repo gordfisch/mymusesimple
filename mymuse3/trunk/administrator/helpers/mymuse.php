@@ -89,10 +89,10 @@ class MyMuseHelper extends JObject
 	public static $catalogs = array (
 			'30' => 'catalog.js',
 			'31' => 'affectionate-grooves.js',
-			'32' => 'migration-recordings.js',
-			'33' => 'nexgen-music.js',
-			'34' => 'orangeman-recordings.js',
-			'35' => 'sour-grapes.js'
+			'32' => 'migration.js',
+			'33' => 'nexgen.js',
+			'34' => 'nexgen.js',
+			'35' => 'migration.js'
 	);
 	public static $_playlist = null;
 
@@ -276,7 +276,7 @@ class MyMuseHelper extends JObject
 	
 	/**
 	 * getPlaylist
-	 * Gets playlist for amplitute player and creates two arrays to do indexing and printing with
+	 * Gets playlist for amplitute player and creates two arrays to do indexing and printing
 	 * loads javascript playlist for amplitude
 	 *
 	 * @return array
@@ -287,9 +287,9 @@ class MyMuseHelper extends JObject
 			$document = JFactory::getDocument();
 		
 			$jinput = JFactory::getApplication()->input;
-			if($jinput->get('view') == "category" && null !== $jinput->get('id')){
+			if($jinput->get('view') == "category" && null !== $jinput->get('id') && in_array($jinput->get('id'),self::$catalogs)){
 				$filename = self::$catalogs[$jinput->get('id')];
-            }elseif($jinput->get('view') == "product" && null !== $jinput->get('id')){
+            }elseif($jinput->get('view') == "product" && null !== $jinput->get('id') && $jinput->get('catid')){
                 $filename = self::$catalogs[$jinput->get('catid')];
 			}else{
 				$filename = "catalog.js";

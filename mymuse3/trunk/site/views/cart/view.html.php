@@ -247,44 +247,7 @@ class myMuseViewCart extends JViewLegacy
 			
 				}
 			}
-			// make a controller for the play/pause buttons
-			$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$order->items) );
-			
-			//get the player itself
-			reset($order->items);
-			$flash = '';
-			$audio = 0;
-			$video = 0;
-			foreach($order->items as $track){
-				if($track->file_preview){
-					if(substr_count($track->file_type,"video") && !$video){
-						//movie
-						$flash .= '<!-- Begin VIDEO Player -->';
-						$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
-			
-						if(is_array($results) && isset($results[0]) && $results[0] != ''){
-							$flash .= $results[0];
-						}
-						$flash .= '<!-- End Player -->';
-						$video = 1;
-							
-					}elseif(substr_count($track->file_type,"audio") && !$audio){
-						//audio
-						$flash .= '<!-- Begin AUDIO Player -->';
-						$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
-			
-						if(is_array($results) && isset($results[0]) && $results[0] != ''){
-							$flash .= $results[0];
-						}
-						$flash .= '<!-- End Player -->';
-						$audio = 1;
-					}
-					$order->flash = $flash;
-					$order->flash_id = $track->id;
-					break;
 
-				}
-			}
 		}
 
 				
@@ -877,4 +840,3 @@ class myMuseViewCart extends JViewLegacy
 		
 	}
 }
-?>

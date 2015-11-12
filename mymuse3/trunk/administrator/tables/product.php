@@ -615,6 +615,8 @@ class MymuseTableproduct extends JTable
 			JPluginHelper::importPlugin('finder');
 			//$dispatcher->trigger('onMymuseAfterSave', array('com_mymuse.product', $this, $isNew));
 			$res = $dispatcher->trigger('onFinderAfterSave', array('com_mymuse.product', $this, $isNew));
+			JPluginHelper::importPlugin('mymuse');
+			$res = $dispatcher->trigger('onMyMuseAfterSave', array('com_mymuse.product', $this, $isNew));
 		}else{
 			
 		}
@@ -665,9 +667,9 @@ class MymuseTableproduct extends JTable
 			$ext = MyMuseHelper::getExt($_FILES[$preview_name]['name']);
 			$_FILES[$preview_name]['name'] = preg_replace("/$ext$/","",$_FILES[$preview_name]['name']);
 			if($params->get('my_use_sring_url_safe')){
-				$this->$file_preview_name = JFilterOutput::stringURLSafe($_FILES[$preview_name]['name']).'.'.$ext;
+				$this->$file_preview_name = JFilterOutput::stringURLSafe($_FILES[$preview_name]['name']).$ext;
 			}else{
-				$this->$file_preview_name = $_FILES[$preview_name]['name'].'.'.$ext;
+				$this->$file_preview_name = $_FILES[$preview_name]['name'].$ext;
 			}
 			
 			$tmpName2  = $_FILES[$preview_name]['tmp_name'];
@@ -692,9 +694,9 @@ class MymuseTableproduct extends JTable
 			$ext = MyMuseHelper::getExt($file_preview);
 			$name = preg_replace("/$ext$/","",$file_preview);
 			if($params->get('my_use_sring_url_safe')){
-				$this->$file_preview_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
+				$this->$file_preview_name = JFilterOutput::stringURLSafe($name).$ext;
 			}else{
-				$this->$file_preview_name = $name.'.'.$ext;
+				$this->$file_preview_name = $name.$ext;
 			}
 
 			$old_file = $path.$file_preview;

@@ -207,6 +207,7 @@ function MymuseParseRoute($segments)
 		if($params->get('my_use_alias')){
 			//check if this is a product alias.
 			if(strpos($segments[0],':')){
+                $orig_segments = $segments;
 				$segments[0] = preg_replace('/:/',"-",$segments[0]);
 			}
 			$query = 'SELECT id,catid from #__mymuse_product WHERE alias="'.$segments[0].'"';
@@ -217,17 +218,19 @@ function MymuseParseRoute($segments)
 				$vars['view'] = 'product';
 				$vars['id'] = (int)$product->id;
 				$vars['catid'] = (int)$product->catid;
+
 				return $vars;
 			}
 			
 			//check if this is a category alias.
-			$query = 'SELECT id from #__categories WHERE alias="'.$segments[0].'"';
-			
+			$query = 'SELECT id from #__categories WHERE alias="'.$segments[0].'" and extension="com_mymuse"';
+	
 			$db->setQuery($query);
 			if($category = $db->loadObject()){
 				$vars['option'] = 'com_mymuse';
 				$vars['view'] = 'category';
 				$vars['id'] = (int)$category->id;
+                print_r($vars); exit;
 				return $vars;
 			}
 		}

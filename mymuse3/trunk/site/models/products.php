@@ -172,7 +172,7 @@ class MyMuseModelProducts extends JModelList
 				'a.id, a.title, a.alias, a.title_alias, a.introtext, ' .
 					'a.metakey, a.metadesc, a.access, a.hits, a.metadata,' .
 				'a.checked_out, a.checked_out_time, a.list_image, a.detail_image, a.price,' .
-				'a.product_discount, a.catid, a.created, a.created_by, a.created_by_alias, ' .
+				'a.product_discount, a.catid, a.artistid, a.created, a.created_by, a.created_by_alias, ' .
 				// use created if modified is 0
 				'CASE WHEN a.modified = 0 THEN a.created ELSE a.modified END as modified, ' .
 					'a.modified_by, uam.name as modified_by_name,' .
@@ -231,6 +231,10 @@ class MyMuseModelProducts extends JModelList
 		// Join over the categories to get parent category titles
 		$query->select('parent.title as parent_title, parent.id as parent_id, parent.path as parent_route, parent.alias as parent_alias');
 		$query->join('LEFT', '#__categories as parent ON parent.id = c.parent_id');
+		
+		// Join on category table for artist .
+		$query->select('art.title AS artist_title, art.alias AS artist_alias, art.access AS artist_access');
+		$query->join('LEFT', '#__categories AS art on art.id = a.artistid');
 
 		// Join on voting table
 		$query->select('ROUND(v.rating_sum / v.rating_count, 0) AS rating, v.rating_count as rating_count');

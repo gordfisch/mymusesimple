@@ -82,6 +82,7 @@ class MyMuseCart {
     $quantity 		= $jinput->get('quantity',array(), 'ARRAY');
     $variation 		= $jinput->get('variation',array(), 'ARRAY');
     $item_quantity 	= $jinput->get('item_quantity',array(), 'ARRAY');
+    
    // $Itemid = $jinput->get('Itemid',  0,'INT');
 
     $db	= JFactory::getDBO();   
@@ -508,7 +509,9 @@ class MyMuseCart {
   	
   	protected function _buildOrder($edit =  true )
   	{
-
+		if($this->order){
+			return $this->order;
+		}
 		$app 		= JFactory::getApplication();
   		$jinput 	= $app->input;
     	$params 	= MyMuseHelper::getParams();
@@ -569,18 +572,25 @@ class MyMuseCart {
 				$order->discount = $this->cart[$i]["discount"];
 				continue;
 			}
+			if(!$this->cart[$i]["variation"]){
+				$this->cart[$i]["variation"] = 0;
+			}
 
 			$order->items[$i] = $this->getProduct($this->cart[$i]['product_id']);
 			if($order->items[$i]->product_downloadable){
 				$preview_tracks[$i] = $order->items[$i];
 			}
+			$ext = '';
 			$jason = json_decode($order->items[$i]->file_name);
 			if(is_array($jason)){
-				if(!$this->cart[$i]["variation"]){
-					$this->cart[$i]["variation"] = 0;
-				}
 				$order->items[$i]->file_name = $jason[$this->cart[$i]["variation"]]->file_name;
+				$order->items[$i]->ext = $jason[$this->cart[$i]["variation"]]->file_ext;
+				//print_pre($jason);
+			}else{
+				$order->items[$i]->ext = pathinfo($order->items[$i]->file_name, PATHINFO_EXTENSION);
 			}
+			//echo "order->items[$i]->file_name = m".$order->items[$i]->file_name."<br />";
+			//echo "order->items[$i]->ext =".$order->items[$i]->ext."<br />";
 			$order->items[$i]->product_id = $order->items[$i]->id;
 			$order->items[$i]->order_item_total = 0.00;
 			$order->items[$i]->not_in_total = 0;
@@ -611,13 +621,10 @@ class MyMuseCart {
 			$order->update_form .= '
             <input type="hidden" name="productid['.$i.']" value="'.$order->items[$i]->id.'"/>
             ';
-            
-            
 
 			// GET PRICES
-			$price = MyMuseModelProduct::getPrice($order->items[$i]);
+			$price = MyMuseModelProduct::getPrice($order->items[$i]);	
 			$order->items[$i]->product_item_price = $price['product_price'];
-			
 			$order->items[$i]->product_item_subtotal = $price['product_price'] * $order->items[$i]->quantity;
 			
 			// shopper group discount
@@ -632,14 +639,10 @@ class MyMuseCart {
 				$order->non_res_total += $order->items[$i]->product_item_subtotal;
 			}
 
-
-			
 			$order->items[$i]->delete_url = "index.php?option=com_mymuse";
 			$order->items[$i]->delete_url .= "&task=cartdelete";
 			$order->items[$i]->delete_url .= "&product_id=".$order->items[$i]->id;
 			$order->items[$i]->delete_url .= "&Itemid=$Itemid";
-
-			
 
 			// Build URL 
 			if ($order->items[$i]->parentid){
@@ -745,7 +748,7 @@ class MyMuseCart {
 		if(@$order->do_html){
 			$order->colspan2 = 1;
 		}
-
+		$this->order = $order;
 		return $order;
 	}
 	
@@ -843,7 +846,8 @@ class MyMuseCart {
 		$row = new MymuseTableproduct($db);
 
 		if(!$row->load($id)){
-			echo "Error: ".$db->ErrorMsg(); exit;
+			echo "Error: id not available";
+			$this->delete($id);
 			return false;
 		}
 
@@ -872,9 +876,9 @@ class MyMuseCart {
 			}
 
 		}else{
-			$artistid = $row->catid;
+			$artistid = $row->artistid;
 		}
-		$row->price = MyMuseModelProduct::getPrice($row);
+		//$row->price = MyMuseModelProduct::getPrice($row);
 		
 		// get the artist object
 		require_once( 'administrator'.DS.'components'.DS.'com_categories'.DS.'tables'.DS.'category.php');

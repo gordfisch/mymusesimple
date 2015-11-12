@@ -989,16 +989,12 @@ class MyMuseController extends JControllerLegacy
 	function ajaxtogglecart()
 	{
 		$jinput = JFactory::getApplication()->input;
-		$productid  = $jinput->get('productid', '', 'int');
-		$variationid  = $jinput->get('variationid', '', 'int');
-		
+		$productid  = $jinput->get('productid', 0, 'int');
+        $variation  = $jinput->get('variation', 0, 'ARRAY');
 		if(!$productid ){
 			$data = array();
 		}else{
-			if($variationid){
-				$jinput->set('variation['.$productid.']',$variationid);
-			}
-			
+
 			$db = JFactory::getDBO();
 			$query = "SELECT title from #__mymuse_product WHERE id =$productid";
 			$db->setQuery($query);
@@ -1022,7 +1018,9 @@ class MyMuseController extends JControllerLegacy
 				$msg = JText::_("MYMUSE_ADDED")." ".$title;
 				$action = "added";
 			}
-			$data = array('action'=>$action, 'msg'=>$msg, 'idx' => $this->MyMuseCart->cart['idx']);
+			$data = array('action'=>$action, 'msg'=>$msg, 
+            'idx' => $this->MyMuseCart->cart['idx'],
+            'variation'=> $variation[$productid]);
 		}
 	
 		//save the cart in the session

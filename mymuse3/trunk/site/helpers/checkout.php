@@ -93,7 +93,17 @@ class MyMuseCheckout
 				continue;
 			}
 			$cart[$i]['product'] = $MyMuseCart->getProduct($cart[$i]["product_id"]);
-
+			$ext = '';
+			$jason = json_decode($cart[$i]['product']->file_name);
+			if(is_array($jason)){
+				$cart[$i]['product']->file_name = $jason[$cart[$i]["variation"]]->file_name;
+				$cart[$i]['product']->ext = $jason[$cart[$i]["variation"]]->file_ext;
+				//print_pre($jason);
+			}else{
+				
+				$cart[$i]['product']->ext = pathinfo($cart[$i]['product']->file_name, PATHINFO_EXTENSION);
+			}
+			$cart[$i]['product']->price = MyMuseModelProduct::getPrice($cart[$i]["product"]);
 			// SEE IF IT IS AN ALL_FILES, ADD ALL FILES TO CART
 
 			if($cart[$i]['product']->product_allfiles){
@@ -109,6 +119,15 @@ class MyMuseCheckout
 					$cart[$cart["idx"]]['quantity'] = 1;
 					$cart[$cart["idx"]]['catid'] = '';
 					$cart[$cart["idx"]]['product']= $MyMuseCart->getProduct($row->id);
+					$jason = json_decode($cart[$cart["idx"]]['product']->file_name);
+					if(is_array($jason)){
+						$cart[$cart["idx"]]['product']->file_name = $jason[$cart[$i]["variation"]]->file_name;
+						$cart[$cart["idx"]]['product']->ext = $jason[$cart[$i]["variation"]]->file_ext;
+						//print_pre($jason);
+					}else{
+						$cart[$cart["idx"]]['product']->ext = pathinfo($cart[$cart["idx"]]['product']->file_name, PATHINFO_EXTENSION);
+					}
+					$cart[$cart["idx"]]['product']->price = array();
 					$cart[$cart["idx"]]['product']->price['product_price'] = 0.00;
 					$cart["idx"]++;
 						
