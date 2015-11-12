@@ -21,7 +21,7 @@ $task		= $this->task;
 ?>
 		
 			
-		<?php if($order->flash){ ?>
+		<?php if(isset($order->flash)){ ?>
 			<div id="product_player"> <?php echo $order->flash; ?></div>
 			<div id="jp-title-div"><?php echo JText::_('MYMUSE_NOW_PLAYING');?> 
 			<span id="jp-title-li"></span></div>
@@ -49,7 +49,7 @@ $task		= $this->task;
 	<?php } ?>
 		<th class="myprice"><b><?php echo JText::_('MYMUSE_CART_PRICE'); ?></b></th>
 		<th class="myquantity"><b><?php echo JText::_('MYMUSE_CART_QUANTITY'); ?></b></th>
-	<?php if($params->get("my_show_cart_preview")){ ?>  
+	<?php if($params->get("my_show_cart_preview") && isset($order_item[$i]->flash)){ ?>  
 		<th class="mypreviews"><b><?php echo JText::_('MYMUSE_PREVIEWS'); ?></b></th>
 	<?php }?>
 		<th class="mysubtotal"><b><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?></b></th>
@@ -96,7 +96,7 @@ $task		= $this->task;
 		        ?></td>
 		    <?php } ?>
 		    
-		    <?php if($params->get("my_show_cart_preview")){ ?>   
+		    <?php if($params->get("my_show_cart_preview") && isset($order_item[$i]->flash)){ ?>   
 		        <td class="mypreviews tracks ui-widget jp-gui mobile-hide" style="width: 20px;"><?php echo $order_item[$i]->flash; ?></td>
 		     <?php } ?>  
 		        <td class="mysubtotal"><?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_subtotal); ?></td>

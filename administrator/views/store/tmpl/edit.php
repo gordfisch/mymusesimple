@@ -119,8 +119,9 @@ method="post" name="adminForm" id="store-form" class="form-validate">
 				<?php if (isset($fieldSet->description) && trim($fieldSet->description)) : ?>
 					<p class="tip"><?php echo $this->escape(JText::_($fieldSet->description));?></p>
 				<?php endif; ?>
-				
+				<div class="span6">
 					<?php foreach ($this->form->getFieldset($name) as $field) : ?>
+	
 										<div class="control-group">
 											<div class="control-label">
 												<?php echo $field->label; ?>
@@ -129,13 +130,19 @@ method="post" name="adminForm" id="store-form" class="form-validate">
 												<?php echo $field->input; ?>
 											</div>
 										</div>
-									<?php endforeach; ?>
+									<?php 
+									
+									if($field->name == "jform[params][my_profile_key]") :
+									?></div><div class="span6 float-right"><?php
+									endif;
+									
+									endforeach; ?>
 					<?php if($name == "testing"){ 
 						$url = preg_replace("#administrator/#","",JURI::base())."components".DS."com_mymuse".DS."log.txt";
 						echo '<div><a target="_blank" href="'.$url.'">'.JText::_("MYMUSE_VIEW_LOG").'</a></div>';
 						
 					}?>
-		
+				</div>
 			  <?php echo JHtml::_('bootstrap.endTab'); ?>
 			<?php endforeach; ?>
 <!--  

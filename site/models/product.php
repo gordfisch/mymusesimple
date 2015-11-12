@@ -95,7 +95,7 @@ class MyMuseModelProduct extends JModelItem
 				$query = $db->getQuery(true);
 
 				$query->select($this->getState(
-					'item.select', 'a.id, a.asset_id, a.title, a.alias, a.title_alias, a.introtext, a.fulltext, ' .
+					'item.select', 'a.id, a.asset_id, a.title, a.alias, a.artistid, a.title_alias, a.introtext, a.fulltext, ' .
 					// If badcats is not null, this means that the article is inside an unpublished category
 					// In this case, the state is set to 0 to indicate Unpublished (even if the article state is Published)
 					'CASE WHEN badcats.id is null THEN a.state ELSE 0 END AS state, ' .
@@ -106,7 +106,7 @@ class MyMuseModelProduct extends JModelItem
 					'a.list_image, a.detail_image, a.attribs, a.version, a.parentid, a.ordering, ' .
 					'a.metakey, a.metadesc, a.access, a.hits, a.metadata, a.featured, a.language, a.product_physical, ' .
 					'a.product_downloadable, a.product_sku, a.product_made_date, a.product_in_stock, a.product_discount, ' .
-					'a.urls, a.price, a.reservation_fee, ' .
+					'a.urls, a.price, a.reservation_fee, a.product_allfiles, ' .
 					'a.product_full_time, a.product_producer, a.product_publisher, a.product_studio'
 					)
 				);
@@ -115,6 +115,10 @@ class MyMuseModelProduct extends JModelItem
 				// Join on category table.
 				$query->select('c.title AS category_title, c.alias AS category_alias, c.access AS category_access');
 				$query->join('LEFT', '#__categories AS c on c.id = a.catid');
+				
+				// Join on category table for artist .
+				$query->select('art.title AS artist_title, art.alias AS artist_alias, art.access AS artist_access');
+				$query->join('LEFT', '#__categories AS art on art.id = a.artistid');
 				
 				// Join on country table.
 				$query->select('co.country_name AS product_country');
@@ -780,7 +784,7 @@ class MyMuseModelProduct extends JModelItem
      * @param object $product
      * @return mixed Array or false: array [product_price] [special_shopper_group] [product_discount] [product_shopper_group_discount]
      */
-	static function getPrice(&$product, $type='mp3') {
+	static function getPrice(&$product) {
 
 		$params 		= MyMuseHelper::getParams();
 		$MyMuseShopper 	= MyMuse::getObject('shopper','models');
@@ -800,26 +804,40 @@ class MyMuseModelProduct extends JModelItem
 			if($product_parent_id > 0){
 				$price_info["item"]=true;
 			}
-		}
-		
-		if($product->parentid > 0){
-			$query = "SELECT attribs FROM #__mymuse_product WHERE id='".$product->parentid."'";
-			$db->setQuery($query);
-			if(!$product->attribs = $db->loadResult()){
-				$product_price = $product->price;
-			}
-			$registry = new JRegistry;
-			$registry->loadString($product->attribs);
-			$product->attribs = $registry;
-			
-		}
-		$product->price = $product->attribs->get('product_price_'.$type);
-		
+		}  
 		if(is_array($product->price)){
 			// we've been here already
 			return $product->price;
 		}else{
+			if($params->get('my_price_by_product')){
+				if($product->parentid > 0){
+					$query = "SELECT attribs FROM #__mymuse_product WHERE id='".$product->parentid."'";
+					$db->setQuery($query);
+					if(!$product->attribs = $db->loadResult()){
+						$product_price = $product->price;
+					}
+				}
+				$registry = new JRegistry;
+				$registry->loadString($product->attribs);
+				$product->attribs = $registry;
+				if($product->product_physical){
+					$key = 'product_price_physical';
+					$product->price = $product->attribs->get($key);
+					//echo "key = $key <br />";
+				}elseif($product->product_allfiles && isset($product->ext)){
+					$key = 'product_price_'.$product->ext.'_all';
+					$product->price = $product->attribs->get($key);
+					//echo "key = $key <br />";
+					//echo "product->price = ".$product->price." <br />";
+				}elseif(isset($product->ext)){
+					$key = 'product_price_'.$product->ext;
+					$product->price = $product->attribs->get($key);
+					//echo "key = $key <br />";
+				}
+				//print_pre($product->attribs);
+			}
 			$product_price = $product->price;
+			//echo "product price = $product_price<br />";
 		}
 		
 			
@@ -931,9 +949,9 @@ class MyMuseModelProduct extends JModelItem
 		
 		return $price_info;
 		
-  	}
-  	
-  	
+  	}  
+    
+    
   	public function storeVote($pk = 0, $rate = 0)
   	{
   		

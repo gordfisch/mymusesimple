@@ -461,9 +461,7 @@ class MymuseModelproduct extends JModelAdmin
     		$i = 0;
     		foreach($this->_tracks as $track){
 
-    			if($track->product_allfiles){
-    				continue;
-    			}
+    			
     			
     			//main file
     			$jason = json_decode($track->file_name);
@@ -473,6 +471,11 @@ class MymuseModelproduct extends JModelAdmin
     					$track->file_name .= $j->file_name."<br />";
     				}
     			}
+                
+                if($track->product_allfiles){
+    				continue;
+    			}
+                
     			if($this->_params->get('my_encode_filenames')){
     				$name = $track->title_alias;
     			}else{

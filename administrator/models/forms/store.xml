@@ -623,6 +623,17 @@
         </field>
         
         <field
+                name="my_price_by_product"
+                type="list"
+                label="MYMUSE_PRICING_LABEL"
+                description="MYMUSE_PRICING_DESC"
+                class="inputbox"
+                default="0">
+                <option value="0">MYMUSE_PRICE_BY_TRACK</option>
+				<option value="1">MYMUSE_PRICE_BY_PRODUCT</option>
+        </field>
+        
+        <field
                 name="my_registration_redirect"
                 type="list"
                 label="MYMUSE_REGISTER_REDIRECT_LABEL"
