@@ -11,11 +11,11 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-$download_header = '<h3>'.JText::_('MYMUSE_DOWNLOADS_IN_THIS_ORDER').'</h3>
+$download_header = '<h3 class="cart-header">'.JText::_('MYMUSE_DOWNLOADS_IN_THIS_ORDER').'</h3>
 
-<table class="contentpaneopen">
+<table class="mymuse_cart cart">
 <tr>
-		<td>
+		<td class="mymuse_cart cart">
 		<ul>
 ';
 foreach($order->items as $item){ 
@@ -26,25 +26,21 @@ foreach($order->items as $item){
  	}
 } 
 if($params->get('my_registration') == "no_reg"){
-	$link = JURI::root().JRoute::_("index.php?option=com_mymuse&task=accdownloads&id=".$order->order_number."&Itemid=".$Itemid);
+	$link = JRoute::_("index.php?option=com_mymuse&view=store&task=accdownloads&id=".$order->order_number."&Itemid=".$Itemid);
 }else{
-	$link = JURI::root().JRoute::_("index.php?option=com_mymuse&task=downloads&id=".$order->order_number."&Itemid=".$Itemid);
+	$link = JRoute::_("index.php?option=com_mymuse&view=store&task=downloads&id=".$order->order_number."&Itemid=".$Itemid);
 }
+
+$link = JURI::root().ltrim($link,'/');
+
 $download_header .= '
 		</ul>
 		</td>
 	</tr>
 </table>
-<h3>'.JText::_('MYMUSE_DOWNLOAD_LINK_PLEASE_CLICK').'</h3>
+<h3 class="cart-header">'.JText::_('MYMUSE_DOWNLOAD_LINK_PLEASE_CLICK').'</h3>
 <a href="'.$link.'">'.$link.'</a>
-<table class="contentpaneopen">
-	<tr>
-		<td></td>
-	</tr>
-	<tr>
-		<td></td>
-	</tr>
-</table>
+
 <br />
 <br />
 ';

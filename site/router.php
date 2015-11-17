@@ -22,7 +22,7 @@ jimport('joomla.application.categories');
 function MymuseBuildRoute(&$query)
 {
 	$segments	= array();
-	//print_r($query);
+
 	// get a menu item based on Itemid or currently active
 	$app		= JFactory::getApplication();
 	$menu		= $app->getMenu();
@@ -113,7 +113,7 @@ function MymuseBuildRoute(&$query)
     	return $segments;
     }
     if(isset($query['task']) && $query['task'] == "accdownloads"){
-    
+    	
     	unset($query['task']);
     	unset($query['view']);
     	$segments[] = "accdownloads";

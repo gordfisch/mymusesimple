@@ -484,11 +484,7 @@ class MymuseModelproduct extends JModelAdmin
     			if($this->_params->get('my_download_dir_format') == 1){
     				//by format
     				$ext = MyMuseHelper::getExt($name);
-    				if($ext == "mp3"){
-    					$download_path .= "320".DS;
-    				}else{
-    					$download_path .= $ext.DS;
-    				}
+    				$download_path .= $ext.DS;
     			}
     			$full_filename = $filename = $site_path.$name;
     			if(!$this->_params->get('my_use_s3') && file_exists($full_filename) ){
@@ -896,7 +892,7 @@ class MymuseModelproduct extends JModelAdmin
 			$directory = MyMuseHelper::getDownloadPath($this->_item->id,'1');
 			if($this->_params->get('my_download_dir_format')){
 				//by format
-				$files1 = JFolder::files( $directory.DS.'320' );
+				$files1 = JFolder::files( $directory.DS.'mp3' );
 				$files2 = JFolder::files( $directory.DS.'wav' );
 				$files = array_merge($files1,$files2);
 			}else{

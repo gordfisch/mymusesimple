@@ -74,7 +74,7 @@ class MymuseControllerOrder extends JControllerForm
 		
 		include_once( JPATH_SITE.DS.'components'.DS.'com_mymuse'.DS.'mymuse.class.php' );
 		$MyMuseStore  	=& MyMuse::getObject('store','models');
-		$store 			=& $MyMuseStore->getStore();
+		$store 			= $MyMuseStore->getStore();
 		$model 			= $this->getModel();
 		$order			= $model->getItem();
 

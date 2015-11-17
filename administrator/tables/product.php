@@ -305,19 +305,6 @@ class MymuseTableproduct extends JTable
 						'file_alias'=> $this->alias,
 						'file_downloads'=> $this->file_downloads
 				);
-			}else{
-				for($i =0; $i< count($current_files); $i++){
-					if(trim($current_files[$i]->file_ext) == 'mp3'){
-						if(file_exists($download_path.'320/'.$current_files[$i]->file_name)){
-							$m = new mp3file($download_path.'320/'.$current_files[$i]->file_name);
-							$a = $m->get_metadata();
-							if ($a['Encoding']=='VBR' || $a['Encoding']=='CBR'){
-								$this->file_time = $a["Length mm:ss"];
-							}
-						}
-					}
-				}
-				
 			}
 		}else{
 			$current_files = array();
@@ -362,11 +349,7 @@ class MymuseTableproduct extends JTable
 					
 					if($params->get('my_download_dir_format') == 1){
 						//by format
-						if($ext == "mp3"){
-							$download_path .= "320";
-						}else{
-							$download_path .= $ext;
-						}
+						$download_path .= $ext;
 					}
 					
 					if($params->get('my_encode_filenames') ){
