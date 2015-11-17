@@ -22,7 +22,7 @@ jimport('joomla.application.categories');
 function MymuseBuildRoute(&$query)
 {
 	$segments	= array();
-
+	//print_r($query);
 	// get a menu item based on Itemid or currently active
 	$app		= JFactory::getApplication();
 	$menu		= $app->getMenu();
@@ -38,7 +38,7 @@ function MymuseBuildRoute(&$query)
 		$menuItem = $menu->getItem($query['Itemid']);
 		$menuItemGiven = true;
 	}
-
+	
 	if (isset($query['view'])) {
 		$view = $query['view'];
 	}
@@ -46,6 +46,86 @@ function MymuseBuildRoute(&$query)
 		// we need to have a view in the query or it is an invalid URL
 		return $segments;
 	}
+//shipping|addtocart|updatecart|cartdelete|showcart|checkout
+	
+    if(isset($query['task']) && $query['task'] == "checkout"){
+    	unset($query['task']);
+    	unset($query['view']);
+        $segments[] = "checkout";
+        return $segments;
+    }
+    if(isset($query['task']) && $query['task'] == "shipping"){
+    	unset($query['task']);
+    	unset($query['view']);
+        $segments[] = "shipping";
+        return $segments;
+    }
+    if(isset($query['task']) && $query['task'] == "addtocart"){
+    	unset($query['task']);
+    	unset($query['view']);
+        $segments[] = "addtocart";
+        return $segments;
+    }
+    if(isset($query['task']) && $query['task'] == "updatecart"){
+    	unset($query['task']);
+    	unset($query['view']);
+        $segments[] = "updatecart";
+        return $segments;
+    }
+    if(isset($query['task']) && $query['task'] == "cartdelete"){
+    	unset($query['task']);
+    	unset($query['view']);
+        $segments[] = "cartdelete";
+        return $segments;
+    }
+    if(isset($query['task']) && $query['task'] == "showcart"){
+    	unset($query['task']);
+    	unset($query['view']);
+        $segments[] = "showcart";
+        return $segments;
+    }
+    if(isset($query['task']) && $query['task'] == "register"){
+
+    	unset($query['task']);
+    	unset($query['view']);
+    	$segments[] = "register";
+    	return $segments;
+    }
+    if(isset($query['task']) && $query['task'] == "confirm"){
+    
+    	unset($query['task']);
+    	unset($query['view']);
+    	$segments[] = "confirm";
+    	return $segments;
+    }
+    if(isset($query['task']) && $query['task'] == "thankyou"){
+ 
+    	unset($query['task']);
+    	unset($query['view']);
+    	$segments[] = "thankyou";
+    	return $segments;
+    }	
+    if(isset($query['task']) && $query['task'] == "vieworder"){
+    
+    	unset($query['task']);
+    	unset($query['view']);
+    	$segments[] = "vieworder";
+    	return $segments;
+    }
+    if(isset($query['task']) && $query['task'] == "accdownloads"){
+    
+    	unset($query['task']);
+    	unset($query['view']);
+    	$segments[] = "accdownloads";
+    	return $segments;
+    }
+    if(isset($query['task']) && $query['task'] == "downloads"){
+    
+    	unset($query['task']);
+    	unset($query['view']);
+    	$segments[] = "downloads";
+    	return $segments;
+    }
 
 	// are we dealing with an product or category that is attached to a menu item?
 	if (($menuItem instanceof stdClass) && $menuItem->query['view'] == $query['view'] && isset($query['id']) 
@@ -167,7 +247,7 @@ function MymuseBuildRoute(&$query)
  */
 function MymuseParseRoute($segments)
 {
-	
+	//echo 'segments'; print_r($segments);
 	$vars = array();
 	if(!defined('DS')){
 		define('DS',DIRECTORY_SEPARATOR);
@@ -187,6 +267,8 @@ function MymuseParseRoute($segments)
 	$advanced = $params->get('sef_advanced_link', 0);
 	$db = JFactory::getDBO();
 
+
+
 	// Count route segments
 	$count = count($segments);
 
@@ -202,8 +284,99 @@ function MymuseParseRoute($segments)
 	// if there is only one segment, then it points to either a product or a category
 	// we test it first to see if it is a category.  If the id and alias match a category
 	// then we assume it is a category.  If they don't we assume it is an product
+    // or it could be a cart thing
 	if ($count == 1) {
-		
+		//print_pre($segments);exit;
+        //shipping|addtocart|updatecart|cartdelete|showcart|checkout
+        if($segments[0] == "checkout"){
+            $vars['option'] = 'com_mymuse';
+            $vars['view'] = 'cart';
+            $vars['task'] = 'checkout';
+            
+            return $vars;
+        }
+        if($segments[0] == "shipping"){
+            $vars['option'] = 'com_mymuse';
+            $vars['view'] = 'cart';
+            $vars['task'] = 'shipping';
+            
+            return $vars;
+        }
+        if($segments[0] == "addtocart"){
+            $vars['option'] = 'com_mymuse';
+            $vars['view'] = 'cart';
+            $vars['task'] = 'addtocart';
+            
+            return $vars;
+        }
+        if($segments[0] == "updatecart"){
+            $vars['option'] = 'com_mymuse';
+            $vars['view'] = 'cart';
+            $vars['task'] = 'updatecart';
+            
+            return $vars;
+        }
+        if($segments[0] == "cartdelete"){
+            $vars['option'] = 'com_mymuse';
+            $vars['view'] = 'cart';
+            $vars['task'] = 'cartdelete';
+            
+            return $vars;
+        }
+        if($segments[0] == "showcart"){
+            $vars['option'] = 'com_mymuse';
+            $vars['view'] = 'cart';
+            $vars['task'] = 'showcart';
+            
+            return $vars;
+        }
+        if($segments[0] == "register"){
+        	$vars['option'] = 'com_mymuse';
+        	$vars['view'] = 'shopper';
+        	$vars['task'] = 'register';
+        	$vars['layout'] = 'register';
+        
+        	return $vars;
+        }
+        if($segments[0] == "confirm"){
+        	$vars['option'] = 'com_mymuse';
+        	$vars['view'] = 'cart';
+        	$vars['task'] = 'confirm';
+        
+        	return $vars;
+        }
+        if($segments[0] == "thankyou"){
+        	$vars['option'] = 'com_mymuse';
+        	$vars['view'] = 'cart';
+        	$vars['task'] = 'vieworder';
+        
+        	return $vars;
+        }
+        if($segments[0] == "vieworder"){
+        	$vars['option'] = 'com_mymuse';
+        	$vars['view'] = 'cart';
+        	$vars['task'] = 'vieworder';
+        
+        	return $vars;
+        }
+        if($segments[0] == "downloads"){
+        	$vars['option'] = 'com_mymuse';
+        	$vars['view'] = 'store';
+        	$vars['task'] = 'downloads';
+        
+        	return $vars;
+        }
+        if($segments[0] == "accdownloads"){
+        	$vars['option'] = 'com_mymuse';
+        	$vars['view'] = 'store';
+        	$vars['task'] = 'accdownloads';
+        
+        	return $vars;
+        }
+        //accdownloads
+        
+
+        
 		if($params->get('my_use_alias')){
 			//check if this is a product alias.
 			if(strpos($segments[0],':')){
@@ -230,7 +403,6 @@ function MymuseParseRoute($segments)
 				$vars['option'] = 'com_mymuse';
 				$vars['view'] = 'category';
 				$vars['id'] = (int)$category->id;
-                print_r($vars); exit;
 				return $vars;
 			}
 		}

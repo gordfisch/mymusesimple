@@ -550,7 +550,9 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product_file` (
 CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `asset_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to the #__assets table.',
+  `parentid` int(11) unsigned NOT NULL DEFAULT '0',
   `title` varchar(255) NOT NULL DEFAULT '',
+  `product_sku` varchar(64) NOT NULL DEFAULT '',
   `alias` varchar(255) NOT NULL DEFAULT '',
   `title_alias` varchar(255) NOT NULL DEFAULT '',
   `introtext` mediumtext NOT NULL,
@@ -558,21 +560,11 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `state` tinyint(3) NOT NULL DEFAULT '0',
   `catid` int(11) NOT NULL,
   `price` decimal(10,4) default NULL,
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
-  `created_by_alias` varchar(255) NOT NULL DEFAULT '',
-  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) unsigned NOT NULL DEFAULT '0',
-  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
-  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `list_image` varchar(255) NOT NULL,
   `detail_image` varchar(255) NOT NULL,
   `urls` text NOT NULL,
   `attribs` text NOT NULL,
   `version` int(11) unsigned NOT NULL DEFAULT '1',
-  `parentid` int(11) unsigned NOT NULL DEFAULT '0',
   `ordering` int(11) NOT NULL DEFAULT '0',
   `metakey` varchar(1024) NOT NULL DEFAULT '',
   `metadesc` varchar(1024) NOT NULL DEFAULT '',
@@ -582,7 +574,6 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `product_physical` tinyint(1) NOT NULL DEFAULT '0',
   `product_downloadable` tinyint(1) NOT NULL DEFAULT '0',
   `product_allfiles` tinyint(1) NOT NULL DEFAULT '0',
-  `product_sku` varchar(64) NOT NULL DEFAULT '',
   `product_made_date` date DEFAULT '0000-00-00',
   `product_in_stock` int(11) NOT NULL DEFAULT '1',
   `product_special` char(1) DEFAULT NULL,
@@ -607,6 +598,15 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `file_preview_4` varchar(255) NOT NULL DEFAULT '',
   `featured` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Set if product is featured.',
   `language` char(7) NOT NULL COMMENT 'The language code for the article.',
+   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
+  `created_by_alias` varchar(255) NOT NULL DEFAULT '',
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
+  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `publish_up` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `publish_down` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `xreference` varchar(50) NOT NULL COMMENT 'A reference to enable linkages to external data sets.',
   PRIMARY KEY (`id`),
   KEY `idx_access` (`access`),
@@ -1264,7 +1264,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_store` (
 
 
 INSERT IGNORE INTO `#__mymuse_store` (`id`, `title`, `name`, `alias`, `scope`, `description`, `published`, `checked_out`, `checked_out_time`, `ordering`, `access`, `count`, `params`, `currency`, `version`, `metadesc`, `metakey`, `metadata`, `my_catid`, `state`) VALUES
-(1, 'MyMuse Store', '', 'mymuse', 'store', '<p>MyMuse Store Description</p>', 0, 0, '0000-00-00 00:00:00', 1, 0, 0, '{"contact_first_name":"Gord","contact_last_name":"Fisch","contact_title":"Mister","contact_email":"gord@arboreta.ca","phone":"514-481-8524","fax":"514-481-3333","address_1":"5380 King Edward","address_2":"","city":"Montreal","province":"Quebec","country":"CA","zip":"H4A 2K1","currency":"CAD","store_thumb_image":"images\\/logo150sq.jpg","my_downloads_enable":"1","my_download_max":"3","my_download_expire":"432000","my_download_enable_status":"C","my_download_dir":"\\/var\\/www\\/html\\/mymusetest35\\/images\\/A_MyMuseDownloads","my_preview_dir":"images\\/A_MyMusePreviews","my_encode_filenames":"0","my_free_downloads":"0","my_play_downloads":"0","my_use_shipping":"0","my_use_stock":"0","my_check_stock":"0","my_add_stock_zero":"0","my_saveorder":"before","my_use_coupons":"0","my_currency_separator":",","my_currency_dec_point":".","my_currency_position":"0","my_registration_redirect":"registration","my_registration":"joomla","my_checkout":"regular","my_profile_key":"mymuse","my_plugin_email":"0","my_cc_webmaster":"1","my_webmaster":"info@joomlamymuse.com","my_webmaster_name":"Joe Strummer","my_continue_shopping":"index.php?option=com_mymuse","my_date_format":"d M Y","my_email_msg":"","my_show_original_price":"0","my_add_taxes":"0","my_default_shopper_group_id":"1","my_ownergid":"3","my_owner_percent":"100","my_shop_test":"0","my_debug":"0"}', 'CAD', '3.3.0', '', '', '{"robots":"","author":"","rights":"","xreference":""}', 49, 1);
+(1, 'MyMuse Store', '', 'mymuse', 'store', '<p>MyMuse Store Description</p>', 0, 0, '0000-00-00 00:00:00', 1, 0, 0, '{"contact_first_name":"Gord","contact_last_name":"Fisch","contact_title":"Mister","contact_email":"gord@arboreta.ca","phone":"514-481-8524","fax":"514-481-3333","address_1":"5382 King Edward","address_2":"","city":"Montreal","province":"Quebec","country":"CA","zip":"H4A 2K1","currency":"CAD","store_thumb_image":"images\\/logo150sq.jpg","my_downloads_enable":"1","my_download_max":"3","my_download_expire":"432000","my_download_enable_status":"C","my_download_dir":"\\/var\\/www\\/html\\/mymusetest35\\/images\\/A_MyMuseDownloads","my_preview_dir":"images\\/A_MyMusePreviews","my_encode_filenames":"0","my_free_downloads":"0","my_play_downloads":"0","my_use_shipping":"0","my_use_stock":"0","my_check_stock":"0","my_add_stock_zero":"0","my_saveorder":"before","my_use_coupons":"0","my_currency_separator":",","my_currency_dec_point":".","my_currency_position":"0","my_registration_redirect":"registration","my_registration":"joomla","my_checkout":"regular","my_profile_key":"mymuse","my_plugin_email":"0","my_cc_webmaster":"1","my_webmaster":"info@joomlamymuse.com","my_webmaster_name":"Joe Strummer","my_continue_shopping":"index.php?option=com_mymuse","my_date_format":"d M Y","my_email_msg":"","my_show_original_price":"0","my_add_taxes":"0","my_default_shopper_group_id":"1","my_ownergid":"3","my_owner_percent":"100","my_shop_test":"0","my_debug":"0"}', 'CAD', '3.3.0', '', '', '{"robots":"","author":"","rights":"","xreference":""}', 49, 1);
 
 -- --------------------------------------------------------
 

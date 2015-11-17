@@ -11,6 +11,7 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 ?>
+
      <table class="mymuse_cart">
  
         <!-- Begin Order Summary -->
@@ -51,16 +52,16 @@ defined('_JEXEC') or die('Restricted access');
 		<!-- start of basket -->
 		<table class="mymuse_cart">
 		<tr>
-			<td  class="sectiontableheader mymuse_cart_top" COLSPAN="4"><b><?php echo JText::_('MYMUSE_ORDER_DETAILS') ?></b></td>
+			<td  class="cart mymuse_cart_top" COLSPAN="4"><b><?php echo JText::_('MYMUSE_ORDER_DETAILS') ?></b></td>
 		</tr>
 		<tr class="mymuse_cart_top">
-			<td class="sectiontableheader mymuse_cart_top"><b><?php echo JText::_('MYMUSE_TITLE'); ?></b></td>
+			<td class="cart mymuse_cart_top"><b><?php echo JText::_('MYMUSE_TITLE'); ?></b></td>
 		<?php if($params->get("my_show_sku")){ ?>
-			<td class="sectiontableheader mymuse_cart_top"><b><?php echo JText::_('MYMUSE_CART_SKU'); ?></b></td>
+			<td class="cart mymuse_cart_top"><b><?php echo JText::_('MYMUSE_CART_SKU'); ?></b></td>
 		<?php } ?>
-			<td class="sectiontableheader mymuse_cart_top"><b><?php echo JText::_('MYMUSE_CART_PRICE'); ?></b></td>
-			<td class="sectiontableheader mymuse_cart_top"><b><?php echo JText::_('MYMUSE_CART_QUANTITY'); ?></b></td>
-			<td class="sectiontableheader mymuse_cart_top" width="50"><b><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?></b></td>
+			<td class="cart mymuse_cart_top"><b><?php echo JText::_('MYMUSE_CART_PRICE'); ?></b></td>
+			<td class="cart mymuse_cart_top"><b><?php echo JText::_('MYMUSE_CART_QUANTITY'); ?></b></td>
+			<td class="cart mymuse_cart_top" width="50"><b><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?></b></td>
 		</tr>
 		
 		<?php

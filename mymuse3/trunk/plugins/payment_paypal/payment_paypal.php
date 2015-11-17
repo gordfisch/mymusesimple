@@ -146,8 +146,8 @@ class plgMymusePayment_Paypal extends JPlugin
 		<form action="'.PAYPAL_URL.'" method="post" name="adminFormPayPal" >
 	    <input type="hidden" name="amount" value="'.sprintf("%.2f", $order->order_subtotal).'" />
 		<input type="hidden" name="tax_cart"        value="'. $order->tax_total.'" />
-		<input type="hidden" name="return"          value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&pp=paypal&Itemid='.$Itemid.'" />
-		<input type="hidden" name="cancel_return"   value="'. JURI::base().'index.php?option=com_mymuse&task=paycancel&Itemid='.$Itemid.'" />
+		<input type="hidden" name="return"          value="'. JRoute::_(JURI::base().'index.php?option=com_mymuse&task=thankyou&pp=paypal&Itemid='.$Itemid).'" />
+		<input type="hidden" name="cancel_return"   value="'. JRoute::_(JURI::base().'index.php?option=com_mymuse&task=paycancel&Itemid='.$Itemid).'" />
 		<input type="hidden" name="notify_url"      value="'. JURI::base().'index.php?option=com_mymuse&task=notify" />
 		
 		<input type="hidden" name="cmd"             value="_cart" />

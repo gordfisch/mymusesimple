@@ -40,6 +40,7 @@ $mobile_style .= '
 	td.mytime:before { content: "'.JText::_('MYMUSE_TIME').'";}
 	td.myfilesize:before { content: "'.JText::_('MYMUSE_FILE_SIZE').'";}
 	td.mydownloads:before { content: "'.JText::_('MYMUSE_DOWNLOADS').'";}
+	td.myexpiry:before { content: "'.JText::_('MYMUSE_EXPIRES').'";}
 	td.myprice:before { content: "'.JText::_('MYMUSE_CART_PRICE').'";}
 	td.mypreviews:before { content: "'.JText::_('MYMUSE_PLAY').'";}
 	td.myquantity:before { content: "'.JText::_('MYMUSE_QUANTITY').'";}

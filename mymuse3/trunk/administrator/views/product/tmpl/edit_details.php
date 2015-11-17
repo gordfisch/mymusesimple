@@ -70,12 +70,30 @@
 					<?php echo $this->form->getInput('product_physical'); ?>
 				</div>
 			</div>
+			
 			<div class="control-group">
 				<div class="control-label">
 					<?php echo $this->form->getLabel('product_in_stock'); ?>
 				</div>
 				<div class="controls">
 					<?php echo $this->form->getInput('product_in_stock'); ?>
+				</div>
+			</div>
+			
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('product_special'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('product_special'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('urls'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('urls'); ?>
 				</div>
 			</div>
 

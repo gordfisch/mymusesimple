@@ -291,11 +291,33 @@ class MymuseTableproduct extends JTable
 			}
 		}
 		*/
-		
+		$download_path = MyMuseHelper::getdownloadPath($this->id,'1');
 		if(!$isNew && $this->file_name){
+	
 			$current_files = json_decode($this->file_name);
 			if(!is_array($current_files) && $this->file_name){
-				$current_files[] = (object) array('file_name' => $this->file_name);;
+				//converting old style
+				$ext = MyMuseHelper::getExt($this->file_name);
+				$current_files[] = (object) array(
+						'file_name' => $this->file_name,
+						'file_length' => $this->file_length,
+						'file_ext' => $ext,
+						'file_alias'=> $this->alias,
+						'file_downloads'=> $this->file_downloads
+				);
+			}else{
+				for($i =0; $i< count($current_files); $i++){
+					if(trim($current_files[$i]->file_ext) == 'mp3'){
+						if(file_exists($download_path.'320/'.$current_files[$i]->file_name)){
+							$m = new mp3file($download_path.'320/'.$current_files[$i]->file_name);
+							$a = $m->get_metadata();
+							if ($a['Encoding']=='VBR' || $a['Encoding']=='CBR'){
+								$this->file_time = $a["Length mm:ss"];
+							}
+						}
+					}
+				}
+				
 			}
 		}else{
 			$current_files = array();
@@ -323,7 +345,7 @@ class MymuseTableproduct extends JTable
 			
 		}
 
-		$download_path = MyMuseHelper::getdownloadPath($this->id,'1');
+		
 		if(is_array( $select_files )){
 			for( $i = 0; $i < count($select_files); $i++ ){
 				//rename if necessary
@@ -383,7 +405,7 @@ class MymuseTableproduct extends JTable
 						$m = new mp3file($new_file);
 						$a = $m->get_metadata();
 						if ($a['Encoding']=='VBR' || $a['Encoding']=='CBR'){
-							$file_time = $a["Length mm:ss"];
+							$this->file_time = $a["Length mm:ss"];
 						}
 					}
 					
@@ -392,7 +414,6 @@ class MymuseTableproduct extends JTable
 					$current_files[$i] = array(
 							'file_name' => $file_name,
 							'file_length' => $file_length,
-							'file_time' => $file_time,
 							'file_ext' => $ext,
 							'file_alias'=> $file_alias,
 							'file_downloads'=> $file_downloads
@@ -566,15 +587,14 @@ class MymuseTableproduct extends JTable
 		$result = parent::store($updateNulls);
 		if($result){
 			
-
 			// other categories
-			if(isset($form['othercats'])  && !$this->parentid && $this->id){
+			if(isset($form['othercats'])  && $this->id){
 				// clear product_category_xref
 				$query = "DELETE FROM #__mymuse_product_category_xref WHERE product_id=".$this->id;
 				$db->setQuery($query);
 				$db->execute();
-				if(!in_array($form['catid'], $form['othercats'])){
-					$form['othercats'][] = $form['catid'];
+				if(in_array($form['catid'], $form['othercats']) ){
+					unset($form['othercats'][$form['catid']]);
 				}
 				foreach($form['othercats'] as $catid){
 					$query = "INSERT INTO #__mymuse_product_category_xref

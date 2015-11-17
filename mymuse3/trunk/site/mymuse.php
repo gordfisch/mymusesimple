@@ -18,11 +18,14 @@ if(!defined('DS')){
 	define('DS',DIRECTORY_SEPARATOR);
 }
 
-
 require_once( JPATH_COMPONENT.DS.'mymuse.class.php');
 ini_set('memory_limit',"256M");
 ini_set('max_execution_time',"120");
 
+//include any custom code
+if(file_exists(JPATH_COMPONENT.DS."custom.php")){
+	require_once( JPATH_COMPONENT.DS.'custom.php');
+}
 //load com_user language for logins and registration
 $lang = JFactory::getLanguage();
 $rtl = $lang->get('rtl');
@@ -51,7 +54,7 @@ $jinput 	= JFactory::getApplication()->input;
 $return 	= $jinput->get('return','');
 if(!$return){
 	$return = MyMuseHelper::returnURL();
-	$jinput->get('return',$return);
+	$jinput->set('return',$return);
 }
 $active	= JFactory::getApplication()->getMenu()->getActive();
 

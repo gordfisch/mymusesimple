@@ -240,7 +240,6 @@ class MyMuseCart {
     	$productid 	= $jinput->get('productid',array(), 'ARRAY');
     	$quantity 	= $jinput->get('quantity',array(), 'ARRAY');
     	$variation 	= $jinput->get('variation',array(), 'ARRAY');
-  
     	$Itemid 	= $jinput->get('Itemid',  0, 'INT');
 
  
@@ -270,7 +269,7 @@ class MyMuseCart {
     
         while(list($key,$val)=each($productid)) {
             $product_id = $val;
-            $quant = $quantity[$val];
+            $quant = (isset($quantity[$val]))? $quantity[$val] : 1;
     
             // Check for negative quantity
             if ($quant < 0) {
@@ -314,6 +313,7 @@ class MyMuseCart {
                 for ($i=0;$i<$this->cart["idx"];$i++) {
                     if (isset($this->cart[$i]["product_id"]) && $this->cart[$i]["product_id"] == $product_id) {
                         $this->cart[$i]["quantity"] = $quant;
+                        $this->cart[$i]["variation"] = isset($variation[$product_id])? $variation[$product_id] : 0;
                     }
                 }
             }
@@ -509,9 +509,7 @@ class MyMuseCart {
   	
   	protected function _buildOrder($edit =  true )
   	{
-		if($this->order){
-			return $this->order;
-		}
+
 		$app 		= JFactory::getApplication();
   		$jinput 	= $app->input;
     	$params 	= MyMuseHelper::getParams();
@@ -583,12 +581,42 @@ class MyMuseCart {
 			$ext = '';
 			$jason = json_decode($order->items[$i]->file_name);
 			if(is_array($jason)){
+				$order->items[$i]->variation_select = '<select name="variation['.$this->cart[$i]['product_id'].']"
+					id = "variationid_'.$this->cart[$i]['product_id'].'" class="inputbox myformatselect cart ">';
+										
+				//print_pre($jason);
+				//if multiple variations, create select box
+				for($j=0; $j < count($jason); $j++){
+					$order->items[$i]->variation_select .= '<option value="'.$j.'" ';
+					if($j == $this->cart[$i]["variation"]){
+						$order->items[$i]->variation_select .= 'SELECTED=SELECTED';
+					}	
+					$order->items[$i]->variation_select .= '>'.$jason[$j]->file_ext.'</option>'."\n";
+				}
+				$order->items[$i]->variation_select  .= "</select>";
+				
 				$order->items[$i]->file_name = $jason[$this->cart[$i]["variation"]]->file_name;
 				$order->items[$i]->ext = $jason[$this->cart[$i]["variation"]]->file_ext;
-				//print_pre($jason);
 			}else{
 				$order->items[$i]->ext = pathinfo($order->items[$i]->file_name, PATHINFO_EXTENSION);
 			}
+			
+			//other cats
+			$othercats = array();
+			$query = "SELECT c.title FROM #__mymuse_product_category_xref as x
+					LEFT JOIN #__categories as c ON c.id=x.catid
+				WHERE product_id = '".$this->cart[$i]['product_id']."' AND catid != ".$order->items[$i]->catid."
+						AND catid !=".$order->items[$i]->artistid;
+			$db->setQuery($query);
+			$res = $db->loadObjectList();
+			if(count($res)){
+				foreach($res as $r){
+					$othercats[] = $r->title;
+				}
+			}
+			$othercats = array_unique($othercats);
+			$order->items[$i]->othercats = implode(",",$othercats);
+			
 			//echo "order->items[$i]->file_name = m".$order->items[$i]->file_name."<br />";
 			//echo "order->items[$i]->ext =".$order->items[$i]->ext."<br />";
 			$order->items[$i]->product_id = $order->items[$i]->id;
@@ -640,9 +668,10 @@ class MyMuseCart {
 			}
 
 			$order->items[$i]->delete_url = "index.php?option=com_mymuse";
-			$order->items[$i]->delete_url .= "&task=cartdelete";
+			$order->items[$i]->delete_url .= "&task=cartdelete&view=cart";
 			$order->items[$i]->delete_url .= "&product_id=".$order->items[$i]->id;
 			$order->items[$i]->delete_url .= "&Itemid=$Itemid";
+			$order->items[$i]->delete_url = JRoute::_($order->items[$i]->delete_url);
 
 			// Build URL 
 			if ($order->items[$i]->parentid){
@@ -656,6 +685,7 @@ class MyMuseCart {
 			$order->items[$i]->url = myMuseHelperRoute::getProductRoute($pid, $aid);
 			$order->items[$i]->cat_url = myMuseHelperRoute::getCategoryRoute($aid);
 			$order->items[$i]->flash = '';
+			
 		
 		
 		} //end of cart items

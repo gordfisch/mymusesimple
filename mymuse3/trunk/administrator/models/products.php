@@ -254,7 +254,11 @@ class MymuseModelproducts extends JModelList
 			}
 			else {
 				$search = $db->Quote('%'.$db->escape($search, true).'%');
-				$query->where('(a.title LIKE '.$search.' OR a.alias LIKE '.$search.')');
+				$query->where('(
+						a.title LIKE '.$search.' 
+						OR a.alias LIKE '.$search.'
+						OR a.product_sku LIKE '.$search.'
+						)');
 			}
 		}
 

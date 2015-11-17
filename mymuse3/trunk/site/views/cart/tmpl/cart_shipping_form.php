@@ -21,9 +21,8 @@ $params 	= $this->params;
 <?php  }else{ ?>
 
 
-<form action="index.php?Itemid=<?php echo $this->Itemid; ?>" method="post" name="adminForm">
-<input type="hidden" name="option" value="com_mymuse">
-<input type="hidden" name="task" value="confirm">
+<form action="<?php echo JRoute::_('index.php?option=com_mymuse&task=confirm&Itemid='.$this->Itemid); ?>" 
+method="post" name="adminForm">
 
 
 <?php if($this->order->need_shipping){ ?>

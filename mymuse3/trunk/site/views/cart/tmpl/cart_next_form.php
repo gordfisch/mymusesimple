@@ -11,9 +11,7 @@
  // no direct access
 defined('_JEXEC') or die('Restricted access');
 ?>
-        <form action="index.php?Itemid=<?php echo $this->Itemid; ?>" method="post" name="adminForm">
-        <input type="hidden" name="option" value="com_mymuse">
-        <input type="hidden" name="task" value="<?php echo $this->task; ?>">
+        <form action="<?php echo JRoute::_('index.php?option=com_mymuse&view=cart&task='.$this->task.'&Itemid='.$this->Itemid); ?>" method="post" name="adminForm">
         <?php if ($this->params->get('my_muse_use_shipping')){ ?>
         <input type="hidden" name="shipmethodid" value="<?php echo $this->shipmethodid; ?>">
 		<?php } ?>
