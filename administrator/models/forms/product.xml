@@ -400,6 +400,28 @@
 				description="MYMUSE_PRODUCT_IN_STOCK_DESC"
 			/>
 			
+			 <field
+                name="product_special"
+                type="list"
+                label="MYMUSE_PRODUCT_SPECIAL_LABEL"
+                description="MYMUSE_PRODUCT_SPECIAL_DESC"
+                class="inputbox"
+                size="1"
+                default="0">
+                <option value="0">JNO</option>
+				<option value="1">JYES</option>
+         </field>
+         
+         <field
+                name="urls"
+                type="text"
+                label="MYMUSE_CUSTOM_URL_LABEL"
+                description="MYMUSE_CUSTOM_URL_DESC"
+                class="inputbox"
+                size="100"
+                required="false"
+          	/>
+			
 			<field 
           		name="product_downloadable" 
           		type="list"

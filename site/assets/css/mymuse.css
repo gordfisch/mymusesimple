@@ -329,7 +329,7 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount,
 	td.myoriginalsubtotal, td.myshoppergroupdiscount,
 	td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal,
 	td.mydiscount, td.myshipping, td.myshipmethod, td.mysummarytotal, 
-	td.mysubtotal, td.mycoupon, td.mypreview
+	td.mysubtotal, td.mycoupon, td.mypreview, td.mydownloads, td.myexpiry
 	{
 		text-align: left;
 	}
@@ -373,7 +373,7 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount,
 	td.myregion:before, td.mycountry:before, td.mycompany:before , td.myfax:before, 
 	td.myColour:before, td.myshipmethod:before, td.myordernumber:before,
 	td.myorderdate:before, td.mypaid:before, td.mysummarytotal:before,
-	td.mypreview:before
+	td.mypreview:before, td.mydownloads:before, td.myexpiry:before
 	 { 
 		white-space: nowrap;
 		padding-right: 7%;
@@ -399,7 +399,7 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount,
 	td.myphone, td.myaddress, td.mycity, td.myzip,
 	td.myregion, td.mycountry, td.mycompany , td.myfax, 
 	td.myColour, td.myshipmethod, td.myordernumber,
-	td.myorderdate, td.mypaid, td.mypreview
+	td.myorderdate, td.mypaid, td.mypreview, td.mydownloads, td.myexpiry
 	{ 
 		clear:both;
 	}

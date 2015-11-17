@@ -56,7 +56,7 @@ class JFormFieldCategoryTree extends JFormFieldList{
 			$db = JFactory::getDBO();
 			$query = 'SELECT catid' .
 			' FROM #__mymuse_product_category_xref' .
-			' WHERE product_id='. $id ;;
+			' WHERE product_id='. $id ;
 			$db->setQuery($query);
 			$cats = $db->loadObjectList();
 
@@ -371,7 +371,6 @@ class JFormFieldCategoryTree extends JFormFieldList{
 			$cat->descendantsarray		= JFormFieldCategoryTree::_getDescendants(array($cat));
 			$cat->descendants			= implode(',', $cat->descendantsarray);
 		}
-		
 		return $mymusecats;
 	}
 	

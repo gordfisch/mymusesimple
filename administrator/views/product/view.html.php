@@ -41,7 +41,7 @@ class MymuseViewProduct extends JViewLegacy
 
 		$app 			= JFactory::getApplication();
 		$subtype 		= $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'details');
-		
+		$subtype 		='details';
 		$view 			= $input->get('view');
 		
         $isNew  		= ($this->item->id < 1);
@@ -88,6 +88,7 @@ class MymuseViewProduct extends JViewLegacy
         	}
         	$input->set('subtype','file');
         	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'file');
+        	
         	
         }
         

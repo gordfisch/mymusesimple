@@ -23,43 +23,46 @@ function mydownload(url,item_id){
 	window.location.href=url;
 }
 </script>
-<h2><?php echo JText::_('MYMUSE_DOWNLOAD_PAGE') ?></h2>
-		<table  class="mymusetable">
+<h1 class="cart-header"><?php echo JText::_('MYMUSE_DOWNLOAD_PAGE') ?></h1>
+		<table  class="mymuse_cart cart">
  
         <!-- Begin Order Summary -->
-        <tr>
+        <tr class="mymuse_cart cart cart" >
             <td colspan="2"  class="mymuse_cart_top"><b><?php echo JText::_('MYMUSE_ORDER_SUMMARY') ?></b></td>
         </tr>
         <tr>
-            <td><?php echo JText::_('MYMUSE_ORDER_NUMBER') ?>:</td>
-            <td><?php echo sprintf("%08d", $order->id) ?></td>
+            <td class="mobile-hide cart"><?php echo JText::_('MYMUSE_ORDER_NUMBER') ?>:</td>
+            <td class="myordernumber cart"><?php echo sprintf("%08d", $order->id) ?></td>
         </tr>
         <tr>
-            <td><?php echo JText::_('MYMUSE_ORDER_DATE') ?>:</td>
-            <td><?php echo $order->created ?></td>
+            <td class="mobile-hide cart"><?php echo JText::_('MYMUSE_ORDER_DATE') ?>:</td>
+            <td class="myorderdate cart"><?php echo $order->created ?></td>
         </tr>
         <tr>
-            <td><?php echo JText::_('MYMUSE_ORDER_STATUS') ?>:</td>
-            <td><?php echo JText::_('MYMUSE_'.strtoupper($order->status_name)) ?></td>
+            <td class="mobile-hide cart"><?php echo JText::_('MYMUSE_ORDER_STATUS') ?>:</td>
+            <td class="myorderstatus cart"><?php echo JText::_('MYMUSE_'.strtoupper($order->status_name)) ?></td>
         </tr>
         </table>
         <br />
         <br />
 
-		<table class="mymusetable">
+		<table class="mymuse_cart cart">
+            <thead>
 			<tr>
-				<td class="mymuse_cart_top"><?php echo JText::_('MYMUSE_FILENAME'); ?></td>
-				<td class="mymuse_cart_top"><?php echo JText::_('MYMUSE_NUMBER_DOWNLOADS'); ?></td>
-				<td class="mymuse_cart_top"><?php echo JText::_('MYMUSE_FILE_SIZE'); ?></td>
-				<td class="mymuse_cart_top"><?php echo JText::_('MYMUSE_EXPIRES'); ?></td>
+				<th class="mytitle cart"><?php echo JText::_('MYMUSE_FILENAME'); ?></th>
+				<th class="mydownloads cart"><?php echo JText::_('MYMUSE_NUMBER_DOWNLOADS'); ?></th>
+				<th class="myfilesize cart"><?php echo JText::_('MYMUSE_FILE_SIZE'); ?></th>
+				<th class="myexpiry cart"><?php echo JText::_('MYMUSE_EXPIRES'); ?></th>
 			</tr>
+            </thead>
+            <tbody>
 			<?php 
 			foreach($order->items as $item){ 
 				//print_pre($item);
 				if($item->product->product_downloadable){
 				?>
 			<tr>
-				<td align="center"><?php 
+				<td class="mytitle cart"><?php 
 
 				$end_date = $item->end_date? $item->end_date : time()*2;
 				$my_download_max = $params->get('my_download_max')? $params->get('my_download_max') : ($item->downloads+1)*2;
@@ -81,9 +84,9 @@ function mydownload(url,item_id){
 				<?php 
 				if($item->downloads < $my_download_max && $end_date > time()){ ?></a><?php } ?></td>
 				
-				<td align="center"><?php echo $item->downloads; ?></td>
-				<td align="center"><?php echo MyMuseHelper::ByteSize($item->file_length); ?></td>
-				<td align="center"><?php if($item->end_date < time()){ ?><span style="color : #c30;">*</span> <?php } ?>
+				<td class="mydownload carts"><?php echo $item->downloads; ?></td>
+				<td class="myfilesize cart"><?php echo MyMuseHelper::ByteSize($item->file_size); ?></td>
+				<td class="myexpiry cart"><?php if($item->end_date < time()){ ?><span style="color : #c30;">*</span> <?php } ?>
 				<?php 
 				if($item->end_date){
 					$date = JFactory::getDate($item->end_date);
@@ -94,4 +97,5 @@ function mydownload(url,item_id){
 			</tr>
 			<?php } 
 				} ?>
+            </tbody>
 		</table>

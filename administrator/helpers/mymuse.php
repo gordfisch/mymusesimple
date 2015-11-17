@@ -85,16 +85,7 @@ class MyMuseHelper extends JObject
 	
 	);
 	
-	// for nexgen
-	public static $catalogs = array (
-			'30' => 'catalog.js',
-			'31' => 'affectionate-grooves.js',
-			'32' => 'migration.js',
-			'33' => 'nexgen.js',
-			'34' => 'nexgen.js',
-			'35' => 'migration.js'
-	);
-	public static $_playlist = null;
+
 
 	
 	
@@ -274,57 +265,7 @@ class MyMuseHelper extends JObject
 
 	}
 	
-	/**
-	 * getPlaylist
-	 * Gets playlist for amplitute player and creates two arrays to do indexing and printing
-	 * loads javascript playlist for amplitude
-	 *
-	 * @return array
-	 */
-	public static function getPlaylist(){
-		if(!self::$_playlist){
-			$site_url = preg_replace("#administrator/#","",JURI::base());
-			$document = JFactory::getDocument();
-		
-			$jinput = JFactory::getApplication()->input;
-			if($jinput->get('view') == "category" && null !== $jinput->get('id') && in_array($jinput->get('id'),self::$catalogs)){
-				$filename = self::$catalogs[$jinput->get('id')];
-            }elseif($jinput->get('view') == "product" && null !== $jinput->get('id') && $jinput->get('catid')){
-                $filename = self::$catalogs[$jinput->get('catid')];
-			}else{
-				$filename = "catalog.js";
-			}
-		//echo "Using playlist: ".$filename;
-			$path = JPATH_ROOT . "/media/audio/playlists/" . $filename;
-			$js_path = $site_url . "media/audio/playlists/" . $filename;
-			if (! file_exists ( $path )) {
-				$path = JPATH_ROOT . "/media/audio/playlists/catalog.js";
-				$js_path = $site_url . "media/audio/playlists/catalog.js";
-			}
-			$document->addScript( $js_path);
-		//echo $path; exit;
-			$playlist = file_get_contents ( $path );
-			$playlist = preg_replace ( "~.*?Amplitude.init\(~", "", $playlist );
-			$playlist = preg_replace ( "~\);$~", "", $playlist );
-			$playlist = preg_replace ( "~//.*\\n~", "", $playlist );
-			$playlist = preg_replace ( "~],~", "]", $playlist );
-			
-			$playarray = json_decode ( $playlist, true );
-			if (! $playarray) {
-				echo "<br /><br />".self::getJsonError()."<br /><br />";
-				echo "<br /><br />".$playlist."<br /><br />";
-			}
-			
-			$new_arr = array ();
-			foreach ( $playarray ['songs'] as $index => $song ) {
-				$new_arr [$song ['url']] = $index;
-			}
-			$arr[0] = $new_arr;
-			$arr[1] = $playarray ['songs'];
-			self::$_playlist = $arr;
-		}
-		return self::$_playlist;
-	}
+
 	
 	static function getStore($id=1)
 	{

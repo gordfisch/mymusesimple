@@ -286,10 +286,31 @@ class MyMuseModelProduct extends JModelItem
 					}
 				}
 			}
+			
+			//other cats
+			$othercats = array();
+			$query = "SELECT c.title FROM #__mymuse_product_category_xref as x
+					LEFT JOIN #__categories as c ON c.id=x.catid
+				WHERE product_id = '".$pk."' AND catid != ".$this->_item[$pk]->catid." 
+						AND catid !=".$this->_item[$pk]->artistid;
+			$db->setQuery($query);
+			$res = $db->loadObjectList();
+			if(count($res)){
+				foreach($res as $r){
+					$othercats[] = $r->title;
+				}
+			}
+			$othercats = array_unique($othercats);
+			$this->_item[$pk]->othercats = $othercats;
+			
+
+					
+					
+					
 
 			// TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS 
 			// get child tracks with prices
-			$track_query = "SELECT id,title,title_alias,introtext,`fulltext`, parentid, product_physical, product_downloadable, product_allfiles, product_sku,
+			$track_query = "SELECT id,title,title_alias,introtext,`fulltext`, parentid, catid, product_physical, product_downloadable, product_allfiles, product_sku,
 			product_made_date, price, featured, product_discount, product_package_ordering, product_package,file_length,file_time,
 			file_name,file_downloads, file_preview,file_preview_2, file_preview_3,file_type, detail_image,access,
 			ROUND(v.rating_sum / v.rating_count, 0) AS rating, v.rating_count as rating_count, s.sales
@@ -322,6 +343,23 @@ class MyMuseModelProduct extends JModelItem
 			if(count($tracks)){
 				$root = JPATH_ROOT.DS;
 				while (list($i,$track)= each( $tracks )){
+					
+					//other cats
+					$othercats = array();
+					$query = "SELECT c.title FROM #__mymuse_product_category_xref as x
+					LEFT JOIN #__categories as c ON c.id=x.catid
+					WHERE product_id = '".$track->id."' AND catid != ".$track->catid;
+					$db->setQuery($query);
+					
+					if($res = $db->loadObjectList()){
+						foreach($res as $r){
+							$othercats[] = $r->title;
+						}
+					}
+					$othercats = array_unique($othercats);
+					$track->othercats = implode(',',$othercats);
+					
+					
 					$tracks[$i]->price = $this->getPrice($track);
 					if($params->get('my_add_taxes')){
 						$tracks[$i]->price["product_price"] = MyMuseCheckout::addTax($tracks[$i]->price["product_price"]);
@@ -567,7 +605,8 @@ class MyMuseModelProduct extends JModelItem
 						}
 					}
 				}
-			} 
+			}
+			
 			
 			$this->_item[$pk]->tracks = $tracks;
 

@@ -110,9 +110,9 @@ class myMuseViewStore extends JViewLegacy
         	}
         	$uri = JFactory::getURI();
         	if($params->get('my_registration') == "no_reg"){
-        		$current =  $uri->current()."?option=com_mymuse&task=accdownloads&id=".$id."&item_id=";
+        		$current =  JRoute::_("index.php?option=com_mymuse&view=store&task=accdownloads&id=".$id."&item_id=");
         	}else{
-				$current =  $uri->current()."?option=com_mymuse&task=downloads&id=".$id."&item_id=";
+				$current =  JRoute::_("index.php?option=com_mymuse&view=store&task=downloads&id=".$id."&item_id=");
         	}
 			
 			$this->assignRef( 'current', $current );

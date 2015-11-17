@@ -437,6 +437,17 @@ class MyMuseCheckout
 		include_once( JPATH_COMPONENT.DS.'templates'.DS.'thank_you.php' );
 		$contents = ob_get_contents();
 		ob_end_clean();
+		
+		/*
+		 * here is how it is done in the cart view
+		ob_start();
+		parent::display('checkout_header');
+		parent::display('order_summary');
+		parent::display('shopper_info');
+		parent::display('cart');
+		$contents .= ob_get_contents();
+		ob_end_clean();
+		*/
 
 		$download_header = '';
 
@@ -445,9 +456,9 @@ class MyMuseCheckout
 		//IS SOMETHING DOWNLOADABLE AND IS IT PAID FOR?
 		if($order->downloadable && $order->order_status == "C"){
 			if($params->get('my_registration') == "no_reg"){
-				$link = JURI::base()."index.php?option=com_mymuse&task=accdownloads&id=".$order->order_number;
+				$link = JURI::base().JRoute::_("index.php?option=com_mymuse&task=accdownloads&id=".$order->order_number);
 			}else{
-				$link = JURI::base()."index.php?option=com_mymuse&task=downloads&id=".$order->order_number;
+				$link = JURI::base().JRoute::_("index.php?option=com_mymuse&task=downloads&id=".$order->order_number);
 			}
 			 
 			$link_message .= JText::_("MYMUSE_YOUR_DOWNLOAD_KEY")." = ".$order->order_number." <br />";
@@ -462,7 +473,7 @@ class MyMuseCheckout
 			$order->downloadlink = $link_message;
 		}
 		if($order->downloadable  && $order->order_status == "P"){
-			$link = JURI::base()."index.php?option=com_mymuse&task=vieworder&orderid=".$order->id;
+			$link = JRoute::_(JURI::base()."index.php?option=com_mymuse&task=vieworder&orderid=".$order->id);
 			$link_message .= JText::_('MYMUSE_PURCHASE_ORDER')." <br />\n";
 			$link_message .= '<a href="'.$link.'">'.$link.'</a><br /><br />'."\n";
 			 
@@ -797,11 +808,15 @@ class MyMuseCheckout
 		for($i = 0; $i < count($order->items); $i++){
 			$order->items[$i]->product = $MyMuseCart->getProduct($order->items[$i]->product_id);
 			$order->items[$i]->title = $order->items[$i]->product->title;
-			$order->items[$i]->file_length = $order->items[$i]->product->file_length;
 			$order->items[$i]->quantity = $order->items[$i]->product_quantity;
 			$order->items[$i]->product_item_subtotal = $order->items[$i]->product_item_price * $order->items[$i]->product_quantity;
 			$order->items[$i]->product_in_stock = $order->items[$i]->product->product_in_stock;
-				
+			$order->items[$i]->ext = pathinfo($order->items[$i]->file_name, PATHINFO_EXTENSION);
+			
+			$order->items[$i]->ext = pathinfo($order->items[$i]->file_name, PATHINFO_EXTENSION);
+			$order->items[$i]->file_length = $order->items[$i]->product->file_length;
+			$order->items[$i]->file_time = $order->items[$i]->product->file_time;
+			
 			$catid = 0;
 			// Does it have a parent?
 			if ($order->items[$i]->product->parentid){
