@@ -23,14 +23,14 @@ $my_email_msg = isset($my_email_msg)? $my_email_msg : '';
 <link rel="stylesheet" href="'.JURI::root().'components/com_mymuse/assets/css/mymuse.css" type="text/css" />
 
 	
-    <title>'.$store->title.'</title>
+<title>'.$store->title.'</title>
 
 </head>
     <body bgcolor="#FFFFFF" text="#000000" leftmargin="0" topmargin="0" >    
 
-    <table width="90%"  border=0 cellspacing=0 cellpadding=2>
-      <tr>
-        <td valign="top><a href="'.JURI::root().'"><img align="left" src="'.JURI::root().$params->get('store_thumb_image').'" border="0"></a></td>
+    <table class="mymusecart cart">
+      <tr class="mymusecart cart">
+        <td valign="top  class="mymusecart cart"><a href="'.JURI::root().'"><img align="left" src="'.JURI::root().$params->get('store_thumb_image').'" border="0"></a></td>
         <td>
         <table border="0" cellpadding="0" cellspacing="2" width="100%">
         <tr><td>'.$store->title.'</td></tr>

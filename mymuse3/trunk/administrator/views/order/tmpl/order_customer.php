@@ -57,11 +57,22 @@ foreach($order->items as $item){
 } 
 
 // for no_reg
+//JURI::base()
 if($params->get('my_registration') == "no_reg"){
-	$link = JURI::root()."index.php?option=com_mymuse&task=accdownloads&id=".$order->order_number;
+	$link = "index.php?option=com_mymuse&view=store&task=accdownloads&id=".$order->order_number;
 }else{
-	$link = JURI::root()."index.php?option=com_mymuse&task=downloads&id=".$order->order_number;
+	$link = "index.php?option=com_mymuse&view=store&task=downloads&id=".$order->order_number;
 }
+if($params->get('my_default_itemid','')){
+	$link .= "&Itemid=".$params->get('my_default_itemid');
+}
+$app    = JApplication::getInstance('site');
+$router = $app->getRouter();
+$uri = $router->build($link);
+$link = $uri->toString();
+$path = JURI::root(true); echo $path;
+$link = JURI::root().preg_replace("#$path/administrator/#",'',$link);
+
 
 $download_header .= '
 		</ul>

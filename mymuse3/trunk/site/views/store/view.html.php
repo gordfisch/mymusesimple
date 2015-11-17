@@ -337,11 +337,8 @@ class myMuseViewStore extends JViewLegacy
         		if($params->get('my_download_dir_format') == 1){
         			//by format
         			$ext = MyMuseHelper::getExt($filename);
-        			if($ext == "mp3"){
-        				$download_path .= "320";
-        			}else{
-        				$download_path .= $ext;
-        			}
+        			$download_path .= $ext;
+        		
         		}
         		
         		$full_filename = $download_path.DS.$filename;
