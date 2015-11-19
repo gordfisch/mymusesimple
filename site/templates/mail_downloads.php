@@ -10,6 +10,27 @@
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+$path = JURI::root(true);
+if($params->get('my_registration') == "no_reg"){
+	$link = JRoute::_("index.php?option=com_mymuse&view=store&task=accdownloads&id=".$order->order_number);
+}else{
+	$link = JRoute::_("index.php?option=com_mymuse&view=store&task=downloads&id=".$order->order_number);
+}
+$link = rtrim(JURI::root(),"/").preg_replace("#$path#",'',$link);
+if($params->get('my_default_itemid','')){
+	$link .= "&Itemid=".$params->get('my_default_itemid');
+}
+
+
+if($params->get('my_registration') == "no_reg"){
+	$link = JURI::root()."store/accdownloads?id=".$order->order_number;
+}else{
+	$link = JURI::root()."store/downloads?id=".$order->order_number;
+}
+//if($params->get('my_default_itemid','')){top_menu_item
+if($params->get('my_default_itemid','')){
+	$link .= "&Itemid=".$params->get('my_default_itemid');
+}
 
 $download_header = '<h3 class="cart-header">'.JText::_('MYMUSE_DOWNLOADS_IN_THIS_ORDER').'</h3>
 
@@ -25,13 +46,6 @@ foreach($order->items as $item){
 	';
  	}
 } 
-if($params->get('my_registration') == "no_reg"){
-	$link = JRoute::_("index.php?option=com_mymuse&view=store&task=accdownloads&id=".$order->order_number."&Itemid=".$Itemid);
-}else{
-	$link = JRoute::_("index.php?option=com_mymuse&view=store&task=downloads&id=".$order->order_number."&Itemid=".$Itemid);
-}
-
-$link = JURI::root().ltrim($link,'/');
 
 $download_header .= '
 		</ul>

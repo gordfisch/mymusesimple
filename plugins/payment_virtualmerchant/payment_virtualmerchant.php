@@ -79,7 +79,7 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
 			$this->ssl_user_id 		= $this->params->get('my_virtualmerchant_user_id');
 			$this->ssl_pin 			= $this->params->get('my_virtualmerchant_pin');
 		}
-		
+		 
 		//VIRTUAL TERMINAL
 		//live: https://www.myvirtualmerchant.com/VirtualMerchant/login.do
 		//test: https://demo.myvirtualmerchant.com/VirtualMerchantDemo/login.do
@@ -94,7 +94,11 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
 	{
 		$mainframe =& JFactory::getApplication();
 		$db		=& JFactory::getDBO();
-
+		$path = JURI::root(true);
+		$link = JRoute::_('index.php?option=com_mymuse&task=thankyou&view=cart&pp=virtualmerchant&Itemid='.$Itemid);
+		$link = JURI::root().preg_replace("#$path/#",'',$link);
+		
+		
 		//Virtualmerchant Account Email
 		$merchant_email = $this->params->get('my_virtualmerchant_email');
 
@@ -171,18 +175,19 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
 		<input type="hidden" name="ssl_phone"  		
 			value="'. @$shopper->phone.'" />	
 		<input type="hidden" name="ssl_email"  value="'. $shopper_email.'" />
-			
+			 
+
 		
 		<input type="hidden" name="ssl_receipt_apprvl_method"        value="REDG" />
 		<input type="hidden" name="ssl_receipt_apprvl_get_url"      	
-			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&pp=virtualmerchant&Itemid='.$Itemid.'" />
+			value="'. $link .'" />
 				
 		<input type="hidden" name="ssl_error_url"      	
-			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&pp=virtualmerchant&Itemid='.$Itemid.'" />
+			value="'. $link.'" />
 			
 		<input type="hidden" name="ssl_receipt_decl_method"        value="REDG" />
 		<input type="hidden" name="ssl_receipt_decl_get_url"      	
-			value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&pp=virtualmerchant&Itemid='.$Itemid.'" />	
+			value="'. $link.'" />	
 			
 		';
 

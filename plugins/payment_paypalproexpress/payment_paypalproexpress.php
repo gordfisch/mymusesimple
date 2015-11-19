@@ -297,12 +297,14 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 
 		// Fraud attempt? Do nothing more!
 			if(!$isValid ){
-				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=paycancel&pp=paypalexpresscheckout&orderid='.$orderid.'&Itemid='.$Itemid, false);
+				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=paycancel&view=cart&pp=paypalexpresscheckout&orderid='.$orderid.'&Itemid='.$Itemid, false);
 				$msg = "Payment Failed: ".$result ['error'];
 			}else{
-				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalexpresscheckout&orderid='.$orderid.'&Itemid='.$Itemid, false);
+				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&view=cart&pp=paypalexpresscheckout&orderid='.$orderid.'&Itemid='.$Itemid, false);
 				$msg = "";
 			}
+			$path = JURI::root(true);
+			$thankyouUrl = JURI::root().preg_replace("#$path/#",'',$thankyouUrl);
 			JFactory::getApplication()->redirect($thankyouUrl, $msg);
 			return true;
 	}

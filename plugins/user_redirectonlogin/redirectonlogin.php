@@ -51,7 +51,7 @@ class plgUserRedirectonlogin extends JPlugin
 		$cart = $session->get('cart');
 
 		if($cart && $cart['idx'] > 0){
-			$return = JRoute::_("index.php?option=com_mymuse&view=cart&layout=cart");
+			$return = JRoute::_("index.php?option=com_mymuse&task=showcart&view=cart&layout=cart");
 			$app->setUserState('users.login.form.return', $return);
 		}
 		return true;

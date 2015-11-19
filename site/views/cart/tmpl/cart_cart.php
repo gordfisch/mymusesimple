@@ -66,8 +66,8 @@ for ($i=0;$i<count($order->items); $i++) {
 		        	 <?php echo $order_item[$i]->category_name; ?> : 
 		        <?php } ?>
 		        
-		        <?php if(isset($order_item[$i]->parent->title)){ ?>
-		        	 <?php echo $order_item[$i]->parent->title; ?> :
+		        <?php if(isset($order_item[$i]->product->parent->title)){ ?>
+		        	 <?php echo $order_item[$i]->product->parent->title; ?> :
 		        <?php } ?>
 		        <?php echo $order_item[$i]->title; ?>
 		        
