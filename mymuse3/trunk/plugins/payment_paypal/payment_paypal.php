@@ -141,13 +141,18 @@ class plgMymusePayment_Paypal extends JPlugin
 			$order->items[0]->title = JText::_('MYMUSE_REGISTRATION_FEE');
 			$order->tax_total = 0.00;
 		}
-
+		$path = JURI::root(true);
+		$return = JRoute::_('index.php?option=com_mymuse&task=thankyou&view=cart&pp=paypal&Itemid='.$Itemid);
+		$return = rtrim(JURI::root(),"/").preg_replace("#$path#",'',$return);
+		$cancel_return = JRoute::_('index.php?option=com_mymuse&task=paycancel&view=cart&Itemid='.$Itemid);
+		$cancel_return = rtrim(JURI::root(),"/").preg_replace("#$path#",'',$cancel_return);
+		
 		$string = '
 		<form action="'.PAYPAL_URL.'" method="post" name="adminFormPayPal" >
 	    <input type="hidden" name="amount" value="'.sprintf("%.2f", $order->order_subtotal).'" />
 		<input type="hidden" name="tax_cart"        value="'. $order->tax_total.'" />
-		<input type="hidden" name="return"          value="'. JRoute::_(JURI::base().'index.php?option=com_mymuse&task=thankyou&pp=paypal&Itemid='.$Itemid).'" />
-		<input type="hidden" name="cancel_return"   value="'. JRoute::_(JURI::base().'index.php?option=com_mymuse&task=paycancel&Itemid='.$Itemid).'" />
+		<input type="hidden" name="return"          value="'. $return.'" />
+		<input type="hidden" name="cancel_return"   value="'. $cancel_return.'" />
 		<input type="hidden" name="notify_url"      value="'. JURI::base().'index.php?option=com_mymuse&task=notify" />
 		
 		<input type="hidden" name="cmd"             value="_cart" />
@@ -225,7 +230,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		}
 		$string .= '
 		<div id="paypal_form" class="pull-left">
-			<button class="button uk-button " 
+			<button class="button uk-button shopper-info" 
 			type="submit" >'. $button_string.'</button>
 		</div>
 		</form>

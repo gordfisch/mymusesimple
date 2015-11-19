@@ -22,7 +22,7 @@ jimport('joomla.application.categories');
 function MymuseBuildRoute(&$query)
 {
 	$segments	= array();
-
+//print_r($query);
 	// get a menu item based on Itemid or currently active
 	$app		= JFactory::getApplication();
 	$menu		= $app->getMenu();
@@ -99,7 +99,7 @@ function MymuseBuildRoute(&$query)
     	return $segments;
     }
     if(isset($query['task']) && $query['task'] == "thankyou"){
- 
+
     	unset($query['task']);
     	unset($query['view']);
     	$segments[] = "thankyou";
@@ -126,6 +126,21 @@ function MymuseBuildRoute(&$query)
     	$segments[] = "downloads";
     	return $segments;
     }
+    if(isset($query['task']) && $query['task'] == "vieworder"){
+    
+    	unset($query['task']);
+    	unset($query['view']);
+    	$segments[] = "vieworder";
+    	return $segments;
+    }
+    if(isset($query['task']) && $query['task'] == "paycancel"){
+    
+    	unset($query['task']);
+    	unset($query['view']);
+    	$segments[] = "paycancel";
+    	return $segments;
+    }
+    
 
 	// are we dealing with an product or category that is attached to a menu item?
 	if (($menuItem instanceof stdClass) && $menuItem->query['view'] == $query['view'] && isset($query['id']) 
@@ -348,7 +363,7 @@ function MymuseParseRoute($segments)
         if($segments[0] == "thankyou"){
         	$vars['option'] = 'com_mymuse';
         	$vars['view'] = 'cart';
-        	$vars['task'] = 'vieworder';
+        	$vars['task'] = 'thankyou';
         
         	return $vars;
         }
@@ -373,7 +388,21 @@ function MymuseParseRoute($segments)
         
         	return $vars;
         }
-        //accdownloads
+		if($segments[0] == "vieworder"){
+        	$vars['option'] = 'com_mymuse';
+        	$vars['view'] = 'cart';
+        	$vars['task'] = 'vieworder';
+        	$vars['layout'] = 'cart';
+        	return $vars;
+        }
+        if($segments[0] == "paycancel"){
+        	$vars['option'] = 'com_mymuse';
+        	$vars['view'] = 'cart';
+        	$vars['task'] = 'paycancel';
+        	$vars['layout'] = 'cart';
+        	return $vars;
+        }
+  
         
 
         

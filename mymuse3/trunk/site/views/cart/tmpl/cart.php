@@ -18,6 +18,10 @@ if(isset($this->checkout_header)){
 	echo $this->checkout_header;
 }
 
+if(isset($this->download_page)){
+	echo $this->download_page;
+}
+
 if(isset($this->shipping_form)){
 	echo $this->shipping_form;
 }

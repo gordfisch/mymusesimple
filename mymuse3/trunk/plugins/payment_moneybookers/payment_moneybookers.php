@@ -79,10 +79,10 @@ class plgMymusePayment_Moneybookers extends JPlugin
 		<input type="hidden" name="pay_to_email"        value="'. $merchant_email.'" />
 		
 		<input type="hidden" name="recipient_description"        value="'. $store->title.'" />
-		<input type="hidden" name="return_url"          value="'. JURI::base().'index.php?option=com_mymuse&task=thankyou&pp=moneybooker&Itemid='.$Itemid.'" />
+		<input type="hidden" name="return_url"          value="'. JRoute::_(JURI::base().'index.php?option=com_mymuse&task=thankyou&view=cart&pp=moneybooker&Itemid='.$Itemid).'" />
 		<input type="hidden" name="return_url_text"     value="'. JText::_("MYMUSE_MONEYBOOKERS_RETURN_TO").' '. $store->title.'" />
 		<input type="hidden" name="return_url_target"   value="1" />
-		<input type="hidden" name="cancel_url"   		value="'. JURI::base().'index.php?option=com_mymuse&task=paycancel&Itemid='.$Itemid.'" />
+		<input type="hidden" name="cancel_url"   		value="'. JURI::base().'index.php?option=com_mymuse&task=paycancel&view=cart&Itemid='.$Itemid.'" />
 		<input type="hidden" name="cancel_url_target"   value="1" />
 		<input type="hidden" name="status_url"      	value="'. JURI::base().'index.php?option=com_mymuse&task=notify" />
 		<input type="hidden" name="transaction_id"  	value="'.$order->order_number.'" />

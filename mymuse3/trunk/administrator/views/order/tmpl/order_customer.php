@@ -58,11 +58,13 @@ foreach($order->items as $item){
 
 // for no_reg
 //JURI::base()
+$path = JURI::root(true);
 if($params->get('my_registration') == "no_reg"){
-	$link = "index.php?option=com_mymuse&view=store&task=accdownloads&id=".$order->order_number;
+	$link = JRoute::_("index.php?option=com_mymuse&view=store&task=accdownloads&id=".$order->order_number);
 }else{
-	$link = "index.php?option=com_mymuse&view=store&task=downloads&id=".$order->order_number;
+	$link = JRoute::_("index.php?option=com_mymuse&view=store&task=downloads&id=".$order->order_number);
 }
+$link = rtrim(JURI::root(),"/").preg_replace("#$path#",'',$link);
 if($params->get('my_default_itemid','')){
 	$link .= "&Itemid=".$params->get('my_default_itemid');
 }
@@ -70,7 +72,7 @@ $app    = JApplication::getInstance('site');
 $router = $app->getRouter();
 $uri = $router->build($link);
 $link = $uri->toString();
-$path = JURI::root(true); echo $path;
+$path = JURI::root(true); 
 $link = JURI::root().preg_replace("#$path/administrator/#",'',$link);
 
 
@@ -79,9 +81,9 @@ $download_header .= '
 		</td>
 	</tr>
 </table>
-<table class="contentpaneopen">
+<table class="mymuse_cart cart">
 	<tr>
-		<td><div class="componentheading">'.JText::_('MYMUSE_DOWNLOAD_LINK_PLEASE_CLICK').'</div></td>
+		<td><div class="mymuse_header">'.JText::_('MYMUSE_DOWNLOAD_LINK_PLEASE_CLICK').'</div></td>
 	</tr>
 	<tr>
 		<td><a href="'.$link.'">'.$link.'</a></td>

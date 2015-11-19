@@ -89,10 +89,15 @@ class plgMymusePayment_Payfast extends JPlugin
 		    	$total =  $total * $this->params->get('conversion_multiplier');
 		    }
 		    
-		// Create URLs
-		$returnUrl = JURI::Base() .'index.php?option=com_mymuse&task=thankyou&pp=payfast&Itemid='.$Itemid;
-		$cancelUrl = JURI::Base() .'index.php?option=com_mymuse&task=paycancel&Itemid='.$Itemid;
-		$notifyUrl = JURI::Base() .'index.php?option=com_mymuse&task=notify&order_number='.$order->order_number;
+		// Create URLs    
+		$path = JURI::root(true);
+		$returnUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&view=cart&pp=payfast&Itemid='.$Itemid);
+		$returnUrl = rtrim(JURI::root(),"/").preg_replace("#$path/#",'',$returnUrl);
+		
+		$cancelUrl = JRoute::_('index.php?option=com_mymuse&task=paycancel&view=cart&Itemid='.$Itemid);
+		$cancelUrl = rtrim(JURI::root(),"/").preg_replace("#$path/#",'',$cancelUrl);
+		
+		$notifyUrl = JURI::root() .'index.php?option=com_mymuse&task=notify&order_number='.$order->order_number;
 
 		// Create description
 		// Line item details are not available in the $params variable

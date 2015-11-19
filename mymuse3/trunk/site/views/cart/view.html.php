@@ -34,6 +34,36 @@ class myMuseViewCart extends JViewLegacy
 			exit;
 		}
 		
+		if($task == 'makemail'){
+			$result = Array
+			(
+					'plugin' => 'payment_paypal',
+					'myorder' => '1',
+					'message_sent' => '1',
+					'message_received' => '1',
+					'order_found' =>'1',
+					'order_verified' => '1',
+					'order_completed' =>'1',
+					'order_number' => '277b802ad04f940c78c5768a795ed275',
+					'order_id' => '1026',
+					'payer_email' => 'buyertest@gordfisch.net',
+					'payment_status' => 'Completed',
+					'txn_id' => '22616234W53140203',
+					'error' => '',
+					'user_email' => 'gord@arboreta.ca',
+					'userid' => '863',
+					'amountin' => '7.99',
+					'currency' => 'USD',
+					'rate' => '',
+					'fees' => '0.53',
+					'transaction_id' => '22616234W53140203',
+					'transaction_status' => 'Completed'
+			);
+
+			$this->makeMail($result);
+			exit;
+		}
+		
 		if($task == "coupon"){
 			parent::display("coupon");
 		}
@@ -49,7 +79,7 @@ class myMuseViewCart extends JViewLegacy
 		$user			= JFactory::getUser();
 		$document		= JFactory::getDocument();
 		$dispatcher		= JDispatcher::getInstance();
-
+		$currency 		= MyMuseHelper::getCurrency($MyMuseStore->_store->currency);
 
 		$document->setTitle( JText::_('MYMUSE_SHOPPING_CART') );
 		
@@ -59,13 +89,13 @@ class myMuseViewCart extends JViewLegacy
 		$this->assignRef('task', $task);
 		$this->assignRef('shopper', $shopper);
 		$this->assignRef('store', $MyMuseStore->_store);
+		$this->assignRef('currency', $currency);
 
 		$heading 			= '';
 		$message 			= '';
 		$footer 			= '';
 		$edit 				= true;
-		$currency 			= MyMuseHelper::getCurrency($MyMuseStore->_store->currency);
-
+		
 		// set the heading for the top of page
 		// find the order attached to the shopper object, or build it from session cart
 		switch ($task)
@@ -144,7 +174,7 @@ class myMuseViewCart extends JViewLegacy
 				
 			case "vieworder":
 				$st 			= $jinput->get('st', '');
-				$this->order 	= $order 		= $MyMuseShopper->order;
+				$this->order 	= $order 	= $MyMuseShopper->order;
 				$order->waited 	= 0;
 
 				if($st === "Completed" && $order->order_status != "C"){
@@ -169,6 +199,7 @@ class myMuseViewCart extends JViewLegacy
 				}else{
 					$message   = Jtext::_('MYMUSE_HERE_IS_YOUR_ORDER');
 				}
+			
 				$order->show_checkout = 0;
 				$order->show_summary  = 1;
 				break;
@@ -210,7 +241,7 @@ class myMuseViewCart extends JViewLegacy
 					$site_url = MyMuseHelper::getSiteUrl($track->id,'1');
 					$site_path = MyMuseHelper::getSitePath($track->id,'1');
 					$flash = '';
-					if($track->file_preview){
+					if(isset($track->file_preview) && $track->file_preview){
 						$track->path = $site_url.$track->file_preview;
 						$track->real_path = $site_path.$track->file_preview;
 			
@@ -255,6 +286,10 @@ class myMuseViewCart extends JViewLegacy
 		$this->assignRef('currency', $currency);
 		
 		//START CAPTURING THE DISPLAY PARTS
+		
+		//download page if necessary
+		$download_page = $jinput->get('download_page','', 'RAW');
+		$this->assignRef('download_page', $download_page);
 		
 		// show the heading
 		if($heading){
@@ -350,9 +385,9 @@ class myMuseViewCart extends JViewLegacy
 				$this->assignRef('button', $button);
 				ob_start();
 				parent::display("next_form");
-				$next_form = ob_get_contents();
+				$makepayment_form = ob_get_contents();
 				ob_end_clean();
-				$this->assignRef('makepayment_form', $makepaymen_form);
+				$this->assignRef('makepayment_form', $makepayment_form);
 			}
 			
 			else{
@@ -578,158 +613,8 @@ class myMuseViewCart extends JViewLegacy
         		$debug = "$date All is good \n";
         		MyMuseHelper::logMessage( $debug  );
         	}
-        	//make the email and send to customer
-        	$db	= JFactory::getDBO();
-        	$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
-        	$MyMuseShopper  =& MyMuse::getObject('shopper','models');
-			
-        	$query = "SELECT user_id FROM `#__mymuse_order` WHERE `order_number`='".$result['order_number']."'";
-        	$db->setQuery($query);
-        	$user_id = $db->loadResult();
-        	
-        	$order 			= $MyMuseCheckout->getOrder($result['order_id']);
-        	$shopper 		= $MyMuseShopper->getShopperByUser($user_id );
-        	$user 			= JFactory::getUser($user_id);
-        	$currency 		= $order->order_currency;
-        	$heading 		= Jtext::_('MYMUSE_THANK_YOU');
-        	$message 		= Jtext::_('MYMUSE_HERE_IS_YOUR_ORDER');
-            
-            if($order->notes && $params->get('my_registration') == "no_reg" ){
-                $accparams = new JRegistry( $order->notes);
-                /*
-                first_name=Gord
-                last_name=Fisch
-                email=gord@arboreta.ca
-                address1=5380 King Edward
-                address2=
-                city=Montreal
-                country=CA
-                region_name=QC
-                postal_code=H4V 2K1
-
-                */
-
-                $user->set('email',$accparams->get('email'));
-                $user->set('name',$accparams->get('first_name')." ".$accparams->get('last_name'));
-                $shopper->email         = $accparams->get('email');
-                $shopper->first_name    = $accparams->get('first_name');
-                $shopper->last_name     = $accparams->get('last_name');
-                $shopper->address1 		= $accparams->get('address1');
-                $shopper->address2 		= $accparams->get('address2');
-                $shopper->city 		= $accparams->get('city');
-                $shopper->postal_code 		= $accparams->get('postal_code');
-                $shopper->country       = $accparams->get('country');
-                $shopper->region_name         = $accparams->get('region_name');
-            }
-           
-            $user_email 	= $user->email;
-			$task = $jinput->get('task','');
-        	$this->assignRef('user'  , $user);
-        	$this->assignRef('params', $params);
-        	$this->assignRef('task', $task);
-        	$this->assignRef('shopper', $shopper);
-        	$this->assignRef('store', $MyMuseStore->_store);
-        	$this->assignRef('order', $order);
-        	$this->assignRef('currency', $currency);
-        	$this->assignRef('heading', $heading);
-        	$this->assignRef('message', $message);
-
-//".$result['payment_status']."
-        	$subject = $shopper->first_name." ".$shopper->last_name." ".Jtext::_('MYMUSE_ORDER')."  ".$store->title;
-        	$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
-        	$download_header = '';
-        	
-        	if($params->get('my_debug')){
-        		$debug = "$date Downloadable = ".$order->downloadable."\n";
-        		MyMuseHelper::logMessage( $debug  );
-        	}
-        	$contents  = '';
-        	
-        	//see if there is a message
-        	$my_email_msg 	= $params->get('my_email_msg');
-        	$dispatcher		= JDispatcher::getInstance();
-        	if($result['plugin']){
-        		JPluginHelper::importPlugin('mymuse',$result['plugin']);
-        		$results = $dispatcher->trigger('onAfterMyMusePayment', array() );
-        		$pp = $result['plugin'];
-        		foreach($results as $res){
-        			if(preg_match("/$pp/", $res)){
-        				$arr = explode(":",$res);
-        				$my_email_msg .= $arr[1];
-        			}
-        		}
-        	}
-        	
-        	if($params->get('my_debug')){
-        		$debug = "$date Extra Email message: $my_email_msg \n\n";
-        		MyMuseHelper::logMessage( $debug  );
-        	}
-
-        	include_once( JPATH_COMPONENT.DS.'templates'.DS.'mail_html_header.php' );
-        	
-
-        	$contents  = '';
-        	
-        	ob_start();
-        	parent::display('checkout_header');
-        	parent::display('order_summary');
-        	parent::display('shopper_info');
-        	parent::display('cart');
-        	$contents .= ob_get_contents();
-        	ob_end_clean();
-        	 
-        	//make sure the payment status is Completed
-        	if($result['payment_status'] == "Completed"){
-        		$message = $header . $order->downloadlink . $contents . $footer;
-        	}else{
-        		$message = $header . $contents . $footer;
-        	}
-        	
-        	if($params->get('my_debug')){
-        		//$debug = "$date Email message: $message \n\n";
-        		//MyMuseHelper::logMessage( $debug  );
-        	}
-        	// email client $user_email, and cc store owner $mailfrom
-        	// get mailer object
-        	$mailer = JFactory::getMailer();
-        	$mailer->isHTML(true);
-        	$mailer->Encoding = 'base64';
-        	// from
-        	$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
-        	$mailfrom = $params->get('contact_email');
-        	$sender = array(
-        			$mailfrom,
-        			$fromname );
-        	$mailer->setSender($sender);
-        	
-        	//recipient
-        	if($params->get('my_plugin_email')){
-        		//cc admin
-        		$recipient = array($user_email, $mailfrom);
-        	}else{
-        		//don't cc admin
-        		$recipient = array($user_email);
-        	}
-
-        	if($params->get('my_cc_webmaster')){
-        		$recipient = array($user_email, $mailfrom, $params->get('my_webmaster'));
-        	}
-        	$mailer->addRecipient($recipient);
-        	$mailer->setSubject($subject);
-        	$mailer->setBody($message);
-        	$rs = $mailer->Send();
-        	
-        	if ($rs instanceof Exception){
-        		$debug = "Error sending email to $user_email: " . $rs->getError();
-        		
-        	}elseif (empty($rs)){
-        		$debug = "Error sending email to $user_email: return from mailer was empty";
-        	} else {
-        		$debug = "Mail sent to $user_email";
-        	}
-        	if($params->get('my_debug')){
-        		MyMuseHelper::logMessage( $debug  );
-        	}
+ 
+        	$message = $this->makeMail($result);
         	//$debug .= print_r($mailer, true);
         	//if($params->get('my_debug')){
         	//	MyMuseHelper::logMessage( $debug  );
@@ -826,7 +711,7 @@ class myMuseViewCart extends JViewLegacy
   		}
   		//PAYUNITY SEND THE THANK YOU URL
   		if($result['plugin'] == "payment_payunity"){
-  			echo JURI::base()."index.php?option=com_mymuse&task=thankyou&orderid=".$order->id;
+  			echo JURI::base().JRoute::_("index.php?option=com_mymuse&task=thankyou&orderid=".$order->id);
   			exit;
   		}
   		
@@ -836,7 +721,174 @@ class myMuseViewCart extends JViewLegacy
         }
 
 		exit;
-			
-		
 	}
+	
+	function makeMail($result)
+	{
+		
+		$MyMuseStore	=& MyMuse::getObject('store','models');
+        $store = $MyMuseStore->_store;
+        $store_params = new JRegistry;
+        $store_params->loadString($store->params);
+        $date = date('Y-m-d h:i:s');
+     	
+     	$params = MyMuseHelper::getParams();
+		$jinput = JFactory::getApplication()->input;
+		//make the email and send to customer
+		$db	= JFactory::getDBO();
+		$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
+		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
+			
+		$query = "SELECT user_id FROM `#__mymuse_order` WHERE `order_number`='".$result['order_number']."'";
+		$db->setQuery($query);
+		$user_id = $db->loadResult();
+		 
+		$order 			= $MyMuseCheckout->getOrder($result['order_id']);
+		$shopper 		= $MyMuseShopper->getShopperByUser($user_id );
+		$user 			= JFactory::getUser($user_id);
+		$currency 		= $order->order_currency;
+		$heading 		= Jtext::_('MYMUSE_THANK_YOU');
+		$message 		= Jtext::_('MYMUSE_HERE_IS_YOUR_ORDER');
+		
+		if($order->notes && $params->get('my_registration') == "no_reg" ){
+			$accparams = new JRegistry( $order->notes);
+			/*
+			 first_name=Gord
+			 last_name=Fisch
+			 email=gord@arboreta.ca
+			 address1=5380 King Edward
+			 address2=
+			 city=Montreal
+			 country=CA
+			 region_name=QC
+			 postal_code=H4V 2K1
+		
+			*/
+		
+			$user->set('email',$accparams->get('email'));
+			$user->set('name',$accparams->get('first_name')." ".$accparams->get('last_name'));
+			$shopper->email         = $accparams->get('email');
+			$shopper->first_name    = $accparams->get('first_name');
+			$shopper->last_name     = $accparams->get('last_name');
+			$shopper->address1 		= $accparams->get('address1');
+			$shopper->address2 		= $accparams->get('address2');
+			$shopper->city 		= $accparams->get('city');
+			$shopper->postal_code 		= $accparams->get('postal_code');
+			$shopper->country       = $accparams->get('country');
+			$shopper->region_name         = $accparams->get('region_name');
+		}
+		 
+		$user_email 	= $user->email;
+		$task = $jinput->get('task','');
+		$this->assignRef('user'  , $user);
+		$this->assignRef('params', $params);
+		$this->assignRef('task', $task);
+		$this->assignRef('shopper', $shopper);
+		$this->assignRef('store', $MyMuseStore->_store);
+		$this->assignRef('order', $order);
+		$this->assignRef('currency', $currency);
+		$this->assignRef('heading', $heading);
+		$this->assignRef('message', $message);
+		
+		$subject = $shopper->first_name." ".$shopper->last_name." ".Jtext::_('MYMUSE_ORDER')."  ".$store->title;
+		$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
+		$download_header = '';
+		 
+		if($params->get('my_debug')){
+			$debug = "$date Downloadable = ".$order->downloadable."\n";
+			MyMuseHelper::logMessage( $debug  );
+		}
+		$contents  = '';
+		 
+		//see if there is a message
+		$my_email_msg 	= $params->get('my_email_msg');
+		$dispatcher		= JDispatcher::getInstance();
+		if($result['plugin']){
+			JPluginHelper::importPlugin('mymuse',$result['plugin']);
+			$results = $dispatcher->trigger('onAfterMyMusePayment', array() );
+			$pp = $result['plugin'];
+			foreach($results as $res){
+				if(preg_match("/$pp/", $res)){
+					$arr = explode(":",$res);
+					$my_email_msg .= $arr[1];
+				}
+			}
+		}
+		 
+		if($params->get('my_debug')){
+			$debug = "$date Extra Email message: $my_email_msg \n\n";
+			MyMuseHelper::logMessage( $debug  );
+		}
+		
+		include_once( JPATH_COMPONENT.DS.'templates'.DS.'mail_html_header.php' );
+		 
+		
+		$contents  = '';
+		$do_not_display_children = 1;
+		$this->assignRef('do_not_display_children', $do_not_display_children);
+		ob_start();
+		parent::display('checkout_header');
+		parent::display('order_summary');
+		parent::display('shopper_info');
+		parent::display('cart');
+		$contents .= ob_get_contents();
+		ob_end_clean();
+		
+	//echo $contents; exit;
+		
+		
+		//make sure the payment status is Completed
+		if($result['payment_status'] == "Completed"){
+			$message = $header . $order->downloadlink . $contents . $footer;
+		}else{
+			$message = $header . $contents . $footer;
+		}
+		 
+		if($params->get('my_debug')){
+			$debug = "$date Email message: $message \n\n";
+			MyMuseHelper::logMessage( $debug  );
+		}
+		// email client $user_email, and cc store owner $mailfrom
+		// get mailer object
+		$mailer = JFactory::getMailer();
+		$mailer->isHTML(true);
+		$mailer->Encoding = 'base64';
+		// from
+		$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
+		$mailfrom = $params->get('contact_email');
+		$sender = array(
+				$mailfrom,
+				$fromname );
+		$mailer->setSender($sender);
+		 
+		//recipient
+		if($params->get('my_plugin_email')){
+			//cc admin
+			$recipient = array($user_email, $mailfrom);
+		}else{
+			//don't cc admin
+			$recipient = array($user_email);
+		}
+		
+		if($params->get('my_cc_webmaster')){
+			$recipient = array($user_email, $mailfrom, $params->get('my_webmaster'));
+		}
+		$mailer->addRecipient($recipient);
+		$mailer->setSubject($subject);
+		$mailer->setBody($message);
+		$rs = $mailer->Send();
+		 
+		if ($rs instanceof Exception){
+			$debug = "Error sending email to $user_email: " . $rs->getError();
+		
+		}elseif (empty($rs)){
+			$debug = "Error sending email to $user_email: return from mailer was empty";
+		} else {
+			$debug = "Mail sent to $user_email";
+		}
+		if($params->get('my_debug')){
+			MyMuseHelper::logMessage( $debug  );
+		}	
+	}
+
 }

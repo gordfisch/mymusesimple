@@ -520,15 +520,19 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 			
 			
 			sleep(5);
-		
+			$path = JURI::root(true);
 			if(!$isValid ){
-				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=paycancel&pp=paypalpaymentspro&orderid='.$orderid.'&Itemid='.$Itemid, false);
+				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=paycancel&view=cart&pp=paypalpaymentspro&orderid='.$orderid.'&Itemid='.$Itemid, false);
+				$thankyouUrl = rtrim(JURI::root(),"/").preg_replace("#$path#",'',$thankyouUrl);
 				$msg = "Payment Failed: ".$result ['error'];
 			}else{
-				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&pp=paypalpaymentspro&orderid='.$orderid.'&Itemid='.$Itemid, false);
+				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&view=cart&pp=paypalpaymentspro&orderid='.$orderid.'&Itemid='.$Itemid, false);
+				$thankyouUrl = rtrim(JURI::root(),"/").preg_replace("#$path#",'',$thankyouUrl);
 				$msg = "";
 			}
-			JFactory::getApplication()->redirect($thankyouUrl, $msg);
+			$path = JURI::root(true);
+			$link = JURI::root().preg_replace("#$path/#",'',$thankyouUrl);
+			JFactory::getApplication()->redirect($link, $msg);
 			return true;
 			exit ();
 		

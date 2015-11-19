@@ -28,6 +28,7 @@ class MymuseViewCategory extends JViewLegacy
 	protected $intro_items = array();
 	protected $link_items = array();
 	protected $columns = 1;
+	protected $cart;
 	
 
 	function display($tpl = null)
@@ -35,6 +36,8 @@ class MymuseViewCategory extends JViewLegacy
 		$app	= JFactory::getApplication();
 		$user	= JFactory::getUser();
 		$jinput = $app->input;
+		$MyMuseCart =& MyMuse::getObject('cart','helpers');
+		$this->cart =& $MyMuseCart->cart;
 		
 		// Get some data from the models
 		$state		= $this->get('State');

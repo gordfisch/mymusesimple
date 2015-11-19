@@ -465,19 +465,20 @@ class MyMuseController extends JControllerLegacy
 
 			}
 		}
-
+		
 		//save the order
 		if($this->MyMuseCart->cart['idx']){
 			$this->jinput->set('view', 'cart');
 			$this->jinput->set('layout', 'cart');
-			
+	
 			if($params->get('my_saveorder') != "after"){
 				// save the order
 				if(!$this->MyMuseShopper->order = $this->MyMuseCheckout->save( )){
 					$msg = $this->MyMuseCheckout->error;
-					$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&Itemid='.$Itemid), $msg );
+					$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid), $msg );
 					return false;
 				}
+				
 				$this->MyMuseCart->cart['orderid'] = $this->MyMuseShopper->order->id;
 				if($this->MyMuseShopper->order->order_total == 0.00){
 					$this->jinput->set('task', 'thankyou');
@@ -516,6 +517,23 @@ class MyMuseController extends JControllerLegacy
         	$this->setRedirect( JRoute::_('index.php?option=com_users&view='.$rpage.'&return='.$return), $msg );
             return false;
 
+		}  
+            
+		if(!$this->MyMuseCart->cart['orderid'] && $this->params->get('my_shop_test')){
+			if($params->get('my_saveorder') != "after"){
+				// save the order
+				if(!$this->MyMuseShopper->order = $this->MyMuseCheckout->save( )){
+					$msg = $this->MyMuseCheckout->error;
+					$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid), $msg );
+					return false;
+				}
+				$this->MyMuseShopper->order = $this->MyMuseCheckout->getOrder($this->MyMuseShopper->order->id);
+					
+				if($this->params->get('my_shop_test')){
+					$this->jinput->set('view', 'cart');
+					$this->jinput->set('layout', 'cart');
+				}
+			}
 		}elseif($this->MyMuseCart->cart['orderid']){
 			
 			$this->MyMuseShopper->order = $this->MyMuseCheckout->getOrder($this->MyMuseCart->cart['orderid']);
@@ -669,11 +687,14 @@ class MyMuseController extends JControllerLegacy
 			}
 		
 			if($this->MyMuseShopper->order->downloadable){
-				//print out download page
+				//save the download page
 				$this->jinput->set('task', 'downloads');
 				$this->jinput->set('id', $this->MyMuseShopper->order->order_number);
+				ob_start();
 				$this->downloads();
-				
+				$download_page = ob_get_contents();
+				ob_end_clean();
+				$this->jinput->set('download_page',$download_page);
 			}
 			
 			$this->jinput->set('task', 'vieworder');
@@ -742,12 +763,14 @@ class MyMuseController extends JControllerLegacy
 		
 		if($this->MyMuseShopper->order->downloadable
 				&& $this->MyMuseShopper->order->order_status == "C"){
-			//print out download page
-			$this->jinput->set('task', 'downloads');
-			$this->jinput->set('id', $this->MyMuseShopper->order->order_number);
-			$this->jinput->set('view', 'store');
-			$this->jinput->set('layout', 'store');
-			$this->display();
+			//save the download page
+				$this->jinput->set('task', 'downloads');
+				$this->jinput->set('id', $this->MyMuseShopper->order->order_number);
+				ob_start();
+				$this->downloads();
+				$download_page = ob_get_contents();
+				ob_end_clean();
+				$this->jinput->set('download_page',$download_page);
 		}		
 		$this->jinput->set('task', 'vieworder');
 		$this->jinput->set('view', 'cart');
@@ -845,8 +868,8 @@ class MyMuseController extends JControllerLegacy
 	{	
 
 		$this->jinput->set('task', 'downloads');
-		$this->jinput->set('view', 'store');
-		$this->jinput->set('layout', 'store');
+		$this->jinput->set('view', 'cart');
+		$this->jinput->set('layout', 'thankyou');
 		$this->display();
 		return true;
 	}
@@ -862,7 +885,7 @@ class MyMuseController extends JControllerLegacy
 		$params = MyMuseHelper::getParams();
 		$shopper =  $this->MyMuseShopper->getShopper();
 		if(!isset($shopper->perms)){
-			$url = JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart";
+			$url = JURI::root()."index.php?option=com_mymuse&view=cart&layout=cart";
 			$return = base64_encode($url);
 			$msg = JText::_("MYMUSE_PLEASE_LOGIN_OR_REGISTER");;
 			$rpage = strtolower($params->get('my_registration_redirect','login'));
@@ -871,7 +894,17 @@ class MyMuseController extends JControllerLegacy
 		}
 		$this->jinput->set('view', 'store');
 		$this->jinput->set('layout', 'store');
-		$this->display();
+		if(!$this->display()){
+			$id = $this->jinput->get('id',0);
+			$msg = $this->jinput->get('msg',0);
+			if($params->get('my_registration') == "no_reg"){
+				$current =  JRoute::_("index.php?option=com_mymuse&view=cart&task=accdownloads&id=".$id."&item_id=");
+			}else{
+				$current =  JRoute::_("index.php?option=com_mymuse&view=cart&task=downloads&id=".$id."&item_id=");
+			}
+			$this->setRedirect( $current, $msg );
+			return false;
+		}
 		return true;
 	}
 
@@ -889,7 +922,13 @@ class MyMuseController extends JControllerLegacy
 
 	}
 	
+	function makemail()
+	{
+		$this->jinput->set('view', 'cart');
+		$this->jinput->set('layout', 'cart');
+		$this->display();
 	
+	}
 	/**
 	 * rate
 	 * Store a vote on a product

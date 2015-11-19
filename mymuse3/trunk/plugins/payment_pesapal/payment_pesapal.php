@@ -101,11 +101,14 @@ class plgMymusePaymentPesapal extends JPlugin
 		$code = '';//leave blank
 
 		//redirect url, the page that will handle the response from pesapal.
-		$callback_url = JURI::base()."/index.php?option=com_mymuse&task=thankyou&pp=pesapal&Itemid=".$Itemid;
-		
+		$callback_url = JURI::base()."/index.php?option=com_mymuse&task=thankyou&view=cart&pp=pesapal&Itemid=".$Itemid;
+		$path = JURI::root(true);
+		$link = JRoute::_("index.php?option=com_mymuse&task=thankyou&view=cart&pp=pesapal&Itemid=".$Itemid);
+		$callback_url = JURI::root().preg_replace("#$path/#",'',$link);
+
 		$post_xml = "<?xml version=\"1.0\" encoding=\"utf-8\"?><PesapalDirectOrderInfo xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\" Amount=\"".$amount."\" Description=\"".$desc."\" Type=\"".$type."\" Reference=\"".$reference."\" FirstName=\"".$first_name."\" LastName=\"".$last_name."\" Email=\"".$email."\" PhoneNumber=\"".$phonenumber."\" xmlns=\"http://www.pesapal.com\" />";
 		$post_xml = htmlentities($post_xml);
-
+		
 		$consumer = new OAuthConsumer($consumer_key, $consumer_secret);
 
 		//post transaction to pesapal

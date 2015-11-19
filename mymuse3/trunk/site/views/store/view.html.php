@@ -108,11 +108,11 @@ class myMuseViewStore extends JViewLegacy
         			}
         		}
         	}
-        	$uri = JFactory::getURI();
+        	
         	if($params->get('my_registration') == "no_reg"){
-        		$current =  JRoute::_("index.php?option=com_mymuse&view=store&task=accdownloads&id=".$id."&item_id=");
+        		$current =  JRoute::_("index.php?option=com_mymuse&view=cart&task=accdownloads&id=".$id."&item_id=");
         	}else{
-				$current =  JRoute::_("index.php?option=com_mymuse&view=store&task=downloads&id=".$id."&item_id=");
+				$current =  JRoute::_("index.php?option=com_mymuse&view=cart&task=downloads&id=".$id."&item_id=");
         	}
 			
 			$this->assignRef( 'current', $current );
@@ -128,14 +128,13 @@ class myMuseViewStore extends JViewLegacy
         
         // trying to download a file!!
         if($task == "downloadfile"){
-        	
-        	// make sure we have a download key
+        	$jinput 	= JFactory::getApplication()->input;
         	$id = $jinput->get('id',0);
+
+        	// make sure we have a download key
         	if(!$id){
         		$message = JText::_('MYMUSE_NO_DOWNLOAD_KEY');
-        		$this->assignRef( 'message', $message );
-        		$tpl = "message";
-        		parent::display($tpl);
+        		$jinput->set('msg',$message);
         		return false;
         	}
         	
@@ -143,9 +142,7 @@ class myMuseViewStore extends JViewLegacy
         	$item_id = $jinput->get('item_id',0);
         	if(!$item_id){
         		$message = JText::_('MYMUSE_NO_ORDERITEM_ID');
-        		$this->assignRef( 'message', $message );
-        		$tpl = "message";
-        		parent::display($tpl);
+        		$jinput->set('msg',$message);
         		return false;
         	}
 
@@ -158,9 +155,7 @@ class myMuseViewStore extends JViewLegacy
 			//Make sure we have an order
         	if(!$row){
         		$message = JText::_('MYMUSE_NO_MATCHING_ORDER ');
-        		$this->assignRef( 'message', $message );
-        		$tpl = "message";
-        		parent::display($tpl);
+        		$jinput->set('msg',$message);
         		return false;
         	}
 	
@@ -175,10 +170,7 @@ class myMuseViewStore extends JViewLegacy
 
         	if($row->user_id != $MyMuseShopper->_shopper->user_id){
         		$message = JText::_('MYMUSE_USER_ORDER_OWNER_MISMATCH');
-        		//$row->user_id.' : '.$MyMuseShopper->_shopper->user_id;
-        		$this->assignRef( 'message', $message );
-        		$tpl = "message";
-        		parent::display($tpl);
+        		$jinput->set('msg',$message);
         		return false;
         	}
         	
@@ -208,10 +200,7 @@ class myMuseViewStore extends JViewLegacy
         	if(! $row->order_status == $this->params->get('my_download_enable_status'))
         	{
         		$message = JText::_('MYMUSE_USER_ORDER_NOT_CONFIRMED');
-        		//$row->user_id.' : '.$MyMuseShopper->_shopper->user_id;
-        		$this->assignRef( 'message', $message );
-        		$tpl = "message";
-        		parent::display($tpl);
+        		$jinput->set('msg',$message);
         		return false;
         	}
         	
@@ -229,9 +218,7 @@ class myMuseViewStore extends JViewLegacy
         	// check number of downloads
         	if($params->get('my_download_max') && intval($order_item->downloads) >= $params->get('my_download_max')){
         		$message = JText::_('MYMUSE_MAX_NUMBER_OF_DOWNLOADS_REACHED');
-        		$this->assignRef( 'message', $message );
-        		$tpl = "message";
-        		parent::display($tpl);
+        		$jinput->set('msg',$message);
         		return false;
         	}
         			
@@ -240,9 +227,7 @@ class myMuseViewStore extends JViewLegacy
         			&& $order_item->end_date <= time() 
         			&& $prarams->get('my_download_expire') != "-"){
         		$message = JText::_('MYMUSE_DOWNLOAD_EXPIRED');
-        		$this->assignRef( 'message', $message );
-        		$tpl = "message";
-        		parent::display($tpl);
+        		$jinput->set('msg',$message);
         		return false;
         	}
 
@@ -299,9 +284,7 @@ class myMuseViewStore extends JViewLegacy
         			if($params->get('my_debug')){
         				$message .= $product->file_name;
         			}
-        			$this->assignRef( 'message', $message );
-        			$tpl = "message";
-        			parent::display($tpl);
+        			$jinput->set('msg',$message);
         			return false;
 
         		}else{
@@ -326,9 +309,7 @@ class myMuseViewStore extends JViewLegacy
         			if($params->get('my_debug')){
         				$message .= $filename;
         			}
-        			$this->assignRef( 'message', $message );
-        			$tpl = "message";
-        			parent::display($tpl);
+        			$jinput->set('msg',$message);
         			return false;
         		}
 				
@@ -357,20 +338,17 @@ class myMuseViewStore extends JViewLegacy
         			if($params->get('my_debug')){
         				$message .= ": ".$full_filename1;
         			}
-        			$this->assignRef( 'message', $message );
-        			$tpl = "message";
-        			parent::display($tpl);
+        			$jinput->set('msg',$message);
         			return false;
         		}
         		
-        		if(!$object->set_byfile($full_filename,$filename)){ //Download from a file
+        		if(!$object->set_byfile($full_filename,$filename)){ 
+        			//Download from a file
         			$message = JText::_('MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_FILE')." ".$full_filename;
         			if($params->get('my_debug')){
         				$message .= $name;
         			}
-        			$this->assignRef( 'message', $message );
-        			$tpl = "message";
-        			parent::display($tpl);
+        			$jinput->set('msg',$message);
         			return false;
         		}else{
         			$object->use_resume = true; //Enable Resume Mode

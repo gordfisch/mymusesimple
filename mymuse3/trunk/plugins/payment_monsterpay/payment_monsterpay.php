@@ -512,7 +512,10 @@ class plgMymusePayment_Monsterpay extends JPlugin
 			$debug .= "-------END-------\n";
         	MyMuseHelper::logMessage( $debug  );
   		}
-  		$result['redirect'] = JURI::base()."index.php&option=com_mymuse&task=thankyou";
+  		$path = JURI::root(true);
+  		$link = JRoute::_('index.php&option=com_mymuse&task=thankyou&view=cart');
+  		$link = JURI::root().preg_replace("#$path/#",'',$link);
+  		$result['redirect'] = $link;
         return $result;
 
 	}

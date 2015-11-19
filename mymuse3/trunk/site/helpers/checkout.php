@@ -48,6 +48,7 @@ class MyMuseCheckout
 	 */
 
 	function save( ) {
+
 		$app = JFactory::getApplication();
 		$jinput = $app->input;
 		$params = MyMuseHelper::getParams();
@@ -886,6 +887,7 @@ class MyMuseCheckout
 			$order->order_total = 0.00;
 		}
 		$order->order_currency = MyMuseHelper::getCurrency($MyMuseStore->_store->currency);
+		
 		if($params->get("my_show_sku",0) >0){
 			$order->colspan=4;
 		}else{
