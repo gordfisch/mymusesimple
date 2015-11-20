@@ -690,6 +690,7 @@ class MyMuseController extends JControllerLegacy
 				//save the download page
 				$this->jinput->set('task', 'downloads');
 				$this->jinput->set('id', $this->MyMuseShopper->order->order_number);
+				echo "here"; exit;
 				ob_start();
 				$this->downloads();
 				$download_page = ob_get_contents();

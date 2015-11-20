@@ -301,6 +301,16 @@
                 <option value="0">MYMUSE_ARIST_PRODUCT</option>
 				<option value="1">MYMUSE_BY_FORMAT</option>
             </field>
+            <field
+                name="my_use_zip"
+                type="radio"
+                label="MYMUSE_USE_ZIP_LABEL"
+                description="MYMUSE_USE_ZIP_DESC"
+                class="btn-group"
+                default="0">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>>
+        	</field>
            <field
                 name="my_preview_dir"
                 type="text"

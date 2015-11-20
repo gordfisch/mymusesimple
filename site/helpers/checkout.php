@@ -107,7 +107,7 @@ class MyMuseCheckout
 			$cart[$i]['product']->price = MyMuseModelProduct::getPrice($cart[$i]["product"]);
 			// SEE IF IT IS AN ALL_FILES, ADD ALL FILES TO CART
 
-			if($cart[$i]['product']->product_allfiles){
+			if($cart[$i]['product']->product_allfiles && !$params->get('my_use_zip')){
 				$query = "SELECT id from #__mymuse_product WHERE parentid='".$cart[$i]['product']->parentid."'
 				AND product_downloadable='1' AND product_allfiles !='1' ORDER BY ordering ";
 				$this->_db->setQuery($query);
@@ -283,7 +283,7 @@ class MyMuseCheckout
 			$order->items[$i]->product_name = $cart[$i]['product']->title;
 			$order->items[$i]->created = $date->toSql();
 			$order->items[$i]->modified = $date->toSql();
-
+print_pre($cart); exit;
 			if( $params->get('my_downloads_enable') == "1" ) {
 				$order->items[$i]->file_name = stripslashes($cart[$i]['product']->file_name);
 				if($params->get('my_download_expire') == "-"){
@@ -293,6 +293,7 @@ class MyMuseCheckout
 				}
 				$order->items[$i]->end_date = $enddate;
 				$order->items[$i]->downloads =0;
+				echo "file name ".$cart[$i]['product']->file_name;
 				if($cart[$i]['product']->file_name != ''){
 					$downloadable++;
 				}

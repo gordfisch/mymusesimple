@@ -21,7 +21,7 @@ if($params->get('my_default_itemid','')){
 	$link .= "&Itemid=".$params->get('my_default_itemid');
 }
 
-
+//for nexgen
 if($params->get('my_registration') == "no_reg"){
 	$link = JURI::root()."store/accdownloads?id=".$order->order_number;
 }else{

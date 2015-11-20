@@ -96,7 +96,7 @@ class plgMymusePayment_Virtualmerchant extends JPlugin
 		$db		=& JFactory::getDBO();
 		$path = JURI::root(true);
 		$link = JRoute::_('index.php?option=com_mymuse&task=thankyou&view=cart&pp=virtualmerchant&Itemid='.$Itemid);
-		$link = JURI::root().preg_replace("#$path/#",'',$link);
+		$link = rtrim(JURI::root(),"/").preg_replace("#$path#",'',$link);
 		
 		
 		//Virtualmerchant Account Email

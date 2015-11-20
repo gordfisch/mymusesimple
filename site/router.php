@@ -141,6 +141,7 @@ function MymuseBuildRoute(&$query)
     	return $segments;
     }
     
+    //downloadfile
 
 	// are we dealing with an product or category that is attached to a menu item?
 	if (($menuItem instanceof stdClass) && $menuItem->query['view'] == $query['view'] && isset($query['id']) 
@@ -402,7 +403,7 @@ function MymuseParseRoute($segments)
         	$vars['layout'] = 'cart';
         	return $vars;
         }
-  
+  //downloadfile
         
 
         
