@@ -290,7 +290,7 @@ class myMuseViewCart extends JViewLegacy
 		//download page if necessary
 		$download_page = $jinput->get('download_page','', 'RAW');
 		$this->assignRef('download_page', $download_page);
-		
+
 		// show the heading
 		if($heading){
 			$this->assignRef('heading', $heading);
