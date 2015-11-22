@@ -47,10 +47,13 @@ if($rtl){
 
 //$Doc->addScript( 'components/com_mymuse/assets/javascript/mymuse.js' );
 
+
+
 JPluginHelper::importPlugin('mymuse');
 
 // return URL
 $jinput 	= JFactory::getApplication()->input;
+//print_pre($jinput); exit;
 $return 	= $jinput->get('return','');
 if(!$return){
 	$return = MyMuseHelper::returnURL();

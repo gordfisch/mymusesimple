@@ -76,7 +76,6 @@ class myMuseViewStore extends JViewLegacy
         	$MyMuseShopper 	=& MyMuse::getObject('shopper','models');
 			$shopper = $MyMuseShopper->getShopper();
         	if($row->user_id != $MyMuseShopper->_shopper->user_id){
-        		//echo $MyMuseShopper->_shopper->user_id." + "; echo $row->user_id; exit;
         		$message = JText::_('MYMUSE_USER_ORDER_OWNER_MISMATCH');
         		if($params->get('my_debug')){
         				$message .= $row->user_id.' : '.$MyMuseShopper->_shopper->user_id;
@@ -282,10 +281,10 @@ class myMuseViewStore extends JViewLegacy
         		 exit;
         		 
         	}
-    	
+
         	// is it an allfiles and zip is on?
         	if($product->product_allfiles && $params->get('my_use_zip',0)){
-        		
+        
         		$query = "SELECT id,file_name, parentid from #__mymuse_product WHERE parentid='".$product->parentid."'
 				AND product_downloadable='1' AND product_allfiles !='1' ORDER BY ordering ";
 
@@ -312,14 +311,32 @@ class myMuseViewStore extends JViewLegacy
     				}
     				
     			}
-    		
+    	
         		$zip	=& MyMuse::getObject('createzip','helpers');
         		$overwrite = false;
         		$destination = $path.$filename.".zip";
         		//print_pre($files);
         		$zip->create_zip($files,$destination,$overwrite);
+        		sleep(3);
+        		//$zip->forceDownload($destination);
         		//echo "check $destination"; exit;
-        		$zip->forceDownload($destination);
+       
+        		if(!$object->set_byfile($destination,$filename.".zip")){
+        			//Download from a file
+        			$message = JText::_('MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_FILE')." ".$destination." ".$filename;
+        			if($params->get('my_debug')){
+        				$message .= $name;
+        			}
+        			$jinput->set('msg',$message);
+        			return false;
+        		}else{
+        			$object->use_resume = true; //Enable Resume Mode
+        			$object->download(); //Download File
+        		}
+        		
+        		$this->_logDownload($user, $product, $order_item);
+        		
+        		exit;
         		
         	}
         
@@ -390,9 +407,9 @@ class myMuseViewStore extends JViewLegacy
         		
         		if(!$object->set_byfile($full_filename,$filename)){ 
         			//Download from a file
-        			$message = JText::_('MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_FILE')." ".$full_filename;
+        			$message = JText::_('MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_FILE')." ".$filename;
         			if($params->get('my_debug')){
-        				$message .= $name;
+        				$message .= $full_filename;
         			}
         			$jinput->set('msg',$message);
         			return false;
