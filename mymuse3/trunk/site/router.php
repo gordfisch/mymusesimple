@@ -46,7 +46,7 @@ function MymuseBuildRoute(&$query)
 		// we need to have a view in the query or it is an invalid URL
 		return $segments;
 	}
-//shipping|addtocart|updatecart|cartdelete|showcart|checkout
+
 	
     if(isset($query['task']) && $query['task'] == "checkout"){
     	unset($query['task']);
@@ -140,8 +140,14 @@ function MymuseBuildRoute(&$query)
     	$segments[] = "paycancel";
     	return $segments;
     }
+    if(isset($query['task']) && $query['task'] == "downloadfile"){
     
-    //downloadfile
+    	unset($query['task']);
+    	unset($query['view']);
+    	$segments[] = "downloadfile";
+    	return $segments;
+    }
+    
 
 	// are we dealing with an product or category that is attached to a menu item?
 	if (($menuItem instanceof stdClass) && $menuItem->query['view'] == $query['view'] && isset($query['id']) 
@@ -401,6 +407,12 @@ function MymuseParseRoute($segments)
         	$vars['view'] = 'cart';
         	$vars['task'] = 'paycancel';
         	$vars['layout'] = 'cart';
+        	return $vars;
+        }
+        if($segments[0] == "downloadfile"){
+        	$vars['option'] = 'com_mymuse';
+        	$vars['view'] = 'store';
+        	$vars['task'] = 'downloadfile';
         	return $vars;
         }
   //downloadfile

@@ -20,7 +20,7 @@ $id = $this->id;
 function mydownload(url,item_id){
 	var current = '<?php echo $this->current; ?>'+item_id;
 	setTimeout("location.href='"+current+"'",3000);
-	window.location.href=url;
+	window.open(url, "_download");
 }
 </script>
 <h1 class="cart-header"><?php echo JText::_('MYMUSE_DOWNLOAD_PAGE') ?></h1>
@@ -72,7 +72,7 @@ function mydownload(url,item_id){
 				$my_download_max = $params->get('my_download_max')? $params->get('my_download_max') : ($item->downloads+1)*2;
 
 				if($item->downloads < $my_download_max && $end_date > time()){
-						$url = 'index.php?option=com_mymuse&view=store&task=downloadfile&id='.$id.'&item_id='.$item->id;
+						$url = JRoute::_('index.php?option=com_mymuse&view=store&task=downloadfile&id='.$id.'&item_id='.$item->id);
 					
 				?><a href="javascript:void(0);" onclick="mydownload('<?php echo $url; ?>','<?php echo $item->id; ?>');">
 				<?php } ?>
@@ -85,7 +85,7 @@ function mydownload(url,item_id){
 				<?php 
 				if($item->downloads < $my_download_max && $end_date > time()){ ?></a><?php } ?></td>
 				
-				<td class="mydownload carts"><?php echo $item->downloads; ?></td>
+				<td class="mydownload cart"><?php echo $item->downloads; ?></td>
 				<td class="myfilesize cart"><?php echo MyMuseHelper::ByteSize($item->file_size); ?></td>
 				<td class="myexpiry cart"><?php if($item->end_date < time()){ ?><span style="color : #c30;">*</span> <?php } ?>
 				<?php 
