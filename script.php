@@ -209,7 +209,7 @@ class com_mymuseInstallerScript
 			$query->set($db->quoteName('params') . ' = ' . $db->quote($defaults));
 			$query->where($db->quoteName('name') . ' = ' . $db->quote('mymuse')); // com_XXX is your component
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 		
 		//update store table
@@ -370,7 +370,7 @@ class com_mymuseInstallerScript
 		if(!$col = $db->loadObject()){
 			$query = "ALTER TABLE `#__mymuse_country` ADD `ordering` int(11) NOT NULL AFTER `country_2_code`  ";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 		
 		$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'plugin'";
@@ -384,7 +384,7 @@ class com_mymuseInstallerScript
 				$query = "ALTER TABLE `#__mymuse_country` ADD `plugin` TINYTEXT NOT NULL AFTER `id`  ";
 			}
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 			
 			$paypal_countries = '
 			"Australia",
@@ -420,7 +420,7 @@ class com_mymuseInstallerScript
 			
 			$query = "UPDATE #__mymuse_country set plugin='paypal' WHERE country_name IN ($paypal_countries)";
 			$db->setQuery($query);
-			$db->query();	
+			$db->execute();	
 				
 		}
 		
@@ -430,7 +430,7 @@ class com_mymuseInstallerScript
 		if(!$col = $db->loadObject()){
 			$query = "ALTER TABLE `#__mymuse_country` ADD `bloc` TINYTEXT NOT NULL AFTER `id`  ";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 			$eu_countries = '
 				"AUT",
 "BEL",
@@ -462,7 +462,7 @@ class com_mymuseInstallerScript
 "GBR"';
 			$query = "UPDATE #__mymuse_country set bloc='EU' WHERE country_3_code IN ($eu_countries)";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 			}
 			
 			// add table for product recommendations
@@ -471,7 +471,7 @@ class com_mymuseInstallerScript
   		`recommend_id` int(11) NOT NULL DEFAULT '0'
 		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
 		$db->setQuery($query);
-		$db->query();
+		$db->execute();
 		
 		//see if mymuse downloads table exists
 		$query = "SHOW TABLES LIKE '#__mymuse_downloads'";
@@ -491,7 +491,7 @@ class com_mymuseInstallerScript
   KEY `idx_product_filename` (`product_filename`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Download records';";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 			
 		}
 		
@@ -501,7 +501,7 @@ class com_mymuseInstallerScript
 		if(!$col = $db->loadObject()){
 			$query = "ALTER TABLE `#__mymuse_downloads` ADD `order_id` INT( 11 ) NOT NULL AFTER `user_email`";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 		
 		
@@ -511,7 +511,7 @@ class com_mymuseInstallerScript
 		if(!$col = $db->loadObject()){
 			$query = "ALTER TABLE `#__mymuse_order` ADD `shopper_group_discount` decimal(10,2) NOT NULL DEFAULT '0.00' AFTER `discount`";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 		
 		//see if notes field needs updating
@@ -522,16 +522,16 @@ class com_mymuseInstallerScript
 		
 			$query = "ALTER TABLE `#__mymuse_order` CHANGE `notes` `notes` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 		
-		//see if mymuse_product table needs updating
+		//Nov 2015 3.4.0 see if mymuse_product table needs updating
 		$query = "SHOW COLUMNS FROM #__mymuse_product LIKE 'artistid'";
 		$db->setQuery($query);
 		if(!$col = $db->loadObject()){
 			$query = "ALTER TABLE `#__mymuse_product` ADD `artistid` INT( 11 ) NOT NULL AFTER `catid`";
 			$db->setQuery($query);
-			$db->query();
+			$db->execute();
 		}
 		
 		
@@ -706,7 +706,7 @@ class com_mymuseInstallerScript
 				";
 
 				$db->setQuery($query);
-				if(!$db->query()){
+				if(!$db->execute()){
 					$alt = JText::_( "MYMUSE_FAILED" );
 					$astatus = 0;
 					$message =  JText::_("MYMUSE_PROBLEM_UPDATING_STORE").$db->_errorMsg;
@@ -764,7 +764,7 @@ class com_mymuseInstallerScript
 			element='search_mymuse'
 			";
 			$db->setQuery($query);
-			if(!$db->query()){
+			if(!$db->execute()){
 				$alt = JText::_( "MYMUSE_FAILED" );
 				$astatus = 0;
 				$message =  JText::_("MYMUSE_ENABLE_PLUGINS_FAILED");
