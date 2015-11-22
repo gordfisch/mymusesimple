@@ -70,7 +70,7 @@
 					<?php echo $this->form->getInput('product_physical'); ?>
 				</div>
 			</div>
-			
+	
 			<div class="control-group">
 				<div class="control-label">
 					<?php echo $this->form->getLabel('product_in_stock'); ?>
@@ -101,7 +101,9 @@
   
 			<div class="pull-right span5">
 			
-<!--
+<?php if( !$this->params->get('my_price_by_product')){ 
+	//price by track and physical
+	?>
 			<div class="control-group">
 				<div class="control-label">
 					<?php echo $this->form->getLabel('price'); ?>
@@ -110,22 +112,34 @@
 					<?php echo $this->form->getInput('price'); ?>
 				</div>
 			</div>
--->
-<?php $fieldSets = $this->form->getFieldsets('attribs'); ?>
 
-<?php foreach ($fieldSets as $name => $fieldSet) : ?>
 
-	<?php
+<?php 
+}else{ 
+	$fieldSets = $this->form->getFieldsets('attribs'); 
+	$physical = 0;
+	foreach($this->params->get('my_formats') as $variation=>$format){
+?>
+
+<?php foreach ($fieldSets as $name => $fieldSet) {
 
 	foreach ($this->form->getFieldset($name) as $field)
 	{
-		if ($field->name != 'jform[metadata][tags][]' && preg_match("/product/",$field->name))
+		if (preg_match("/physical/",$field->name) && !$physical)
 		{
-			
+			echo $field->renderField();
+			$physical++;
+		}
+		if (preg_match("/$format/",$field->name))
+		{
 			echo $field->renderField();
 		}
 	} ?>
-<?php endforeach; ?>
+	
+<?php } 
+	}
+
+ } ?>
 			<div class="control-group">
 				<div class="control-label">
 					<?php echo $this->form->getLabel('product_discount'); ?>

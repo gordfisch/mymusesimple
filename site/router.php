@@ -385,7 +385,7 @@ function MymuseParseRoute($segments)
         if($segments[0] == "accdownloads"){
         	$vars['option'] = 'com_mymuse';
         	$vars['view'] = 'store';
-        	$vars['task'] = 'accdownloads';
+        	$vars['task'] = 'downloads';
         
         	return $vars;
         }

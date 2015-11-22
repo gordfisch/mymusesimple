@@ -9,24 +9,7 @@
                 readonly="true" 
                 class="readonly"
                 description="JGLOBAL_FIELD_ID_DESC" /> 
-		<field
-                name="my_formats"
-                type="list"
-                label="MYMUSE_SELLING_FORMATS_LABEL"
-                description="MYMUSE_SELLING_FORMATS_DESC"
-                class="inputbox"
-                size="4"
-                default="mp3"
-                multiple="true">
-                <option value="mp3">MP3</option>
-                <option value="wav">WAV</option>
-                <option value="flac">FLAC</option>
-                <option value="ogg">OGG</option>
-                <option value="webma">WEBMA</option>
-                <option value="webmv">WEBMV</option>
-                <option value="ogv">OGV</option>
-                <option value="m4vmp">M4VMP</option>
-          </field> 
+
           
          <field
                 name="state"
@@ -248,6 +231,26 @@
 				<option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
 		  </field>
+		  <field
+                name="my_formats"
+                type="list"
+                label="MYMUSE_SELLING_FORMATS_LABEL"
+                description="MYMUSE_SELLING_FORMATS_DESC"
+                class="inputbox"
+                size="4"
+                default="mp3"
+                multiple="true">
+                <option value="mp3">MP3</option>
+                <option value="wav">WAV</option>
+                <option value="flac">FLAC</option>
+                <option value="ogg">OGG</option>
+                <option value="webma">WEBMA</option>
+                <option value="webmv">WEBMV</option>
+                <option value="ogv">OGV</option>
+                <option value="m4vmp">M4VMP</option>
+                <option value="pdf">PDF</option>
+                <option value="other">OTHER</option>
+          </field> 
 		  <field
                 name="my_download_max"
                 type="text"
@@ -600,7 +603,7 @@
 
 	</fieldset>
 	<fieldset name="store" label="MYMUSE_STORE_OPTIONS_LABEL">
-		
+			
 		<field 
 				name="my_saveorder" 
 				type="radio" 

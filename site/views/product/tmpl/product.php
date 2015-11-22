@@ -30,7 +30,19 @@ $items_select 	= $this->params->get('product_item_selectbox',0);
 $document 	= JFactory::getDocument();
 $lang = JFactory::getLanguage();
 $langtag = $lang->getTag();
-$product_price_physical = array('product_price' => $this->item->attribs->get('product_price_physical'));
+
+if($this->parms->get('my_price_by_product')){
+	$product_price_physical = array('product_price' => $this->item->attribs->get('product_price_physical'));
+
+	foreach($this->params->get('my_formats') as $format){
+		$str = 'product_price_'.$format;
+		$$str = array('product_price' => $this->item->attribs->get($str));
+		$str = 'product_price_'.$format.'_all';
+		$$str = array('product_price' => $this->item->attribs->get($str));
+	}
+}
+echo "price = $product_price_mp3"; exit;
+
 $product_price_mp3      = array('product_price' => $this->item->attribs->get('product_price_mp3'));
 $product_price_mp3_all  = array('product_price' => $this->item->attribs->get('product_price_mp3_all'));
 $product_price_wav      = array('product_price' => $this->item->attribs->get('product_price_wav'));

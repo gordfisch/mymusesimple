@@ -563,6 +563,7 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function thankyou()
 	{
+		echo "in thank you";
 		$errorName = $this->jinput->get('errorName', 0);
 		if($errorName){
 			$errorMsg = $this->jinput->get('errorMsg', '');
@@ -671,6 +672,10 @@ class MyMuseController extends JControllerLegacy
 		
 		$notifyCustomer = $this->jinput->get('notifyCustomer', 0);
 		if($notifyCustomer){
+			
+			
+			
+			//FIX FIX
 			$this->MyMuseCheckout->mailOrder($this->MyMuseShopper,$this->MyMuseStore);
 		}
 		
@@ -685,16 +690,16 @@ class MyMuseController extends JControllerLegacy
 					eval($result);
 				}
 			}
-		
+	print_pre($this->MyMuseShopper->order);	
 			if($this->MyMuseShopper->order->downloadable){
 				//save the download page
 				$this->jinput->set('task', 'downloads');
 				$this->jinput->set('id', $this->MyMuseShopper->order->order_number);
-				echo "here"; exit;
 				ob_start();
 				$this->downloads();
 				$download_page = ob_get_contents();
 				ob_end_clean();
+				echo "in thankyou";
 				$this->jinput->set('download_page',$download_page);
 			}
 			
@@ -867,10 +872,9 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function accdownloads()
 	{	
-
 		$this->jinput->set('task', 'downloads');
-		$this->jinput->set('view', 'cart');
-		$this->jinput->set('layout', 'thankyou');
+		$this->jinput->set('view', 'store');
+		$this->jinput->set('layout', 'store');
 		$this->display();
 		return true;
 	}

@@ -203,7 +203,7 @@ class myMuseViewStore extends JViewLegacy
         		$jinput->set('msg',$message);
         		return false;
         	}
-        	
+	
         	$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
 			$MyMuseCart 	=& MyMuse::getObject('cart','helper');
 			
@@ -214,7 +214,7 @@ class myMuseViewStore extends JViewLegacy
         			$order_item = $order->items[$i];
         		}
         	}
-
+        	
         	// check number of downloads
         	if($params->get('my_download_max') && intval($order_item->downloads) >= $params->get('my_download_max')){
         		$message = JText::_('MYMUSE_MAX_NUMBER_OF_DOWNLOADS_REACHED');
@@ -235,11 +235,12 @@ class myMuseViewStore extends JViewLegacy
 			$query = "SELECT * FROM #__mymuse_product WHERE id = '".$order_item->product_id."'";
 			$db->setQuery($query);
 			$product = $db->loadObject();
-			$jason = json_decode($product->file_name);
+			
 			$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
 			$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
 			$realname = stripslashes($order_item->file_name);
-		
+	
+			$jason = json_decode($product->file_name);
 			if(is_array($jason)){
 				foreach($jason as $j){
 					if($j->file_name == $realname){
@@ -252,10 +253,14 @@ class myMuseViewStore extends JViewLegacy
 			
 				}
 			}else{
-				$filename = $realname;
+				if($params->get('my_encode_filenames')){
+					$filename = $product->alias;
+				}else{
+					$filename = $realname;
+				}
 			}
 			$product->realname = $realname;
-			
+						
         	$object	=& MyMuse::getObject('httpdownload','helpers');
         	
         	//is it s3? redirect
@@ -277,6 +282,47 @@ class myMuseViewStore extends JViewLegacy
         		 exit;
         		 
         	}
+    	
+        	// is it an allfiles and zip is on?
+        	if($product->product_allfiles && $params->get('my_use_zip',0)){
+        		
+        		$query = "SELECT id,file_name, parentid from #__mymuse_product WHERE parentid='".$product->parentid."'
+				AND product_downloadable='1' AND product_allfiles !='1' ORDER BY ordering ";
+
+        		$db->setQuery($query);
+        		$prods = $db->loadObjectList();
+        		$parts = explode('-',$product->realname );
+        		$ext = array_pop($parts);
+        		$files = array();
+   
+    			foreach($prods as $prod){
+    				$path = MyMuseHelper::getDownloadPath($prod->id, $prod->parentid);
+    				if(1 == $params->get('my_download_dir_format')){
+    					$path.= $ext.DS;
+    				}
+    				$jason = json_decode($prod->file_name);
+    				if(is_array($jason)){
+    					foreach($jason as $j){
+    						if($ext == $j->file_ext){
+    							$files[] = $path.$j->file_name;
+    						}
+    					}
+    				}else{
+    						$files[] = $path.$j->file_name;
+    				}
+    				
+    			}
+    		
+        		$zip	=& MyMuse::getObject('createzip','helpers');
+        		$overwrite = false;
+        		$destination = $path.$filename.".zip";
+        		//print_pre($files);
+        		$zip->create_zip($files,$destination,$overwrite);
+        		//echo "check $destination"; exit;
+        		$zip->forceDownload($destination);
+        		
+        	}
+        
         	// download data from the database
         	if($params->get('my_use_database')){
         		if(!$object->set_bydata($product->file_contents)){

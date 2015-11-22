@@ -18,7 +18,7 @@ $params = $this->params;
 JFilterOutput::objectHTMLSafe( $item );
 JHTML::_('behavior.tooltip');
 ?>
-		<script language="javascript" type="text/javascript">
+		<script type="text/javascript">
 		<!--
 
 		function submitbutton(pressbutton)
@@ -65,10 +65,10 @@ JHTML::_('behavior.tooltip');
 				
 				<li><?php echo $this->form->getLabel('file_downloads'); ?>
 				<?php echo $this->form->getInput('file_downloads'); ?></li>
-				
+	<?php if(!$this->params->get('my_price_by_product')){ ?>			
 				<li><?php echo $this->form->getLabel('price'); ?>
 				<?php echo $this->form->getInput('price'); ?></li>
-				
+	<?php } ?>		
 				<li><?php echo $this->form->getLabel('product_discount'); ?>
 				<?php echo $this->form->getInput('product_discount'); ?></li>
 			</ul>

@@ -1,142 +1,52 @@
 <?php
-defined('_JEXEC') or die('Restricted access');
-/**
- * Class to dynamically create a zip file (archive) of file(s) and/or directory
- *
- * @author Rochak Chauhan  www.rochakchauhan.com
- * @package CreateZipFile
- * @see Distributed under "General Public License"
- * 
- * @version 1.0
- */
 
-class CreateZipFile {
+class MyMuseCreatezip {
 
-    public $compressedData = array();
-    public $centralDirectory = array(); // central directory
-    public $endOfCentralDirectory = "\x50\x4b\x05\x06\x00\x00\x00\x00"; //end of Central directory record
-    public $oldOffset = 0;
-
-    /**
-     * Function to create the directory where the file(s) will be unzipped
-     *
-     * @param string $directoryName
-     * @access public
-     * @return void
-     */    
-    public function addDirectory($directoryName) {
-        $directoryName = str_replace("\\", "/", $directoryName);
-        $feedArrayRow = "\x50\x4b\x03\x04";
-        $feedArrayRow .= "\x0a\x00";
-        $feedArrayRow .= "\x00\x00";
-        $feedArrayRow .= "\x00\x00";
-        $feedArrayRow .= "\x00\x00\x00\x00";
-        $feedArrayRow .= pack("V",0);
-        $feedArrayRow .= pack("V",0);
-        $feedArrayRow .= pack("V",0);
-        $feedArrayRow .= pack("v", strlen($directoryName) );
-        $feedArrayRow .= pack("v", 0 );
-        $feedArrayRow .= $directoryName;
-        $feedArrayRow .= pack("V",0);
-        $feedArrayRow .= pack("V",0);
-        $feedArrayRow .= pack("V",0);
-        $this->compressedData[] = $feedArrayRow;
-        $newOffset = strlen(implode("", $this->compressedData));
-        $addCentralRecord = "\x50\x4b\x01\x02";
-        $addCentralRecord .="\x00\x00";
-        $addCentralRecord .="\x0a\x00";
-        $addCentralRecord .="\x00\x00";
-        $addCentralRecord .="\x00\x00";
-        $addCentralRecord .="\x00\x00\x00\x00";
-        $addCentralRecord .= pack("V",0);
-        $addCentralRecord .= pack("V",0);
-        $addCentralRecord .= pack("V",0);
-        $addCentralRecord .= pack("v", strlen($directoryName) );
-        $addCentralRecord .= pack("v", 0 );
-        $addCentralRecord .= pack("v", 0 );
-        $addCentralRecord .= pack("v", 0 );
-        $addCentralRecord .= pack("v", 0 );
-        $addCentralRecord .= pack("V", 16 );
-        $addCentralRecord .= pack("V", $this->oldOffset );
-        $this->oldOffset = $newOffset;
-        $addCentralRecord .= $directoryName;
-        $this->centralDirectory[] = $addCentralRecord;
+	var $zip = "zippy";
+	
+    /* creates a compressed zip file */
+    function create_zip($files = array(),$destination = '',$overwrite = false) {
+        //if the zip file already exists and overwrite is false, return false
+        if(file_exists($destination) && !$overwrite) { return false; }
+        //vars
+        $valid_files = array();
+        //if files were passed in...
+        if(is_array($files)) {
+            //cycle through each file
+            foreach($files as $file) {
+                //make sure the file exists
+                if(file_exists($file)) {
+                    $valid_files[] = $file;
+                }
+            }
+        }
+        //if we have good files...
+        if(count($valid_files)) {
+        	//print_pre($valid_files);
+            //create the archive
+            $zip = new ZipArchive();
+            if($zip->open($destination,$overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== true) {
+                return false;
+            }
+            //add the files
+            foreach($valid_files as $file) {
+                $zip->addFile($file,$file);
+            }
+            //debug
+           // echo 'The zip archive contains ',$zip->numFiles,' files with a status of ',$zip->status;
+    
+            //close the zip -- done!
+            $zip->close();
+    
+            //check to make sure the file exists
+            return file_exists($destination);
+        }
+        else
+        {
+            return false;
+        }
     }
-
-    /**
-     * Function to add file(s) to the specified directory in the archive 
-     *
-     * @param string $directoryName
-     * @param string $data
-     * @return void
-     * @access public
-     */    
-    public function addFile($data, $directoryName)   {
-        $directoryName = str_replace("\\", "/", $directoryName);
-        $feedArrayRow = "\x50\x4b\x03\x04";
-        $feedArrayRow .= "\x14\x00";
-        $feedArrayRow .= "\x00\x00";
-        $feedArrayRow .= "\x08\x00";
-        $feedArrayRow .= "\x00\x00\x00\x00";
-        $uncompressedLength = strlen($data);
-        $compression = crc32($data);
-        $gzCompressedData = gzcompress($data);
-        $gzCompressedData = substr( substr($gzCompressedData, 0, strlen($gzCompressedData) - 4), 2);
-        $compressedLength = strlen($gzCompressedData);
-        $feedArrayRow .= pack("V",$compression);
-        $feedArrayRow .= pack("V",$compressedLength);
-        $feedArrayRow .= pack("V",$uncompressedLength);
-        $feedArrayRow .= pack("v", strlen($directoryName) );
-        $feedArrayRow .= pack("v", 0 );
-        $feedArrayRow .= $directoryName;
-        $feedArrayRow .= $gzCompressedData;
-        $feedArrayRow .= pack("V",$compression);
-        $feedArrayRow .= pack("V",$compressedLength);
-        $feedArrayRow .= pack("V",$uncompressedLength);
-        $this->compressedData[] = $feedArrayRow;
-        $newOffset = strlen(implode("", $this->compressedData));
-        $addCentralRecord = "\x50\x4b\x01\x02";
-        $addCentralRecord .="\x00\x00";
-        $addCentralRecord .="\x14\x00";
-        $addCentralRecord .="\x00\x00";
-        $addCentralRecord .="\x08\x00";
-        $addCentralRecord .="\x00\x00\x00\x00";
-        $addCentralRecord .= pack("V",$compression);
-        $addCentralRecord .= pack("V",$compressedLength);
-        $addCentralRecord .= pack("V",$uncompressedLength);
-        $addCentralRecord .= pack("v", strlen($directoryName) );
-        $addCentralRecord .= pack("v", 0 );
-        $addCentralRecord .= pack("v", 0 );
-        $addCentralRecord .= pack("v", 0 );
-        $addCentralRecord .= pack("v", 0 );
-        $addCentralRecord .= pack("V", 32 );
-        $addCentralRecord .= pack("V", $this->oldOffset );
-        $this->oldOffset = $newOffset;
-        $addCentralRecord .= $directoryName;
-        $this->centralDirectory[] = $addCentralRecord;
-    }
-
-    /**
-     * Function to return the zip file
-     *
-     * @return zipfile (archive)
-     * @access public
-     * @return void
-     */
-    public function getZippedfile() {
-        $data = implode("", $this->compressedData);
-        $controlDirectory = implode("", $this->centralDirectory);
-        return
-        $data.
-        $controlDirectory.
-        $this->endOfCentralDirectory.
-        pack("v", sizeof($this->centralDirectory)).
-        pack("v", sizeof($this->centralDirectory)).
-        pack("V", strlen($controlDirectory)).
-        pack("V", strlen($data)).
-        "\x00\x00";
-    }
-
+    
     /**
      *
      * Function to force the download of the archive as soon as it is created
@@ -149,14 +59,14 @@ class CreateZipFile {
         if(ini_get('zlib.output_compression')) {
             ini_set('zlib.output_compression', 'Off');
         }
-
+    
         // Security checks
         if( $archiveName == "" ) {
             echo "<html><title>Download </title><body><BR><B>ERROR:</B> The download file was NOT SPECIFIED.</body></html>";
             exit;
         }
-
-
+    
+    
         header("Pragma: public");
         header("Expires: 0");
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
@@ -166,52 +76,5 @@ class CreateZipFile {
         header("Content-Transfer-Encoding: binary");
         header("Content-Length: ".filesize($archiveName));
         readfile("$archiveName");
-    }
-
-    /**
-      * Function to parse a directory to return all its files and sub directories as array
-      *
-      * @param string $dir
-      * @access private
-      * @return array
-      */
-    private function parseDirectory($rootPath, $seperator="/"){
-        $fileArray=array();
-        $handle = opendir($rootPath);
-        while( ($file = @readdir($handle))!==false) {
-            if($file !='.' && $file !='..'){
-                if (is_dir($rootPath.$seperator.$file)){
-                    $array=$this->parseDirectory($rootPath.$seperator.$file);
-                    $fileArray=array_merge($array,$fileArray);
-                }
-                else {
-                    $fileArray[]=$rootPath.$seperator.$file;
-                }
-            }
-        }        
-        return $fileArray;
-    }
-
-    /**
-     * Function to Zip entire directory with all its files and subdirectories 
-     *
-     * @param string $dirName
-     * @access public
-     * @return void
-     */
-    public function zipDirectory($dirName, $outputDir) {
-        if (!is_dir($dirName)){
-            trigger_error("CreateZipFile FATAL ERROR: Could not locate the specified directory $dirName", E_USER_ERROR);
-        }
-        $tmp=$this->parseDirectory($dirName);
-        $count=count($tmp);
-        $this->addDirectory($outputDir);
-        for ($i=0;$i<$count;$i++){
-            $fileToZip=trim($tmp[$i]);
-            $newOutputDir=substr($fileToZip,0,(strrpos($fileToZip,'/')+1));
-            $outputDir=$outputDir.$newOutputDir;
-            $fileContents=file_get_contents($fileToZip);
-            $this->addFile($fileContents,$fileToZip);
-        }
     }
 }
