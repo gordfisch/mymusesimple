@@ -57,15 +57,14 @@ class plgMymusePayment_Offline extends JPlugin
 			return $string;
 		}
 		$string .= '
-		<form action="index.php?Itemid='.$Itemid.'" method="post" name="adminFormPayOffline">
+		<form action="'.JRoute::_('index.php?task=thankyou&view=cart').'" method="post" name="adminFormPayOffline">
 		<input type="hidden" name="option" value="com_mymuse">
-		<input type="hidden" name="task" value="thankyou">
 		<input type="hidden" name="notifyCustomer" value="1">
 		<input type="hidden" name="id" value="'.$order->id.'">
+		<input type="hidden" name="Itemid" value="'.$Itemid.'">	
 		<input type="hidden" name="pp" value="payoffline">
 		<div id="payoffline_form" class="pull-left">
-				<button class="button uk-button " 
-			type="submit" >'. JText::_('MYMUSE_I_WILL_PAY_OFFLINE').'</button>
+		<button class="button uk-button " type="submit" >'. JText::_('MYMUSE_I_WILL_PAY_OFFLINE').'</button>
 
 		</div>
 		</form>

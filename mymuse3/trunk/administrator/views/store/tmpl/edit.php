@@ -76,14 +76,6 @@ method="post" name="adminForm" id="store-form" class="form-validate">
                 	<?php echo $this->form->getInput('alias'); ?>
                 </div>
             </div>
-			<div class="control-group">
-				<div class="control-label">
-					<?php echo $this->form->getLabel('my_catid'); ?>
-				</div>
-                <div class="controls">
-                	<?php echo $this->form->getInput('my_catid'); ?>
-                </div>
-            </div>
             
             <div class="control-group">
             	<div class="control-label">

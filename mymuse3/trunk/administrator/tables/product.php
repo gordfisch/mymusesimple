@@ -408,16 +408,17 @@ class MymuseTableproduct extends JTable
 		}
 		
 		if(isset($post['product_allfiles']) && $post['product_allfiles'] && !$this->file_name){
-			$current_files[0] = array(
-							'file_name' => '',
-							'file_ext' => 'mp3',
+			
+			for($p = 0; $p < count($params->get('my_formats')); $p++){
+				$current_files[$p] = array(
+							'file_name' => JFilterOutput::stringURLSafe($post['product_sku']." ". $params->get('my_formats')),
+							'file_length' => '',
+							'file_ext' => $params->get('my_formats')[$p],
+							'file_alias'=> '',
 							'file_downloads'=> ''
 					);
-			$current_files[1] = array(
-					'file_name' => '',
-					'file_ext' => 'wav',
-					'file_downloads'=> ''
-			);
+
+			}
 			$this->file_name = json_encode($current_files);
 		}
 		

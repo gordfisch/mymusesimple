@@ -129,10 +129,13 @@ class MyMuseCheckout
 						$cart[$cart["idx"]]['product']->ext = pathinfo($cart[$cart["idx"]]['product']->file_name, PATHINFO_EXTENSION);
 					}
 					$cart[$cart["idx"]]['product']->price = array();
-					$cart[$cart["idx"]]['product']->price['product_price'] = 0.00;
+					$cart[$cart["idx"]]['product']->price['product_price'] = 0;
 					$cart["idx"]++;
 						
 				}
+			}elseif($cart[$i]['product']->product_allfiles && $params->get('my_use_zip')){
+				
+			
 			}
 		}
 
@@ -283,7 +286,7 @@ class MyMuseCheckout
 			$order->items[$i]->product_name = $cart[$i]['product']->title;
 			$order->items[$i]->created = $date->toSql();
 			$order->items[$i]->modified = $date->toSql();
-print_pre($cart); exit;
+
 			if( $params->get('my_downloads_enable') == "1" ) {
 				$order->items[$i]->file_name = stripslashes($cart[$i]['product']->file_name);
 				if($params->get('my_download_expire') == "-"){
@@ -293,7 +296,7 @@ print_pre($cart); exit;
 				}
 				$order->items[$i]->end_date = $enddate;
 				$order->items[$i]->downloads =0;
-				echo "file name ".$cart[$i]['product']->file_name;
+			//echo "file name ".$cart[$i]['product']->file_name;
 				if($cart[$i]['product']->file_name != ''){
 					$downloadable++;
 				}
@@ -854,7 +857,6 @@ print_pre($cart); exit;
 		}else{
 			$order->downloadlink = '';
 		}
-
 
 		//coupon
 		if($order->coupon_id){
