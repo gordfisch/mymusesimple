@@ -495,7 +495,7 @@ class com_mymuseInstallerScript
 			
 		}
 		
-		//see if mymuse_downloads table need updating
+		//see if mymuse_downloads table needs updating
 		$query = "SHOW COLUMNS FROM #__mymuse_downloads LIKE 'order_id'";
 		$db->setQuery($query);
 		if(!$col = $db->loadObject()){
@@ -505,7 +505,7 @@ class com_mymuseInstallerScript
 		}
 		
 		
-		//see if mymuse_orders table need updating
+		//see if mymuse_orders table needs updating
 		$query = "SHOW COLUMNS FROM #__mymuse_order LIKE 'shopper_group_discount'";
 		$db->setQuery($query);
 		if(!$col = $db->loadObject()){
@@ -524,6 +524,19 @@ class com_mymuseInstallerScript
 			$db->setQuery($query);
 			$db->query();
 		}
+		
+		//see if mymuse_product table needs updating
+		$query = "SHOW COLUMNS FROM #__mymuse_product LIKE 'artistid'";
+		$db->setQuery($query);
+		if(!$col = $db->loadObject()){
+			$query = "ALTER TABLE `#__mymuse_product` ADD `artistid` INT( 11 ) NOT NULL AFTER `catid`";
+			$db->setQuery($query);
+			$db->query();
+		}
+		
+		
+		
+		
 		
 				// DEFAULT DOWNLOAD DIRECTORY
 				$name = JText::_("MYMUSE_MAKE_DOWNLOAD_DIR");
