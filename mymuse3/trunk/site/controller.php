@@ -479,6 +479,12 @@ class MyMuseController extends JControllerLegacy
 					return false;
 				}
 				
+				if($this->MyMuseShopper->order->order_status == "C"){
+					$this->jinput->set('task', 'makemail');
+					$this->display();
+					$this->jinput->set('task', 'confirm');
+				}
+				
 				$this->MyMuseCart->cart['orderid'] = $this->MyMuseShopper->order->id;
 				if($this->MyMuseShopper->order->order_total == 0.00){
 					$this->jinput->set('task', 'thankyou');
@@ -668,15 +674,16 @@ class MyMuseController extends JControllerLegacy
 			return false;
 		}
 	
-		
 		$notifyCustomer = $this->jinput->get('notifyCustomer', 0);
 		if($notifyCustomer){
-			
-			
-			
-			//FIX FIX
-			$this->MyMuseCheckout->mailOrder($this->MyMuseShopper,$this->MyMuseStore);
+		
+			$this->jinput->set('task', 'makemail');
+			$this->jinput->set('view', 'cart');
+			$this->display();
+			$this->jinput->set('task', 'thankyou');
+		
 		}
+
 		
 		if($this->MyMuseShopper->order->order_status == "C"){
 			//already confirmed 

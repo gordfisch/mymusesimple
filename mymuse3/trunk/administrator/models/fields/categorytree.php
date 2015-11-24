@@ -49,8 +49,9 @@ class JFormFieldCategoryTree extends JFormFieldList{
 		$html = array();
 		$attr = '';
 		$selectedCats = array();
+		$jinput = JFactory::getApplication()->input;
 		//product id
-		$id = JRequest::getVar('id',0);
+		$id = $jinput->get('id',0);
 		
 		if($id){
 			$db = JFactory::getDBO();
@@ -209,7 +210,7 @@ class JFormFieldCategoryTree extends JFormFieldList{
 		}
 
 		$query->group('a.id, a.title, a.level, a.lft, a.rgt, a.extension, a.parent_id, a.published')
-			->order('a.lft ASC');
+			->order('a.lft ASC, a.title ASC');	//a.lft ASC
 
 		// Get the options.
 		$db->setQuery($query);

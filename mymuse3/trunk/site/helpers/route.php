@@ -34,6 +34,8 @@ class myMuseHelperRoute
 	public static function getProductRoute($id, $catid = 0, $language = 0)
 	{
 	
+
+		require_once( JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_mymuse'.DS.'helpers'.DS.'mymuse.php' );
 		
 		$db 	= JFactory::getDBO();
 		$params = MyMuseHelper::getParams();

@@ -35,33 +35,83 @@ class myMuseViewCart extends JViewLegacy
 		}
 		
 		if($task == 'makemail'){
+			$pp = $jinput->get('pp', '');
+			
+			$this->MyMuseShopper 	=& MyMuse::getObject('shopper','models');
+			$order = $this->MyMuseShopper->order;
+			
+			//echo "pp = $pp"; print_pre($order); exit;
+			//if we are using no_reg
+			if($params->get('my_registration') == "no_reg"){
+				$fields = MyMuseHelper::getNoRegFields();
+				$registry = new JRegistry;
+				$registry->loadString($order->notes);
+				foreach($fields as $field){
+					if($registry->get($field)){
+						$order->user->profile[$field] = $registry->get($field);
+						//echo $field." ".$registry->get($field)."<br />";
+					}else{
+						$order->user->profile[$field] = '';
+					}
+				}
+				if(isset($order->user->profile['first_name'])){
+					$order->user->name = $order->user->profile['first_name']." ".@$order->user->profile['last_name'];
+				}
+				
+			}else{
+				// get user details
+				$order->user = JFactory::getUser($order->user_id);
+				$profile_key = $params->get('my_profile_key', 'mymuse');
+				
+				// Load the profile data from the database.
+				$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
+						' WHERE user_id = '.(int) $order->user_id .
+						' AND profile_key LIKE \''.$profile_key.'.%\'' .
+						' ORDER BY ordering';
+				$db->setQuery($query);
+				$results = $db->loadRowList();
+					
+				// Check for a database error.
+				if ($db->getErrorNum()) {
+					$this->setError($db->getErrorMsg());
+					return false;
+				}
+				// Merge the profile data.
+				$order->user->profile = array();
+				foreach ($results as $v) {
+					$k = str_replace("$profile_key.", '', $v[0]);
+					$order->user->profile[$k] = trim(json_decode($v[1], true),'"');
+						
+				}
+			}
+		
 			$result = Array
 			(
-					'plugin' => 'payment_paypal',
+					'plugin' => $pp,
 					'myorder' => '1',
 					'message_sent' => '1',
 					'message_received' => '1',
 					'order_found' =>'1',
 					'order_verified' => '1',
 					'order_completed' =>'1',
-					'order_number' => '277b802ad04f940c78c5768a795ed275',
-					'order_id' => '1026',
-					'payer_email' => 'buyertest@gordfisch.net',
-					'payment_status' => 'Completed',
-					'txn_id' => '22616234W53140203',
+					'order_number' => $order->order_number,
+					'order_id' => $order->id,
+					'payer_email' => $order->user->profile['email'],
+					'payment_status' => $order->status_name,
+					'txn_id' => '',
 					'error' => '',
-					'user_email' => 'gord@arboreta.ca',
-					'userid' => '863',
-					'amountin' => '7.99',
-					'currency' => 'USD',
+					'user_email' => $order->user->profile['email'],
+					'userid' => $order->user_id,
+					'amountin' => $order->order_total,
+					'currency' => $order->order_currency['currency_code'],
 					'rate' => '',
-					'fees' => '0.53',
-					'transaction_id' => '22616234W53140203',
-					'transaction_status' => 'Completed'
+					'fees' => '',
+					'transaction_id' => '',
+					'transaction_status' => $order->status_name
 			);
 
 			$this->makeMail($result);
-			exit;
+			return true;
 		}
 		
 		if($task == "coupon"){
@@ -725,7 +775,7 @@ class myMuseViewCart extends JViewLegacy
 	
 	function makeMail($result)
 	{
-		
+
 		$MyMuseStore	=& MyMuse::getObject('store','models');
         $store = $MyMuseStore->_store;
         $store_params = new JRegistry;
@@ -820,7 +870,7 @@ class myMuseViewCart extends JViewLegacy
 			MyMuseHelper::logMessage( $debug  );
 		}
 		
-		include_once( JPATH_COMPONENT.DS.'templates'.DS.'mail_html_header.php' );
+		include_once( JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'templates'.DS.'mail_html_header.php' );
 		 
 		
 		$contents  = '';

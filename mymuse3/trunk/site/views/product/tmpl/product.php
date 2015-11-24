@@ -31,7 +31,7 @@ $document 	= JFactory::getDocument();
 $lang = JFactory::getLanguage();
 $langtag = $lang->getTag();
 
-if($this->parms->get('my_price_by_product')){
+if($this->params->get('my_price_by_product')){
 	$product_price_physical = array('product_price' => $this->item->attribs->get('product_price_physical'));
 
 	foreach($this->params->get('my_formats') as $format){
@@ -41,7 +41,7 @@ if($this->parms->get('my_price_by_product')){
 		$$str = array('product_price' => $this->item->attribs->get($str));
 	}
 }
-echo "price = $product_price_mp3"; exit;
+
 
 $product_price_mp3      = array('product_price' => $this->item->attribs->get('product_price_mp3'));
 $product_price_mp3_all  = array('product_price' => $this->item->attribs->get('product_price_mp3_all'));
@@ -257,12 +257,6 @@ if($this->cart['idx']){
 </div>
 <div class="clear"></div>
 
-<div class="controls">
-    <a href="store/nexgen"><button class="filter rls">NexGen Releases</button></a>
-    <a href="store/migration"><button class="filter rls">Migration Recordings</button></a>
-    <a href="store/affectionate-grooves"><button class="filter rls">Affectionate Grooves Releases</button></a>
-    <a href="store"><button class="filter rls">All Releases</button></a>
-</div>
 <?php  endif; ?>
 	
 <form method="post" action="<?php JRoute::_('index.php?lang='.$langtag) ?>" onsubmit="return hasProduct(this,<?php echo $count; ?>);" name="mymuseform">

@@ -662,7 +662,6 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 			}
 
 			// Compute the asset access permissions.
-			// Technically guest could edit an article, but lets not check that to improve performance a little.
 			if (!$guest) {
 				$asset	= 'com_content.article.'.$item->id;
 

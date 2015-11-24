@@ -27,7 +27,7 @@ function mydownload(url,item_id){
 		<table  class="mymuse_cart cart">
  
         <!-- Begin Order Summary -->
-        <tr class="mymuse_cart cart cart" >
+        <tr class="mymuse_cart cart" >
             <td colspan="2"  class="mymuse_cart_top"><b><?php echo JText::_('MYMUSE_ORDER_SUMMARY') ?></b></td>
         </tr>
         <tr>

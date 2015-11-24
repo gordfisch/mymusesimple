@@ -391,9 +391,6 @@ class MyMuseCheckout
 		// SEND EMAIL CONFIRMATION MESSAGES IF STATUS IS CONFIRMED
 		// or if payment offline is enabled
 		jimport( 'joomla.plugin.helper' );
-		if($order->order_status == "C"){
-			$this->mailOrder($MyMuseShopper,$MyMuseStore);
-		}
 		 
 		if(!$params->get('my_shop_test') && !$params->get('my_debug')){
 			$MyMuseCart->reset();
@@ -403,125 +400,6 @@ class MyMuseCheckout
 	}
 
 
-	function mailOrder(&$MyMuseShopper,&$MyMuseStore){
-
-		$app = JFactory::getApplication();
-		$jinput = $app->input;
-		$params = MyMuseHelper::getParams();
-
-		$shopper 	=& $MyMuseShopper->getShopper();
-		$user_email = $shopper->email;
-		$order 		= $MyMuseShopper->order;
-
-		$store 		= $MyMuseStore->_store;
-		$currency 	= MyMuseHelper::getCurrency($store->currency);
-		$order->colspan		= 3;
-		$order->colspan2 	= 1;
-		$link_message = '';
-		
-		//see if there is a message
-		$dispatcher		= JDispatcher::getInstance();
-		$pp = $jinput->get('pp', '');
-		$my_email_msg = $params->get('my_email_msg');
-		if($pp){
-			JPluginHelper::importPlugin('mymuse',$pp);
-			$results = $dispatcher->trigger('onAfterMyMusePayment',
-					array() );
-			
-			foreach($results as $res){
-				if(preg_match("/$pp/", $res)){
-					$arr = explode(":",$res);
-					array_shift($arr);
-					$my_email_msg .= implode(":",$arr);
-				}
-			}
-			 
-		}
-
-		ob_start();
-		include_once( JPATH_COMPONENT.DS.'templates'.DS.'thank_you.php' );
-		$contents = ob_get_contents();
-		ob_end_clean();
-		
-		/*
-		 * here is how it is done in the cart view
-		ob_start();
-		parent::display('checkout_header');
-		parent::display('order_summary');
-		parent::display('shopper_info');
-		parent::display('cart');
-		$contents .= ob_get_contents();
-		ob_end_clean();
-		*/
-
-		$download_header = '';
-
-		include_once( JPATH_COMPONENT.DS.'templates'.DS.'mail_html_header.php' );
-		 
-		//IS SOMETHING DOWNLOADABLE AND IS IT PAID FOR?
-		if($order->downloadable && $order->order_status == "C"){
-			if($params->get('my_registration') == "no_reg"){
-				$link = JURI::base().JRoute::_("index.php?option=com_mymuse&task=accdownloads&id=".$order->order_number);
-			}else{
-				$link = JURI::base().JRoute::_("index.php?option=com_mymuse&task=downloads&id=".$order->order_number);
-			}
-			 
-			$link_message .= JText::_("MYMUSE_YOUR_DOWNLOAD_KEY")." = ".$order->order_number." <br />";
-			$link_message .= JText::_('MYMUSE_DOWNLOAD_LINK')." ";
-			$link_message .= $link;
-			$contents .= $link_message;
-			
-			$jinput = JFactory::getApplication()->input;
-			$Itemid = $jinput->get("Itemid",$params->get('mymuse_default_itemid'));
-		
-			include_once( JPATH_COMPONENT.DS.'templates'.DS.'mail_downloads.php' );
-			$order->downloadlink = $link_message;
-		}
-		if($order->downloadable  && $order->order_status == "P"){
-			$link = JRoute::_(JURI::base()."index.php?option=com_mymuse&task=vieworder&orderid=".$order->id);
-			$link_message .= JText::_('MYMUSE_PURCHASE_ORDER')." <br />\n";
-			$link_message .= '<a href="'.$link.'">'.$link.'</a><br /><br />'."\n";
-			 
-			$download_header .= $link_message;
-			$order->downloadlink = $link_message;
-		}
-
-		$message = $header.$download_header.$contents.$footer;
-		$message = html_entity_decode($message, ENT_QUOTES,'UTF-8');
-
-		// Send email to user
-
-		$mailer = JFactory::getMailer();
-		$mailer->isHTML(true);
-		$mailer->Encoding = 'base64';
-		// from
-		$fromname = $params->get('contact_first_name')." ".$params->get('contact_last_name');
-		$mailfrom = $params->get('contact_email');
-		$sender = array(
-				$mailfrom,
-				$fromname );
-		$mailer->setSender($sender);
-		//recipient
-		$recipient = $shopper->email;
-		if($params->get('my_cc_webmaster')){
-			$recipient = array($shopper->email, $params->get('my_webmaster'));
-		}
-		$mailer->addRecipient($recipient);
-		//subject, body
-		$subject = Jtext::_('MYMUSE_NEW_ORDER_FOR')." ".$store->title;
-		$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
-		$mailer->setSubject($subject);
-		$mailer->setBody($message);
-
-		$send = $mailer->Send();
-		if ( $send instanceof Exception ) {
-			 
-			//$msg =  'Error sending email: ' . $send->getError();
-			//JFactory::getApplication()->enqueueMessage($msg, 'error');
-		}
-
-		return true;
-	}
 
 	/**
 	 * calc_order_subtotal
@@ -812,12 +690,11 @@ class MyMuseCheckout
 
 		for($i = 0; $i < count($order->items); $i++){
 			$order->items[$i]->product = $MyMuseCart->getProduct($order->items[$i]->product_id);
+
 			$order->items[$i]->title = $order->items[$i]->product->title;
 			$order->items[$i]->quantity = $order->items[$i]->product_quantity;
 			$order->items[$i]->product_item_subtotal = $order->items[$i]->product_item_price * $order->items[$i]->product_quantity;
 			$order->items[$i]->product_in_stock = $order->items[$i]->product->product_in_stock;
-			$order->items[$i]->ext = pathinfo($order->items[$i]->file_name, PATHINFO_EXTENSION);
-			
 			$order->items[$i]->ext = pathinfo($order->items[$i]->file_name, PATHINFO_EXTENSION);
 			$order->items[$i]->file_length = $order->items[$i]->product->file_length;
 			$order->items[$i]->file_time = $order->items[$i]->product->file_time;
@@ -852,7 +729,7 @@ class MyMuseCheckout
 			$jinput = JFactory::getApplication()->input;
 			$Itemid = $jinput->get("Itemid",$params->get('mymuse_default_itemid'));
 			$download_header = '';
-			include_once( JPATH_COMPONENT.DS.'templates'.DS.'mail_downloads.php' );
+			include_once( JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'templates'.DS.'mail_downloads.php' );
 			$order->downloadlink = $download_header;
 		}else{
 			$order->downloadlink = '';

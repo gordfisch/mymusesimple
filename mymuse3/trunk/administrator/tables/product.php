@@ -570,13 +570,13 @@ class MymuseTableproduct extends JTable
 
 		$result = parent::store($updateNulls);
 		if($result){
-			
+			// clear product_category_xref
+			$query = "DELETE FROM #__mymuse_product_category_xref WHERE product_id=".$this->id;
+			$db->setQuery($query);
+			$db->execute();
 			// other categories
 			if(isset($form['othercats'])  && $this->id){
-				// clear product_category_xref
-				$query = "DELETE FROM #__mymuse_product_category_xref WHERE product_id=".$this->id;
-				$db->setQuery($query);
-				$db->execute();
+				
 				if(in_array($form['catid'], $form['othercats']) ){
 					unset($form['othercats'][$form['catid']]);
 				}
