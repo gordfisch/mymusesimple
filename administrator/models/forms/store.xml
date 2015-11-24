@@ -558,7 +558,6 @@
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
         </field>
-        my_add_shipping_auto
         <field
                 name="my_add_shipping_auto"
                 type="radio"
@@ -747,11 +746,22 @@
                 default="mymuse"
         />
         <field
+                name="my_disable_css"
+                type="radio"
+                label="MYMUSE_DISABLE_CSS_LABEL"
+                description="MYMUSE_DISABLE_CSS_DESC"
+                class="btn-group"
+                default="0">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>>
+        </field>
+        
+        <field
                 name="my_plugin_email"
                 type="radio"
                 label="MYMUSE_PLUGIN_EMAIL_LABEL"
                 description="MYMUSE_PLUGIN_EMAIL_DESC"
-                class="inputbox"
+                class="btn-group"
                 default="0">
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>>
@@ -834,14 +844,14 @@
                 type="radio"
                 label="MYMUSE_SHOW_ORIGINAL_PRICE"
                 description="MYMUSE_SHOW_ORIGINAL_PRICE_DESC"
-                class="inputbox"
+                class="btn-group"
                 default="0">
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>>
         </field>
         <field
                 name="my_add_taxes"
-                type="list"
+                type="radio"
                 label="MYMUSE_ADD_TAXES_LABEL"
                 description="MYMUSE_ADD_TAXES_DESC"
                 class="btn-group"
@@ -852,7 +862,7 @@
         
         <field
                 name="my_show_category_name"
-                type="list"
+                type="radio"
                 label="MYMUSE_SHOW_CATEGORY_NAME_LABEL"
                 description="MYMUSE_SHOW_CATEGORY_NAMEDESC"
                 class="btn-group"

@@ -892,9 +892,13 @@ class MymuseModelproduct extends JModelAdmin
 			$directory = MyMuseHelper::getDownloadPath($this->_item->id,'1');
 			if($this->_params->get('my_download_dir_format')){
 				//by format
-				$files1 = JFolder::files( $directory.DS.'mp3' );
-				$files2 = JFolder::files( $directory.DS.'wav' );
-				$files = array_merge($files1,$files2);
+				$files = array();
+				foreach($this->_params->get('my_formats') as $format){
+					$arr = JFolder::files( $directory.DS.$format );
+					if(is_array($arr)){
+						$files = array_merge($files,$arr);
+					}
+				}
 			}else{
 				$files = JFolder::files( $directory );
 			}

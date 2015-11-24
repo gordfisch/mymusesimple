@@ -40,10 +40,13 @@ $download_header = '<h3 class="cart-header">'.JText::_('MYMUSE_DOWNLOADS_IN_THIS
 		<ul>
 ';
 foreach($order->items as $item){ 
+
 	if($item->file_name != ""){
-	$download_header .= '
-	<li>'.$item->product_name.'</li>
-	';
+		$download_header .= '<li>';
+		if(isset($item->product->parent->title)){
+			$download_header .= $item->product->parent->title;
+		}
+		$download_header .= ' '.$item->product_name.'</li>';
  	}
 } 
 

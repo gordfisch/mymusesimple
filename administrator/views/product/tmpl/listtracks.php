@@ -188,8 +188,10 @@ Joomla.orderTable = function()
 					<th width="10%" class="nowrap hidden-phone">
 						<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
 					</th>
+				<?php if(!$this->params->get('my_price_by_product')){ ?>
 					<th class="title"><?php echo JText::_('MYMUSE_PRICE');?>
 					</th>
+				<?php } ?>
 					<th class="title"><?php echo JText::_('MYMUSE_DISCOUNT');?>
 					</th>
 					<th class="title" colspan="2"><?php echo JText::_('MYMUSE_FILE_NAME');?>

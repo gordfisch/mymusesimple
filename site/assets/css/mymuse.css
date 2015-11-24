@@ -3,6 +3,10 @@
 .clear {
 	clear: both;
 }
+*, *::after, *::before {
+    box-sizing: border-box;
+}
+
 
 /* those dickey print and email icons */
 ul.actions {
@@ -314,7 +318,20 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount,
 	top: -7px;
 	right: -7px;
 }	
-	
+/* related/recommended items */
+#mymuse-container-wrap {
+    margin: 50px 0px 35px 0px
+}
+#mymuse-container {
+    width: 100%;
+}
+.related-item {
+    display: inline-block;
+    width: 13.98%;
+}
+.related-item img {
+    width: 100%
+}
 	
 
 /* Only Phones */  

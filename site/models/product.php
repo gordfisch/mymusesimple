@@ -357,7 +357,7 @@ class MyMuseModelProduct extends JModelItem
 						}
 					}
 					$othercats = array_unique($othercats);
-					$track->othercats = implode(',',$othercats);
+					$track->othercats = implode(', ',$othercats);
 					
 					
 					$tracks[$i]->price = $this->getPrice($track);

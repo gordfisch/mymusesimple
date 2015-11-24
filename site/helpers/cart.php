@@ -911,7 +911,7 @@ class MyMuseCart {
 		//$row->price = MyMuseModelProduct::getPrice($row);
 		
 		// get the artist object
-		require_once( 'administrator'.DS.'components'.DS.'com_categories'.DS.'tables'.DS.'category.php');
+		require_once( JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_categories'.DS.'tables'.DS.'category.php');
 		$cat = new CategoriesTableCategory($db);
 		$cat->load($artistid);
 		$row->artist = $cat;
