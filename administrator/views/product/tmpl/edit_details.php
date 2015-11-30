@@ -96,6 +96,24 @@
 					<?php echo $this->form->getInput('urls'); ?>
 				</div>
 			</div>
+<?php 	
+$fieldSets = $this->form->getFieldsets('attribs'); 
+
+foreach ($fieldSets as $name => $fieldSet) {
+
+	foreach ($this->form->getFieldset($name) as $field)
+	{
+		if (preg_match("/media_/",$field->name))
+		{
+			echo $field->renderField();
+		}
+
+	} 
+	
+} 
+?>			
+			
+			
 
 			</div>
   

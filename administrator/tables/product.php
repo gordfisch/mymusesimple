@@ -407,11 +407,13 @@ class MymuseTableproduct extends JTable
 			$this->file_name = json_encode($current_files);
 		}
 		
-		if(isset($post['product_allfiles']) && $post['product_allfiles'] && !$this->file_name){
+		if(isset($post['product_allfiles']) && $post['product_allfiles']){
+		
+			
 			
 			for($p = 0; $p < count($params->get('my_formats')); $p++){
 				$current_files[$p] = array(
-							'file_name' => JFilterOutput::stringURLSafe($post['product_sku']." ". $params->get('my_formats')),
+							'file_name' => JFilterOutput::stringURLSafe($form['product_sku']."-full-release-". $params->get('my_formats')[$p]),
 							'file_length' => '',
 							'file_ext' => $params->get('my_formats')[$p],
 							'file_alias'=> '',
@@ -419,7 +421,9 @@ class MymuseTableproduct extends JTable
 					);
 
 			}
+	
 			$this->file_name = json_encode($current_files);
+			$this->file_type = "audio";
 		}
 		
 		// Previews
@@ -470,96 +474,97 @@ class MymuseTableproduct extends JTable
         if(!isset($this->parentid) || !$this->parentid){
 			//must be  a parent
         	// get artist alias
-        	
-        	$artist_alias = MyMuseHelper::getArtistAlias($this->catid);
-        	$artistdir = $params->get('my_download_dir').DS.$artist_alias;
-        	$albumdir = $params->get('my_download_dir').DS.$artist_alias.DS.$this->alias;
-       	
-        	//what if directory names have changed?
-        	$old_alias = JRequest::getVar('old_alias', '');
-        	$old_catid = JRequest::getVar('old_catid', '');
-        	if(($old_alias && $old_alias != $this->alias) || ($old_catid && $old_catid != $this->catid) ){
-        		// for the source
-        		if($old_alias && $old_alias != $this->alias){
-        			$src_alias = $old_alias;
-        		}else{
-        			$src_alias = $this->alias;
-        		}
-        		if($old_catid && $old_catid != $this->catid){
-        			$src_artist_alias = MyMuseHelper::getArtistAlias($old_catid);
-        		}else{
-        			$src_artist_alias = $artist_alias;
-        		}
-      	
-        		// for the main product dir
-        		$src = $params->get('my_download_dir').DS.$src_artist_alias.DS.$src_alias;
-        		$dest = $params->get('my_download_dir').DS.$artist_alias.DS.$this->alias;
-        		if(!$this->folderMove($src, $dest)){
-        			$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_DIR").$src." ".$dest);
-        			return false;
-        		}
-        		// for the preview dir
-        		$src  = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$src_artist_alias.DS.$src_alias;
-        		$dest = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
-        		if(!$this->folderMove($src, $dest)){
-        			$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_DIR").$src." ".$dest);
-        			return false;
-        		}
-        		$msg = JText::sprintf("MYMUSE_PRODUCT_CHANGED_CATEGORY_SUCCESS", $msg);
-        		JFactory::getApplication()->enqueueMessage($msg, 'notice');
-        	}
-        	
-        	//create new dirs if needed 
-        	if(!$this->fileExists($artistdir)){
-        		if(!$this->folderNew($artistdir)){
-        			$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").$artistdir);
-        			return false;
-        		}
-        		if(!$params->get('my_use_s3')){
-        			if(!$this->fileCopy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
-        			$artistdir.DS."index.html")){
-        				$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").$artistdir);
-        			}
-        		}
-        	}
-        	if(!$this->fileExists($albumdir)){
-        		if(!$this->folderNew($albumdir)){
-        			$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").$albumdir);
-        			return false;
-        		}
-        		if(!$params->get('my_use_s3')){
-        			if(!$this->fileCopy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
-        			$albumdir.DS."index.html")){
-        				$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").$albumdir);
-        			}
-        		}
-        	}	
-        	
+        	if(!$params->get('my_download_dir_format')){
+				// only create dirs if my_download_dir_format is default 0
+				$artist_alias = MyMuseHelper::getArtistAlias ( $this->catid );
+				$artistdir = $params->get ( 'my_download_dir' ) . DS . $artist_alias;
+				$albumdir = $params->get ( 'my_download_dir' ) . DS . $artist_alias . DS . $this->alias;
+				
+				// what if directory names have changed?
+				$old_alias = JRequest::getVar ( 'old_alias', '' );
+				$old_catid = JRequest::getVar ( 'old_catid', '' );
+				if (($old_alias && $old_alias != $this->alias) || ($old_catid && $old_catid != $this->catid)) {
+					// for the source
+					if ($old_alias && $old_alias != $this->alias) {
+						$src_alias = $old_alias;
+					} else {
+						$src_alias = $this->alias;
+					}
+					if ($old_catid && $old_catid != $this->catid) {
+						$src_artist_alias = MyMuseHelper::getArtistAlias ( $old_catid );
+					} else {
+						$src_artist_alias = $artist_alias;
+					}
+					
+					// for the main product dir
+					$src = $params->get ( 'my_download_dir' ) . DS . $src_artist_alias . DS . $src_alias;
+					$dest = $params->get ( 'my_download_dir' ) . DS . $artist_alias . DS . $this->alias;
+					if (! $this->folderMove ( $src, $dest )) {
+						$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_MOVE_DIR" ) . $src . " " . $dest );
+						return false;
+					}
+					// for the preview dir
+					$src = ($params->get ( 'my_use_s3' ) ? '' : JPATH_ROOT . DS) . $params->get ( 'my_preview_dir' ) . DS . $src_artist_alias . DS . $src_alias;
+					$dest = ($params->get ( 'my_use_s3' ) ? '' : JPATH_ROOT . DS) . $params->get ( 'my_preview_dir' ) . DS . $artist_alias . DS . $album_alias;
+					if (! $this->folderMove ( $src, $dest )) {
+						$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_MOVE_DIR" ) . $src . " " . $dest );
+						return false;
+					}
+					$msg = JText::sprintf ( "MYMUSE_PRODUCT_CHANGED_CATEGORY_SUCCESS", $msg );
+					JFactory::getApplication ()->enqueueMessage ( $msg, 'notice' );
+				}
+				
+				// create new dirs if needed
+				if (! $this->fileExists ( $artistdir )) {
+					if (! $this->folderNew ( $artistdir )) {
+						$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_MAKE_DIR" ) . $artistdir );
+						return false;
+					}
+					if (! $params->get ( 'my_use_s3' )) {
+						if (! $this->fileCopy ( JPATH_ROOT . DS . "administrator" . DS . "components" . DS . "com_mymuse" . DS . "assets" . DS . "index.html", $artistdir . DS . "index.html" )) {
+							$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_COPY_INDEX" ) . $artistdir );
+						}
+					}
+				}
+				if (! $this->fileExists ( $albumdir )) {
+					if (! $this->folderNew ( $albumdir )) {
+						$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_MAKE_DIR" ) . $albumdir );
+						return false;
+					}
+					if (! $params->get ( 'my_use_s3' )) {
+						if (! $this->fileCopy ( JPATH_ROOT . DS . "administrator" . DS . "components" . DS . "com_mymuse" . DS . "assets" . DS . "index.html", $albumdir . DS . "index.html" )) {
+							$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_COPY_INDEX" ) . $albumdir );
+						}
+					}
+				}
+			}
         	
         	
         	//create preview dirs if needed
-        	$preview_dir = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
-        	if(!$this->fileExists($preview_dir)){
-        		//see if artist dir exists
-        		$preview_artist_dir= ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias;
-        		if(!$this->folderNew($preview_artist_dir)){
-        			if(!$this->folderNew($preview_dir)){
-        				//$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").' '.$preview_dir);
-        				return false;
-        			}
-        		}
-        		
-        		if(!$this->folderNew($preview_dir)){
-        			$this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").' '.$preview_dir);
-        			return false;
-        		}
-        		if(!$params->get('my_use_s3')){
-        			if(!$this->fileCopy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
-        			$preview_dir.DS."index.html")){
-        				$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").' '.$preview_dir);
-        			}
-        		}
-        	}	
+        	if(!$params->get('my_previews_in_one_dir')){
+				// only create dirs if my_previews_in_one_dir is default 0
+				$preview_dir = ($params->get ( 'my_use_s3' ) ? '' : JPATH_ROOT . DS) . $params->get ( 'my_preview_dir' ) . DS . $artist_alias . DS . $album_alias;
+				if (! $this->fileExists ( $preview_dir )) {
+					// see if artist dir exists
+					$preview_artist_dir = ($params->get ( 'my_use_s3' ) ? '' : JPATH_ROOT . DS) . $params->get ( 'my_preview_dir' ) . DS . $artist_alias;
+					if (! $this->folderNew ( $preview_artist_dir )) {
+						if (! $this->folderNew ( $preview_dir )) {
+							// $this->setError(JText::_("MYMUSE_COULD_NOT_MAKE_DIR").' '.$preview_dir);
+							return false;
+						}
+					}
+					
+					if (! $this->folderNew ( $preview_dir )) {
+						$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_MAKE_DIR" ) . ' ' . $preview_dir );
+						return false;
+					}
+					if (! $params->get ( 'my_use_s3' )) {
+						if (! $this->fileCopy ( JPATH_ROOT . DS . "administrator" . DS . "components" . DS . "com_mymuse" . DS . "assets" . DS . "index.html", $preview_dir . DS . "index.html" )) {
+							$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_COPY_INDEX" ) . ' ' . $preview_dir );
+						}
+					}
+				}	
+			}
 
         } // end of if parent
        

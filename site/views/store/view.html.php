@@ -284,6 +284,8 @@ class myMuseViewStore extends JViewLegacy
 
         	// is it an allfiles and zip is on?
         	if($product->product_allfiles && $params->get('my_use_zip',0)){
+                // Get current directory
+
         
         		$query = "SELECT id,file_name, parentid from #__mymuse_product WHERE parentid='".$product->parentid."'
 				AND product_downloadable='1' AND product_allfiles !='1' ORDER BY ordering ";
@@ -303,15 +305,16 @@ class myMuseViewStore extends JViewLegacy
     				if(is_array($jason)){
     					foreach($jason as $j){
     						if($ext == $j->file_ext){
-    							$files[] = $path.$j->file_name;
+    							$files[] = $j->file_name;
     						}
     					}
     				}else{
-    						$files[] = $path.$j->file_name;
+    						$files[] = $j->file_name;
     				}
     				
     			}
-    	
+
+                chdir($path);
         		$zip	=& MyMuse::getObject('createzip','helpers');
         		$overwrite = false;
         		$destination = $path.$filename.".zip";

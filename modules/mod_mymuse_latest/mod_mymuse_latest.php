@@ -34,11 +34,10 @@ $language_tag = 'en-GB';
 $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
 
-$doc = JFactory::getDocument();
-$doc->addStyleSheet( 'modules/mod_mymuse_latest/mod_mymuse_latest_style.css' );
-
 $mparams 	= MyMuseHelper::getParams();
 $params->merge($mparams);
+$doc = JFactory::getDocument();
+$doc->addStyleSheet( 'modules/mod_mymuse_latest/mod_mymuse_latest_style.css' );
 
 $params->def('maximum_shown', 5);
 $params->def('type_shown', 'tracks');

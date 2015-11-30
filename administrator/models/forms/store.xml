@@ -674,6 +674,38 @@
 				
         </field>
         <field
+                name="my_registration"
+                type="list"
+                label="MYMUSE_REGISTER_LABEL"
+                description="MYMUSE_REGISTER_DESC"
+                default="joomla">
+                <option value="joomla">MYMUSE_JOOMLA</option>
+				<option value="full">MYMUSE_FULL</option>
+				<option value="jomsocial">MYMUSE_JOMSOCIAL</option>
+				<option value="no_reg">MYMUSE_NO_REGISTRATION</option>
+        </field>
+        
+        <field
+                name="my_checkout"
+                type="list"
+                label="MYMUSE_CHECKOUT_LABEL"
+                description="MYMUSE_CHECKOUT_DESC"
+                default="joomla">
+                <option value="regular">MYMUSE_CHECKOUT_REGULAR</option>
+				<option value="skip_confirm">MYMUSE_CHECKOUT_SKIP_CONFIRM</option>
+
+        </field>
+        
+        <field
+                name="my_profile_key"
+                type="text"
+                label="MYMUSE_PROFILE_KEY_LABEL"
+                description="MYMUSE_PROFILE_KEY_DESC"
+                class="inputbox"
+                size="15"
+                default="mymuse"
+        />
+        <field
                 name="my_use_alias"
                 type="radio"
                 label="MYMUSE_USE_ALIAS_LABEL"
@@ -713,38 +745,7 @@
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>>
         </field>
-        <field
-                name="my_registration"
-                type="list"
-                label="MYMUSE_REGISTER_LABEL"
-                description="MYMUSE_REGISTER_DESC"
-                default="joomla">
-                <option value="joomla">MYMUSE_JOOMLA</option>
-				<option value="full">MYMUSE_FULL</option>
-				<option value="jomsocial">MYMUSE_JOMSOCIAL</option>
-				<option value="no_reg">MYMUSE_NO_REGISTRATION</option>
-        </field>
-        
-        <field
-                name="my_checkout"
-                type="list"
-                label="MYMUSE_CHECKOUT_LABEL"
-                description="MYMUSE_CHECKOUT_DESC"
-                default="joomla">
-                <option value="regular">MYMUSE_CHECKOUT_REGULAR</option>
-				<option value="skip_confirm">MYMUSE_CHECKOUT_SKIP_CONFIRM</option>
 
-        </field>
-        
-        <field
-                name="my_profile_key"
-                type="text"
-                label="MYMUSE_PROFILE_KEY_LABEL"
-                description="MYMUSE_PROFILE_KEY_DESC"
-                class="inputbox"
-                size="15"
-                default="mymuse"
-        />
         <field
                 name="my_disable_css"
                 type="radio"

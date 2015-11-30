@@ -615,7 +615,7 @@ class MyMuseCart {
 				}
 			}
 			$othercats = array_unique($othercats);
-			$order->items[$i]->othercats = implode(",",$othercats);
+			$order->items[$i]->othercats = implode(", ",$othercats);
 			
 			//echo "order->items[$i]->file_name = m".$order->items[$i]->file_name."<br />";
 			//echo "order->items[$i]->ext =".$order->items[$i]->ext."<br />";
