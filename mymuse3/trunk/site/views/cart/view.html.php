@@ -872,17 +872,19 @@ class myMuseViewCart extends JViewLegacy
 			MyMuseHelper::logMessage( $debug  );
 		}
 		
-		include_once( JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'templates'.DS.'mail_html_header.php' );
+		//include_once( JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'templates'.DS.'mail_html_header.php' );
 		 
 		
 		$contents  = '';
 		$do_not_display_children = 1;
 		$this->assignRef('do_not_display_children', $do_not_display_children);
 		ob_start();
+		parent::display('email_header');
 		parent::display('checkout_header');
 		parent::display('order_summary');
 		parent::display('shopper_info');
 		parent::display('cart');
+		parent::display('email_footer');
 		$contents .= ob_get_contents();
 		ob_end_clean();
 		
