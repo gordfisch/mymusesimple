@@ -191,9 +191,10 @@ Joomla.orderTable = function()
 				<?php if(!$this->params->get('my_price_by_product')){ ?>
 					<th class="title"><?php echo JText::_('MYMUSE_PRICE');?>
 					</th>
-				<?php } ?>
 					<th class="title"><?php echo JText::_('MYMUSE_DISCOUNT');?>
 					</th>
+				<?php } ?>
+					
 					<th class="title" colspan="2"><?php echo JText::_('MYMUSE_FILE_NAME');?>
 					</th>
 					<th class="title"><?php echo JText::_('MYMUSE_FILE_SIZE');?>
@@ -277,8 +278,12 @@ Joomla.orderTable = function()
 					<td class="small hidden-phone">
 						<?php echo $this->escape($file->access_level); ?>
 					</td>
+					
+				<?php if(!$this->params->get('my_price_by_product')){ ?>	
 					<td><?php echo $file->price; ?></td>
 					<td><?php echo $file->product_discount; ?></td>
+				<?php } ?>	
+					
 					
 					<td><div id="product_player"><?php echo $file->stream; ?></div></td>
 					<td  align="center">

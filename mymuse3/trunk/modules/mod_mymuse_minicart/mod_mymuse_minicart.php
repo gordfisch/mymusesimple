@@ -30,11 +30,7 @@ $language_tag = 'en-GB';
 $reload = true;
 $lang->load($extension, $base_dir, $language_tag, $reload);
 
-// add css
-$Doc = JFactory::getDocument();
-$Doc->addStyleSheet( 'components/com_mymuse/assets/css/mymuse.css' );
-include(MYMUSE_PATH.'assets'.DS.'css'.DS.'mobile_css.php');
-$Doc->addStyleDeclaration($mobile_style);
+
 
 $MyMuseCart 	=& MyMuse::getObject('cart','helpers');
 $cart 			=& $MyMuseCart->cart;
@@ -43,4 +39,13 @@ $params			= MyMuseHelper::getParams();
 $jinput 		= JFactory::getApplication()->input;
 $Itemid			= $jinput->get("Itemid", "", "string");
 $checkoutUrl 	= 'index.php?option=com_mymuse&task=checkout&Itemid='.$Itemid;
+
+if(!$params->get('my_disable_css',0)){
+	// add css
+	$Doc = JFactory::getDocument();
+	$Doc->addStyleSheet( 'components/com_mymuse/assets/css/mymuse.css' );
+	include(MYMUSE_PATH.'assets'.DS.'css'.DS.'mobile_css.php');
+	$Doc->addStyleDeclaration($mobile_style);
+}
+
 require(JModuleHelper::getLayoutPath('mod_mymuse_minicart'));

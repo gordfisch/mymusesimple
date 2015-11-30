@@ -579,8 +579,37 @@
 	
 	<fields name="attribs">
 		<fieldset name="attribs" label="MYMUSE_PARAMETERS_ATTRIBUTES">
-		
-		<field
+
+			<field
+                name="media_rls"
+                type="modal_article"
+                label="MYMUSE_NEWS_RLS_LABEL"
+                description="MYMUSE_NEWS_RLS_DESC"
+                class="inputbox"
+				edit="true"
+				clear="false"
+                required="false"
+          	/>
+          	<field
+                name="media_link"
+                type="media"
+                label="MYMUSE_MEDIA_LINK_LABEL"
+                description="MYMUSE_MEDIA_LINK_DESC"
+                class="inputbox"
+				directory="/"
+                required="false"
+          	/>
+          	<field
+                name="isrc_code"
+                type="text"
+                label="MYMUSE_ISRC_LABEL"
+                description="MYMUSE_ISRC_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	
+          	<field
                 name="isrc_code"
                 type="text"
                 label="MYMUSE_ISRC_LABEL"

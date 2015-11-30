@@ -259,6 +259,7 @@ if($this->cart['idx']){
 
 <?php  endif; ?>
 	
+	
 <form method="post" action="<?php JRoute::_('index.php?lang='.$langtag) ?>" onsubmit="return hasProduct(this,<?php echo $count; ?>);" name="mymuseform">
 <input type="hidden" name="option" value="com_mymuse" />
 <input type="hidden" name="task" value="addtocart" />
@@ -288,7 +289,7 @@ if($this->cart['idx']){
 
 <!-- START RELEASE INFO  -->
     <div class="product-content">
-    <span class="release">Release</span>
+    <span class="release"><?php echo JText::_('MYMUSE_RELEASE')?></span>
     <span class="release-title"><?php echo $product->title ?></span>
     
     <ul class="product-content-list">
@@ -296,16 +297,20 @@ if($this->cart['idx']){
             <span class="category">Artist</span>
             <span class="value"><?php echo $product->artist_title;?></span>
         </li>
+        <?php if ($this->item->product_made_date && $this->item->product_made_date > 0) : ?>
         <li class="product-content-item">
-            <span class="category">Release Date</span>
+            <span class="category"><?php echo JText::_('MYMUSE_PRODUCT_CREATED_LABEL'); ?></span>
             <span class="value"><?php echo $product->product_made_date;?></span>
         </li>
+        <?php endif; ?>
+        <?php if($product->category_title) : ?>
         <li class="product-content-item">
-            <span class="category">Label</span>
+            <span class="category"><?php echo JText::_('MYMUSE_CATEGORY'); ?></span>
             <span class="value"><?php echo $product->category_title;?></span>
         </li>
+        <?php endif; ?>
         <li class="product-content-item">
-            <span class="category">Catalog</span>
+            <span class="category"><?php echo JText::_('MYMUSE_CATALOG'); ?></span>
             <span class="value"><?php echo $product->product_sku;?></span>
         </li>
         <li class="product-content-item-actions">
@@ -313,7 +318,7 @@ if($this->cart['idx']){
             <span class="value"><?php if($all_tracks) : ?>
                 <!--  PRODUCT ALL TRACKS -->
                 <span class="product-full">
-                    <span class="product-full-title">Buy Full Release</span>
+                    <span class="product-full-title"><?php echo JText::_('MYMUSE_BUY_FULL_RELEASE'); ?></span>
                     <span id="mp3_<?php echo $all_tracks->id; ?>" class="price"><?php echo MyMuseHelper::printMoneyPublic($product_price_mp3_all); ?></span>
                     <span id="wav_<?php echo $all_tracks->id; ?>" class="price" style="display:none"><?php echo MyMuseHelper::printMoneyPublic($product_price_wav_all); ?></span>
                     <span class="format"> <?php 
@@ -348,6 +353,57 @@ if($this->cart['idx']){
     
 <!-- END RELEASE INFO -->
 <div style="clear: both"></div>
+
+<!-- RECORDING DETAILS -->
+<?php $useRecList = ($params->get('show_recording_details') && ($this->item->product_made_date or $this->item->product_full_time or $this->item->product_country
+	or $this->item->product_publisher or $this->item->product_producer or $this->item->product_studio)); ?>
+	
+<?php if ($useRecList) : ?>
+	<dl class="article-info">
+	<dt class="article-info-term"><?php  echo JText::_('MYMUSE_RECORDING_DETAILS'); ?></dt>
+
+<?php if ($this->item->product_made_date && $this->item->product_made_date > 0) : ?>
+	<dd class="product_made_date">
+	<?php echo JText::_('MYMUSE_PRODUCT_CREATED_LABEL'); ?> :
+	<?php echo JHtml::_('date', $product->product_made_date, $this->escape(
+		$this->params->get('date_format', JText::_('DATE_FORMAT_LC3')))); ?>
+	</dd>
+<?php endif; ?>
+<?php if ($this->item->product_full_time) : ?>
+	<dd class="product_full_time">
+	<?php echo JText::_('MYMUSE_PRODUCT_FULL_TIME_LABEL'); ?> :
+	<?php echo $this->item->product_full_time; ?>
+	</dd>
+<?php endif; ?>
+<?php if ($this->item->product_country) : ?>
+	<dd class="product_country">
+	<?php echo JText::_('MYMUSE_PRODUCT_COUNTRY_LABEL'); ?> :
+	<?php echo $this->item->product_country; ?>
+	</dd>
+<?php endif; ?>
+<?php if ($this->item->product_publisher) : ?>
+	<dd class="product_publisher">
+	<?php echo JText::_('MYMUSE_PRODUCT_PUBLISHER_LABEL'); ?> :
+	<?php echo $this->item->product_publisher; ?>
+	</dd>
+<?php endif; ?>
+<?php if ($this->item->product_producer) : ?>
+	<dd class="product_producer">
+	<?php echo JText::_('MYMUSE_PRODUCT_PRODUCER_LABEL'); ?> :
+	<?php echo $this->item->product_producer; ?>
+	</dd>
+<?php endif; ?>
+<?php if ($this->item->product_studio) : ?>
+	<dd class="product_studio">
+	<?php echo JText::_('MYMUSE_PRODUCT_STUDIO_LABEL'); ?> :
+	<?php echo $this->item->product_studio; ?>
+	</dd>
+<?php endif; ?>
+	</dl>
+<?php endif; ?>
+<div style="clear: both"></div>
+
+<!-- END RECORDING DETAILS -->
 
 
 <!--  PRODUCT PHYSICAL -->

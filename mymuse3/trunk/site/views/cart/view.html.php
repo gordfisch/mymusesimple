@@ -840,7 +840,9 @@ class myMuseViewCart extends JViewLegacy
 		$this->assignRef('heading', $heading);
 		$this->assignRef('message', $message);
 		
-		$subject = $shopper->first_name." ".$shopper->last_name." ".Jtext::_('MYMUSE_ORDER')."  ".$store->title;
+		$subject =  $store->title." - ".Jtext::_('MYMUSE_ORDER_CONFIRMATION');
+		
+		
 		$subject = html_entity_decode($subject, ENT_QUOTES,'UTF-8');
 		$download_header = '';
 		 

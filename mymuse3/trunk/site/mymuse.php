@@ -37,19 +37,18 @@ $lang->load($extension, $base_dir, $language_tag, $reload);
 
 $params 	= MyMuseHelper::getParams();
 // add css and javascript
-$Doc = JFactory::getDocument();
 
-include(JPATH_COMPONENT.DS.'assets'.DS.'css'.DS.'mobile_css.php');
-$Doc->addStyleDeclaration($mobile_style);
-if($rtl){
-	$Doc->addStyleSheet( 'components/com_mymuse/assets/css/mymuse_rtl.css' );
-}
+
 if(!$params->get('my_disable_css',0)){
+	$Doc = JFactory::getDocument();
 	$Doc->addStyleSheet( 'components/com_mymuse/assets/css/mymuse.css' );
+	include(JPATH_COMPONENT.DS.'assets'.DS.'css'.DS.'mobile_css.php');
+	$Doc->addStyleDeclaration($mobile_style);
+	if($rtl){
+		$Doc->addStyleSheet( 'components/com_mymuse/assets/css/mymuse_rtl.css' );
+	}
+	//$Doc->addScript( 'components/com_mymuse/assets/javascript/mymuse.js' );
 }
-//$Doc->addScript( 'components/com_mymuse/assets/javascript/mymuse.js' );
-
-
 
 JPluginHelper::importPlugin('mymuse');
 
