@@ -84,7 +84,9 @@ class myMuseViewCart extends JViewLegacy
 						
 				}
 			}
-		
+			if(is_array($order->order_currency)){
+				$order->order_currency = $order->order_currency['currency_code'];
+			}
 			$result = Array
 			(
 					'plugin' => $pp,
@@ -103,7 +105,7 @@ class myMuseViewCart extends JViewLegacy
 					'user_email' => $order->user->profile['email'],
 					'userid' => $order->user_id,
 					'amountin' => $order->order_total,
-					'currency' => $order->order_currency['currency_code'],
+					'currency' => $order->order_currency,
 					'rate' => '',
 					'fees' => '',
 					'transaction_id' => '',
@@ -777,8 +779,8 @@ class myMuseViewCart extends JViewLegacy
 	{
 
 		$MyMuseStore	=& MyMuse::getObject('store','models');
-        $store = $MyMuseStore->_store;
-        $store_params = new JRegistry;
+        $store 			= $MyMuseStore->_store;
+        $store_params 	= new JRegistry;
         $store_params->loadString($store->params);
         $date = date('Y-m-d h:i:s');
      	
@@ -866,7 +868,8 @@ class myMuseViewCart extends JViewLegacy
 				}
 			}
 		}
-		 
+		$this->assignRef('my_email_msg', $my_email_msg);
+		
 		if($params->get('my_debug')){
 			$debug = "$date Extra Email message: $my_email_msg \n\n";
 			MyMuseHelper::logMessage( $debug  );
@@ -880,6 +883,10 @@ class myMuseViewCart extends JViewLegacy
 		$this->assignRef('do_not_display_children', $do_not_display_children);
 		ob_start();
 		parent::display('email_header');
+		$header = ob_get_contents();
+		ob_end_clean();
+		
+		ob_start();
 		parent::display('checkout_header');
 		parent::display('order_summary');
 		parent::display('shopper_info');
@@ -893,9 +900,9 @@ class myMuseViewCart extends JViewLegacy
 		
 		//make sure the payment status is Completed
 		if($result['payment_status'] == "Completed"){
-			$message = $header . $order->downloadlink . $contents . $footer;
+			$message = $header . $order->downloadlink . $contents;
 		}else{
-			$message = $header . $contents . $footer;
+			$message = $header . $contents;
 		}
 		 
 		if($params->get('my_debug')){
@@ -933,7 +940,7 @@ class myMuseViewCart extends JViewLegacy
 		$rs = $mailer->Send();
 		 
 		if ($rs instanceof Exception){
-			$debug = "Error sending email to $user_email: " . $rs->getError();
+			$debug = "Error sending email to $user_email: " . $rs->__toString();
 		
 		}elseif (empty($rs)){
 			$debug = "Error sending email to $user_email: return from mailer was empty";
