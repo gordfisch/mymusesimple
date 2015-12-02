@@ -11,6 +11,14 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
+$params 		= $this->params;
+
+$MyMuseShopper  =& MyMuse::getObject('shopper','models');
+$shopper 		=& $MyMuseShopper->getShopper();
+$user_email 	= $shopper->email;
+$MyMuseStore  	=& MyMuse::getObject('store','models');
+$store 			= $MyMuseStore->_store;
+
 ?>
 <!DOCTYPE HTML>
 <html lang="en-gb" dir="ltr">
@@ -94,7 +102,7 @@ table.mymuse_cart td, table.mymuse_cart th, div.mymuse_cart {
       </tr>
 
       <tr valign="top" colspan="2"> 
-        <td class="mmy-email-header email-msg"><?php echo $my_email_msg; ?></td>
+        <td class="mmy-email-header email-msg"><?php echo $this->my_email_msg; ?></td>
       </tr>
     </table>
 
