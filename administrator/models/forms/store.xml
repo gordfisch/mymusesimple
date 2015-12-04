@@ -685,6 +685,15 @@
 				<option value="no_reg">MYMUSE_NO_REGISTRATION</option>
         </field>
         
+         <field
+                name="my_noreg_password"
+                type="text"
+                label="MYMUSE_NOREG_PASSWORD_LABEL"
+                description="MYMUSE_NOREG_PASSWORD_DESC"
+                class="inputbox"
+                size="15"
+                default="buyer"
+        />
         <field
                 name="my_checkout"
                 type="list"

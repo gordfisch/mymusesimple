@@ -284,7 +284,7 @@ class MyMuseController extends JControllerLegacy
         	$plugin = JPluginHelper::getPlugin('user', 'mymusenoreg');
         	
         	if(!count($plugin)){
-        	
+        	echo 'Here in checkout'; exit;
         		//plugin is not on, try to login as buyer
         		if(!$this->MyMuseShopper->savenoreg()){
         			echo $this->MyMuseShopper->getError();
@@ -684,7 +684,35 @@ class MyMuseController extends JControllerLegacy
 		
 		}
 
+	
+
+				
+		if($st === "Completed" && $this->MyMuseShopper->order != "C"){
+			// waiting for IPN
+			sleep(3);
+			$this->MyMuseShopper->order = $this->MyMuseCheckout->getOrder( $orderid );
+			$this->MyMuseShopper->order->waited = 3;
+		}
+		if($st === "Completed" && $this->MyMuseShopper->order != "C"){
+			// waiting for IPN
+			sleep(3);
+			$this->MyMuseShopper->order = $this->MyMuseCheckout->getOrder( $orderid );
+			$this->MyMuseShopper->order->waited = 6;
+		}
+		if($st === "Completed" && $this->MyMuseShopper->order != "C"){
+			// waiting for IPN
+			sleep(3);
+			$this->MyMuseShopper->order = $this->MyMuseCheckout->getOrder( $orderid );
+			$this->MyMuseShopper->order->waited = 9;
+		}
+		if($st === "Completed" && $this->MyMuseShopper->order != "C"){
+			$msg = JText::_("MYMUSE_WAITING_FOR_IPN");
+			$this->setRedirect(JURI::current(), $msg);
+			return false;
+		}
 		
+		
+
 		if($this->MyMuseShopper->order->order_status == "C"){
 			//already confirmed 
 			$dispatcher		= JDispatcher::getInstance();

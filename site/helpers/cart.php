@@ -581,6 +581,7 @@ class MyMuseCart {
 			$ext = '';
 			$jason = json_decode($order->items[$i]->file_name);
 			if(is_array($jason)){
+				
 				$order->items[$i]->variation_select = '<select name="variation['.$this->cart[$i]['product_id'].']"
 					id = "variationid_'.$this->cart[$i]['product_id'].'" class="inputbox myformatselect cart ">';
 										
