@@ -538,17 +538,19 @@ class MyMuseHelper extends JObject
 	static function getAlbumAlias($id,$parent=0){
 		
 		$db	= JFactory::getDBO();
-		if($parent){
+		if(!$parent){
 			$query = "SELECT parentid from #__mymuse_product
 			WHERE id ='$id'";
 			$db->setQuery($query);
 			$id = $db->loadResult();
 		}
+		echo "id = $id parent = $parent <br />";
 		$query = "SELECT alias FROM #__mymuse_product 
    			WHERE id='".$id."'";
 
    		$db->setQuery($query);
    		$alias = $db->loadResult();
+   
 		return $alias;
 		
 	}
@@ -568,7 +570,7 @@ class MyMuseHelper extends JObject
 		}else{
 			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
 			$album_alias = MyMuseHelper::getAlbumAlias($id,$parent);
-				
+	
 			$site_url = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base());
 			$site_url .= $params->get('my_use_s3')? '' :  $params->get('my_preview_dir');
 			$site_url .=  '/'.$artist_alias.'/'.$album_alias.'/';
