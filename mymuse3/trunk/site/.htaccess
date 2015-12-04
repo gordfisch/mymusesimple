@@ -1,0 +1,382 @@
+AuthUserFile /var/www/vhosts/affectionategrooves.com/new.nexgenmusicgroup.com/z/.htpasswd
+AuthType Basic
+AuthName "Restricted Area"
+Require valid-user
+
+##
+# @package    Joomla
+# @copyright  Copyright (C) 2005 - 2015 Open Source Matters. All rights reserved.
+# @license    GNU General Public License version 2 or later; see LICENSE.txt
+##
+
+##
+# READ THIS COMPLETELY IF YOU CHOOSE TO USE THIS FILE!
+#
+# The line just below this section: 'Options +FollowSymLinks' may cause problems
+# with some server configurations.  It is required for use of mod_rewrite, but may already
+# be set by your server administrator in a way that disallows changing it in
+# your .htaccess file.  If using it causes your server to error out, comment it out (add # to
+# beginning of line), reload your site in your browser and test your sef url's.  If they work,
+# it has been set by your server administrator and you do not need it set here.
+##
+
+## No directory listings
+IndexIgnore *
+
+## Can be commented out if causes errors, see notes above.
+Options +FollowSymlinks
+Options -Indexes
+
+## Mod_rewrite in use.
+
+RewriteEngine On
+
+## Begin - Rewrite rules to block out some common exploits.
+# If you experience problems on your site block out the operations listed below
+# This attempts to block the most common type of exploit `attempts` to Joomla!
+#
+# Block out any script trying to base64_encode data within the URL.
+RewriteCond %{QUERY_STRING} base64_encode[^(]*\([^)]*\) [OR]
+# Block out any script that includes a <script> tag in URL.
+RewriteCond %{QUERY_STRING} (<|%3C)([^s]*s)+cript.*(>|%3E) [NC,OR]
+# Block out any script trying to set a PHP GLOBALS variable via URL.
+RewriteCond %{QUERY_STRING} GLOBALS(=|\[|\%[0-9A-Z]{0,2}) [OR]
+# Block out any script trying to modify a _REQUEST variable via URL.
+RewriteCond %{QUERY_STRING} _REQUEST(=|\[|\%[0-9A-Z]{0,2})
+# Return 403 Forbidden header and show the content of the root homepage
+RewriteRule .* index.php [F]
+#
+## End - Rewrite rules to block out some common exploits.
+
+## Begin - Custom redirects
+#
+# If you need to redirect some pages, or set a canonical non-www to
+# www redirect (or vice versa), place that code here. Ensure those
+# redirects use the correct RewriteRule syntax and the [R=301,L] flags.
+#
+## End - Custom redirects
+
+##
+# Uncomment following line if your webserver's URL
+# is not directly related to physical file paths.
+# Update Your Joomla! Directory (just / for root).
+##
+
+# RewriteBase /
+
+## Begin - Joomla! core SEF Section.
+#
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+#
+# If the requested path and file is not /index.php and the request
+# has not already been internally rewritten to the index.php script
+RewriteCond %{REQUEST_URI} !^/index\.php
+# and the requested path and file doesn't directly match a physical file
+RewriteCond %{REQUEST_FILENAME} !-f
+# and the requested path and file doesn't directly match a physical folder
+RewriteCond %{REQUEST_FILENAME} !-d
+# internally rewrite the request to the index.php script
+RewriteRule .* index.php [L]
+#
+## End - Joomla! core SEF Section.
+
+AddOutputFilterByType DEFLATE text/html text/plain text/xml
+<FilesMatch "\\.(js|css|html|htm|php|xml|jpg|png|svg)$">
+SetOutputFilter DEFLATE
+</FilesMatch>
+
+
+<FilesMatch ".(flv|gif|jpg|jpeg|png|ico|swf|js|css|pdf|svg)$">
+Header set Cache-Control "max-age=2592000"
+</FilesMatch>
+
+AddType video/ogg .ogv
+AddType video/ogg .ogg
+AddType video/mp4 .mp4
+AddType video/webm .webm
+AddType application/x-shockwave-flash swf
+
+# secure htaccess file
+<Files .htaccess>
+ order allow,deny
+ deny from all
+</Files>
+
+# 5G BLACKLIST/FIREWALL
+# @ http://perishablepress.com/5g-blacklist/
+
+# 5G:[QUERYSTRINGS]
+<ifModule mod_rewrite.c>
+RewriteEngine On
+#RewriteBase /
+RewriteCond %{QUERY_STRING} (environ|localhost|mosconfig|scanner) [NC,OR]
+RewriteCond %{QUERY_STRING} (menu|mod|path|tag)\=\.?/? [NC,OR]
+RewriteCond %{QUERY_STRING} boot\.ini  [NC,OR]
+RewriteCond %{QUERY_STRING} echo.*kae  [NC,OR]
+RewriteCond %{QUERY_STRING} etc/passwd [NC,OR]
+RewriteCond %{QUERY_STRING} \=\\%27$   [NC,OR]
+RewriteCond %{QUERY_STRING} \=\\\'$    [NC,OR]
+RewriteCond %{QUERY_STRING} \.\./      [NC,OR]
+RewriteCond %{QUERY_STRING} \?         [NC,OR]
+RewriteCond %{QUERY_STRING} \:         [NC,OR]
+RewriteCond %{QUERY_STRING} \[         [NC,OR]
+RewriteCond %{QUERY_STRING} \]         [NC]
+RewriteCond %{HTTP_USER_AGENT} ^BlackWidow [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Bot\ mailto:craftbot@yahoo.com [OR]
+RewriteCond %{HTTP_USER_AGENT} ^ChinaClaw [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Custo [OR]
+RewriteCond %{HTTP_USER_AGENT} ^DISCo [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Download\ Demon [OR]
+RewriteCond %{HTTP_USER_AGENT} ^eCatch [OR]
+RewriteCond %{HTTP_USER_AGENT} ^EirGrabber [OR]
+RewriteCond %{HTTP_USER_AGENT} ^EmailSiphon [OR]
+RewriteCond %{HTTP_USER_AGENT} ^EmailWolf [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Express\ WebPictures [OR]
+RewriteCond %{HTTP_USER_AGENT} ^ExtractorPro [OR]
+RewriteCond %{HTTP_USER_AGENT} ^EyeNetIE [OR]
+RewriteCond %{HTTP_USER_AGENT} ^FlashGet [OR]
+RewriteCond %{HTTP_USER_AGENT} ^GetRight [OR]
+RewriteCond %{HTTP_USER_AGENT} ^GetWeb! [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Go!Zilla [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Go-Ahead-Got-It [OR]
+RewriteCond %{HTTP_USER_AGENT} ^GrabNet [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Grafula [OR]
+RewriteCond %{HTTP_USER_AGENT} ^HMView [OR]
+RewriteCond %{HTTP_USER_AGENT} HTTrack [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} ^Image\ Stripper [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Image\ Sucker [OR]
+RewriteCond %{HTTP_USER_AGENT} Indy\ Library [NC,OR]
+RewriteCond %{HTTP_USER_AGENT} ^InterGET [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Internet\ Ninja [OR]
+RewriteCond %{HTTP_USER_AGENT} ^JetCar [OR]
+RewriteCond %{HTTP_USER_AGENT} ^JOC\ Web\ Spider [OR]
+RewriteCond %{HTTP_USER_AGENT} ^larbin [OR]
+RewriteCond %{HTTP_USER_AGENT} ^LeechFTP [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Mass\ Downloader [OR]
+RewriteCond %{HTTP_USER_AGENT} ^MIDown\ tool [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Mister\ PiX [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Navroad [OR]
+RewriteCond %{HTTP_USER_AGENT} ^NearSite [OR]
+RewriteCond %{HTTP_USER_AGENT} ^NetAnts [OR]
+RewriteCond %{HTTP_USER_AGENT} ^NetSpider [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Net\ Vampire [OR]
+RewriteCond %{HTTP_USER_AGENT} ^NetZIP [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Octopus [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Offline\ Explorer [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Offline\ Navigator [OR]
+RewriteCond %{HTTP_USER_AGENT} ^PageGrabber [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Papa\ Foto [OR]
+RewriteCond %{HTTP_USER_AGENT} ^pavuk [OR]
+RewriteCond %{HTTP_USER_AGENT} ^pcBrowser [OR]
+RewriteCond %{HTTP_USER_AGENT} ^RealDownload [OR]
+RewriteCond %{HTTP_USER_AGENT} ^ReGet [OR]
+RewriteCond %{HTTP_USER_AGENT} ^SiteSnagger [OR]
+RewriteCond %{HTTP_USER_AGENT} ^SmartDownload [OR]
+RewriteCond %{HTTP_USER_AGENT} ^SuperBot [OR]
+RewriteCond %{HTTP_USER_AGENT} ^SuperHTTP [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Surfbot [OR]
+RewriteCond %{HTTP_USER_AGENT} ^tAkeOut [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Teleport\ Pro [OR]
+RewriteCond %{HTTP_USER_AGENT} ^VoidEYE [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Web\ Image\ Collector [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Web\ Sucker [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebAuto [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebCopier [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebFetch [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebGo\ IS [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebLeacher [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebReaper [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebSauger [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Website\ eXtractor [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Website\ Quester [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebStripper [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebWhacker [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WebZIP [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Widow [OR]
+RewriteCond %{HTTP_USER_AGENT} ^WWWOFFLE [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Xaldon\ WebSpider [OR]
+RewriteCond %{HTTP_USER_AGENT} ^Zeus 
+RewriteRule .* - [F]
+</ifModule>
+
+# 5G:[USER AGENTS]
+<ifModule mod_setenvif.c>
+#SetEnvIfNoCase User-Agent ^$ keep_out
+SetEnvIfNoCase User-Agent (casper|cmsworldmap|diavol|dotbot)   keep_out
+SetEnvIfNoCase User-Agent (flicky|ia_archiver|jakarta|kmccrew) keep_out
+SetEnvIfNoCase User-Agent (libwww|planetwork|pycurl|skygrid)   keep_out
+SetEnvIfNoCase User-Agent (purebot|comodo|feedfinder|turnit)   keep_out
+SetEnvIfNoCase User-Agent (zmeu|nutch|vikspider|binlar|sucker) keep_out
+<limit GET POST PUT>
+Order Allow,Deny
+Allow from all
+Deny from env=keep_out
+</limit>
+</ifModule>
+
+# 5G:[REQUESTSTRINGS]
+<ifModule mod_alias.c>
+RedirectMatch 403 (https?|ftp|php)\://
+RedirectMatch 403 /(cgi|https?|ima|ucp)/
+RedirectMatch 403 /(Permanent|Better)$
+RedirectMatch 403 (\=\\\'|\=\\%27|/\\\'/?|\)\.css\()$
+RedirectMatch 403 (\,|//|\)\+|/\,/|\{0\}|\(/\(|\.\.\.|\+\+\+|\||\\\"\\\")
+RedirectMatch 403 \.(cgi|asp|aspx|cfg|dll|exe|jsp|mdb|sql|ini|rar)$
+RedirectMatch 403 /(contac|fpw|install|pingserver|register)\.php$
+RedirectMatch 403 (base64|crossdomain|localhost|wwwroot|e107\_)
+RedirectMatch 403 (eval\(|\_vti\_|\(null\)|echo.*kae|config\.xml)
+RedirectMatch 403 \.well\-known/host\-meta
+RedirectMatch 403 /function\.array\-rand
+RedirectMatch 403 \)\;\$\(this\)\.html\(
+RedirectMatch 403 proc/self/environ
+RedirectMatch 403 msnbot\.htm\)\.\_
+RedirectMatch 403 /ref\.outcontrol
+RedirectMatch 403 com\_cropimage
+RedirectMatch 403 indonesia\.htm
+RedirectMatch 403 \{\$itemURL\}
+RedirectMatch 403 function\(\)
+RedirectMatch 403 labels\.rdf
+RedirectMatch 403 /playing.php
+RedirectMatch 403 muieblackcat
+</ifModule>
+
+# 5G:[BAD IPS]
+<limit GET POST PUT>
+Order Allow,Deny
+Allow from all
+# uncomment/edit/repeat next line to block IPs
+# Deny from 123.456.789
+</limit>
+
+# 5G BLACKLIST/FIREWALL (2013)
+# @ http://perishablepress.com/5g-blacklist-2013/
+
+# 5G:[QUERY STRINGS]
+<IfModule mod_rewrite.c>
+	RewriteEngine On
+	RewriteBase /
+	RewriteCond %{QUERY_STRING} (\"|%22).*(<|>|%3) [NC,OR]
+	RewriteCond %{QUERY_STRING} (javascript:).*(\;) [NC,OR]
+	RewriteCond %{QUERY_STRING} (<|%3C).*script.*(>|%3) [NC,OR]
+	RewriteCond %{QUERY_STRING} (\\|\.\./|`|=\'$|=%27$) [NC,OR]
+	RewriteCond %{QUERY_STRING} (\;|\'|\"|%22).*(union|select|insert|drop|update|md5|benchmark|or|and|if) [NC,OR]
+	RewriteCond %{QUERY_STRING} (base64_encode|localhost|mosconfig) [NC,OR]
+	RewriteCond %{QUERY_STRING} (boot\.ini|echo.*kae|etc/passwd) [NC,OR]
+	RewriteCond %{QUERY_STRING} (GLOBALS|REQUEST)(=|\[|%) [NC]
+	RewriteRule .* - [F]
+</IfModule>
+
+# 5G:[USER AGENTS]
+<IfModule mod_setenvif.c>
+	# SetEnvIfNoCase User-Agent ^$ keep_out
+	SetEnvIfNoCase User-Agent (binlar|casper|cmsworldmap|comodo|diavol|dotbot|feedfinder|flicky|ia_archiver|jakarta|kmccrew|nutch|planetwork|purebot|pycurl|skygrid|sucker|turnit|vikspider|zmeu) keep_out
+	<limit GET POST PUT>
+		Order Allow,Deny
+		Allow from all
+		Deny from env=keep_out
+	</limit>
+</IfModule>
+
+# 5G:[REQUEST STRINGS]
+<IfModule mod_alias.c>
+	RedirectMatch 403 (https?|ftp|php)\://
+	RedirectMatch 403 /(https?|ima|ucp)/
+	RedirectMatch 403 /(Permanent|Better)$
+	RedirectMatch 403 (\=\\\'|\=\\%27|/\\\'/?|\)\.css\()$
+	RedirectMatch 403 (\,|\)\+|/\,/|\{0\}|\(/\(|\.\.\.|\+\+\+|\||\\\"\\\")
+	RedirectMatch 403 \.(cgi|asp|aspx|cfg|dll|exe|jsp|mdb|sql|ini|rar)$
+	RedirectMatch 403 /(contac|fpw|install|pingserver|register)\.php$
+	RedirectMatch 403 (base64|crossdomain|localhost|wwwroot|e107\_)
+	RedirectMatch 403 (eval\(|\_vti\_|\(null\)|echo.*kae|config\.xml)
+	RedirectMatch 403 \.well\-known/host\-meta
+	RedirectMatch 403 /function\.array\-rand
+	RedirectMatch 403 \)\;\$\(this\)\.html\(
+	RedirectMatch 403 proc/self/environ
+	RedirectMatch 403 msnbot\.htm\)\.\_
+	RedirectMatch 403 /ref\.outcontrol
+	RedirectMatch 403 com\_cropimage
+	RedirectMatch 403 indonesia\.htm
+	RedirectMatch 403 \{\$itemURL\}
+	RedirectMatch 403 function\(\)
+	RedirectMatch 403 labels\.rdf
+	RedirectMatch 403 /playing.php
+	RedirectMatch 403 muieblackcat
+</IfModule>
+
+# 5G:[REQUEST METHOD]
+<ifModule mod_rewrite.c>
+	RewriteCond %{REQUEST_METHOD} ^(TRACE|TRACK)
+	RewriteRule .* - [F]
+</IfModule>
+
+# 5G:[BAD IPS]
+<limit GET POST PUT>
+	Order Allow,Deny
+	Allow from all
+	# uncomment/edit/repeat next line to block IPs
+	# Deny from 123.456.789
+</limit>
+
+
+########## Begin - ETag Optimization
+## This rule will create an ETag for files based only on the modification
+## timestamp and their size. 
+## Note: It may cause problems on your server and you may need to remove it
+FileETag MTime Size
+# AddOutputFilterByType is now deprecated by Apache. Use mod_filter in the future.
+AddOutputFilterByType DEFLATE text/plain text/html text/xml text/css application/xml application/xhtml+xml application/rss+xml application/javascript application/x-javascript
+# Enable expiration control
+ExpiresActive On
+# Default expiration: 1 hour after request
+ExpiresDefault "now plus 1 hour"
+# CSS and JS expiration: 1 week after request
+ExpiresByType text/css "now plus 1 week"
+ExpiresByType application/javascript "now plus 1 week"
+ExpiresByType text/javascript "now plus 1 week"
+ExpiresByType application/x-javascript "now plus 1 week"
+
+# Image files expiration: 1 month after request
+ExpiresByType image/bmp "now plus 1 month"
+ExpiresByType image/gif "now plus 1 month"
+ExpiresByType image/jpeg "now plus 1 month"
+ExpiresByType image/jp2 "now plus 1 month"
+ExpiresByType image/pipeg "now plus 1 month"
+ExpiresByType image/png "now plus 1 month"
+ExpiresByType image/svg+xml "now plus 1 month"
+ExpiresByType image/tiff "now plus 1 month"
+ExpiresByType image/vnd.microsoft.icon "now plus 1 month"
+ExpiresByType image/x-icon "now plus 1 month"
+ExpiresByType image/ico "now plus 1 month"
+ExpiresByType image/icon "now plus 1 month"
+ExpiresByType text/ico "now plus 1 month"
+ExpiresByType application/ico "now plus 1 month"
+ExpiresByType image/vnd.wap.wbmp "now plus 1 month"
+ExpiresByType application/vnd.wap.wbxml "now plus 1 month"
+ExpiresByType image/svg+xml "now plus 1 month"
+ExpiresByType application/vnd.ms-fontobject "now plus 1 month"
+
+# Font files expiration: 1 month after request
+ExpiresByType font/truetype "access plus 1 month"
+ExpiresByType font/opentype "access plus 1 month"
+ExpiresByType application/x-font-woff "now plus 1 month"
+
+ExpiresByType application/smil "now plus 1 month"
+# Audio files expiration: 1 month after request
+ExpiresByType audio/basic "now plus 1 month"
+ExpiresByType audio/mid "now plus 1 month"
+ExpiresByType audio/midi "now plus 1 month"
+ExpiresByType audio/mpeg "now plus 1 month"
+ExpiresByType audio/x-aiff "now plus 1 month"
+ExpiresByType audio/x-mpegurl "now plus 1 month"
+ExpiresByType audio/x-pn-realaudio "now plus 1 month"
+ExpiresByType audio/x-wav "now plus 1 month"
+
+# Movie files expiration: 1 month after request
+ExpiresByType application/x-shockwave-flash "now plus 1 month"
+ExpiresByType x-world/x-vrml "now plus 1 month"
+ExpiresByType video/x-msvideo "now plus 1 month"
+ExpiresByType video/mpeg "now plus 1 month"
+ExpiresByType video/mp4 "now plus 1 month"
+ExpiresByType video/quicktime "now plus 1 month"
+ExpiresByType video/x-la-asf "now plus 1 month"
+ExpiresByType video/x-ms-asf "now plus 1 month"

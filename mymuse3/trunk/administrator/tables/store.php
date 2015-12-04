@@ -82,9 +82,11 @@ class MymuseTablestore extends JTable
 
     	jimport('joomla.filesystem.file');
     	$this->checkin();
+    	$myparams = MyMuseHelper::getParams();
+    	$jinput = JFactory::getApplication()->input;
+    	$form 	= $jinput->get('jform',array(), 'ARRAY');
     	
     	//save the css file
-    	$jinput = JFactory::getApplication()->input;
     	$mymuse_css = $jinput->get('mymuse_css','', 'RAW');
 
     	if($mymuse_css){
@@ -95,6 +97,40 @@ class MymuseTablestore extends JTable
     		}
     	}
     	
+    	
+    	
+    	//if my_noreg_password has changed
+    	$my_noreg_password = $form['params']['my_noreg_password'];
+    	if($my_noreg_password !== $myparams->get('my_noreg_password')){
+    		echo "DO SOMETHING! $my_noreg_password ".$myparams->get('my_noreg_password');
+    		$user	= JFactory::getUser('buyer');
+    		$user = new JUser($user->id);
+    		print_pre($user);
+    		$data = array('name' => 'Guest Buyer',
+    				'password'=>  $my_noreg_password,
+    				'email' => 'guest@mymuse.ca',
+					'username' => 'buyer',
+					'password1' => $my_noreg_password,
+					'password2' => $my_noreg_password, 
+					'email1' => 'guest@mymuse.ca',
+					'email2' => 'guest@mymuse.ca' 
+ 			);
+    		// Bind the data.
+    		if (!$user->bind($data))
+    		{
+    			$this->setError(JText::sprintf('COM_USERS_PROFILE_BIND_FAILED', $user->getError()));
+    			return false;
+    		}
+    		$user->groups = null;
+    		// Store the data.
+    		if (!$user->save())
+    		{
+    			$this->setError($user->getError());
+    			return false;
+    		}
+    		
+    	}
+
     	return parent::store($updateNulls);
     }
     	

@@ -142,7 +142,7 @@ class plgMymusePayment_Paypal extends JPlugin
 			$order->tax_total = 0.00;
 		}
 		$path = JURI::root(true);
-		$return = JRoute::_('index.php?option=com_mymuse&task=thankyou&view=cart&pp=paypal&Itemid='.$Itemid);
+		$return = JRoute::_('index.php?option=com_mymuse&task=thankyou&view=cart&pp=paypal&st=Completed&Itemid='.$Itemid);
 		$return = rtrim(JURI::root(),"/").preg_replace("#$path#",'',$return);
 		$cancel_return = JRoute::_('index.php?option=com_mymuse&task=paycancel&view=cart&Itemid='.$Itemid);
 		$cancel_return = rtrim(JURI::root(),"/").preg_replace("#$path#",'',$cancel_return);
@@ -229,7 +229,7 @@ class plgMymusePayment_Paypal extends JPlugin
 			$button_string = JText::_('MYMUSE_PAY_AT_PAYPAL');
 		}
 		$string .= '
-		<div id="paypal_form" class="pull-left">
+		<div id="paypal_form" class="pull-right">
 			<button class="button uk-button shopper-info" 
 			type="submit" >'. $button_string.'</button>
 		</div>
@@ -527,7 +527,8 @@ class plgMymusePayment_Paypal extends JPlugin
         			$result['order_id'] 	= $this_order->id;
         			$result['order_number'] = $this_order->order_number;
         			if (preg_match ("/Completed/", $result['payment_status'])) {
-                		MyMuseHelper::orderStatusUpdate($result['order_id'] , "C");
+        				$MyMuseHelper = new MyMuseHelper();
+                		$MyMuseHelper->orderStatusUpdate($result['order_id'] , "C");
                 		$date = date('Y-m-d h:i:s');
                 		$debug .= "$date 5. order COMPLETED at PayPal, update in DB\n\n";
                 		$result['order_completed'] = 1;

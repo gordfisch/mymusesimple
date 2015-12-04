@@ -227,20 +227,7 @@ class myMuseViewCart extends JViewLegacy
 			case "vieworder":
 				$st 			= $jinput->get('st', '');
 				$this->order 	= $order 	= $MyMuseShopper->order;
-				$order->waited 	= 0;
-
-				if($st === "Completed" && $order->order_status != "C"){
-					// waiting for IPN
-					sleep(3);
-					$order = MyMuseCheckout::getOrder($order->id);
-					$order->waited = 1;
-				}
-				if($st === "Completed" && $order->order_status != "C"){
-					// waiting for IPN
-					sleep(3);
-					$order = MyMuseCheckout::getOrder($order->id);
-					$order->waited = 2;
-				}
+				
 
 				$currency 	= $order->order_currency;
 				$edit 		= false;
@@ -881,6 +868,7 @@ class myMuseViewCart extends JViewLegacy
 		$contents  = '';
 		$do_not_display_children = 1;
 		$this->assignRef('do_not_display_children', $do_not_display_children);
+		
 		ob_start();
 		parent::display('email_header');
 		$header = ob_get_contents();

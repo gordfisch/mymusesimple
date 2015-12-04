@@ -257,11 +257,9 @@ class mymuseModelShopper extends JModelForm
 				$this->_shopper->user_id = null;
 				
 			}
-			
 		}
 
 		return $this->_shopper;
-
 	}
 	/**
 	 * getShopperByUser
@@ -383,6 +381,7 @@ class mymuseModelShopper extends JModelForm
 		$jinput = $app->input;
 		$user	= JFactory::getUser();
 		$fields = MyMuseHelper::getNoRegFields();
+		$myparams = MyMuseHelper::getParams();
 		
 		if($user->get('id')){
 			return true;
@@ -443,14 +442,13 @@ class mymuseModelShopper extends JModelForm
 		//perform the login action
 		$credentials = array();
 		$credentials['username'] = 'buyer';
-		$credentials['password'] = 'buyer';
+		$credentials['password'] = $myparams->get('my_noreg_password');
 		$options = array();
 		$error = $app->login($credentials, $options);
 		
-		if(!JError::isError($error)){
-		
-		}else{
-			$this->setError(JText::_($error->code));
+		$queue = $app->getMessageQueue();
+		if(count($queue)){
+			//$this->setError(JText::_($error->code));
 			return false;
 		}
 		
@@ -496,8 +494,7 @@ class mymuseModelShopper extends JModelForm
 				$user->set('name',@$post['jform']['profile']['first_name']." ".@$post['jform']['profile']['last_name']);
 			}
 		}
-
-		$session = JFactory::getSession();
+;
 		$session->set('user', $user);
 		
 		return true;
@@ -534,10 +531,11 @@ class mymuseModelShopper extends JModelForm
 		
 	function createGuestUser()
 	{
+		$myparams = MyMuseHelper::getParams();
  		$data = array('name' => 'Guest Buyer',
 		'username' => 'buyer',
-		'password1' => 'buyer',
-		'password2' => 'buyer', 
+		'password1' => $myparams->get('my_noreg_password'),
+		'password2' => $myparams->get('my_noreg_password'), 
 		'email1' => 'guest@mymuse.ca',
 		'email2' => 'guest@mymuse.ca' 
  		);
@@ -556,7 +554,7 @@ class mymuseModelShopper extends JModelForm
  		// Get the default new user group, Registered if not specified.
  		$system	= $params->get('new_usertype', 2);
  		$data['groups'][] = $system;
- 		
+
  		
  		// Bind the data.
  		if (!$user->bind($data)) {
@@ -590,6 +588,8 @@ class mymuseModelShopper extends JModelForm
 		$app = JFactory::getApplication();
 		$jinput = $app->input;
 		$user = JFactory::getUser();
+		$params	= JComponentHelper::getParams('com_users');
+		$myparams = MyMuseHelper::getParams();
 		if($user->get('id')){
 			return true;
 		}
@@ -611,9 +611,10 @@ class mymuseModelShopper extends JModelForm
 
 		$credentials = array();
 		$credentials['username'] = 'buyer';
-		$credentials['password'] = 'buyer';
+		$credentials['password'] = $myparams->get('my_noreg_password');
 		$options = array();
 		;
+		echo "login options "; print_pre($credentials); exit;
 		//preform the login action
 		$error = $app->login($credentials, $options);
 		
