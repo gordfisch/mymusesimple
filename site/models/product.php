@@ -333,8 +333,8 @@ class MyMuseModelProduct extends JModelItem
 			$tracks = $db->loadObjectList();
 		
 			$site_url = MyMuseHelper::getSiteUrl($pk,'1');
-			$site_path = MyMuseHelper::getSitePath($pk,'1');
-			// set up flash previews and streams
+			$site_path = MyMuseHelper::getSitePath($pk,'1');			
+			// set up previews and streams
 
 	
 			$this->_item[$pk]->flash = '';
@@ -427,7 +427,7 @@ class MyMuseModelProduct extends JModelItem
 						
 						if($track->file_preview){
 
-							
+							//echo $site_url." ".$track->file_preview."<br />";
 							$track->path = $site_url.$track->file_preview;
 							$track->real_path = $site_path.$track->file_preview;
 							

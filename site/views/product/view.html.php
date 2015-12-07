@@ -193,6 +193,7 @@ class myMuseViewProduct extends JViewLegacy
 				}		
 				$item->tracks[$i]->variation_select .= "</select>";
 			}
+			
 		}
 		
 		

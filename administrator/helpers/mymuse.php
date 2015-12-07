@@ -544,7 +544,6 @@ class MyMuseHelper extends JObject
 			$db->setQuery($query);
 			$id = $db->loadResult();
 		}
-		echo "id = $id parent = $parent <br />";
 		$query = "SELECT alias FROM #__mymuse_product 
    			WHERE id='".$id."'";
 
