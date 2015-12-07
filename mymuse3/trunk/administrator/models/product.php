@@ -835,11 +835,11 @@ class MymuseModelproduct extends JModelAdmin
 
  		// file lists for albums
  		$artist_alias = MyMuseHelper::getArtistAlias($parentid,'1');
-		$album_alias = MyMuseHelper::getAlbumAlias($parentid);
-		
-		$site_url = MyMuseHelper::getSiteUrl($this->_item->id,'1');
-		$site_path = MyMuseHelper::getSitePath($this->_item->id,'1');
-		$download_path = MyMuseHelper::getdownloadPath($this->_item->id,'1');
+		$album_alias = MyMuseHelper::getAlbumAlias($parentid,1);
+	
+		$site_url = MyMuseHelper::getSiteUrl($parentid,1);
+		$site_path = MyMuseHelper::getSitePath($parentid,1);
+		$download_path = MyMuseHelper::getdownloadPath($this->_item->id,'0');
 
 		$files = array();
 		// get the preview lists
@@ -889,7 +889,7 @@ class MymuseModelproduct extends JModelAdmin
 				}
 			}
 		}else{
-			$directory = MyMuseHelper::getDownloadPath($this->_item->id,'1');
+			$directory = MyMuseHelper::getDownloadPath($parentid,'1');
 			if($this->_params->get('my_download_dir_format')){
 				//by format
 				$files = array();

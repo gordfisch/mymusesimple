@@ -42,12 +42,6 @@ if($this->params->get('my_price_by_product')){
 	}
 }
 
-
-$product_price_mp3      = array('product_price' => $this->item->attribs->get('product_price_mp3'));
-$product_price_mp3_all  = array('product_price' => $this->item->attribs->get('product_price_mp3_all'));
-$product_price_wav      = array('product_price' => $this->item->attribs->get('product_price_wav'));
-$product_price_wav_all  = array('product_price' => $this->item->attribs->get('product_price_wav_all'));
-
 $all_tracks = 0;
 if(count($tracks)){ 
     foreach($tracks as $track){ 
@@ -192,11 +186,14 @@ jQuery(document).ready(function($){
 		$("#box_'.$track->id.'").click(function(e){
 			if(typeof document.mymuseform.variation_'.$track->id.'_id !== "undefined"){	
 				myvariation = document.mymuseform.variation_'.$track->id.'_id.value;
+<<<<<<< .mine
+				//alert("variation "+myvariation);
+=======
 				//alert("variation = "+myvariation);
+>>>>>>> .r1609
 			}else{
 				myvariation = "";
 			}
-            //alert("'.$url.'");
             $.post("'.$url.'",
             {
                 "productid":"'.$track->id.'",
@@ -269,6 +266,87 @@ if($this->cart['idx']){
 ?></div>
 </div>
 <div class="clear"></div>
+<?php  if (!$params->get('show_intro')) :
+	echo $this->item->event->afterDisplayTitle;
+endif; ?>
+
+<?php echo $this->item->event->beforeDisplayProduct; ?>
+
+
+
+<!-- PRODUCT ATTRIBUTES -->
+<?php $useDefList = (($params->get('show_author')) or ($params->get('show_category')) or ($params->get('show_parent_category'))
+	or ($params->get('show_create_date')) or ($params->get('show_modify_date')) or ($params->get('show_publish_date'))
+	or ($params->get('show_hits'))); ?>
+
+<?php if ($useDefList) : ?>
+	<dl class="article-info">
+	<dt class="article-info-term"><?php  echo JText::_('MYMUSE_PRODUCT_INFO'); ?></dt>
+<?php endif; ?>
+<?php if ($params->get('show_parent_category') && $this->item->parent_slug != '1:root') : ?>
+	<dd class="parent-category-name">
+	<?php	$title = $this->escape($this->item->parent_title);
+	$url = '<a href="'.JRoute::_(myMuseHelperRoute::getCategoryRoute($this->item->parent_id)).'">'.$title.'</a>';?>
+	<?php if ($params->get('link_parent_category') and $this->item->parent_slug) : ?>
+		<?php echo JText::sprintf('MYMUSE_PARENT', $url); ?>
+	<?php else : ?>
+		<?php echo JText::sprintf('MYMUSE_PARENT', $title); ?>
+	<?php endif; ?>
+	</dd>
+<?php endif; ?>
+<?php if ($params->get('show_category')) : ?>
+	<dd class="category-name">
+	<?php 	$title = $this->escape($this->item->category_title);
+	$url = '<a href="'.JRoute::_(myMuseHelperRoute::getCategoryRoute($this->item->catid)).'">'.$title.'</a>';?>
+	<?php if ($params->get('link_category') and $this->item->catslug) : ?>
+		<?php echo JText::sprintf('MYMUSE_PRODUCT_CATEGORY', $url); ?>
+	<?php else : ?>
+		<?php echo JText::sprintf('MYMUSE_PRODUCT_CATEGORY', $title); ?>
+	<?php endif; ?>
+	</dd>
+<?php endif; ?>
+<?php if ($params->get('show_create_date')) : ?>
+	<dd class="create">
+	<?php echo JText::sprintf('MYMUSE_CREATED_DATE_ON', JHtml::_('date', $this->item->created, JText::_('DATE_FORMAT_LC2'))); ?>
+	</dd>
+<?php endif; ?>
+<?php if ($params->get('show_modify_date')) : ?>
+	<dd class="modified">
+	<?php echo JText::sprintf('MYMUSE_LAST_UPDATED', JHtml::_('date', $this->item->modified, JText::_('DATE_FORMAT_LC2'))); ?>
+	</dd>
+<?php endif; ?>
+<?php if ($params->get('show_publish_date')) : ?>
+	<dd class="published">
+	<?php echo JText::sprintf('MYMUSE_PUBLISHED_DATE_ON', JHtml::_('date', $this->item->publish_up, JText::_('DATE_FORMAT_LC2'))); ?>
+	</dd>
+<?php endif; ?>
+<?php if ($params->get('show_author') && !empty($this->item->author )) : ?>
+	<dd class="createdby">
+	<?php $author = $this->item->created_by_alias ? $this->item->created_by_alias : $this->item->author; ?>
+	<?php if (!empty($this->item->contactid) && $params->get('link_author') == true): ?>
+	<?php
+		$needle = 'index.php?option=com_contact&view=contact&id=' . $this->item->contactid;
+		$menu = JFactory::getApplication()->getMenu();
+		$item = $menu->getItems('link', $needle, true);
+		$cntlink = !empty($item) ? $needle . '&Itemid=' . $item->id : $needle;
+	?>
+		<?php echo JText::sprintf('MYMUSE_WRITTEN_BY', JHtml::_('link', JRoute::_($cntlink), $author)); ?>
+	<?php else: ?>
+		<?php echo JText::sprintf('MYMUSE_WRITTEN_BY', $author); ?>
+	<?php endif; ?>
+	</dd>
+<?php endif; ?>
+<?php if ($params->get('show_hits')) : ?>
+	<dd class="hits">
+	<?php echo JText::sprintf('MYMUSE_PRODUCT_HITS', $this->item->hits); ?>
+	</dd>
+<?php endif; ?>
+<?php if ($useDefList) : ?>
+	</dl>
+<?php endif; ?>
+<!-- END ATTRIBUTES -->
+
+
 <?php  endif; ?>
 	
 	
@@ -417,7 +495,7 @@ endif; ?>
  <?php endif; ?>   
   
 
-    <ul class="product-content-list">
+    <ul class="product-content">
         <li class="product-content-item">
             <span class="category">Artist</span>
             <span class="value"><?php echo $product->artist_title;?></span>
@@ -443,21 +521,30 @@ endif; ?>
         </li>
         
         <li class="product-content-item-actions">
-            <span class="product-preview-play"><?php echo $tracks[0]->flash; ?></span>
+            <span class="mypreviews tracks jp-gui ui-widget"><?php echo $tracks[0]->flash; ?></span>
             <span class="value"><?php if($all_tracks) : ?>
                 <!--  PRODUCT ALL TRACKS -->
                 <span class="product-full">
                     <span class="product-full-title"><?php echo JText::_('MYMUSE_BUY_FULL_RELEASE'); ?></span>
-                    <span id="mp3_<?php echo $all_tracks->id; ?>" class="price"><?php echo MyMuseHelper::printMoneyPublic($product_price_mp3_all); ?></span>
-                    <span id="wav_<?php echo $all_tracks->id; ?>" class="price" style="display:none"><?php echo MyMuseHelper::printMoneyPublic($product_price_wav_all); ?></span>
+                <?php
+                foreach($params->get('my_formats') as $format) : 
+                    echo '<span id="'.$format.'_'.$all_tracks->id.' class="price">';
+                    $product_price_all = 'product_price_'.$format.'_all';
+                    echo MyMuseHelper::printMoneyPublic($product_price_all); ?>
+                    </span>
+				<?php endforeach;?>
                     <span class="format"> <?php 
-                    if(isset($track->variation_select)) :
-                        echo $track->variation_select;
+                    if(isset($tracks[0]->variation_select)) :
+                        echo $tracks[0]->variation_select;
                     endif;?>
                 </span>
+                
             </span>
             <?php endif;?>
         </li>
+    </ul>
+    <br />
+    <ul class="product-content">
         <li class="product-content-item">
             <span class="category">Description</span>
             <span class="value">
@@ -710,8 +797,171 @@ endif; ?>
 <?php } ?>
 <!--  END ITEMS -->
 		
+<!-- ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS -->
+	<?php if(count($items) && !$items_select){  ?>
+
+	<style type="text/css">
+	@media (max-width: 767px) { 
+	<?php foreach($product->attribute_sku as $a_sku){ ?>
+		td.my<?php echo $a_sku->name ?>:before { 
+			content: "<?php echo JText::_($a_sku->name); ?>";
+		}
+		td.my<?php echo $a_sku->name ?>{
+			text-align: left;
+		}
+		td.my<?php echo $a_sku->name ?>:before {
+			white-space: nowrap;
+			padding-right: 7%;
+			margin-right: 7%;
+			width: 23%;
+			display: inline-block;
+			border-right: 1px solid #ccc;
+		}
+		td.my<?php echo $a_sku->name ?> {
+			clear: both;
+		}
+		
+	<?php } ?>
+	}
+	</style>
+		<h3><?php echo JText::_('MYMUSE_ITEMS'); ?></h3> 
+		<table class="mymuse_cart">
+			<thead>
+		    <tr>
+		    	<th class="myselect" align="left" width="5%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
+        		<th class="mytitle" align="left" width="55%" ><?php echo JText::_('MYMUSE_NAME'); ?>
+				</th>
+       			<?php foreach($product->attribute_sku as $a_sku){ ?>
+						<th class="my<?php echo $a_sku->name ?>" align="left"><?php echo $a_sku->name; ?></th>
+				<?php } ?>
+       			
+				<th class="myprice" align="center" width="20%"><?php echo JText::_('MYMUSE_COST'); ?></th>
+        	<?php if ($params->get('product_show_quantity')) :?>
+        		<th class="myquantity" align="left" width="20%"><?php echo JText::_('MYMUSE_QUANTITY'); ?></th>
+      	    <?php endif; ?>
+      		</tr>
+      		</thead>
+			<?php 
+
+			foreach($items as $item){  
+				?>
+			  		<tr>
+        				<td class="myselect"><span class="mycheckbox"><input type="checkbox" name="productid[]" 
+        				value="<?php echo $item->id; ?>" id="box<?php echo $check; $check++; ?>" /></span></td>
+        				<td class="mytitle"><?php echo $item->title; ?></td>
+        			<?php foreach($product->attribute_sku as $a_sku){ ?>
+						<td class="my<?php echo $a_sku->name ?>"><?php echo $item->attributes[$a_sku->name]; ?></td>
+					<?php } ?>
+						<td class="myprice">
+						<?php echo MyMuseHelper::printMoneyPublic($item->price); 
+				?></td>
+        			<?php if ($params->get('product_show_quantity')) :?>
+						<td class="myquantity"><input class="inputbox" type="text" name="quantity[<?php echo $item->id; ?>]" size="2" value="1" /></td>
+					<?php endif; ?>
+      				</tr>
+      		<?php  } ?>
+		</table>
+		<table class="mymuse_cart">
+	  		<tr>	
+				<td width="30%"><input class="button" type="submit" value="<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?>"
+				title="<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?>" />&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				<td width="30%"><input class="button" type="button" value="<?php echo JText::_('MYMUSE_CANCEL');; ?>" 
+				title="<?php echo JText::_('MYMUSE_CANCEL'); ?>" onclick="window.location='<?php echo htmlentities($return_link); ?>'" /></td>
+	  		</tr>
+		</table>
+		<br />
+		<br />
+	<?php } ?>
+
+	<?php 
+	//select option
+	if(count($items) && $items_select){  ?>
+		<h3><?php echo JText::_('MYMUSE_ITEMS'); ?></h3> 
+		<script type="text/javascript">
+		function updateq (sid){
+			var element = 'pidselect' + sid;
+			var pidselect=document.getElementById(element);
+		    var pid = pidselect.options[pidselect.selectedIndex].value;
+		    //alert("chosen pid = "+pid);
+		    var qid = 'quantity'+pid;
+		    var qchosen =document.getElementById(qid);
+		    var iid = "item_quantity" + sid
+		    var qbox=document.getElementById(iid);
+		    var q = qbox.value;
+		    //alert("quantity = "+q);
+
+		    qchosen.value = q;
+		    //alert(qchosen.value);
+		    return true;
+		
+		}
+		</script>
+		<table class="mymuse_cart">
+			<thead>
+		    <tr>
+		    	<th class="mytitle" align="left" width="45%" ><?php echo JText::_('MYMUSE_NAME'); ?></th>
+		    	<th class="myselect" align="left" width="45%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
+        	<?php if ($params->get('product_show_quantity')) :?>
+        		<th class="myquantity" align="left" width="20%"><?php echo JText::_('MYMUSE_QUANTITY'); ?></th>
+      	    <?php endif; ?>
+      		</tr>
+      		</thead>
+      	<?php foreach($items as $item){ ?>
+      		<tr>
+      			<td class="mytitle"><?php echo $item->title; ?></td>
+      			<td class="myselect"><?php echo $item->select; ?></td>
+      			<?php if ($params->get('product_show_quantity')) :?>
+						<td class="myquantity"><input class="inputbox" type="text" name="item_quantity[<?php echo $item->pidselect; ?>]" 
+						id="item_quantity<?php echo $item->pidselect; ?>"
+						size="2" value="1" 
+						onchange="updateq(<?php echo $item->pidselect; ?>);"
+						/> 
+						</td>
+				<?php endif; ?>
+      		</tr>
+      	<?php } ?>
+		</table>
+		<table class="mymuse_cart">
+	  		<tr>	
+				<td width="30%"><input class="button" type="submit" value="<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?>"
+				title="<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?>" />&nbsp;&nbsp;&nbsp;&nbsp;</td>
+				<td width="30%"><input class="button" type="button" value="<?php echo JText::_('MYMUSE_CANCEL');; ?>" 
+				title="<?php echo JText::_('MYMUSE_CANCEL'); ?>" onclick="window.location='<?php echo htmlentities($return_link); ?>'" /></td>
+	  		</tr>
+		</table>
+		<br />
+		<br />
+<?php } ?>
+<!--  END ITEMS -->
+		
 <!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
 <?php if(count($tracks)){ ?>
+<<<<<<< .mine
+
+    	<?php if($params->get('product_player_type') == "single"){ ?>
+			<div id="product_player" 
+			<?php if($params->get('product_player_height')){ ?>
+			style="height: <?php echo $params->get('product_player_height'); ?>px"
+			<?php } ?>
+			><?php echo $product->flash; ?>
+			</div>
+			<?php if($product->flash){ ?>
+			<div><?php echo JText::_('MYMUSE_NOW_PLAYING');?> <span id="jp-title-li"></span></div>
+			<?php } ?>
+		<?php } ?>
+		<?php if($params->get('product_player_type') == "playlist"){ ?>
+			<div id="product_player" ><?php echo $product->flash; ?>
+			</div>
+			
+		<?php } ?>
+		<div style="clear: both"></div>
+		
+		<div class="clips petrol" 
+		<?php if($params->get('product_player_type') == "each"){ ?>
+		id="product_player"
+		<?php } ?>
+		>
+=======
 		<h3><?php echo JText::_('MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
 
 		<?php if($params->get('product_player_type') == "single"){ ?>
@@ -739,6 +989,7 @@ endif; ?>
 		>
 		
 		
+>>>>>>> .r1609
 		<div class="track-count"><?php echo count($tracks); 
         if(count($tracks) == 1){ $word = "Track"; }else{ $word = "Tracks";} ?> 
             <?php echo $word; ?> Total</div>
@@ -836,12 +1087,26 @@ endif; ?>
         			<?php } ?>
         			
 					<!--  COST COLUMN -->
-        			<?php  if($params->get('product_show_cost_column', 1)){?>	
+        			<?php  if($params->get('product_show_cost_column', 1)) :?>	
         				<td class="myprice">
-                        <div id="mp3_<?php echo $track->id; ?>" class="price"><?php echo MyMuseHelper::printMoneyPublic($product_price_mp3); ?></div>
-                        <div id="wav_<?php echo $track->id; ?>" class="price" style="display:none"><?php echo MyMuseHelper::printMoneyPublic($product_price_wav); ?></div>
+        				<?php 
+        				if($params->get('my_price_by_product')) :
+        					$first = 1;
+							foreach($this->params->get('my_formats') as $format) :
+								$product_price = 'product_price_'.$format;
+        						echo '<div id="'.$format.'_'.$track->id.'" class="price"';
+        						if(!$first):
+        							echo ' style="display:none" ';
+      							endif;
+      							$first = 0;
+ 								echo '>'.MyMuseHelper::printMoneyPublic($product_price).'<div>';
+ 							endforeach;
+        				else :  
+        					echo MyMuseHelper::printMoneyPublic($track->price);
+        				
+        				endif; ?>
         				</td>
-        			<?php } ?>	
+        			<?php endif; ?>	
                     
                     <!--  FORMAT COLUMN -->
         			
@@ -877,7 +1142,7 @@ endif; ?>
         			
         			<!--  PREVIEW COLUMN -->
 
-        				<td class="mypreviews tracks"><?php echo $track->flash; ?></td>
+        				<td class="mypreviews tracks jp-gui ui-widget"><?php echo $track->flash; ?></td>
         		
 
       				</tr>
