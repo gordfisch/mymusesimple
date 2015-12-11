@@ -52,21 +52,7 @@ class myMuseHelperRoute
 				'product'  => array((int) $id)
 		);
 		
-		if($params->get('my_use_alias') && $params->get('top_menu_item',0)){
-			
-			$q = "SELECT alias from #__menu WHERE id ='".$params->get('top_menu_item')."'";
-			$db->setQuery($q);
-			$menu_alias = $db->loadResult();
-			$q = "SELECT catid, alias from #__mymuse_product WHERE id ='".$id."'";
-			$db->setQuery($q);
-			$res = $db->loadObject();
-			if(!$catid){
-				$catid = $res->catid;
-			}
-			$alias = $res->alias;
-			$link = "$menu_alias/$alias";
-			return  $link;
-		}
+
 		
 		//if not use alias
 		//Create the link
@@ -135,17 +121,7 @@ class myMuseHelperRoute
 			$category = JCategories::getInstance('mymuse')->get($id);
 		}
 		
-		if($params->get('my_use_alias') && $params->get('top_menu_item',0)){
-			$q = "SELECT alias from #__menu WHERE id ='".$params->get('top_menu_item')."'";
-			$db->setQuery($q);
-			$menu_alias = $db->loadResult();
-			$q = "SELECT alias from #__categories WHERE id ='".$id."'";
-			$db->setQuery($q);
-			if($alias = $db->loadResult()){
-				$link = "$menu_alias/$alias";
-				return  $link;
-			}
-		}
+
 
 		if($id < 1)
 		{

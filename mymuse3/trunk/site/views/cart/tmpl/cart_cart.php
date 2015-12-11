@@ -19,8 +19,14 @@ $params 	= $this->params;
 $task		= $this->task;
 $got_flash  = 0;
 for ($i=0;$i<count($order->items); $i++) { 
+    if(!isset($order->items[$i])){
+                  continue;
+              }
     if(isset($order_item[$i]->flash)){
             $got_flash = 1;
+    }
+    if(isset($order_item[$i]->variation_select)){
+        $got_variation = 1;
     }
 }
 ?>
@@ -31,7 +37,30 @@ for ($i=0;$i<count($order->items); $i++) {
 
 		<!-- start of basket -->
 
-		<h2><?php echo JText::_('MYMUSE_SHOPPING_CART'); ?></h2>          
+		<h2><?php echo JText::_('MYMUSE_SHOPPING_CART'); ?></h2> 
+		  
+		<?php if($params->get('product_player_type') == "single") : ?>
+			<div id="product_player" 
+			<?php if($params->get('product_player_height')) : ?>
+			style="height: <?php echo $params->get('product_player_height'); ?>px"
+			<?php endif; ?>
+			><?php echo $order->flash; ?>
+			</div>
+		<?php endif; ?>
+		<?php if($params->get('product_player_type') == "playlist"){ ?>
+			<div id="product_player" ><?php echo $product->flash; ?>
+			</div>
+			
+		<?php } ?>
+		<div style="clear: both"></div>
+		
+		<div class="clips petrol" 
+		<?php if($params->get('product_player_type') == "each"){ ?>
+		id="product_player"
+		<?php } ?>
+		>
+		
+		       
 	<table class="mymuse_cart cart">
 		<thead>
 		<tr class="mymuse_cart cart">
@@ -53,14 +82,14 @@ for ($i=0;$i<count($order->items); $i++) {
 		</thead>
 		<?php
 		  // LOOP THRU order_items
-		  for ($i=0;$i<count($order->items); $i++) { 
+		  for ($i=0;$i<count($order_item); $i++) { 
 		?>
 		
 		    <tr>
 		     <?php if($params->get("my_show_cart_preview") && $got_flash){ ?>  
-		        <td class="mypreviews cart"><?php 
+		        <td class="mypreviews tracks jp-gui ui-widget cart" style="width: 42px;"><?php 
                 echo isset($order_item[$i]->flash)?  $order_item[$i]->flash : ''; ?></td>
-		     <?php } ?>			    
+		     <?php } ?>		    
 		        <td class="mytitle cart">
 		        <?php if(isset($order_item[$i]->category_name) && $params->get('mymuse_show_category')){ ?>
 		        	 <?php echo $order_item[$i]->category_name; ?> : 
@@ -93,10 +122,12 @@ for ($i=0;$i<count($order->items); $i++) {
 		        ?></td>
 		    <?php } ?>  
 		        <td class="mysubtotal cart"><?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_subtotal); ?></td>
-		        
+		    
 		    <?php if($order->do_html){ ?>
 		        <td class="myaction cart"><a href="<?php echo $order_item[$i]->delete_url; ?>"><?php echo JText::_('MYMUSE_DELETE'); ?></a></td>
 		    <?php } ?>
+		    
+		    	
 		       </tr>
 		<?php } ?>
 		

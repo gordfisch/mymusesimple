@@ -153,8 +153,8 @@ class modMyMuseLatestHelper
 			if($params->get('type_shown') == "tracks" && $results[$i]->file_preview){
 				$trs = array();
 				
-				$artist_alias = MyMuseHelper::getArtistAlias($results[$i]->parentid,'1');
-				$album_alias = MyMuseHelper::getAlbumAlias($results[$i]->parentid);
+				$artist_alias = MyMuseHelper::getArtistAlias($results[$i]->parentid, '1');
+				$album_alias = MyMuseHelper::getAlbumAlias($results[$i]->parentid, '1');
 				
 					
 				$site_url = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base());

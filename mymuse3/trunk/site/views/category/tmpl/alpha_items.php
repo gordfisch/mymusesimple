@@ -131,6 +131,7 @@ $l = 0;
 		}
 		?>
 	<?php endforeach; ?>
+	</div>
 </div>
 
 <?php endif;

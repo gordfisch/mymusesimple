@@ -415,9 +415,7 @@ function MymuseParseRoute($segments)
         	$vars['task'] = 'downloadfile';
         	return $vars;
         }
-  //downloadfile
         
-
         
 		if($params->get('my_use_alias')){
 			//check if this is a product alias.

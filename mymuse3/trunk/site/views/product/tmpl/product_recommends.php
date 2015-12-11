@@ -12,17 +12,17 @@
 // no direct access
 defined('_JEXEC') or die('Restricted access');
 
-if(count($this->recommends)){ ?>
+if(count($this->recommends)) : ?>
 	<div id="mymuse-container-wrap">
 	<h3><?php echo JText::_('MYMUSE_RELATED_ITEMS'); ?></h3>
-	<?php foreach($this->recommends as $item){ ?>
 	<div id="mymuse-container">	
+	<?php foreach($this->recommends as $item) : ?>
 		<div class="related-item">
 		<a href="<?php echo $item->url; ?>"><img src="<?php echo $item->list_image; ?>"></a>
 		</div>
-	<?php } ?>
-    
+	<?php endforeach; ?>
 	</div>
-<?php } ?>
+	</div>
+<?php endif; ?>
 <div style="clear: both;"></div>
-</div>
+

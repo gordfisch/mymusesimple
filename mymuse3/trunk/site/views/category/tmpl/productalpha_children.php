@@ -112,3 +112,4 @@ if(!$total_shown){
 	</ul>
 	</div>
 <?php endif; ?>
+</div>

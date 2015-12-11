@@ -478,7 +478,17 @@ class MyMuseHelper extends JObject
 	static function getArtistAlias($id,$parent=0){
 		
 		$db	= JFactory::getDBO();
-		if($parent){
+		if(!$parent){
+			$query = "SELECT parentid from #__mymuse_product
+			WHERE id ='$id'";
+			$db->setQuery($query);
+			$parentid = $db->loadResult();
+			$query = "SELECT catid from #__mymuse_product
+			WHERE id ='$parentid'";
+			$db->setQuery($query);
+			$id = $db->loadResult();
+
+		}else{
 			$query = "SELECT catid from #__mymuse_product
 			WHERE id ='$id'";
 			$db->setQuery($query);
@@ -558,6 +568,7 @@ class MyMuseHelper extends JObject
 	 * getSiteUrl get url for previews/downloads
 	 *
 	 * @param $id int
+	 * @param $parent int
 	 * @return string
 	 */
 	static function getSiteUrl($id, $parent=0)

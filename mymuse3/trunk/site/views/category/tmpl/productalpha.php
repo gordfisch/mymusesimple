@@ -13,11 +13,7 @@ defined('_JEXEC') or die;
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 $category = $this->category;
 ?>
-<style type="text/css">
-.cat-items li {
-	display: block;
-}
-</style>
+
 <?php  echo $category->event->beforeDisplayHeader; ?>
 
 <div class="category-list<?php echo $this->pageclass_sfx;?>">
@@ -66,7 +62,7 @@ $category = $this->category;
 	</div>
 	<div class="clear"></div>
 	<?php endif; ?>
-</div>
+
 
 <?php echo $category->event->beforeDisplayProduct; ?>
      <div class="cat-items">
@@ -74,3 +70,5 @@ $category = $this->category;
 	</div>
 
 <?php echo $category->event->afterDisplayProduct; ?>
+</div>
+<div class="clear"></div>
