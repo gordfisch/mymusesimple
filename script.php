@@ -532,6 +532,9 @@ class com_mymuseInstallerScript
 			$query = "ALTER TABLE `#__mymuse_product` ADD `artistid` INT( 11 ) NOT NULL AFTER `catid`";
 			$db->setQuery($query);
 			$db->execute();
+			$query = "UPDATE `#__mymuse_product` SET `artistid` = `catid` WHERE 1";
+			$db->setQuery($query);
+			$db->execute();
 		}
 		
 		

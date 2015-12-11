@@ -3,10 +3,6 @@ defined('_JEXEC') or die('Restricted access');
 $height 	= $params->get('product_image_height',0);
 ?>
 
-
-
-
-
 <?php if(count($list)):?>	
 <div id="mod_mymuse_latest_<?php echo $params->get('module_number'); ?>">
 <?php if($params->get('display')){  //vertical ?>
@@ -40,6 +36,7 @@ if($params->get('type_shown') == "tracks" && $params->get('show_track_preview'))
 			<?php 
 }
 ?>
+<div style="clear: both;"></div>
 <ul class="mymuse_latest<?php echo $params->get('moduleclass_sfx'); ?>">
 <?php foreach ($list as $item) : ?>
 	<li class="mymuse_latest<?php echo $params->get('moduleclass_sfx'); ?>">

@@ -47,10 +47,10 @@ $category = $this->category;
 		<?php if ($this->params->get('show_description') && $this->category->description) : ?>
 			<?php echo JHtml::_('content.prepare', $this->category->description, '', 'com_content.category'); ?>
 		<?php endif; ?>
-		<div class="clr"></div>
+		<div class="clear"></div>
 	</div>
 	<?php endif; ?>
-	<div style="clear: both;"></div>
+	<div class="clear"></div>
 <?php echo $category->event->beforeDisplayProduct; ?>
 
 <div class="cat-items">
@@ -58,5 +58,7 @@ $category = $this->category;
 echo $this->loadTemplate('items');
 ?>
 </div>
-</div>
+
 <?php echo $category->event->afterDisplayProduct; ?>
+</div>
+<div class="clear"></div>

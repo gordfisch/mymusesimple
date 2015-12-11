@@ -302,12 +302,8 @@ class MyMuseModelProduct extends JModelItem
 			}
 			$othercats = array_unique($othercats);
 			$this->_item[$pk]->othercats = $othercats;
+
 			
-
-					
-					
-					
-
 			// TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS 
 			// get child tracks with prices
 			$track_query = "SELECT id,title,title_alias,introtext,`fulltext`, parentid, catid, product_physical, product_downloadable, product_allfiles, product_sku,
@@ -430,7 +426,7 @@ class MyMuseModelProduct extends JModelItem
 							//echo $site_url." ".$track->file_preview."<br />";
 							$track->path = $site_url.$track->file_preview;
 							$track->real_path = $site_path.$track->file_preview;
-							
+						
 							if($track->file_preview_2){
 								$track->path_2 = $site_url.$track->file_preview_2;
 								$track->real_path_2 = $site_path.$track->file_preview_2;

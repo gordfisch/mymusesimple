@@ -69,7 +69,7 @@ $mobile_style .= '
 	td.mydate-modified:before { content: "'.JText::_('MYMUSE_MODIFIED_DATE').'";}
 	td.mydate-created:before { content: "'.JText::_('MYMUSE_CREATED_DATE').'";}
 	td.mydate-published:before { content: "'.JText::_('MYMUSE_PUBLISHED_DATE').'";}
-	td.mydate-product_made_date:before { content: "'.JText::_('MYMUSE_PRODUCT_CREATED_DATE').'";}
+	td.mydate-product_made_date:before { content: "'.JText::_('MYMUSE_RELEASE').'";}
 	td.myartist:before { content: "'.JText::_('MYMUSE_ARTIST').'";}
 	
 	td.myorderid:before { content: "'.JText::_('MYMUSE_ORDER_ID').'";}

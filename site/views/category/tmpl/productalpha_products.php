@@ -38,7 +38,7 @@ $column = 1;
 $done = 0;
 //echo "count = $count break = $break letters = ".count($lets);
 ?>
-<div class="cat-items">
+
 <h3><?php echo JText::_('MYMUSE_PRODUCTS'); ?></h3>
 <div class="cols-<?php echo $this->params->get('num_columns'); ?>">
 	<?php foreach($alphaarr as $letter => $children) : 
@@ -127,4 +127,4 @@ $done = 0;
 </div>
 
 <?php endif; ?>
-</div>
+

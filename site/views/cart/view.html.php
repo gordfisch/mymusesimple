@@ -275,10 +275,15 @@ class myMuseViewCart extends JViewLegacy
 			// TRACKS
 			if($count = count($order->items)){
 				$count = count($order->items);
+				if(count($order->items) && $params->get('product_player_type') == "single"){
+					
 				$j = 0;
 				while (list($i,$track) = each( $order->items)){
-					$site_url = MyMuseHelper::getSiteUrl($track->id,'1');
-					$site_path = MyMuseHelper::getSitePath($track->id,'1');
+					if($track->parentid == 0){
+						continue;
+					}
+					$site_url = MyMuseHelper::getSiteUrl($track->id,'0');
+					$site_path = MyMuseHelper::getSitePath($track->id,'0');
 					$flash = '';
 					if(isset($track->file_preview) && $track->file_preview){
 						$track->path = $site_url.$track->file_preview;
@@ -315,6 +320,56 @@ class myMuseViewCart extends JViewLegacy
 						$j++;
 					}
 			
+				}
+				// make a controller for the play/pause buttons
+				$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$order->items) );
+				
+				//get the player itself
+				reset($order->items);
+				$flash = '';
+				$audio = 0;
+				$video = 0;
+				foreach($order->items as $track){
+					if($track->file_preview){
+						$flash .= '<!-- Begin Player -->';
+						if(substr_count($track->file_type,"video") && !$video){
+							//movie
+				
+							$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
+				
+							if(is_array($results) && isset($results[0]) && $results[0] != ''){
+								$flash .= $results[0];
+							}
+							$video = 1;
+							$order->flash_type = "video";
+							if($audio){
+								$order->flash_type = "mix";
+							}
+								
+						}elseif(substr_count($track->file_type,"audio") && !$audio){
+							//audio
+							$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
+				
+							if(is_array($results) && isset($results[0]) && $results[0] != ''){
+								$flash .= $results[0];
+							}
+							$audio = 1;
+							$order->flash_type = "audio";
+							if($video){
+								$order->flash_type = "mix";
+							}
+						}
+						$flash .= '<!-- End Player -->';
+						$order->flash = $flash;
+						$order->flash_id = $track->id;
+						if($order->flash_type != "mix"){
+							break;
+						}elseif($audio && $video){
+							break;
+						}
+				
+					}
+				}
 				}
 			}
 

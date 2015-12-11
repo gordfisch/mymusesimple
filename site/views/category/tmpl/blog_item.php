@@ -199,5 +199,6 @@ style="height: <?php echo $params->get('category_product_image_height'); ?>px"
 </div>
 <?php endif; ?>
 
-<div class="item-separator"></div>
+
 <?php echo $this->item->event->afterDisplayContent; ?>
+<div class="clear"></div>

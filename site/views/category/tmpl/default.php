@@ -64,9 +64,8 @@ $category = $this->category;
 	
 <?php echo $category->event->beforeDisplayProduct; ?>
 
-	<div class="cat-items">
-		<?php echo $this->loadTemplate('products'); ?>
-	</div>
+<?php echo $this->loadTemplate('products'); ?>
+
 
 <?php echo $category->event->afterDisplayProduct; ?>
 </div>

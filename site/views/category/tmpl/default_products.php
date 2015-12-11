@@ -147,8 +147,13 @@ $height 	= $this->params->get('category_product_image_height',0);
 				</td>
 			<?php endif; ?>
 
-				<td class="mytitle"><a
-					href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($product->id, $this->category->id)); ?>">
+				<td class="mytitle">
+				<?php echo MyMuseHelperRoute::getProductRoute($product->id, $this->category->id);?>
+				<a
+					href="<?php 
+					
+					
+					echo JRoute::_(MyMuseHelperRoute::getProductRoute($product->id, $this->category->id)); ?>">
 						<?php echo $this->escape($product->title); ?>
 				</a> <?php if ($product->params->get('access-edit')) : ?> <!--  
 						 <ul class="actions">
@@ -271,5 +276,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 		<?php echo $this->pagination->getPagesLinks(); ?>
 	</div>
 	<?php endif; ?>
-</form>
+
 <?php  endif; ?>
+</form>
+

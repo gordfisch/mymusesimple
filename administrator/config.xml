@@ -959,6 +959,28 @@
 			<option value="1">JSHOW</option>
 		</field>
 
+		<field name="list_show_artist" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_LIST_ARTIST_DESC"
+				label="MYMUSE_LIST_ARTIST_LABEL"
+				default="1"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+		</field>
+			
+		<field name="list_show_album" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_LIST_ALBUM_DESC"
+				label="MYMUSE_LIST_ALBUM_LABEL"
+				default="1"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+		</field>
+			
 		<field name="list_show_file_length" 
 			type="list"
 			description="MYMUSE_LIST_FILE_LENGTH_DESC"

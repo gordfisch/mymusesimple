@@ -18,7 +18,7 @@ div#mod_mymuse_latest_1 {
 	float: left;
 	list-style-type:none;
 	margin-left: -30px;
-
+	margin-bottom: 10px;
 }
 
 div#mod_mymuse_latest li a, div#mod_mymuse_latest_1 li a:active, div#mod_mymuse_latest_1 li a:visited{

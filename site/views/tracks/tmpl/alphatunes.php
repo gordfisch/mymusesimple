@@ -12,7 +12,7 @@ $cells = 0;
 $category_height = $this->params->get('category_image_height',0);
 $product_height = $this->params->get('category_product_image_height',0);
 $params = $this->params;
-
+$Itemid		= $this->Itemid;
 $check = 0;
 $return_link = myMuseHelperRoute::getCategoryRoute($this->category->id); 
 $count = 0;
@@ -116,32 +116,8 @@ function tableOrdering( order, dir, task )
 }
 */
 
-#alphabet .letter{
-    padding: 0 5px 0 0;
-    font-weight:bold;
-}
-#alphabet .selected{
-   font-size:150%
-}
-#main .pagination ul{
-	list-style-type: none;
-    margin: 0;
-    padding: 0;
-    text-align: left;
-}
-.pagination li {
-    border: 1px solid #EEEEEE;
-    display: inline;
-    margin: 0 2px;
-    padding: 2px 5px;
-    text-align: left;
-}
-#carttop {
-    width: 200px;
-    border: 1px solid;
-    height: 50px;
-    margin-bottom:10px;
-}
+
+
 </style>
 
 
@@ -183,21 +159,24 @@ function tableOrdering( order, dir, task )
 	<?php endif; ?>
 <div class="clear"></div>
 
+
 <?php if($this->params->get('show_minicart')) :?>
 <!--  the cart box  -->
 <div id='carttop'>
-<img src="components/com_mymuse/assets/images/cart.png" align="left"><span id="carttop1"><?php
-if($this->cart['idx']){
-    echo $this->cart['idx']." ".JText::_('MYMUSE_PRODUCTS');
-}
-?></span><br />
-<span id="carttop2"><?php
-if($this->cart['idx']){
-    echo '<a href="'.JRoute::_('index.php?option=com_mymuse&view=cart&layout=cart').'">'.JText::_('MYMUSE_VIEW_CART').'</a>';
-}else{
+<div class="carttop"></div>
+<div id="carttop1"><?php
+if($this->cart['idx']) :
+    $word = ($this->cart['idx'] == 1) ? "item" : "items"; 
+    echo $this->cart['idx']." $word";
+endif;
+?></div>
+<div id="carttop2"><?php
+if($this->cart['idx']) :
+    echo '<a href="'.JRoute::_('index.php?option=com_mymuse&view=cart&task=showcart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>';
+else :
     echo JText::_('MYMUSE_YOUR_CART_IS_EMPTY');
-}
-?></span>
+endif;
+?></div>
 </div>
 <div class="clear"></div>
 <?php  endif; ?>
@@ -280,10 +259,16 @@ if($this->cart['idx']){
 		<table class="mymuse_cart tracks jp-gui ui-widget ui-widget-content ui-corner-all">
 			<thead>
 		    <tr>
-
-        		<th class="mymuse_cart_top myartist" align="left" width="40%" >
+				<?php if($params->get('list_show_artist')) { ?>
+        		<th class="mymuse_cart_top myartist" >
         		<?php echo JHtml::_('grid.sort', 'MYMUSE_ARTIST', 'category_name', $listDirn, $listOrder); ?></th>
-       
+       			<?php } ?>
+       			
+       			<?php if($params->get('list_show_album')) { ?>
+        		<th class="mymuse_cart_top myartist" >
+        		<?php echo JHtml::_('grid.sort', 'MYMUSE_ALBUM', 'product_title', $listDirn, $listOrder); ?></th>
+       			<?php } ?>
+       			
        			<th class="mymuse_cart_top mytitle" align="center" width="40%">
        			<?php echo JHtml::_('grid.sort', 'MYMUSE_NAME', 'a.title', $listDirn, $listOrder); ?>
        			</th>
@@ -339,25 +324,40 @@ if($this->cart['idx']){
       		</tr>
       		</thead>
       		<?php foreach($tracks as $track){ ?>
-      			<!--  ARTIST/ALBUM COLUMN -->	
+      				
 			  		<tr>
+			  		<?php if($params->get('list_show_artist')) { ?>
+			  		<!--  ARTIST COLUMN -->
+                        <td class="myartist">
+                            <?php 
+                				if($params->get('category_product_link_titles')){
+                            		$link = myMuseHelperRoute::getCategoryRoute($track->artistid);
+                            		echo '<a href="'.$link.'">';
+                            	}
+                            	echo $track->category_name;
+                            	if($params->get('category_product_link_titles')){
+                            		echo '</a>';
+                            	}
+                            ?>
+                        </td>
+                     <?php } ?>
+                     
+                     <?php if($params->get('list_show_album')) { ?>
+			  		<!--  ALBUM COLUMN -->
                         <td class="myartist">
                             <?php
-                            echo $track->category_name; ?>
-                            <?php if($params->get('show_title')) { 
-                            	echo "<br />(";
-                           
                             	if($params->get('category_product_link_titles')){
-                            			$link = myMuseHelperRoute::getProductRoute($track->parentid,$track->artistid);
-                            			echo '<a href="'.$link.'">';
+                            		$link = myMuseHelperRoute::getProductRoute($track->parentid,$track->artistid);
+                            		echo '<a href="'.$link.'">';
                             	}		
                             	echo $track->product_title;
                             	if($params->get('category_product_link_titles')){
                             		echo '</a>';
-                            	}
-                            	echo ")";
-                            } ?>
+                            	} 
+                            ?>
                         </td>
+                     <?php } ?>
+                     
       				<!--  TITLE COLUMN -->			
 						<td class="mytitle" valign="middle"><?php echo $track->title; ?> <br />
 							<?php if($params->get('product_show_filesize') && $track->file_length) { ?>
@@ -465,4 +465,10 @@ if($this->cart['idx']){
 <input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
 <input type="hidden" name="filter_alpha" value="<?php echo $this->filterAlpha; ?>" />
 </form>
+</div>
+
+<div id='my_overlay' style="display:none"></div>
+<div id='my_modal' style="display:none">
+    <div id='my_content'>No JavaScript Yet!</div>
+    <a href='#' id='my_close'>close</a>
 </div>
