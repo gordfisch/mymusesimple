@@ -587,7 +587,7 @@
                 description="MYMUSE_NEWS_RLS_DESC"
                 class="inputbox"
 				edit="true"
-				clear="false"
+				clear="true"
                 required="false"
           	/>
           	<field
