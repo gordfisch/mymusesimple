@@ -445,8 +445,9 @@ class mymuseModelShopper extends JModelForm
 		$credentials['password'] = $myparams->get('my_noreg_password');
 		$options = array();
 		$error = $app->login($credentials, $options);
-		
+			
 		$queue = $app->getMessageQueue();
+
 		if(count($queue)){
 			//$this->setError(JText::_($error->code));
 			return false;

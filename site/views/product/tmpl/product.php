@@ -694,7 +694,7 @@ endif; ?>
 <!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
 		<h3><?php echo JText::_('MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
 
-		<?php if($params->get('product_player_type') == "single") : ?>
+		<?php if($params->get('product_player_type') == "singleton") : ?>
 			<div id="product_player" 
 			<?php if($params->get('product_player_height')) : ?>
 			style="height: <?php echo $params->get('product_player_height'); ?>px"

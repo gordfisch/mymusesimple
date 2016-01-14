@@ -279,7 +279,7 @@ class myMuseViewCart extends JViewLegacy
 					
 				$j = 0;
 				while (list($i,$track) = each( $order->items)){
-					if($track->parentid == 0){
+					if(!isset($track->parentid) || $track->parentid == 0){
 						continue;
 					}
 					$site_url = MyMuseHelper::getSiteUrl($track->id,'0');
@@ -330,7 +330,7 @@ class myMuseViewCart extends JViewLegacy
 				$audio = 0;
 				$video = 0;
 				foreach($order->items as $track){
-					if($track->file_preview){
+					if(isset($track->file_preview) && $track->file_preview){
 						$flash .= '<!-- Begin Player -->';
 						if(substr_count($track->file_type,"video") && !$video){
 							//movie

@@ -85,7 +85,9 @@
  <?php } ?>
     
     <div style="float:left;width:80%;">
-		<h4><?php echo JText::_('MYMUSE_PAYMENT_METHOD'); ?></h4>
+		<h3><?php 
+echo $this->params->get('title',JText::_('PLG_MYMUSE_PAYPALPAYMENTSPRO_TITLE')); 
+  ?></h3>
         <table>
         <tr>
             <td>

@@ -131,6 +131,7 @@
 				label="MYMUSE_PRODUCT_PLAYERTYPE_LABEL" 
 				description="MYMUSE_PRODUCT_PLAYERTYPE_DESC">
 	 			<option value="single">MYMUSE_SINGLE</option>
+	 			<option value="module">MYMUSE_PLAYER_IN_A_MODULE</option>
 	 		</field>
 	 		
 	 		<field name="product_player_width" type="text" size="6"

@@ -76,15 +76,16 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 		?>
 	</div>
 	<?php $counter++; ?>
-	<?php if (($rowcount == $this->columns) or ($counter ==$introcount)): ?>
+		<?php if (($rowcount == $this->columns) or ($counter == $introcount)): ?>
 				<span class="row-separator"></span>
 				</div>
 
-			<?php endif; ?>
+		<?php endif; ?>
 	<?php endforeach; ?>
 
 
 <?php endif; ?>
+</div>
 <div class="clear"></div>
 <?php if (!empty($this->link_items)) : ?>
 
@@ -104,6 +105,6 @@ JHtml::addIncludePath(JPATH_COMPONENT . '/helpers');
 <?php  endif; ?>
 
 </div>
-</div>
+
 
 <?php echo $this->store->event->afterDisplayProduct; ?>

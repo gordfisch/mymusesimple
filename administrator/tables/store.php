@@ -101,11 +101,12 @@ class MymuseTablestore extends JTable
     	
     	//if my_noreg_password has changed
     	$my_noreg_password = $form['params']['my_noreg_password'];
+
     	if($my_noreg_password !== $myparams->get('my_noreg_password')){
-    		echo "DO SOMETHING! $my_noreg_password ".$myparams->get('my_noreg_password');
+    		
     		$user	= JFactory::getUser('buyer');
     		$user = new JUser($user->id);
-    		print_pre($user);
+    		//print_pre($user); exit;
     		$data = array('name' => 'Guest Buyer',
     				'password'=>  $my_noreg_password,
     				'email' => 'guest@mymuse.ca',

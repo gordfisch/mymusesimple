@@ -33,7 +33,7 @@ $column = 1;
 $i=0;
 
 ?>
-
+<div style="clear: both"></div>
 <div class="cols-<?php echo $columns; ?>">
 
 <?php if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) : 
@@ -80,12 +80,12 @@ if(!$total_shown){
 
 			<?php if ($this->params->get('show_subcat_desc') == 1) :?>
 			<?php if ($child->description) : ?>
-			<?php if ($this->params->get('subcat_desc_truncate')) : 
-			$child->description = JHtmlString::truncate($child->description,$this->params->get('subcat_desc_truncate'));
-		 	$child->description = str_replace("...",'',$child->description);
-		 	$child->description = preg_replace("~</p>$~",' ...</p>',$child->description);
+				<?php if ($this->params->get('subcat_desc_truncate')) : 
+					$child->description = JHtmlString::truncate($child->description,$this->params->get('subcat_desc_truncate'));
+		 			$child->description = str_replace("...",'',$child->description);
+		 			$child->description = preg_replace("~</p>$~",' ...</p>',$child->description);
 		
-			endif; ?>
+				endif; ?>
 				<div class="category-desc">
 					<?php echo JHtml::_('content.prepare', $child->description, '', 'com_content.category'); ?>
 				</div>
