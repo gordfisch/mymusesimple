@@ -39,7 +39,7 @@ for ($i=0;$i<count($order->items); $i++) {
 
 		<h2><?php echo JText::_('MYMUSE_SHOPPING_CART'); ?></h2> 
 		  
-		<?php if($params->get('product_player_type') == "single") : ?>
+		<?php if($params->get('product_player_type') == "single" && isset($order->flash)) : ?>
 			<div id="product_player" 
 			<?php if($params->get('product_player_height')) : ?>
 			style="height: <?php echo $params->get('product_player_height'); ?>px"

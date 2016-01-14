@@ -197,6 +197,14 @@
                 size="40"
                />
                <field
+                name="twitter_handle"
+                type="text"
+                label="MYMUSE_TWITTER_HANDLE_LABEL"
+                description="MYMUSE_TWITTER_HANDLE_DESC"
+                class="inputbox"
+                size="40"
+               />
+               <field
                 name="currency"
                 type="sql"
                 label="MYMUSE_CURRENCY_LABEL"

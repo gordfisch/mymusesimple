@@ -108,6 +108,9 @@ class myMuseHelperRoute
 
 	public static function getCategoryRoute($catid)
 	{
+		require_once( JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_mymuse'.DS.'helpers'.DS.'mymuse.php' );
+		
+	
 		$db 	= JFactory::getDBO();
 		$params = MyMuseHelper::getParams();
 		if ($catid instanceof JCategoryNode)

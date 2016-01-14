@@ -33,6 +33,9 @@ class MymuseViewCategory extends JViewLegacy
 
 	function display($tpl = null)
 	{
+		$this->MyMuseStore		=& MyMuse::getObject('store','models');
+		$this->store			= $this->MyMuseStore->getStore();
+		
 		$app	= JFactory::getApplication();
 		$user	= JFactory::getUser();
 		$jinput = $app->input;

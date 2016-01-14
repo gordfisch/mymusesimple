@@ -10,6 +10,25 @@
 // no direct access
 defined('_JEXEC') or die;
 
+$uri = JFactory::getURI();
+$cat_uri = $uri->toString();
+
+$document 	= JFactory::getDocument();
+$document->setMetaData( 'og:site_name',nl2br($this->escape($this->store->title))  );
+$document->setMetaData( 'og:type', 'article');
+$document->setMetaData( 'og:url', $cat_uri);
+$document->setMetaData( 'og:title', nl2br($this->escape($this->category->title)) );
+$document->setMetaData( 'og:description', nl2br($this->escape($this->category->title)));
+$document->setMetaData( 'og:image', JURI::Root().$this->category->getParams()->get('image'));
+
+$document->setMetaData( 'twitter:title', nl2br($this->escape($this->category->title)) );
+$document->setMetaData( 'twitter:card', 'summary_large_image');
+$document->setMetaData( 'twitter:site', $this->params->get('twitter_handle'));
+$document->setMetaData( 'twitter:creator', $this->params->get('twitter_handle'));
+$document->setMetaData( 'twitter:url', $cat_uri);
+$document->setMetaData( 'twitter:description', nl2br($this->escape($this->category->title)));
+$document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams()->get('image'));
+
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 $category = $this->category;
 ?>
