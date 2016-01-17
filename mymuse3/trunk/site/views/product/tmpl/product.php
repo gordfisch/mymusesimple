@@ -198,6 +198,60 @@ jQuery(document).ready(function($){
 
 ';
 }
+if($product->product_physical){
+	$js .= '
+jQuery(document).ready(function($){
+		$("#box_'.$product->id.'").click(function(e){
+			if(typeof document.mymuseform.variation_'.$product->id.'_id !== "undefined"){
+				myvariation = document.mymuseform.variation_'.$product->id.'_id.value;
+				//alert("variation = "+myvariation);
+	
+			}else{
+				myvariation = "";
+			}
+            $.post("'.$url.'",
+            {
+                "productid":"'.$product->id.'",
+                "variation['.$product->id.']":myvariation
+	
+            },
+            function(data,status)
+            {
+	
+                var res = jQuery.parseJSON(data);
+                idx = res.idx;
+                msg = res.msg;
+                action = res.action;
+                //alert(res.msg);
+                if(action == "deleted"){
+                    $("#img_'.$product->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/checkbox.png");
+                }else{
+                    $("#img_'.$product->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/cart.png");
+                }
+                if(idx){
+                    if(idx == 1){
+                        txt = idx+" "+"item";
+                    }else{
+                        txt = idx+" "+"items";
+                    }
+                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>\';
+                    $("#carttop1").html(txt);
+                    $("#carttop2").html(link);
+                }else{
+	
+                    $("#carttop1").html(" ");
+                    $("#carttop2").html("'.JText::_('MYMUSE_YOUR_CART_IS_EMPTY').'");
+                }
+                my_modal.open({content: msg+"<br />"+link, width: 300 });
+            });
+	
+		});
+	});
+	
+';
+	
+	
+}
 $document->addScriptDeclaration($js);
 ?>
 
@@ -530,41 +584,45 @@ endif; ?>
 		<table class="mymuse_cart">
 			<thead>
 		    <tr>
-		    	<th class="myselect" align="left" width="5%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>  
+		    	
         		<th class="mytitle" align="left" width="55%" ><?php echo JText::_('MYMUSE_NAME'); ?></th>
        			<th class="myprice" align="center" width="20%"><?php echo JText::_('MYMUSE_COST'); ?></th>
        		<?php if ($params->get('product_show_quantity')) :?>
         		<th class="myquantity" align="left" width="20%"><?php echo JText::_('MYMUSE_QUANTITY'); ?></th>
       	    <?php endif; ?>
+      	    	<th class="myselect" align="left" width="5%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>  
       		</tr>
       		</thead>
 			<tr>
-				<td class="myselect"><span class="mycheckbox"><input type="checkbox" name="productid[]" 
+				<!--   td class="myselect"><span class="mycheckbox"><input type="checkbox" name="productid[]" 
 				value="<?php echo $product->id; ?>" id="box<?php echo $check; $check++; ?>" 
+				
 				<?php if($count == 1){ ?>
 				CHECKED="CHECKED"
 				<?php } ?>
-				/></span></td>
+				/></span></td -->
 				<td class="mytitle" ><?php echo $product->title; ?></td>
 				<td class="myprice"><?php  echo MyMuseHelper::printMoneyPublic($product->price);
 				?></td>
 			<?php if ($params->get('product_show_quantity')) :?>
 				<td class="myquantity"><input class="inputbox" type="text" name="quantity[<?php echo $product->id; ?>]" size="2" value="1" /> 
 				</td>
-
 			<?php endif; ?>
+			<td class="myselect"  nowrap>
+               <a href="javascript:void(0)" id="box_<?php echo $product->id; ?>"><img id="img_<?php echo $product->id; ?>" src="<?php
+                    if(in_array($product->id, $products)) :
+                       echo "components/com_mymuse/assets/images/cart.png";
+                    else :
+                        echo "components/com_mymuse/assets/images/checkbox.png";
+                     endif;
+                 ?>"></a>
+        		<span class="mycheckbox"><input style="display:none;" type="checkbox" name="productid[]" 
+        		value="<?php echo $product->id; ?>" id="box<?php echo $check; $check++; ?>" />
+      			</span>
+      		</td>
 			</tr>
 		</table>
-		<div class="mymuse-wrap">
-				<div class="pull-left mymuse-button-left"><button class="button uk-button" type="submit" >
-				<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?></button></div>
-				<div class="pull-right mymuse-button-right"><button 
-				class="button uk-button" 
-				type="button" 
-				onclick="window.location='<?php echo htmlentities($return_link); ?>'"
-				><?php echo JText::_('MYMUSE_CANCEL'); ?></button></div>
-	  		<div style="clear: both;"></div>
-		</div>
+
 <!-- END PRODUCT PHYSICAL -->
 <?php endif; ?>
 	
@@ -672,10 +730,11 @@ endif; ?>
 			<thead>
 		    <tr>
 		    	<th class="mytitle" align="left" width="45%" ><?php echo JText::_('MYMUSE_NAME'); ?></th>
-		    	<th class="myselect" align="left" width="45%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
+		    	<th class="myselect" align="left" width="45%" ><?php echo JText::_('MYMUSE_CHOOSE'); ?></th>
         	<?php if ($params->get('product_show_quantity')) :?>
         		<th class="myquantity" align="left" width="20%"><?php echo JText::_('MYMUSE_QUANTITY'); ?></th>
       	    <?php endif; ?>
+      	    <th class="myselect" align="left" width="10%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
       		</tr>
       		</thead>
       	<?php foreach($items as $item){ ?>
@@ -690,12 +749,24 @@ endif; ?>
 						/> 
 						</td>
 				<?php endif; ?>
+				<td class="myselect"  nowrap>
+               <a href="javascript:void(0)" id="box_<?php echo $product->id; ?>"><img id="img_<?php echo $product->id; ?>" src="<?php
+                    if(in_array($product->id, $products)) :
+                       echo "components/com_mymuse/assets/images/cart.png";
+                    else :
+                        echo "components/com_mymuse/assets/images/checkbox.png";
+                     endif;
+                 ?>"></a>
+				
+				
+				</td>
       		</tr>
       	<?php } ?>
 		</table>
 		<div class="mymuse-wrap">
 				<div class="pull-left mymuse-button-left"><button class="button uk-button" type="submit" >
 				<?php echo JText::_('MYMUSE_ADD_SELECTIONS_TO_CART'); ?></button></div>
+				
 				<div class="pull-right mymuse-button-right"><button 
 				class="button uk-button" 
 				type="button" 
@@ -713,7 +784,7 @@ endif; ?>
 <!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
 		<h3><?php echo JText::_('MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
 
-		<?php if($params->get('product_player_type') == "singleton") : ?>
+		<?php if($params->get('product_player_type') == "single") : ?>
 			<div id="product_player" 
 			<?php if($params->get('product_player_height')) : ?>
 			style="height: <?php echo $params->get('product_player_height'); ?>px"
