@@ -44,8 +44,9 @@ if(!$params->get('my_disable_css',0)){
 	// add css
 	$Doc = JFactory::getDocument();
 	$Doc->addStyleSheet( 'components/com_mymuse/assets/css/mymuse.css' );
-	include(MYMUSE_PATH.'assets'.DS.'css'.DS.'mobile_css.php');
-	$Doc->addStyleDeclaration($mobile_style);
+	if(include_once(MYMUSE_PATH.'assets'.DS.'css'.DS.'mobile_css.php')){
+		$Doc->addStyleDeclaration($mobile_style);
+	}
 }
 
 require(JModuleHelper::getLayoutPath('mod_mymuse_minicart'));

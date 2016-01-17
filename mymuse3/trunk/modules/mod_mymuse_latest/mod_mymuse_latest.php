@@ -47,7 +47,7 @@ $list	= modMyMuseLatestHelper::getResults($params);
 // ui js and css
 JHtml::_('jquery.ui');
 $document = JFactory::getDocument();
-//$document->addScript( 'http://code.jquery.com/ui/1.8.23/jquery-ui.min.js' );
+
 $document->addStyleSheet('https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
 
 if($params->get('type_shown') == "tracks" && $params->get('show_track_preview')){

@@ -27,9 +27,28 @@ $count		= 0;
 $return_link = 'index.php?option=com_mymuse&view=product&task=product&id='.$product->id.'&catid='.$product->catid.'&Itemid='.$Itemid;
 $canEdit	= $this->item->params->get('access-edit',0);
 $items_select 	= $this->params->get('product_item_selectbox',0);
-$document 	= JFactory::getDocument();
 $lang = JFactory::getLanguage();
 $langtag = $lang->getTag();
+
+$uri = JFactory::getURI();
+$prod_uri = $uri->toString();
+$description = ($product->introtext != '')? $product->introtext : $product->title;
+$document 	= JFactory::getDocument();
+$document->setMetaData( 'og:site_name',$this->escape($this->store->title));
+$document->setMetaData( 'og:type', 'article');
+$document->setMetaData( 'og:url', $prod_uri);
+$document->setMetaData( 'og:title', $this->escape($product->title));
+$document->setMetaData( 'og:description', strip_tags($description));
+$document->setMetaData( 'og:image', JURI::Root().$product->detail_image);
+
+$document->setMetaData( 'twitter:title', $this->escape($product->title));
+$document->setMetaData( 'twitter:card', 'summary_large_image');
+$document->setMetaData( 'twitter:site', $this->params->get('twitter_handle'));
+$document->setMetaData( 'twitter:creator', $this->params->get('twitter_handle'));
+$document->setMetaData( 'twitter:url', $prod_uri);
+$document->setMetaData( 'twitter:description', strip_tags($description));
+$document->setMetaData( 'twitter:image', JURI::Root().$product->detail_image);
+
 
 if($this->params->get('my_price_by_product')){
 	$product_price_physical = array('product_price' => $this->item->attribs->get('product_price_physical'));
@@ -371,7 +390,7 @@ endif; ?>
 
     <ul class="product-content">
         <li class="product-content-item">
-            <span class="category">Artist</span>
+            <span class="category"><?php echo JText::_('MYMUSE_ARTIST'); ?></span>
             <span class="value"><?php echo $product->artist_title;?></span>
         </li>
         

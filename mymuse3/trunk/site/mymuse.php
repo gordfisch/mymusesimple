@@ -42,8 +42,9 @@ JHtml::_('jquery.framework');
 if(!$params->get('my_disable_css',0)){
 	$Doc = JFactory::getDocument();
 	$Doc->addStyleSheet( 'components/com_mymuse/assets/css/mymuse.css' );
-	include(JPATH_COMPONENT.DS.'assets'.DS.'css'.DS.'mobile_css.php');
-	$Doc->addStyleDeclaration($mobile_style);
+	if(include_once(JPATH_COMPONENT.DS.'assets'.DS.'css'.DS.'mobile_css.php')){
+		$Doc->addStyleDeclaration($mobile_style);
+	}
 	if($rtl){
 		$Doc->addStyleSheet( 'components/com_mymuse/assets/css/mymuse_rtl.css' );
 	}
