@@ -44,7 +44,7 @@ if(!$params->get('my_disable_css',0)){
 	// add css
 	$Doc = JFactory::getDocument();
 	$Doc->addStyleSheet( 'components/com_mymuse/assets/css/mymuse.css' );
-	if(include_once(MYMUSE_PATH.'assets'.DS.'css'.DS.'mobile_css.php')){
+	if(!include_once(MYMUSE_PATH.'assets'.DS.'css'.DS.'mobile_css.php')){  //include_once returns TRUE if the file is already included
 		$Doc->addStyleDeclaration($mobile_style);
 	}
 }
