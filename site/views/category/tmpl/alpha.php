@@ -14,6 +14,24 @@ defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 $category = $this->category;
+$uri = JFactory::getURI();
+$cat_uri = $uri->toString();
+$description = ($this->category->description != '')? $this->category->description : $this->category->title;
+$document 	= JFactory::getDocument();
+$document->setMetaData( 'og:site_name',nl2br($this->escape($this->store->title))  );
+$document->setMetaData( 'og:type', 'article');
+$document->setMetaData( 'og:url', $cat_uri);
+$document->setMetaData( 'og:title', $this->escape($this->category->title));
+$document->setMetaData( 'og:description', strip_tags($description));
+$document->setMetaData( 'og:image', JURI::Root().$this->category->getParams()->get('image'));
+
+$document->setMetaData( 'twitter:title', $this->escape($this->category->title));
+$document->setMetaData( 'twitter:card', 'summary_large_image');
+$document->setMetaData( 'twitter:site', $this->params->get('twitter_handle'));
+$document->setMetaData( 'twitter:creator', $this->params->get('twitter_handle'));
+$document->setMetaData( 'twitter:url', $cat_uri);
+$document->setMetaData( 'twitter:description', strip_tags($description));
+$document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams()->get('image'));
 ?>
 
 <?php  echo $category->event->beforeDisplayHeader; ?>
