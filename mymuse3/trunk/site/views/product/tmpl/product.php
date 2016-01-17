@@ -734,7 +734,7 @@ endif; ?>
         	<?php if ($params->get('product_show_quantity')) :?>
         		<th class="myquantity" align="left" width="20%"><?php echo JText::_('MYMUSE_QUANTITY'); ?></th>
       	    <?php endif; ?>
-      	    <th class="myselect" align="left" width="10%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
+ 
       		</tr>
       		</thead>
       	<?php foreach($items as $item){ ?>
@@ -749,17 +749,7 @@ endif; ?>
 						/> 
 						</td>
 				<?php endif; ?>
-				<td class="myselect"  nowrap>
-               <a href="javascript:void(0)" id="box_<?php echo $product->id; ?>"><img id="img_<?php echo $product->id; ?>" src="<?php
-                    if(in_array($product->id, $products)) :
-                       echo "components/com_mymuse/assets/images/cart.png";
-                    else :
-                        echo "components/com_mymuse/assets/images/checkbox.png";
-                     endif;
-                 ?>"></a>
-				
-				
-				</td>
+
       		</tr>
       	<?php } ?>
 		</table>
