@@ -134,8 +134,8 @@ class MymuseViewProduct extends JViewLegacy
         	require_once (JPATH_COMPONENT.DS.'helpers'.DS.'pluploadscript.php');
         	
         	$this->setLayout('upload');
-        	$this->item ->artist_alias = MyMuseHelper::getArtistAlias($this->item->id, 1);
-        	$this->item->album_alias = MyMuseHelper::getAlbumAlias($this->item->id);
+        	$this->item->artist_alias = MyMuseHelper::getArtistAlias($this->item->id, 1);
+        	$this->item->album_alias = MyMuseHelper::getAlbumAlias($this->item->id, 1);
         	$language = JFactory::getLanguage();
         	$lang = $language->getTag();
         	if($this->task == "uploadtrack" ){

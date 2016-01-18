@@ -192,7 +192,7 @@ class MymuseTableproduct extends JTable
 		
 		$params = MyMuseHelper::getParams();
 		require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_mymuse'.DS.'helpers'.DS.'mp3file.php');
-		
+
 		$input = JFactory::getApplication()->input;
 		$task 	= $input->get('task');
 		
@@ -238,7 +238,7 @@ class MymuseTableproduct extends JTable
         	$artist_alias = MyMuseHelper::getArtistAlias($this->parentid, 1);
         	$album_alias = MyMuseHelper::getAlbumAlias($this->parentid);
         }else{
-        	$artist_alias = MyMuseHelper::getArtistAlias($this->catid, 0);
+        	$artist_alias = MyMuseHelper::getArtistAlias($this->id, 1);
         	$album_alias = $this->alias;
         }
         if(isset($post['upgrade']) && $form['title_alias']){

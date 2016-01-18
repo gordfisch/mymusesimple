@@ -496,6 +496,13 @@ class com_mymuseInstallerScript
 		}
 		
 		//see if mymuse_downloads table needs updating
+		$query = "SHOW COLUMNS FROM #__mymuse_downloads LIKE 'user_email'";
+		$db->setQuery($query);
+		if(!$col = $db->loadObject()){
+			$query = "ALTER TABLE `#__mymuse_downloads` ADD `user_email` VARCHAR(255)";
+			$db->setQuery($query);
+			$db->execute();
+		}
 		$query = "SHOW COLUMNS FROM #__mymuse_downloads LIKE 'order_id'";
 		$db->setQuery($query);
 		if(!$col = $db->loadObject()){

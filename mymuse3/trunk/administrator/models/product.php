@@ -832,14 +832,15 @@ class MymuseModelproduct extends JModelAdmin
     {
     	$input = JFactory::getApplication()->input;
     	$parentid = $this->_item->parentid;
+    	jimport('joomla.filesystem.file');
 
  		// file lists for albums
- 		$artist_alias = MyMuseHelper::getArtistAlias($parentid,'1');
+ 		$artist_alias = MyMuseHelper::getArtistAlias($parentid,1);
 		$album_alias = MyMuseHelper::getAlbumAlias($parentid,1);
 	
 		$site_url = MyMuseHelper::getSiteUrl($parentid,1);
 		$site_path = MyMuseHelper::getSitePath($parentid,1);
-		$download_path = MyMuseHelper::getdownloadPath($this->_item->id,'0');
+		$download_path = MyMuseHelper::getdownloadPath($parentid,1);
 
 		$files = array();
 		// get the preview lists
@@ -859,7 +860,9 @@ class MymuseModelproduct extends JModelAdmin
 				}
 			}
 		}else{
-			
+			if(!JFolder::exists($site_path)){
+				JFolder::create($site_path);
+			}
 			$files = JFolder::files( $site_path );
 		}
 
@@ -894,12 +897,18 @@ class MymuseModelproduct extends JModelAdmin
 				//by format
 				$files = array();
 				foreach($this->_params->get('my_formats') as $format){
+					if(!JFolder::exists( $directory.DS.$format )){
+						JFolder::create( $directory.DS.$format );
+					}
 					$arr = JFolder::files( $directory.DS.$format );
 					if(is_array($arr)){
 						$files = array_merge($files,$arr);
 					}
 				}
 			}else{
+				if(!JFolder::exists( $directory )){
+					JFolder::create( $directory );
+				}
 				$files = JFolder::files( $directory );
 			}
 		}
