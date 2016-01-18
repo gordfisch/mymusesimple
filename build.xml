@@ -2,9 +2,9 @@
 <project name="MyMuse3.5" basedir="." default="copy_to_test351">
  		<property name="myversion" value="3.5.1" override="true" />
 	<!-- arboreta/joomlamy3/callinish || mymusetest35 || mymusetest336 || nexgen-->
-        <property name="test" value="/var/www/html/arboreta/joomlamy3/callinish" override="true" />
+        <property name="test" value="/var/www/html/mymusetest35" override="true" />
         <property name="testadmincomp"
-                value="/var/www/html/arboreta/joomlamy3/callinish/administrator/components/com_mymuse"
+                value="/var/www/html/mymusetest35/administrator/components/com_mymuse"
                 override="true" />
         <property name="src" value="${project.basedir}" override="true" />
         <fileset dir="./site" id="site_files">

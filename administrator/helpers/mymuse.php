@@ -472,6 +472,7 @@ class MyMuseHelper extends JObject
 	 * getArtistAlias. alias from artist record
 	 * 
 	 * @param $id int
+	 * @param $parent // is this the parent?
 	 * @return string
 	 */
 	
@@ -483,13 +484,13 @@ class MyMuseHelper extends JObject
 			WHERE id ='$id'";
 			$db->setQuery($query);
 			$parentid = $db->loadResult();
-			$query = "SELECT catid from #__mymuse_product
+			$query = "SELECT artistid from #__mymuse_product
 			WHERE id ='$parentid'";
 			$db->setQuery($query);
 			$id = $db->loadResult();
 
 		}else{
-			$query = "SELECT catid from #__mymuse_product
+			$query = "SELECT artistid from #__mymuse_product
 			WHERE id ='$id'";
 			$db->setQuery($query);
    			$id = $db->loadResult();
