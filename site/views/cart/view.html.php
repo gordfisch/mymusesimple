@@ -23,7 +23,7 @@ class myMuseViewCart extends JViewLegacy
         
 	function display($tpl = null)
 	{
-
+		$db = JFactory::getDBO();
 		$params = MyMuseHelper::getParams();
 		$jinput = JFactory::getApplication()->input;
 		$this->Itemid = $jinput->get("Itemid",'');
@@ -40,7 +40,6 @@ class myMuseViewCart extends JViewLegacy
 			$this->MyMuseShopper 	=& MyMuse::getObject('shopper','models');
 			$order = $this->MyMuseShopper->order;
 			
-			//echo "pp = $pp"; print_pre($order); exit;
 			//if we are using no_reg
 			if($params->get('my_registration') == "no_reg"){
 				$fields = MyMuseHelper::getNoRegFields();
@@ -80,12 +79,15 @@ class myMuseViewCart extends JViewLegacy
 				$order->user->profile = array();
 				foreach ($results as $v) {
 					$k = str_replace("$profile_key.", '', $v[0]);
-					$order->user->profile[$k] = trim(json_decode($v[1], true),'"');
-						
+					$order->user->profile[$k] = trim(json_decode($v[1], true),'"');	
+				}
+				if(!isset($order->user->profile['email'])){
+					$order->user->profile['email'] = $order->user->email;
 				}
 			}
+
 			if(is_array($order->order_currency)){
-				$order->order_currency = $order->order_currency['currency_code'];
+				$order->currency_code = $order->order_currency['currency_code'];
 			}
 			$result = Array
 			(
@@ -105,7 +107,7 @@ class myMuseViewCart extends JViewLegacy
 					'user_email' => $order->user->profile['email'],
 					'userid' => $order->user_id,
 					'amountin' => $order->order_total,
-					'currency' => $order->order_currency,
+					'currency' => $order->currency_code,
 					'rate' => '',
 					'fees' => '',
 					'transaction_id' => '',

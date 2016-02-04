@@ -197,6 +197,12 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 					<?php else : ?>
 						<?php echo $this->escape($item->title); ?>
 					<?php endif; ?>
+					
+					<?php if($item->attribs->get('product_preorder')){
+					echo "<br /><b>".JText::_("MYMUSE_PRODUCT_PREORDER_LABEL")."</b>";
+					} ?>
+					
+					
 					<p class="smallsub">
 						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias));?></p>
 				</td>

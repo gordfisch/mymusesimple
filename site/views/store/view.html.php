@@ -286,7 +286,6 @@ class myMuseViewStore extends JViewLegacy
         	if($product->product_allfiles && $params->get('my_use_zip',0)){
                 // Get current directory
 
-        
         		$query = "SELECT id,file_name, parentid from #__mymuse_product WHERE parentid='".$product->parentid."'
 				AND product_downloadable='1' AND product_allfiles !='1' ORDER BY ordering ";
 
@@ -380,7 +379,7 @@ class myMuseViewStore extends JViewLegacy
         		}
 				
        
-        		$download_path = MyMuseHelper::getDownloadPath($order_item->product_id, 1);
+        		$download_path = MyMuseHelper::getDownloadPath($order_item->product_id, 0);
         		if($params->get('my_download_dir_format') == 1){
         			//by format
         			$ext = MyMuseHelper::getExt($filename);
@@ -388,13 +387,9 @@ class myMuseViewStore extends JViewLegacy
         		
         		}
         		
-        		$full_filename = $download_path.DS.$filename;
+        		$full_filename = $download_path.$filename;
         		$full_filename1 = $full_filename;
-        		//echo $full_filename;
-        		
-        		
-        		
-        		
+
         		if(!file_exists($full_filename)){
         			//try with the root
         			$full_filename = JPATH_ROOT.DS.$params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$filename;
@@ -521,7 +516,7 @@ class myMuseViewStore extends JViewLegacy
         		return false;
         	}
         	
-        	
+        
         	$product->realname = $realname;
         	$object	=& MyMuse::getObject('httpdownload','helpers');
         	 

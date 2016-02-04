@@ -36,7 +36,11 @@ $lang = JFactory::getLanguage();
 	</div>
 <?php endif; ?>
 
+<?php echo MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $lang->getTag()); 
+echo "<br />";
+echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $lang->getTag())); ?>
 
+?>
 <?php if ($params->get('store_show_product_image') && $this->item->list_image): ?>
 <div class="list_image">
 <a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $lang->getTag())); ?>"

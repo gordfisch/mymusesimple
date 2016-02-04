@@ -236,7 +236,7 @@ class MymuseTableproduct extends JTable
         // get artist alias
         if($this->parentid){
         	$artist_alias = MyMuseHelper::getArtistAlias($this->parentid, 1);
-        	$album_alias = MyMuseHelper::getAlbumAlias($this->parentid);
+        	$album_alias = MyMuseHelper::getAlbumAlias($this->parentid, 1);
         }else{
         	$artist_alias = MyMuseHelper::getArtistAlias($this->id, 1);
         	$album_alias = $this->alias;
@@ -291,7 +291,8 @@ class MymuseTableproduct extends JTable
 			}
 		}
 		*/
-		$download_path = MyMuseHelper::getdownloadPath($this->id,'1');
+		
+		$download_path = MyMuseHelper::getdownloadPath($this->id,0);
 		if(!$isNew && $this->file_name){
 	
 			$current_files = json_decode($this->file_name);
@@ -346,7 +347,7 @@ class MymuseTableproduct extends JTable
 					}else{
 						$file_name = $select_file;
 					}
-					
+				
 					if($params->get('my_download_dir_format') == 1){
 						//by format
 						$download_path .= $ext;
@@ -453,6 +454,7 @@ class MymuseTableproduct extends JTable
 		
 		$path = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) . $params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS;
 		// Previews 1
+	
 		if(!$this->managePreview('preview', $path)){
 			$this->setError(JText::_("MYMUSE_COULD_NOT_SET_PREVIEW")." preview ".$path);
 			return false;
@@ -693,6 +695,8 @@ class MymuseTableproduct extends JTable
 		
 		//if they selected a file from drop down
 		$file_preview = isset($post[$file_preview_name])? $post[$file_preview_name] : '';
+		
+
 		if($file_preview
 				&& ( !isset($_FILES[$preview_name]['name']) || $_FILES[$preview_name]['name'] == '' )
 				&& (!isset($post[$remove_name]) || !$post[$remove_name] == "on")
@@ -701,13 +705,14 @@ class MymuseTableproduct extends JTable
 			$new = 1;
 			 
 			$ext = MyMuseHelper::getExt($file_preview);
+			echo "ext = $ext ";
 			$name = preg_replace("/$ext$/","",$file_preview);
 			if($params->get('my_use_sring_url_safe')){
-				$this->$file_preview_name = JFilterOutput::stringURLSafe($name).$ext;
+				$this->$file_preview_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
 			}else{
 				$this->$file_preview_name = $name.$ext;
 			}
-
+		
 			$old_file = $path.$file_preview;
 			$new_file = $path.$this->$file_preview_name;
 			

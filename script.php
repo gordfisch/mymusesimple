@@ -177,8 +177,9 @@ class com_mymuseInstallerScript
 				$manifest = json_decode($res->manifest_cache);
 				$this->old_version = $manifest ->version;
 				// get the current css file
-				$this->css = file_get_contents(JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'assets'.DS.'css'.DS.'mymuse.css');
-				
+				if(file_exists(JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'assets'.DS.'css'.DS.'mymuse.css')){
+					$this->css = file_get_contents(JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'assets'.DS.'css'.DS.'mymuse.css');
+				}
 		}
 		$parent->already_installed = $this->already_installed;
 		$parent->old_version = $this->old_version;

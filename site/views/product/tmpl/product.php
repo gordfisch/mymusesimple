@@ -123,6 +123,8 @@ function tableOrdering( order, dir, task )
 	document.adminForm.submit( task );
 }
 ';
+
+//flip price between formats
 if(count($params->get('my_formats') > 1) && $params->get('my_price_by_product')){			
 	$js .= 'function flip_price(id) {'."\n";
 	$js .= ' var formats = new Array();'."\n";
@@ -137,7 +139,9 @@ if(count($params->get('my_formats') > 1) && $params->get('my_price_by_product'))
 	for($i=0; $i < count($params->get('my_formats')); $i++){
     	$js .= 'jQuery('.$params->get('my_formats')[$i].'_id).hide();'."\n";
 	}   		
-	$js .= 'jQuery(formats[select_id.val()]+"_id").show();'."\n}";
+	$js .= '
+			alert(formats[jQuery(select_id).val()]+"_"+id);
+			jQuery(formats[jQuery(select_id).val()]+"_"+id).show();'."\n}";
     		
 }
   
@@ -910,7 +914,7 @@ endif; ?>
         							echo ' style="display:none" ';
       							endif;
       							$first = 0;
- 								echo '>'.MyMuseHelper::printMoneyPublic($product_price).'<div>';
+ 								echo '>'.MyMuseHelper::printMoneyPublic($$product_price).'<div>';
  							endforeach;
         				else :  
         					echo MyMuseHelper::printMoneyPublic($track->price);
@@ -982,7 +986,7 @@ endif; ?>
 
 <div id='my_overlay' style="display:none"></div>
 <div id='my_modal' style="display:none">
-    <div id='my_content'>No JavaScript Yet!</div>
+    <div id='my_content'>No JavaScript!</div>
     <a href='#' id='my_close'>close</a>
 </div>
 

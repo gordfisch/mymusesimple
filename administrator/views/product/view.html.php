@@ -139,11 +139,31 @@ class MymuseViewProduct extends JViewLegacy
         	$language = JFactory::getLanguage();
         	$lang = $language->getTag();
         	if($this->task == "uploadtrack" ){
-        		$this->currentDir = $this->params->get('my_download_dir') . DS . $this->item ->artist_alias . DS . $this->item->album_alias . DS;
+        		//my_formats
+        		//my_download_dir_format
         		$this->message = JText::_("MYMUSE_UPLOAD_TRACKS");
+        		if($this->params->get('my_download_dir_format',0)){
+        			$format = $input->get('myformat','');
+        			if(!$format){
+        				$tpl = "choose-format";
+        				$this->addToolbar($subtype,$this->item->parentid);
+        				parent::display($tpl);
+        				return true;
+        			}else{
+        				$this->currentDir = $this->params->get('my_download_dir') . DS . $format;
+        			}
+        			
+        		}else{
+        			$this->currentDir = $this->params->get('my_download_dir') . DS . $this->item ->artist_alias . DS . $this->item->album_alias . DS;
+        			
+        		}
         	}else{
-        		$this->currentDir = JPATH_ROOT . DS . $this->params->get('my_preview_dir') . DS . $this->item ->artist_alias . DS . $this->item->album_alias . DS;
         		$this->message = JText::_("MYMUSE_UPLOAD_PREVIEWS");
+        		if($this->params->get('my_previews_in_one_dir')){
+        			$this->currentDir = JPATH_ROOT . DS . $this->params->get('my_preview_dir');
+        		}else{
+        			$this->currentDir = JPATH_ROOT . DS . $this->params->get('my_preview_dir') . DS . $this->item ->artist_alias . DS . $this->item->album_alias . DS;
+        		}
         	}
         	
         	$langfiles        = JPATH_COMPONENT_ADMINISTRATOR.'/assets/plupload/js/i18n/';
@@ -235,6 +255,8 @@ class MymuseViewProduct extends JViewLegacy
 		if($layout == "listtracks"){
 			// LIST TRACKS
 			JToolBarHelper::custom('product.uploadtrack', 'save-new.png', 'save-new_f2.png', 'MYMUSE_UPLOAD_TRACKS', false);
+			
+			
 			JToolBarHelper::custom('product.uploadpreview', 'save-new.png', 'save-new_f2.png', 'MYMUSE_UPLOAD_PREVIEWS', false);
 			JToolBarHelper::editList('product.edit', 'MYMUSE_EDIT_TRACK');
 			JToolBarHelper::addNew('product.addfile', 'MYMUSE_NEW_TRACK');

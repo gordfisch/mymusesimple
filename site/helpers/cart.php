@@ -585,7 +585,6 @@ class MyMuseCart {
 				$order->items[$i]->variation_select = '<select name="variation['.$this->cart[$i]['product_id'].']"
 					id = "variationid_'.$this->cart[$i]['product_id'].'" class="inputbox myformatselect cart ">';
 										
-				//print_pre($jason);
 				//if multiple variations, create select box
 				for($j=0; $j < count($jason); $j++){
 					$order->items[$i]->variation_select .= '<option value="'.$j.'" ';
@@ -634,15 +633,15 @@ class MyMuseCart {
 			}
 
 			// Get any reservation fee
-			if (isset($order->items[$i]->parentid) && $order->items[$i]->parentid > 0) {
+			//if (isset($order->items[$i]->parentid) && $order->items[$i]->parentid > 0) {
 
-				if($order->items[$i]->parent->reservation_fee > 0){
-					$order->reservation_fees[$order->items[$i]->parent->id] = $order->items[$i]->parent->reservation_fee;
-					$order->items[$i]->not_in_total = 1;
-					$order->must_pay_now += $order->items[$i]->parent->reservation_fee;
-				}
+				//if($order->items[$i]->parent->reservation_fee > 0){
+					//$order->reservation_fees[$order->items[$i]->parent->id] = $order->items[$i]->parent->reservation_fee;
+					//$order->items[$i]->not_in_total = 1;
+					//$order->must_pay_now += $order->items[$i]->parent->reservation_fee;
+				//}
 				
-			}
+			//}
 			
 
 			$order->items[$i]->quantity = $this->cart[$i]['quantity'];
@@ -858,6 +857,7 @@ class MyMuseCart {
 	 */
 	function getProduct($id=null)
 	{
+		
 		$mainframe 	= JFactory::getApplication();
     	$params 	= MyMuseHelper::getParams();;
     	
@@ -884,6 +884,9 @@ class MyMuseCart {
 
 		// take out the file_contents
 		$row->file_contents = null;
+		if($name = json_decode($row->file_name)){
+			$row->file_length = $name[0]->file_length;
+		}
 		
 		if(isset($shopper->shopper_group_id)){
 			$shopper_group_id = $shopper->shopper_group_id;
@@ -893,10 +896,28 @@ class MyMuseCart {
 
 		// get parent object
 		if($row->parentid){
+
 			$parent = new MymuseTableproduct($db);
 			$parent->load($row->parentid);
+			// Convert the attribs field to an array.
+			$registry = new JRegistry;
+			$registry->loadString($parent->attribs);
+			$parent->attribs = $registry->toArray();
+			
+			$registry = new JRegistry;
+			$registry->loadString($row->attribs);
+			$row->attribs = $registry->toArray();
+			
+			$parent->attribs = array_merge($parent->attribs, $row->attribs);
+			$row->attribs = $parent->attribs;
+			
+			// Convert the metadata field to an array.
+			$registry = new JRegistry;
+			$registry->loadString($parent->metadata);
+			$parent->metadata = $registry->toArray();
+
 			$row->parent = $parent;
-			$artistid = $row->parent->catid;
+			$artistid = $row->parent->artistid;
 			// Get attributes
 
 			$attributes = $MyMuseProduct->getAttributes( $row->id, $row->parentid);
@@ -907,7 +928,17 @@ class MyMuseCart {
 			}
 
 		}else{
+			$row->parent = null;
 			$artistid = $row->artistid;
+			// Convert the attribs field to an array.
+			$registry = new JRegistry;
+			$registry->loadString($row->attribs);
+			$row->attribs = $registry->toArray();
+				
+			// Convert the metadata field to an array.
+			$registry = new JRegistry;
+			$registry->loadString($row->metadata);
+			$row->metadata = $registry->toArray();
 		}
 		//$row->price = MyMuseModelProduct::getPrice($row);
 		
@@ -917,7 +948,7 @@ class MyMuseCart {
 		$cat->load($artistid);
 		$row->artist = $cat;
 		$row->category_name = $row->artist->title;
-		
+
 		return $row;
 	}
 }

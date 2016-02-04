@@ -57,8 +57,8 @@ class plgMymusePreOrder extends JPlugin
 		if ($this->params->get ( 'which_min' ) == "number") {
 			if ($cart ['idx'] < $this->params->get ( 'my_min' )) {
 				$string .= '$msg = "' . JText::_ ( $msg ) . '"';
-				$jinput->set( "task", "" );
-				$this->setRedirect( "index.php?option=com_mymuse&task=showcart", $msg );
+				//$jinput->set( "task", "" );
+				$app->redirect( JRoute::_("index.php?option=com_mymuse&task=showcart&view=cart"), $msg );
 			}
 		} elseif ($this->params->get ( 'which_min' ) == "price") {
 			require_once (JPATH_COMPONENT . DS . 'mymuse.class.php');
@@ -66,8 +66,8 @@ class plgMymusePreOrder extends JPlugin
 			$order = $MyMuseCart->buildOrder ( false );
 			if ($order->order_subtotal < $this->params->get ( 'my_min' )) {
 				$string .= '$msg = "' . JText::_ ( $msg ) . '"';
-				$jinput->set( "task", "" );
-				$this->setRedirect( "index.php?option=com_mymuse&task=showcart", $msg );
+				//$jinput->set( "task", "" );
+				$app->redirect( JRoute::_("index.php?option=com_mymuse&task=showcart&view=cart"), $msg );
 			}
 		}
 		

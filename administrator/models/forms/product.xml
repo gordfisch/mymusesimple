@@ -465,7 +465,7 @@
 				class="inputbox" 
 				size="22"
 				format="%Y-%m-%d" 
-				filter="user_utc" 
+				
 			/>
 			
 			<field 
@@ -609,15 +609,16 @@
                 required="false"
           	/>
           	
-          	<field
-                name="isrc_code"
-                type="text"
-                label="MYMUSE_ISRC_LABEL"
-                description="MYMUSE_ISRC_DESC"
-                class="inputbox"
-                size="45"
-                required="false"
-          	/>
+          	<field 
+          		name="product_preorder" 
+          		type="list"
+				label="MYMUSE_PRODUCT_PREORDER_LABEL"
+				description="MYMUSE_PRODUCT_PREORDER_DESC"
+				default="0"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
           	<field
                 name="product_price_physical"
                 type="text"
