@@ -30,6 +30,7 @@ class MymuseViewStore extends JViewLegacy
 		$this->item		= $this->get('Item');
 		$this->form		= $this->get('Form');
 		$this->css		= $this->get('Css');
+		$this->params 	= MyMuseHelper::getParams();
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {

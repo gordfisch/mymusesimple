@@ -209,7 +209,7 @@ class MymuseModelproduct extends JModelAdmin
 			
 			if ($item = parent::getItem($pk)) {
 				
-				// Convert the params field to an array.
+				// Convert the attribs field to an array.
 				$registry = new JRegistry;
 				$registry->loadString($item->attribs);
 				$item->attribs = $registry->toArray();

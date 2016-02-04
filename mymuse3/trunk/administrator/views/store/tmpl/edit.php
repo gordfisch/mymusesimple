@@ -20,8 +20,8 @@ JHtml::_('behavior.keepalive');
 JHtml::_('formbehavior.chosen', 'select');
 
 // Create shortcut to parameters.
-$params = $this->state->get('params');
-$params = $params->toArray();
+//$params = $this->state->get('params');
+$params = $this->params->toArray();
 $app = JFactory::getApplication();
 $input = $app->input;
 
@@ -134,6 +134,7 @@ method="post" name="adminForm" id="store-form" class="form-validate">
 						echo '<div><a target="_blank" href="'.$url.'">'.JText::_("MYMUSE_VIEW_LOG").'</a></div>';
 						
 					}?>
+					 
 				</div>
 			  <?php echo JHtml::_('bootstrap.endTab'); ?>
 			<?php endforeach; ?>

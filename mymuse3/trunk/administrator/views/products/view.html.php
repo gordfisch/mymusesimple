@@ -227,6 +227,9 @@ class MymuseViewProducts extends JViewLegacy
 				}
 			}
 			$items[$i]->subcats = preg_replace("/,$/","",$items[$i]->subcats);
+			
+			$registry = new JRegistry;
+			$items[$i]->attribs = $registry->loadString($items[$i]->attribs);
 		}
 		 
 	}

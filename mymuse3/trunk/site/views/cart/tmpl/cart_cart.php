@@ -104,6 +104,12 @@ for ($i=0;$i<count($order->items); $i++) {
 		        	 :<?php echo $order_item[$i]->file_ext ?> 
 		        <?php } ?>
 		        
+		        <?php if(
+                (isset($order_item[$i]->attribs['product_preorder']) && $order_item[$i]->attribs['product_preorder'])
+                ){ ?>
+		        	 : PRE-ORDER
+		        <?php } ?> 
+		        
 		        </td>
 		    <?php if($params->get("my_show_sku")){ ?>
 		        <td class="mysku cart"><?php echo $order_item[$i]->product_sku; ?></td>

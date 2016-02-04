@@ -272,7 +272,7 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function checkout()
 	{
-		
+	
 		$mainframe = JFactory::getApplication();
 		$params = MyMuseHelper::getParams();
 		$user = JFactory::getUser();
@@ -365,7 +365,7 @@ class MyMuseController extends JControllerLegacy
 			return true;
 		}
 		
-
+		
 		//See if we want to skip the confirm page
 		if($params->get('my_checkout','regular') == "skip_confirm"){
 			$this->jinput->set('task','confirm');
@@ -375,6 +375,7 @@ class MyMuseController extends JControllerLegacy
 
 		$this->jinput->set('view', 'cart');
 		$this->jinput->set('layout', 'cart');
+		
 		$this->display();
 
 	}

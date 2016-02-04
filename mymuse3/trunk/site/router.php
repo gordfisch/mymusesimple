@@ -22,7 +22,7 @@ jimport('joomla.application.categories');
 function MymuseBuildRoute(&$query)
 {
 	$segments	= array();
-//print_r($query);
+
 	// get a menu item based on Itemid or currently active
 	$app		= JFactory::getApplication();
 	$menu		= $app->getMenu();
@@ -166,9 +166,10 @@ function MymuseBuildRoute(&$query)
 
 		return $segments;
 	}
-
+	//Array([option]=com_mymuse,[view]=product,[id]=1,[catid]=9,[lang]=en-GB,[Itemid]=90)
 	if ($view == 'category' || $view == 'product')
 	{
+
 		if (!$menuItemGiven) {
 			$segments[] = $view;
 		}
@@ -178,6 +179,7 @@ function MymuseBuildRoute(&$query)
 		if ($view == 'product') {
 			if (isset($query['id']) && isset($query['catid']) && $query['catid']) {
 				$catid = $query['catid'];
+				
 				// Make sure we have the id and the alias
 				if (strpos($query['id'], ':') === false) {
 					$db = JFactory::getDbo();

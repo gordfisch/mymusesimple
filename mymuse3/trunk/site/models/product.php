@@ -339,7 +339,9 @@ class MyMuseModelProduct extends JModelItem
 			if(count($tracks)){
 				$root = JPATH_ROOT.DS;
 				while (list($i,$track)= each( $tracks )){
-					
+					if($name = json_decode($track->file_name)){
+						$track->file_length = $name[0]->file_length;
+					}
 					//other cats
 					$othercats = array();
 					$query = "SELECT c.title FROM #__mymuse_product_category_xref as x

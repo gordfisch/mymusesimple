@@ -86,7 +86,7 @@ function mydownload(url,item_id){
 				if($item->downloads < $my_download_max && $end_date > time()){ ?></a><?php } ?></td>
 				
 				<td class="mydownload cart"><?php echo $item->downloads; ?></td>
-				<td class="myfilesize cart"><?php echo MyMuseHelper::ByteSize($item->file_size); ?></td>
+				<td class="myfilesize cart"><?php echo MyMuseHelper::ByteSize($item->file_length); ?></td>
 				<td class="myexpiry cart"><?php if($item->end_date < time()){ ?><span style="color : #c30;">*</span> <?php } ?>
 				<?php 
 				if($item->end_date){

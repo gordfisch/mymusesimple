@@ -346,18 +346,19 @@ $fieldSets = $this->form->getFieldsets('attribs');
 					</tr>
 				<?php } ?>
 					<tr>
-						<td colspan="7"><a href="javascript:addvariation();">Add Variation</a></td>
+						<td colspan="7"><a href="javascript:addvariation();"><?php echo JText::_('MYMUSE_ADD_VARIATION')?></a></td>
 					</tr>
 				
 				</tbody>
 			</table>
-					
+		</div>			
 					
 	
 			
 		</fieldset>
+		
 <?php echo JHtml::_('bootstrap.endTab'); ?>
-
+	
 
 <!--  PREVIEWS TAB -->
 <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'previews', '<b>'.strtoupper(JText::_('MYMUSE_PREVIEWS', true))).'</b>'; ?>

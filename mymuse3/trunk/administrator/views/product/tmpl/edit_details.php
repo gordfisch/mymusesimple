@@ -143,6 +143,11 @@ foreach ($fieldSets as $name => $fieldSet) {
 
 	foreach ($this->form->getFieldset($name) as $field)
 	{
+		if (preg_match("/preorder/",$field->name) && !$physical)
+		{
+			echo $field->renderField();
+
+		}
 		if (preg_match("/physical/",$field->name) && !$physical)
 		{
 			echo $field->renderField();
