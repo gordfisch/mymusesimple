@@ -58,22 +58,23 @@ foreach($order->items as $item){
 
 // for no_reg
 //JURI::base()
-$path = JURI::root(true);
+//$path = JURI::root(true);
 if($params->get('my_registration') == "no_reg"){
-	$link = JRoute::_("index.php?option=com_mymuse&view=store&task=accdownloads&id=".$order->order_number);
+	$link = "index.php?option=com_mymuse&view=store&task=accdownloads&id=".$order->order_number;
 }else{
-	$link = JRoute::_("index.php?option=com_mymuse&view=store&task=downloads&id=".$order->order_number);
+	$link = "index.php?option=com_mymuse&view=store&task=downloads&id=".$order->order_number;
 }
-$link = rtrim(JURI::root(),"/").preg_replace("#$path#",'',$link);
 if($params->get('my_default_itemid','')){
 	$link .= "&Itemid=".$params->get('my_default_itemid');
 }
+//echo " link = $link <br />";
 $app    = JApplication::getInstance('site');
 $router = $app->getRouter();
 $uri = $router->build($link);
-$link = $uri->toString();
-$path = JURI::root(true); 
-$link = JURI::root().preg_replace("#$path/administrator/#",'',$link);
+$link = rtrim(JURI::root(),'/').$uri->toString(array('path', 'query', 'fragment'));
+$link = preg_replace("#/administrator#",'',$link);
+//echo " link = $link <br />"; exit;
+
 
 
 $download_header .= '

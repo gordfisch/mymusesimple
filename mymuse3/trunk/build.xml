@@ -4,7 +4,7 @@
 	<!-- arboreta/joomlamy3/callinish || mymusetest35 || mymusetest336 || nexgen-->
         <property name="test" value="/var/www/html/nexgen" override="true" />
         <property name="testadmincomp"
-                value="/var/www/html/mnexgen/administrator/components/com_mymuse"
+                value="/var/www/html/nexgen/administrator/components/com_mymuse"
                 override="true" />
         <property name="src" value="${project.basedir}" override="true" />
         <fileset dir="./site" id="site_files">
