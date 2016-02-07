@@ -591,6 +591,7 @@ class mymuseModelShopper extends JModelForm
 		$user = JFactory::getUser();
 		$params	= JComponentHelper::getParams('com_users');
 		$myparams = MyMuseHelper::getParams();
+		
 		if($user->get('id')){
 			return true;
 		}
@@ -615,7 +616,7 @@ class mymuseModelShopper extends JModelForm
 		$credentials['password'] = $myparams->get('my_noreg_password');
 		$options = array();
 		;
-		echo "login options "; print_pre($credentials); exit;
+		//echo "login options "; print_pre($credentials); exit;
 		//preform the login action
 		$error = $app->login($credentials, $options);
 		

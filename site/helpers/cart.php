@@ -884,7 +884,10 @@ class MyMuseCart {
 
 		// take out the file_contents
 		$row->file_contents = null;
-		if($name = json_decode($row->file_name)){
+		if($name = json_decode($row->file_name) && isset($name[0]->file_length)){
+			
+			
+			
 			$row->file_length = $name[0]->file_length;
 		}
 		
