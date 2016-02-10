@@ -386,6 +386,27 @@ class myMuseViewCart extends JViewLegacy
 		//download page if necessary
 		$download_page = $jinput->get('download_page','', 'RAW');
 		$this->assignRef('download_page', $download_page);
+		
+		//licence if necessary
+		//display the licence if necessary
+		if(2 == $params->get('my_price_by_product',0)){
+			$session = JFactory::getSession();
+			$my_licence = $session->get("my_licence",0);
+			$this->assignRef('my_licence', $my_licence);
+			for ($i = 0; $i < 5; $i++){
+				if(null != $params->get('my_license_'.$i.'_name')
+						&& null != $params->get('my_license_'.$i.'_price')){
+					$licence[$i]['name'] = $params->get('my_license_'.$i.'_name');
+					$licence[$i]['price'] = $params->get('my_license_'.$i.'_price');
+					$licences[$i] = JHTML::_('select.option',  $params->get('my_license_'.$i.'_name') );
+				}
+			}
+			$lists['licences'] = JHTML::_('select.genericlist',  $licences, 'licence', 
+					'class="inputbox" size="1" id="licence"', 'value', 'text', $this->my_licence );
+			$this->assignRef('licence', $licence);		
+			$this->assignRef('lists', $lists);
+			$this->assignRef('my_licence', $my_licence);
+		}
 
 		// show the heading
 		if($heading){
@@ -414,6 +435,18 @@ class myMuseViewCart extends JViewLegacy
 		$cart_display = ob_get_contents();
 		ob_end_clean();
 		$this->assignRef('cart_display', $cart_display);
+		
+		
+		//display the licence if necessary
+		if(2 == $params->get('my_price_by_product',0)){
+
+			ob_start();
+			parent::display('licence');
+			$cart_licence = ob_get_contents();
+			ob_end_clean();
+			$this->assignRef('cart_licence', $cart_licence);
+
+		}
 		
 		
 		//display the shopper info, if we have one

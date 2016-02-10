@@ -654,7 +654,7 @@ class MyMuseCart {
 			$price = MyMuseModelProduct::getPrice($order->items[$i]);	
 			$order->items[$i]->product_item_price = $price['product_price'];
 			$order->items[$i]->product_item_subtotal = $price['product_price'] * $order->items[$i]->quantity;
-			
+			$order->items[$i]->price = $price;
 			// shopper group discount
 			if($price["product_shopper_group_discount_amount"] > 0){
 				$order->shopper_group_discount += $price["product_shopper_group_discount_amount"] * $order->items[$i]->quantity;

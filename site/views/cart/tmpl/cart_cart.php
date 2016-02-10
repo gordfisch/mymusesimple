@@ -114,7 +114,24 @@ for ($i=0;$i<count($order->items); $i++) {
 		    <?php if($params->get("my_show_sku")){ ?>
 		        <td class="mysku cart"><?php echo $order_item[$i]->product_sku; ?></td>
 		    <?php } ?>
-		        <td class="myprice cart"> <?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_price); ?></td>
+		    
+		        <td class="myprice cart"> 
+		        <?php if(isset($this->licence)){
+		        	foreach($order_item[$i]->price['licence'] as $j=>$licence){ 
+		        		if($this->my_licence == $j){
+		        			$style = 'style="display: block;"';
+		        		}else{
+		        			$style = 'style="display: none;"';
+		        		}
+		        		echo '<div id="licence_'.$j.'" class="price" '.$style.'>'.
+		        		MyMuseHelper::printMoney($order_item[$i]->price['licence'][$j]['price']).
+		        		'</div>';
+		        		
+		        	}
+		        	//print_pre($order_item[$i]->price);
+		        }
+		        ?>
+		        </td>
 		        
 		   <?php if($order->do_html && $order_item[$i]->quantity){ ?>
 		        <td class="myquantity cart"> <input class="inputbox" type="text" size="4" maxlength="4" name="quantity[<?php echo $order_item[$i]->id ?>]"
@@ -269,6 +286,13 @@ for ($i=0;$i<count($order->items); $i++) {
 			<?php } ?>
 		
 		<?php } ?>
+		
+		<?php if(isset($this->cart_licence)){
+			echo $this->cart_licence;
+		}
+		?>
+		
+		
 		
 		<?php if($order->do_html){ ?>
 		</form>
