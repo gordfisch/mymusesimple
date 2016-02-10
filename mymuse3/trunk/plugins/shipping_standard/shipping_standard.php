@@ -72,11 +72,11 @@ class plgMymuseShipping_Standard extends JPlugin
             	// see if countries match
             	$good = 0;
             	if($this->params->get("ship_all_countries_$i")){
-            		print_pre($this->params->get("ship_countries_$i"));
+            		//print_pre($this->params->get("ship_countries_$i"));
             		//see if there are exceptions
             		if(isset($shopper->profile['country'])
             				&& in_array($shopper->profile['country'], (array)$this->params->get("ship_countries_$i"))){
-            			//we have an exeption
+            			//we have an exeption do not ship
             		}else{
             			$good = 1;
             		}

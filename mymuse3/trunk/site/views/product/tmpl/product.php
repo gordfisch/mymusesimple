@@ -50,7 +50,7 @@ $document->setMetaData( 'twitter:description', strip_tags($description));
 $document->setMetaData( 'twitter:image', JURI::Root().$product->detail_image);
 
 
-if($this->params->get('my_price_by_product')){
+if("1" == $this->params->get('my_price_by_product')){//price by product
 	$product_price_physical = array('product_price' => $this->item->attribs->get('product_price_physical'));
 
 	foreach($this->params->get('my_formats') as $format){
@@ -144,22 +144,22 @@ if(count($params->get('my_formats') > 1) && $params->get('my_price_by_product'))
 			jQuery(formats[jQuery(select_id).val()]+"_"+id).show();'."\n}";
     		
 }
-  
+
     //print_pre($params->get('my_formats'));
         
 
 $url = JURI::Root()."index.php?option=com_mymuse&task=ajaxtogglecart";
 foreach($tracks as $track){
 
-$js .= '
-jQuery(document).ready(function($){
+	$js .= '
+	jQuery(document).ready(function($){
 		$("#box_'.$track->id.'").click(function(e){
 			if(typeof document.mymuseform.variation_'.$track->id.'_id !== "undefined"){	
 				myvariation = document.mymuseform.variation_'.$track->id.'_id.value;
 				//alert("variation = "+myvariation);
 
 			}else{
-				myvariation = "";
+				myvariation = 0;
 			}
             $.post("'.$url.'",
             {
@@ -200,8 +200,8 @@ jQuery(document).ready(function($){
 		});
 	});
 
-';
-}
+	';
+	}
 if($product->product_physical){
 	$js .= '
 jQuery(document).ready(function($){
@@ -905,7 +905,7 @@ endif; ?>
         			<?php  if($params->get('product_show_cost_column', 1)) :?>	
         				<td class="myprice">
         				<?php 
-        				if($params->get('my_price_by_product')) :
+        				if("1" == $params->get('my_price_by_product')) :
         					$first = 1;
 							foreach($this->params->get('my_formats') as $format) :
 								$product_price = 'product_price_'.$format;

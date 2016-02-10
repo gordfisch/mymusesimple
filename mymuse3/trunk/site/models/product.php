@@ -359,6 +359,7 @@ class MyMuseModelProduct extends JModelItem
 					
 					
 					$tracks[$i]->price = $this->getPrice($track);
+
 					if($params->get('my_add_taxes')){
 						$tracks[$i]->price["product_price"] = MyMuseCheckout::addTax($tracks[$i]->price["product_price"]);
 					}
@@ -842,46 +843,6 @@ class MyMuseModelProduct extends JModelItem
 				$price_info["item"]=true;
 			}
 		}  
-		if(is_array($product->price)){
-			// we've been here already
-			return $product->price;
-		}else{
-			if($params->get('my_price_by_product')){
-				if($product->parentid > 0){
-					$query = "SELECT attribs FROM #__mymuse_product WHERE id='".$product->parentid."'";
-					$db->setQuery($query);
-					if(!$product->attribs = $db->loadResult()){
-						$product_price = $product->price;
-					}
-				}
-				$registry = new JRegistry;
-				$registry->loadString($product->attribs);
-				$product->attribs = $registry;
-				if($product->product_physical){
-					$key = 'product_price_physical';
-					$product->price = $product->attribs->get($key);
-					//echo "key = $key <br />";
-				}elseif($product->product_allfiles && isset($product->ext)){
-					$key = 'product_price_'.$product->ext.'_all';
-					$product->price = $product->attribs->get($key);
-					//echo "key = $key <br />";
-					//echo "product->price = ".$product->price." <br />";
-				}elseif(isset($product->ext)){
-					$key = 'product_price_'.$product->ext;
-					$product->price = $product->attribs->get($key);
-					//echo "key = $key <br />";
-				}
-				//print_pre($product->attribs);
-			}
-			$product_price = $product->price;
-			//echo "product price = $product_price<br />";
-		}
-		
-			
-		// see if this product has a discount
-		$discount = $product->product_discount;
-
-		
 		// Get the shopper group id for this shopper
 		$shopper_group_id = @$shopper->shopper_group->id;
 		if($shopper_group_id == ""){
@@ -894,15 +855,87 @@ class MyMuseModelProduct extends JModelItem
 			$shopper->shopper_group = $db->loadObject();
 		}
 		$shopper_group_discount = $shopper->shopper_group->discount;
-
+		
 		// Get the product_parent_id for this product/item
 		$product_parent_id = 0;
-		if(isset($product->parentid)){
-			$product_parent_id = $product->parentid;
-			if($product_parent_id > 0){
-				$price_info["item"]=true;
+
+
+		//if(is_array($product->price)){
+			// we've been here already
+		//	return $product->price;
+		//}else{
+			if(0 == $params->get('my_price_by_product') || $product->product_physical ){ //price by track
+				$price_info["product_price"] = $product->price;
+				
+			}elseif(1 == $params->get('my_price_by_product')){ //price by product
+				if($product->parentid > 0){
+					$query = "SELECT attribs FROM #__mymuse_product WHERE id='".$product->parentid."'";
+					$db->setQuery($query);
+					if(!$product->attribs = $db->loadResult()){
+						$price_info["product_price"] = $product_price = $product->price;
+					}
+				}
+				$registry = new JRegistry;
+				$registry->loadString($product->attribs);
+				$product->attribs = $registry;
+				if($product->product_physical){
+					$key = 'product_price_physical';
+					$product->price = $product->attribs->get($key);
+					$price_info["product_price"] = $product->price;
+				}elseif($product->product_allfiles && isset($product->ext)){
+					$key = 'product_price_'.$product->ext.'_all';
+					$product->price = $product->attribs->get($key);
+					$price_info["product_price"] = $product->price;
+				}elseif(isset($product->ext)){
+					$key = 'product_price_'.$product->ext;
+					$product->price = $product->attribs->get($key);
+					$price_info["product_price"] = $product->price;
+				}
+				$product_price = $product->price;
+				$price_info["product_shopper_group_discount"] = $shopper_group_discount;
+				$price_info["product_shopper_group_discount_amount"] = $product_price*$shopper_group_discount/100;
+				
+				$price_info["product_price"] = round($price_info["product_price"],2);
+				$price_info["product_shopper_group_discount_amount"] = round($price_info["product_shopper_group_discount_amount"],2);
+				
+				
+				return $price_info;
+				
+			}elseif(2 == $params->get('my_price_by_product') && 1 != $product->product_physical){ //price by licence
+				
+				$registry = new JRegistry;
+				$registry->loadString($params->get('attribs'));
+				$product->attribs = $registry;
+				$session = JFactory::getSession();
+				$my_licence = $session->get("my_licence",0);
+				$price_info["product_price"] = $params->get('my_license_'.$my_licence.'_price');
+				for ($i = 0; $i < 5; $i++){
+					if(null != $params->get('my_license_'.$i.'_name')
+							&& null != $params->get('my_license_'.$i.'_price')){
+						$price_info['licence'][$i]['name'] = $params->get('my_license_'.$i.'_name');
+						$price_info['licence'][$i]['price'] = $params->get('my_license_'.$i.'_price');
+						
+					}
+				}
+				$product->price = $price_info["product_price"];
+				$product_price = $product->price;
+				$price_info["product_shopper_group_discount"] = $shopper_group_discount;
+				$price_info["product_shopper_group_discount_amount"] = $product_price*$shopper_group_discount/100;
+				
+				$price_info["product_price"] = round($price_info["product_price"],2);
+				$price_info["product_shopper_group_discount_amount"] = round($price_info["product_shopper_group_discount_amount"],2);
+				
+				return $price_info;
 			}
-		}
+			
+		//}
+		$product_price = $product->price;
+			
+		// see if this product has a discount
+		$discount = $product->product_discount;
+
+		
+		
 
 		// DEBUG
 		//echo "product:$product_id product_price: $product_price discount:$discount, shopper group id = $shopper_group_id, shopper group discount = $shopper_group_discount<BR>";
@@ -950,7 +983,7 @@ class MyMuseModelProduct extends JModelItem
 				}
 				$price_info["product_price"] = round($price_info["product_price"],2);
 				$price_info["product_shopper_group_discount_amount"] = round($price_info["product_shopper_group_discount_amount"],2);
-				
+				//print_pre($price_info);
 				return $price_info;
 			}
 		}
@@ -967,7 +1000,7 @@ class MyMuseModelProduct extends JModelItem
 			
 			$price_info["product_price"] = round($price_info["product_price"],2);
 			$price_info["product_shopper_group_discount_amount"] = round($price_info["product_shopper_group_discount_amount"],2);
-			
+			//print_pre($price_info); 
 			return $price_info;
 		}
 

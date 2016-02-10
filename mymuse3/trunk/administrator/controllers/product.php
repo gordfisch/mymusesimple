@@ -545,6 +545,34 @@ class MymuseControllerProduct extends JControllerForm
     
     }
     
-
+    /**
+     * ARBORETA IMPORT PRODUCT
+     *
+     */
+    
+    function import_products()
+    {
+    	
+    	$model = $this->getModel('product');
+    	$model->import_products();
+    
+    }
+    
+    /**
+     * ARBORETA IMPORT PRODUCT 2
+     *
+     */
+    
+    function import_products2()
+    {
+    	$limit = JRequest::getVar('limit','50');
+    	$limitstart = JRequest::getVar('limitstart','0');
+    	$myfile = JRequest::getVar('myfile','50');
+    	$url = "index.php?option=com_mymuse&task=product.import_products&limit=$limit&limitstart=$limitstart&myfile=$myfile";
+    	echo '<meta http-equiv="refresh" content="2;url='.$url.'">';
+    	echo "$limitstart $limit <br />";
+    	echo "<a href='index.php?option=com_mymuse&task=product.import_products'>Stop</a>";
+    
+    }
 
 }
