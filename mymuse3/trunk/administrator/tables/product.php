@@ -166,7 +166,7 @@ class MymuseTableproduct extends JTable
 		
 		$this->_db->setQuery($query);
 		if($this->_db->loadResult()){
-			$app->enqueueMessage(JText::_("MYMUSE_FILE_MUST_HAVE_A_UNIQUE_SKU"), 'error');
+			$app->enqueueMessage(JText::_("MYMUSE_FILE_MUST_HAVE_A_UNIQUE_SKU").' '.$this->product_sku, 'error');
 			return false;
 		}
 		
@@ -199,6 +199,7 @@ class MymuseTableproduct extends JTable
 		$post 			= JRequest::get('post');
 		$form 			= JRequest::getVar('jform', array());
 		$subtype 		= JRequest::getVar('subtype');
+	
 		$date			= JFactory::getDate();
 		$user			= JFactory::getUser();
 		
@@ -241,14 +242,14 @@ class MymuseTableproduct extends JTable
         	$artist_alias = MyMuseHelper::getArtistAlias($this->id, 1);
         	$album_alias = $this->alias;
         }
-        if(isset($post['upgrade']) && $form['title_alias']){
+        if(isset($post['upgrade']) && isset($form['title_alias'])){
         	$this->title_alias = $form['title_alias'];
         }
 
  
 		// Uploaded product file
 		$new = 0;
-		/**
+		
 		if(isset($_FILES['product_file']['name']) && $_FILES['product_file']['name'] != ""){
 			
 			if(isset($_FILES['product_file']['error']) && $_FILES['product_file']['error'])
@@ -284,13 +285,31 @@ class MymuseTableproduct extends JTable
 				}
 				
         		$new_file = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
-			
-				if(!$this->fileUpload($tmpName, $new_file)){
-            		return false;
-				}
+        		
+        		if (file_exists($tmpName)){
+        			if(!file_exists($new_file)){
+        				if(is_writable(dirname($new_file))){
+        					rename($tmpName, $new_file);
+        				}else{
+        					if($this->folderNew(dirname($new_file))){
+								rename($tmpName, $new_file);
+							}else{
+								$application->enqueueMessage(JText::_("MYMUSE_FOLDER_NOT_WRITABLE").": ".dirname($new_file), 'error');
+							}
+        				}
+        			}else{
+        				echo "woops, file exists $new_file";
+        			}
+        			
+        		}else{
+        			echo "file does not exist $tmpName";
+        		}
+				//if(!$this->fileUpload($tmpName, $new_file)){
+            	//	return false;
+				//}
 			}
 		}
-		*/
+		
 		
 		$download_path = MyMuseHelper::getdownloadPath($this->id,0);
 		if(!$isNew && $this->file_name){
@@ -678,18 +697,39 @@ class MymuseTableproduct extends JTable
 			$ext = MyMuseHelper::getExt($_FILES[$preview_name]['name']);
 			$_FILES[$preview_name]['name'] = preg_replace("/$ext$/","",$_FILES[$preview_name]['name']);
 			if($params->get('my_use_sring_url_safe')){
-				$this->$file_preview_name = JFilterOutput::stringURLSafe($_FILES[$preview_name]['name']).$ext;
+				$this->$file_preview_name = JFilterOutput::stringURLSafe($_FILES[$preview_name]['name']).'.'.$ext;
 			}else{
-				$this->$file_preview_name = $_FILES[$preview_name]['name'].$ext;
+				$this->$file_preview_name = $_FILES[$preview_name]['name'].'.'.$ext;
 			}
 			
-			$tmpName2  = $_FILES[$preview_name]['tmp_name'];
+			$tmpName  = $_FILES[$preview_name]['tmp_name'];
 			 
 			$new = $path.$this->$file_preview_name;
-			if(!$this->fileUpload($tmpName2, $new)){
-				$this->setError(JText::_("MYMUSE_COULD_NOT_UPLOAD_FILE").": ".$new);
-				return false;
+			//if(!$this->fileUpload($tmpName2, $new)){
+			if (file_exists($tmpName)){
+				if(!file_exists($new)){
+					if(is_writable(dirname($new))){
+						rename($tmpName, $new);
+					}else{
+						if($this->folderNew(dirname($new))){
+							rename($tmpName, $new);
+						}else{
+							$application->enqueueMessage(JText::_("MYMUSE_FOLDER_NOT_WRITABLE").": ".dirname($new), 'error');
+						}
+					}
+				}else{
+					$application->enqueueMessage(JText::_("MYMUSE_FILE_EXISTS").": ".$new, 'error');
+				}
+						
+			}else{
+					echo "file does not exist $tmpName"; exit;
+					$application->enqueueMessage(JText::_("MYMUSE_FILE_DOES_NOT_EXIST").": ".$tmpName, 'error');
 			}
+			//if(!JFile::move($tmpName2, $new)){
+				
+			//	$this->setError(JText::_("MYMUSE_COULD_NOT_UPLOAD_FILE").": ".$new);
+			//	return false;
+			//}
 		}
 
 		
@@ -994,7 +1034,7 @@ class MymuseTableproduct extends JTable
     /**
      * Upload a file
      * 
-     * @param   string file to move
+     * @param   string file to 
      * @param   string file name moving to
      *
      * @return  boolean  True on success.
@@ -1028,7 +1068,7 @@ class MymuseTableproduct extends JTable
     			return false;
     		}
     	}else{
- 
+    		
     		if(!JFile::upload($tmpName, $new_file)){
     			$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$tmpName." ".$new_file);
     			$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$tmpName." ".$new_file , 'error');
@@ -1088,7 +1128,7 @@ class MymuseTableproduct extends JTable
     		}
     	}else{
     
-    		if(!JFile::copy($old_file, $new_file)){
+    		if(!JFile::copy("$old_file", "$new_file")){
     			$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file);
     			$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file , 'error');
     			return false;
@@ -1123,7 +1163,7 @@ class MymuseTableproduct extends JTable
     	}
     }
     
-    public function folderMove($src, $dest)
+    public function folder($src, $dest)
     {
     	$application = JFactory::getApplication();
     	$params = MyMuseHelper::getParams();

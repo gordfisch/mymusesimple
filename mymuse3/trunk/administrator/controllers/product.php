@@ -80,7 +80,7 @@ class MymuseControllerProduct extends JControllerForm
     { 
     	$input 				= JFactory::getApplication()->input;
         $post 				= JRequest::get('post');
-     
+  
         $this->id 			= isset($post['id'])? $post['id'] : null ;
         $this->parentid 	= isset($post['parentid'])? $post['parentid'] : 0;
         $form 				= $post['jform'];
@@ -144,7 +144,7 @@ class MymuseControllerProduct extends JControllerForm
 			}else {
 
         		$this->msg = JText::_( 'MYMUSE_ERROR_SAVING_FILE' ).": ".$table->getError();
-        	
+
         		JFactory::getApplication()->enqueueMessage($this->msg, 'notice');
         		if($this->id){
         			$this->setRedirect( "index.php?option=com_mymuse&view=product&task=product.editfile&parentid=".$this->parentid.'&id='.$this->id.'&subtype='.$post['subtype'], $this->msg );
