@@ -130,13 +130,15 @@ class MyMuseUpdateHelper extends JObject
 		$db = JFactory::getDBO();
 		$app = JFactory::getApplication();
 		$token = JSession::getFormToken();
-		$query = "DELETE from #__mymuse_product WHERE product_sku = '".$p->product_sku."'";
+		$query = "DELETE from #__mymuse_product WHERE product_sku = ".$db->quote($p->product_sku);
 		$db->setQuery($query);
 		$db->execute();
 		$user = JFactory::getUser();
 		$userid = $user->get('id');
-	
-	
+	if($p->parentid){
+		print_pre($p); print_pre($_FILES); 
+	}
+		
 		require_once (JPATH_COMPONENT.DS.'controllers'.DS.'product.php');
 	
 		$controller	= new MymuseControllerProduct(array(
@@ -165,6 +167,170 @@ class MyMuseUpdateHelper extends JObject
 						'title_alias' => $p->title_alias,
 						'articletext' => $p->articletext,
 						'state' => $p->state,
+						'artistid' => $p->artistid,
+						'catid' => $p->catid,
+						'price' => $p->price,
+						'created_by' => $userid,
+						'created_by_alias' => '',
+						'created' => '',
+						'publish_up' => $p->publish_up,
+						'publish_down' => $p->publish_down,
+						'list_image' => $p->image,
+						'detail_image' => $p->images,
+						'urls' => $p->urls,
+						'attribs' => Array
+						(
+								'product_made_date' => $p->product_made_date,
+								'product_in_stock' => $p->product_in_stock,
+						),
+						'version' => $p->version,
+						'parentid' => $p->parentid,
+						'ordering' => $p->ordering,
+						'metakey' => $p->metakey,
+						'metadesc' => $p->metadesc,
+						'access' => '1',
+						'hits' => $p->hits,
+						'metadata' => Array
+						(
+								'robots' => '',
+								'author' => '',
+								'rights' => '',
+								'xreference' => ''
+						),
+						'product_physical' => $p->product_physical,
+						'product_downloadable' => $p->product_downloadable,
+						'product_allfiles' => $p->product_allfiles,
+						'product_sku' => $p->product_sku,
+						'product_made_date' => $p->product_made_date,
+						'product_in_stock' => $p->product_in_stock,
+						'product_special' => $p->product_special,
+						'product_discount' => $p->product_discount,
+						'reservation_fee' => $p->reservation_fee,
+						'file_length' => $p->file_length,
+						'file_name' => $p->file_name,
+						'file_downloads' => $p->file_downloads,
+						'file_contents' => $p->file_contents,
+						'file_type' => $p->file_type,
+						'file_preview' => $p->file_preview,
+						'file-time' => $p->file_time,
+						'featured' => $p->product_special,
+						'language' => '*',
+						'othercats' => $p->othercats,
+				),
+	
+				'task' => 'product.save',
+				'subtype' => 'details',
+				'return' => '',
+				$token => 1,
+				'option' => 'com_mymuse',
+				'file_preview' => $p->file_preview,
+				'upgrade' => 1
+	
+		);
+		$mime['wav'] = "audio/wav";
+		$mime['mp3'] = "audio/mpeg";
+		if(isset($_FILES['product_file'])){
+			$ext = pathinfo($_FILES['product_file']['tmp_name'], PATHINFO_EXTENSION);
+			$data["product_file"] = new CURLFile($_FILES['product_file']['tmp_name'], $mime[$ext], $_FILES['product_file']['name']);
+		}
+		if(isset($_FILES['product_preview'])){
+			$ext = pathinfo($_FILES['product_preview']['tmp_name'], PATHINFO_EXTENSION);
+			//$data["product_preview"] = new CURLFile($_FILES['product_preview']['tmp_name'],$mime[$ext], $_FILES['product_preview']['name']);
+		}
+		print_pre($data);
+
+		$str = http_build_query($data);
+		$url = JURI::base()."index.php";
+		$cookie = session_name()."=".session_id();
+		
+		$ch = curl_init();
+		curl_setopt($ch, CURLOPT_URL,            $url );
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
+		curl_setopt($ch, CURLOPT_COOKIE, 		$cookie );
+		curl_setopt($ch, CURLOPT_POST,           1 );
+		curl_setopt($ch, CURLOPT_POSTFIELDS, $str);
+		curl_setopt($ch, CURLOPT_HTTPHEADER,array('Content-Type: multipart/form-data'));
+		
+		curl_setopt($ch, CURLOPT_HEADER, true);    // return headers
+		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);     // follow redirects
+		curl_setopt($ch, CURLOPT_ENCODING,"");       // handle all encodings
+		curl_setopt($ch, CURLOPT_USERAGENT, "spider"); // who am i
+		curl_setopt($ch, CURLOPT_AUTOREFERER, true);     // set referer on redirect
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);      // timeout on connect
+		curl_setopt($ch, CURLOPT_TIMEOUT, 120);      // timeout on response
+		curl_setopt($ch, CURLOPT_MAXREDIRS , 10);       // stop after 10 redirects
+		curl_setopt($ch, CURLOPT_HTTPHEADER, array( 'Expect:' ) );
+		// return web page
+		$result=curl_exec ($ch);
+		curl_close($ch);
+		
+		//see if it worked
+		$query = "SELECT id from #__mymuse_product WHERE title = ".$db->quote($p->title);
+		//echo "<br />$query<br />";
+		$db->setQuery($query);
+		
+		if($res = $db->loadResult()){
+			return $res;
+		}else{
+			echo $result; exit;
+			$this->error = "Could not create product. ".$result;
+			return false;
+		}
+		
+
+	}
+	
+	/**
+	 * makeProduct
+	 *
+	 * @param array $p the product form input
+	 *
+	 * @return mixed productid on success, false on failure
+	 */
+	
+function makeProduct($p)
+	{
+
+		$db = JFactory::getDBO();
+		//Add a main product
+		$token = JSession::getFormToken();
+		$query = "DELETE from #__mymuse_product WHERE product_sku = ".$db->quote($p->product_sku);
+		//echo $query."<br />";
+		$db->setQuery($query);
+		$db->query();
+		$user = JFactory::getUser();
+		$userid = $user->get('id');
+	
+	
+		require_once (JPATH_COMPONENT.DS.'controllers'.DS.'product.php');
+	
+		$controller	= new MymuseControllerProduct(array(
+				'base_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/",
+				'model_prefix' => 'MymuseModel',
+				'model_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/models",
+				'table_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/tables"
+		)
+		);
+	
+		if($p->image != ""){
+			$p->image = 'images/A_MyMuseImages/'.$p->image;
+		}
+		if($p->images != ""){
+			$p->images = 'images/A_MyMuseImages/'.$p->images;
+		}
+	
+		$model = $controller->getModel('product', 'MymuseModel',
+				array('table_path' => JPATH_ADMINISTRATOR."/components/com_mymuse/tables"));
+		$_POST = Array(
+				'jform' => Array
+				(
+						'id' => $p->id,
+						'title' => $p->title,
+						'alias' => $p->alias,
+						'title_alias' => $p->title_alias,
+						'articletext' => $p->articletext,
+						'state' => $p->state,
+						'artistid' => $p->artistid,
 						'catid' => $p->catid,
 						'price' => $p->price,
 						'created_by' => $userid,
@@ -214,8 +380,8 @@ class MyMuseUpdateHelper extends JObject
 						'othercats' => $p->othercats,
 				),
 	
-				'task' => 'product.save',
-				'subtype' => 'details',
+				'task' => 'product.apply',
+				'subtype' => 'file',
 				'return' => '',
 				$token => 1,
 				'option' => 'com_mymuse',
@@ -223,130 +389,23 @@ class MyMuseUpdateHelper extends JObject
 				'upgrade' => 1
 	
 		);
-		//$jform = $_POST['jform'];
-
-		$str = http_build_query($data);
-		$url = JURI::base()."index.php";
-		$cookie = session_name()."=".session_id();
-		
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL,            $url );
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
-		curl_setopt($ch, CURLOPT_COOKIE, 		$cookie );
-		curl_setopt($ch, CURLOPT_POST,           1 );
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $str);
-		
-		curl_setopt($ch, CURLOPT_HEADER, true);    // return headers
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);     // follow redirects
-		curl_setopt($ch, CURLOPT_ENCODING,"");       // handle all encodings
-		curl_setopt($ch, CURLOPT_USERAGENT, "spider"); // who am i
-		curl_setopt($ch, CURLOPT_AUTOREFERER, true);     // set referer on redirect
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);      // timeout on connect
-		curl_setopt($ch, CURLOPT_TIMEOUT, 120);      // timeout on response
-		curl_setopt($ch, CURLOPT_MAXREDIRS , 10);       // stop after 10 redirects
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array( 'Expect:' ) );
-		// return web page
-		$result=curl_exec ($ch);
-		curl_close($ch);
-		
-		//see if it worked
+		$jform = $_POST['jform'];
+		JRequest::setVar('jform',$jform);
+		//print_pre($_POST); exit;
+		if(!$model->save($jform)){
+			$this->error = $model->getError();
+			echo $this->error; exit;
+			return false;
+		}
+	
 		$query = "SELECT id from #__mymuse_product WHERE title = ".$db->quote($p->title);
-		//echo "<br />$query<br />";
 		$db->setQuery($query);
-		
-		if($res = $db->loadResult()){
-			return $res;
+		if($id = $db->loadResult()){
+			return $id;
 		}else{
-			echo $result; exit;
-			$this->error = "Could not create product. ".$result;
+			$this->error =  "Could not make product ".print_pre($_POST,true);
 			return false;
 		}
-		
-
-	}
-	
-	/**
-	 * makeProduct
-	 *
-	 * @param array $p the product form input
-	 *
-	 * @return mixed productid on success, false on failure
-	 */
-	
-	function makeProduct($data)
-	{
-	
-		//Add a main product
-		$db = JFactory::getDBO();
-		$app = JFactory::getApplication();
-		$token = JSession::getFormToken();
-		
-		//see if it exists
-		$query = "SELECT id from #__mymuse_product WHERE title = ".$db->quote($data['jform']['title']);
-
-		$db->setQuery($query);
-		$res = $db->loadResult();
-		
-		if($res > 0){
-			return $this->upgradeProduct($data);
-		}
-		
-		/**
-		$user = JFactory::getUser();
-		$userid = $user->get('id');
-	
-		require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_mymuse'.DS.'controllers'.DS.'product.php');
-	
-		$controller	= new MymuseControllerProduct(array(
-				'base_path' => JPATH_ADMINISTRATOR.DS.'components'.DS.'com_mymuse'.DS,
-				'model_prefix' => 'MymuseModel',
-				'model_path' => JPATH_ADMINISTRATOR.DS.'components'.DS.'com_mymuse'.DS.'models',
-				'table_path' => JPATH_ADMINISTRATOR.DS.'components'.DS.'com_mymuse'.DS.'tables'
-				)
-		);
-		*/
-
-	
-		$str = http_build_query($data);
-		$url = JURI::base()."index.php";
-		$cookie = session_name()."=".session_id();
-
-		$ch = curl_init();
-		curl_setopt($ch, CURLOPT_URL,            $url );
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1 );
-		curl_setopt($ch, CURLOPT_COOKIE, 		$cookie );
-		curl_setopt($ch, CURLOPT_POST,           1 );
-		curl_setopt($ch, CURLOPT_POSTFIELDS, $str);
-	
-		curl_setopt($ch, CURLOPT_HEADER, true);    // return headers
-		curl_setopt($ch, CURLOPT_FOLLOWLOCATION, true);     // follow redirects
-		curl_setopt($ch, CURLOPT_ENCODING,"");       // handle all encodings
-		curl_setopt($ch, CURLOPT_USERAGENT, "spider"); // who am i
-		curl_setopt($ch, CURLOPT_AUTOREFERER, true);     // set referer on redirect
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 120);      // timeout on connect
-		curl_setopt($ch, CURLOPT_TIMEOUT, 120);      // timeout on response
-		curl_setopt($ch, CURLOPT_MAXREDIRS , 1);       // stop after 10 redirects
-		curl_setopt($ch, CURLOPT_HTTPHEADER, array( 'Expect:' ) );
-		// return web page
-		$result=curl_exec ($ch);
-		curl_close($ch);
-		
-		//see if it worked
-		$query = "SELECT id from #__mymuse_product WHERE title = ".$db->quote($data['jform']['title']);
-
-		$db->setQuery($query);
-		$res = $db->loadResult();
-		
-		if($res > 0){
-			return $res;
-		}else{
-
-			$this->error = "Could not create product. ".$result;
-			echo $result;  exit;
-			return false;
-		}
-	
-	
 	}
 	
 	function get_data($url, $file)

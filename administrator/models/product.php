@@ -1342,92 +1342,44 @@ class MymuseModelproduct extends JModelAdmin
 		$path = JPATH_SITE.DS.'staging';
 		$path_downloads = 'Download';
 		$path_preview = 'Preview';
+		$mycsv = $path.DS.'import.csv';
 		
+		$q = "SELECT id from #__categories where alias='artists'";
+		$db->setQuery($q);
+		$catid_artist = $db->loadResult();
+		$q = "SELECT id from #__categories where alias='genres'";
+		$db->setQuery($q);
+		$catid_genre = $db->loadResult();
+
+
 		$artists = JFolder::folders($path, '.');
-		print_pre($folders); exit;
 		
-		
-		$files = JFolder::files($path, '.', false, true );
-		$myfile = JRequest::getVar('myfile', 0);
+
+		//$files = JFolder::files($path, '.', false, true );
 		$date = date('Y/M/d h:i:s');
-		$string = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-            <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-gb" lang="en-gb" dir="ltr" ><head>
-            <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-            </head><body>
-            ';
-		$string .= "#####################<br />
-		$date<br />
-		\n#########<br /><br />";
-		$string .= '<style>
-		td { font-size: 14px; }</style><table width="100%">
-        <tr><td>Nom Excel</td><td>Nom CDG/Nom Demo</td></tr>';
+
+		$clear = JRequest::getVar('clear','0');
 	
-     
-        echo '<form action="index.php?option=com_mymuse&task=product.import_products" method="get">
-            choisir un fichier: <select name="myfile">
-            <option value=""></option>
-            ';
-        foreach ($files as $file){
-		echo '<option value='.$file.' ';
-			if($file == $myfile){
-					echo "SELECTED=SELECTED ";
-		}
-			echo  '>'.$file.'</option>
-			';
-        }
-	
-					echo '</select>
-	
-			<input type="hidden" name="option" value="com_mymuse">
-			<input type="hidden" name="task" value="product.import_products">
-        <br /><input type="checkbox" value="1" name="clear"> Vider
-        <br /><input type="submit" value="Commencer">
-        </form>
-        ';
-        if(preg_match('/anglais/', $myfile)){
-            $path = $path_anglais;
-            $other_path = $path_francais;
-	            $parent_id = 15;
-			}elseif(preg_match('/desfetes/', $myfile)){
-			$path = $path_francais;
-			$other_path = $path_anglais;
-			$parent_id = 16;
-	}elseif(preg_match('/enfents/', $myfile)){
-	$path = $path_francais;
-	$other_path = $path_anglais;
-	$parent_id = 24;
-			}elseif(preg_match('/special/', $myfile)){
-					$path = $path_francais;
-					$other_path = $path_anglais;
-	$parent_id = 25;
-	}else{
-	$path = $path_francais;
-	$other_path = $path_anglais;
-			$parent_id = 14;
+		if($clear){
+			JFile::delete(JPATH_ADMINISTRATOR .DS.'components'.DS.'com_mymuse'.DS.'log.html');
+			$good = 0;
+			$q = "SELECT id from #__categories where parent_id='$catid_artist' OR parent_id='$catid_genre'";
+			$db->setQuery($q);
+			$cats = $db->loadObjectList();
+			$cat_ids = '(';
+			foreach ($cats as $cat){
+				$cat_ids .= $cat->id.",";
+				$good = 1;
 			}
-	
-				$clear = JRequest::getVar('clear','0');
-	
-				if($clear){
-				JFile::delete(JPATH_ADMINISTRATOR .DS.'components'.DS.'com_mymuse'.DS.'log.html');
-				$good = 0;
-				$q = "SELECT id from #__categories where parent_id='$parent_id'";
-				$db->setQuery($q);
-				$cats = $db->loadObjectList();
-				$cat_ids = '(';
-					foreach ($cats as $cat){
-					$cat_ids .= $cat->id.",";
-							$good = 1;
-				}
-				$cat_ids = preg_replace("/,$/",'',$cat_ids);
-				$cat_ids .= ")";
-				if($good){
+			$cat_ids = preg_replace("/,$/",'',$cat_ids);
+			$cat_ids .= ")";
+			if($good){
 				$q = "DELETE FROM #__mymuse_product WHERE 1
 				AND catid IN $cat_ids";
-	
+			echo $q."<br />";
 				$db->setQuery($q);
 				if(!$db->query()){
-				echo $db->error;
+					echo $db->error;
 				}
 				//$q = "ALTER TABLE #__mymuse_product AUTO_INCREMENT = 1";
 				//if(!$db->query()){
@@ -1436,271 +1388,361 @@ class MymuseModelproduct extends JModelAdmin
 	
 				$q = "DELETE FROM #__mymuse_product_category_xref WHERE 1
 				AND catid IN $cat_ids";;
+			echo $q."<br />";
 				$db->setQuery($q);
-					if(!$db->query()){
-							echo $db->error;
-				}
-	
-							$q = "DELETE FROM #__categories WHERE id IN $cat_ids";
-							$db->setQuery($q);
-					if(!$db->query()){
+				if(!$db->query()){
 					echo $db->error;
-					}
-					/**
-					DELETE FROM `aktmd_categories` WHERE id>25;
-					DELETE FROM `aktmd_mymuse_product`;
-					DELETE FROM `aktmd_assets` WHERE name LIKE "com_mymuse%" AND id > 92;
-					* */
-				}
 				}
 	
-	
-				if(!$myfile){
-				echo '<h2>choisir un fichier</h2>';
-				return true;
+				$q = "DELETE FROM #__categories WHERE id IN $cat_ids";
+				$db->setQuery($q);
+			echo $q."<br />";
+				if(!$db->query()){
+					echo $db->error;
 				}
-	
-	
-				$string .= "<tr><td colspan=\"2\">fichier $myfile</td></tr>";
-				$this->logMessage($string);
-	
-				$csv = $this::readCSV($myfile);
-					if(!isset($csv[$limitstart][1])){
-					echo "All done";
-					return true;
-				}
-	
-				for($i = $limitstart; $i < $limit+$limitstart; $i++ ){
-	
-				if(!isset($csv[$i][1])){
-				echo "All done";
-				return true;
-				}
-					$string = '';
-					$entry = array();
-					$entry = $csv[$i];
-					$parent_name = $entry[0];
-					$artist_name = $product_name = $entry[1];
-	
-	
-					$arr[] = '(';
-					$arr[] = ')';
-					// $arr[] = "'";
-					$arr[] = ",";
-					$filename = '';
-					$filename = str_replace(" ","_", strtolower(str_replace($arr, '', $entry[1].'_'.$entry[2])));
-					$filename = str_replace("'",'_',$filename);
-							$filename = str_replace("-",'_',$filename);
-	$filename = str_replace("&",'et',$filename);
-	
-	
-			$from = array(
-			"á", "à", "â", "ã", "ä", "é", "è", "ê", "ë", "í", "ì", "î", "ï",
-	"ó", "ò", "ô", "õ", "ö", "ú", "ù", "û", "ü", "ç", "Á", "À", "Â",
-	"Ã", "Ä", "É", "È", "Ê", "Ë", "Í", "Ì", "Î", "Ï", "Ó", "Ò", "Ô",
-	"Õ", "Ö", "Ú", "Ù", "Û", "Ü", "Ç"
-	);
-	$to = array(
-	"a", "a", "a", "a", "a", "e", "e", "e", "e", "i", "i", "i", "i",
-	"o", "o", "o", "o", "o", "u", "u", "u", "u", "c", "A", "A", "A",
-	"A", "A", "E", "E", "E", "E", "I", "I", "I", "I", "O", "O", "O",
-	"O", "O", "U", "U", "U", "U", "C"
-	);
-	$filename = strtolower(str_replace($from, $to, $filename));
-	
-	$cdg = $filename.".zip";
-	$mp3 = $filename.".MP3";
-	$have_payload = '';
-	$have_demo = '';
-	
-	$string .= "<tr><td colspan=\"2\">".$entry[1]." ".$entry[2]." : $filename</td></tr>";
-	
-	// see if artist category exist
-	$artist_alias = JApplication::stringURLSafe($artist_name);
-	$query = "SELECT id FROM #__categories WHERE alias =".$db->quote($artist_alias)."
-	AND parent_id=$parent_id";
-	
-	$db->setQuery($query);
-	if(!$artist_id = $db->loadResult()){
-	//make top cat
-	$artist_id = $this->makeCategory($entry[1], $parent_id);
-	$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Catégorie fabriqué: ".$entry[1]." $artist_id</span></td></tr>";
-	}else{
-			$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Catégorie exist: ".$entry[1]." $artist_id</span></td></tr>";
-	}
-					//if($artist_name == "Elsa"){
-	//    echo $query." ".$artist_id;
-	//    $string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Elsa: ".$query." ".$artist_id."</span></td></tr>";
-	// }
-	if(file_exists($path.$cdg)){
-			$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">".$path.$cdg."</span></td></tr>";
-			$have_payload = $path.$cdg;
-	}elseif(file_exists($other_path.$cdg)){
-	$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">".$other_path.$cdg."</span></td></tr>";
-	$have_payload = $other_path.$cdg;
-	}else{
-	$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">".$path.$cdg."</span></td></tr>";
-	}
-	if(file_exists($path_preview.$mp3)){
-	$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;;\">".$path_preview.$mp3."</span></td></tr>";
-	$have_demo = $path_preview.$mp3;
-	}else{
-	$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">".$path_preview.$mp3."</span></td></tr>";
-	}
-	
-	// MAKING OF PRODUCTS AND TRACKS//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-	if($have_payload != ''){
-		//see if parent product exists
-		$query = "SELECT id FROM #__mymuse_product WHERE title = ".$db->quote($product_name)."
-		AND parentid=0 AND catid=$artist_id";
-		 
-		$db->setQuery($query);
-		if(!$product_id = $db->loadResult()){
-		//make product
-		$product_id = $this->makeProduct($product_name, $artist_id, 0, 0);
-		if(is_numeric($product_id)){
-		$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Produit fabriqué: $product_name $artist_id $product_id</span></td></tr>";
-		$this->logMessage($string);
-		$string = '';
-	}else{
-	$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">Ne pouvait pas rendre le produit : ".$product_name." ".$product_id."</span></td></tr>";
-	$string .= "</table>";
-		$this->logMessage($string);
-		echo $string;
-		return false;
-	}
-	}else{
-	$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">HAD product: ".$product_name."</span></td></tr>";
-	$this->logMessage($string);
-			$string = '';
+			}
+			exit;
+
 		}
-	
-		// see if track exists
-		if($have_payload != ''){
-		$query = "SELECT id FROM #__mymuse_product WHERE  title = ".$db->quote($entry[2])."
-		AND parentid=$product_id";
-	
+
+		$from = array(
+				"á", "à", "â", "ã", "ä", "é", "è", "ê", "ë", "í", "ì", "î", "ï",
+				"ó", "ò", "ô", "õ", "ö", "ú", "ù", "û", "ü", "ç", "Á", "À", "Â",
+				"Ã", "Ä", "É", "È", "Ê", "Ë", "Í", "Ì", "Î", "Ï", "Ó", "Ò", "Ô",
+				"Õ", "Ö", "Ú", "Ù", "Û", "Ü", "Ç"
+		);
+		$to = array(
+				"a", "a", "a", "a", "a", "e", "e", "e", "e", "i", "i", "i", "i",
+				"o", "o", "o", "o", "o", "u", "u", "u", "u", "c", "A", "A", "A",
+				"A", "A", "E", "E", "E", "E", "I", "I", "I", "I", "O", "O", "O",
+				"O", "O", "U", "U", "U", "U", "C"
+		);
+		
+		$artist_array = array();
+		$product_array = array();
+		$string = "<table>";
+		$this->logMessage($string);
+		
+		//make artist categories if needed
+		foreach($artists as $i => $artist){
+			// see if artist category exist
+			$artist_alias = JApplication::stringURLSafe($artist);
+			$query = "SELECT id FROM #__categories WHERE alias =".$db->quote($artist_alias);
+			
 			$db->setQuery($query);
-					if(!$track_id = $db->loadResult()){
-					//make track
-					$track_id = $this->makeProduct($entry[2], $artist_id, $product_id, 1, $have_payload, $have_demo);
-					if(is_numeric($track_id)){
-							$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;;\">Fait piste : ".$entry[2]." ".$artist_id." $track_id</span></td></tr>";
+			if(!$artist_id = $db->loadResult()){
+				//make top cat
+				$artist_id = $this->makeCategory($artist, $catid_artist);
+				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Category Made: ".$artist." $artist_id</span></td></tr>";
+				
 			}else{
-				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">ne pouvait pas faire la piste : ".$entry[2]." $track_id</span></td></tr>";
-				$string .= "</table>";
-				$this->logMessage($string);
-				$string = '';
-				sleep(5);
-				return false;
-				}
-				}else{
-				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">HAD Demo: ".$entry[2]."</span></td></tr>";
-				$this->logMessage($string);
-				$string = '';
-				}
-				}
-				}
-				$this->logMessage($string);
-				 
-				}
-				echo "</table>";
+				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Category Exists: ".$artist." $artist_id</span></td></tr>";
+			}
+			$artist_array[$artist_alias] = $artist_id;
+		}
+		print_pre($artist_array);
+		
+		$csv = $this::readCSV($mycsv);
+		
+		$quit = 0;
+
+		for($i = $limitstart; $i < $limit+$limitstart; $i++ ){
 	
-				$oldlimitstart =$limitstart;
-				$limitstart = $limitstart+50;
-					$url = "index.php?option=com_mymuse&&task=productarb.import_products2&limit=$limit&limitstart=$limitstart&myfile=$myfile";
+			if($quit > 10){
+				echo "All done";
+				$this->logMessage("</table>");
+				exit;
+			}
+			if(!isset($csv[$i][0]) || $csv[$i][0] == ''){
+				$quit++;
+				continue;
+			}
+			if($csv[$i][0] == "Artist"){
+				continue;
+			}
+			$string = '';
+			$entry = $csv[$i];
+			//echo "entry"; print_pre($entry);
+			$have_payload = '';
+			$have_demo = '';
+			/**
+			 *     [0] => Array
+        (
+            [0] => Artist
+            [1] => Title
+            [2] => Time
+            [3] => Download File
+            [4] => Preview File
+            [5] => Author1
+            [6] => Author2
+            [7] => Author3
+            [8] => Genre1
+            [9] => Genre1
+            [10] => Genre3
+            [11] => Description
+        )
+        */
+
+
 	
-					$this->logMessage("Products $oldlimitstart to $limitstart saved");
-					$this->logMessage($url."\n");
-	
-					$app->redirect($url);
-					 
-					}
-					 
-					function logMessage($message){
-					$path = JPATH_ADMINISTRATOR .DS.'components'.DS.'com_mymuse'.DS.'log.html';
-	
-					$fh = fopen($path, "a");
-					fwrite($fh,$message."\n");
-					fclose($fh);
-					return true;
-					}
-	
-					function makeCategory($title, $parent_id)
-					{
-					require_once (JPATH_COMPONENT.DS.'helpers'.DS.'update.php');
-					$helper = new MyMuseUpdateHelper;
-					$id = $helper->makeCategory($title, $parent_id);
-					return $id;
-					}
-	
-					function makeProduct($title, $cat_id, $parent_id = 0, $downloadable = 0, $payloadpath = '', $demopath = '')
-						{
-							if($payloadpath){
-								$_FILES['product_file']['name'] = basename($payloadpath);
-								$_FILES['product_file']['tmp_name'] = $payloadpath;
-								$_FILES['product_file']['size'] = filesize($payloadpath);
-					}
-					if($demopath){
-					$_FILES['product_preview']['name'] = basename($demopath);
-					$_FILES['product_preview']['tmp_name'] = $demopath;
-            $_FILES['product_preview']['size'] = filesize($demopath);
-					}
-	
-	            		if($downloadable){
-	            		$price = 2.50;
+			$string .= "<tr><td>$i</td><td>".$entry[0].": ".$entry[1]." : $entry[3]</td></tr>";
+			$product_name = $entry[0];
+			$product_alias = JApplication::stringURLSafe($product_name);
+			
+			
+			if($entry[3] && file_exists($path.DS.$product_name.DS."Download".DS.$entry[3])){
+				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">".$path.DS.$product_name.DS."Download".DS.$entry[3]."</span></td></tr>";
+				$filename = $path.DS.$product_name.DS."Download".DS.$entry[3];
+				$ext =  JFile::getExt($entry[3]);
+				$name = JApplication::stringURLSafe(JFile::stripExt($entry[3])).'.'.$ext;
+				
+				$have_payload = $path.DS.$product_name.DS."Download".DS.$name;
+				JFile::copy($filename, $have_payload);
+			
+			}else{
+				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">".$path.DS.$product_name.DS."Download".DS.$entry[3]."</span></td></tr>";
+			}
+		
+			if($entry[4] && file_exists($path.DS.$product_name.DS."Preview".DS.$entry[4])){
+				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;;\">".$path.DS.$product_name.DS."Preview".DS.$entry[4]."</span></td></tr>";
+				$filename = $path.DS.$product_name.DS."Preview".DS.$entry[4];
+				$ext =  JFile::getExt($entry[4]);
+				$name = JApplication::stringURLSafe(JFile::stripExt($entry[4])).'.'.$ext;
+				$have_demo = $path.DS.$product_name.DS."Preview".DS.$name;
+				JFile::copy($filename, $have_demo);
+			}else{
+				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">".$path.DS.$product_name.DS."Preview".DS.$entry[4]."</span></td></tr>";
+			}
+			if(isset($artist_array[$product_alias])){
+				$artist_id = $artist_array[$product_alias];
+			}else{
+				echo "No artist_id $product_alias"; print_pre($artist_array); exit;
+			}
+			
+			// MAKING OF PRODUCTS AND TRACKS//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			if($have_payload != ''){
+				//see if parent product exists
+				$query = "SELECT id FROM #__mymuse_product WHERE title= ".$db->quote($product_name)."
+				AND parentid=0";
+		 
+				$db->setQuery($query);
+				if(!$product_id = $db->loadResult()){
+					
+					echo "make product ".$entry[0]."<br />";
+					$product_id = $this->makeProduct($entry, $artist_id, 0, 0);
+					if(is_numeric($product_id)){
+						$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Product Made: $product_name $artist_id $product_id</span></td></tr>";
+						$this->logMessage($string);
+						$string = '';
 					}else{
-					$price = '';
+						$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">Could not make product : ".$product_name." ".$product_id."</span></td></tr>";
+						$string .= "</table>";
+						$this->logMessage($string);
+						echo $string;
+						return false;
+					}
+				}else{
+					$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">HAD product: ".$product_name."</span></td></tr>";
+					$this->logMessage($string);
+					$string = '';
+				}
+	
+				// see if track exists
+				if($have_payload != ''){
+					$query = "SELECT id FROM #__mymuse_product WHERE  title = ".$db->quote($entry[1])."
+					AND parentid=$product_id";
+					//echo $query. "<br />";
+					$db->setQuery($query);
+					//echo $db->loadResult(). "<br />"; 
+					if(!$track_id = $db->loadResult()){
+						//make track
+						$entry['artist_id'] = $artist_id;
+						$entry['parentid'] = $product_id;
+						echo "making a track <br />"; print_pre($entry); 
+						$track_id = $this->makeProduct($entry, $artist_id, $product_id, 1, $have_payload, $have_demo);
+						if(is_numeric($track_id)){
+							$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;;\">Made Track : ".$entry[1]." ".$artist_id." $track_id</span></td></tr>";
+						}else{
+							$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">Could Not Make Track : ".$entry[1]."</span></td></tr>";
+							$string .= "</table>";
+							$this->logMessage($string);
+							return false;
+						}
+						
+					}else{
+						$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">HAD Track: ".$entry[1]."</span></td></tr>";
+						
+					}
+				}
+				$this->logMessage($string);
+			}		 
+		}
+		
+	
+		$oldlimitstart =$limitstart;
+		$limitstart = $limitstart+50;
+		$url = "index.php?option=com_mymuse&&task=product.import_products2&limit=$limit&limitstart=$limitstart&myfile=$myfile";
+		$this->logMessage("<tr><td>$i</td><td><span style=\"color: #2222FF;\">Products $oldlimitstart to $limitstart saved</span></td></tr>");
+		$this->logMessage("<tr><td>$i</td><td><span style=\"color: #2222FF;\">$url</span></td></tr>");
+		$this->logMessage( "</table>" );
+
+	
+		$app->redirect($url);
+					 
 	}
-	$sku = $title.rand(1,1000);
+					 
+	function logMessage($message){
+		$path = JPATH_ADMINISTRATOR .DS.'components'.DS.'com_mymuse'.DS.'log.html';
 	
+		$fh = fopen($path, "a");
+		fwrite($fh,$message."\n");
+		fclose($fh);
+		return true;
+	}
 	
-	require_once (JPATH_COMPONENT.DS.'helpers'.DS.'update.php');
+	function makeCategory($title, $parent_id){
+		require_once (JPATH_COMPONENT.DS.'helpers'.DS.'update.php');
+		$helper = new MyMuseUpdateHelper;
+		$id = $helper->makeCategory($title, $parent_id);
+		return $id;
+	}
+	
+	function makeProduct($entry, $artistid, $parent_id = 0, $downloadable = 0, $payloadpath = '', $demopath = '')
+	{
+		$db = JFactory::getDBO();
+		if($payloadpath){
+			$_FILES['product_file']['name'] = basename($payloadpath);
+			$_FILES['product_file']['tmp_name'] = $payloadpath;
+			$_FILES['product_file']['size'] = filesize($payloadpath);
+		}
+		if($demopath){
+			$_FILES['product_preview']['name'] = basename($demopath);
+			$_FILES['product_preview']['tmp_name'] = $demopath;
+            $_FILES['product_preview']['size'] = filesize($demopath);
+		}
+
+		//cats and othercats
+		$q = "SELECT id from #__categories where alias='genres'";
+		$db->setQuery($q);
+		$catid_genre = $db->loadResult();
+		$catid = '';
+		$othercats = array();
+		$othercats[] = $artistid;
+		$string = '';
+		
+		if($entry[8]){
+			$genre_alias = JApplication::stringURLSafe($entry[8]);
+			$query = "SELECT id FROM #__categories WHERE alias =".$db->quote($genre_alias);
+				
+			$db->setQuery($query);
+			if(!$genre_id = $db->loadResult()){
+				//make top cat
+				$genre_id = $this->makeCategory($entry[8], $catid_genre);
+				$string .= "<tr><td></td><td><span style=\"color: #2222FF;\">Genre Made: ".$entry[8]." $genre_id</span></td></tr>";
+				
+			}else{
+				$string .= "<tr><td></td><td><span style=\"color: #2222FF;\">Genre Exists: ".$entry[8]." $genre_id</span></td></tr>";
+			}
+			$catid = $genre_id;
+			$othercats[] = $genre_id;
+		}
+		
+		if($entry[9]){
+			$genre_alias = JApplication::stringURLSafe($entry[9]);
+			$query = "SELECT id FROM #__categories WHERE alias =".$db->quote($genre_alias);
+		
+			$db->setQuery($query);
+			if(!$genre_id = $db->loadResult()){
+				//make top cat
+				$genre_id = $this->makeCategory($entry[9], $catid_genre);
+				$string .= "<tr><td></td><td><span style=\"color: #2222FF;\">Genre Made: ".$entry[9]." $genre_id</span></td></tr>";
+					
+			}else{
+				$string .= "<tr><td></td><td><span style=\"color: #2222FF;\">Genre Exists: ".$entry[9]." $genre_id</span></td></tr>";
+			}
+			$othercats[] = $genre_id;
+		}
+		
+		if($entry[10]){
+			$genre_alias = JApplication::stringURLSafe($entry[10]);
+			$query = "SELECT id FROM #__categories WHERE alias =".$db->quote($genre_alias);
+		
+			$db->setQuery($query);
+			if(!$genre_id = $db->loadResult()){
+				//make top cat
+				$genre_id = $this->makeCategory($entry[8], $catid_genre);
+				$string .= "<tr><td></td><td><span style=\"color: #2222FF;\">Genre Made: ".$entry[10]." $genre_id</span></td></tr>";
+					
+			}else{
+				$string .= "<tr><td></td><td><span style=\"color: #2222FF;\">Genre Exists: ".$entry[10]." $genre_id</span></td></tr>";
+			}
+			$othercats[] = $genre_id;
+		}
+
+		$this->logMessage($string);
+		if(!$catid){
+			$catid = $artistid;
+		}
+		if($parent_id){
+			$title = $entry[1];
+			$sku = $entry[1].'-'.rand(1,1000);
+			$description = $entry[11];
+		}else{
+			$title = $entry[0];
+			$sku = $entry[0].'-'.rand(1,1000);
+			$description = '';
+		}
+		$alias = JApplication::stringURLSafe($title);
+		
+		require_once (JPATH_COMPONENT.DS.'helpers'.DS.'update.php');
 		$helper = new MyMuseUpdateHelper;
 		$p = new stdClass;
+		$p->id = 0;
 		$p->title = $title;
-		$p->alias = '';
+		$p->alias = $alias;
 		$p->title_alias = '';
-		$p->articletext = $title;
+		$p->articletext = $description;
 		$p->state = 1;
-			$p->catid = $cat_id;
-				$p->price = $price;
+		$p->artistid = $artistid;
+		$p->catid = $catid;
+		$p->price = '14.99';
 	
-				$p->publish_up = '';
-				$p->publish_down = '';
-				$p->image ='';
-				$p->images ='';
-				$p->urls ='';
-				$p->product_in_stock = 0;
-				$p->version = 1;
-					$p->parentid = $parent_id;
-					$p->ordering = 0;
-					$p->metakey ='';
-					$p->metadesc ='';
-					$p->hits = 0;
-					$p->product_physical = 0;
-					$p->product_downloadable = $downloadable;
-					$p->product_allfiles = 0;
-					$p->product_sku = $sku;
-					$p->product_made_date = "2013-09-25 23:43:40";
-					$p->product_special = 0;
-					$p->product_discount = 0;
-					$p->reservation_fee = 0;
-					$p->file_length = '';
-					$p->file_name = '';
-					$p->file_downloads = '';
-						$p->file_contents = '';
-						$p->file_type = '';
-						$p->file_preview = '';
-						$p->othercats= array();
+		$p->publish_up = '';
+		$p->publish_down = '';
+		$p->image ='';
+		$p->images ='';
+		$p->urls ='';
+		$p->product_in_stock = 0;
+		$p->version = 1;
+		$p->parentid = $parent_id;
+		$p->ordering = 0;
+		$p->metakey ='';
+		$p->metadesc ='';
+		$p->hits = 0;
+		$p->product_physical = 0;
+		$p->product_downloadable = $downloadable;
+		$p->product_allfiles = 0;
+		$p->product_sku = $sku;
+		$p->product_made_date = "2016-02-14 23:43:40";
+		$p->product_special = 0;
+		$p->product_discount = 0;
+		$p->reservation_fee = 0;
+		$p->file_length = '';
+		$p->file_name = '';
+		$p->file_downloads = '';
+		$p->file_contents = '';
+		$p->file_type = '';
+		$p->file_preview = '';
+		$p->file_time = $entry[2];
+		$p->othercats= $othercats;
 	
-						$id = $helper->makeProduct($p);
-						if(!$id){
-						return $helper->error;
-					}
-					unset($_FILES);
-					unset($_POST);
-					return $id;
+		$id = $helper->makeProduct($p);
+		if(!$id){
+			return $helper->error;
+		}
+		unset($_FILES);
+		unset($_POST);
+		return $id;
 	}
 	
 
