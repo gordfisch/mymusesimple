@@ -570,8 +570,9 @@ class MymuseControllerProduct extends JControllerForm
     	$myfile = JRequest::getVar('myfile','50');
     	$url = "index.php?option=com_mymuse&task=product.import_products&limit=$limit&limitstart=$limitstart&myfile=$myfile";
     	echo '<meta http-equiv="refresh" content="2;url='.$url.'">';
-    	echo "$limitstart $limit <br />";
-    	echo "<a href='index.php?option=com_mymuse&task=product.import_products'>Stop</a>";
+    	echo "<h1>Product Import</h1>";
+    	echo "Limitstart $limitstart Limit: $limit <br />";
+    	echo "<a href='index.php?option=com_mymuse&view=mymuse'>Stop</a>";
     
     }
 
