@@ -375,6 +375,7 @@ function makeProduct($p)
 						'file_contents' => $p->file_contents,
 						'file_type' => $p->file_type,
 						'file_preview' => $p->file_preview,
+						'file_time' => $p->file_time,
 						'featured' => $p->product_special,
 						'language' => '*',
 						'othercats' => $p->othercats,

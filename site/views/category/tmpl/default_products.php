@@ -148,7 +148,7 @@ $height 	= $this->params->get('category_product_image_height',0);
 			<?php endif; ?>
 
 				<td class="mytitle">
-				<?php echo MyMuseHelperRoute::getProductRoute($product->id, $this->category->id);?>
+				<?php //echo MyMuseHelperRoute::getProductRoute($product->id, $this->category->id);?>
 				<a
 					href="<?php 
 					
