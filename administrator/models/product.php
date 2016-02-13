@@ -1490,7 +1490,8 @@ class MymuseModelproduct extends JModelAdmin
         */
 			$notes = $entry[0];
 			$artist = $entry[1];
-			$album = ($entry[2] != '')? $entry[2] : $entry[1];
+			$entry[2] = ($entry[2] != '')? $entry[2] : $entry[1];
+			$album = $entry[2];
 			$song_title = $entry[3];
 			$catalog = $entry[4];
 			$preview = $entry[5];
@@ -1617,7 +1618,7 @@ class MymuseModelproduct extends JModelAdmin
 			}
 		}
 		
-	 echo "did 50"; exit;
+	 
 		$oldlimitstart =$limitstart;
 		$limitstart = $limitstart+50;
 		$url = "index.php?option=com_mymuse&&task=product.import_products2&limit=$limit&limitstart=$limitstart&myfile=$myfile";
@@ -1659,7 +1660,26 @@ class MymuseModelproduct extends JModelAdmin
 			$_FILES['product_preview']['tmp_name'] = $demopath;
             $_FILES['product_preview']['size'] = filesize($demopath);
 		}
-
+		/**
+		 *     [0] => Array
+		 (
+		 Files Ready?	Composer/ Artist	Album	Track Title	Catalogue Number	Preview Filename	Download Filename	Length	Description	Web category 1	Web category 2	Web category 3
+		
+		 [0] => Notes
+		 [1] => Artist
+		 [2] => Album
+		 [3] => Title
+		 [4] => Catalogue
+		 [5] => Preview File
+		 [6] => Download File
+		 [7] => Time
+		 [8] => Description
+		 [9] => Genre1
+		 [10] => Genre1
+		 [11] => Genre3
+		
+		 )
+		 */
 		//cats and othercats
 		$q = "SELECT id from #__categories where alias='genres'";
 		$db->setQuery($q);
@@ -1727,8 +1747,8 @@ class MymuseModelproduct extends JModelAdmin
 			$sku = $entry[4];
 			$description = $entry[8];
 		}else{
-			$title = $entry[0];
-			$sku = $entry[1];
+			$title = $entry[2];
+			$sku = $entry[1].'-'.rand(1,1000);;
 			$description = '';
 		}
 		$alias = JApplication::stringURLSafe($title);
@@ -1774,6 +1794,7 @@ class MymuseModelproduct extends JModelAdmin
 		$p->file_preview = '';
 		$p->file_time = $entry[7];
 		$p->othercats= $othercats;
+print_pre($entry);
 print_pre($p);	
 		$id = $helper->makeProduct($p);
 		if(!$id){
