@@ -203,12 +203,13 @@ class plgMymusePayment_Paypal extends JPlugin
 				}
 			}
 		}else{
+			$total = $order->order_subtotal + $order->coupon_discount + $order->discount;
 			$string .= '<input type="hidden" name="item_name_1"
 					value="Website Order" />
 					<input type="hidden" name="quantity_1"
 					value="1" />
 					<input type="hidden" name="amount_1"
-					value="'. $order->order_subtotal.'" />
+					value="'. $total .'" />
 					';
 		}
 		//coupon discount
