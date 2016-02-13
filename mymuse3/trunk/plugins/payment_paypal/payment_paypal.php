@@ -184,22 +184,32 @@ class plgMymusePayment_Paypal extends JPlugin
 		
 		//send individual items
 		$j = 1;
-		for ($i=0;$i<$order->idx;$i++) {
-			if(isset($order->items[$i]->title) && $order->items[$i]->title != ''){
-				$string .= '
-				<input type="hidden" name="item_name_'. $j .'"
-				value="'. $order->items[$i]->title;
-				if($params->get('my_show_sku') || $params->get('my_saveorder') == "after"){
-					$string .= ' : '.$order->items[$i]->product_sku;
+		if($order->idx < 100){
+			for ($i=0;$i<$order->idx;$i++) {
+				if(isset($order->items[$i]->title) && $order->items[$i]->title != ''){
+					$string .= '
+					<input type="hidden" name="item_name_'. $j .'"
+					value="'. $order->items[$i]->title;
+					if($params->get('my_show_sku') || $params->get('my_saveorder') == "after"){
+						$string .= ' : '.$order->items[$i]->product_sku;
+					}
+					$string .= '" />
+					<input type="hidden" name="quantity_'. $j .'"
+					value="'. $order->items[$i]->quantity.'" />
+					<input type="hidden" name="amount_'. $j .'"
+					value="'. $order->items[$i]->product_item_price.'" />
+					';
+					$j++;
 				}
-				$string .= '" />
-				<input type="hidden" name="quantity_'. $j .'"
-				value="'. $order->items[$i]->quantity.'" />
-				<input type="hidden" name="amount_'. $j .'"
-				value="'. $order->items[$i]->product_item_price.'" />
-				';
-				$j++;
 			}
+		}else{
+			$string .= '<input type="hidden" name="item_name_1"
+					value="Website Order" />
+					<input type="hidden" name="quantity_1"
+					value="1" />
+					<input type="hidden" name="amount_1"
+					value="'. $order->order_subtotal.'" />
+					';
 		}
 		//coupon discount
 		if(isset($order->coupon_discount) && $order->coupon_discount > 0){
