@@ -398,12 +398,12 @@ class myMuseViewCart extends JViewLegacy
 						&& null != $params->get('my_license_'.$i.'_price')){
 					$licence[$i]['name'] = $params->get('my_license_'.$i.'_name');
 					$licence[$i]['price'] = $params->get('my_license_'.$i.'_price');
-					$licences[$i] = JHTML::_('select.option',  $params->get('my_license_'.$i.'_name') );
+					$licences[$i] = JHTML::_('select.option',   $i, $params->get('my_license_'.$i.'_name') );
 				}
 			}
 			$lists['licences'] = JHTML::_('select.genericlist',  $licences, 'licence', 
 					'class="inputbox" size="1" id="licence"', 'value', 'text', $this->my_licence );
-			$this->assignRef('licence', $licence);		
+			$this->assignRef('licence', $licence);	
 			$this->assignRef('lists', $lists);
 			$this->assignRef('my_licence', $my_licence);
 		}

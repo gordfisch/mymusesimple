@@ -30,7 +30,24 @@ for ($i=0;$i<count($order->items); $i++) {
     }
 }
 ?>
-
+<?php if(isset($this->lists['licences'])){ ?>
+<script>
+jQuery(document).ready(function(){  
+	jQuery("#licence").change( function(e) {
+		newval = jQuery('#licence>option:selected').val();
+		priceid = '#licence'+'_'+newval;
+		alert(jQuery('#licence>option:selected').text());
+		alert(priceid);
+		jQuery('#licence'+'_'+ '0').hide();
+		jQuery('#licence'+'_'+ '1').hide();
+		jQuery('#licence'+'_'+ '2').hide();
+		jQuery('#licence'+'_'+ '3').hide();
+		jQuery('#licence'+'_'+ '4').hide();
+		jQuery(priceid).show();
+	})
+});
+</script>
+<?php } ?>
 		<?php if($order->do_html){ ?>
 			<form action="index.php?Itemid=<?php echo $Itemid; ?>" method="post" name="adminForm">
 		<?php } ?>
@@ -115,7 +132,7 @@ for ($i=0;$i<count($order->items); $i++) {
 		        <td class="mysku cart"><?php echo $order_item[$i]->product_sku; ?></td>
 		    <?php } ?>
 		    
-		        <td class="myprice cart"> 
+		        <td class="myprice cart">
 		        <?php if(isset($this->licence)){
 		        	foreach($order_item[$i]->price['licence'] as $j=>$licence){ 
 		        		if($this->my_licence == $j){
@@ -286,9 +303,10 @@ for ($i=0;$i<count($order->items); $i++) {
 			<?php } ?>
 		
 		<?php } ?>
-		
-		<?php if(isset($this->cart_licence)){
-			echo $this->cart_licence;
+
+	</table>
+		<?php if(isset($this->lists['licences'])){
+			echo '<h3>Licence</h3>'.$this->lists['licences'];
 		}
 		?>
 		
@@ -297,8 +315,8 @@ for ($i=0;$i<count($order->items); $i++) {
 		<?php if($order->do_html){ ?>
 		</form>
 		<?php } ?>
-	</table>
-
+		
+		
 		<?php 
 		if(isset($order->show_checkout) && $order->show_checkout){ 
 		    // add the checkout link
