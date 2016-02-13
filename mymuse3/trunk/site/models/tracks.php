@@ -249,15 +249,16 @@ class MyMuseModelTracks extends JModelList
         a.product_package,
         a.file_length,a.file_time,
         a.file_name,a.file_preview,a.file_preview_2, a.file_preview_3,a.file_type, a.detail_image,
-        p.id as parentid, p.title as product_title, p.alias as parent_alias, p.catid as artistid, 
+        p.id as parentid, p.title as product_title, p.alias as parent_alias, p.catid, p.artistid as artistid, 
         p.product_made_date as product_made_date,
         p.created as created, p.publish_up as publish_up, p.modified as modified,
-        c.title as category_name, c.alias as category_alias, s.sales,
+        c.title as category_name, c.alias as category_alias, ar.title as artist_name, ar.alias as artist_alias, s.sales,
         ROUND(v.rating_sum / v.rating_count, 0) AS rating, v.rating_count as rating_count,
         CASE WHEN p.created_by_alias > ' ' THEN p.created_by_alias ELSE ua.name END AS author
         FROM #__mymuse_product as a
         LEFT JOIN #__mymuse_product as p ON a.parentid = p.id
         LEFT JOIN #__categories as c ON a.catid = c.id
+        LEFT JOIN #__categories as ar ON a.artistid =ar.id
         LEFT JOIN #__mymuse_product_rating AS v ON a.id = v.product_id
         LEFT JOIN (SELECT sum(quantity) as sales, x.product_name, x.product_id FROM
         		(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
@@ -553,7 +554,7 @@ class MyMuseModelTracks extends JModelList
                     continue;
                 }
                 
-                $artist_alias = $track->category_alias;
+                $artist_alias = $track->artist_alias;
 				$album_alias = $track->parent_alias;
 			
                 $flash = '';

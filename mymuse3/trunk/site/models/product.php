@@ -327,11 +327,11 @@ class MyMuseModelProduct extends JModelItem
 
 			$db->setQuery($track_query);
 			$tracks = $db->loadObjectList();
-		
+	
 			$site_url = MyMuseHelper::getSiteUrl($pk,'1');
 			$site_path = MyMuseHelper::getSitePath($pk,'1');			
 			// set up previews and streams
-
+//echo "site url = $site_url";
 	
 			$this->_item[$pk]->flash = '';
 			$this->_item[$pk]->flash_type = '';
@@ -454,6 +454,7 @@ class MyMuseModelProduct extends JModelItem
 								}
 							}
 							//audio or video?
+							
 							$ext = MyMuseHelper::getExt($track->file_preview);
 							$flash = '<!-- Begin Play -->';
 							if(substr_count($track->file_type,"video")){

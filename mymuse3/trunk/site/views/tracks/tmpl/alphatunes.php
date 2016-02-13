@@ -334,7 +334,7 @@ endif;
                             		$link = myMuseHelperRoute::getCategoryRoute($track->artistid);
                             		echo '<a href="'.$link.'">';
                             	}
-                            	echo $track->category_name;
+                            	echo $track->artist_name;
                             	if($params->get('category_product_link_titles')){
                             		echo '</a>';
                             	}

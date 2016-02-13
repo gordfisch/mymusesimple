@@ -1400,6 +1400,9 @@ class MymuseModelproduct extends JModelAdmin
 				if(!$db->query()){
 					echo $db->error;
 				}
+				?>
+				<a href="administrator/index.php?option=com_mymuse">Go Back</a>
+				<?php 
 			}
 			exit;
 
@@ -1449,75 +1452,109 @@ class MymuseModelproduct extends JModelAdmin
 		for($i = $limitstart; $i < $limit+$limitstart; $i++ ){
 	
 			if($quit > 10){
-				echo "All done";
+				echo "All done <a href='index.php?option=com_mymuse&view=products'>Back to Products</a>";
 				$this->logMessage("</table>");
 				exit;
 			}
-			if(!isset($csv[$i][0]) || $csv[$i][0] == ''){
+			if(!isset($csv[$i][1]) || $csv[$i][1] == ''){
 				$quit++;
 				continue;
 			}
-			if($csv[$i][0] == "Artist"){
+			if($csv[$i][0] == "Files Ready?" || $csv[$i][2] == "Album"){
 				continue;
 			}
 			$string = '';
 			$entry = $csv[$i];
-			//echo "entry"; print_pre($entry);
+			echo "entry"; print_pre($entry); 
 			$have_payload = '';
 			$have_demo = '';
 			/**
 			 *     [0] => Array
         (
-            [0] => Artist
-            [1] => Title
-            [2] => Time
-            [3] => Download File
-            [4] => Preview File
-            [5] => Author1
-            [6] => Author2
-            [7] => Author3
-            [8] => Genre1
+        Files Ready?	Composer/ Artist	Album	Track Title	Catalogue Number	Preview Filename	Download Filename	Length	Description	Web category 1	Web category 2	Web category 3
+
+            [0] => Notes
+            [1] => Artist
+            [2] => Album
+            [3] => Title
+            [4] => Catalogue
+            [5] => Preview File
+            [6] => Download File
+            [7] => Time
+            [8] => Description
             [9] => Genre1
-            [10] => Genre3
-            [11] => Description
+            [10] => Genre1
+            [11] => Genre3
+            
         )
         */
+			$notes = $entry[0];
+			$artist = $entry[1];
+			$album = ($entry[2] != '')? $entry[2] : $entry[1];
+			$song_title = $entry[3];
+			$catalog = $entry[4];
+			$preview = $entry[5];
+			$download = $entry[6];
+			$time = $entry[7];
+			$description = $entry[8];
+			$genre1 = $entry[9];
+			$genre2 = $entry[10];
+			$genre3 = $entry[11];
 
 
 	
-			$string .= "<tr><td>$i</td><td>".$entry[0].": ".$entry[1]." : $entry[3]</td></tr>";
-			$product_name = $entry[0];
+			$string .= "<tr><td>$i</td><td>".$artist.": ".$album." : $song_title</td></tr>";
+			$product_name = $album;
 			$product_alias = JApplication::stringURLSafe($product_name);
 			
-			
-			if($entry[3] && file_exists($path.DS.$product_name.DS."Download".DS.$entry[3])){
-				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">".$path.DS.$product_name.DS."Download".DS.$entry[3]."</span></td></tr>";
-				$filename = $path.DS.$product_name.DS."Download".DS.$entry[3];
-				$ext =  JFile::getExt($entry[3]);
-				$name = JApplication::stringURLSafe(JFile::stripExt($entry[3])).'.'.$ext;
-				
-				$have_payload = $path.DS.$product_name.DS."Download".DS.$name;
-				JFile::copy($filename, $have_payload);
-			
-			}else{
-				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">".$path.DS.$product_name.DS."Download".DS.$entry[3]."</span></td></tr>";
-			}
-		
-			if($entry[4] && file_exists($path.DS.$product_name.DS."Preview".DS.$entry[4])){
-				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;;\">".$path.DS.$product_name.DS."Preview".DS.$entry[4]."</span></td></tr>";
-				$filename = $path.DS.$product_name.DS."Preview".DS.$entry[4];
-				$ext =  JFile::getExt($entry[4]);
-				$name = JApplication::stringURLSafe(JFile::stripExt($entry[4])).'.'.$ext;
-				$have_demo = $path.DS.$product_name.DS."Preview".DS.$name;
-				JFile::copy($filename, $have_demo);
-			}else{
-				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">".$path.DS.$product_name.DS."Preview".DS.$entry[4]."</span></td></tr>";
-			}
+			//artist exist?
 			if(isset($artist_array[$product_alias])){
 				$artist_id = $artist_array[$product_alias];
 			}else{
-				echo "No artist_id $product_alias"; print_pre($artist_array); exit;
+				$artist_alias = JApplication::stringURLSafe($artist);
+				$query = "SELECT id FROM #__categories WHERE alias =".$db->quote($artist_alias);
+			
+				$db->setQuery($query);
+				if(!$artist_id = $db->loadResult()){
+					//make top cat
+					$artist_id = $this->makeCategory($entry[1], $catid_artist);
+					$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Category Made: ".$artist." $artist_id</span></td></tr>";
+					echo "created $artist <br />";
+				}else{
+					$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Category Exists: ".$artist." $artist_id</span></td></tr>";
+					echo "HAD $artist <br />";
+				}
+				$artist_array[$artist_alias] = $artist_id;
 			}
+			//download file
+			if($download && file_exists($path.DS.$product_name.DS."Download".DS.$download)){
+				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">".$path.DS.$product_name.DS."Download".DS.$download."</span></td></tr>";
+				$filename = $path.DS.$product_name.DS."Download".DS.$download;
+				$ext =  JFile::getExt($download);
+				$name = JApplication::stringURLSafe(JFile::stripExt($download)).'.'.$ext;
+				
+				$have_payload = $path.DS.$product_name.DS."Download".DS.$name;
+				JFile::copy($filename, $have_payload);
+				echo "Found download: $have_payload <br />";
+			}else{
+				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">".$path.DS.$product_name.DS."Download".DS.$download."</span></td></tr>";
+				echo "NO PAYLOAD FILE ".$path.DS.$product_name.DS."Download".DS.$download." <br />";
+			}
+		
+			//preview
+			if($preview && file_exists($path.DS.$product_name.DS."Preview".DS.$preview)){
+				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;;\">".$path.DS.$product_name.DS."Preview".DS.$preview."</span></td></tr>";
+				$filename = $path.DS.$product_name.DS."Preview".DS.$preview;
+				$ext =  JFile::getExt($preview);
+				$name = JApplication::stringURLSafe(JFile::stripExt($preview)).'.'.$ext;
+				$have_demo = $path.DS.$product_name.DS."Preview".DS.$name;
+				JFile::copy($filename, $have_demo);
+				echo "Found Preview $have_demo <br />";
+			}else{
+				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">".$path.DS.$product_name.DS."Preview".DS.$preview."</span></td></tr>";
+				echo "NO PREVIEW FILE $download <br />";
+			}
+			
 			
 			// MAKING OF PRODUCTS AND TRACKS//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			if($have_payload != ''){
@@ -1528,7 +1565,7 @@ class MymuseModelproduct extends JModelAdmin
 				$db->setQuery($query);
 				if(!$product_id = $db->loadResult()){
 					
-					echo "make product ".$entry[0]."<br />";
+					echo "make product ".$album."<br />";
 					$product_id = $this->makeProduct($entry, $artist_id, 0, 0);
 					if(is_numeric($product_id)){
 						$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Product Made: $product_name $artist_id $product_id</span></td></tr>";
@@ -1549,7 +1586,7 @@ class MymuseModelproduct extends JModelAdmin
 	
 				// see if track exists
 				if($have_payload != ''){
-					$query = "SELECT id FROM #__mymuse_product WHERE  title = ".$db->quote($entry[1])."
+					$query = "SELECT id FROM #__mymuse_product WHERE  title = ".$db->quote($song_title)."
 					AND parentid=$product_id";
 					//echo $query. "<br />";
 					$db->setQuery($query);
@@ -1561,24 +1598,26 @@ class MymuseModelproduct extends JModelAdmin
 						echo "making a track <br />"; print_pre($entry); 
 						$track_id = $this->makeProduct($entry, $artist_id, $product_id, 1, $have_payload, $have_demo);
 						if(is_numeric($track_id)){
-							$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;;\">Made Track : ".$entry[1]." ".$artist_id." $track_id</span></td></tr>";
+							$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;;\">Made Track : ".$song_title." ".$artist_id." $track_id</span></td></tr>";
 						}else{
-							$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">Could Not Make Track : ".$entry[1]."</span></td></tr>";
+							$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">Could Not Make Track : ".$song_title."</span></td></tr>";
 							$string .= "</table>";
 							$this->logMessage($string);
 							return false;
 						}
 						
 					}else{
-						$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">HAD Track: ".$entry[1]."</span></td></tr>";
+						$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">HAD Track: ".$song_title."</span></td></tr>";
 						
 					}
 				}
 				$this->logMessage($string);
-			}		 
+			}else{
+				echo "NO PAYLOAD FILE!!!!! <br />";
+			}
 		}
 		
-	
+	 echo "did 50"; exit;
 		$oldlimitstart =$limitstart;
 		$limitstart = $limitstart+50;
 		$url = "index.php?option=com_mymuse&&task=product.import_products2&limit=$limit&limitstart=$limitstart&myfile=$myfile";
@@ -1630,36 +1669,20 @@ class MymuseModelproduct extends JModelAdmin
 		$othercats[] = $artistid;
 		$string = '';
 		
-		if($entry[8]){
-			$genre_alias = JApplication::stringURLSafe($entry[8]);
-			$query = "SELECT id FROM #__categories WHERE alias =".$db->quote($genre_alias);
-				
-			$db->setQuery($query);
-			if(!$genre_id = $db->loadResult()){
-				//make top cat
-				$genre_id = $this->makeCategory($entry[8], $catid_genre);
-				$string .= "<tr><td></td><td><span style=\"color: #2222FF;\">Genre Made: ".$entry[8]." $genre_id</span></td></tr>";
-				
-			}else{
-				$string .= "<tr><td></td><td><span style=\"color: #2222FF;\">Genre Exists: ".$entry[8]." $genre_id</span></td></tr>";
-			}
-			$catid = $genre_id;
-			$othercats[] = $genre_id;
-		}
-		
 		if($entry[9]){
 			$genre_alias = JApplication::stringURLSafe($entry[9]);
 			$query = "SELECT id FROM #__categories WHERE alias =".$db->quote($genre_alias);
-		
+				
 			$db->setQuery($query);
 			if(!$genre_id = $db->loadResult()){
 				//make top cat
 				$genre_id = $this->makeCategory($entry[9], $catid_genre);
 				$string .= "<tr><td></td><td><span style=\"color: #2222FF;\">Genre Made: ".$entry[9]." $genre_id</span></td></tr>";
-					
+				
 			}else{
 				$string .= "<tr><td></td><td><span style=\"color: #2222FF;\">Genre Exists: ".$entry[9]." $genre_id</span></td></tr>";
 			}
+			$catid = $genre_id;
 			$othercats[] = $genre_id;
 		}
 		
@@ -1670,11 +1693,27 @@ class MymuseModelproduct extends JModelAdmin
 			$db->setQuery($query);
 			if(!$genre_id = $db->loadResult()){
 				//make top cat
-				$genre_id = $this->makeCategory($entry[8], $catid_genre);
+				$genre_id = $this->makeCategory($entry[10], $catid_genre);
 				$string .= "<tr><td></td><td><span style=\"color: #2222FF;\">Genre Made: ".$entry[10]." $genre_id</span></td></tr>";
 					
 			}else{
 				$string .= "<tr><td></td><td><span style=\"color: #2222FF;\">Genre Exists: ".$entry[10]." $genre_id</span></td></tr>";
+			}
+			$othercats[] = $genre_id;
+		}
+		
+		if($entry[11]){
+			$genre_alias = JApplication::stringURLSafe($entry[11]);
+			$query = "SELECT id FROM #__categories WHERE alias =".$db->quote($genre_alias);
+		
+			$db->setQuery($query);
+			if(!$genre_id = $db->loadResult()){
+				//make top cat
+				$genre_id = $this->makeCategory($entry[11], $catid_genre);
+				$string .= "<tr><td></td><td><span style=\"color: #2222FF;\">Genre Made: ".$entry[11]." $genre_id</span></td></tr>";
+					
+			}else{
+				$string .= "<tr><td></td><td><span style=\"color: #2222FF;\">Genre Exists: ".$entry[11]." $genre_id</span></td></tr>";
 			}
 			$othercats[] = $genre_id;
 		}
@@ -1684,12 +1723,12 @@ class MymuseModelproduct extends JModelAdmin
 			$catid = $artistid;
 		}
 		if($parent_id){
-			$title = $entry[1];
-			$sku = $entry[1].'-'.rand(1,1000);
-			$description = $entry[11];
+			$title = $entry[3];
+			$sku = $entry[4];
+			$description = $entry[8];
 		}else{
 			$title = $entry[0];
-			$sku = $entry[0].'-'.rand(1,1000);
+			$sku = $entry[1];
 			$description = '';
 		}
 		$alias = JApplication::stringURLSafe($title);
@@ -1731,11 +1770,11 @@ class MymuseModelproduct extends JModelAdmin
 		$p->file_name = '';
 		$p->file_downloads = '';
 		$p->file_contents = '';
-		$p->file_type = '';
+		$p->file_type = 'audio';
 		$p->file_preview = '';
-		$p->file_time = $entry[2];
+		$p->file_time = $entry[7];
 		$p->othercats= $othercats;
-	
+print_pre($p);	
 		$id = $helper->makeProduct($p);
 		if(!$id){
 			return $helper->error;

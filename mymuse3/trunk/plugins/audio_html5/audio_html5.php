@@ -110,7 +110,7 @@ class plgMymuseAudio_html5 extends JPlugin
 			//$css_path = $site_url.'plugins/mymuse/audio_html5/skin/premium-pixels.css';
 		}
 		
-		//echo "type = $type, index = $index  count = $count<br />";
+	//echo "type = $type, index = $index  count = $count<br />";
 	
 		$params 	= MyMuseHelper::getParams();
 

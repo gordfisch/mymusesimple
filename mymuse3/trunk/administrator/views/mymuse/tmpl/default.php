@@ -72,5 +72,8 @@
 
 		</table>
 		</fieldset>
+		<a class="btn btn-small btn-success" href="index.php?option=com_mymuse&task=product.import_products">Import</a>&nbsp;&nbsp;
+		<a class="btn btn-small"href="index.php?option=com_mymuse&task=product.import_products&clear=1">Clear Products</a>&nbsp;&nbsp;
+		<a class="btn btn-small"href="components/com_mymuse/log.html" target="_new">view Log</a>
 	</div>
 </form>
