@@ -413,6 +413,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_order` (
   `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `ordering` int(11) NOT NULL DEFAULT '0',
+  `licence` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1001 ;
 

@@ -62,6 +62,7 @@ class MyMuseCheckout
 		$cart 			= $MyMuseCart->cart;
 		$cart_order 	= $MyMuseCart->buildOrder(0,1);
 		$d 				= $jinput->post->getArray();
+		$session 		= JFactory::getSession();
 
 		// TODO stop repeat orders on reload
 		if($params->get('my_debug')){
@@ -233,10 +234,16 @@ class MyMuseCheckout
 		$order->non_res_total		= $cart_order->non_res_total;
 		$order->pay_now				= $cart_order->must_pay_now;
 		$order->extra 				= @$cart['extra'];
-
+		
+		//LICENCE MODEL?
+		if(2 == $params->get('my_price_by_product',0)){
+			$my_licence = $session->get("my_licence",0);
+			$licence_name = $params->get('my_license_'.$my_licence.'_name');
+			$licence_price = $params->get('my_license_'.$my_licence.'_price');
+			$order->licence = $my_licence."|".$licence_name.'|'.$licence_price;
+		}
 
 		//save the order number in the session
-		$session = JFactory::getSession();
 		$session->set("order_number",$order->order_number);
 
 

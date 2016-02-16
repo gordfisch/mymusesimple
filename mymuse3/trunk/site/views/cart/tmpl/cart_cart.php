@@ -19,6 +19,7 @@ $user 		= $this->user;
 $params 	= $this->params;
 $task		= $this->task;
 $got_flash  = 0;
+$post_order = array('confirm','makepayment','thankyou','vieworder');
 for ($i=0;$i<count($order->items); $i++) { 
     if(!isset($order->items[$i])){
                   continue;
@@ -37,7 +38,7 @@ jQuery(document).ready(function(){
 	jQuery("#licence").on('change', function(e){
 		newval = jQuery('#licence>option:selected').val();
 		newtext = jQuery('#licence>option:selected').text();
-		alert(newval);
+		//alert(newval);
 		items = <?php echo $no_items; ?>;
 		jQuery.post("index.php?option=com_mymuse&task=ajaxupdatelicence",
 		{
@@ -156,7 +157,7 @@ jQuery(document).ready(function(){
 		    <?php } ?>
 		    
 		        <td class="myprice cart">
-		        <?php if(isset($this->licence)){
+		        <?php if(isset($this->licence) &&  !in_array($task, $post_order)){
 		        	foreach($order_item[$i]->price['licence'] as $j=>$licence){ 
 		        		if($this->my_licence == $j){
 		        			echo '<div id="item_price_'.$i.'" class="price" >'.
@@ -164,7 +165,6 @@ jQuery(document).ready(function(){
 		        		'</div>';
 		        		}
 		        	}
-		        	//print_pre($order_item[$i]->price);
 		        }else{
 		        	echo MyMuseHelper::printMoney($order_item[$i]->product_item_price);
 		        }
@@ -357,8 +357,16 @@ jQuery(document).ready(function(){
 		<?php } ?>
 
 	</table>
-		<?php if(isset($this->lists['licences'])){
-			echo '<h3>Licence</h3>'.$this->lists['licences'];
+		<?php 
+		//LICENCE MODEL?
+		if(isset($this->lists['licences'])){
+			echo '<h3>Licence</h3>';
+		
+			if(!in_array($task, $post_order)){
+				echo $this->lists['licences'];
+			}else{
+				echo '<span class="licence-text">'.$this->my_licence_text.'</span>';
+			}
 		}
 		?>
 		

@@ -366,6 +366,8 @@ class com_mymuseInstallerScript
 <?php
 		// see if db needs updating
 		$db = JFactory::getDBO();
+		
+
 		$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'ordering'";
 		$db->setQuery($query);
 		if(!$col = $db->loadObject()){
@@ -518,6 +520,14 @@ class com_mymuseInstallerScript
 		$db->setQuery($query);
 		if(!$col = $db->loadObject()){
 			$query = "ALTER TABLE `#__mymuse_order` ADD `shopper_group_discount` decimal(10,2) NOT NULL DEFAULT '0.00' AFTER `discount`";
+			$db->setQuery($query);
+			$db->execute();
+		}
+		
+		$query = "SHOW COLUMNS FROM #__mymuse_order LIKE 'licence'";
+		$db->setQuery($query);
+		if(!$col = $db->loadObject()){
+			$query = "ALTER TABLE `#__mymuse_order` ADD `licence` varchar(255) NOT NULL AFTER `ordering`  ";
 			$db->setQuery($query);
 			$db->execute();
 		}

@@ -88,7 +88,10 @@ class myMuseViewCart extends JViewLegacy
 
 			if(is_array($order->order_currency)){
 				$order->currency_code = $order->order_currency['currency_code'];
+			}else{
+				$order->currency_code = $order->order_currency;
 			}
+
 			$result = Array
 			(
 					'plugin' => $pp,
@@ -392,6 +395,7 @@ class myMuseViewCart extends JViewLegacy
 		if(2 == $params->get('my_price_by_product',0)){
 			$session = JFactory::getSession();
 			$my_licence = $session->get("my_licence",0);
+			$my_licence_text = '';
 			$this->assignRef('my_licence', $my_licence);
 			for ($i = 0; $i < 5; $i++){
 				if(null != $params->get('my_license_'.$i.'_name')
@@ -399,6 +403,9 @@ class myMuseViewCart extends JViewLegacy
 					$licence[$i]['name'] = $params->get('my_license_'.$i.'_name');
 					$licence[$i]['price'] = $params->get('my_license_'.$i.'_price');
 					$licences[$i] = JHTML::_('select.option',   $i, $params->get('my_license_'.$i.'_name') );
+					if($i == $my_licence){
+						$my_licence_text = $licence[$i]['name'];
+					}
 				}
 			}
 			$lists['licences'] = JHTML::_('select.genericlist',  $licences, 'licence', 
@@ -406,6 +413,7 @@ class myMuseViewCart extends JViewLegacy
 			$this->assignRef('licence', $licence);	
 			$this->assignRef('lists', $lists);
 			$this->assignRef('my_licence', $my_licence);
+			$this->assignRef('my_licence_text', $my_licence_text);
 		}
 
 		// show the heading
