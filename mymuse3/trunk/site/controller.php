@@ -1183,6 +1183,43 @@ class MyMuseController extends JControllerLegacy
 		exit;
 	}
 	
+	function ajaxupdatelicence()
+	{
+		$jinput = JFactory::getApplication()->input;
+		$my_licence  = $jinput->get('my_licence', 0);
+		$session = JFactory::getSession();
+	
+		$session->set("my_licence",$my_licence);
+		$order = $this->MyMuseCart->buildOrder(0,1);
+		$msg = JText::_('MYMUSE_LICENCE_UPDATED');
+		unset($order->update_form);
+		unset($order->update_url);
+		foreach($order->items as $item){
+			unset($item->parent);
+			unset($item->artist);
+			unset($item->_upload_errors);
+			unset($item->metadata);
+		}
+		$data = array(
+			'msg'=>  $msg,
+			'order'=>$order,
+		);
+		//echo "licence = $my_licence";
+		//save the cart in the session
+		$session->set("cart",$this->MyMuseCart->cart);
+	
+		$rand = JUserHelper::genRandomPassword(8);
+		$document = JFactory::getDocument();
+		$document->setMimeEncoding('application/json');
+		JResponse::setHeader("Expires","Sun, 19 Nov 1978 05:00:00 GMT");
+		JResponse::setHeader("Last-Modified", gmdate("D, d M Y H:i:s") . " GMT");
+		JResponse::setHeader("Cache-Control", "no-store, no-cache, must-revalidate");
+		JResponse::setHeader("Cache-Control", "post-check=0, pre-check=0", false);
+		JResponse::setHeader("Pragma", "no-cache");
+		JResponse::setHeader('Content-Disposition','attachment;filename="coupon_'.$rand .'.json"');
+		echo json_encode($data);
+		exit;
+	}
 	/*
 	 * send_ipn
 	*

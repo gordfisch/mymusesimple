@@ -904,11 +904,16 @@ class MyMuseModelProduct extends JModelItem
 				
 			}elseif(2 == $params->get('my_price_by_product') && 1 != $product->product_physical){ //price by licence
 				
+				$jinput = JFactory::getApplication()->input;
+				$my_licence  = $jinput->get('my_licence', 0);
+				$session = JFactory::getSession();
+				
 				$registry = new JRegistry;
 				$registry->loadString($params->get('attribs'));
 				$product->attribs = $registry;
 				$session = JFactory::getSession();
-				$my_licence = $session->get("my_licence",0);
+				$my_licence = $jinput->get('my_licence',$session->get("my_licence",0));
+		
 				$price_info["product_price"] = $params->get('my_license_'.$my_licence.'_price');
 				for ($i = 0; $i < 5; $i++){
 					if(null != $params->get('my_license_'.$i.'_name')
