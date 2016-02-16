@@ -28,7 +28,7 @@ if($print){
 	});
 
 	';
-	$document = &JFactory::getDocument();
+	$document = JFactory::getDocument();
 	$document->addScriptDeclaration($content);
 
 }else{
@@ -109,6 +109,14 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 				</div>
 				<div class="controls">
 					<?php echo $this->form->getInput('order_currency'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
+					<?php echo $this->form->getLabel('licence'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('licence'); ?>
 				</div>
 			</div>
 		</div>

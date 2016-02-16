@@ -31,6 +31,10 @@
              readonly="true" 
              class="readonly"
          />
+         <field name="licence" type="text" default="0" label="MYMUSE_LICENCE"
+             readonly="true" 
+             class="readonly"
+         />
          <field name="order_shipping" type="text" default="0" label="MYMUSE_SHIPPING"
              readonly="true" 
              class="readonly"
