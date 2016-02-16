@@ -13,6 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $order		= $this->order;
 $order_item = $order->items;
+$no_items 	= count($order_item = $order->items);
 $Itemid 	= @$this->Itemid;
 $user 		= $this->user;
 $params 	= $this->params;
@@ -33,19 +34,41 @@ for ($i=0;$i<count($order->items); $i++) {
 <?php if(isset($this->lists['licences'])){ ?>
 <script>
 jQuery(document).ready(function(){  
-	jQuery("#licence").change( function(e) {
+	jQuery("#licence").on('change', function(e){
 		newval = jQuery('#licence>option:selected').val();
-		priceid = '#licence'+'_'+newval;
-		alert(jQuery('#licence>option:selected').text());
-		alert(priceid);
-		jQuery('#licence'+'_'+ '0').hide();
-		jQuery('#licence'+'_'+ '1').hide();
-		jQuery('#licence'+'_'+ '2').hide();
-		jQuery('#licence'+'_'+ '3').hide();
-		jQuery('#licence'+'_'+ '4').hide();
-		jQuery(priceid).show();
-	})
+		newtext = jQuery('#licence>option:selected').text();
+		alert(newval);
+		items = <?php echo $no_items; ?>;
+		jQuery.post("index.php?option=com_mymuse&task=ajaxupdatelicence",
+		{
+			"my_licence":newval
+		},
+
+		function(data,status)
+		{
+			var res = jQuery.parseJSON(data);
+			msg = res.msg;
+			order = res.order;
+			console.log(JSON.stringify(order ,null, 4));
+
+
+			var output = '';
+			for (var property in order) {
+				 output += property + ': ' + order[property]+'; \n';
+			}
+			
+
+			for(i=0; i < items; i++){
+				jQuery("#item_price_"+i).html('$'+order["items"][i]["price"]["product_price"]);
+				jQuery("#product_item_subtotal_"+i).html('$'+order["items"][i]["product_item_subtotal"]);
+			}
+			jQuery("#mytotal").html('$'+order["order_subtotal"]);
+				my_modal.open({content: msg+"<br />", width: 300 });
+		});
+	});
+
 });
+
 </script>
 <?php } ?>
 		<?php if($order->do_html){ ?>
@@ -136,16 +159,14 @@ jQuery(document).ready(function(){
 		        <?php if(isset($this->licence)){
 		        	foreach($order_item[$i]->price['licence'] as $j=>$licence){ 
 		        		if($this->my_licence == $j){
-		        			$style = 'style="display: block;"';
-		        		}else{
-		        			$style = 'style="display: none;"';
-		        		}
-		        		echo '<div id="licence_'.$j.'" class="price" '.$style.'>'.
+		        			echo '<div id="item_price_'.$i.'" class="price" >'.
 		        		MyMuseHelper::printMoney($order_item[$i]->price['licence'][$j]['price']).
 		        		'</div>';
-		        		
+		        		}
 		        	}
 		        	//print_pre($order_item[$i]->price);
+		        }else{
+		        	echo MyMuseHelper::printMoney($order_item[$i]->product_item_price);
 		        }
 		        ?>
 		        </td>
@@ -161,7 +182,11 @@ jQuery(document).ready(function(){
 		        }
 		        ?></td>
 		    <?php } ?>  
-		        <td class="mysubtotal cart"><?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_subtotal); ?></td>
+		        <td class="mysubtotal cart">
+		        	<div id="product_item_subtotal_<?php echo $i ?>">
+		        	<?php echo MyMuseHelper::printMoney($order_item[$i]->product_item_subtotal); ?>
+		        	</div>
+		        </td>
 		    
 		    <?php if($order->do_html){ ?>
 		        <td class="myaction cart"><a href="<?php echo $order_item[$i]->delete_url; ?>"><?php echo JText::_('MYMUSE_DELETE'); ?></a></td>
@@ -176,7 +201,11 @@ jQuery(document).ready(function(){
 		<!--  original subtotal -->
 			<tr>
 		    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?></td>
-		        <td class="myoriginalsubtotal cart" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->subtotal_before_discount); ?></td>
+		        <td class="myoriginalsubtotal cart" colspan="<?php echo $order->colspan2; ?>">
+		        	<div id="subtotal_before_discount">
+		        	<?php echo MyMuseHelper::printMoney($order->subtotal_before_discount); ?>
+		        	</div>
+		       	</td>
 		        <?php if(@$order->do_html){ ?>
 		        <td class="mobile-hide">&nbsp;</td>
 		        <?php } ?>
@@ -188,7 +217,10 @@ jQuery(document).ready(function(){
 		    <tr>
 		    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_SHOPPING_GROUP_DISCOUNT'); ?>
 		    	<?php echo $order->shopper_group_name; ?> <?php echo $user->shopper_group->discount; ?> %</td>
-		        <td class="myshoppergroupdiscount cart" colspan="<?php echo $order->colspan2; ?>">(<?php echo MyMuseHelper::printMoney($order->shopper_group_discount); ?>)</td>
+		        <td class="myshoppergroupdiscount cart" colspan="<?php echo $order->colspan2; ?>">
+		        	<div id="shopper_group_discount">(<?php echo MyMuseHelper::printMoney($order->shopper_group_discount); ?>)
+		        	</div>
+		        </td>
 		        <?php if(@$order->do_html){ ?>
 		        <td class="mobile-hide">&nbsp;</td>
 		        <?php } ?>
@@ -200,7 +232,10 @@ jQuery(document).ready(function(){
 		    <tr>
 		    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_DISCOUNT'); ?>
 		    	</td>
-		        <td class="mydiscount cart" colspan="<?php echo $order->colspan2; ?>">- <?php echo MyMuseHelper::printMoney($order->discount); ?></td>
+		        <td class="mydiscount cart" colspan="<?php echo $order->colspan2; ?>">
+		        	<div id="discount">- <?php echo MyMuseHelper::printMoney($order->discount); ?>
+		        	</div>
+		        </td>
 		        <?php if(@$order->do_html){ ?>
 		        <td class="mobile-hide cart">&nbsp;</td>
 		        <?php } ?>
@@ -213,7 +248,10 @@ jQuery(document).ready(function(){
 		    <tr>
 		    	<td class="mobile-hide cart"><?php echo JText::_('MYMUSE_YOUR_COUPON'); ?> <?php echo $order->coupon->title ?></td>
 		    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan -1; ?>">&nbsp;</td>
-		        <td class="mycoupon cart" colspan="<?php echo $order->colspan2; ?>">- <?php echo MyMuseHelper::printMoney($order->coupon->discount); ?> </td>
+		        <td class="mycoupon cart" colspan="<?php echo $order->colspan2; ?>">
+		        	<div id="coupon_discount"- <?php echo MyMuseHelper::printMoney($order->coupon->discount); ?> 
+		        	></div>
+		        </td>
 		        <?php if(@$order->do_html){ ?>
 		        <td class="mobile-hide cart">&nbsp;</td>
 		        <?php } ?>
@@ -230,7 +268,10 @@ jQuery(document).ready(function(){
 		    	?>
 		        <tr>
 		        	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo $key; ?></td>
-		        	<td class="mytax  cart <?php echo strtolower($pre_key); ?>" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($val); ?></td>
+		        	<td class="mytax  cart" colspan="<?php echo $order->colspan2; ?>">
+		        		<div id=tax_<?php echo strtolower($pre_key); ?>"><?php echo MyMuseHelper::printMoney($val); ?>
+		        		</div>
+		        	</td>
 		        	<?php if(@$order->do_html){ ?>
 		        	<td class="mobile-hide cart">&nbsp;</td>
 		        	<?php  } ?>
@@ -244,7 +285,9 @@ jQuery(document).ready(function(){
 		    <td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_SHIPPING') ?>
 		    <?php echo $order->order_shipping->ship_carrier_name ?> <?php echo $order->order_shipping->ship_method_name ?></td>
 		    <td class="myshipping cart" colspan="<?php echo $order->colspan2; ?>">
-		    <?php echo MyMuseHelper::printMoney($order->order_shipping->cost); ?>
+		    	<div id="order_shipping_cost">
+		    	<?php echo MyMuseHelper::printMoney($order->order_shipping->cost); ?>
+		    	</div>
 		    </td>
 		    <?php if(@$order->do_html){ ?>
 		        <td>&nbsp;</td>
@@ -253,7 +296,9 @@ jQuery(document).ready(function(){
 		<?php } ?>
 		<tr>
 		    <td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_CART_TOTAL') ?>:</td>
-		    <td class="mytotal cart" colspan="<?php echo $order->colspan2; ?>"><?php echo MyMuseHelper::printMoney($order->order_total); ?>
+		    <td class="mytotal cart" colspan="<?php echo $order->colspan2; ?>">
+		    	<div id="mytotal"><?php echo MyMuseHelper::printMoney($order->order_total); ?>
+		    	</div>
 		    <?php echo $this->currency['currency_code']; ?></td>
 		    <?php if($order->do_html){ ?>
 		        <td class="mobile-hide cart" >&nbsp;</td>
@@ -277,7 +322,9 @@ jQuery(document).ready(function(){
 		<?php  if($order->reservation_fee > 0){ ?>
 		<tr>
 		    <td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_RESERVATION_FEE') ?>:</td>
-		    <td class="myreservationfee cart" colspan="<?php echo $order->colspan2; ?>" align="right"><b><?php echo MyMuseHelper::printMoney($order->reservation_fee); ?></b>
+		    <td class="myreservationfee cart" colspan="<?php echo $order->colspan2; ?>" align="right">
+		    	<div id="reservation_fee"><b><?php echo MyMuseHelper::printMoney($order->reservation_fee); ?></b>
+		    	</div>
 		    </td>
 		    <?php if(@$order->do_html){ ?>
 		        <td>&nbsp;</td>
@@ -286,7 +333,9 @@ jQuery(document).ready(function(){
 			<?php  if($order->non_res_total > 0){ ?>
 			<tr>
 		    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_OTHER_CHARGES') ?>:</td>
-		    	<td class="myothercharges cart" colspan="<?php echo $order->colspan2; ?>" align="right"><b><?php echo MyMuseHelper::printMoney($order->non_res_total); ?></b>
+		    	<td class="myothercharges cart" colspan="<?php echo $order->colspan2; ?>" align="right">
+		    		<div id=">non_res_total"><b><?php echo MyMuseHelper::printMoney($order->non_res_total); ?></b>
+		    		</div>
 		    	</td>
 		    	<?php if(@$order->do_html){ ?>
 		        	<td>&nbsp;</td>
@@ -294,7 +343,10 @@ jQuery(document).ready(function(){
 			</tr>
 			<tr>
 		    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_PAYNOW') ?>:</td>
-		    	<td class="mypaynow cart" colspan="<?php echo $order->colspan2; ?>" align="right"><?php echo MyMuseHelper::printMoney($order->must_pay_now); ?>
+		    	<td class="mypaynow cart" colspan="<?php echo $order->colspan2; ?>" align="right">
+		    		<div id="must_pay_now">
+		    		<?php echo MyMuseHelper::printMoney($order->must_pay_now); ?>
+		    		</div>
 		    	</td>
 		    	<?php if(@$order->do_html){ ?>
 		        	<td>&nbsp;</td>
