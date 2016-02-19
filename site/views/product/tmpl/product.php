@@ -142,7 +142,6 @@ if(count($params->get('my_formats') > 1) && $params->get('my_price_by_product'))
 	$js .= '
 			alert(formats[jQuery(select_id).val()]+"_"+id);
 			jQuery(formats[jQuery(select_id).val()]+"_"+id).show();'."\n}";
-    		
 }
 
     //print_pre($params->get('my_formats'));
@@ -239,12 +238,12 @@ jQuery(document).ready(function($){
                         txt = idx+" "+"items";
                     }
                     link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>\';
-                    $("#carttop1").html(txt);
-                    $("#carttop2").html(link);
+                    $("#mini-cart-text").html(txt);
+                    $("#mini-cart-link").html(link);
                 }else{
 	
-                    $("#carttop1").html(" ");
-                    $("#carttop2").html("'.JText::_('MYMUSE_YOUR_CART_IS_EMPTY').'");
+                    $("#mini-cart-text").html(" ");
+                    $("#mini-cart-link").html("'.JText::_('MYMUSE_YOUR_CART_IS_EMPTY').'");
                 }
                 my_modal.open({content: msg+"<br />"+link, width: 300 });
             });
@@ -509,12 +508,14 @@ endif; ?>
         <?php endif;?>
     </ul>
     <br />
+    
     <ul class="product-content">
+    	<?php  if ($params->get('show_intro')) : ?>
         <li class="product-content-item">
             <span class="category">Description</span>
             <span class="value">
                 <div class="product-description">
-                    <?php  if ($params->get('show_intro')) : ?>
+                    
                         <?php echo $product->introtext ?>
                     <?php endif ?>
                     
@@ -525,10 +526,11 @@ endif; ?>
                             echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
                         endif;
                         ?></a>
-                    <?php endif ?>
+                   
                 </div>
             </span>
         </li>
+         <?php endif ?>
 
   <!-- END RELEASE INFO --> 
   
@@ -864,7 +866,7 @@ endif; ?>
 								echo "(".JText::_("MYMUSE_ALL_TRACKS").")";
 					 		endif; ?>
 					 		<?php if($track->introtext && $track->introtext != $track->title) :
-					 			echo "<br />".$track->introtext;
+					 			echo '<br /><span class="track-text">'.$track->introtext.'</span>';
 							endif; ?>
                             
                            

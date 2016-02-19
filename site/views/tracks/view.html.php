@@ -31,6 +31,9 @@ class mymuseViewtracks extends JViewLegacy
 		$user	= JFactory::getUser();
 		$db     = JFactory::getDBO();
 		$jinput = $app->input;
+		$app = JFactory::getApplication();
+		$menu = $app->getMenu()->getActive()->id;
+
 
 		// Get some data from the models
 		$state		= $this->get('State');
@@ -44,7 +47,7 @@ class mymuseViewtracks extends JViewLegacy
         
         $this->sortDirection    = $state->get('list.direction');
         $this->sortColumn       = $state->get('list.ordering');
-        $this->Itemid           = $jinput->get('Itemid');
+        $this->Itemid           = $jinput->get('Itemid', $menu);
         $filter_alpha           = $jinput->get('filter_alpha', '', 'STRING');
         $this->task             = $jinput->get('task', 'view', 'STRING');
 
@@ -83,17 +86,18 @@ class mymuseViewtracks extends JViewLegacy
 				$query = "SELECT count(*) as total
             FROM #__mymuse_product as a
             LEFT JOIN #__mymuse_product as p ON a.parentid = p.id
-            LEFT JOIN #__categories as c ON a.catid = c.id
+            LEFT JOIN #__categories as c ON a.artistid = c.id
             LEFT JOIN #__mymuse_product_rating AS v ON a.id = v.product_id
             WHERE a.product_downloadable = 1
             AND a.state=1
             AND c.title LIKE '$letter%'
-            AND (a.catid = " . $category->id . " OR a.catid IN ( 
+            AND (a.artistid = " . $category->id . " OR a.artistid IN ( 
 			SELECT sub.id FROM #__categories as sub 
 			INNER JOIN #__categories as this ON sub.lft > this.lft 
 			AND sub.rgt < this.rgt WHERE this.id = " . $category->id . ") 
 			OR a.id IN (0)) 
             ";
+				//echo $query."<br />";
 				if ($featured) {
 					$query .= " AND a.featured=1
             	";

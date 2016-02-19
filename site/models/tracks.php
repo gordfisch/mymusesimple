@@ -150,7 +150,7 @@ class MyMuseModelTracks extends JModelList
 				
 		}
 		
-		// just fetured tracks?
+		// just featured tracks?
 		$featured = $params->get('featured','0');
 		$this->setState('list.featured', $featured);
 
@@ -274,14 +274,14 @@ class MyMuseModelTracks extends JModelList
         AND a.state=1
         ";
         if($alpha != ''){
-            $query .= "AND c.title LIKE '$alpha%' ";
+            $query .= "AND ar.title LIKE '$alpha%' ";
         }
         if($searchword != ''){
         	$query .= "AND (
         	a.title LIKE ".$db->quote('%'.$searchword.'%')."
         	OR a.file_name LIKE ".$db->quote('%'.$searchword.'%')."
         	OR p.title LIKE ".$db->quote('%'.$searchword.'%')."
-        	OR c.title LIKE ".$db->quote('%'.$searchword.'%')."
+        	OR ar.title LIKE ".$db->quote('%'.$searchword.'%')."
         	)";
         }
         
@@ -735,7 +735,7 @@ class MyMuseModelTracks extends JModelList
                     $track->free_download = 0;
                 }
             }
-        }else{
+        }elseif(isset($track)){
             $track->free_download = 0;
         }
 

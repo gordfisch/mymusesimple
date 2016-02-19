@@ -225,6 +225,19 @@
 				<option value="1">JSHOW</option>
 			</field>
 			
+			<field 
+	 			name="product_show_filesize" 
+	 			type="radio"
+				class="btn-group"
+	 			default="1" 
+	 			label="MYMUSE_SHOW_FILESIZE" 
+	 			description="MYMUSE_SHOW_FILESIZE_DESC"
+	 		>
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+	 		</field>
+			
 			<field name="list_show_price" 
 				type="radio"
 				class="btn-group"

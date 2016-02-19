@@ -340,7 +340,9 @@ class MyMuseModelProduct extends JModelItem
 				$root = JPATH_ROOT.DS;
 				while (list($i,$track)= each( $tracks )){
 					if($name = json_decode($track->file_name)){
-						$track->file_length = $name[0]->file_length;
+						if(isset($name[0]->file_length)){
+							$track->file_length = $name[0]->file_length;
+						}
 					}
 					//other cats
 					$othercats = array();
@@ -890,6 +892,8 @@ class MyMuseModelProduct extends JModelItem
 				}elseif(isset($product->ext)){
 					$key = 'product_price_'.$product->ext;
 					$product->price = $product->attribs->get($key);
+					$price_info["product_price"] = $product->price;
+				}else{
 					$price_info["product_price"] = $product->price;
 				}
 				$product_price = $product->price;

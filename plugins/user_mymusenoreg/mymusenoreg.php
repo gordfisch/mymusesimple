@@ -319,7 +319,7 @@ class plgUserMyMusenoreg extends JPlugin
 					
 					$q = "SELECT '' as value, '".JText::_('MYMUSE_SELECT_COUNTRY')."' as country, 0 as ordering 
 								UNION SELECT country_3_code as value, country_name as country, ordering 
-								FROM #__mymuse_country ORDER by ordering";
+								FROM #__mymuse_country ORDER by country_name";
 					
 					$form->setFieldAttribute($field, 'query', $q, 'profile');
 			
