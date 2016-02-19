@@ -119,7 +119,8 @@ foreach ($fieldSets as $name => $fieldSet) {
   
 			<div class="pull-right span5">
 			
-<?php if( !$this->params->get('my_price_by_product')){ 
+<?php
+ if( !$this->params->get('my_price_by_product')){ 
 	//price by track and physical
 	?>
 			<div class="control-group">
@@ -133,33 +134,32 @@ foreach ($fieldSets as $name => $fieldSet) {
 
 
 <?php 
-}else{ 
+}elseif(1 == $this->params->get('my_price_by_product')){ 
 	$fieldSets = $this->form->getFieldsets('attribs'); 
 	$physical = 0;
-	foreach($this->params->get('my_formats') as $variation=>$format){
-?>
-
-<?php foreach ($fieldSets as $name => $fieldSet) {
-
-	foreach ($this->form->getFieldset($name) as $field)
+	foreach($this->params->get('my_formats') as $variation=>$format)
 	{
-		if (preg_match("/preorder/",$field->name) && !$physical)
-		{
-			echo $field->renderField();
+	 	foreach ($fieldSets as $name => $fieldSet)
+	 	{
 
-		}
-		if (preg_match("/physical/",$field->name) && !$physical)
-		{
-			echo $field->renderField();
-			$physical++;
-		}
-		if (preg_match("/$format/",$field->name))
-		{
-			echo $field->renderField();
-		}
-	} ?>
+			foreach ($this->form->getFieldset($name) as $field)
+			{
+				if (preg_match("/preorder/",$field->name) && !$physical)
+				{
+					echo $field->renderField();
+				}
+				if (preg_match("/physical/",$field->name) && !$physical)
+				{
+					echo $field->renderField();
+					$physical++;
+				}
+				if (preg_match("/$format/",$field->name))
+				{
+					echo $field->renderField();
+				}
+			} 
 	
-<?php } 
+ 		} 
 	}
 
  } ?>

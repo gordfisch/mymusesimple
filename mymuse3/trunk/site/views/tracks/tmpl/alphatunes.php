@@ -42,22 +42,27 @@ jQuery(document).ready(function($){
                 idx = res.idx;
                 msg = res.msg;
                 action = res.action;
-                alert(res.msg + "\nStatus: " + status);
+                //alert(res.msg + "\nStatus: " + status);
                 if(action == "deleted"){
                     $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/checkbox.png");
                 }else{
                     $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/cart.png");
                 }
                 if(idx){
-                    txt = idx+" "+"'.JText::_('MYMUSE_PRODUCTS').'";
-                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&view=cart&layout=cart').'">'.JText::_('MYMUSE_VIEW_CART').'</a>\';
-                    $("#carttop1").html(txt);
-                    $("#carttop2").html(link);
+                    if(idx == 1){
+                        txt = idx+" "+"item";
+                    }else{
+                        txt = idx+" "+"items";
+                    }
+                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>\';
+                    $("#mini-cart-text").html(txt);
+                    $("#mini-cart-link").html(link);
                 }else{
                     
-                    $("#carttop1").html(" ");
-                    $("#carttop2").html("'.JText::_('MYMUSE_YOUR_CART_IS_EMPTY').'");
+                    $("#mini-cart-text").html(" ");
+                    $("#mini-cart-link").html("'.JText::_('MYMUSE_YOUR_CART_IS_EMPTY').'");
                 }
+                my_modal.open({content: msg+"<br />"+link, width: 300 });
             });
             
 		}); 
@@ -161,16 +166,18 @@ function tableOrdering( order, dir, task )
 
 
 <?php if($this->params->get('show_minicart')) :?>
+<!--  INLINE MINICART  -->
 <!--  the cart box  -->
-<div id='carttop'>
-<div class="carttop"></div>
-<div id="carttop1"><?php
+<div id="mini-cart-top">
+<div id="mini-cart-content">
+<div id="mini-cart-cart"></div>
+<div id="mini-cart-text"><?php
 if($this->cart['idx']) :
     $word = ($this->cart['idx'] == 1) ? "item" : "items"; 
     echo $this->cart['idx']." $word";
 endif;
 ?></div>
-<div id="carttop2"><?php
+<div id="mini-cart-link"><?php
 if($this->cart['idx']) :
     echo '<a href="'.JRoute::_('index.php?option=com_mymuse&view=cart&task=showcart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>';
 else :
@@ -178,7 +185,9 @@ else :
 endif;
 ?></div>
 </div>
+</div>
 <div class="clear"></div>
+<!--  END INLINE MINICART  -->
 <?php  endif; ?>
 
 
@@ -206,7 +215,7 @@ endif;
 			<td align="left" width="60%" nowrap="nowrap">
 				<?php echo JText::_('MYMUSE_TITLE_FILTER').'&nbsp;'; ?>
 				<input type="text" name="searchword" value="<?php echo $this->escape($this->state->get('list.searchword')); ?>" 
-				class="inputbox" 
+				class="" 
 				onchange="this.start.value=0;this.form.submit();" />
 			</td>
 		<?php endif; ?>
@@ -272,6 +281,10 @@ endif;
        			<th class="mymuse_cart_top mytitle" align="center" width="40%">
        			<?php echo JHtml::_('grid.sort', 'MYMUSE_NAME', 'a.title', $listDirn, $listOrder); ?>
        			</th>
+       			
+       			<?php  if($params->get('product_show_filetime', 0)) :?>
+       			<th class="mymuse_cart_top mytime" align="center" width="10%"><?php echo JText::_('MYMUSE_TIME'); ?></th>
+       			<?php endif; ?>
        	
      			<?php if($params->get('list_show_price')) { ?>
         			<th class="mymuse_cart_top myprice" align="left" width="10%">
@@ -369,7 +382,14 @@ endif;
 					 			} ?>
       						</td>
 
+        			<?php  if($params->get('product_show_filetime', 0)) : ?>
+        			<!--  TIME COLUMN -->	
+        				<td class="mytime">
+        				<?php echo $track->file_time ?>
+        				</td>
+        			<?php endif; ?>
         			<?php if($params->get('list_show_price')) { ?>
+        			
         			<!--  PRICE COLUMN -->	
         				<td class="myprice">
         				<?php if($params->get('my_free_downloads') || $params->get('my_downloads_enable')){
@@ -469,6 +489,7 @@ endif;
 
 <div id='my_overlay' style="display:none"></div>
 <div id='my_modal' style="display:none">
-    <div id='my_content'>No JavaScript Yet!</div>
+    <div id='my_content'>No JavaScript!</div>
     <a href='#' id='my_close'>close</a>
 </div>
+

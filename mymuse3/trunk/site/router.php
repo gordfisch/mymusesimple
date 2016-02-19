@@ -271,7 +271,7 @@ function MymuseBuildRoute(&$query)
  */
 function MymuseParseRoute($segments)
 {
-	//echo 'segments'; print_r($segments);
+	//echo 'segments'; print_r($segments); exit;
 	$vars = array();
 	if(!defined('DS')){
 		define('DS',DIRECTORY_SEPARATOR);
@@ -299,6 +299,11 @@ function MymuseParseRoute($segments)
 	// Standard routing for products.  If we don't pick up an Itemid then we get the view from the segments
 	// the first segment is the view and the last segment is the id of the product or category.
 	if (!isset($item)) {
+        if($params->get('my_default_itemid','')){
+            $item	= $menu->getItem($params->get('my_default_itemid',''));
+        }
+    }
+    if (!isset($item)) {
 		$vars['view']	= $segments[0];
 		$vars['id']		= $segments[$count - 1];
 
@@ -387,7 +392,7 @@ function MymuseParseRoute($segments)
         	$vars['option'] = 'com_mymuse';
         	$vars['view'] = 'store';
         	$vars['task'] = 'downloads';
-        
+   
         	return $vars;
         }
         if($segments[0] == "accdownloads"){

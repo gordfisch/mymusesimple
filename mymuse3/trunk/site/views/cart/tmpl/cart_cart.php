@@ -32,7 +32,9 @@ for ($i=0;$i<count($order->items); $i++) {
     }
 }
 ?>
-<?php if(isset($this->lists['licences'])){ ?>
+<?php if(isset($this->lists['licences'])){ 
+
+	?>
 <script>
 jQuery(document).ready(function(){  
 	jQuery("#licence").on('change', function(e){
@@ -60,8 +62,8 @@ jQuery(document).ready(function(){
 			
 
 			for(i=0; i < items; i++){
-				jQuery("#item_price_"+i).html('$'+order["items"][i]["price"]["product_price"]);
-				jQuery("#product_item_subtotal_"+i).html('$'+order["items"][i]["product_item_subtotal"]);
+				jQuery("#item_price_"+i).html('<?php echo $params->get('my_currency_symbol')?>'+order["items"][i]["price"]["product_price"]);
+				jQuery("#product_item_subtotal_"+i).html('<?php echo $params->get('my_currency_symbol')?>'+order["items"][i]["product_item_subtotal"]);
 			}
 			jQuery("#mytotal").html('$'+order["order_subtotal"]);
 				my_modal.open({content: msg+"<br />", width: 300 });
@@ -299,7 +301,7 @@ jQuery(document).ready(function(){
 		    <td class="mytotal cart" colspan="<?php echo $order->colspan2; ?>">
 		    	<div id="mytotal"><?php echo MyMuseHelper::printMoney($order->order_total); ?>
 		    	</div>
-		    <?php echo $this->currency['currency_code']; ?></td>
+		    </td>
 		    <?php if($order->do_html){ ?>
 		        <td class="mobile-hide cart" >&nbsp;</td>
 		    <?php  } ?>

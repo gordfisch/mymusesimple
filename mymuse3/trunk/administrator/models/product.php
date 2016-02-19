@@ -1460,7 +1460,7 @@ class MymuseModelproduct extends JModelAdmin
 				$quit++;
 				continue;
 			}
-			if($csv[$i][0] == "Files Ready?" || $csv[$i][2] == "Album"){
+			if($csv[$i][0] == "Files Ready?" || $csv[$i][0] == "N" || $csv[$i][2] == "Album"){
 				continue;
 			}
 			$string = '';
