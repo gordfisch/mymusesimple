@@ -65,8 +65,14 @@ jQuery(document).ready(function(){
 				jQuery("#item_price_"+i).html('<?php echo $params->get('my_currency_symbol')?>'+order["items"][i]["price"]["product_price"]);
 				jQuery("#product_item_subtotal_"+i).html('<?php echo $params->get('my_currency_symbol')?>'+order["items"][i]["product_item_subtotal"]);
 			}
-			jQuery("#mytotal").html('$'+order["order_subtotal"]);
+			jQuery("#mytotal").html('<?php echo $params->get('my_currency_symbol')?>'+order["order_subtotal"]);
 				my_modal.open({content: msg+"<br />", width: 300 });
+			for(i=0; i < 5; i++){
+				jQuery("#licence_desc_"+i).hide();
+			}	
+			jQuery("#licence_desc_"+newval).show();
+			
+				
 		});
 	});
 
@@ -107,20 +113,21 @@ jQuery(document).ready(function(){
 	<table class="mymuse_cart cart">
 		<thead>
 		<tr class="mymuse_cart cart">
-	<?php if($params->get("my_show_cart_preview") && $got_flash){ ?>  
+	<?php if($params->get("my_show_cart_preview") && $got_flash): ?>  
 		<th class="mypreviews cart"></th>
-	<?php }?>			
+	<?php endif; ?>			
 		<th class="mytitle cart"><?php echo JText::_('MYMUSE_TITLE'); ?></th>
-	<?php if($params->get("my_show_sku")){ ?>
+	<?php if($params->get("my_show_sku")): ?>
 		<th class="mysku cart"><?php echo JText::_('MYMUSE_CART_SKU'); ?></th>
-	<?php } ?>
+	<?php endif; ?>
 		<th class="myprice cart"><?php echo JText::_('MYMUSE_CART_PRICE'); ?></th>
+	
 		<th class="myquantity cart"><?php echo JText::_('MYMUSE_CART_QUANTITY'); ?></th>
-
+	
 		<th class="mysubtotal cart"><?php echo JText::_('MYMUSE_CART_SUBTOTAL'); ?></th>
-		<?php if(@$order->do_html){ ?>
-		    <th class="myaction cart"><?php echo JText::_('MYMUSE_CART_ACTION'); ?>&nbsp;<?php echo $order->update_form; ?></th>		    
-		<?php } ?>
+	<?php if(@$order->do_html): ?>
+		   <th class="myaction cart"><?php echo JText::_('MYMUSE_CART_ACTION'); ?>&nbsp;<?php echo $order->update_form; ?></th>		    
+	<?php endif; ?>
 		</tr>
 		</thead>
 		<?php
@@ -362,12 +369,22 @@ jQuery(document).ready(function(){
 		<?php 
 		//LICENCE MODEL?
 		if(isset($this->lists['licences'])){
-			echo '<h3>Licence</h3>';
-		
+			echo '<h3>'.JText::_('MYMUSE_LICENCE').'</h3>';
+
 			if(!in_array($task, $post_order)){
 				echo $this->lists['licences'];
 			}else{
 				echo '<span class="licence-text">'.$this->my_licence_text.'</span>';
+			}
+			
+			foreach($this->licence as $i=>$licence){
+				if($i == $this->my_licence){
+					$display = "block";
+				}else{
+					$display = "none";
+				}
+				$style = 'style="display:'.$display.'"';
+				echo '<div id="licence_desc_'.$i.'" class="licence-text" '.$style.'>'.nl2br($licence['desc']).'</div>';
 			}
 		}
 		?>

@@ -402,6 +402,7 @@ class myMuseViewCart extends JViewLegacy
 						&& null != $params->get('my_license_'.$i.'_price')){
 					$licence[$i]['name'] = $params->get('my_license_'.$i.'_name');
 					$licence[$i]['price'] = $params->get('my_license_'.$i.'_price');
+					$licence[$i]['desc'] = $params->get('my_license_'.$i.'_desc');
 					$licences[$i] = JHTML::_('select.option',   $i, $params->get('my_license_'.$i.'_name') );
 					if($i == $my_licence){
 						$my_licence_text = $licence[$i]['name'];
