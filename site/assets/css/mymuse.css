@@ -386,7 +386,10 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount,
     width: 100%
 }
 	
-
+.licence-text{
+	margin-top: 10px;
+	font-weight: bold;
+}
 /* Only Phones */  
 @media (max-width: 767px) { 
 	

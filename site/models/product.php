@@ -329,10 +329,9 @@ class MyMuseModelProduct extends JModelItem
 			$tracks = $db->loadObjectList();
 	
 			$site_url = MyMuseHelper::getSiteUrl($pk,'1');
-			$site_path = MyMuseHelper::getSitePath($pk,'1');			
+			$site_path = MyMuseHelper::getSitePath($pk,'1');
+						
 			// set up previews and streams
-//echo "site url = $site_url";
-	
 			$this->_item[$pk]->flash = '';
 			$this->_item[$pk]->flash_type = '';
 			$preview_tracks = array();
@@ -846,6 +845,9 @@ class MyMuseModelProduct extends JModelItem
 				$price_info["item"]=true;
 			}
 		}  
+		
+		
+		
 		// Get the shopper group id for this shopper
 		$shopper_group_id = @$shopper->shopper_group->id;
 		if($shopper_group_id == ""){
@@ -863,14 +865,12 @@ class MyMuseModelProduct extends JModelItem
 		$product_parent_id = 0;
 
 
-		//if(is_array($product->price)){
-			// we've been here already
-		//	return $product->price;
-		//}else{
-			if(0 == $params->get('my_price_by_product') || $product->product_physical ){ //price by track
+			if(0 == $params->get('my_price_by_product') || $product->product_physical ){ 
+				//price by track
 				$price_info["product_price"] = $product->price;
 				
-			}elseif(1 == $params->get('my_price_by_product')){ //price by product
+			}elseif(1 == $params->get('my_price_by_product')){ 
+				//price by product
 				if($product->parentid > 0){
 					$query = "SELECT attribs FROM #__mymuse_product WHERE id='".$product->parentid."'";
 					$db->setQuery($query);
@@ -906,11 +906,19 @@ class MyMuseModelProduct extends JModelItem
 				
 				return $price_info;
 				
-			}elseif(2 == $params->get('my_price_by_product') && 1 != $product->product_physical){ //price by licence
+			}elseif(2 == $params->get('my_price_by_product') && 1 != $product->product_physical){ 
+				//price by licence
 				
-				$jinput = JFactory::getApplication()->input;
-				$my_licence  = $jinput->get('my_licence', 0);
 				$session = JFactory::getSession();
+				$jinput = JFactory::getApplication()->input;
+				$my_licence  = $jinput->get('my_licence', $session->get("my_licence",0));
+				if (!$session->get("cart",0)) {
+					$this->cart = array();
+					$this->cart["idx"] = 0;
+				}else{
+					$this->cart = $session->get("cart");
+				}
+
 				
 				$registry = new JRegistry;
 				$registry->loadString($params->get('attribs'));
@@ -934,6 +942,16 @@ class MyMuseModelProduct extends JModelItem
 				
 				$price_info["product_price"] = round($price_info["product_price"],2);
 				$price_info["product_shopper_group_discount_amount"] = round($price_info["product_shopper_group_discount_amount"],2);
+				
+				
+				//DISCOUNTS FROM PLUGINS
+				JPluginHelper::importPlugin('mymuse');
+				$dispatcher	= JDispatcher::getInstance();
+				$result = $dispatcher->trigger('onCalculatePrice', array(&$price_info, &$this->cart));
+				if(count($result)){
+					print_pre($price_info);
+				}
+				
 				
 				return $price_info;
 			}

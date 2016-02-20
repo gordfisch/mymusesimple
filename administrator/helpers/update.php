@@ -136,7 +136,7 @@ class MyMuseUpdateHelper extends JObject
 		$user = JFactory::getUser();
 		$userid = $user->get('id');
 	if($p->parentid){
-		print_pre($p); print_pre($_FILES); 
+		//print_pre($p); print_pre($_FILES); 
 	}
 		
 		require_once (JPATH_COMPONENT.DS.'controllers'.DS.'product.php');
@@ -237,7 +237,7 @@ class MyMuseUpdateHelper extends JObject
 			$ext = pathinfo($_FILES['product_preview']['tmp_name'], PATHINFO_EXTENSION);
 			//$data["product_preview"] = new CURLFile($_FILES['product_preview']['tmp_name'],$mime[$ext], $_FILES['product_preview']['name']);
 		}
-		print_pre($data);
+		//print_pre($data);
 
 		$str = http_build_query($data);
 		$url = JURI::base()."index.php";
@@ -273,7 +273,7 @@ class MyMuseUpdateHelper extends JObject
 			return $res;
 		}else{
 			echo $result; exit;
-			$this->error = "Could not create product. ".$result;
+			$this->error = "Could not update product. ".$result;
 			return false;
 		}
 		

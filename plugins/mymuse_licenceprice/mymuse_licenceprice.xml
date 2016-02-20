@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0"  type="plugin" group="mymuse">
+	<name>PLG_MYMUSE_LICENCEPRICE</name>
+	<author>Arboreta</author>
+	<creationDate>February 2016</creationDate>
+	<copyright>Copyright (C) 2016 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>3.4.0</version>
+	<description>MYMUSE_licenceprice_DESC</description>
+	
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_mymuse_licenceprice.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_mymuse_licenceprice.sys.ini</language>
+	</languages>
+
+	
+	<files>
+		<filename plugin="mymuse_licenceprice">mymuse_licenceprice.php</filename>
+	</files>
+	
+	<config>
+	<fields  name="params">
+<fieldset name="BASIC">
+	<field name="licenceprice_based_on" type="radio" default="0" 
+		label="MYMUSE_licenceprice_BASED_ON_LABEL" 
+		description="MYMUSE_licenceprice_BASED_ON_DESC"
+		>
+	 			<option value="0">MYMUSE_licenceprice_USE_UNITS</option>
+	 			<option value="1">MYMUSE_licenceprice_USE_TOTAL</option>
+	 			
+	 </field>
+	 
+	 	<field name="licenceprice_type" type="radio" default="0" 
+		label="MYMUSE_licenceprice_TYPE_LABEL" 
+		description="MYMUSE_licenceprice_TYPE_DESC"
+		>
+	 			<option value="0">MYMUSE_licenceprice_TYPE_AMOUNT</option>
+	 			<option value="1">MYMUSE_licenceprice_TYPE_PERCENT</option>
+	 			
+	 </field>
+<field name="@spacer10" type="spacer" default="" label="MYMUSE_DEFINE_RANGES" description="" />
+		<field name="licenceprice_minimum_1" type="text" size="20" default="5" label="MYMUSE_licenceprice_MIMIMUM_1_LABEL" description="MYMUSE_licenceprice_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_1" type="text" size="20" default="10.00" label="MYMUSE_licenceprice_AMOUNT_1_LABEL" description="MYMUSE_licenceprice_AMOUNT_1_DESC"/>
+
+<field name="@spacer11" type="spacer" default="" label="" description="" />
+		<field name="licenceprice_minimum_2" type="text" size="20" default="10" label="MYMUSE_licenceprice_MIMIMUM_2_LABEL" description="MYMUSE_licenceprice_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_2" type="text" size="20" default="25.00" label="MYMUSE_licenceprice_AMOUNT_2_LABEL" description="MYMUSE_licenceprice_AMOUNT_1_DESC"/>
+
+<field name="@spacer12" type="spacer" default="" label="" description="" />
+		<field name="licenceprice_minimum_3" type="text" size="20" default="20" label="MYMUSE_licenceprice_MIMIMUM_3_LABEL" description="MYMUSE_licenceprice_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_3" type="text" size="20" default="75.00" label="MYMUSE_licenceprice_AMOUNT_3_LABEL" description="MYMUSE_licenceprice_AMOUNT_1_DESC"/>
+
+<field name="@spacer13" type="spacer" default="" label="" description="" />
+		<field name="licenceprice_minimum_4" type="text" size="20" default="" label="MYMUSE_licenceprice_MIMIMUM_4_LABEL" description="MYMUSE_licenceprice_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_4" type="text" size="20" default="0" label="MYMUSE_licenceprice_AMOUNT_4_LABEL" description="MYMUSE_licenceprice_AMOUNT_1_DESC"/>
+
+<field name="@spacer14" type="spacer" default="" label="" description="" />
+		<field name="licenceprice_minimum_5" type="text" size="20" default="" label="MYMUSE_licenceprice_MIMIMUM_5_LABEL" description="MYMUSE_licenceprice_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_5" type="text" size="20" default="" label="MYMUSE_licenceprice_AMOUNT_5_LABEL" description="MYMUSE_licenceprice_AMOUNT_1_DESC"/>
+
+<field name="@spacer15" type="spacer" default="" label="" description="" />
+		<field name="licenceprice_minimum_6" type="text" size="20" default="" label="MYMUSE_licenceprice_MIMIMUM_6_LABEL" description="MYMUSE_licenceprice_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_6" type="text" size="20" default="" label="MYMUSE_licenceprice_AMOUNT_6_LABEL" description="MYMUSE_licenceprice_AMOUNT_1_DESC"/>
+
+<field name="@spacer16" type="spacer" default="" label="" description="" />
+		<field name="licenceprice_minimum_7" type="text" size="20" default="" label="MYMUSE_licenceprice_MIMIMUM_7_LABEL" description="MYMUSE_licenceprice_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_7" type="text" size="20" default="" label="MYMUSE_licenceprice_AMOUNT_7_LABEL" description="MYMUSE_licenceprice_AMOUNT_1_DESC"/>
+
+<field name="@spacer17" type="spacer" default="" label="" description="" />
+		<field name="licenceprice_minimum_8" type="text" size="20" default="" label="MYMUSE_licenceprice_MIMIMUM_8_LABEL" description="MYMUSE_licenceprice_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_8" type="text" size="20" default="" label="MYMUSE_licenceprice_AMOUNT_8_LABEL" description="MYMUSE_licenceprice_AMOUNT_1_DESC"/>
+
+<field name="@spacer18" type="spacer" default="" label="" description="" />
+		<field name="licenceprice_minimum_9" type="text" size="20" default="" label="MYMUSE_licenceprice_MIMIMUM_9_LABEL" description="MYMUSE_licenceprice_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_9" type="text" size="20" default="" label="MYMUSE_licenceprice_AMOUNT_9_LABEL" description="MYMUSE_licenceprice_AMOUNT_1_DESC"/>
+
+<field name="@spacer19" type="spacer" default="" label="" description="" />
+		<field name="licenceprice_minimum_10" type="text" size="20" default="" label="MYMUSE_licenceprice_MIMIMUM_10_LABEL" description="MYMUSE_licenceprice_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_10" type="text" size="20" default="" label="MYMUSE_licenceprice_AMOUNT_10_LABEL" description="MYMUSE_licenceprice_AMOUNT_1_DESC"/>
+
+<field name="@spacer110" type="spacer" default="" label="" description="" />
+		<field name="licenceprice_minimum_11" type="text" size="20" default="" label="MYMUSE_licenceprice_MIMIMUM_11_LABEL" description="MYMUSE_licenceprice_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_11" type="text" size="20" default="" label="MYMUSE_licenceprice_AMOUNT_11_LABEL" description="MYMUSE_licenceprice_AMOUNT_1_DESC"/>
+
+<field name="@spacer111" type="spacer" default="" label="" description="" />
+		<field name="licenceprice_minimum_12" type="text" size="20" default="" label="MYMUSE_licenceprice_MIMIMUM_12_LABEL" description="MYMUSE_licenceprice_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_12" type="text" size="20" default="" label="MYMUSE_licenceprice_AMOUNT_12_LABEL" description="MYMUSE_licenceprice_AMOUNT_1_DESC"/>
+
+</fieldset>
+
+	</fields>
+	</config>
+<updateservers>
+    <server type="extension" priority="1"
+        name="Plug MyMuse licenceprice">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=73</server>
+</updateservers>
+</extension>

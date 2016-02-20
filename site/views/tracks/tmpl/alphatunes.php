@@ -215,7 +215,7 @@ endif;
 			<td align="left" width="60%" nowrap="nowrap">
 				<?php echo JText::_('MYMUSE_TITLE_FILTER').'&nbsp;'; ?>
 				<input type="text" name="searchword" value="<?php echo $this->escape($this->state->get('list.searchword')); ?>" 
-				class="" 
+				style="width:80%"
 				onchange="this.start.value=0;this.form.submit();" />
 			</td>
 		<?php endif; ?>

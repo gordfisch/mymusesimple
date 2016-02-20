@@ -1356,8 +1356,7 @@ class MymuseModelproduct extends JModelAdmin
 		
 
 		//$files = JFolder::files($path, '.', false, true );
-		$date = date('Y/M/d h:i:s');
-
+		
 		$clear = JRequest::getVar('clear','0');
 	
 		if($clear){
@@ -1423,7 +1422,9 @@ class MymuseModelproduct extends JModelAdmin
 		
 		$artist_array = array();
 		$product_array = array();
-		$string = "<table>";
+		$date = date('Y/M/d h:i:s');
+		
+		$string = "\n\n\n##########################\n$date\n##############################\n<table>";
 		$this->logMessage($string);
 		
 		//make artist categories if needed
@@ -1592,7 +1593,7 @@ class MymuseModelproduct extends JModelAdmin
 					//echo $query. "<br />";
 					$db->setQuery($query);
 					//echo $db->loadResult(). "<br />"; 
-					if(!$track_id = $db->loadResult()){
+					//if(!$track_id = $db->loadResult()){
 						//make track
 						$entry['artist_id'] = $artist_id;
 						$entry['parentid'] = $product_id;
@@ -1607,10 +1608,10 @@ class MymuseModelproduct extends JModelAdmin
 							return false;
 						}
 						
-					}else{
-						$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">HAD Track: ".$song_title."</span></td></tr>";
+					//}else{
+					//	$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">HAD Track: ".$song_title."</span></td></tr>";
 						
-					}
+					//}
 				}
 				$this->logMessage($string);
 			}else{
