@@ -11,13 +11,13 @@
 	<description>MYMUSE_LICENCEPRICE_DESC</description>
 	
 	<languages>
-		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_MYMUSE_LICENCEPRICE.ini</language>
-		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_MYMUSE_LICENCEPRICE.sys.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_mymuse_licenceprice.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_mymuse_licenceprice.sys.ini</language>
 	</languages>
 
 	
 	<files>
-		<filename plugin="MYMUSE_LICENCEPRICE">MYMUSE_LICENCEPRICE.php</filename>
+		<filename plugin="mymuse_licenceprice">mymuse_licenceprice.php</filename>
 	</files>
 	
 	<config>
