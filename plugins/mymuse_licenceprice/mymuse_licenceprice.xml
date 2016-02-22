@@ -26,15 +26,15 @@
 
 	 
 
-<field name="@spacer10" type="spacer" default="" label="MYMUSE_DEFINE_RANGES" description="" />
-		<field name="licenceprice_1_minimum_1" type="text" size="20" default="5" label="MYMUSE_LICENCEPRICE_1_MIMIMUM_1_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_1_amount_1" type="text" size="20" default="10.00" label="MYMUSE_LICENCEPRICE_1_AMOUNT_1_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+<field name="@spacer1" type="spacer" default="" label="MYMUSE_DEFINE_RANGES" description="" />
+		<field name="licenceprice_1_minimum_1" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_1_MIMIMUM_1_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_1_amount_1" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_1_AMOUNT_1_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
-		<field name="licenceprice_1_minimum_2" type="text" size="20" default="10" label="MYMUSE_LICENCEPRICE_1_MIMIMUM_2_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_1_amount_2_licence_1" type="text" size="20" default="25.00" label="MYMUSE_LICENCEPRICE_1_AMOUNT_2_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+		<field name="licenceprice_1_minimum_2" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_1_MIMIMUM_2_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_1_amount_2_licence_1" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_1_AMOUNT_2_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
-		<field name="licenceprice_1_minimum_3" type="text" size="20" default="20" label="MYMUSE_LICENCEPRICE_1_MIMIMUM_3_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_1_amount_3_licence_1" type="text" size="20" default="75.00" label="MYMUSE_LICENCEPRICE_1_AMOUNT_3_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+		<field name="licenceprice_1_minimum_3" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_1_MIMIMUM_3_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_1_amount_3_licence_1" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_1_AMOUNT_3_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
 		<field name="licenceprice_1_minimum_4" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_1_MIMIMUM_4_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
 		<field name="licenceprice_1_amount_4" type="text" size="20" default="0" label="MYMUSE_LICENCEPRICE_1_AMOUNT_4_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
@@ -45,18 +45,18 @@
 		<field name="licenceprice_1_minimum_6" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_1_MIMIMUM_6_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
 		<field name="licenceprice_1_amount_6" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_1_AMOUNT_6_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
-<field name="@spacer10" type="spacer" default="" label="MYMUSE_DEFINE_RANGES" description="" />
-		<field name="licenceprice_2_minimum_1" type="text" size="20" default="5" label="MYMUSE_LICENCEPRICE_2_MIMIMUM_1_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_2_amount_1" type="text" size="20" default="10.00" label="MYMUSE_LICENCEPRICE_AMOUNT_2_1_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+<field name="@spacer2" type="spacer" default="" label="MYMUSE_DEFINE_RANGES" description="" />
+		<field name="licenceprice_2_minimum_1" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_2_MIMIMUM_1_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_2_amount_1" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_2_AMOUNT_1_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
-		<field name="licenceprice_2_minimum_2" type="text" size="20" default="10" label="MYMUSE_LICENCEPRIC_2E_MIMIMUM_2_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_2_amount_2" type="text" size="20" default="25.00" label="MYMUSE_LICENCEPRICE_2_AMOUNT_2_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+		<field name="licenceprice_2_minimum_2" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_2_MIMIMUM_2_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_2_amount_2" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_2_AMOUNT_2_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
-		<field name="licenceprice_2_minimum_3" type="text" size="20" default="20" label="MYMUSE_LICENCEPRICE_2_MIMIMUM_3_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_2_amount_3" type="text" size="20" default="75.00" label="MYMUSE_LICENCEPRICE_AMOUNT_3_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+		<field name="licenceprice_2_minimum_3" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_2_MIMIMUM_3_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_2_amount_3" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_2_AMOUNT_3_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
 		<field name="licenceprice_2_minimum_4" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_2_MIMIMUM_4_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_2_amount_4" type="text" size="20" default="0" label="MYMUSE_LICENCEPRICE_2_AMOUNT_4_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+		<field name="licenceprice_2_amount_4" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_2_AMOUNT_4_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
 		<field name="licenceprice_2_minimum_5" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_2_MIMIMUM_5_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
 		<field name="licenceprice_2_amount_5" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_2_AMOUNT_5_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
@@ -64,18 +64,18 @@
 		<field name="licenceprice_2_minimum_6" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_2_MIMIMUM_6_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
 		<field name="licenceprice_2_amount_6" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_2_AMOUNT_6_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
-<field name="@spacer10" type="spacer" default="" label="MYMUSE_DEFINE_RANGES" description="" />
-		<field name="licenceprice_3_minimum_1" type="text" size="20" default="5" label="MYMUSE_LICENCEPRICE_3_MIMIMUM_1_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_3_amount_1" type="text" size="20" default="10.00" label="MYMUSE_LICENCEPRICE_3_AMOUNT_1_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+<field name="@spacer3" type="spacer" default="" label="MYMUSE_DEFINE_RANGES" description="" />
+		<field name="licenceprice_3_minimum_1" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_3_MIMIMUM_1_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_3_amount_1" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_3_AMOUNT_1_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
-		<field name="licenceprice_3_minimum_2" type="text" size="20" default="10" label="MYMUSE_LICENCEPRICE_3_MIMIMUM_2_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_3_amount_2" type="text" size="20" default="25.00" label="MYMUSE_LICENCEPRICE_3_AMOUNT_2_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+		<field name="licenceprice_3_minimum_2" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_3_MIMIMUM_2_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_3_amount_2" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_3_AMOUNT_2_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
-		<field name="licenceprice_3_minimum_3" type="text" size="20" default="20" label="MYMUSE_LICENCEPRICE_3_MIMIMUM_3_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_3_amount_3" type="text" size="20" default="75.00" label="MYMUSE_LICENCEPRICE_3_AMOUNT_3_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+		<field name="licenceprice_3_minimum_3" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_3_MIMIMUM_3_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_3_amount_3" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_3_AMOUNT_3_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
 		<field name="licenceprice_3_minimum_4" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_3_MIMIMUM_4_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_3_amount_4" type="text" size="20" default="0" label="MYMUSE_LICENCEPRICE_3_AMOUNT_4_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+		<field name="licenceprice_3_amount_4" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_3_AMOUNT_4_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
 		<field name="licenceprice_3_minimum_5" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_3_MIMIMUM_5_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
 		<field name="licenceprice_3_amount_5" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_3_AMOUNT_5_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
@@ -83,18 +83,18 @@
 		<field name="licenceprice_3_minimum_6" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_3_MIMIMUM_6_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
 		<field name="licenceprice_3_amount_6" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_3_AMOUNT_6_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
-<field name="@spacer10" type="spacer" default="" label="MYMUSE_DEFINE_RANGES" description="" />
-		<field name="licenceprice_4_minimum_1" type="text" size="20" default="5" label="MYMUSE_LICENCEPRICE_4_MIMIMUM_1_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_4_amount_1" type="text" size="20" default="10.00" label="MYMUSE_LICENCEPRICE_AMOUNT_1_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+<field name="@spacer4" type="spacer" default="" label="MYMUSE_DEFINE_RANGES" description="" />
+		<field name="licenceprice_4_minimum_1" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_4_MIMIMUM_1_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_4_amount_1" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_4_AMOUNT_1_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
-		<field name="licenceprice_4_minimum_2" type="text" size="20" default="10" label="MYMUSE_LICENCEPRICE_4_MIMIMUM_2_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_4_amount_2" type="text" size="20" default="25.00" label="MYMUSE_LICENCEPRICE_4_AMOUNT_2_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+		<field name="licenceprice_4_minimum_2" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_4_MIMIMUM_2_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_4_amount_2" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_4_AMOUNT_2_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
-		<field name="licenceprice_4_minimum_3" type="text" size="20" default="20" label="MYMUSE_LICENCEPRICE_4_MIMIMUM_3_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_4_amount_3" type="text" size="20" default="75.00" label="MYMUSE_LICENCEPRICE_4_AMOUNT_3_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+		<field name="licenceprice_4_minimum_3" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_4_MIMIMUM_3_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_4_amount_3" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_4_AMOUNT_3_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
 		<field name="licenceprice_4_minimum_4" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_4_MIMIMUM_4_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_4_amount_4" type="text" size="20" default="0" label="MYMUSE_LICENCEPRICE_4_AMOUNT_4_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+		<field name="licenceprice_4_amount_4" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_4_AMOUNT_4_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
 		<field name="licenceprice_4_minimum_5" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_4_MIMIMUM_5_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
 		<field name="licenceprice_4_amount_5" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_4_AMOUNT_5_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
@@ -102,18 +102,18 @@
 		<field name="licenceprice_4_minimum_6" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_4_MIMIMUM_6_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
 		<field name="licenceprice_4_amount_6" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_4_AMOUNT_6_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
-<field name="@spacer10" type="spacer" default="" label="MYMUSE_DEFINE_RANGES" description="" />
-		<field name="licenceprice_5_minimum_1" type="text" size="20" default="5" label="MYMUSE_LICENCEPRICE_5_MIMIMUM_1_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_5_amount_1" type="text" size="20" default="10.00" label="MYMUSE_LICENCEPRICE_5_AMOUNT_1_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+<field name="@spacer5" type="spacer" default="" label="MYMUSE_DEFINE_RANGES" description="" />
+		<field name="licenceprice_5_minimum_1" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_5_MIMIMUM_1_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_5_amount_1" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_5_AMOUNT_1_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
-		<field name="licenceprice_5_minimum_2" type="text" size="20" default="10" label="MYMUSE_LICENCEPRICE_5_MIMIMUM_2_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_5_amount_2" type="text" size="20" default="25.00" label="MYMUSE_LICENCEPRICE_5_AMOUNT_2_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+		<field name="licenceprice_5_minimum_2" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_5_MIMIMUM_2_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_5_amount_2" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_5_AMOUNT_2_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
-		<field name="licenceprice_5_minimum_3" type="text" size="20" default="20" label="MYMUSE_LICENCEPRICE_5_MIMIMUM_3_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_5_amount_3" type="text" size="20" default="75.00" label="MYMUSE_LICENCEPRICE_5_AMOUNT_3_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+		<field name="licenceprice_5_minimum_3" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_5_MIMIMUM_3_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
+		<field name="licenceprice_5_amount_3" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_5_AMOUNT_3_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
 		<field name="licenceprice_5_minimum_4" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_5_MIMIMUM_4_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
-		<field name="licenceprice_5_amount_4" type="text" size="20" default="0" label="MYMUSE_LICENCEPRICE_5_AMOUNT_4_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
+		<field name="licenceprice_5_amount_4" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_5_AMOUNT_4_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>
 
 		<field name="licenceprice_5_minimum_5" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_5_MIMIMUM_5_LABEL" description="MYMUSE_LICENCEPRICE_MIMIMUM_1_DESC"/>
 		<field name="licenceprice_5_amount_5" type="text" size="20" default="" label="MYMUSE_LICENCEPRICE_5_AMOUNT_5_LABEL" description="MYMUSE_LICENCEPRICE_AMOUNT_1_DESC"/>

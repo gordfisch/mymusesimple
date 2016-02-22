@@ -904,120 +904,120 @@
         <field
                 name="my_license_0_name"
                 type="text"
-                label="MYMUSE_LICENSE_NAME"
-                description="MYMUSE_LICENSE_NAME"
+                label="MYMUSE_LICENSE_0_NAME"
+                description="MYMUSE_LICENSE_0_NAME"
                 class="inputbox"
                 default=""
         />
         <field
                 name="my_license_0_price"
                 type="text"
-                label="MYMUSE_LICENSE_PRICE"
-                description="MYMUSE_LICENSE_PRICE"
+                label="MYMUSE_LICENSE_0_PRICE"
+                description="MYMUSE_LICENSE_0_PRICE"
                 class="inputbox"
                 default=""
         />
         <field
                 name="my_license_0_desc"
                 type="textarea"
-                label="MYMUSE_LICENSE_DESC"
-                description="MYMUSE_LICENSE_DESC"
+                label="MYMUSE_LICENSE_0_DESC"
+                description="MYMUSE_LICENS_0_DESC"
                 class="inputbox"
                 default=""
         />
         <field
                 name="my_license_1_name"
                 type="text"
-                label="MYMUSE_LICENSE_NAME"
-                description="MYMUSE_LICENSE_NAME"
+                label="MYMUSE_LICENSE_1_NAME"
+                description="MYMUSE_LICENSE_1_NAME"
                 class="inputbox"
                 default=""
         />
         <field
                 name="my_license_1_price"
                 type="text"
-                label="MYMUSE_LICENSE_PRICE"
-                description="MYMUSE_LICENSE_PRICE"
+                label="MYMUSE_LICENSE_1_PRICE"
+                description="MYMUSE_LICENSE_1_PRICE"
                 class="inputbox"
                 default=""
         />
         <field
                 name="my_license_1_desc"
                 type="textarea"
-                label="MYMUSE_LICENSE_DESC"
-                description="MYMUSE_LICENSE_DESC"
+                label="MYMUSE_LICENSE_1_DESC"
+                description="MYMUSE_LICENSE_1_DESC"
                 class="inputbox"
                 default=""
         />
         <field
                 name="my_license_2_name"
                 type="text"
-                label="MYMUSE_LICENSE_NAME"
-                description="MYMUSE_LICENSE_NAME"
+                label="MYMUSE_LICENSE_2_NAME"
+                description="MYMUSE_LICENSE_2_NAME"
                 class="inputbox"
                 default=""
         />
         <field
                 name="my_license_2_price"
                 type="text"
-                label="MYMUSE_LICENSE_PRICE"
-                description="MYMUSE_LICENSE_PRICE"
+                label="MYMUSE_LICENSE_2_PRICE"
+                description="MYMUSE_LICENSE_2_PRICE"
                 class="inputbox"
                 default=""
         />
         <field
                 name="my_license_2_desc"
                 type="textarea"
-                label="MYMUSE_LICENSE_DESC"
-                description="MYMUSE_LICENSE_DESC"
+                label="MYMUSE_LICENSE_2_DESC"
+                description="MYMUSE_LICENSE_2_DESC"
                 class="inputbox"
                 default=""
         />
         <field
                 name="my_license_3_name"
                 type="text"
-                label="MYMUSE_LICENSE_NAME"
-                description="MYMUSE_LICENSE_NAME"
+                label="MYMUSE_LICENSE_3_NAME"
+                description="MYMUSE_LICENSE_3_NAME"
                 class="inputbox"
                 default=""
         />
         <field
                 name="my_license_3_price"
                 type="text"
-                label="MYMUSE_LICENSE_PRICE"
-                description="MYMUSE_LICENSE_PRICE"
+                label="MYMUSE_LICENSE_3_PRICE"
+                description="MYMUSE_LICENSE_3_PRICE"
                 class="inputbox"
                 default=""
         />
         <field
                 name="my_license_3_desc"
                 type="textarea"
-                label="MYMUSE_LICENSE_DESC"
-                description="MYMUSE_LICENSE_DESC"
+                label="MYMUSE_LICENSE_3_DESC"
+                description="MYMUSE_LICENSE_3_DESC"
                 class="inputbox"
                 default=""
         />
         <field
                 name="my_license_4_name"
                 type="text"
-                label="MYMUSE_LICENSE_NAME"
-                description="MYMUSE_LICENSE_NAME"
+                label="MYMUSE_LICENSE_4_NAME"
+                description="MYMUSE_LICENSE_4_NAME"
                 class="inputbox"
                 default=""
         />
         <field
                 name="my_license_4_price"
                 type="text"
-                label="MYMUSE_LICENSE_PRICE"
-                description="MYMUSE_LICENSE_PRICE"
+                label="MYMUSE_LICENSE_4_PRICE"
+                description="MYMUSE_LICENSE_4_PRICE"
                 class="inputbox"
                 default=""
         />
         <field
                 name="my_license_4_desc"
                 type="textarea"
-                label="MYMUSE_LICENSE_DESC"
-                description="MYMUSE_LICENSE_DESC"
+                label="MYMUSE_LICENSE_4_DESC"
+                description="MYMUSE_LICENSE_4_DESC"
                 class="inputbox"
                 default=""
         />

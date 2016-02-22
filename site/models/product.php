@@ -31,6 +31,8 @@ class MyMuseModelProduct extends JModelItem
 	 * @var		string
 	 */
 	protected $_context = 'com_mymuse.product';
+	
+	static $cart = null;
 
 	/**
 	 * Method to auto-populate the model state.
@@ -913,16 +915,14 @@ class MyMuseModelProduct extends JModelItem
 				$jinput = JFactory::getApplication()->input;
 				$my_licence  = $jinput->get('my_licence', $session->get("my_licence",0));
 				if (!$session->get("cart",0)) {
-					$this->cart = array();
-					$this->cart["idx"] = 0;
+					self::$cart = array();
+					self::$cart["idx"] = 0;
 				}else{
-					$this->cart = $session->get("cart");
+					self::$cart = $session->get("cart");
 				}
 
 				
-				$registry = new JRegistry;
-				$registry->loadString($params->get('attribs'));
-				$product->attribs = $registry;
+
 				$session = JFactory::getSession();
 				$my_licence = $jinput->get('my_licence',$session->get("my_licence",0));
 		
@@ -947,9 +947,10 @@ class MyMuseModelProduct extends JModelItem
 				//DISCOUNTS FROM PLUGINS
 				JPluginHelper::importPlugin('mymuse');
 				$dispatcher	= JDispatcher::getInstance();
-				$result = $dispatcher->trigger('onCalculatePrice', array(&$price_info, &$this->cart));
+				//echo "here";
+				$result = $dispatcher->trigger('onCalculatePrice', array(&$price_info, self::$cart));
 				if(count($result)){
-					print_pre($price_info);
+					//print_pre($price_info);
 				}
 				
 				
