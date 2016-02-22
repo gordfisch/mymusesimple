@@ -135,6 +135,11 @@
         	        	todir="${test}/administrator/language/en-GB" />
         	    <copy file="${src}/plugins/mymuse_discount/language/en-GB/en-GB.plg_mymuse_mymuse_discount.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" />
+        	        	
+        	    <copy file="${src}/plugins/mymuse_licenceprice/language/en-GB/en-GB.plg_mymuse_mymuse_licenceprice.ini"
+        	        	todir="${test}/administrator/language/en-GB" />
+        	    <copy file="${src}/plugins/mymuse_licenceprice/language/en-GB/en-GB.plg_mymuse_mymuse_licenceprice.sys.ini"
+        	        	todir="${test}/administrator/language/en-GB" />
         	
         		<copy file="${src}/plugins/searchmymuse/language/en-GB/en-GB.plg_search_searchmymuse.ini"
         	        	todir="${test}/administrator/language/en-GB" />
@@ -263,7 +268,11 @@
         	            todir="${test}/plugins/mymuse/mymuse_discount" />
         	    <copy file="${src}/plugins/mymuse_discount/mymuse_discount.xml"
         	              todir="${test}/plugins/mymuse/mymuse_discount" />
-        	    
+        	              
+        	    <copy file="${src}/plugins/mymuse_licenceprice/mymuse_licenceprice.php"
+        	            todir="${test}/plugins/mymuse/mymuse_licenceprice" />
+        	    <copy file="${src}/plugins/mymuse_licenceprice/mymuse_licenceprice.xml"
+        	              todir="${test}/plugins/mymuse/mymuse_licenceprice" /> 
         	
                 <copy file="${src}/plugins/searchmymuse/searchmymuse.php"
                         todir="${test}/plugins/search/searchmymuse" />

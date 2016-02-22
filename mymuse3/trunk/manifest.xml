@@ -122,6 +122,7 @@
         <plugin name="shoppergroupview" folder="plugins/shoppergroupview">Shopper group</plugin>
 		<plugin name="mymuse_vote" folder="plugins/mymuse_vote">MyMuse Vote</plugin>
 		<plugin name="mymuse_discount" folder="plugins/mymuse_discount">MyMuse Discount</plugin>
+		<plugin name="mymuse_licenceprice" folder="plugins/mymuse_licenceprice">MyMuse LicencePrice</plugin>
 		
 		<plugin name="redirectonlogin" folder="plugins/user_redirectonlogin">MyMuse Redirect on Log In</plugin>
         <plugin name="mymuse" folder="plugins/user_mymuse">MyMuse User Profile</plugin>
