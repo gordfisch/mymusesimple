@@ -67,7 +67,7 @@ class plgMymuseMymuse_licenceprice extends JPlugin
 		
 		for($i = 1; $i < 7; $i++){
 			$min = $this->params->get('licenceprice_'.$my_licence.'_minimum_'.$i);
-			if($quantity >= $min){
+			if($min && $quantity >= $min){
 				//we have a match
 				$price_info['product_price'] = $this->params->get('licenceprice_'.$my_licence.'_amount_'.$i);
 				//echo 'min = '.$min.' licenceprice_'.$my_licence.'_amount_'.$i.' '.$this->params->get('licenceprice_'.$my_licence.'_amount_'.$i); exit;
