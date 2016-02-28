@@ -57,6 +57,10 @@ class plgMymuseAudio_html5_nxg extends JPlugin
         $arr = self::getPlaylist();
         $this->indexes = $arr[0];
         $this->playlist = $arr[1];
+        
+        $site_url = JURI::root();
+        $js_path = $site_url.'plugins/mymuse/audio_amplitude/js/amplitude.min.js';
+        $document->addScript( $js_path );
 	}
 
 	/**
@@ -73,6 +77,9 @@ class plgMymuseAudio_html5_nxg extends JPlugin
 		$category = $categories->get($catid);
 		$children = $category->getChildren();
 		$array[] = $category->id;
+		foreach($children as $child){
+			$array[] = $child->id;
+		}
 		$this->catlogs = $array;
 		
 	}
@@ -87,7 +94,7 @@ class plgMymuseAudio_html5_nxg extends JPlugin
 	public static function getPlaylist($load_js = true){
 		if(!self::$_playlist){
          
-			$site_url = preg_replace("#administrator/#","",JURI::base());
+			$site_url = JURI::root();
 			$document = JFactory::getDocument();
 		
 			$jinput = JFactory::getApplication()->input;
@@ -145,6 +152,8 @@ class plgMymuseAudio_html5_nxg extends JPlugin
         $arr = self::getPlaylist();
         $this->indexes = $arr[0];
         $this->playlist = $arr[1];
+        
+
 
 		$document = JFactory::getDocument();
 		$match = 0;

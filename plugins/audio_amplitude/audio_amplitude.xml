@@ -12,7 +12,6 @@
 	
 	<files>
 		<filename plugin="audio_amplitude">audio_amplitude.php</filename>
-		<filename plugin="audio_amplitude">Jplayer.swf</filename>
 		<folder>js</folder>
 		<folder>skin</folder>
 	</files>
@@ -32,12 +31,6 @@
                 extension="com_mymuse"
                 scope="com_mymuse"
                 description="MYMUSE_AMPLITUDE_CATEGORY_DESC" /> 
-
-		<field name="my_player_errors" type="radio" default="0" label="MYMUSE_AMPLITUDE_SHOW_ERRORS_LABEL" 
-		description="MYMUSE_AMPLITUDE_SHOW_ERRORS_DESC">
-		  <option value="0">JNO</option>
-		  <option value="1">JYES</option>
-		</field>
 		</fieldset>
 	</fields>
 	</config>
