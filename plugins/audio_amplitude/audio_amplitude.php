@@ -215,16 +215,20 @@ class plgMymuseAudio_html5_nxg extends JPlugin
         $text = '';
     	jimport('joomla.filesystem.file');
     	$db = JFactory::getDBO();
-    	$query = "SELECT id, alias from #__categories WHERE parent_id=30";
+    	$catid = $this->params('my_amplitude_catid');
+    	$params 	= MyMuseHelper::getParams();
+    	
+    	$query = "SELECT id, alias from #__categories WHERE parent_id=$catid";
     	$db->setQuery($query);
     	$res = $db->loadObjectList();
+    	
         $all = array();
         $first = new StdClass;
         $first->name = " ";
-        $first->artist = "PLAYER";
-        $first->album = "READY";
-        $first->url="/media/audio/previews/00_-_silence.mp3";
-        $first->cover_art_url="/images/releases/180px/NEXGEN_sm.jpg";
+        $first->artist = $this->params('my_amplitude_first_artist');
+        $first->album = $this->params('my_amplitude_first_album');
+        $first->url=$params->get('my_preview_dir').'/'.$this->params('my_amplitude_first_url');
+        $first->cover_art_url=$this->params('my_amplitude_first_cover');
         $all['songs'][] = $first;
         $allcats = array();
     	
@@ -252,7 +256,7 @@ class plgMymuseAudio_html5_nxg extends JPlugin
                 $i = 0;
                 echo '<br />';
     			foreach ($tracks as $track){
-                    $path = "/var/www/html/nexgen".$track->url;
+                    $path = JPATH_ROOT.$track->url;
                     if(!file_exists($path)){
                         //echo "$i ".$path."<br />\n";
                         $i++;
@@ -309,8 +313,10 @@ class plgMymuseAudio_html5_nxg extends JPlugin
         $catin = implode(",",$catin);
         $track_query = "SELECT p.title as name, parent.title as album,
             p.product_sku as artist,
+        		
             CONCAT('/media/audio/previews/',p.file_preview) as url,
             CONCAT('/images/releases/180px/',parent.product_sku,'_sm.jpg') as cover_art_url
+        		
             FROM #__mymuse_product as p
             LEFT JOIN #__mymuse_product as parent on p.parentid=parent.id
             LEFT JOIN #__categories as a on parent.artistid=a.id
