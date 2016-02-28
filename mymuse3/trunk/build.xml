@@ -102,6 +102,11 @@
         	        	todir="${test}/administrator/language/en-GB" /> 
         		<copy file="${src}/plugins/audio_html5/language/en-GB/en-GB.plg_mymuse_audio_html5.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" /> 
+        	        	
+        	    <copy file="${src}/plugins/audio_amplitude/language/en-GB/en-GB.plg_mymuse_audio_amplitude.ini"
+        	        	todir="${test}/administrator/language/en-GB" /> 
+        		<copy file="${src}/plugins/audio_amplitude/language/en-GB/en-GB.plg_mymuse_audio_amplitude.sys.ini"
+        	        	todir="${test}/administrator/language/en-GB" /> 
 
                 <copy file="${src}/plugins/mp3player_dewplayer/language/en-GB/en-GB.plg_mymuse_mp3player_dewplayer.ini"
                         todir="${test}/administrator/language/en-GB" />
@@ -340,8 +345,14 @@
         		<copy file="${src}/plugins/audio_html5/skin/jplayer.blue.monday.video.play.png"
         		        todir="${test}/plugins/mymuse/audio_html5/skin" />
         	
-    
-        	
+    			<copy file="${src}/plugins/audio_amplitude/audio_amplitude.php"
+        	            todir="${test}/plugins/mymuse/audio_amplitude" /> 
+        		<copy file="${src}/plugins/audio_amplitude/audio_amplitude.xml"
+        	        	todir="${test}/plugins/mymuse/audio_amplitude" /> 
+        		<copy file="${src}/plugins/audio_amplitude/js/amplitude.js"
+        	        	todir="${test}/plugins/mymuse/audio_amplitude/js" /> 
+        		<copy file="${src}/plugins/audio_amplitude/js/amplitude.min.js"
+        	        	todir="${test}/plugins/mymuse/audio_amplitude/js" /> 
         	
                 <copy file="${src}/plugins/mp3player_flowplayer/mp3player_flowplayer.php"
                         todir="${test}/plugins/mymuse/mp3player_flowplayer" />  

@@ -30,7 +30,33 @@
                 extension="com_mymuse"
                 scope="com_mymuse"
                 description="MYMUSE_AMPLITUDE_CATEGORY_DESC" /> 
+        <field 
+        		name="my_amplitude_first_artist" 
+        		type="text" 
+        		default="PLAYER" 
+				label="MYMUSE_AMPLITUDE_FIRST_ARTIST_LABEL" 
+				description="MYMUSE_AMPLITUDE_FIRST_ARTIST_DESC" />
+		<field 
+        		name="my_amplitude_first_album" 
+        		type="text"  
+        		default="READY" 
+				label="MYMUSE_AMPLITUDE_FIRST_ALBUM_LABEL" 
+				description="MYMUSE_AMPLITUDE_FIRST_ALBUM_DESC" />
+		<field 
+        		name="my_amplitude_first_url" 
+        		type="text"  
+        		default="00_-_silence.mp3" 
+				label="MYMUSE_AMPLITUDE_FIRST_URL_LABEL" 
+				description="MYMUSE_AMPLITUDE_FIRST_URL_DESC" />
+		<field 
+        		name="my_amplitude_first_cover" 
+        		type="text"  
+        		default="components/com_mymuse/assets/images/logo_sq.jpg" 
+				label="MYMUSE_AMPLITUDE_FIRST_COVER_LABEL" 
+				description="MYMUSE_AMPLITUDE_FIRST_COVER_DESC" />
+		
 		</fieldset>
+		
 	</fields>
 	</config>
 </extension>
