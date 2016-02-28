@@ -13,7 +13,6 @@
 	<files>
 		<filename plugin="audio_amplitude">audio_amplitude.php</filename>
 		<folder>js</folder>
-		<folder>skin</folder>
 	</files>
 
 	<languages>
