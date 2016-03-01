@@ -1249,6 +1249,18 @@
 			<option value="0">JHIDE</option>
 			<option value="1">JSHOW</option>
 		</field>
+		
+		<field 
+			name="category_match_level"
+			type="radio"
+			class="btn-group"
+			default="product"
+			label="MYMUSE_CATEGORY_MATCH_LEVEL_LABEL"
+			description="MYMUSE_CATEGORY_MATCH_LEVEL_DESC"
+		>
+			<option value="product">MYMUSE_CATEGORY_MATCH_PRODUCT</option>
+			<option value="track">MYMUSE_CATEGORY_MATCH_TRACK</option>
+		</field>
 
 	</fieldset>
 

@@ -32,6 +32,8 @@ class MyMuseModelCategory extends JModelList
 	protected $_item = null;
 
 	protected $_products = null;
+	
+	protected $_tracks = null;
 
 	protected $_siblings = null;
 
@@ -216,6 +218,54 @@ class MyMuseModelCategory extends JModelList
 		$app	= JFactory::getApplication('site');
 		$jinput = $app->input;
 		$itemid = $jinput->get('id', 0, 'INT') . ':' . $jinput->get('Itemid', 0, 'INT');
+	
+		if($params->get('category_layout') == "_:tracks"){
+			//echo "looking for tracks";
+			if ($this->_tracks === null && $category = $this->getCategory()) {
+			
+				$model = JModelList::getInstance('Tracks', 'MyMuseModel', array('ignore_request' => false));
+				$model->setState('params', $params);
+				$model->setState('filter.category_id', $category->id);
+				$model->setState('category_id', $category->id);
+				$model->setState('filter.published', $this->getState('filter.published'));
+				$model->setState('filter.access', $this->getState('filter.access'));
+				$model->setState('filter.language', $this->getState('filter.language'));
+				$ordering = $this->getState('list.ordering');
+					
+				$orderCol = $app->getUserStateFromRequest('com_mymuse.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
+				if (!in_array($orderCol, $this->filter_fields)) {
+					$model->setState('list.ordering', ProductHelperQuery::orderbySecondary($params->get('orderby_sec', 'rdate'), $params->get('order_date')));
+				}else{
+					$model->setState('list.ordering',$orderCol);
+			
+				}
+					
+				$model->setState('list.start', $this->getState('list.start'));
+				$model->setState('list.limit', $limit);
+				$model->setState('list.direction', $this->getState('list.direction'));
+				$model->setState('list.filter', $this->getState('list.filter'));
+				// filter.subcategories indicates whether to include products from subcategories in the list or blog
+				$model->setState('filter.subcategories', $this->getState('filter.subcategories'));
+				$model->setState('filter.max_category_levels', $this->getState('filter.max_category_levels'));
+				$model->setState('list.links', $this->getState('list.links'));
+			
+				if ($limit >= 0) {
+					$res = $model->getItems();
+			
+					if ($res  === false) {
+						$this->setError($model->getError());
+					}
+					$this->_tracks = $res;
+
+				}
+				else {
+					$this->_tracks =array();
+				}
+			
+				$this->_pagination = $res[2];
+				return $this->_tracks;
+			}
+		}
 		
 		if ($this->_products === null && $category = $this->getCategory()) {
 			$model = JModelList::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));

@@ -106,7 +106,9 @@ $l = 0;
                   <?php  endif; ?>
                   src="<?php echo $child->getParams()->get('image'); ?>"/></a></span>
             <?php endif; ?>
-				<span class="item-title"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($child->id));?>">
+            
+				<span class="item-title">
+				<a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($child->id));?>">
 					<?php echo $this->escape($child->title); ?></a>
 				</span>
 			</li>

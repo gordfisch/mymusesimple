@@ -76,6 +76,8 @@ class MyMuseModelTracks extends JModelList
 		}
 
 		parent::__construct($config);
+		$this->getCategory();
+		
 	}
 
 	/**
@@ -239,6 +241,10 @@ class MyMuseModelTracks extends JModelList
         	$listDirn	= '';
         }
         
+        $app 	= JFactory::getApplication();
+        $jinput = $app->input;
+        $categoryId = $this->getState('category.id',$jinput->get('id',0,'INT'));
+   
         $secondaryOrder = $this->getState('list.secondaryOrder', '');
 
        // TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS 
@@ -255,6 +261,7 @@ class MyMuseModelTracks extends JModelList
         c.title as category_name, c.alias as category_alias, ar.title as artist_name, ar.alias as artist_alias, s.sales,
         ROUND(v.rating_sum / v.rating_count, 0) AS rating, v.rating_count as rating_count,
         CASE WHEN p.created_by_alias > ' ' THEN p.created_by_alias ELSE ua.name END AS author
+        
         FROM #__mymuse_product as a
         LEFT JOIN #__mymuse_product as p ON a.parentid = p.id
         LEFT JOIN #__categories as c ON a.catid = c.id
@@ -269,8 +276,28 @@ class MyMuseModelTracks extends JModelList
         		as x GROUP BY x.all_id) as s ON s.product_id = a.id
         LEFT JOIN #__users AS ua ON ua.id = p.created_by
         LEFT JOIN #__users AS uam ON uam.id = p.modified_by
-        WHERE a.parentid IN ".$IN ."
-        AND a.product_downloadable = 1
+        ";
+    
+        if($params->get('category_match_level') == "track"){
+        	$query .= "RIGHT JOIN #__mymuse_product_category_xref as xref ON xref.product_id = a.id 
+        	
+        	WHERE xref.catid = $categoryId ";
+        	
+            // get prodids from xref for the top level cat
+			//$subQuery = "SELECT product_id FROM #__mymuse_product_category_xref WHERE catid = ".$categoryId;
+			//$db->setQuery($subQuery);
+			//$pids = $db->loadObjectList();
+			//foreach($pids as $pid){
+			//	$in[] = $pid->product_id;
+			//}
+			//$IN = "(".implode(",",$in).")";
+			//$query .= "WHERE a.id IN $IN ";
+		}else{			
+        		
+        	$query .= " WHERE a.parentid IN ".$IN ." ";
+		}	
+        		
+        $query .= " AND a.product_downloadable = 1
         AND a.state=1
         ";
         if($alpha != ''){
@@ -297,10 +324,10 @@ class MyMuseModelTracks extends JModelList
         $orderby = "ORDER BY $ordering $listDirn
         ";
         if($secondaryOrder){
-        	$orderby .= " $secondaryOrder ";
+        	$orderby .= ", $secondaryOrder ";
         }
         $query .= $orderby;
-        //echo "$query <br />";
+        //echo "$query <br />"; exit;
 
 		return $query;
 	}
@@ -379,10 +406,10 @@ class MyMuseModelTracks extends JModelList
 	 */
 	public function getCategory()
 	{
-        
+		$id = $this->getState('category.id', 'root');
 		if (!is_object($this->_category)) {
             
-            /**
+            
             if( isset( $this->state->params ) ) {
 				$params = $this->state->params;
 				$options = array();
@@ -396,15 +423,16 @@ class MyMuseModelTracks extends JModelList
             $categories = JCategories::getInstance('Mymuse', $options);
 
 			$this->_category= $categories->get($this->getState('category.id', 'root'));
-            */
-     
-			$id = $this->getState('category.id', 'root');
+            
+            /**
+			$id = $this->getState('category.id', '0');
             $query = "SELECT * FROM #__categories WHERE id=$id";
             $this->_db->setQuery($query);
             $this->_category = $this->_db->loadObject();
             $registry = new JRegistry;
             $registry->loadObject(json_decode($this->_category->params));
             $this->_category->params = $registry;
+            */
 		}
 
 		return $this->_category;
@@ -421,18 +449,18 @@ class MyMuseModelTracks extends JModelList
 	 */
 	public function getItems()
 	{
+		
+
 		$params = MyMuseHelper::getParams();
 		$tracks	= parent::getItems();
 
 		$site_url = preg_replace("#administrator/#","",JURI::base());
-		
 		$site_url = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base());
 
-		
-		
 		$globalParams = JComponentHelper::getParams('com_mymuse', true);
         $root = JPATH_ROOT.DS;
         $top_cat = $this->getState('filter.category_id');
+   
         $this->_category->flash_type = '';
         $this->_category->flash = '';
         
@@ -499,11 +527,7 @@ class MyMuseModelTracks extends JModelList
             }else{
                 $track->download_name = $track->file_name;
             }
-            
-            
-           
-            
-            
+
             $down_dir = str_replace($root,'',$params->get('my_download_dir'));
             $track->download_path = JURI::base().'/'.$down_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->download_name;
             $track->download_real_path = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$track->download_name;
