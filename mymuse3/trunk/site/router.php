@@ -21,12 +21,23 @@ jimport('joomla.application.categories');
  */
 function MymuseBuildRoute(&$query)
 {
+	if(!defined('DS')){
+		define('DS',DIRECTORY_SEPARATOR);
+	}
+	
+	if(!defined('MYMUSE_ADMIN_PATH')){
+		define('MYMUSE_ADMIN_PATH',JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_mymuse'.DS);
+	}
+	require_once( MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php' );
+	$params = MyMuseHelper::getParams();
+	
+	
+	
 	$segments	= array();
 
 	// get a menu item based on Itemid or currently active
 	$app		= JFactory::getApplication();
 	$menu		= $app->getMenu();
-	$params		= JComponentHelper::getParams('com_mymuse');
 	$advanced	= $params->get('sef_advanced_link', 0);
 
 	// we need a menu item.  Either the one specified in the query, or the current active one if none specified
@@ -47,7 +58,7 @@ function MymuseBuildRoute(&$query)
 		return $segments;
 	}
 
-	
+
     if(isset($query['task']) && $query['task'] == "checkout"){
     	unset($query['task']);
     	unset($query['view']);
@@ -169,7 +180,7 @@ function MymuseBuildRoute(&$query)
 	//Array([option]=com_mymuse,[view]=product,[id]=1,[catid]=9,[lang]=en-GB,[Itemid]=90)
 	if ($view == 'category' || $view == 'product')
 	{
-
+	
 		if (!$menuItemGiven) {
 			$segments[] = $view;
 		}
@@ -234,15 +245,16 @@ function MymuseBuildRoute(&$query)
 		}
 
 		$array = array_reverse($array);
-
-		if (!$advanced && count($array)) {
+		if($params->get('my_use_alias')){
+			//echo "use the alias only";
+		}elseif (!$advanced && count($array)) {
 			$array[0] = (int)$catid.':'.$array[0];
 		}
 
 		$segments = array_merge($segments, $array);
 
 		if ($view == 'product') {
-			if ($advanced) {
+			if ($advanced || $params->get('my_use_alias')) {
 				list($tmp, $id) = explode(':', $query['id'], 2);
 			}
 			else {
@@ -306,7 +318,6 @@ function MymuseParseRoute($segments)
     if (!isset($item)) {
 		$vars['view']	= $segments[0];
 		$vars['id']		= $segments[$count - 1];
-
 		return $vars;
 	}
 
@@ -491,6 +502,50 @@ function MymuseParseRoute($segments)
 	// if there was more than one segment, then we can determine where the URL points to
 	// because the first segment will have the target category id prepended to it.  If the
 	// last segment has a number prepended, it is a product, otherwise, it is a category.
+	if($params->get('my_use_alias') && $count == 2){
+		//check if this is a product alias.
+		if(strpos($segments[0],':')){
+			$orig_segments = $segments;
+			$segments[0] = preg_replace('/:/',"-",$segments[0]);
+			$segments[1] = preg_replace('/:/',"-",$segments[1]);
+		}
+		$query = 'SELECT id,catid from #__mymuse_product WHERE alias="'.$segments[0].'"';
+	
+		$db->setQuery($query);
+		if($product = $db->loadObject()){
+			$vars['option'] = 'com_mymuse';
+			$vars['view'] = 'product';
+			$vars['id'] = (int)$product->id;
+			$vars['catid'] = (int)$product->catid;
+	
+			return $vars;
+		}
+		
+		$query = 'SELECT id,catid from #__mymuse_product WHERE alias="'.$segments[1].'"';
+		
+		$db->setQuery($query);
+		if($product = $db->loadObject()){
+			$vars['option'] = 'com_mymuse';
+			$vars['view'] = 'product';
+			$vars['id'] = (int)$product->id;
+			$vars['catid'] = (int)$product->catid;
+		
+			return $vars;
+		}
+			
+		//check if this is a category alias.
+		$query = 'SELECT id from #__categories WHERE alias="'.$segments[0].'" and extension="com_mymuse"';
+	
+		$db->setQuery($query);
+		if($category = $db->loadObject()){
+			$vars['option'] = 'com_mymuse';
+			$vars['view'] = 'category';
+			$vars['id'] = (int)$category->id;
+			return $vars;
+		}
+	}
+	
+	
 	if (!$advanced) {
 		$cat_id = (int)$segments[0];
 

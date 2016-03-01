@@ -44,15 +44,39 @@ class MymuseViewCategory extends JViewLegacy
 		
 		// Get some data from the models
 		$state		= $this->get('State');
-	
 		$params		= $state->params;
-		$items		= $this->get('Items');
-		$category	= $this->get('Category');
+		$this->print	= $jinput->get('print',0, 'INT');
+		$this->Itemid = $jinput->get("Itemid",'');
+		
+		$menu	= $app->getMenu();
+		$item	= $menu->getActive();
+		$top_cat = $item->query['id'];
+		
+		if($params->get('category_layout') == "_:tracks"){
+			$res	= $this->get('Items');
+			$items = $res[0];
+			$category = $res[1];
+			$pagination = $res[2];
+			
+			
+		}else{
+			$category	= $this->get('Category');
+			$items		= $this->get('Items');
+			$pagination = $this->get('Pagination');
+		}
+		// Setup the category parameters.
+		$cparams = $category->getParams();
+		$category->params = clone($params);
+		$category->params->merge($cparams);
+		
+		
+	
+		//params[category_layout] => _:tracks
 		
 		$children	= $this->get('Children');
 		$parent		= $this->get('Parent');
 	
-		$pagination = $this->get('Pagination');
+		
 		$task = $jinput->get('task', 'notask');
 		
 		$this->total = count($items);
@@ -72,10 +96,7 @@ class MymuseViewCategory extends JViewLegacy
 			//return JError::raiseError(404, JText::_('JGLOBAL_CATEGORY_NOT_FOUND'));
 		}
 
-		// Setup the category parameters.
-		$cparams = $category->getParams();
-		$category->params = clone($params);
-		$category->params->merge($cparams);
+		
 
 		// Check whether category access level allows access.
 		$user	= JFactory::getUser();
