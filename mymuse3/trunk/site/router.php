@@ -39,7 +39,7 @@ function MymuseBuildRoute(&$query)
 	$app		= JFactory::getApplication();
 	$menu		= $app->getMenu();
 	$advanced	= $params->get('sef_advanced_link', 0);
-
+//print_pre($query);
 	// we need a menu item.  Either the one specified in the query, or the current active one if none specified
 	if (empty($query['Itemid'])) {
 		$menuItem = $menu->getActive();
@@ -184,7 +184,7 @@ function MymuseBuildRoute(&$query)
 		if (!$menuItemGiven) {
 			$segments[] = $view;
 		}
-
+//print_pre($segments);
 		unset($query['view']);
 
 		if ($view == 'product') {

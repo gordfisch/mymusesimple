@@ -1105,6 +1105,7 @@
 				<option value="1">JSHOW</option>
 			</field>
 			
+			
 		<field name="product_show_preview_column" 
 			type="radio" 
 			class="btn-group"
@@ -1162,6 +1163,25 @@
 				<option value="a.parentid">MYMUSE_PRODUCT</option>
 				<option value="c.id">MYMUSE_CATEGORY</option>
 		</field>
+		
+		<field name="product_show_artist" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_PRODUCT_SHOW_ARTIST_DESC"
+				label="MYMUSE_PRODUCT_SHOW_ARTIST_LABEL"
+			>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+	 		<field
+                name="product_artist_alternate_itemid"
+                type="menuitem"
+                label="MYMUSE_PRODUCT_ARTIST_ITEMID_LABEL"
+                description="PRODUCT_ARTIST_ITEMID_DESC"
+                class="inputbox"
+                required="false"
+                />
 
 	</fieldset>
 

@@ -1360,9 +1360,11 @@ class MymuseModelproduct extends JModelAdmin
 		$clear = JRequest::getVar('clear','0');
 	
 		if($clear){
+			
 			JFile::delete(JPATH_ADMINISTRATOR .DS.'components'.DS.'com_mymuse'.DS.'log.html');
 			$good = 0;
 			$q = "SELECT id from #__categories where parent_id='$catid_artist' OR parent_id='$catid_genre'";
+		echo $q."<br />";
 			$db->setQuery($q);
 			$cats = $db->loadObjectList();
 			$cat_ids = '(';
@@ -1372,18 +1374,19 @@ class MymuseModelproduct extends JModelAdmin
 			}
 			$cat_ids = preg_replace("/,$/",'',$cat_ids);
 			$cat_ids .= ")";
+		echo "clear2 ".$cat_ids;
 			if($good){
-				$q = "DELETE FROM #__mymuse_product WHERE 1
-				AND catid IN $cat_ids";
+				$q = "DELETE FROM #__mymuse_product WHERE 1 ";
+				//AND catid IN $cat_ids";
 			echo $q."<br />";
 				$db->setQuery($q);
 				if(!$db->query()){
 					echo $db->error;
 				}
-				//$q = "ALTER TABLE #__mymuse_product AUTO_INCREMENT = 1";
-				//if(!$db->query()){
-				//    echo $db->error;
-				// }
+				$q = "ALTER TABLE #__mymuse_product AUTO_INCREMENT = 1";
+				if(!$db->query()){
+				    echo $db->error;
+				 }
 	
 				$q = "DELETE FROM #__mymuse_product_category_xref WHERE 1
 				AND catid IN $cat_ids";;
@@ -1399,10 +1402,11 @@ class MymuseModelproduct extends JModelAdmin
 				if(!$db->query()){
 					echo $db->error;
 				}
-				?>
-				<a href="administrator/index.php?option=com_mymuse">Go Back</a>
-				<?php 
+				
 			}
+			?>
+							<a href="index.php?option=com_mymuse">Go Back</a>
+							<?php 
 			exit;
 
 		}
@@ -1426,8 +1430,9 @@ class MymuseModelproduct extends JModelAdmin
 		
 		$string = "\n\n\n##########################\n$date\n##############################\n<table>";
 		$this->logMessage($string);
+		$string = '';
 		
-		//make artist categories if needed
+		//make artist categories if needed from list of folders in /staging/
 		foreach($artists as $i => $artist){
 			// see if artist category exist
 			$artist_alias = JApplication::stringURLSafe($artist);
@@ -1444,7 +1449,7 @@ class MymuseModelproduct extends JModelAdmin
 			}
 			$artist_array[$artist_alias] = $artist_id;
 		}
-		print_pre($artist_array);
+		$this->logMessage($string);
 		
 		$csv = $this::readCSV($mycsv);
 		
@@ -1466,7 +1471,8 @@ class MymuseModelproduct extends JModelAdmin
 			}
 			$string = '';
 			$entry = $csv[$i];
-			echo "entry"; print_pre($entry); 
+
+			$this->logMessage("<tr><td>$i</td><td><span style=\"color: ##1D854C;\">".implode(":",$entry)."</span></td></tr>");
 			$have_payload = '';
 			$have_demo = '';
 			/**
@@ -1530,18 +1536,26 @@ class MymuseModelproduct extends JModelAdmin
 			}
 			//download file
 			if($download && file_exists($path.DS.$product_name.DS."Download".DS.$download)){
-				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">".$path.DS.$product_name.DS."Download".DS.$download."</span></td></tr>";
+				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">PAYLOAD: ".$path.DS.$product_name.DS."Download".DS.$download."</span></td></tr>";
 				$filename = $path.DS.$product_name.DS."Download".DS.$download;
 				$ext =  JFile::getExt($download);
 				$name = JApplication::stringURLSafe(JFile::stripExt($download)).'.'.$ext;
 				
 				$have_payload = $path.DS.$product_name.DS."Download".DS.$name;
-				JFile::copy($filename, $have_payload);
-				echo "Found download: $have_payload <br />";
+				if(file_exists($have_payload)){
+					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;\">PAYLOAD EXISTS: ".$product_name.DS."Download".DS.$download."</span></td></tr>";
+				}else{
+					JFile::copy($filename, $have_payload);
+					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;\">PAYLOAD copied: ".$product_name.DS."Download".DS.$download."</span></td></tr>";
+					
+				}
+				//echo "Found download: $have_payload <br />";
 			}else{
-				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">".$path.DS.$product_name.DS."Download".DS.$download."</span></td></tr>";
-				echo "NO PAYLOAD FILE ".$path.DS.$product_name.DS."Download".DS.$download." <br />";
+				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">NO PAYLOAD FILE: ".$path.DS.$product_name.DS."Download".DS.$download."</span></td></tr>";
+				//echo "NO PAYLOAD FILE ".$path.DS.$product_name.DS."Download".DS.$download." <br />";
 			}
+			$this->logMessage($string);
+			$string = '';
 		
 			//preview
 			if($preview && file_exists($path.DS.$product_name.DS."Preview".DS.$preview)){
@@ -1550,12 +1564,19 @@ class MymuseModelproduct extends JModelAdmin
 				$ext =  JFile::getExt($preview);
 				$name = JApplication::stringURLSafe(JFile::stripExt($preview)).'.'.$ext;
 				$have_demo = $path.DS.$product_name.DS."Preview".DS.$name;
-				JFile::copy($filename, $have_demo);
-				echo "Found Preview $have_demo <br />";
+				if(file_exists($have_demo)){
+					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;;\">Preview Exists: ".DS.$preview."</span></td></tr>";
+				}else{
+					JFile::copy($filename, $have_demo);
+					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;;\">Preview copied: ".DS.$preview."</span></td></tr>";
+				}
+				//echo "Found Preview $have_demo <br />";
 			}else{
 				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">".$path.DS.$product_name.DS."Preview".DS.$preview."</span></td></tr>";
-				echo "NO PREVIEW FILE $download <br />";
+				//echo "NO PREVIEW FILE $download <br />";
 			}
+			$this->logMessage($string);
+			$string = '';
 			
 			
 			// MAKING OF PRODUCTS AND TRACKS//!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1563,29 +1584,30 @@ class MymuseModelproduct extends JModelAdmin
 				//see if parent product exists
 				$query = "SELECT id FROM #__mymuse_product WHERE title= ".$db->quote($product_name)."
 				AND parentid=0";
-		 
+				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">$query</span></td></tr>";
+				
 				$db->setQuery($query);
 				if(!$product_id = $db->loadResult()){
 					
-					echo "make product ".$album."<br />";
+					//echo "make product ".$album."<br />";
 					$product_id = $this->makeProduct($entry, $artist_id, 0, 0);
 					if(is_numeric($product_id)){
 						$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Product Made: $product_name $artist_id $product_id</span></td></tr>";
-						$this->logMessage($string);
-						$string = '';
+
 					}else{
 						$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">Could not make product : ".$product_name." ".$product_id."</span></td></tr>";
 						$string .= "</table>";
 						$this->logMessage($string);
-						echo $string;
+
 						return false;
 					}
 				}else{
 					$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">HAD product: ".$product_name."</span></td></tr>";
-					$this->logMessage($string);
-					$string = '';
 				}
-	
+				$this->logMessage($string);
+				$string = '';
+				
+				
 				// see if track exists
 				if($have_payload != ''){
 					$query = "SELECT id FROM #__mymuse_product WHERE  title = ".$db->quote($song_title)."
@@ -1593,11 +1615,11 @@ class MymuseModelproduct extends JModelAdmin
 					//echo $query. "<br />";
 					$db->setQuery($query);
 					//echo $db->loadResult(). "<br />"; 
-					//if(!$track_id = $db->loadResult()){
+					if(!$track_id = $db->loadResult()){
 						//make track
 						$entry['artist_id'] = $artist_id;
 						$entry['parentid'] = $product_id;
-						echo "making a track <br />"; print_pre($entry); 
+						//echo "making a track <br />"; print_pre($entry); 
 						$track_id = $this->makeProduct($entry, $artist_id, $product_id, 1, $have_payload, $have_demo);
 						if(is_numeric($track_id)){
 							$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;;\">Made Track : ".$song_title." ".$artist_id." $track_id</span></td></tr>";
@@ -1608,15 +1630,18 @@ class MymuseModelproduct extends JModelAdmin
 							return false;
 						}
 						
-					//}else{
-					//	$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">HAD Track: ".$song_title."</span></td></tr>";
+					}else{
+						$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">HAD Track: ".$song_title."</span></td></tr>";
 						
-					//}
+					}
 				}
-				$this->logMessage($string);
+				
 			}else{
-				echo "NO PAYLOAD FILE!!!!! <br />";
+				
+				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">NO PAYLOAD FILE!!!!!</span></td></tr>";
 			}
+			$this->logMessage($string);
+			$string = '';
 		}
 		
 	 

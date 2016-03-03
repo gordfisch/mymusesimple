@@ -531,28 +531,7 @@
 	 			<option value="0">MYMUSE_HIDE</option>
 	 			<option value="1">MYMUSE_SHOW</option>
 	 		</field>
-			
-	 <field type="spacer" name="spaceritems" label="MYMUSE_PRODUCT_PAGES_ITEMS_SECTION" /> 		
-			<field name="product_show_quantity" 
-	 			type="radio"
-				class="btn-group"
-	 			label="MYMUSE_SHOW_QUANTITY" 
-	 			description="MYMUSE_SHOW_QUANTITY_DESC">
-	 			<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field>
-	 		
-	 		<field name="product_item_selectbox" 
-	 			type="radio"
-				class="btn-group"
-	 			label="MYMUSE_ITEM_SELECTBOX" 
-	 			description="MYMUSE_ITEM_SELECTBOX_DESC">
-	 			<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">MYMUSE_NO</option>
-	 			<option value="1">MYMUSE_YES</option>
-	 		</field>
-	 		
+
 	<field type="spacer" name="spacerdownload" label="MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" /> 		
 
 	 		
@@ -587,6 +566,26 @@
 				label="MYMUSE_PLAYER_HEIGHT_LABEL" 
 				description="MYMUSE_PLAYER_HEIGHT_DESC"
 			/>
+			
+			<field name="product_show_artist" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_PRODUCT_SHOW_ARTIST_DESC"
+				label="MYMUSE_PRODUCT_SHOW_ARTIST_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+	 		<field
+                name="product_artist_alternate_itemid"
+                type="menuitem"
+                label="MYMUSE_PRODUCT_ARTIST_ITEMID_LABEL"
+                description="PRODUCT_ARTIST_ITEMID_DESC"
+                class="inputbox"
+                required="false"
+                />
 		
 			<field name="product_show_select_column"
 			 	type="radio"
