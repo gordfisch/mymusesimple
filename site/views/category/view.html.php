@@ -57,8 +57,6 @@ class MymuseViewCategory extends JViewLegacy
 			$items = $res[0];
 			$category = $res[1];
 			$pagination = $res[2];
-			
-			
 		}else{
 			$category	= $this->get('Category');
 			$items		= $this->get('Items');

@@ -144,7 +144,7 @@ if(count($params->get('my_formats') > 1) && $params->get('my_price_by_product'))
 			jQuery(formats[jQuery(select_id).val()]+"_"+id).show();'."\n}";
 }
 
-    //print_pre($params->get('my_formats'));
+   // print_pre($params);
         
 
 $url = JURI::Root()."index.php?option=com_mymuse&task=ajaxtogglecart";
@@ -293,7 +293,22 @@ endif;
 <!--  END INLINE MINICART  -->
 <?php  endif; ?>
 	
+
 	
+<!--  INLINE PARENT  -->
+<div id="parent">
+<div id="mini-cart-top">
+<div id="mini-cart-content">
+<div id="mini-cart-text">
+<a href="<?php echo JRoute::_("index.php?option=com_mymuse&view=category&id=".$product->artist->parent_id); ?>">
+<?php echo $product->artist->parent_title; ?></a>
+</div>
+</div>
+</div>
+</div>
+<!--  END INLINE PARENT  -->
+
+
 <?php if ($canEdit ||  $params->get('show_print_icon') || $params->get('show_email_icon')) : ?>
 <!-- ICONS -->
 	<ul class="actions">
@@ -397,7 +412,7 @@ endif; ?>
 	<?php endif; ?>
 	</dd>
 <?php endif; ?>
-<?php if ($params->get('show_hits')) : ?>
+<?php if($params->get('show_hits')) : ?>
 	<dd class="hits">
 	<?php echo JText::sprintf('MYMUSE_PRODUCT_HITS', $this->item->hits); ?>
 	</dd>
@@ -814,6 +829,10 @@ endif; ?>
 		    <tr>
         	<th class="mymuse_cart_top mytitle" align="center" width="40%"><?php echo JText::_('MYMUSE_NAME'); ?></th>
        		
+       		<?php  if($params->get('product_show_artist', 0)) :?>
+       			<th class="mymuse_cart_top myartist" align="center" width="30%"><?php echo JText::_('MYMUSE_GENRE'); ?></th>
+       		<?php endif; ?>
+       		
        		<?php  if($params->get('product_show_filetime', 0)) :?>
        			<th class="mymuse_cart_top mytime" align="center" width="10%"><?php echo JText::_('MYMUSE_TIME'); ?></th>
        		<?php endif; ?>
@@ -856,9 +875,7 @@ endif; ?>
                     continue;
                 endif;
              	?>
-			  		<tr>
-
-      					
+			  		<tr>	
       				<!--  TITLE COLUMN -->	
 						<td class="mytitle"><?php echo $track->title; ?> 
       						<?php  
@@ -871,7 +888,14 @@ endif; ?>
                             
                            
       					</td>
-      					
+      				<?php  if($params->get('product_show_artist', 0)) :?>
+      				<!-- ARTIST COLUMN -->
+      				<td class="myartist">
+        				<a href="<?php 
+						echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($product->category->id));?>">
+						<?php echo $product->category_title ?></a>
+        			</td>
+      				<?php endif; ?>		
       				<!--  TIME COLUMN -->
         			<?php  if($params->get('product_show_filetime', 0)) : ?>	
         				<td class="mytime">

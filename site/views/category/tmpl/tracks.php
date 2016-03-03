@@ -47,7 +47,7 @@ $document->setMetaData( 'twitter:creator', $this->params->get('twitter_handle'))
 $document->setMetaData( 'twitter:url', $prod_uri);
 $document->setMetaData( 'twitter:description', strip_tags($description));
 $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams()->get('image'));
-
+//print_pre($params);
 
 if("1" == $this->params->get('my_price_by_product')){//price by product
 	$category_price_physical = array('product_price' => $this->item->attribs->get('product_price_physical'));
@@ -245,25 +245,25 @@ endif;
 	<?php if (!$this->print) : ?>
 		<?php if ($params->get('show_print_icon')) : ?>
 			<li class="print-icon">
-			<?php echo JHtml::_('icon.print_popup',  $this->item, $params); ?>
+			<?php echo JHtml::_('icon.print_popup',  $this->category, $params); ?>
 			</li>
 		<?php endif; ?>
 
 		<?php if ($params->get('show_email_icon')) : ?>
 			<li class="email-icon">
-			<?php echo JHtml::_('icon.email',  $this->item, $params); ?>
+			<?php echo JHtml::_('icon.email',  $this->category, $params); ?>
 			</li>
 		<?php endif; ?>
 
 		<?php if ($canEdit) : ?>
 			<!--  li class="edit-icon">
-			<?php echo JHtml::_('icon.edit', $this->item, $params); ?>
+			<?php echo JHtml::_('icon.edit', $this->category, $params); ?>
 			</li -->
 		<?php endif; ?>
 
 	<?php else : ?>
 		<li>
-		<?php echo JHtml::_('icon.print_screen',  $this->item, $params); ?>
+		<?php echo JHtml::_('icon.print_screen',  $this->category, $params); ?>
 		</li>
 	<?php endif; ?>
 
@@ -272,7 +272,7 @@ endif;
 <?php endif; ?>
 
 <?php  if (!$params->get('show_intro')) :
-	echo $this->item->event->afterDisplayTitle;
+	//echo $this->item->event->afterDisplayTitle;
 endif; ?>
 
 <?php //echo $this->item->event->beforeDisplayProduct; ?>
@@ -362,9 +362,7 @@ endif; ?>
 
 <!--  START PRODUCT VIEW -->	
 <div class="mymuse">
-<?php  if (!$params->get('show_intro')) :
-	echo $this->item->event->afterDisplayTitle;
-endif; ?>
+
 <!-- IMAGE  -->
 
 
@@ -490,10 +488,8 @@ endif; ?>
 <?php endif; ?>
  </div>
 <div style="clear: both"></div>
-
 <!-- END RECORDING INFO -->
 
-		
 
 <?php if(count($tracks)) : ?>
 <!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
@@ -522,8 +518,7 @@ endif; ?>
 		id="product_player"
 		<?php } ?>
 		>
-		
-		
+			
 		<div class="track-count"><?php echo count($tracks); 
         if(count($tracks) == 1){ $word = "Track"; }else{ $word = "Tracks";} ?> 
             <?php echo $word; ?> Total</div>
@@ -532,6 +527,10 @@ endif; ?>
 			<thead>
 		    <tr>
         	<th class="mymuse_cart_top mytitle" align="center" width="40%"><?php echo JText::_('MYMUSE_NAME'); ?></th>
+       		
+       		<?php  if($params->get('product_show_artist', 0)) :?>
+       			<th class="mymuse_cart_top myartist" align="center" width="30%"><?php echo JText::_('MYMUSE_ARTIST'); ?></th>
+       		<?php endif; ?>
        		
        		<?php  if($params->get('product_show_filetime', 0)) :?>
        			<th class="mymuse_cart_top mytime" align="center" width="10%"><?php echo JText::_('MYMUSE_TIME'); ?></th>
@@ -577,20 +576,26 @@ endif; ?>
              	?>
 			  		<tr>
 
-      					
+      				
       				<!--  TITLE COLUMN -->	
-						<td class="mytitle"><?php echo $track->title; ?> 
-      						<?php  
-      						if($track->product_allfiles == "1") : 
+						<td class="mytitle"><?php echo $track->title; ?>
+      						<?php if($track->product_allfiles == "1") : 
 								echo "(".JText::_("MYMUSE_ALL_TRACKS").")";
-					 		endif; ?>
+					 		 endif; ?>
 					 		<?php if($track->introtext && $track->introtext != $track->title) :
 					 			echo '<br /><span class="track-text">'.$track->introtext.'</span>';
 							endif; ?>
-                            
-                           
       					</td>
       					
+      				<?php  if($params->get('product_show_artist', 0)) :?>
+      				<!-- ARTIST COLUMN -->
+      				<td class="myartist">
+        				<a href="<?php 
+						echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($track->artistid));?>">
+						<?php echo $track->artist_name ?></a>
+        			</td>
+      				<?php endif; ?>	
+      				
       				<!--  TIME COLUMN -->
         			<?php  if($params->get('product_show_filetime', 0)) : ?>	
         				<td class="mytime">

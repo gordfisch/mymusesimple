@@ -170,7 +170,8 @@ class myMuseHelperRoute
 	{
 		$app		= JFactory::getApplication();
 		$menus		= $app->getMenu('site');
-		$language = isset($needles['language']) ? $needles['language'] : '*';
+		$language 	= isset($needles['language']) ? $needles['language'] : '*';
+		$params 	= MyMuseHelper::getParams();
 
 		// Prepare the reverse lookup array.
 		/*
@@ -261,6 +262,9 @@ class myMuseHelperRoute
 		}
 		else
 		{
+			if($params->get('product_artist_alternate_itemid', 0)){
+				//return $params->get('product_artist_alternate_itemid');
+			}
 			$active = $menus->getActive();
 			if ($active && $active->component == 'com_mymuse') {
 				return $active->id;

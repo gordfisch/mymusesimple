@@ -707,10 +707,17 @@ class MyMuseModelProduct extends JModelItem
 			//get maincategory
 			$query = "SELECT * from #__categories WHERE id='".$this->_item[$pk]->catid."'";
 			$db->setQuery($query);
-			$this->_item[$pk]->artist = $db->loadObject();
+			$this->_item[$pk]->category = $db->loadObject();
+			$this->_item[$pk]->category->link = myMuseHelperRoute::getCategoryRoute($this->_item[$pk]->catid);
 			
+			//get artist category
+			$query = "SELECT c.*, p.title as parent_title from #__categories as c
+					LEFT JOIN #__categories as p on p.id = c.parent_id
 
-			$this->_item[$pk]->artist->link = myMuseHelperRoute::getCategoryRoute($this->_item[$pk]->catid);
+					WHERE c.id='".$this->_item[$pk]->artistid."'";
+			$db->setQuery($query);
+			$this->_item[$pk]->artist = $db->loadObject();
+			$this->_item[$pk]->artist->link = myMuseHelperRoute::getCategoryRoute($this->_item[$pk]->artistid);
 			
 		}
 

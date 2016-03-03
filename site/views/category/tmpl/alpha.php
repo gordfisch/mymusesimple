@@ -32,6 +32,7 @@ $document->setMetaData( 'twitter:creator', $this->params->get('twitter_handle'))
 $document->setMetaData( 'twitter:url', $cat_uri);
 $document->setMetaData( 'twitter:description', strip_tags($description));
 $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams()->get('image'));
+//print_pre($this->params);
 ?>
 
 <?php  echo $category->event->beforeDisplayHeader; ?>
