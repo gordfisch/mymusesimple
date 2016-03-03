@@ -590,8 +590,9 @@ endif; ?>
       				<?php  if($params->get('product_show_artist', 0)) :?>
       				<!-- ARTIST COLUMN -->
       				<td class="myartist">
+      				<?php echo MyMuseHelperRoute::getCategoryRoute($track->artistid, true);?>
         				<a href="<?php 
-						echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($track->artistid));?>">
+						echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($track->artistid, true));?>">
 						<?php echo $track->artist_name ?></a>
         			</td>
       				<?php endif; ?>	

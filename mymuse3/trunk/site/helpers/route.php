@@ -106,7 +106,7 @@ class myMuseHelperRoute
 
 
 
-	public static function getCategoryRoute($catid)
+	public static function getCategoryRoute($catid, $category_layout=0)
 	{
 		require_once( JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_mymuse'.DS.'helpers'.DS.'mymuse.php' );
 		
@@ -152,10 +152,10 @@ class myMuseHelperRoute
 						'category' => $catids,
 						'categories' => $catids
 					);
-					if ($item = self::_findItem($needles)) {
+					if ($item = self::_findItem($needles,$category_layout)) {
 						$link .= '&Itemid='.$item;
 					}
-					elseif ($item = self::_findItem()) {
+					elseif ($item = self::_findItem(null,$category_layout)) {
 						$link .= '&Itemid='.$item;
 					}
 				}
@@ -166,12 +166,15 @@ class myMuseHelperRoute
 		return $link;
 	}
 
-	protected static function _findItem($needles = null)
+	protected static function _findItem($needles = null, $category_layout = null)
 	{
+
 		$app		= JFactory::getApplication();
 		$menus		= $app->getMenu('site');
 		$language 	= isset($needles['language']) ? $needles['language'] : '*';
 		$params 	= MyMuseHelper::getParams();
+
+
 
 		// Prepare the reverse lookup array.
 		/*
@@ -262,8 +265,9 @@ class myMuseHelperRoute
 		}
 		else
 		{
-			if($params->get('product_artist_alternate_itemid', 0)){
-				//return $params->get('product_artist_alternate_itemid');
+			if($params->get('product_artist_alternate_itemid', 0) && $category_layout){
+				return $params->get('product_artist_alternate_itemid');
+		
 			}
 			$active = $menus->getActive();
 			if ($active && $active->component == 'com_mymuse') {

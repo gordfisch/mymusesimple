@@ -216,9 +216,9 @@ class MyMuseHelper extends JObject
 	 * 
 	 * @return mixed JRegistry object or false
 	 */
-	public static function getParams($store=0)
+	public static function getParams($store=0, $new = 0)
 	{
-		if(!self::$_params){
+		if(!self::$_params || $new){
 			jimport( 'joomla.application.component.helper' );
 			jimport( 'joomla.html.parameter' );
 

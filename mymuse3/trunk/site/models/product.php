@@ -308,12 +308,17 @@ class MyMuseModelProduct extends JModelItem
 			
 			// TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS 
 			// get child tracks with prices
-			$track_query = "SELECT id,title,title_alias,introtext,`fulltext`, parentid, catid, product_physical, product_downloadable, product_allfiles, product_sku,
-			product_made_date, price, featured, product_discount, product_package_ordering, product_package,file_length,file_time,
-			file_name,file_downloads, file_preview,file_preview_2, file_preview_3,file_type, detail_image,access,
-			ROUND(v.rating_sum / v.rating_count, 0) AS rating, v.rating_count as rating_count, s.sales
+			$track_query = "SELECT a.id,a.title,title_alias,introtext,`fulltext`, parentid, catid, artistid, 
+			product_physical, product_downloadable, product_allfiles, product_sku,
+			product_made_date, price, featured, product_discount, product_package_ordering, 
+			product_package,file_length,file_time,
+			file_name,file_downloads, file_preview,file_preview_2, file_preview_3,file_type, 
+			detail_image,a.access,
+			ROUND(v.rating_sum / v.rating_count, 0) AS rating, v.rating_count as rating_count, s.sales,
+			c.title as category_title
 			FROM #__mymuse_product as a
 			LEFT JOIN #__mymuse_product_rating AS v ON a.id = v.product_id
+			LEFT JOIN #__categories AS c ON c.id = a.catid
 			LEFT JOIN (SELECT sum(quantity) as sales, x.product_name, x.product_id FROM
         		(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
         		i.product_name, product_id as all_id
@@ -347,18 +352,20 @@ class MyMuseModelProduct extends JModelItem
 					}
 					//other cats
 					$othercats = array();
-					$query = "SELECT c.title FROM #__mymuse_product_category_xref as x
+					$query = "SELECT c.id, c.title FROM #__mymuse_product_category_xref as x
 					LEFT JOIN #__categories as c ON c.id=x.catid
-					WHERE product_id = '".$track->id."' AND catid != ".$track->catid;
+					WHERE product_id = '".$track->id."' 
+					AND catid != ".$track->catid."
+					AND catid != ".$track->artistid;
 					$db->setQuery($query);
 					
 					if($res = $db->loadObjectList()){
 						foreach($res as $r){
-							$othercats[] = $r->title;
+							$othercats[$r->id] = $r->title;
 						}
 					}
-					$othercats = array_unique($othercats);
-					$track->othercats = implode(', ',$othercats);
+					$track->othercats = array_unique($othercats);
+					//$track->othercats = implode(', ',$othercats);
 					
 					
 					$tracks[$i]->price = $this->getPrice($track);
