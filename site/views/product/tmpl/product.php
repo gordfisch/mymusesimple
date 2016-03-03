@@ -459,7 +459,7 @@ endif; ?>
     <h2 class="product-title"><?php echo $product->title ?></h2>
  <?php endif; ?>   
   
-
+<?php if( $params->get('show_release_info') ): ?>  
     <ul class="product-content">
         <li class="product-content-item">
             <span class="category"><?php echo JText::_('MYMUSE_ARTIST'); ?></span>
@@ -523,11 +523,15 @@ endif; ?>
         <?php endif;?>
     </ul>
     <br />
+ 
+  <!-- END RELEASE INFO --> 
+    <?php endif; ?>
     
-    <ul class="product-content">
+    
     	<?php  if ($params->get('show_intro')) : ?>
+    	<ul class="product-content">
         <li class="product-content-item">
-            <span class="category">Description</span>
+            <span class="category"><?php echo JText::_('MYMUSE_DESCRIPTION');?></span>
             <span class="value">
                 <div class="product-description">
                     
@@ -545,13 +549,15 @@ endif; ?>
                 </div>
             </span>
         </li>
-         <?php endif ?>
+        </ul>
+         <?php endif; ?>
 
-  <!-- END RELEASE INFO --> 
   
- <!-- START RECORDING INFO  -->
- <?php if( $params->get('show_recording_details') ): ?>   
+  
+<!-- START RECORDING INFO  -->
+<?php if( $params->get('show_recording_details') ): ?>   
 
+<ul class="product-content">
 <?php if ($this->item->product_made_date && $this->item->product_made_date > 0) : ?>
 	<li class="product_made_date">
 	<?php echo JText::_('MYMUSE_PRODUCT_CREATED_LABEL'); ?> :
@@ -559,30 +565,35 @@ endif; ?>
 		$this->params->get('date_format', JText::_('DATE_FORMAT_LC3')))); ?>
 	</li>
 <?php endif; ?>
+
 <?php if ($this->item->product_full_time) : ?>
 	<li class="product_full_time">
 	<?php echo JText::_('MYMUSE_PRODUCT_FULL_TIME_LABEL'); ?> :
 	<?php echo $this->item->product_full_time; ?>
 	</li>
 <?php endif; ?>
+
 <?php if ($this->item->product_country) : ?>
 	<li class="product_country">
 	<?php echo JText::_('MYMUSE_PRODUCT_COUNTRY_LABEL'); ?> :
 	<?php echo $this->item->product_country; ?>
 	</li>
 <?php endif; ?>
+
 <?php if ($this->item->product_publisher) : ?>
 	<li class="product_publisher">
 	<?php echo JText::_('MYMUSE_PRODUCT_PUBLISHER_LABEL'); ?> :
 	<?php echo $this->item->product_publisher; ?>
 	</li>
 <?php endif; ?>
+
 <?php if ($this->item->product_producer) : ?>
 	<li class="product_producer">
 	<?php echo JText::_('MYMUSE_PRODUCT_PRODUCER_LABEL'); ?> :
 	<?php echo $this->item->product_producer; ?>
 	</li>
 <?php endif; ?>
+
 <?php if ($this->item->product_studio) : ?>
 	<li class="product_studio">
 	<?php echo JText::_('MYMUSE_PRODUCT_STUDIO_LABEL'); ?> :
@@ -592,6 +603,7 @@ endif; ?>
 	</ul>
 	
 <?php endif; ?>
+	
  </div>
 <div style="clear: both"></div>
 
@@ -889,11 +901,16 @@ endif; ?>
                            
       					</td>
       				<?php  if($params->get('product_show_artist', 0)) :?>
-      				<!-- ARTIST COLUMN -->
+      				<!-- GENRE COLUMN -->
       				<td class="myartist">
         				<a href="<?php 
-						echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($product->category->id));?>">
-						<?php echo $product->category_title ?></a>
+						echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($track->catid, true));?>">
+						<?php echo $track->category_title ?></a>
+						<?php foreach($track->othercats as $id=>$name): ?>
+								<br /><a href="<?php
+								echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($id, true));?>">
+								<?php echo $name ?></a>
+						<?php endforeach; ?>
         			</td>
       				<?php endif; ?>		
       				<!--  TIME COLUMN -->

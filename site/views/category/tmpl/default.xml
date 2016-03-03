@@ -590,6 +590,20 @@
 				<option value="1">JYES</option>
 			</field>
 			
+          	<field name="show_minicart" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_SHOW_MINICART_DESC"
+				label="MYMUSE_SHOW_MINICART_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			
+			
+	<field type="spacer" name="spacerdescription" label="MYMUSE_PRODUCT_DESCRIPTION" /> 		
+			
 			<field 
 				name="show_recording_details" 
 				type="radio"
@@ -601,11 +615,20 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
           	</field>
-			
-			
-	<field type="spacer" name="spacerdescription" label="MYMUSE_PRODUCT_DESCRIPTION" /> 		
-			
-			<field name="show_intro" 
+          	
+          	<field 
+				name="show_release_info" 
+				type="radio"
+				class="btn-group"
+				label="MYMUSE_SHOW_RELEASE_INFO_LABEL"
+				description="MYMUSE_SHOW_RELEASE_INFO_DESC"  
+				>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+          	</field>
+          	
+          	<field name="show_intro" 
 				type="radio"
 				class="btn-group"
 				description="MYMUSE_SHOW_INTRO_DESC"
