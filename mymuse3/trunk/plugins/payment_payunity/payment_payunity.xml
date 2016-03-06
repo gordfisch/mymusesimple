@@ -65,6 +65,17 @@
 				<field name="js_file" type="text" size="50" 
 				default="" 
 				label="PLG_MYMUSE_PAYUNITY_JS_LABEL" description="PLG_MYMUSE_PAYUNITY_JS_DESC"/>
+				
+				        <field type="spacer" />
+        <field name="email_msg" 
+        type="editor" 
+        filter="raw" 
+        width="200px"
+        rows="35" 
+        cols="35" 
+        default="" 
+        label="MYMUSE_MSG_LABEL" 
+        description="MYMUSE_MSG_DESC" />
 			</fieldset>
 		</fields>
 	</config>

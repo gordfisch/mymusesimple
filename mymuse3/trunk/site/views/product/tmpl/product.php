@@ -29,6 +29,8 @@ $canEdit	= $this->item->params->get('access-edit',0);
 $items_select 	= $this->params->get('product_item_selectbox',0);
 $lang = JFactory::getLanguage();
 $langtag = $lang->getTag();
+$listOrder	= $this->sortColumn;
+$listDirn	= $this->sortDirection;
 
 $uri = JFactory::getURI();
 $prod_uri = $uri->toString();
@@ -308,6 +310,35 @@ endif;
 </div>
 <!--  END INLINE PARENT  -->
 
+<?php 
+if ( ($this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit'))) : ?>
+<!--  FILTERS  -->
+	<form method="post" action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" id="adminForm">
+	<input type="hidden" name="option" value="com_mymuse" />
+	<input type="hidden" name="view" value="product" />
+	<input type="hidden" name="catid" value="<?php echo $product->catid; ?>" />
+	<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
+	<input type="hidden" name="filter_alpha" value="<?php echo $this->filterAlpha; ?>" />	
+	<table class="mymuse_cart">
+		<tr>
+		<?php if ($this->params->get('filter_field') != 'hide') : ?>
+			<td align="left" width="60%" nowrap="nowrap">
+				<?php echo JText::_('MYMUSE_TITLE_FILTER').'&nbsp;'; ?>
+				<input type="text" name="searchword" value="<?php echo $this->escape($this->state->get('list.searchword')); ?>" 
+				style="width:80%"
+				onchange="this.start.value=0;this.form.submit();" />
+			</td>
+		<?php endif; ?>
+        
+
+		</tr>
+	</table>
+	<br />
+	</form>
+<!--  END FILTERS  -->
+<?php endif; ?>
 
 <?php if ($canEdit ||  $params->get('show_print_icon') || $params->get('show_email_icon')) : ?>
 <!-- ICONS -->
@@ -839,30 +870,39 @@ endif; ?>
 		<table class="mymuse_cart tracks">
 			<thead>
 		    <tr>
-        	<th class="mymuse_cart_top mytitle" align="center" width="40%"><?php echo JText::_('MYMUSE_NAME'); ?></th>
+        	<th class="mymuse_cart_top mytitle" align="center" width="40%">
+        	<?php echo JHtml::_('grid.sort', 'MYMUSE_NAME', 'title', $listDirn, $listOrder); ?></th>
        		
        		<?php  if($params->get('product_show_artist', 0)) :?>
-       			<th class="mymuse_cart_top myartist" align="center" width="30%"><?php echo JText::_('MYMUSE_GENRE'); ?></th>
+       			<th class="mymuse_cart_top myartist" align="center" width="30%">
+       			<?php echo JHtml::_('grid.sort', 'MYMUSE_GENRE', 'category_name', $listDirn, $listOrder); ?></th>
+       			
        		<?php endif; ?>
        		
        		<?php  if($params->get('product_show_filetime', 0)) :?>
-       			<th class="mymuse_cart_top mytime" align="center" width="10%"><?php echo JText::_('MYMUSE_TIME'); ?></th>
+       			<th class="mymuse_cart_top mytime" align="center" width="10%">
+       			<?php echo JHtml::_('grid.sort', 'MYMUSE_TIME', 'file_time', $listDirn, $listOrder); ?></th>
        		<?php endif; ?>
        		
        		<?php  if($params->get('product_show_filesize', 0)) :?>
-       			<th class="mymuse_cart_top myfilesize" align="center" width="10%"><?php echo JText::_('MYMUSE_FILE_SIZE'); ?></th>
+       			<th class="mymuse_cart_top myfilesize" align="center" width="10%">
+       			<?php echo JHtml::_('grid.sort', 'MYMUSE_FILE_SIZE', 'ABS(file_length)', $listDirn, $listOrder); ?></th>
+       			
        		<?php endif; ?>
        		
        		<?php if($params->get('product_show_sales', 0)) : ?>
-        		<th class="mymuse_cart_top mysales" align="left" width="10%"><?php echo JText::_('MYMUSE_SALES'); ?></th>
+        		<th class="mymuse_cart_top mysales" align="left" width="10%">sales
+        		<?php echo JHtml::_('grid.sort', 'FILE_SALES', 'sales', $listDirn, $listOrder); ?></th>
       		<?php endif; ?>
       		
       		<?php if($params->get('product_show_downloads', 0)) : ?>
-        		<th class="mymuse_cart_top mydownloads" align="left" width="10%"><?php echo JText::_('MYMUSE_DOWNLOADS'); ?></th>
+        		<th class="mymuse_cart_top mydownloads" align="left" width="10%">
+        		<?php echo JHtml::_('grid.sort', 'FILE_DOWNLOADS', 'file_downloads', $listDirn, $listOrder); ?></th>
       		<?php endif; ?>
        		
        		<?php  if($params->get('product_show_cost_column', 1)) :?>
-       			<th class="mymuse_cart_top myprice" align="center" width="10%"><?php echo JText::_('MYMUSE_COST'); ?></th>
+       			<th class="mymuse_cart_top myprice" align="center" width="10%">
+       			<?php echo JHtml::_('grid.sort', 'MYMUSE_CART_PRICE', 'a.price', $listDirn, $listOrder); ?></th>
        		<?php endif; ?>
             
             <?php if(count($params->get('my_formats')) > 1) :?>
@@ -905,7 +945,7 @@ endif; ?>
       				<td class="myartist">
         				<a href="<?php 
 						echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($track->catid, true));?>">
-						<?php echo $track->category_title ?></a>
+						<?php echo $track->category_name ?></a>
 						<?php foreach($track->othercats as $id=>$name): ?>
 								<br /><a href="<?php
 								echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($id, true));?>">
@@ -925,7 +965,7 @@ endif; ?>
         				<td class="myfilesize">
         				<?php 
         				if(!$track->product_allfiles) :
-        					echo "(".MyMuseHelper::ByteSize($track->file_length).")"; 
+        					echo MyMuseHelper::ByteSize($track->file_length); 
 						endif; ?>
         				</td>
         			<?php endif; ?>

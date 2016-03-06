@@ -53,9 +53,13 @@ class myMuseViewProduct extends JViewLegacy
 		}
 	
 		
-		$this->print	= $jinput->get('print',0, 'INT');
-		$this->state	= $this->get('State');
-		$this->user		= $user;
+		$this->print			= $jinput->get('print',0, 'INT');
+		$this->state			= $this->get('State');
+		$this->user				= $user;
+		$this->sortDirection    = $this->state->get('list.direction');
+		$this->sortColumn       = $this->state->get('list.ordering');
+		$this->filterAlpha     	= $jinput->get('filter_alpha', '', 'STRING');
+		$this->pagination 		= $this->get('Pagination');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {

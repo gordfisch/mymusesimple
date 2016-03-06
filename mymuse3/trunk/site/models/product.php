@@ -33,6 +33,50 @@ class MyMuseModelProduct extends JModelItem
 	protected $_context = 'com_mymuse.product';
 	
 	static $cart = null;
+	
+	protected $filer_fields = null;
+	
+	/**
+	 * Constructor.
+	 *
+	 * @param	array	An optional associative array of configuration settings.
+	 * @see		JController
+	 * @since	1.6
+	 */
+	public function __construct($config = array())
+	{
+		if (empty($config['filter_fields'])) {
+			$config['filter_fields'] = array(
+					'id', 'a.id',
+					'title', 'a.title',
+					'catid', 'a.catid', 'category_title',
+					'state', 'a.state',
+					'access', 'a.access', 'access_level',
+					'created', 'p.created',
+					'created_by', 'p.created_by',
+					'ordering', 'a.ordering',
+					'featured', 'a.featured',
+					'language', 'a.language',
+					'hits', 'a.hits',
+					'price','a.price',
+					'file_downloads', 'a.file_downloads',
+					'ABS(file_length)', 'ABS(a.file_length)',
+					'product_discount','a.product_discount',
+					'publish_up', 'a.publish_up',
+					'publish_down', 'a.publish_down',
+					'category_name', 'c.title',
+					'sales', 's.sales',
+					'created','p.created',
+					'modified','p.modified',
+					'product_made_date', 'p.product_made_date',
+					'c.lft'
+			);
+		}
+		
+		parent::__construct($config);
+		$this->filter_fields = $config['filter_fields'];
+
+	}
 
 	/**
 	 * Method to auto-populate the model state.
@@ -45,6 +89,7 @@ class MyMuseModelProduct extends JModelItem
 	{
 		$app = JFactory::getApplication('site');
 		$jinput = $app->input;
+		$params 	= MyMuseHelper::getParams();
 
 		// Load state from the request.
 		$pk = $jinput->get('id');
@@ -52,6 +97,42 @@ class MyMuseModelProduct extends JModelItem
 
 		$offset = $jinput->get('limitstart');
 		$this->setState('list.offset', $offset);
+		
+
+		$this->setState('list.alpha', $jinput->get('filter_alpha', '', 'STRING'));
+		$this->setState('list.searchword', $jinput->get('searchword','', 'STRING'));
+		//direction
+		$listOrder	=  $jinput->get('filter_order_Dir', 'ASC');
+		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))) {
+			$listOrder = 'ASC';
+		}
+		$this->setState('list.direction', $listOrder);
+		
+		//over ride primary if we have filter request
+		$filter_order	= $jinput->get('filter_order', '', 'STRING');
+		if ($filter_order){
+			if(!in_array($filter_order, $this->filter_fields)) {
+				$filter_order = 'a.title';
+			}
+			$this->setState('list.ordering', $filter_order);
+		}
+		
+		//secondary ordering
+		if(!$filter_order){
+			$secondaryOrder = ProductHelperQuery::orderbyProduct($params->get('orderby_sec','alpha'),$params->get('order_date',''));
+			$this->setState('list.secondaryOrder',$secondaryOrder);
+		}
+		
+		//if order by track, override ordering
+		$orderby_track = $params->get('orderby_track','');
+		
+		if(!$filter_order && $orderby_track){
+			$primaryOrder = ProductHelperQuery::orderbySecondary($orderby_track,$params->get('order_date',''));
+			$this->setState('list.secondaryOrder','');
+			$this->setState('list.direction', '');
+			$this->setState('list.ordering', $primaryOrder );
+		
+		}
 
 		// Load the parameters.
 		$params = $app->getParams();
@@ -306,8 +387,16 @@ class MyMuseModelProduct extends JModelItem
 			$this->_item[$pk]->othercats = $othercats;
 
 			
+			
 			// TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS 
 			// get child tracks with prices
+			$alpha = $this->getState('list.alpha','');
+			$searchword = $this->getState('list.searchword','');
+			$listDirn	= $this->getState('list.direction', 'ASC');
+			$ordering 	= $this->getState('list.ordering', 'title');
+			//echo $ordering; exit;
+			$secondaryOrder = $this->getState('list.secondaryOrder', '');
+			
 			$track_query = "SELECT a.id,a.title,title_alias,introtext,`fulltext`, parentid, catid, artistid, 
 			product_physical, product_downloadable, product_allfiles, product_sku,
 			product_made_date, price, featured, product_discount, product_package_ordering, 
@@ -315,10 +404,12 @@ class MyMuseModelProduct extends JModelItem
 			file_name,file_downloads, file_preview,file_preview_2, file_preview_3,file_type, 
 			detail_image,a.access,
 			ROUND(v.rating_sum / v.rating_count, 0) AS rating, v.rating_count as rating_count, s.sales,
-			c.title as category_title
+			c.title as category_name
 			FROM #__mymuse_product as a
 			LEFT JOIN #__mymuse_product_rating AS v ON a.id = v.product_id
 			LEFT JOIN #__categories AS c ON c.id = a.catid
+			
+        
 			LEFT JOIN (SELECT sum(quantity) as sales, x.product_name, x.product_id FROM
         		(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
         		i.product_name, product_id as all_id
@@ -329,9 +420,27 @@ class MyMuseModelProduct extends JModelItem
 			WHERE parentid='".$pk."'
 			AND product_downloadable = 1
 			AND state=1
-			ORDER BY ordering
-			";
+					";
+			
+			
+			if($alpha != ''){
+				$track_query .= "AND a.title LIKE '$alpha%' ";
+			}
+			if($searchword != ''){
+				$track_query .= "AND (
+        		a.title LIKE ".$db->quote('%'.$searchword.'%')."
+        		OR a.file_name LIKE ".$db->quote('%'.$searchword.'%')."
 
+        		)";
+			}
+			
+			$orderby = "ORDER BY $ordering $listDirn
+			";
+			if($secondaryOrder){
+				$orderby .= ", $secondaryOrder ";
+			}
+			$track_query .= $orderby;
+				
 			$db->setQuery($track_query);
 			$tracks = $db->loadObjectList();
 	
@@ -345,6 +454,7 @@ class MyMuseModelProduct extends JModelItem
 			if(count($tracks)){
 				$root = JPATH_ROOT.DS;
 				while (list($i,$track)= each( $tracks )){
+
 					if($name = json_decode($track->file_name)){
 						if(isset($name[0]->file_length)){
 							$track->file_length = $name[0]->file_length;
@@ -729,6 +839,14 @@ class MyMuseModelProduct extends JModelItem
 		}
 
 		return $this->_item[$pk];
+	}
+	
+	public function getPagination()
+	{
+		if (empty($this->_pagination)) {
+			return null;
+		}
+		return $this->_pagination;
 	}
 
 	/**

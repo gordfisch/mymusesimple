@@ -43,10 +43,6 @@ $my_email_msg = isset($my_email_msg)? $my_email_msg : '';
         </table>
       </td>
       </tr>
-
-      <tr valign="top" colspan="2"> 
-        <td>'.$my_email_msg.'</td>
-      </tr>
     </table>
 	<br />
 	<br />
@@ -54,6 +50,11 @@ $my_email_msg = isset($my_email_msg)? $my_email_msg : '';
 
 
 	$footer = '
+	<table class="mymusecart cart">
+      <tr class="mymusecart cart">
+			<td>'.$my_email_msg.'</td>
+      </tr>
+	</table>
     </body>
     </html>
 

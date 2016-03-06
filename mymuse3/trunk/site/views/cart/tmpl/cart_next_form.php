@@ -19,5 +19,11 @@ defined('_JEXEC') or die('Restricted access');
 			<tr>
 				<td><input type="submit" class="button" name="<?php echo $this->task; ?>" value="<?php echo $this->button; ?>"></td>
 			</tr>
+		
+			<?php if(strpos($this->task, "confirm") !== false):?>
+			<tr>
+				<td></td>
+			</tr>
+			<?php endif;?>
 		</table>
 		</form>
