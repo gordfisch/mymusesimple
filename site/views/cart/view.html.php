@@ -745,7 +745,7 @@ class myMuseViewCart extends JViewLegacy
             $send = $mailer->Send();
             
         }else{
-        	//all is good!
+        	//all is good! all is well!
 
         	if($params->get('my_debug')){
         		$debug = "$date All is good \n";
@@ -950,7 +950,8 @@ class myMuseViewCart extends JViewLegacy
 			foreach($results as $res){
 				if(preg_match("/$pp/", $res)){
 					$arr = explode(":",$res);
-					$my_email_msg .= $arr[1];
+                    $p = array_shift($arr);
+        			$my_email_msg .= implode(":",$arr);
 				}
 			}
 		}
@@ -986,7 +987,7 @@ class myMuseViewCart extends JViewLegacy
 		
 		
 		//make sure the payment status is Completed
-		if($result['payment_status'] == "Completed"){
+		if($order->order_status == "C"){
 			$message = $header . $order->downloadlink . $contents;
 		}else{
 			$message = $header . $contents;

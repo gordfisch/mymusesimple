@@ -238,6 +238,46 @@ endif;
 </div>
 <!--  END INLINE PARENT  -->
 	
+
+<?php 
+
+if ( ($this->params->get('filter_field') == "show" || $this->params->get('show_pagination_limit'))) : ?>
+<!--  FILTERS  -->
+	<form method="post" action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" id="adminForm">
+	<input type="hidden" name="option" value="com_mymuse" />
+	<input type="hidden" name="view" value="category" />
+	<input type="hidden" name="catid" value="<?php echo $category->catid; ?>" />
+	<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
+	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
+	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
+	<input type="hidden" name="filter_alpha" value="<?php echo $this->filterAlpha; ?>" />	
+	<table class="mymuse_cart">
+		<tr>
+		<?php if ($this->params->get('filter_field') != 'hide') : ?>
+			<td align="left" width="60%" nowrap="nowrap">
+				<?php echo JText::_('MYMUSE_TITLE_FILTER').'&nbsp;'; ?>
+				<input type="text" name="searchword" value="<?php echo $this->escape($this->state->get('list.searchword')); ?>" 
+				style="width:80%"
+				onchange="this.start.value=0;this.form.submit();" />
+			</td>
+		<?php endif; ?>
+        
+		<?php if ($this->params->get('show_pagination_limit')) : ?>
+			<td  nowrap="nowrap">
+			<?php
+				echo '&nbsp;&nbsp;&nbsp;'.JText::_('MYMUSE_DISPLAY_NUM').'&nbsp;';
+				echo $this->pagination->getLimitBox();
+			?>
+			</td>
+		<?php endif; ?>
+		</tr>
+	</table>
+	<br />
+	</form>
+<!--  END FILTERS  -->
+<?php endif; ?>
+
+
 <div class="clear"></div>
 <?php if ($canEdit ||  $params->get('show_print_icon') || $params->get('show_email_icon')) : ?>
 <!-- ICONS -->
@@ -386,16 +426,15 @@ endif; ?>
 
 <!-- END IMAGE  -->
 
-<!-- START RELEASE INFO  -->
+
 <div class="product-content">
 <?php if( $params->get('show_title') ): ?>
     <h2 class="product-title"><?php echo $category->title ?></h2>
  <?php endif; ?>   
   
-
+ <?php if( $params->get('show_rlease_info') ): ?>
+ <!-- START RELEASE INFO  -->
     <ul class="product-content">
-
-
 
         <!--  PRODUCT ALL TRACKS -->
         <?php if($all_tracks) : ?>
@@ -418,24 +457,26 @@ endif; ?>
                     //echo $format." ".$category_price_all."<br />"; 
                     ?>
                     </span>
-				<?php endforeach;?>
-                    <span class="format"> <?php 
-                    if(isset($tracks[0]->variation_select)) :
-                        echo $tracks[0]->variation_select;
-                    endif;?>
+				<?php 
+				endforeach;?>
+                <span class="format"> <?php 
+                if(isset($tracks[0]->variation_select)) :
+                    echo $tracks[0]->variation_select;
+                endif;?>
                 	</span>
-            <?php else :?>
+            <?php 
+            else :?>
             		<span class="price"><?php 
             		echo MyMuseHelper::printMoneyPublic($all_tracks->price); ?>
             		</span>
-            <?php endif;?>
+            <?php 
+            endif;?>
             </span>
-            
         </li>
-        <?php endif;?>
-    </ul>
-    <br />
-    
+      <?php endif;?>
+  </ul>
+<br />  
+ <?php endif;?>   
     <ul class="product-content">
     	<?php  if ($params->get('show_intro')) : ?>
 
@@ -590,7 +631,6 @@ endif; ?>
       				<?php  if($params->get('product_show_artist', 0)) :?>
       				<!-- ARTIST COLUMN -->
       				<td class="myartist">
-      				<?php echo MyMuseHelperRoute::getCategoryRoute($track->artistid, true);?>
         				<a href="<?php 
 						echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($track->artistid, true));?>">
 						<?php echo $track->artist_name ?></a>

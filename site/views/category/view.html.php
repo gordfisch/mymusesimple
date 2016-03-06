@@ -36,17 +36,20 @@ class MymuseViewCategory extends JViewLegacy
 		$this->MyMuseStore		=& MyMuse::getObject('store','models');
 		$this->store			= $this->MyMuseStore->getStore();
 		
-		$app	= JFactory::getApplication();
-		$user	= JFactory::getUser();
-		$jinput = $app->input;
-		$MyMuseCart =& MyMuse::getObject('cart','helpers');
-		$this->cart =& $MyMuseCart->cart;
+		$app					= JFactory::getApplication();
+		$user					= JFactory::getUser();
+		$jinput 				= $app->input;
+		$MyMuseCart 			=& MyMuse::getObject('cart','helpers');
+		$this->cart 			=& $MyMuseCart->cart;
 		
 		// Get some data from the models
-		$state		= $this->get('State');
-		$params		= $state->params;
-		$this->print	= $jinput->get('print',0, 'INT');
-		$this->Itemid = $jinput->get("Itemid",'');
+		$state					= $this->get('State');
+		$params					= $state->params;
+		$this->print			= $jinput->get('print',0, 'INT');
+		$this->Itemid 			= $jinput->get("Itemid",'');
+		$this->sortDirection    = $state->get('list.direction');
+		$this->sortColumn       = $state->get('list.ordering');
+		$this->filterAlpha     = $jinput->get('filter_alpha', '', 'STRING');
 		
 		$menu	= $app->getMenu();
 		$item	= $menu->getActive();
