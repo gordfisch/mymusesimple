@@ -60,6 +60,7 @@ class MyMuseModelProduct extends JModelItem
 					'hits', 'a.hits',
 					'price','a.price',
 					'file_downloads', 'a.file_downloads',
+					'file_time', 'a.file_time',
 					'ABS(file_length)', 'ABS(a.file_length)',
 					'product_discount','a.product_discount',
 					'publish_up', 'a.publish_up',
@@ -437,7 +438,7 @@ class MyMuseModelProduct extends JModelItem
 			$orderby = "ORDER BY $ordering $listDirn
 			";
 			if($secondaryOrder){
-				$orderby .= ", $secondaryOrder ";
+				//$orderby .= ", $secondaryOrder ";
 			}
 			$track_query .= $orderby;
 				

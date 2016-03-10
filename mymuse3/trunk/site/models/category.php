@@ -94,10 +94,15 @@ class MyMuseModelCategory extends JModelList
 				'publish_down', 'a.publish_down',
 				'author', 'a.author',
 				'price', 'a.price',
+				
 				'product_discount', 'a.product_discount',
 				'images', 'a.images',
 				'urls', 'a.urls',
 				'sales', 's.sales',
+					'artist_name', 'ar.artist_name',
+					'file_downloads', 'a.file_downloads',
+					'file_time', 'a.file_time',
+					'ABS(file_length)', 'ABS(a.file_length)',
 				'product_made_date', 'a.product_made_date'
 
 			);
@@ -220,7 +225,7 @@ class MyMuseModelCategory extends JModelList
 		$itemid = $jinput->get('id', 0, 'INT') . ':' . $jinput->get('Itemid', 0, 'INT');
 	
 		if($params->get('category_layout') == "_:tracks"){
-			//echo "looking for tracks";
+			//TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS 
 			if ($this->_tracks === null && $category = $this->getCategory()) {
 			
 				$model = JModelList::getInstance('Tracks', 'MyMuseModel', array('ignore_request' => false));
@@ -267,6 +272,7 @@ class MyMuseModelCategory extends JModelList
 			}
 		}
 		
+		//PRODUCTS PRODUCTS PRODUCTS PRODUCTS PRODUCTS PRODUCTS PRODUCTS PRODUCTS 
 		if ($this->_products === null && $category = $this->getCategory()) {
 			$model = JModelList::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
 			$model->setState('params', $params);

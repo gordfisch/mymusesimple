@@ -231,12 +231,13 @@ class MyMuseModelTracks extends JModelList
 		$db = $this->getDbo();
 		$params 	= MyMuseHelper::getParams();
 
-        $alpha = $this->getState('list.alpha','');
+        $alpha 		= $this->getState('list.alpha','');
         $searchword = $this->getState('list.searchword','');
-        $IN = $this->getState('list.prods','');
+        $IN 		= $this->getState('list.prods','');
         $listDirn	= $this->getState('list.direction', 'ASC');
         $ordering 	= $this->getState('list.ordering', 'category_name');
-        $featured = $this->getState('list.featured',0);
+        $featured 	= $this->getState('list.featured',0);
+        
         if(preg_match("/ASC|DESC/",strtoupper($ordering)) || !$ordering){
         	$listDirn	= '';
         }
@@ -327,7 +328,7 @@ class MyMuseModelTracks extends JModelList
         	$orderby .= ", $secondaryOrder ";
         }
         $query .= $orderby;
-        //echo "$query <br />"; exit;
+
 
 		return $query;
 	}
