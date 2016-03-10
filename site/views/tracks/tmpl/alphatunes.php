@@ -16,6 +16,8 @@ $Itemid		= $this->Itemid;
 $check = 0;
 $return_link = myMuseHelperRoute::getCategoryRoute($this->category->id); 
 $count = 0;
+$listOrder	= $this->sortColumn;
+$listDirn	= $this->sortDirection;
 $item = $this->category;
 $document = JFactory::getDocument();
 $url = "index.php?option=com_mymuse&task=ajaxtogglecart";
@@ -73,8 +75,7 @@ jQuery(document).ready(function($){
     $count++;
 }
 $document->addScriptDeclaration($js);
-$listOrder	= $this->sortColumn;
-$listDirn	= $this->sortDirection;
+
 ?>
 <script type="text/javascript">
 function updateTop(idx)

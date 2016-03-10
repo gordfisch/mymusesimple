@@ -80,8 +80,10 @@ class MymuseViewCategory extends JViewLegacy
 		
 		$task = $jinput->get('task', 'notask');
 		
-		$this->total = count($items);
-		$this->limit = $params->get('display_num', 10);
+		$this->total 			= count($items);
+		$this->limit 			= $params->get('display_num', 10);
+		$this->sortDirection    = $state->get('list.direction');
+		$this->sortColumn       = $state->get('list.ordering');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {

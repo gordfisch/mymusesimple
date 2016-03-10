@@ -887,7 +887,6 @@ endif; ?>
        		<?php  if($params->get('product_show_filesize', 0)) :?>
        			<th class="mymuse_cart_top myfilesize" align="center" width="10%">
        			<?php echo JHtml::_('grid.sort', 'MYMUSE_FILE_SIZE', 'ABS(file_length)', $listDirn, $listOrder); ?></th>
-       			
        		<?php endif; ?>
        		
        		<?php if($params->get('product_show_sales', 0)) : ?>
