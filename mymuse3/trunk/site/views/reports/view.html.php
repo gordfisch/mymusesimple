@@ -27,7 +27,8 @@ class myMuseViewReports extends JViewLegacy
 		$user   	= JFactory::getUser();
         $userid 	= $user->get('id');
         $profile 	= $user->get('profile');
-		$catid 		= $profile['category_owner'];
+
+		$catid 		= isset($profile['category_owner'])? $profile['category_owner'] : '';
 		$this->Itemid = $jinput->get('Itemid');
 		
 		if(!$catid || !$userid){
