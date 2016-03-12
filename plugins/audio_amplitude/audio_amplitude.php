@@ -80,7 +80,7 @@ class plgMymuseAudio_html5_nxg extends JPlugin
 		foreach($children as $child){
 			$array[] = $child->id;
 		}
-		$this->catlogs = $array;
+		$this->catalogs = $array;
 		
 	}
 
@@ -218,10 +218,6 @@ class plgMymuseAudio_html5_nxg extends JPlugin
     	$catid = $this->params('my_amplitude_catid');
     	$params 	= MyMuseHelper::getParams();
     	
-    	$query = "SELECT id, alias from #__categories WHERE parent_id=$catid";
-    	$db->setQuery($query);
-    	$res = $db->loadObjectList();
-    	
         $all = array();
         $first = new StdClass;
         $first->name = " ";
@@ -232,6 +228,10 @@ class plgMymuseAudio_html5_nxg extends JPlugin
         $all['songs'][] = $first;
         $allcats = array();
     	
+        $query = "SELECT id, alias from #__categories WHERE parent_id=$catid";
+        $db->setQuery($query);
+        $res = $db->loadObjectList();
+        
     	foreach($res as $r){
     		$filename = $r->alias.".js";
     		$text .= "Making list for $filename <br />";
