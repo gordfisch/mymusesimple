@@ -14,6 +14,10 @@
 		<filename plugin="audio_amplitude">audio_amplitude.php</filename>
 		<folder>js</folder>
 	</files>
+	
+	<media folder="media" destination="com_mymuse">
+		<filename>00_-_silence.mp3</filename>
+	</media>
 
 	<languages>
 		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_audio_amplitude.ini</language>
