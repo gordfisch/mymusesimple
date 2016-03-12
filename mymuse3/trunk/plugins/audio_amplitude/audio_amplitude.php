@@ -58,9 +58,11 @@ class plgMymuseAudio_html5_nxg extends JPlugin
         $this->indexes = $arr[0];
         $this->playlist = $arr[1];
         
-        $site_url = JURI::root();
-        $js_path = $site_url.'plugins/mymuse/audio_amplitude/js/amplitude.min.js';
+
+        $js_path = JURI::root().'plugins/mymuse/audio_amplitude/js/amplitude.min.js';
         $document->addScript( $js_path );
+        $css_path = JURI::root().'plugins/mymuse/audio_amplitude/css/amplitude.css';
+        $document->addStyleSheet($css_path);
 	}
 
 	/**
