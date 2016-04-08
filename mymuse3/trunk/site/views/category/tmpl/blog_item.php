@@ -53,7 +53,7 @@ JHtmlBehavior::framework();
 ><img src="<?php echo $this->item->list_image; ?>" 
 alt="<?php echo htmlspecialchars($this->item->list_image); ?>" border="0" 
 <?php if ($params->get('category_product_image_height')) : ?>
-style="height: <?php echo $params->get('category_product_image_height'); ?>px"
+style="height: <?php echo $params->get('category_product_image_height'); ?>px !important;"
 <?php endif; ?>
 /></a></div>
 <?php endif; ?>

@@ -55,7 +55,7 @@ JPluginHelper::importPlugin('mymuse');
 
 // return URL
 $jinput 	= JFactory::getApplication()->input;
-//print_pre($jinput); exit;
+
 $return 	= $jinput->get('return','');
 if(!$return){
 	$return = MyMuseHelper::returnURL();
@@ -73,7 +73,7 @@ $controller = $jinput->get('controller','');
 
 // Execute the task.
 $controller	= JControllerLegacy::getInstance('Mymuse');
-
+ //print_pre($jinput); exit;
 $controller->execute(JFactory::getApplication()->input->get('task'));
 
 //save the cart in the session

@@ -576,7 +576,7 @@ class MyMuseHelper extends JObject
 	{
 		$params = self::$_params;
 		if(1 == $params->get('my_previews_in_one_dir')){
-			$site_url = preg_replace("#administrator/#","",JURI::base());
+			$site_url = JURI::root();
 			$site_url .= $params->get('my_preview_dir').'/';
 		}else{
 			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
@@ -629,6 +629,50 @@ class MyMuseHelper extends JObject
 
 		return $site_path;
 	}	
+	
+	/**
+	 * myCurl
+	 *
+	 * @param $url string
+	 * @param $requestQuery string
+	 * @param $params array
+	 * @return mixed boolean or string
+	 */
+	static function myCurl($url, $requestQuery, &$params)
+	{
+		$app = JFactory::getApplication();
+		$curlOptions = array (
+			CURLOPT_SSLVERSION => 6,
+			CURLOPT_URL => $url,
+			CURLOPT_VERBOSE => 1,
+			CURLOPT_RETURNTRANSFER => 1,
+			CURLOPT_POST => 1,
+			CURLOPT_POSTFIELDS => $requestQuery
+		);
+	
+		$ch = curl_init ();
+	
+		curl_setopt_array ( $ch, $curlOptions );
+	
+		$responseQuery = curl_exec ( $ch ); // make the request
+	
+		if (curl_errno ( $ch )) {
+			$_errors = curl_error ( $ch );
+			curl_close ( $ch );
+			$app->enqueueMessage(print_r($_errors), 'error');
+			if($params->get('my_debug')){
+				$debug = "\nPayPalPro Express PLUGIN ERROR\n";
+				$debug .= print_r($_errors,true);
+				MyMuseHelper::logMessage( $debug  );
+			}
+			return false;
+		} else {
+			curl_close ( $ch );
+			return $responseQuery;
+		}
+	}
+	
+	
 
 	/**
 	 * sortObjectsByProperty sort array of objects by a property
