@@ -28,7 +28,7 @@ class myMuseViewCart extends JViewLegacy
 		$jinput = JFactory::getApplication()->input;
 		$this->Itemid = $jinput->get("Itemid",'');
 		$this->task = $task	= $jinput->get('task', '', 'CMD');
-		
+	
 		if($task == "notify"){
 			$this->notify();
 			exit;
@@ -185,6 +185,7 @@ class myMuseViewCart extends JViewLegacy
 			case "confirm":
 
 				$edit 		= false;
+				
 				if($params->get('my_saveorder') != "after" && isset($MyMuseShopper->order->id)){
 					$this->order = $order 		= $MyMuseCheckout->getOrder($MyMuseShopper->order->id);
 					if($order->order_total == 0.00){
@@ -269,7 +270,7 @@ class myMuseViewCart extends JViewLegacy
 				}
 				break;
 		}
-		
+	
 		// check for order
 		if(!isset($order->items) || !count($order->items)) {
 			//Hmm nothing to display...
@@ -540,7 +541,7 @@ class myMuseViewCart extends JViewLegacy
 				$session->set("order_number",$order->order_number);
 				
 				JPluginHelper::importPlugin('mymuse');
-				
+			
 				$results = $dispatcher->trigger('onBeforeMyMusePayment', 
 				array($this->shopper, $this->store, $this->order, $params, $this->Itemid) );
 			
@@ -852,7 +853,6 @@ class myMuseViewCart extends JViewLegacy
   			echo JURI::base().JRoute::_("index.php?option=com_mymuse&task=thankyou&orderid=".$order->id);
   			exit;
   		}
-  		
   		
         if(isset($result['redirect']) && $result['redirect'] != ""){
         	header( 'Location: '.$result['redirect'] ) ;

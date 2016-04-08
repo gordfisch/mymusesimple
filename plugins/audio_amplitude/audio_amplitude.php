@@ -22,7 +22,7 @@ jimport( 'joomla.html.parameter' );
 * @package 		MyMuse
 * @subpackage	mymuse
 */
-class plgMymuseAudio_html5_nxg extends JPlugin
+class plgMymuseAudio_amplitude extends JPlugin
 {
 
 	/**
@@ -38,6 +38,7 @@ class plgMymuseAudio_html5_nxg extends JPlugin
     
 	public static $catalogs = array ();
 	public static $_playlist = null;
+	public static $_my_amplitude_playlist_path = null;
 	
 	/**
 	 * Constructor
@@ -45,8 +46,18 @@ class plgMymuseAudio_html5_nxg extends JPlugin
 	 * @param   object  $subject  The object to observe
 	 * @param   array   $config   An array that holds the plugin configuration
 	 */
-	function plgMymuseAudio_html5_nxg(&$subject, $config)  {
+	function plgMymuseAudio_amplitude(&$subject, $config)  {
 		parent::__construct($subject, $config);
+		
+		if(!defined('DS')){
+			define('DS',DIRECTORY_SEPARATOR);
+		}
+		 
+		if(!defined('MYMUSE_ADMIN_PATH')){
+			define('MYMUSE_ADMIN_PATH',JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_mymuse'.DS);
+		}
+		
+		require_once( MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php' );
 
         $app = JFactory::getApplication();
         if ($app->isAdmin()) return;
@@ -54,15 +65,31 @@ class plgMymuseAudio_html5_nxg extends JPlugin
 		$this->language = $document->language;
 		$this->direction = $document->direction;
 		$this->getCategories();
+		
+		$js_path = JURI::root().'plugins/mymuse/audio_amplitude/js/amplitude.min.js';
+		$document->addScript( $js_path );
+		
+		$css_path = JURI::root().'plugins/mymuse/audio_amplitude/css/amplitude.css';
+		$document->addStyleSheet($css_path);
+		
+		$sprite_path = $this->params->get('my_amplitude_sprite_path');
+		$more_style = '
+				div#play-pause.amplitude-paused, div#play-pause.amplitude-playing, div.play-pause.amplitude-paused, 
+				div.play-pause.amplitude-playing, div#next, .play-pause {
+    			background: url("'.JURI::base( true ).$sprite_path.'");
+    			background-repeat: no-repeat;
+			}';
+		//$document->addStyleDeclaration($more_style);
+		
+        $playlist_path = rtrim($this->params->get('my_amplitude_playlist_path'),'/');
+        $playlist_path .= DS;
+        self::$_my_amplitude_playlist_path = $playlist_path;
+        
         $arr = self::getPlaylist();
         $this->indexes = $arr[0];
         $this->playlist = $arr[1];
         
-
-        $js_path = JURI::root().'plugins/mymuse/audio_amplitude/js/amplitude.min.js';
-        $document->addScript( $js_path );
-        $css_path = JURI::root().'plugins/mymuse/audio_amplitude/css/amplitude.css';
-        $document->addStyleSheet($css_path);
+        
 	}
 
 	/**
@@ -75,14 +102,14 @@ class plgMymuseAudio_html5_nxg extends JPlugin
 	function getCategories()
 	{
 		$categories = JCategories::getInstance('MyMuse');
-		$catid = $this->params('my_amplitude_catid');
+		$catid = $this->params->get('my_amplitude_catid');
 		$category = $categories->get($catid);
 		$children = $category->getChildren();
-		$array[] = $category->id;
+		$array[$category->id] = $category->alias;
 		foreach($children as $child){
-			$array[] = $child->id;
+			$array[$child->id] = $child->alias;
 		}
-		$this->catalogs = $array;
+		self::$catalogs = $array;
 		
 	}
 
@@ -96,32 +123,39 @@ class plgMymuseAudio_html5_nxg extends JPlugin
 	public static function getPlaylist($load_js = true){
 		if(!self::$_playlist){
          
-			$site_url = JURI::root();
 			$document = JFactory::getDocument();
 		
 			$jinput = JFactory::getApplication()->input;
             $option = $jinput->get('option');
 
 			if($jinput->get('view') == "category" && null !== $jinput->get('id') && array_key_exists($jinput->get('id'),self::$catalogs)){
-				$filename = self::$catalogs[$jinput->get('id')];
+				$filename = isset(self::$catalogs[$jinput->get('id')])? self::$catalogs[$jinput->get('id')].'.js' : 'catalog.js';
+				$catid = $jinput->get('id');
             }elseif($jinput->get('view') == "product" && null !== $jinput->get('id') && $jinput->get('catid')){
-                $filename = self::$catalogs[$jinput->get('catid')];
+                $filename = isset(self::$catalogs[$jinput->get('catid')])? self::$catalogs[$jinput->get('catid')].'.js' : 'catalog.js';
+                $catid = $jinput->get('catid');
 			}else{
 				$filename = "catalog.js";
+				$catid = 'none';
 			}
-
-		//echo "Using playlist: ".$filename. " view = ".$jinput->get('view'). " id = ".$jinput->get('id');
-			$path = JPATH_ROOT . "/media/audio/playlists/" . $filename;
-			$js_path = $site_url . "media/audio/playlists/" . $filename;
+		
+		//print_pre(self::$catalogs); echo "category input: ".$catid;
+	
+			$path = JPATH_ROOT . self::$_my_amplitude_playlist_path . $filename;
+			$url = JURI::root(). self::$_my_amplitude_playlist_path . $filename;
+		//echo "Using playlist: ".$path. " view = ".$jinput->get('view'). " id = ".$jinput->get('id');
 			if (! file_exists ( $path )) {
-				$path = JPATH_ROOT . "/media/audio/playlists/catalog.js";
-				$js_path = $site_url . "media/audio/playlists/catalog.js";
+				echo "<br /><br />No playlist: ".$path."<br />";
+				echo "Please save a product in MyMuse to generate playlists<br />";
+				return null;
 			}
          
             if($jinput->get('tmpl','') != "component" && $load_js){
-                $document->addScript( $js_path);
+                $document->addScript( $url);
             }
+            
 		//echo $path; exit;
+
 			$playlist = file_get_contents ( $path );
 			$playlist = preg_replace ( "~.*?Amplitude.init\(~", "", $playlist );
 			$playlist = preg_replace ( "~\);$~", "", $playlist );
@@ -130,8 +164,8 @@ class plgMymuseAudio_html5_nxg extends JPlugin
 			
 			$playarray = json_decode ( $playlist, true );
 			if (! $playarray) {
-				echo "<br /><br />".self::getJsonError()."<br /><br />";
-				echo "<br /><br />".$playlist."<br /><br />";
+				echo "<br /><br />".MyMuseHelper::getJsonError()."<br /><br />";
+				echo "<br /><br />No playlist: ".$playlist."<br /><br />";
 			}
 			
 			$new_arr = array ();
@@ -140,7 +174,10 @@ class plgMymuseAudio_html5_nxg extends JPlugin
 			}
 			$arr[0] = $new_arr;
 			$arr[1] = $playarray ['songs'];
+			
 			self::$_playlist = $arr;
+			//print_pre($arr);
+           
 		}
 		return self::$_playlist;
 	}
@@ -151,15 +188,13 @@ class plgMymuseAudio_html5_nxg extends JPlugin
 	 */
 	function onPrepareMyMuseMp3Player(&$track, $type='single', $height=0, $width=0, $index=0, $count=0)
 	{
-        $arr = self::getPlaylist();
-        $this->indexes = $arr[0];
+        $arr 			= self::getPlaylist();
+        $this->indexes 	= $arr[0];
         $this->playlist = $arr[1];
-        
+      
 
-
-		$document = JFactory::getDocument();
-		$match = 0;
-		$site_url = preg_replace("#administrator/#","",JURI::base());
+		$document 	= JFactory::getDocument();
+		$match 		= 0;
 		$params 	= MyMuseHelper::getParams();
 
 		if($type == 'singleplayer' || $type == 'single'){
@@ -175,19 +210,19 @@ class plgMymuseAudio_html5_nxg extends JPlugin
 		//SINGLE PLAYER MAKE PLAY BUTTONS//
 		if($type=='single'){
             //get index
-            $preview = "/media/audio/previews/".$track->file_preview;
+			$site_url = MyMuseHelper::getSiteUrl($track->parentid,1);
+            $preview = $site_url.$track->file_preview;
 
             if(isset($this->indexes[$preview])){
                 $index = $this->indexes[$preview];
             }else{
                 $index = '0';
             }
-
+//echo "index = $index <br />";
             $html = '
 <div class="amplitude-song-container">
-
     <div class="amplitude-song-container amplitude-play-pause" amplitude-song-index="'.$index.'">
-        <div class="play-pause" amplitude-main-play-pause="true"></div>
+        <div class="play-pause" amplitude-main-play-pause="false"></div>
         <div class="playlist-meta">
             <div class="now-playing-title" style="display:none;">'.$this->playlist[$index]['name'].'</div>
             <div class="album-information" style="display:none;">'.$this->playlist[$index]['artist'].'</div>
@@ -214,29 +249,45 @@ class plgMymuseAudio_html5_nxg extends JPlugin
     
     function onMyMuseAfterSave()
     {
+
+    	
         $text = '';
     	jimport('joomla.filesystem.file');
-    	$db = JFactory::getDBO();
-    	$catid = $this->params('my_amplitude_catid');
+    	$db 		= JFactory::getDBO();
+    	$catid 		= $this->params->get('my_amplitude_catid');
     	$params 	= MyMuseHelper::getParams();
     	
         $all = array();
-        $first = new StdClass;
-        $first->name = " ";
-        $first->artist = $this->params('my_amplitude_first_artist');
-        $first->album = $this->params('my_amplitude_first_album');
-        $first->url=$params->get('my_preview_dir').'/'.$this->params('my_amplitude_first_url');
-        $first->cover_art_url=$this->params('my_amplitude_first_cover');
-        $all['songs'][] = $first;
+        $first 					= new StdClass;
+        $first->name 			= " ";
+        $first->artist 			= $this->params->get('my_amplitude_first_artist');
+        $first->album 			= $this->params->get('my_amplitude_first_album');
+        $first->url				= JURI::root().$this->params->get('my_amplitude_first_url');
+        $first->cover_art_url	= $this->params->get('my_amplitude_first_cover');
+        $all['songs'][] 		= $first;
         $allcats = array();
-    	
+        
+        $playlist_path = JPATH_ROOT . rtrim($this->params->get('my_amplitude_playlist_path'),'/');
+        if(!JFolder::exists($playlist_path)){
+        	JFolder::create($playlist_path);
+        }
+        $playlist_path .= DS;
+        $album_art_path = JPATH_ROOT . rtrim($this->params->get('my_amplitude_album_art_path'),'/');
+        $album_art_path .= DS;
+
+        $query = "SELECT alias from #__categories WHERE id=$catid";
+        $db->setQuery($query);
+        $alias = $db->loadResult();
+        
         $query = "SELECT id, alias from #__categories WHERE parent_id=$catid";
         $db->setQuery($query);
         $res = $db->loadObjectList();
         
+        $res[] = (object) array('id' => $catid, 'alias' => $alias);
+
     	foreach($res as $r){
     		$filename = $r->alias.".js";
-    		$text .= "Making list for $filename <br />";
+    		$text .= "Making playlist for $filename <br />";
     		$arr = array();
     		$arr['songs'][] = $first;
             //see if they have children
@@ -255,17 +306,16 @@ class plgMymuseAudio_html5_nxg extends JPlugin
     		$db->setQuery($track_query);
     
     		if($tracks = $db->loadObjectList()){
+    			
                 $i = 0;
                 echo '<br />';
     			foreach ($tracks as $track){
-                    $path = JPATH_ROOT.$track->url;
-                    if(!file_exists($path)){
-                        //echo "$i ".$path."<br />\n";
-                        $i++;
-                    }
+    				$site_url = MyMuseHelper::getSiteUrl($track->parentid,1);
+					$track->url = $site_url.$track->url;
+					unset($track->parentid);
     				$arr['songs'][] = $track;
     			}
-    
+    			//print_pre($tracks); exit;
     			$jstring = "Amplitude.init(".json_encode($arr).");";
     			$jstring = preg_replace("~,~",",\n",$jstring);
     			$jstring = preg_replace("~\[~","[\n",$jstring);
@@ -273,37 +323,52 @@ class plgMymuseAudio_html5_nxg extends JPlugin
     			$jstring = preg_replace("~\},~","\n},",$jstring);
     			$jstring = preg_replace("~\}\]\}\)~","\n}\n]\n})",$jstring);
     
-    			if($fh = fopen(JPATH_ROOT.DS.'media'.DS.'audio'.DS.'playlists'.DS.$filename, "w")){
+    			if($fh = fopen($playlist_path . $filename, "w")){
     				fwrite($fh,$jstring);
     				fclose($fh);
+    				$text .= $playlist_path . $filename." <br />";
+    			}else{
+    				$text .= "Could not open file: ".$playlist_path . $filename;
     			}
     			//print_pre($jstring);
     			//echo "<br />";
     		}else{
     			$text .= "No tracks for $filename <br />";
+    			$text .= $track_query;
     		//echo $query;
     		}
     	}
+    	
+    	
     	//one for all
         $track_query = $this->_getQuery($allcats);
         $db->setQuery($track_query);
         if($tracks = $db->loadObjectList()){
             $i = 0;
             foreach ($tracks as $track){
+            	$site_url = MyMuseHelper::getSiteUrl($track->parentid,1);
+            	$track->url = $site_url.$track->url;
+            	unset($track->parentid);
                 $all['songs'][] = $track;
             }
         }
-    	$text .= "Making list for catalog.js <br />";
+    	$text .= "Making playlist for catalog.js <br />";
+    	
 		$jstring = "Amplitude.init(".json_encode($all).");";
     	$jstring = preg_replace("~,~",",\n",$jstring);
     	$jstring = preg_replace("~\[~","[\n",$jstring);
     	$jstring = preg_replace("~\{~","{\n",$jstring);
     	$jstring = preg_replace("~\},~","\n},",$jstring);
     	$jstring = preg_replace("~\}\]\}\)~","\n}\n]\n})",$jstring);
-    
-    	if($fh = fopen(JPATH_ROOT.DS.'media'.DS.'audio'.DS.'playlists'.DS.'catalog.js', "w")){
+    	
+    	
+    	$file =  $playlist_path . "catalog.js";
+    	if($fh = fopen($file, "w")){
     		fwrite($fh,$jstring);
     		fclose($fh);
+    		$text .= $file." <br />";
+    	}else{
+    		$text .=  "Could not open file for writing $file";
     	}
 
         return $text;
@@ -313,16 +378,20 @@ class plgMymuseAudio_html5_nxg extends JPlugin
     function _getQuery($catin)
     {
         $catin = implode(",",$catin);
-        $track_query = "SELECT p.title as name, parent.title as album,
-            p.product_sku as artist,
+        
+        
+        $track_query = "SELECT p.title as name, p.parentid, parent.title as album,
+            a.title as artist,
         		
-            CONCAT('/media/audio/previews/',p.file_preview) as url,
-            CONCAT('/images/releases/180px/',parent.product_sku,'_sm.jpg') as cover_art_url
+            p.file_preview as url,
+            parent.list_image as cover_art_url
         		
             FROM #__mymuse_product as p
             LEFT JOIN #__mymuse_product as parent on p.parentid=parent.id
             LEFT JOIN #__categories as a on parent.artistid=a.id
-            WHERE p.parentid>0 AND parent.catid IN (".$catin.") AND p.product_allfiles=0
+            WHERE p.parentid>0 
+        		AND (parent.catid IN (".$catin.") OR parent.artistid IN (".$catin.") )
+        		AND p.product_allfiles=0
             ORDER BY parent.product_made_date DESC, parent.created DESC, p.product_sku"; //
         return $track_query;
     }

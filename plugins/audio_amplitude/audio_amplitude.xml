@@ -13,10 +13,12 @@
 	<files>
 		<filename plugin="audio_amplitude">audio_amplitude.php</filename>
 		<folder>js</folder>
+		<folder>css</folder>
 	</files>
 	
 	<media folder="media" destination="com_mymuse">
 		<filename>00_-_silence.mp3</filename>
+		<filename>sprite.png</filename>
 	</media>
 
 	<languages>
@@ -35,6 +37,18 @@
                 scope="com_mymuse"
                 description="MYMUSE_AMPLITUDE_CATEGORY_DESC" /> 
         <field 
+        		name="my_amplitude_playlist_path" 
+        		type="text"  
+        		default="/media/com_mymuse/playlists/" 
+				label="MYMUSE_AMPLITUDE_PLAYLIST_PATH_LABEL" 
+				description="MYMUSE_AMPLITUDE_PLAYLIST_PATH_DESC" />
+		<field 
+        		name="my_amplitude_album_art_path" 
+        		type="text"  
+        		default="/images/A_MyMuseImages/" 
+				label="MYMUSE_AMPLITUDE_ALBUM_ART_PATH_LABEL" 
+				description="MYMUSE_AMPLITUDE_ALBUM_ART_PATH_DESC" />
+        <field 
         		name="my_amplitude_first_artist" 
         		type="text" 
         		default="PLAYER" 
@@ -49,7 +63,7 @@
 		<field 
         		name="my_amplitude_first_url" 
         		type="text"  
-        		default="00_-_silence.mp3" 
+        		default="media/com_mymuse/00_-_silence.mp3" 
 				label="MYMUSE_AMPLITUDE_FIRST_URL_LABEL" 
 				description="MYMUSE_AMPLITUDE_FIRST_URL_DESC" />
 		<field 
@@ -58,7 +72,12 @@
         		default="components/com_mymuse/assets/images/logo_sq.jpg" 
 				label="MYMUSE_AMPLITUDE_FIRST_COVER_LABEL" 
 				description="MYMUSE_AMPLITUDE_FIRST_COVER_DESC" />
-		
+		<field 
+        		name="my_amplitude_sprite_path" 
+        		type="text"  
+        		default="media/com_mymuse/sprite.png" 
+				label="MYMUSE_AMPLITUDE_SPRITE_PATH_LABEL" 
+				description="MYMUSE_AMPLITUDE_SPRITE_PATH_DESC" />
 		</fieldset>
 		
 	</fields>

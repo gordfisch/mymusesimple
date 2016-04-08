@@ -1,6 +1,6 @@
 <?php
 /**
- * @package		akeebasubs
+ * @package		mymuse
  * @copyright	Copyright (c)2010-2014 Nicholas K. Dionysopoulos / AkeebaBackup.com
  * @license		GNU GPLv3 <http://www.gnu.org/licenses/gpl.html> or later
  */
@@ -23,6 +23,16 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 	
 	public function __construct(&$subject, $config = array())
 	{
+		if(!defined('DS')){
+			define('DS',DIRECTORY_SEPARATOR);
+		}
+			
+		if(!defined('MYMUSE_ADMIN_PATH')){
+			define('MYMUSE_ADMIN_PATH',JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_mymuse'.DS);
+		}
+		
+		require_once( MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php' );
+		
 		$config = array_merge($config, array(
 			'pppe'		=> 'paypalproexpress'
 		));
@@ -43,21 +53,17 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 	 */
 	public function onBeforeMyMusePayment($shopper, $store, $order, $params, $Itemid=1 )
 	{
-
+	
+		$app = JFactory::getApplication();
 		if($params->get('my_debug')){
 			$debug = "#####################\nPayPalPro Express PLUGIN onBeforeMyMusePayment\n";
 			//$debug .= print_r($order,true);
 			MyMuseHelper::logMessage( $debug  );
 		}
 		
-		$rootURL = rtrim(JURI::base(),'/');
-		$subpathURL = JURI::base(true);
-		if(!empty($subpathURL) && ($subpathURL != '/')) {
-			$rootURL = substr($rootURL, 0, -1 * strlen($subpathURL));
-		}
 
-		$callbackUrl = JURI::base().'index.php?option=com_mymuse&task=notify&orderid='.$order->id;
-		$cancelUrl = JURI::base().'index.php?option=com_mymuse&task=paycancel';
+		$callbackUrl = JURI::root().'index.php?option=com_mymuse&task=notify&orderid='.$order->id;
+		$cancelUrl = JURI::root().'index.php?option=com_mymuse&task=paycancel';
 		$requestData = (object)array(
 			'METHOD'							=> 'SetExpressCheckout',
 			'USER'								=> $this->getMerchantUsername(),
@@ -138,18 +144,10 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			MyMuseHelper::logMessage( $debug  );
 		}
 		$requestQuery = http_build_query($requestData);
-		$requestContext = stream_context_create(array(
-			'http' => array (
-				'method' => 'POST',
-				'header' => "Content-Type: application/x-www-form-urlencoded\r\n".
-							"Connection: close\r\n".
-							"Content-Length: " . strlen($requestQuery) . "\r\n",
-				'content'=> $requestQuery)
-			));
-		$responseQuery = file_get_contents(
-				$this->getPaymentURL(),
-				false,
-				$requestContext);
+
+		if(!$responseQuery = MyMuseHelper::myCurl($this->getPaymentURL (), $requestQuery, $params)){
+			return false;
+		}
 
 		// Payment Response
 		$responseData = array();
@@ -168,10 +166,10 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			$data['URL'] = $this->getPaypalURL($responseData['TOKEN']);
 		} else {
 			$jinput = JFactory::getApplication()->input;
-			
+			$msg = isset($responseData['L_LONGMESSAGE0'])? $responseData['L_LONGMESSAGE0'] : "Did not get a response from PayPal";
 			$error_url = 'index.php?option=com_mymuse&view=cart&layout=cart&Itemid='.$Itemid;
 			$error_url = JRoute::_($error_url,false);
-			JFactory::getApplication()->redirect($error_url,$responseData['L_LONGMESSAGE0'],'error');
+			JFactory::getApplication()->redirect($error_url,$msg,'error');
 		}
 		
 		
@@ -213,11 +211,48 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 	{
 		JLoader::import('joomla.utilities.date');
 		$isValid = true;
+		$db	= JFactory::getDBO();
+		
+		$result = array ();
+		$result ['plugin'] = "paypalproexpress";
+		$result ['myorder'] = 0; // must be >0 to trigger that it was this plugin
+		$result ['message_sent'] = 0; // must be >0 or tiggers error
+		$result ['message_received'] = 0; // must be >0 or tiggers error
+		$result ['order_found'] = 0; // must be >0 or tiggers error
+		$result ['order_verified'] = 0; // must be >0 or tiggers error
+		$result ['order_completed'] = 0; // must be >0 or tiggers error
+		$result ['order_number'] = 0; // must be >0 or tiggers error
+		$result ['order_id'] = $data['orderid']; // must be >0 or tiggers error
+		$result ['payer_email'] = 0;
+		$result ['payment_status'] = $data['PAYMENTINFO_0_PAYMENTSTATUS'];
+		$result ['txn_id'] = $data['PAYMENTINFO_0_TRANSACTIONID'];
+		$result ['error'] = '';
+		$result ['redirect'] = '';
+		
+		$error_url = 'index.php?option=com_mymuse&view=cart&layout=cart';
+		$error_url = JRoute::_($error_url,false);
 		
 		if($params->get('my_debug')){
 			$date = date('Y-m-d h:i:s');
 			$debug = "$date \n#####################\nPayPalProExpress notify FORMCALLBACK\n";
 			MyMuseHelper::logMessage( $debug  );
+		}
+		
+		if(isset($data['orderid'])){
+			$result ['myorder'] = 1;
+			$query = "SELECT * FROM `#__mymuse_order`
+                    WHERE `id`='".$data['orderid']."'";
+			$db->setQuery($query);
+			$order = $db->loadObject();
+			$result ['order_number'] = $order->order_number;
+			$notes = $order->notes;	
+		}else{
+			$result ['error'] = "No Order ID";
+			$debug = $result ['error']."\n";
+			MyMuseHelper::logMessage( $debug  );
+
+			$result ['redirect'] = $error_url;
+			return $result;
 		}
 
 
@@ -226,6 +261,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			$MyMuseCheckout 	= MyMuse::getObject('checkout','helpers');
 			$order 				= $MyMuseCheckout->getOrder($data['orderid']);
 			//print_r($order);
+			$result ['order_found'] = 1;
 			
 			$store = MyMuseHelper::getStore();
 				
@@ -254,18 +290,16 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			}
 		
 			$requestQuery = http_build_query($requestData);
-			$requestContext = stream_context_create(array(
-				'http' => array (
-					'method' => 'POST',
-					'header' => "Connection: close\r\n".
-								"Content-Length: " . strlen($requestQuery) . "\r\n",
-					'content'=> $requestQuery)
-				));
-			$responseQuery = file_get_contents(
-					$this->getPaymentURL(),
-					false,
-					$requestContext);
+			
+			if(!$responseQuery = MyMuseHelper::myCurl($this->getPaymentURL(), $requestQuery, $params)){
+				// mycurl will record any errors
+				$result ['order_verified'] = 0;
 
+				return false;
+			}
+			$result ['message_sent'] =1;
+			$result ['message_received'] = 1;
+			
 			// Payment Response
 			$responseData = array();
 			parse_str($responseQuery, $responseData);
@@ -276,19 +310,36 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			}
 			
 			//errors
+			
 			if(! preg_match('/^SUCCESS/', strtoupper($responseData['ACK']))) {
 				$isValid = false;
-                $error_url = 'index.php?option=com_mymuse&view=cart&layout=cart';
-				$error_url = JRoute::_($error_url,false);
+
 				JFactory::getApplication()->redirect($error_url,$responseData['L_LONGMESSAGE0'],'error');
+				if($params->get('my_debug')){
+					$debug = "formCallback ERROR: ACK != SUCCESS: ".$responseData['L_LONGMESSAGE0'];
+					MyMuseHelper::logMessage( $debug  );
+				}
+				return false;
 			} else if(! preg_match('/^SUCCESS/', strtoupper($responseData['PAYMENTINFO_0_ACK']))) {
 				$isValid = false;
-				$responseData['error'] = "PayPal error code: " . $responseData['PAYMENTINFO_0_ERRORCODE'];
+				JFactory::getApplication()->redirect($error_url,$responseData['L_LONGMESSAGE0'],'error');
+				if($params->get('my_debug')){
+					$debug = "formCallback ERROR: PAYMENTINFO_0_ACK' != SUCCESS: ".$responseData['L_LONGMESSAGE0'];
+					MyMuseHelper::logMessage( $debug  );
+				}
+				return false;
 			}
-
+			$result ['order_verified'] = 1;
 			
+			//completed
 			if($responseData['PAYMENTINFO_0_PAYMENTSTATUS'] == "Completed" ){
+				$result ['order_completed'] = 1;
 				MyMuseHelper::orderStatusUpdate($data['orderid'] , "C");
+			}else{
+				$result ['error'] = $responseData['PAYMENTINFO_0_REASONCODE']." ".$responseData['PAYMENTINFO_0_PENDINGREASON'];
+				$result ['redirect'] = $error_url;
+				JFactory::getApplication()->redirect($error_url,$result ['error'],'error');
+				return false;
 			}
 
 
@@ -297,16 +348,22 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 
 		// Fraud attempt? Do nothing more!
 			if(!$isValid ){
-				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=paycancel&view=cart&pp=paypalexpresscheckout&orderid='.$orderid.'&Itemid='.$Itemid, false);
 				$msg = "Payment Failed: ".$result ['error'];
-			}else{
-				$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&view=cart&pp=paypalexpresscheckout&orderid='.$orderid.'&Itemid='.$Itemid, false);
-				$msg = "";
+				$result ['redirect'] = $error_url;
+				if($params->get('my_debug')){
+					$debug = "formCallback: $msg \n";
+					MyMuseHelper::logMessage( $debug  );
+				}
+				JFactory::getApplication()->redirect($error_url,$result ['error'],'error');
+				return false;
 			}
+			
 			$path = JURI::root(true);
+			$thankyouUrl = JRoute::_('index.php?option=com_mymuse&task=thankyou&view=cart&pp=paypalexpresscheckout&orderid='.$orderid.'&Itemid='.$Itemid, false);
 			$thankyouUrl = JURI::root().preg_replace("#$path/#",'',$thankyouUrl);
-			JFactory::getApplication()->redirect($thankyouUrl, $msg);
-			return true;
+			//JFactory::getApplication()->redirect($thankyouUrl);
+			$result ['redirect'] = $thankyouUrl;
+			return $result;
 	}
 
 	private function IPNCallback($data, $params)
@@ -352,7 +409,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			//}
 			
 			// Check IPN data for validity (i.e. protect against fraud attempt)
-			$isValid = $this->isValidIPN ( $data );
+			$isValid = $this->isValidIPN ( $data, $params );
 			$result ['message_sent'] = 1;
 			
 			if (! $isValid){
@@ -412,13 +469,14 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 				);
 				$isValid = in_array ( $data ['txn_type'], $validTypes );
 				
-				if (! $isValid) {
-					$result ['error'] = "Transaction type " . $data ['txn_type'] . " can't be processed by this payment plugin.";
-					if($params->get('my_debug')){
-						MyMuseHelper::logMessage( $result ['error'] );
-					}
-					return $result;
+				
+			}
+			if (! $isValid) {
+				$result ['error'] = "Transaction type " . $data ['txn_type'] . " can't be processed by this payment plugin.";
+				if($params->get('my_debug')){
+					MyMuseHelper::logMessage( $result ['error'] );
 				}
+				return $result;
 			}
 			
 			//order was verified!
@@ -464,7 +522,10 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 					$helper = new MyMuseHelper;
 					$helper->orderStatusUpdate($result['order_id'] , "C");
 					$date = date('Y-m-d h:i:s');
-					$debug .= "$date 5. order COMPLETED at PayPal, update in DB\n\n";
+					if($params->get('my_debug')){
+						$debug = "$date 5. order COMPLETED at PayPal, update in DB\n\n";
+						MyMuseHelper::logMessage( $debug  );
+					}
 					$result['order_completed'] = 1;
 				}else{
 					// not completed, set order status to
@@ -481,7 +542,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 	 * Validates the incoming data against PayPal's IPN to make sure this is not a
 	 * fraudelent request.
 	 */
-	private function isValidIPN($data)
+	private function isValidIPN($data, &$params)
 	{
 		$sandbox = $this->params->get('sandbox',0);
 		$hostname = $sandbox ? 'www.sandbox.paypal.com' : 'www.paypal.com';
@@ -506,6 +567,10 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 
 		if (!$fp) {
 			// HTTP ERROR
+			if($params->get('my_debug')){
+				$debug = "ERROR! fsockopen: ".$errno."\n". $errstr."\n\n";
+				MyMuseHelper::logMessage( $debug  );
+			}
 			return false;
 		} else {
 			fputs ($fp, $header . $req);

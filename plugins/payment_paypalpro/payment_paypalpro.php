@@ -380,7 +380,8 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 	 */
 	function onMyMuseNotify($params, $Itemid = 1)
 	{
-		$jinput = JFactory::getApplication()->input;
+		$app = JFactory::getApplication();
+		$jinput = $app->input;
 		$data = $jinput->post->getArray();
 	
 		$db	= JFactory::getDBO();
@@ -421,12 +422,13 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 						'X-PAYPAL-SECURITY-PASSWORD' => $this->getMerchantPassword (),
 						'X-PAYPAL-SECURITY-SIGNATURE' => $this->getMerchantSignature () 
 				);
-				
+				//CURLOPT_SSL_VERIFYPEER => false,
 				$curlOptions = array (
 						CURLOPT_HTTPHEADER => $http_header,
+						CURLOPT_SSLVERSION => 6,
 						CURLOPT_URL => $this->getPaymentURL (),
 						CURLOPT_VERBOSE => 1,
-						CURLOPT_SSL_VERIFYPEER => false,
+
 						CURLOPT_RETURNTRANSFER => 1,
 						CURLOPT_POST => 1,
 						CURLOPT_POSTFIELDS => $requestQuery 
@@ -440,6 +442,12 @@ class plgMyMusePayment_Paypalpro extends JPlugin
 				if (curl_errno ( $ch )) {
 					$this->_errors = curl_error ( $ch );
 					curl_close ( $ch );
+
+					if($params->get('my_debug')){
+						$debug = "\nPayPalPro PLUGIN ERROR\n";
+						$debug .= print_r($this->_errors,true);
+						MyMuseHelper::logMessage( $debug  );
+					}
 					return false;
 				} else {
 					curl_close ( $ch );

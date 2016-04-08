@@ -277,14 +277,14 @@ class MyMuseController extends JControllerLegacy
 		$params = MyMuseHelper::getParams();
 		$user = JFactory::getUser();
         $Itemid = $this->jinput->get('Itemid','');
-       
+        
 		//no_reg and not logged in
         if(!$user->get('id') && $params->get('my_registration') == "no_reg"){
         	
         	$plugin = JPluginHelper::getPlugin('user', 'mymusenoreg');
         	
         	if(!count($plugin)){
-        	echo 'Here in checkout'; exit;
+       
         		//plugin is not on, try to login as buyer
         		if(!$this->MyMuseShopper->savenoreg()){
         			echo $this->MyMuseShopper->getError();
@@ -321,9 +321,10 @@ class MyMuseController extends JControllerLegacy
             $this->setRedirect( JRoute::_('index.php?option=com_community'), $msg );
             return false;
         }
-        
+       
         //user and shopper but missing fields, so no shopper perms
         if($user->get('id') && $this->shopper->id && !$this->shopper->perms){
+        	
         	$url = JRoute::_(JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$Itemid");
         	$return = base64_encode($url);
 
@@ -334,6 +335,7 @@ class MyMuseController extends JControllerLegacy
         
         //normal registration 
 		if(!$this->shopper->perms){
+			
 			$url = JRoute::_(JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$Itemid");
         	$return = base64_encode($url);
 			
@@ -355,7 +357,7 @@ class MyMuseController extends JControllerLegacy
 			}
 		}
 		
-		
+	
 		if($this->params->get('my_use_shipping') 
 		&& !isset($this->MyMuseCart->cart['ship_method_id'])
 		&& $this->MyMuseCart->shipping_needed() ){
@@ -372,7 +374,7 @@ class MyMuseController extends JControllerLegacy
 			$this->confirm();
 			return true;
 		}
-
+	
 		$this->jinput->set('view', 'cart');
 		$this->jinput->set('layout', 'cart');
 		
@@ -438,7 +440,7 @@ class MyMuseController extends JControllerLegacy
 		$mainframe = JFactory::getApplication();
 		$params = MyMuseHelper::getParams();
 		$Itemid = $this->jinput->get('Itemid','');
-		
+
 		// are they logged in?
 		if(!$this->shopper->perms){
 			$url = JRoute::_(JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$Itemid);
@@ -466,7 +468,7 @@ class MyMuseController extends JControllerLegacy
 
 			}
 		}
-		
+
 		//save the order
 		if($this->MyMuseCart->cart['idx']){
 			$this->jinput->set('view', 'cart');
@@ -495,6 +497,7 @@ class MyMuseController extends JControllerLegacy
 			}else{
 				//print_pre($this->MyMuseCart->cart); exit;
 			}
+
 			$this->display();
 	
 		}else{

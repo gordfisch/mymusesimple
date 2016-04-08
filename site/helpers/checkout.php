@@ -495,6 +495,16 @@ class MyMuseCheckout
 		$store_country_3_code 	= $store_country_res->country_3_code;
 		$store_bloc 			= $store_country_res->bloc;
 		
+		$total_physical = 0;
+		$total_downloadable = 0;
+		foreach($order->items as $item) {
+			if($item->product_physical){
+				$total_physical += $item->product_item_subtotal;
+			}else{
+				$total_downloadable += $item->product_item_subtotal;
+			}
+		}
+		
 		
 		// for European taxes, are shopper and store both in EU? Both in same country?
 		// For digital goods, you must now charge VAT based on the buyer's country,
@@ -502,15 +512,7 @@ class MyMuseCheckout
 		if(($store_bloc == 'EU' && $user_bloc == 'EU') || $params->get('my_add_taxes')){
 					
 			//do euro tax
-			$total_physical = 0;
-			$total_downloadable = 0;
-			foreach($order->items as $item) {
-				if($item->product_physical){
-					$total_physical += $item->product_item_subtotal;
-				}else{
-					$total_downloadable += $item->product_item_subtotal;
-				}
-			}
+			
 			
 			//how to apply any discount
 			if(!$total_physical){ //all downloads

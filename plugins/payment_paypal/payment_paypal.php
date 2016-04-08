@@ -153,7 +153,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		<input type="hidden" name="tax_cart"        value="'. $order->tax_total.'" />
 		<input type="hidden" name="return"          value="'. $return.'" />
 		<input type="hidden" name="cancel_return"   value="'. $cancel_return.'" />
-		<input type="hidden" name="notify_url"      value="'. JURI::base().'index.php?option=com_mymuse&task=notify" />
+		<input type="hidden" name="notify_url"      value="'. JURI::root().'index.php?option=com_mymuse&task=notify" />
 		
 		<input type="hidden" name="cmd"             value="_cart" />
 		<input type="hidden" name="upload"          value="1" />
