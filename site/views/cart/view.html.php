@@ -882,6 +882,10 @@ class myMuseViewCart extends JViewLegacy
 		$user_id = $db->loadResult();
 		 
 		$order 			= $MyMuseCheckout->getOrder($result['order_id']);
+		if($params->get('my_debug')){
+			$debug = "$date Order = ".print_r($order, true)."\n";
+			MyMuseHelper::logMessage( $debug  );
+		}
 		$shopper 		= $MyMuseShopper->getShopperByUser($user_id );
 		$user 			= JFactory::getUser($user_id);
 		$currency 		= $order->order_currency;

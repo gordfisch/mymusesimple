@@ -224,8 +224,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		$result ['order_number'] = 0; // must be >0 or tiggers error
 		$result ['order_id'] = $data['orderid']; // must be >0 or tiggers error
 		$result ['payer_email'] = 0;
-		$result ['payment_status'] = $data['PAYMENTINFO_0_PAYMENTSTATUS'];
-		$result ['txn_id'] = $data['PAYMENTINFO_0_TRANSACTIONID'];
+		
 		$result ['error'] = '';
 		$result ['redirect'] = '';
 		
@@ -330,7 +329,8 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 				return false;
 			}
 			$result ['order_verified'] = 1;
-			
+			$result ['payment_status'] = $responseData['PAYMENTINFO_0_PAYMENTSTATUS'];
+			$result ['txn_id'] = $responseData['PAYMENTINFO_0_TRANSACTIONID'];
 			//completed
 			if($responseData['PAYMENTINFO_0_PAYMENTSTATUS'] == "Completed" ){
 				$result ['order_completed'] = 1;
