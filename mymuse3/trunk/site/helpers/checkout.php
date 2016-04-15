@@ -743,7 +743,7 @@ class MyMuseCheckout
 			$jinput = JFactory::getApplication()->input;
 			$Itemid = $jinput->get("Itemid",$params->get('mymuse_default_itemid'));
 			$download_header = '';
-			include_once( JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'templates'.DS.'mail_downloads.php' );
+			include( JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'templates'.DS.'mail_downloads.php' );
 			$order->downloadlink = $download_header;
 		}else{
 			$order->downloadlink = '';
