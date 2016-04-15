@@ -145,7 +145,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		}
 		$requestQuery = http_build_query($requestData);
 
-		if(!$responseQuery = MyMuseHelper::myCurl($this->getPaymentURL (), $requestQuery, $params)){
+		if(!$responseQuery = $this->myCurl($this->getPaymentURL (), $requestQuery, $params)){
 			return false;
 		}
 
@@ -290,7 +290,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		
 			$requestQuery = http_build_query($requestData);
 			
-			if(!$responseQuery = MyMuseHelper::myCurl($this->getPaymentURL(), $requestQuery, $params)){
+			if(!$responseQuery = $this->myCurl($this->getPaymentURL(), $requestQuery, $params)){
 				// mycurl will record any errors
 				$result ['order_verified'] = 0;
 
@@ -645,4 +645,48 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		return $email_msg;
 	
 	}
+	
+	/**
+	 * myCurl
+	 *
+	 * @param $url string
+	 * @param $requestQuery string
+	 * @param $params array
+	 * @return mixed boolean or string
+	 */
+	static function myCurl($url, $requestQuery, &$params)
+	{
+		$app = JFactory::getApplication();
+		$curlOptions = array (
+				CURLOPT_SSLVERSION => 6,
+				CURLOPT_URL => $url,
+				CURLOPT_VERBOSE => 1,
+				CURLOPT_RETURNTRANSFER => 1,
+				CURLOPT_POST => 1,
+				CURLOPT_POSTFIELDS => $requestQuery
+		);
+	
+		$ch = curl_init ();
+	
+		curl_setopt_array ( $ch, $curlOptions );
+	
+		$responseQuery = curl_exec ( $ch ); // make the request
+	
+		if (curl_errno ( $ch )) {
+			$_errors = curl_error ( $ch );
+			curl_close ( $ch );
+			$app->enqueueMessage(print_r($_errors), 'error');
+			if($params->get('my_debug')){
+				$debug = "\nPayPalPro Express PLUGIN ERROR\n";
+				$debug .= print_r($_errors,true);
+				MyMuseHelper::logMessage( $debug  );
+			}
+			return false;
+		} else {
+			curl_close ( $ch );
+			return $responseQuery;
+		}
+	}
+	
+	
 }
