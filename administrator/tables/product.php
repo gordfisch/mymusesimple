@@ -98,7 +98,7 @@ class MymuseTableproduct extends JTable
 		$app = JFactory::getApplication();
 		$this->title = trim($this->title);
 		if ($this->title == '') {
-			$this->setError(JText::_('MYMUSE_FILE_MUST_HAVE_A_TITLE'));
+			$this->setError(JText::_('MYMUSE_FILE_MUST_HAVE_A_TITLE').print_pre($this));
 			return false;
 		}
 
@@ -299,7 +299,7 @@ class MymuseTableproduct extends JTable
 							}
         				}
         			}else{
-        				echo "woops, file exists $new_file";
+        				echo "File exists $new_file";
         			}
         			
         		}else{

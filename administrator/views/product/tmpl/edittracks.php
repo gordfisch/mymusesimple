@@ -165,7 +165,8 @@ $fieldSets = $this->form->getFieldsets('attribs');
 				</div>
 			</div>
 		<?php } ?>
-		<!--  
+		<?php if(!$this->params->get('my_price_by_product')){ ?>
+		 
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('price'); ?>
 				</div>
@@ -173,7 +174,7 @@ $fieldSets = $this->form->getFieldsets('attribs');
 				<?php echo $this->form->getInput('price'); ?>
 				</div>
 			</div>
-		-->		
+		<?php } ?>	
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('product_discount'); ?>
 				</div>

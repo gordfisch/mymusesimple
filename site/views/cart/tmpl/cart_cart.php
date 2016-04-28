@@ -325,7 +325,7 @@ jQuery(document).ready(function(){
 		    <td class="mobile-hide cart">&nbsp;</td>
 		</tr>
 		    
-		
+
 		<?php } ?>
 		
 		<?php  if($order->reservation_fee > 0){ ?>
@@ -389,8 +389,20 @@ jQuery(document).ready(function(){
 		}
 		?>
 		
-		
-		
+<h3>Tell us about your project</h3>
+        <span class="licence-text">How the track will be used: Website/ Shop/ Corporate video.. etc<br />
+The name of the project:<br />
+A URL link to the project if available:<br />
+(Optional): Any further information on your project: <br />
+THIS IS VITAL IN ORDER FOR A LICENSE TO BE ISSUED<br /></span>
+        <textarea style="height: 200px; width:90%;" name="notes" rows="10" cols="5"><?php echo $order->notes['notes']; ?></textarea>
+        
+    <?php if(!in_array($task, $post_order)){ ?>
+        <div class="pull-left myupdate cart"><button class="button uk-button " 
+				type="submit" >
+				<?php echo JText::_('MYMUSE_UPDATE_CART'); ?></button></div>
+		<div class="clear"></div>
+	<?php } ?>	
 		<?php if($order->do_html){ ?>
 		</form>
 		<?php } ?>
@@ -423,7 +435,7 @@ jQuery(document).ready(function(){
 		?>
 		<?php if($params->get("my_use_coupons") && (preg_match("/shipping|addtocart|updatecart|cartdelete|showcart|checkout/",$task) || $task == '') && !isset($order->coupon->id) ){ ?>
 		    <div class="mycoupon cart">
-		    <form action="index.php" method="post" name="adminForm">
+		    <form action="index.php" method="post" name="CouponadminForm">
             <input type="hidden" name="option" value="com_mymuse">
             <input type="hidden" name="task" value="couponadd">
             <input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>">

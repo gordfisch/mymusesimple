@@ -223,13 +223,22 @@ class MyMuseCheckout
 
 		if($params->get('my_registration') == "no_reg"){
 			$fields = MyMuseHelper::getNoRegFields();
-			$order->notes = '';
+
+			if(isset($order->notes)){
+				$notes['notes'] = $order->notes;
+			}
+
 			foreach($fields as $field){
 				if(isset($shopper->$field)){
-					$order->notes .= $field."=".$shopper->$field."\n";
+					$notes[$field] = $shopper->$field;
 				}
 			}
+			$registry = new JRegistry;
+			$registry->loadArray($notes);
+			$order->notes = (string) $registry;
+	
 		}
+
 		$order->reservation_fee 	= $cart_order->reservation_fee;
 		$order->non_res_total		= $cart_order->non_res_total;
 		$order->pay_now				= $cart_order->must_pay_now;

@@ -152,6 +152,7 @@ if($params->get('my_registration') == "no_reg"){
         ?></td>
             <!-- End Customer Information --> 
         </tr>
+
         <?php 
        
         if($this->user->id 

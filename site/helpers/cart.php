@@ -241,6 +241,8 @@ class MyMuseCart {
     	$quantity 	= $jinput->get('quantity',array(), 'ARRAY');
     	$variation 	= $jinput->get('variation',array(), 'ARRAY');
     	$Itemid 	= $jinput->get('Itemid',  0, 'INT');
+    	$licence 	= $jinput->get('licence',  0, 'INT');
+    	$notes		= $jinput->get('notes', '', 'RAW');
 
  
     	$db  = JFactory::getDBO();;
@@ -248,19 +250,17 @@ class MyMuseCart {
             $this->error = JText::_('MYMUSE_CANT_UPDATE_CART');
             return false;
         }
-    
+
         if (!is_array(@$productid)) {
             $prod_id = $productid;
             $productid = array();
             $productid["0"] = $prod_id;
-    
         }
     
         if (!is_array(@$quantity)) {
             $quant = $quantity;
             $quantity = array();
             $quantity[$productid["0"]] = $quant;
-    
         }
 
         reset($productid);
@@ -346,6 +346,12 @@ class MyMuseCart {
         	$fixed['extra'] = $this->cart['extra'];
         }
         $this->cart = $fixed;
+        if($licence){
+        	$this->cart['licence'] = $licence;
+        }
+        if($notes){
+        	$this->cart['notes'] = $notes;
+        }
         $this->buildOrder(1,1);
         return True;
   	}
@@ -778,6 +784,11 @@ class MyMuseCart {
 		if(@$order->do_html){
 			$order->colspan2 = 1;
 		}
+		
+		//licence and notes
+		$order->licence = isset($this->cart["licence"])? $this->cart["licence"] : '';
+		$order->notes = isset($this->cart["notes"])? $this->cart["notes"] : '';
+		
 		$this->order = $order;
 		return $order;
 	}

@@ -22,7 +22,7 @@ foreach($alpha as $letter){
 	$n = 0;
 	foreach($this->children[$this->category->id] as $id => $child){
 
-		if(substr_compare($letter, $child->title,0,1,TRUE) === 0){
+		if(substr_compare($letter, $child->title,0,1,TRUE) === 0 || preg_match("/^[$letter]/",$child->title)){
 			$alphaarr[$letter][$n] = $child;
 			if ( $this->params->get('show_cat_num_articles', 1)) :
 				$alphaarr[$letter][$n]->title .= ' ('.$child->product_total.')';
@@ -65,23 +65,20 @@ $l = 0;
 		}else{
 			$ulend = 1;
 			echo '<!-- 2 -->
-			</ul>
+		
 			</div>
 			<div class="column-'.$column.'" >
 			';
 			$column++;
 			if($lettercount != $l){
-				echo '<ul>';
+				//echo '<ul>';
 			}
 				
 		}
 		$i = 0;
 	}
 	?>
-	<span class="alphabet"><?php 
-	echo $letter; 
-	
-	?></span>
+	<span class="alphabet"><?php echo $letter; ?></span>
 		<ul>
 		<?php
 		$lettercount = count($children );

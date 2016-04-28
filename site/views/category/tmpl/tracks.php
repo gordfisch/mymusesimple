@@ -171,12 +171,13 @@ foreach($tracks as $track){
                         txt = idx+" "+"items";
                     }
                     link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>\';
-                    $("#carttop1").html(txt);
-                    $("#carttop2").html(link);
+                    //alert(txt+" "+"mini-cart-text");
+                    $("#mini-cart-text").html(txt);
+                    $("#mini-cart-link").html(link);
                 }else{
 
-                    $("#carttop1").html(" ");
-                    $("#carttop2").html("'.JText::_('MYMUSE_YOUR_CART_IS_EMPTY').'");
+                    $("#mini-cart-text").html(" ");
+                    $("#mini-cart-links").html("'.JText::_('MYMUSE_YOUR_CART_IS_EMPTY').'");
                 }
                 my_modal.open({content: msg+"<br />"+link, width: 300 });
             });
@@ -197,14 +198,29 @@ $document->addScriptDeclaration($js);
 
 <?php if ($this->params->get('show_page_heading', 0)) : ?>
 	<h1>
-	<?php echo $this->escape($this->params->get('page_heading')); ?>
+	<?php echo $this->escape($this->params->get('page_heading','')); ?>
 	</h1>
 <?php endif; ?>
 
 
+
+
+<!--  INLINE PARENT  -->
+<div id="parent">
+<div id="mini-cart">
+<div id="mini-cart-content">
+<div id="mini-cart-parent-text">
+<a href="<?php echo JRoute::_("index.php?option=com_mymuse&view=category&layout=alpha&id=".$this->parent->id); ?>">
+<?php echo $this->parent->title; ?></a>
+</div>
+</div>
+</div>
+</div>
+<!--  END INLINE PARENT  -->
+	
 <?php if($this->params->get('show_minicart')) :?>
 <!--  INLINE MINICART  -->
-<!--  the cart box  -->
+<div id="mini-cart">
 <div id="mini-cart-top">
 <div id="mini-cart-content">
 <div id="mini-cart-cart"></div>
@@ -223,23 +239,9 @@ endif;
 ?></div>
 </div>
 </div>
-
+</div>
 <!--  END INLINE MINICART  -->
 <?php  endif; ?>
-
-<!--  INLINE PARENT  -->
-<div id="parent">
-<div id="mini-cart-top">
-<div id="mini-cart-content">
-<div id="mini-cart-text">
-<a href="<?php echo JRoute::_("index.php?option=com_mymuse&view=category&layout=alpha&id=".$this->parent->id); ?>">
-<?php echo $this->parent->title; ?></a>
-</div>
-</div>
-</div>
-</div>
-<!--  END INLINE PARENT  -->
-	
 
 <?php 
 
@@ -544,10 +546,11 @@ endif; ?>
 			style="height: <?php echo $params->get('product_player_height'); ?>px"
 			<?php endif; ?>
 			><?php echo $category->flash; ?>
-			</div>
+			
 			<?php if($category->flash) : ?>
 			<div><?php echo JText::_('MYMUSE_NOW_PLAYING');?> <span id="jp-title-li"></span></div>
 			<?php endif; ?>
+			</div>
 		<?php endif; ?>
 		<?php if($params->get('product_player_type') == "playlist"){ ?>
 			<div id="product_player" ><?php echo $category->flash; ?>

@@ -16,12 +16,13 @@ if($params->get('my_registration') == "no_reg"){
 }else{
 	$link = JRoute::_("index.php?option=com_mymuse&view=store&task=downloads&id=".$order->order_number);
 }
-$link = rtrim(JURI::root(),"/").preg_replace("#$path#",'',$link);
+$link = JURI::root().$link;
 if($params->get('my_default_itemid','')){
-	$link .= "&Itemid=".$params->get('my_default_itemid');
+	$link .= "&Itemid=".$params->get('my_default_itemid');	
 }
 
 //for nexgen
+/**
 if($params->get('my_registration') == "no_reg"){
 	$link = JURI::root()."store/accdownloads?id=".$order->order_number;
 }else{
@@ -31,7 +32,7 @@ if($params->get('my_registration') == "no_reg"){
 if($params->get('my_default_itemid','')){
 	$link .= "&Itemid=".$params->get('my_default_itemid');
 }
-
+*/
 $download_header = '<h3 class="cart-header">'.JText::_('MYMUSE_DOWNLOADS_IN_THIS_ORDER').'</h3>
 
 <table class="mymuse_cart cart">
