@@ -132,8 +132,7 @@ jQuery(document).ready(function(){
 		</thead>
 		<?php
 		  // LOOP THRU order_items
-		  for ($i=0;$i<count($order_item); $i++) { 
-		?>
+		  for ($i=0;$i<count($order_item); $i++) { ?>
 		
 		    <tr>
 		     <?php if($params->get("my_show_cart_preview") && $got_flash){ ?>  
