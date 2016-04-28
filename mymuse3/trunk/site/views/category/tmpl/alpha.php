@@ -16,7 +16,9 @@ JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 $category = $this->category;
 $uri = JFactory::getURI();
 $cat_uri = $uri->toString();
+$Itemid		= $this->Itemid;
 $description = ($this->category->description != '')? $this->category->description : $this->category->title;
+
 $document 	= JFactory::getDocument();
 $document->setMetaData( 'og:site_name',nl2br($this->escape($this->store->title))  );
 $document->setMetaData( 'og:type', 'article');
@@ -32,17 +34,48 @@ $document->setMetaData( 'twitter:creator', $this->params->get('twitter_handle'))
 $document->setMetaData( 'twitter:url', $cat_uri);
 $document->setMetaData( 'twitter:description', strip_tags($description));
 $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams()->get('image'));
-//print_pre($this->params);
 ?>
 
 <?php  echo $category->event->beforeDisplayHeader; ?>
 
 <div class="categories-list<?php echo $this->pageclass_sfx;?>">
 	<?php if ($this->params->get('show_page_heading', 1)) : ?>
-	<h1>
+	<div id="parent">
+		<h1>
 		<?php echo $this->escape($this->params->get('page_heading')); ?>
 	</h1>
-	<?php endif; ?>
+	</div>
+	
+
+	<?php if($this->params->get('show_minicart')) :?>
+	<!--  INLINE MINICART  -->
+	<div id="mini-cart">
+		<div id="mini-cart-top">
+			<div id="mini-cart-content">
+				<div id="mini-cart-cart"></div>
+				<div id="mini-cart-text"><?php
+			if ($this->cart ['idx']) :
+				$word = ($this->cart ['idx'] == 1) ? "item" : "items";
+				echo $this->cart ['idx'] . " $word";
+			
+			endif;
+			?></div>
+				<div id="mini-cart-link"><?php
+			if ($this->cart ['idx']) :
+				echo '<a href="' . JRoute::_ ( 'index.php?option=com_mymuse&view=cart&task=showcart&Itemid=' . $Itemid ) . '">' . JText::_ ( 'MYMUSE_VIEW_CART' ) . '</a>';
+			 else :
+				echo JText::_ ( 'MYMUSE_YOUR_CART_IS_EMPTY' );
+			endif;
+			?></div>
+			</div>
+		</div>
+	</div>
+	<!--  END INLINE MINICART  -->
+	<div style="clear: both;"></div>
+	<?php  endif; ?>
+		
+	
+<?php endif; ?>
 
 	<?php if ($this->params->get('show_category_title', 1) or $this->params->get('page_subheading')) : ?>
 	<h2>
@@ -52,6 +85,12 @@ $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams
 		<?php endif; ?>
 	</h2>
 	<?php endif; ?>
+	
+	
+	
+	
+	
+	
 <?php echo $category->event->afterDisplayTitle; ?>
 
 	<?php if ($this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>

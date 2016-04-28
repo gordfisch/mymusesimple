@@ -269,10 +269,24 @@ $document->addScriptDeclaration($js);
 	</h1>
 <?php endif; ?>
 
+	
+<!--  INLINE PARENT  -->
+<div id="parent">
+<div id="mini-cart-top">
+<div id="mini-cart-content">
+<div id="mini-cart-text">
+<a href="<?php echo JRoute::_("index.php?option=com_mymuse&view=category&id=".$product->artist->parent_id); ?>">
+<?php echo $product->artist->parent_title; ?></a>
+</div>
+</div>
+</div>
+</div>
+<!--  END INLINE PARENT  -->
 
 <?php if($this->params->get('show_minicart')) :?>
 <!--  INLINE MINICART  -->
 <!--  the cart box  -->
+<div id="mini-cart">
 <div id="mini-cart-top">
 <div id="mini-cart-content">
 <div id="mini-cart-cart"></div>
@@ -291,25 +305,10 @@ endif;
 ?></div>
 </div>
 </div>
+</div>
 <div class="clear"></div>
 <!--  END INLINE MINICART  -->
 <?php  endif; ?>
-	
-
-	
-<!--  INLINE PARENT  -->
-<div id="parent">
-<div id="mini-cart-top">
-<div id="mini-cart-content">
-<div id="mini-cart-text">
-<a href="<?php echo JRoute::_("index.php?option=com_mymuse&view=category&id=".$product->artist->parent_id); ?>">
-<?php echo $product->artist->parent_title; ?></a>
-</div>
-</div>
-</div>
-</div>
-<!--  END INLINE PARENT  -->
-
 <?php 
 if ( ($this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit'))) : ?>
 <!--  FILTERS  -->
@@ -693,7 +692,7 @@ endif; ?>
 		
 
 <?php if(count($items) && !$items_select) :  ?>
-<!-- ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS ITEMS -->
+<!-- PHYSICAL ITEMS  PHYSICAL ITEMS  PHYSICAL ITEMS  PHYSICAL ITEMS  PHYSICAL ITEMS -->
 	<style type="text/css">
 	@media (max-width: 767px) { 
 	<?php foreach($product->attribute_sku as $a_sku) : ?>
@@ -829,7 +828,7 @@ endif; ?>
 	  		<div style="clear: both;"></div>
 		</div>
 <div style="clear: both"></div>
-<!--  END ITEMS -->
+<!--  END PHYSICAL ITEMS -->
 <?php endif; ?>
 
 		
@@ -998,7 +997,23 @@ endif; ?>
       							$first = 0;
  								echo '>'.MyMuseHelper::printMoneyPublic($$product_price).'<div>';
  							endforeach;
-        				else :  
+ 							
+        				elseif($params->get('my_free_downloads') && isset($track->free_download) && $track->free_download) :
+        					if($user->get('guest')) :
+        						$menu = JFactory::getApplication()->getMenu();
+        						$active = $menu->getActive();
+        						$itemId = $active->id;
+        						$link = new JUri(JRoute::_('index.php?option=com_users&view=login&Itemid=' . $itemId, false));
+        						$link->setVar('return', base64_encode(JRoute::_(myMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language))));
+        					else :
+        						$link = $track->free_download_link;
+        					endif;
+        					?>
+        				    <a class="free_download_link" href="<?php echo $link; ?>"
+        				    ><img src="components/com_mymuse/assets/images/download_dark.png" border="0" /></a>
+							<?php 
+        				else :
+        					
         					echo MyMuseHelper::printMoneyPublic($track->price);
         				
         				endif; ?>

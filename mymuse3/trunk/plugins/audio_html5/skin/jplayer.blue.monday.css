@@ -1,6 +1,8 @@
 #product_player{
-	position:relative;
-	
+	position:fixed;
+	left: 350px;
+	top: 10px;
+	z-index: 5000;
 }
 
 

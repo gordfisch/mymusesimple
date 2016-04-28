@@ -52,10 +52,9 @@ if(!$params->get('my_disable_css',0)){
 }
 
 JPluginHelper::importPlugin('mymuse');
-
-// return URL
 $jinput 	= JFactory::getApplication()->input;
 
+// return URL
 $return 	= $jinput->get('return','');
 if(!$return){
 	$return = MyMuseHelper::returnURL();

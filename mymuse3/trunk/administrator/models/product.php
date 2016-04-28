@@ -1330,7 +1330,8 @@ class MymuseModelproduct extends JModelAdmin
 	 
 	function import_products()
 	{
-	
+		error_reporting(E_ALL);
+		ini_set("display_errors", 1);
 		$app = JFactory::getApplication();
 		$db = JFactory::getDBO();
 		$limit = JRequest::getVar('limit','50');
@@ -1350,8 +1351,9 @@ class MymuseModelproduct extends JModelAdmin
 		$q = "SELECT id from #__categories where alias='genres'";
 		$db->setQuery($q);
 		$catid_genre = $db->loadResult();
-
-
+		if(!$limitstart){
+			JFile::delete(JPATH_ADMINISTRATOR .DS.'components'.DS.'com_mymuse'.DS.'log.html');
+		}
 		$artists = JFolder::folders($path, '.');
 		
 
@@ -1361,7 +1363,7 @@ class MymuseModelproduct extends JModelAdmin
 	
 		if($clear){
 			
-			JFile::delete(JPATH_ADMINISTRATOR .DS.'components'.DS.'com_mymuse'.DS.'log.html');
+			
 			$good = 0;
 			$q = "SELECT id from #__categories where parent_id='$catid_artist' OR parent_id='$catid_genre'";
 		echo $q."<br />";
@@ -1405,8 +1407,8 @@ class MymuseModelproduct extends JModelAdmin
 				
 			}
 			?>
-							<a href="index.php?option=com_mymuse">Go Back</a>
-							<?php 
+<a href="index.php?option=com_mymuse">Go Back</a>
+<?php 
 			exit;
 
 		}
@@ -1432,24 +1434,28 @@ class MymuseModelproduct extends JModelAdmin
 		$this->logMessage($string);
 		$string = '';
 		
-		//make artist categories if needed from list of folders in /staging/
-		foreach($artists as $i => $artist){
-			// see if artist category exist
-			$artist_alias = JApplication::stringURLSafe($artist);
-			$query = "SELECT id FROM #__categories WHERE alias =".$db->quote($artist_alias);
-			
-			$db->setQuery($query);
-			if(!$artist_id = $db->loadResult()){
-				//make top cat
-				$artist_id = $this->makeCategory($artist, $catid_artist);
-				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Category Made: ".$artist." $artist_id</span></td></tr>";
+		
+		if(!$limitstart){ // just starting
+			// make artist categories if needed from list of folders in /staging/
+			foreach ( $artists as $i => $artist ) {
+				// see if artist category exist
+				$artist_alias = JApplication::stringURLSafe ( $artist );
+				$query = "SELECT id FROM #__categories WHERE alias =" . $db->quote ( $artist_alias );
 				
-			}else{
-				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Category Exists: ".$artist." $artist_id</span></td></tr>";
+				$db->setQuery ( $query );
+				if (! $artist_id = $db->loadResult ()) {
+					// make top cat
+					$artist_id = $this->makeCategory ( $artist, $catid_artist );
+					$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Category Made: " . $artist . " $artist_id</span></td></tr>";
+				} else {
+					$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Category Exists: " . $artist . " $artist_id</span></td></tr>";
+				}
+				$artist_array [$artist_alias] = $artist_id;
 			}
-			$artist_array[$artist_alias] = $artist_id;
+			$this->logMessage ( $string );
 		}
-		$this->logMessage($string);
+		
+		
 		
 		$csv = $this::readCSV($mycsv);
 		
@@ -1527,52 +1533,55 @@ class MymuseModelproduct extends JModelAdmin
 					//make top cat
 					$artist_id = $this->makeCategory($entry[1], $catid_artist);
 					$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Category Made: ".$artist." $artist_id</span></td></tr>";
-					echo "created $artist <br />";
+					//echo "created $artist <br />";
 				}else{
 					$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">Category Exists: ".$artist." $artist_id</span></td></tr>";
-					echo "HAD $artist <br />";
+					//echo "HAD $artist <br />";
 				}
 				$artist_array[$artist_alias] = $artist_id;
 			}
 			//download file
 			if($download && file_exists($path.DS.$product_name.DS."Download".DS.$download)){
-				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">PAYLOAD: ".$path.DS.$product_name.DS."Download".DS.$download."</span></td></tr>";
+				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">PAYLOAD: ".$product_name.DS."Download".DS.$download."</span></td></tr>";
 				$filename = $path.DS.$product_name.DS."Download".DS.$download;
 				$ext =  JFile::getExt($download);
 				$name = JApplication::stringURLSafe(JFile::stripExt($download)).'.'.$ext;
 				
 				$have_payload = $path.DS.$product_name.DS."Download".DS.$name;
 				if(file_exists($have_payload)){
-					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;\">PAYLOAD EXISTS: ".$product_name.DS."Download".DS.$download."</span></td></tr>";
+					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;\">PAYLOAD EXISTS: ".$have_payload."</span></td></tr>";
 				}else{
 					JFile::copy($filename, $have_payload);
-					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;\">PAYLOAD copied: ".$product_name.DS."Download".DS.$download."</span></td></tr>";
+					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;\">PAYLOAD copied to: ".$have_payload."</span></td></tr>";
 					
 				}
-				//echo "Found download: $have_payload <br />";
+		
 			}else{
 				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">NO PAYLOAD FILE: ".$path.DS.$product_name.DS."Download".DS.$download."</span></td></tr>";
-				//echo "NO PAYLOAD FILE ".$path.DS.$product_name.DS."Download".DS.$download." <br />";
 			}
+			
+			//$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">LOCAL PAYLOAD DELETED: ".$product_name.DS."Download".DS.$name."</span></td></tr>";
+			
+			
 			$this->logMessage($string);
 			$string = '';
 		
 			//preview
 			if($preview && file_exists($path.DS.$product_name.DS."Preview".DS.$preview)){
-				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;;\">".$path.DS.$product_name.DS."Preview".DS.$preview."</span></td></tr>";
+				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;;\">PREVIEW EXITS: ".$product_name.DS."Preview".DS.$preview."</span></td></tr>";
 				$filename = $path.DS.$product_name.DS."Preview".DS.$preview;
 				$ext =  JFile::getExt($preview);
 				$name = JApplication::stringURLSafe(JFile::stripExt($preview)).'.'.$ext;
 				$have_demo = $path.DS.$product_name.DS."Preview".DS.$name;
 				if(file_exists($have_demo)){
-					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;;\">Preview Exists: ".DS.$preview."</span></td></tr>";
+					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;;\">Preview Exists: ".$have_demo."</span></td></tr>";
 				}else{
 					JFile::copy($filename, $have_demo);
-					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;;\">Preview copied: ".DS.$preview."</span></td></tr>";
+					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;;\">Preview copied: ".$have_demo."</span></td></tr>";
 				}
 				//echo "Found Preview $have_demo <br />";
 			}else{
-				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">".$path.DS.$product_name.DS."Preview".DS.$preview."</span></td></tr>";
+				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">NO PREVIEW FILE: ".$path.DS.$product_name.DS."Preview".DS.$preview."</span></td></tr>";
 				//echo "NO PREVIEW FILE $download <br />";
 			}
 			$this->logMessage($string);
@@ -1634,6 +1643,12 @@ class MymuseModelproduct extends JModelAdmin
 						$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">HAD Track: ".$song_title."</span></td></tr>";
 						
 					}
+				}
+				
+				if(JFile::delete($have_payload)){
+					$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">DELETED file: ".$have_payload."</span></td></tr>";
+				}else{
+					$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">COULD NOT DELETE file: ".$have_payload."</span></td></tr>";
 				}
 				
 			}else{
@@ -1820,9 +1835,9 @@ class MymuseModelproduct extends JModelAdmin
 		$p->file_preview = '';
 		$p->file_time = $entry[7];
 		$p->othercats= $othercats;
-print_pre($entry);
-print_pre($p);	
-		$id = $helper->makeProduct($p);
+//print_pre($entry);
+//print_pre($p);	
+		$id = $helper->makeProductObject($p);
 		if(!$id){
 			return $helper->error;
 		}

@@ -249,8 +249,9 @@ endif;
 				style="height: <?php echo $params->get('product_player_height'); ?>px"
 			<?php } ?>	
 			><?php echo $item->flash; ?>
-			</div>
+			
 			<div><?php echo JText::_('MYMUSE_NOW_PLAYING');?> <span id="jp-title-li"></span></div>
+			</div>
 		<?php } ?>
 		<?php if($params->get('product_player_type') == "playlist"){ ?>
 			<div id="product_player"

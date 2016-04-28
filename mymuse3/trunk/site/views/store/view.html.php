@@ -465,7 +465,7 @@ class myMuseViewStore extends JViewLegacy
         		AND o.order_status='C'";
         	$db->setQuery($query);
         	$res = $db->loadObject();
-        	if($res->status == "C"){
+        	if(is_object($res) && $res->status == "C"){
         		$owned = 1;
         		$realname = $res->file_name;
         		if(is_array($jason)){
@@ -484,7 +484,7 @@ class myMuseViewStore extends JViewLegacy
         		}
         	}
         		
-        	if(!owned){
+        	if(!$owned){
         		// See if it is free
         		if($product->price == 0.00 || $product->price == '' || !$product->price){
         			$free = 1;

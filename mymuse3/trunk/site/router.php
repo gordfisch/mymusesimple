@@ -30,16 +30,22 @@ function MymuseBuildRoute(&$query)
 	}
 	require_once( MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php' );
 	$params = MyMuseHelper::getParams();
-	
-	
-	
+
 	$segments	= array();
 
 	// get a menu item based on Itemid or currently active
 	$app		= JFactory::getApplication();
 	$menu		= $app->getMenu();
 	$advanced	= $params->get('sef_advanced_link', 0);
-//print_pre($query);
+	$dbo = JFactory::getDbo();
+	if($params->get('my_default_itemid','')){
+		$q = 'SELECT alias from #__menu WHERE id="'.$params->get('my_default_itemid').'"';
+		$dbo->setQuery($q);
+		$alias = $dbo->loadResult();
+		//$segments[] = $alias;
+	}
+	
+	
 	// we need a menu item.  Either the one specified in the query, or the current active one if none specified
 	if (empty($query['Itemid'])) {
 		$menuItem = $menu->getActive();
@@ -193,13 +199,13 @@ function MymuseBuildRoute(&$query)
 				
 				// Make sure we have the id and the alias
 				if (strpos($query['id'], ':') === false) {
-					$db = JFactory::getDbo();
-					$aquery = $db->setQuery($db->getQuery(true)
+					
+					$aquery = $dbo->setQuery($dbo->getQuery(true)
 						->select('alias')
 						->from('#__mymuse_product')
 						->where('id='.(int)$query['id'])
 					);
-					$alias = $db->loadResult();
+					$alias = $dbo->loadResult();
 					$query['id'] = $query['id'].':'.$alias;
 				}
 			} else {
@@ -301,7 +307,7 @@ function MymuseParseRoute($segments)
 	$item	= $menu->getActive();
 	$params = MyMuseHelper::getParams();
 	$advanced = $params->get('sef_advanced_link', 0);
-	$db = JFactory::getDBO();
+	$dbo = JFactory::getDBO();
 
 
 
@@ -443,8 +449,8 @@ function MymuseParseRoute($segments)
 			}
 			$query = 'SELECT id,catid from #__mymuse_product WHERE alias="'.$segments[0].'"';
 
-			$db->setQuery($query);
-			if($product = $db->loadObject()){
+			$dbo->setQuery($query);
+			if($product = $dbo->loadObject()){
 				$vars['option'] = 'com_mymuse';
 				$vars['view'] = 'product';
 				$vars['id'] = (int)$product->id;
@@ -456,8 +462,8 @@ function MymuseParseRoute($segments)
 			//check if this is a category alias.
 			$query = 'SELECT id from #__categories WHERE alias="'.$segments[0].'" and extension="com_mymuse"';
 	
-			$db->setQuery($query);
-			if($category = $db->loadObject()){
+			$dbo->setQuery($query);
+			if($category = $dbo->loadObject()){
 				$vars['option'] = 'com_mymuse';
 				$vars['view'] = 'category';
 				$vars['id'] = (int)$category->id;
@@ -484,8 +490,8 @@ function MymuseParseRoute($segments)
 			return $vars;
 		} else {
 			$query = 'SELECT alias, catid FROM #__mymuse_product WHERE id = '.(int)$id;
-			$db->setQuery($query);
-			$product = $db->loadObject();
+			$dbo->setQuery($query);
+			$product = $dbo->loadObject();
 
 			if ($product) {
 				if ($product->alias == $alias) {
@@ -511,8 +517,8 @@ function MymuseParseRoute($segments)
 		}
 		$query = 'SELECT id,catid from #__mymuse_product WHERE alias="'.$segments[0].'"';
 	
-		$db->setQuery($query);
-		if($product = $db->loadObject()){
+		$dbo->setQuery($query);
+		if($product = $dbo->loadObject()){
 			$vars['option'] = 'com_mymuse';
 			$vars['view'] = 'product';
 			$vars['id'] = (int)$product->id;
@@ -523,8 +529,8 @@ function MymuseParseRoute($segments)
 		
 		$query = 'SELECT id,catid from #__mymuse_product WHERE alias="'.$segments[1].'"';
 		
-		$db->setQuery($query);
-		if($product = $db->loadObject()){
+		$dbo->setQuery($query);
+		if($product = $dbo->loadObject()){
 			$vars['option'] = 'com_mymuse';
 			$vars['view'] = 'product';
 			$vars['id'] = (int)$product->id;
@@ -536,8 +542,8 @@ function MymuseParseRoute($segments)
 		//check if this is a category alias.
 		$query = 'SELECT id from #__categories WHERE alias="'.$segments[0].'" and extension="com_mymuse"';
 	
-		$db->setQuery($query);
-		if($category = $db->loadObject()){
+		$dbo->setQuery($query);
+		if($category = $dbo->loadObject()){
 			$vars['option'] = 'com_mymuse';
 			$vars['view'] = 'category';
 			$vars['id'] = (int)$category->id;
@@ -595,10 +601,10 @@ function MymuseParseRoute($segments)
 
 		if ($found == 0) {
 			if ($advanced) {
-				$db = JFactory::getDBO();
-				$query = 'SELECT id FROM #__mymuse_product WHERE catid = '.$vars['catid'].' AND alias = '.$db->Quote($segment);
-				$db->setQuery($query);
-				$cid = $db->loadResult();
+				$dbo = JFactory::getDBO();
+				$query = 'SELECT id FROM #__mymuse_product WHERE catid = '.$vars['catid'].' AND alias = '.$dbo->Quote($segment);
+				$dbo->setQuery($query);
+				$cid = $dbo->loadResult();
 			} else {
 				$cid = $segment;
 			}

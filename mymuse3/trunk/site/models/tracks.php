@@ -199,7 +199,7 @@ class MyMuseModelTracks extends JModelList
 	protected function getStoreId($id = '')
 	{
 		// Compile the store id.
-		$id .= ':'.$this->getState('filter.published');
+		//$id .= ':'.$this->getState('filter.published');
 		$id .= ':'.$this->getState('filter.access');
 		$id .= ':'.$this->getState('filter.featured');
 		$id .= ':'.$this->getState('filter.product_id');

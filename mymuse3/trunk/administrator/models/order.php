@@ -223,9 +223,11 @@ class MymuseModelorder extends JModelAdmin
 				$fields = MyMuseHelper::getNoRegFields();
 				$registry = new JRegistry;
 				$registry->loadString($item->notes);
+				$item->notes = $registry->toArray();
+				
 				foreach($fields as $field){
 					if($registry->get($field)){
-						$item->user->profile[$field] = $registry->get($field);
+						$item->user->profile[$field] = $item->notes[$field];
 						//echo $field." ".$registry->get($field)."<br />";
 					}else{
 						$item->user->profile[$field] = '';
@@ -237,6 +239,13 @@ class MymuseModelorder extends JModelAdmin
 				if($item->user->profile['email']){
 					$item->user->email = $item->user->profile['email'];
 				}
+				
+				$notes = '';
+				foreach($item->notes as $key => $val){
+					$notes .= $key.'='.$val."\n";
+				}
+				$item->notes = $notes;
+				
 			}
 			
 			

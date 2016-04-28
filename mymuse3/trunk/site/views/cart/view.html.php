@@ -152,7 +152,7 @@ class myMuseViewCart extends JViewLegacy
 		$message 			= '';
 		$footer 			= '';
 		$edit 				= true;
-		
+	
 		// set the heading for the top of page
 		// find the order attached to the shopper object, or build it from session cart
 		switch ($task)
@@ -218,6 +218,13 @@ class myMuseViewCart extends JViewLegacy
 						$order->show_summary  = 0;
 					}
 				}
+				
+				if($order->notes && $params->get('my_registration') == "no_reg" ){
+
+					$registry = new JRegistry;
+					$registry->loadString($order->notes);
+					$order->notes = $registry->toArray();
+				}
 				break;
 				
 			case "makepayment":
@@ -270,7 +277,7 @@ class myMuseViewCart extends JViewLegacy
 				}
 				break;
 		}
-	
+
 		// check for order
 		if(!isset($order->items) || !count($order->items)) {
 			//Hmm nothing to display...
@@ -446,7 +453,6 @@ class myMuseViewCart extends JViewLegacy
 		ob_end_clean();
 		$this->assignRef('cart_display', $cart_display);
 		
-		
 		//display the licence if necessary
 		if(2 == $params->get('my_price_by_product',0)){
 
@@ -457,8 +463,7 @@ class myMuseViewCart extends JViewLegacy
 			$this->assignRef('cart_licence', $cart_licence);
 
 		}
-		
-		
+
 		//display the shopper info, if we have one
 		if($heading && $user->get('id') > 0 && $user->get('name') != "Guest Buyer"){
 			ob_start();
@@ -893,7 +898,10 @@ class myMuseViewCart extends JViewLegacy
 		$message 		= Jtext::_('MYMUSE_HERE_IS_YOUR_ORDER');
 		
 		if($order->notes && $params->get('my_registration') == "no_reg" ){
-			$accparams = new JRegistry( $order->notes);
+
+			$registry = new JRegistry;
+			$registry->loadString($order->notes);
+			$order->notes = $registry->toArray();
 			/*
 			 first_name=Gord
 			 last_name=Fisch
@@ -909,15 +917,15 @@ class myMuseViewCart extends JViewLegacy
 		
 			$user->set('email',$accparams->get('email'));
 			$user->set('name',$accparams->get('first_name')." ".$accparams->get('last_name'));
-			$shopper->email         = $accparams->get('email');
-			$shopper->first_name    = $accparams->get('first_name');
-			$shopper->last_name     = $accparams->get('last_name');
-			$shopper->address1 		= $accparams->get('address1');
-			$shopper->address2 		= $accparams->get('address2');
-			$shopper->city 		= $accparams->get('city');
-			$shopper->postal_code 		= $accparams->get('postal_code');
-			$shopper->country       = $accparams->get('country');
-			$shopper->region_name         = $accparams->get('region_name');
+			$shopper->email         = isset($order->notes['email'])? $order->notes['email'] : '';
+			$shopper->first_name    = isset($order->notes['first_name'])? $order->notes['first_name'] : '';
+			$shopper->last_name     = isset($order->notes['last_name'])? $order->notes['last_name'] : '';
+			$shopper->address1 		= isset($order->notes['address1'])? $order->notes['address1'] : '';
+			$shopper->address2 		= isset($order->notes['address2'])? $order->notes['address2'] : '';
+			$shopper->city 			= isset($order->notes['city'])? $order->notes['city'] : '';
+			$shopper->postal_code 	= isset($order->notes['postal_code'])? $order->notes['postal_code'] : '';
+			$shopper->country       = isset($order->notes['country'])? $order->notes['country'] : '';
+			$shopper->region_name   = isset($order->notes['region_name'])? $order->notes['region_name'] : '';
 		}
 		 
 		$user_email 	= $user->email;
