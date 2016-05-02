@@ -1405,6 +1405,18 @@ class MymuseModelproduct extends JModelAdmin
 					echo $db->error;
 				}
 				
+				$q = "DELETE FROM `vl6xc_assets` WHERE `name` LIKE '%mymuse_product%'";
+				$db->setQuery($q);
+			echo $q."<br />";
+				if(!$db->query()){
+					echo $db->error;
+				}
+				$q = "DELETE FROM `vl6xc_assets` WHERE `name` LIKE '%mymuse.category%'";
+				$db->setQuery($q);
+				echo $q."<br />";
+				if(!$db->query()){
+					echo $db->error;
+				}
 			}
 			?>
 <a href="index.php?option=com_mymuse">Go Back</a>

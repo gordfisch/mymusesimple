@@ -31,17 +31,18 @@ class mymuseViewtracks extends JViewLegacy
 		$user	= JFactory::getUser();
 		$db     = JFactory::getDBO();
 		$jinput = $app->input;
-		$app = JFactory::getApplication();
-		$menu = $app->getMenu()->getActive()->id;
+		$app 	= JFactory::getApplication();
+		$menu 	= $app->getMenu()->getActive()->id;
 
-
+		
 		// Get some data from the models
 		$state		= $this->get('State');
 		$params		= $state->params;
 
 		$category	= $this->get('Category');
+		
         $products   = $this->get('Products');// sets list.prods for tracks query
-
+    
         $MyMuseCart =& MyMuse::getObject('cart','helpers');
         $this->cart =& $MyMuseCart->cart;
         
@@ -50,6 +51,12 @@ class mymuseViewtracks extends JViewLegacy
         $this->Itemid           = $jinput->get('Itemid', $menu);
         $filter_alpha           = $jinput->get('filter_alpha', '', 'STRING');
         $this->task             = $jinput->get('task', 'view', 'STRING');
+        $Itemid 				= $jinput->get("Itemid",'');
+        $layout   				= $jinput->get("layout",'');
+        
+        if($layout){
+        	$this->setLayout($layout);
+        }
 
 		// Check for layout override only if this is not the active menu item
 		// If it is the active menu item, then the view and category id will match
@@ -62,7 +69,7 @@ class mymuseViewtracks extends JViewLegacy
 			}
 		}
 		// At this point, we are in a menu item, so we don't override the layout
-		elseif (isset($active->query['layout'])) {
+		elseif (!$layout && isset($active->query['layout'])) {
 				
 			// We need to set the layout from the query in case this is an alternative menu item (with an alternative layout)
 			$this->setLayout($active->query['layout']);
@@ -70,9 +77,8 @@ class mymuseViewtracks extends JViewLegacy
 
 		//items!
         $result = $this->get('Items');
-
         $items = $result[0];
-        //print_pre($items);
+
         $category->flash = $result[1]->flash;
         $pagination = $result[2];
         

@@ -394,7 +394,7 @@ The name of the project:<br />
 A URL link to the project if available:<br />
 (Optional): Any further information on your project: <br />
 THIS IS VITAL IN ORDER FOR A LICENSE TO BE ISSUED<br /></span>
-        <textarea style="height: 200px; width:90%;" name="notes" rows="10" cols="5"><?php echo $order->notes['notes']; ?></textarea>
+        <textarea style="height: 200px; width:90%;" name="notes" rows="10" cols="5"><?php echo @$order->notes['notes']; ?></textarea>
         
     <?php if(!in_array($task, $post_order)){ ?>
         <div class="pull-left myupdate cart"><button class="button uk-button " 

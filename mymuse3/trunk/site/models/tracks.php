@@ -280,9 +280,25 @@ class MyMuseModelTracks extends JModelList
         ";
     
         if($params->get('category_match_level') == "track"){
-        	$query .= "RIGHT JOIN #__mymuse_product_category_xref as xref ON xref.product_id = a.id 
         	
-        	WHERE xref.catid = $categoryId ";
+        	
+        	if($this->getState('filter.subcategories')){
+        		$cats = array();
+        		$cats[] = $categoryId;
+        		$category = $this->getCategory();
+        		$category->children = $category->getChildren();
+        		foreach($category->children as $child){
+        			$cats[] = $child->id;
+        		}
+        		$CATIN = implode(",",$cats);
+        		$query .= "RIGHT JOIN #__mymuse_product_category_xref as xref ON xref.product_id = a.id
+        		WHERE xref.catid IN ($CATIN) ";
+        	}else{
+        		$query .= "RIGHT JOIN #__mymuse_product_category_xref as xref ON xref.product_id = a.id
+        		WHERE xref.catid = $categoryId ";
+        	}
+        		
+        	
         	
             // get prodids from xref for the top level cat
 			//$subQuery = "SELECT product_id FROM #__mymuse_product_category_xref WHERE catid = ".$categoryId;
@@ -307,6 +323,7 @@ class MyMuseModelTracks extends JModelList
         if($searchword != ''){
         	$query .= "AND (
         	a.title LIKE ".$db->quote('%'.$searchword.'%')."
+        	OR a.introtext LIKE ".$db->quote('%'.$searchword.'%')."
         	OR a.file_name LIKE ".$db->quote('%'.$searchword.'%')."
         	OR p.title LIKE ".$db->quote('%'.$searchword.'%')."
         	OR ar.title LIKE ".$db->quote('%'.$searchword.'%')."
@@ -329,7 +346,6 @@ class MyMuseModelTracks extends JModelList
         }
         $query .= $orderby;
 
-
 		return $query;
 	}
 
@@ -345,7 +361,6 @@ class MyMuseModelTracks extends JModelList
 		$params = $this->getState()->get('params');
 		$limit = $this->getState('list.limit');
         $limit = 10000;
-
 
 		if ($this->_products === null && $category = $this->getCategory()) {
 			$model = JModelLegacy::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
@@ -367,7 +382,7 @@ class MyMuseModelTracks extends JModelList
 			$model->setState('filter.max_category_levels', $this->getState('filter.max_category_levels'));
 			$model->setState('list.links', $this->getState('list.links'));
 
-            
+         
 			if ($limit >= 0) {
 				$this->_products = $model->getItems();
 
@@ -407,10 +422,9 @@ class MyMuseModelTracks extends JModelList
 	 */
 	public function getCategory()
 	{
-		$id = $this->getState('category.id', 'root');
+		jimport( 'joomla.application.categories' );
 		if (!is_object($this->_category)) {
-            
-            
+
             if( isset( $this->state->params ) ) {
 				$params = $this->state->params;
 				$options = array();
@@ -420,11 +434,15 @@ class MyMuseModelTracks extends JModelList
 				$options['countItems'] = 0;
 			}
             jimport( 'joomla.application.categories' );
-            $options = array();
+            //$options = array();
+           
             $categories = JCategories::getInstance('Mymuse', $options);
 
 			$this->_category= $categories->get($this->getState('category.id', 'root'));
-            
+			$registry = new JRegistry;
+			$registry->loadObject(json_decode($this->_category->params));
+			$this->_category->params = $registry;
+          
             /**
 			$id = $this->getState('category.id', '0');
             $query = "SELECT * FROM #__categories WHERE id=$id";

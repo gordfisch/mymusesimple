@@ -576,6 +576,7 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 	{
 		$params 	= MyMuseHelper::getParams();
 		$items		= parent::getItems();
+	
 		$app 		= JFactory::getApplication();
 		$jinput 	= $app->input;
 		$db 		= JFactory::getDBO();

@@ -49,14 +49,20 @@ class MymuseViewCategory extends JViewLegacy
 		$this->Itemid 			= $jinput->get("Itemid",'');
 		$this->sortDirection    = $state->get('list.direction');
 		$this->sortColumn       = $state->get('list.ordering');
-		$this->filterAlpha     = $jinput->get('filter_alpha', '', 'STRING');
+		$this->filterAlpha      = $jinput->get('filter_alpha', '', 'STRING');
+		$layout   				= $jinput->get("layout",'');
+		
+		if($layout){
+			$this->setLayout($layout);
+		}
 		
 		$menu	= $app->getMenu();
-		$item	= $menu->getActive();
+		$item	= $menu->getItem($this->Itemid);
+
 		$top_cat = $item->query['id'];
-	
 		if($params->get('category_layout') == "_:tracks"){
 			$res	= $this->get('Items');
+			//echo "here"; print_pre($res); exit;
 			$items = $res[0];
 			$category = $res[1];
 			$pagination = $res[2];
@@ -169,8 +175,7 @@ class MymuseViewCategory extends JViewLegacy
 			}
 		}
 
-		
-		
+			
 		// Check for layout override only if this is not the active menu item
 		// If it is the active menu item, then the view and category id will match
 		$active	= $app->getMenu()->getActive();
@@ -181,13 +186,11 @@ class MymuseViewCategory extends JViewLegacy
 			}
 		}
 		// At this point, we are in a menu item, so we don't override the layout
-		elseif (isset($active->query['layout'])) {
+		elseif (!$layout && isset($active->query['layout'])) {
 			// We need to set the layout from the query in case this is an alternative menu item (with an alternative layout)
 			$this->setLayout($active->query['layout']);
 		}
 
-		
-		
 		
 		// For blog layouts, preprocess the breakdown of leading, intro and linked articles.
 		// This makes it much easier for the designer to just interrogate the arrays.
@@ -272,7 +275,7 @@ class MymuseViewCategory extends JViewLegacy
 
 		// Because the application sets a default page title,
 		// we need to get it from the menu item itself
-		$menu = $menus->getActive();
+		$menu = $menus->getItem($this->Itemid);
 
 		if ($menu) {
 			$this->params->def('page_heading', $this->params->get('page_title', $menu->title));
@@ -287,7 +290,11 @@ class MymuseViewCategory extends JViewLegacy
 			$path = array(array('title' => $this->category->title, 'link' => ''));
 			$category = $this->category->getParent();
 
-			while (($menu->query['option'] != 'com_mymuse' || $menu->query['view'] == 'article' || $id != $category->id) && $category->id > 1)
+			while (($menu->query['option'] != 'com_mymuse' || 
+					$menu->query['view'] == 'article' || 
+					$id != $category->id) 
+					
+					&& $category->id > 1)
 			{
 				$path[] = array('title' => $category->title, 'link' => MyMuseHelperRoute::getCategoryRoute($category->id));
 				$category = $category->getParent();
