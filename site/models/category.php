@@ -223,12 +223,13 @@ class MyMuseModelCategory extends JModelList
 		$app	= JFactory::getApplication('site');
 		$jinput = $app->input;
 		$itemid = $jinput->get('id', 0, 'INT') . ':' . $jinput->get('Itemid', 0, 'INT');
-	
+
 		if($params->get('category_layout') == "_:tracks"){
 			//TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS 
 			if ($this->_tracks === null && $category = $this->getCategory()) {
-			
+		
 				$model = JModelList::getInstance('Tracks', 'MyMuseModel', array('ignore_request' => false));
+
 				$model->setState('params', $params);
 				$model->setState('filter.category_id', $category->id);
 				$model->setState('category_id', $category->id);
@@ -256,7 +257,6 @@ class MyMuseModelCategory extends JModelList
 			
 				if ($limit >= 0) {
 					$res = $model->getItems();
-			
 					if ($res  === false) {
 						$this->setError($model->getError());
 					}
@@ -375,6 +375,7 @@ class MyMuseModelCategory extends JModelList
 	 */
 	public function getCategory()
 	{
+		jimport( 'joomla.application.categories' );
 		if (!is_object($this->_item)) {
 			if( isset( $this->state->params ) ) {
 				$cparams = $this->state->params;
@@ -384,10 +385,10 @@ class MyMuseModelCategory extends JModelList
 			else {
 				$options['countItems'] = 0;
 			}
-
 			$categories = JCategories::getInstance('Mymuse', $options);
+
 			$this->_item = $categories->get($this->getState('category.id', '0'));
-			
+
 			$params = new JRegistry($this->_item->params);
 			$params->merge( $cparams );
 
