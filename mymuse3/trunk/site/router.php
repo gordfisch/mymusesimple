@@ -442,11 +442,24 @@ function MymuseParseRoute($segments)
         
         
 		if($params->get('my_use_alias')){
-			//check if this is a product alias.
+			
 			if(strpos($segments[0],':')){
                 $orig_segments = $segments;
 				$segments[0] = preg_replace('/:/',"-",$segments[0]);
 			}
+			
+			//check if this is a category alias.
+			$query = 'SELECT id from #__categories WHERE alias="'.$segments[0].'" and extension="com_mymuse"';
+			
+			$dbo->setQuery($query);
+			if($category = $dbo->loadObject()){
+				$vars['option'] = 'com_mymuse';
+				$vars['view'] = 'category';
+				$vars['id'] = (int)$category->id;
+				return $vars;
+			}
+			
+			//check if this is a product alias.
 			$query = 'SELECT id,catid from #__mymuse_product WHERE alias="'.$segments[0].'"';
 
 			$dbo->setQuery($query);
@@ -459,16 +472,7 @@ function MymuseParseRoute($segments)
 				return $vars;
 			}
 			
-			//check if this is a category alias.
-			$query = 'SELECT id from #__categories WHERE alias="'.$segments[0].'" and extension="com_mymuse"';
-	
-			$dbo->setQuery($query);
-			if($category = $dbo->loadObject()){
-				$vars['option'] = 'com_mymuse';
-				$vars['view'] = 'category';
-				$vars['id'] = (int)$category->id;
-				return $vars;
-			}
+
 		}
 				
 		// we check to see if an alias is given.  If not, we assume it is an product

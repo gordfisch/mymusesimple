@@ -380,10 +380,15 @@ class plgMymusePayment_Paypal extends JPlugin
   			}
   					
         	
-        	if (preg_match ( "/VERIFIED/", $res) ) {
-        		//order was verified!
+        	if (preg_match ( "/VERIFIED/", $res) || $result['payment_status'] == "Completed") {
+        		//order was verified or completed!
             	$date = date('Y-m-d h:i:s');
-            	$debug = "$date  4. order VERIFIED at PayPal\n\n";
+            	
+            	if (!preg_match ( "/VERIFIED/", $res)){
+            		$debug = "$date  4. order completed but NOT VERIFIED!!?? at PayPal\n\n";
+            	}else{
+            		$debug = "$date  4. order VERIFIED at PayPal\n\n";
+            	}
             	$result['order_verified'] = 1;
             	
         		if($params->get('my_debug')){

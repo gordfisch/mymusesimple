@@ -19,8 +19,10 @@ if(!defined('DS')){
 }
 
 require_once( JPATH_COMPONENT.DS.'mymuse.class.php');
-ini_set('memory_limit',"256M");
+ini_set('memory_limit',"512M");
 ini_set('max_execution_time',"120");
+ini_set("log_errors", 1);
+ini_set("error_log", "php-error.log");
 
 //include any custom code
 if(file_exists(JPATH_COMPONENT.DS."custom.php")){
@@ -53,7 +55,7 @@ if(!$params->get('my_disable_css',0)){
 
 JPluginHelper::importPlugin('mymuse');
 $jinput 	= JFactory::getApplication()->input;
-//print_pre($jinput);
+//print_pre($jinput->get('view'));
 // return URL
 $return 	= $jinput->get('return','');
 if(!$return){

@@ -192,7 +192,7 @@ class MyMuseController extends JControllerLegacy
 			$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid), $msg );
 			return false;
 		}
-		$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid) );
 		return;
 	}
 	

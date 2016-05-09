@@ -393,6 +393,17 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount,
 /* Only Phones */  
 @media (max-width: 767px) { 
 	
+.cat-items .cols-2 .column-1 { width: 98%; }
+.cat-items .cols-2 .column-2 { width :98%; }
+
+.cat-items .cols-3 .column-1 { width: 98%; }
+.cat-items .cols-3 .column-2 { width: 98%; }
+.cat-items .cols-3 .column-3 { width: 98%; }
+
+.cat-items .cols-4 .column-1 { width: 98%; }
+.cat-items .cols-4 .column-2 { width: 98%; }
+.cat-items .cols-4 .column-3 { width: 98%; }
+.cat-items .cols-4 .column-4 { width: 98%; }
 
 	.product-image{
 		width:100%;

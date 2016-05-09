@@ -334,9 +334,9 @@ class MyMuseModelTracks extends JModelList
         	$query .= " AND a.featured=1
         	";
         }
-        
+        $query .=  " GROUP BY a.id ";
         if($params->get('group_by',0)){
-        	$query .= " GROUP BY ".$params->get('group_by',0)."
+        	$query .= " ".$params->get('group_by',0)."
         	";
         }
         $orderby = "ORDER BY $ordering $listDirn

@@ -450,6 +450,7 @@ class mymuseModelShopper extends JModelForm
 
 		if(count($queue)){
 			//$this->setError(JText::_($error->code));
+			//print_pre($queue); exit;
 			return false;
 		}
 		
@@ -495,7 +496,8 @@ class mymuseModelShopper extends JModelForm
 				$user->set('name',@$post['jform']['profile']['first_name']." ".@$post['jform']['profile']['last_name']);
 			}
 		}
-;
+//print_pre($post);
+//print_pre($user); exit;
 		$session->set('user', $user);
 		
 		return true;

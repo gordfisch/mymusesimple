@@ -1,7 +1,7 @@
 #product_player{
 	position:fixed;
 	left: 350px;
-	top: 10px;
+	top: 100px;
 	z-index: 5000;
 }
 
@@ -92,6 +92,14 @@ li.jp-unmute,
 
 /* Only Phones */  
 @media (max-width: 767px) { 
+	
+	#product_player{
+		position:relative;
+		left: 0px;
+		top: 0px;
+		z-index: 0;
+	}
+
 	.jp-gui ul{
 		display:inline-block;
 	}

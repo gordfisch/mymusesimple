@@ -19,7 +19,9 @@ $user 		= $this->user;
 $params 	= $this->params;
 $task		= $this->task;
 $got_flash  = 0;
-$post_order = array('confirm','makepayment','thankyou','vieworder');
+$post_order = array('confirm','makepayment','thankyou','vieworder', 'notify');
+$notes_required = $params->get('notes_required',1);
+
 for ($i=0;$i<count($order->items); $i++) { 
     if(!isset($order->items[$i])){
                   continue;
@@ -367,34 +369,64 @@ jQuery(document).ready(function(){
 	</table>
 		<?php 
 		//LICENCE MODEL?
-		if(isset($this->lists['licences'])){
+		if(2 == $params->get('my_price_by_product',0)){
 			echo '<h3>'.JText::_('MYMUSE_LICENCE').'</h3>';
 
-			if(!in_array($task, $post_order)){
+			if(!in_array($task, $post_order) && isset($this->lists['licences'])){
 				echo $this->lists['licences'];
 			}else{
 				echo '<span class="licence-text">'.$this->my_licence_text.'</span>';
 			}
-			
-			foreach($this->licence as $i=>$licence){
-				if($i == $this->my_licence){
-					$display = "block";
-				}else{
-					$display = "none";
+			if(isset($this->lists['licences'])){
+				foreach($this->licence as $i=>$licence){
+					if($i == $this->my_licence){
+						$display = "block";
+					}else{
+						$display = "none";
+					}
+					$style = 'style="display:'.$display.'"';
+					echo '<div id="licence_desc_'.$i.'" class="licence-text" '.$style.'>'.nl2br($licence['desc']).'</div>';
 				}
-				$style = 'style="display:'.$display.'"';
-				echo '<div id="licence_desc_'.$i.'" class="licence-text" '.$style.'>'.nl2br($licence['desc']).'</div>';
+			}elseif(isset($this->my_licence_desc)){
+				echo '<div id="licence_desc_'.$params->get('my_price_by_product',0).'" class="licence-text">'.nl2br($this->my_licence_desc).'</div>';
 			}
 		}
 		?>
 		
-<h3>Tell us about your project</h3>
+		
+    <?php 
+if($notes_required){
+	
+    $notes = isset($order->notes['notes'])? $order->notes['notes'] : @$order->notes; 
+    $jason = json_decode($notes);
+    if(is_array($jason)){
+    	$notes = $jason['notes'];
+    }
+    if(is_object($jason)){
+    	$notes = $jason->notes;
+    }
+
+    
+    
+    if(!in_array($task, $post_order)){ ?>		
+		<h3>Tell us about your project</h3>
         <span class="licence-text">How the track will be used: Website/ Shop/ Corporate video.. etc<br />
-The name of the project:<br />
-A URL link to the project if available:<br />
-(Optional): Any further information on your project: <br />
-THIS IS VITAL IN ORDER FOR A LICENSE TO BE ISSUED<br /></span>
-        <textarea style="height: 200px; width:90%;" name="notes" rows="10" cols="5"><?php echo @$order->notes['notes']; ?></textarea>
+		The name of the project:<br />
+		A URL link to the project if available:<br />
+		(Optional): Any further information on your project: <br />
+		THIS IS VITAL IN ORDER FOR A LICENSE TO BE ISSUED<br /></span>
+        <textarea style="height: 200px; width:90%;" name="notes" rows="10" cols="5"><?php 
+        
+        echo $notes; 
+        
+        ?></textarea>
+<?php 
+	}elseif($notes) { ?>
+		<h3>Project Description</h3>
+		<?php echo nl2br($notes);
+	}
+}
+?>
         
     <?php if(!in_array($task, $post_order)){ ?>
         <div class="pull-left myupdate cart"><button class="button uk-button " 
@@ -412,15 +444,15 @@ THIS IS VITAL IN ORDER FOR A LICENSE TO BE ISSUED<br /></span>
 		    // add the checkout link
 		?> 
 		<div class="mymuse-wrap">
-	  			
+	  		<?php if($notes_required && $notes){ ?>
 				<div class="pull-left mymuse-button-left cart"><button class="button uk-button" 
 				type="button" 
 				onclick="location.href='<?php echo JRoute::_("index.php?option=com_mymuse&task=checkout&Itemid=$Itemid") ?>'">
 				<?php echo JText::_('MYMUSE_CHECKOUT'); ?></button></div>
-				
+			<?php } ?>
 				<div class="pull-right  mymuse-button-right cart"><button class="button uk-button" 
 				type="button" 
-				onclick="location.href='<?php echo $params->get('my_continue_cart'); ?>'">
+				onclick="location.href='<?php echo $params->get('my_continue_shopping'); ?>'">
 				<?php echo JText::_('MYMUSE_CONTINUE_SHOPPING'); ?></button></div>
 	  		<div style="clear: both;"></div>
 		</div>
