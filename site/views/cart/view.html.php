@@ -758,14 +758,11 @@ class myMuseViewCart extends JViewLegacy
         		MyMuseHelper::logMessage( $debug  );
         	}
  
-        	$message = $this->makeMail($result);
-        	//$debug .= print_r($mailer, true);
-        	//if($params->get('my_debug')){
-        	//	MyMuseHelper::logMessage( $debug  );
-        	//}
-        	
-            //$debug .= "user mail = $user_email\n\n";
-            //$debug .= $message."\n\n";
+        	if(!$this->makeMail($result)){
+        		$debug = "$date makeMail failed \n";
+        		MyMuseHelper::logMessage( $debug  );
+        		
+        	}
             
         	//now log the payment
         	$payment['order_id'] 			= $result['order_id'];
@@ -869,6 +866,7 @@ class myMuseViewCart extends JViewLegacy
 	function makeMail($result)
 	{
 
+
 		$MyMuseStore	=& MyMuse::getObject('store','models');
         $store 			= $MyMuseStore->_store;
         $store_params 	= new JRegistry;
@@ -877,20 +875,30 @@ class myMuseViewCart extends JViewLegacy
      	
      	$params = MyMuseHelper::getParams();
 		$jinput = JFactory::getApplication()->input;
-		//make the email and send to customer
 		$db	= JFactory::getDBO();
 		$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
 		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
-			
+		
+		if(2 == $params->get('my_price_by_product',0)){
+			$session = JFactory::getSession();
+			$my_licence = $session->get("my_licence",0);
+			$my_licence_text = $params->get('my_license_'.$my_licence.'_name');
+			$my_licence_desc = $params->get('my_license_'.$my_licence.'_desc');
+			$this->assignRef('my_licence', $my_licence);
+			$this->assignRef('my_licence_text', $my_licence_text);
+			$this->assignRef('my_licence_desc', $my_licence_desc);
+		}
 		$query = "SELECT user_id FROM `#__mymuse_order` WHERE `order_number`='".$result['order_number']."'";
 		$db->setQuery($query);
 		$user_id = $db->loadResult();
 		 
-		$order 			= $MyMuseCheckout->getOrder($result['order_id']);
-		if($params->get('my_debug')){
-			$debug = "$date Order = ".print_r($order, true)."\n";
+		$order 	= $MyMuseCheckout->getOrder($result['order_id']);
+		if(is_object($order) && $params->get('my_debug')){
+			$debug = "$date makeMail Order = ".$order->id."\n";
 			MyMuseHelper::logMessage( $debug  );
 		}
+		
+		
 		$shopper 		= $MyMuseShopper->getShopperByUser($user_id );
 		$user 			= JFactory::getUser($user_id);
 		$currency 		= $order->order_currency;
@@ -899,8 +907,11 @@ class myMuseViewCart extends JViewLegacy
 		
 		if($order->notes && $params->get('my_registration') == "no_reg" ){
 
+			$debug = "makeMail Order Notes = ".print_r($order->notes,true)."\n";
+			MyMuseHelper::logMessage( $debug  );
+			//$accparams = new JRegistry( $order->notes);
 			$registry = new JRegistry;
-			$registry->loadString($order->notes);
+			$accparams = $registry->loadString($order->notes);
 			$order->notes = $registry->toArray();
 			/*
 			 first_name=Gord
@@ -947,7 +958,7 @@ class myMuseViewCart extends JViewLegacy
 		$download_header = '';
 		 
 		if($params->get('my_debug')){
-			$debug = "$date Downloadable = ".$order->downloadable."\n";
+			$debug = "$date makeMail Downloadable = ".$order->downloadable."\n";
 			MyMuseHelper::logMessage( $debug  );
 		}
 		$contents  = '';
@@ -970,7 +981,7 @@ class myMuseViewCart extends JViewLegacy
 		$this->assignRef('my_email_msg', $my_email_msg);
 		
 		if($params->get('my_debug')){
-			$debug = "$date Extra Email message: $my_email_msg \n\n";
+			$debug = "$date makeMail Extra Email message: $my_email_msg \n\n";
 			MyMuseHelper::logMessage( $debug  );
 		}
 		
@@ -995,9 +1006,6 @@ class myMuseViewCart extends JViewLegacy
 		$contents .= ob_get_contents();
 		ob_end_clean();
 		
-	//echo $contents; exit;
-		
-		
 		//make sure the payment status is Completed
 		if($order->order_status == "C"){
 			$message = $header . $order->downloadlink . $contents;
@@ -1006,9 +1014,11 @@ class myMuseViewCart extends JViewLegacy
 		}
 		 
 		if($params->get('my_debug')){
-			$debug = "$date Email message: $message \n\n";
-			MyMuseHelper::logMessage( $debug  );
+			//$debug = "$date makeMail Email message: $message \n\n";
+			//MyMuseHelper::logMessage( $debug  );
 		}
+		
+		
 		// email client $user_email, and cc store owner $mailfrom
 		// get mailer object
 		$mailer = JFactory::getMailer();
@@ -1049,7 +1059,8 @@ class myMuseViewCart extends JViewLegacy
 		}
 		if($params->get('my_debug')){
 			MyMuseHelper::logMessage( $debug  );
-		}	
+		}
+		return true;	
 	}
 
 }

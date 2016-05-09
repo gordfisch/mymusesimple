@@ -346,6 +346,7 @@ class MyMuseCart {
         	$fixed['extra'] = $this->cart['extra'];
         }
         $this->cart = $fixed;
+        
         if($licence){
         	$this->cart['licence'] = $licence;
         }

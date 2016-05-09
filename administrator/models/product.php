@@ -1405,13 +1405,13 @@ class MymuseModelproduct extends JModelAdmin
 					echo $db->error;
 				}
 				
-				$q = "DELETE FROM `vl6xc_assets` WHERE `name` LIKE '%mymuse_product%'";
+				$q = "DELETE FROM `#__assets` WHERE `name` LIKE '%mymuse_product%'";
 				$db->setQuery($q);
 			echo $q."<br />";
 				if(!$db->query()){
 					echo $db->error;
 				}
-				$q = "DELETE FROM `vl6xc_assets` WHERE `name` LIKE '%mymuse.category%'";
+				$q = "DELETE FROM `#__assets` WHERE `name` LIKE '%mymuse.category%'";
 				$db->setQuery($q);
 				echo $q."<br />";
 				if(!$db->query()){
@@ -1552,6 +1552,11 @@ class MymuseModelproduct extends JModelAdmin
 				}
 				$artist_array[$artist_alias] = $artist_id;
 			}
+			
+			if($overwrite){
+				
+			}
+			
 			//download file
 			if($download && file_exists($path.DS.$product_name.DS."Download".DS.$download)){
 				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">PAYLOAD: ".$product_name.DS."Download".DS.$download."</span></td></tr>";
@@ -1572,15 +1577,12 @@ class MymuseModelproduct extends JModelAdmin
 				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">NO PAYLOAD FILE: ".$path.DS.$product_name.DS."Download".DS.$download."</span></td></tr>";
 			}
 			
-			//$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">LOCAL PAYLOAD DELETED: ".$product_name.DS."Download".DS.$name."</span></td></tr>";
-			
-			
 			$this->logMessage($string);
 			$string = '';
 		
 			//preview
 			if($preview && file_exists($path.DS.$product_name.DS."Preview".DS.$preview)){
-				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;;\">PREVIEW EXITS: ".$product_name.DS."Preview".DS.$preview."</span></td></tr>";
+				$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;;\">PREVIEW EXISTS: ".$product_name.DS."Preview".DS.$preview."</span></td></tr>";
 				$filename = $path.DS.$product_name.DS."Preview".DS.$preview;
 				$ext =  JFile::getExt($preview);
 				$name = JApplication::stringURLSafe(JFile::stripExt($preview)).'.'.$ext;
@@ -1658,15 +1660,22 @@ class MymuseModelproduct extends JModelAdmin
 				}
 				
 				if(JFile::delete($have_payload)){
-					$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">DELETED file: ".$have_payload."</span></td></tr>";
+					$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">DELETED LOCAL file: ".$have_payload."</span></td></tr>";
 				}else{
-					$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">COULD NOT DELETE file: ".$have_payload."</span></td></tr>";
+					$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">COULD NOT LOCAL DELETE file: ".$have_payload."</span></td></tr>";
+				}
+				if(JFile::delete($have_demo)){
+					$string .= "<tr><td>$i</td><td><span style=\"color: #2222FF;\">DELETED LOCAL file: ".$have_demo."</span></td></tr>";
+				}else{
+					$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">COULD NOT DELETE LOCAL file: ".$have_demo."</span></td></tr>";
 				}
 				
 			}else{
 				
 				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">NO PAYLOAD FILE!!!!!</span></td></tr>";
 			}
+			//spacer
+			$string .= "<tr><td>&nbsp;</td><td>&nbsp;</td></tr>";
 			$this->logMessage($string);
 			$string = '';
 		}

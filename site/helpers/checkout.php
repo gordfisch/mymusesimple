@@ -58,6 +58,7 @@ class MyMuseCheckout
 		$MyMuseCart  	=& MyMuse::getObject('cart','helpers');
 
 		$shopper 		=& $MyMuseShopper->getShopper();
+		//print_pre($shopper); exit;
 		$store 			= $MyMuseStore->getStore();
 		$cart 			= $MyMuseCart->cart;
 		$cart_order 	= $MyMuseCart->buildOrder(0,1);

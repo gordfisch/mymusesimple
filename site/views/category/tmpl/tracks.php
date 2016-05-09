@@ -26,6 +26,7 @@ $check 		= 1;
 $count		= 0;
 $listOrder	= $this->sortColumn;
 $listDirn	= $this->sortDirection;
+$searchword = $this->searchword;
 //$return_link = 'index.php?option=com_mymuse&view=product&task=product&id='.$category->id.'&catid='.$category->catid.'&Itemid='.$Itemid;
 $canEdit	= $category->params->get('access-edit',0);
 $lang = JFactory::getLanguage();
@@ -204,10 +205,10 @@ $document->addScriptDeclaration($js);
 
 
 
-
 <!--  INLINE PARENT  -->
+<?php  if($this->parent->id > 0){	?>
 <div id="parent">
-<div id="mini-cart">
+<div id="mini-cart-top">
 <div id="mini-cart-content">
 <div id="mini-cart-parent-text">
 <a href="<?php echo JRoute::_("index.php?option=com_mymuse&view=category&layout=alpha&id=".$this->parent->id); ?>">
@@ -216,7 +217,9 @@ $document->addScriptDeclaration($js);
 </div>
 </div>
 </div>
+<?php }?>
 <!--  END INLINE PARENT  -->
+
 	
 <?php if($this->params->get('show_minicart')) :?>
 <!--  INLINE MINICART  -->
@@ -244,7 +247,6 @@ endif;
 <?php  endif; ?>
 
 <?php 
-
 if ( ($this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit'))) : ?>
 <!--  FILTERS  -->
 	<form method="post" action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" id="adminForm">
@@ -259,7 +261,7 @@ if ( ($this->params->get('filter_field') != 'hide' || $this->params->get('show_p
 		<tr>
 		<?php if ($this->params->get('filter_field') != 'hide') : ?>
 			<td align="left" width="60%" nowrap="nowrap">
-				<?php echo JText::_('MYMUSE_TITLE_FILTER').'&nbsp;'; ?>
+				Filter
 				<input type="text" name="searchword" value="<?php echo $this->escape($this->state->get('list.searchword')); ?>" 
 				style="width:80%"
 				onchange="this.start.value=0;this.form.submit();" />
@@ -398,11 +400,6 @@ endif; ?>
 
 
 
-<form method="post" action="<?php JRoute::_('index.php?lang='.$langtag) ?>" onsubmit="return hasProduct(this,<?php echo $count; ?>);" name="mymuseform">
-<input type="hidden" name="option" value="com_mymuse" />
-<input type="hidden" name="task" value="addtocart" />
-<input type="hidden" name="catid" value="<?php echo $category->catid; ?>" />
-<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
 
 <!--  START PRODUCT VIEW -->	
 <div class="mymuse">
@@ -433,7 +430,16 @@ endif; ?>
 
 <div class="product-content">
 <?php if( $params->get('show_title') ): ?>
-    <h2 class="product-title"><?php echo $category->title ?></h2>
+    <h2 class="product-title">
+    <?php if($searchword){ ?>
+    Search
+    <?php } ?>
+    <?php echo $category->title ?>
+    <?php if($searchword){ 
+    	echo ": ".$searchword;
+     } ?>
+    
+    </h2>
  <?php endif; ?>   
   
  <?php if( $params->get('show_rlease_info') ): ?>
@@ -534,7 +540,31 @@ endif; ?>
  </div>
 <div style="clear: both"></div>
 <!-- END RECORDING INFO -->
-
+<div class="moduletable ">
+	<div class="search">
+	<form action="" method="get" class="form-inline">
+		<label for="mod-search-searchword" class="element-invisible">Type your search and press enter...</label> 
+        <input name="searchword" id="mod-search-searchword" maxlength="200" class="inputbox search-query" 
+        placeholder="Type your search and press enter..." type="search">		
+		<input name="option" value="com_mymuse" type="hidden">
+		<input name="Itemid" value="<?php echo $Itemid; ?>" type="hidden">
+        <input name="view" value="category" type="hidden">
+        <input name="catid" value="<?php echo $category->id; ?>" type="hidden">
+        <input name="id" value="<?php echo $category->id; ?>" type="hidden">
+        <input name="layout" value="tracks" type="hidden">
+        <input name="filter_order" value="a.ordering" type="hidden">
+        <input name="filter_order_Dir" value="" type="hidden">
+        <input name="filter_alpha" value="" type="hidden">
+        <input name="lang" value="en-GB" type="hidden">
+        <input name="language" value="en-GB" type="hidden">
+        <input name="limit" value="1000" type="hidden">
+	</form>
+</div>
+<form method="post" action="<?php JRoute::_('index.php?lang='.$langtag) ?>" onsubmit="return hasProduct(this,<?php echo $count; ?>);" name="mymuseform">
+<input type="hidden" name="option" value="com_mymuse" />
+<input type="hidden" name="task" value="addtocart" />
+<input type="hidden" name="catid" value="<?php echo $category->catid; ?>" />
+<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
 
 <?php if(count($tracks)) : ?>
 <!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->

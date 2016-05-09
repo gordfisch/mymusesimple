@@ -41,7 +41,7 @@ class MymuseViewCategory extends JViewLegacy
 		$jinput 				= $app->input;
 		$MyMuseCart 			=& MyMuse::getObject('cart','helpers');
 		$this->cart 			=& $MyMuseCart->cart;
-		
+
 		// Get some data from the models
 		$state					= $this->get('State');
 		$params					= $state->params;
@@ -51,16 +51,17 @@ class MymuseViewCategory extends JViewLegacy
 		$this->sortColumn       = $state->get('list.ordering');
 		$this->filterAlpha      = $jinput->get('filter_alpha', '', 'STRING');
 		$layout   				= $jinput->get("layout",'');
+		$searchword   			= $jinput->get("searchword",'');
 		
 		if($layout){
 			$this->setLayout($layout);
 		}
-		
+
 		$menu	= $app->getMenu();
 		$item	= $menu->getItem($this->Itemid);
 
 		$top_cat = $item->query['id'];
-		if($params->get('category_layout') == "_:tracks"){
+		if($params->get('category_layout') == "_:tracks" && $this->getLayout() != "alpha" ){
 			$res	= $this->get('Items');
 			//echo "here"; print_pre($res); exit;
 			$items = $res[0];
@@ -68,7 +69,8 @@ class MymuseViewCategory extends JViewLegacy
 			$pagination = $res[2];
 		}else{
 			$category	= $this->get('Category');
-			$items		= $this->get('Items');
+			//$items		= $this->get('Items');
+			$items = array();
 			$pagination = $this->get('Pagination');
 		}
 		// Setup the category parameters.
@@ -226,6 +228,7 @@ class MymuseViewCategory extends JViewLegacy
 			}
 		}
 
+
 		$children = array($category->id => $children);
 
 		//Escape strings for HTML output
@@ -240,6 +243,7 @@ class MymuseViewCategory extends JViewLegacy
 		$this->assignRef('parent', $parent);
 		$this->assignRef('pagination', $pagination);
 		$this->assignRef('user', $user);
+		$this->assignRef('searchword', $searchword);
 
 		$this->_prepareDocument();
 		$layout = $this->getLayout();

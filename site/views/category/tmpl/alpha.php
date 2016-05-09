@@ -86,17 +86,13 @@ $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams
 	</h2>
 	<?php endif; ?>
 	
-	http://localhost/mymusetest35/en/?option=com_mymuse&layout=tracks&view=category&catid=621&Itemid=700&
-	filter_order=a.ordering&searchword=Comedy&id=621&filter_order_Dir=&filter_alpha
-	&language=en-GB&lang=en-GB&return=L215bXVzZXRlc3QzNS9pbmRleC5waHA/b3B0aW9uPWNvbV9teW11c2UmaWQ9NjEwJnZpZXc9Y2F0ZWdvcnkmSXRlbWlkPTY5Mg==
-	
+
 <div class="moduletable ">
 	<div class="search">
 	<form action="" method="get" class="form-inline">
-	<?php echo $category->id;?>
-		<label for="mod-search-searchword" class="element-invisible">Search ...</label> 
+		<label for="mod-search-searchword" class="element-invisible">Type your search and press enter...</label> 
         <input name="searchword" id="mod-search-searchword" maxlength="200" class="inputbox search-query" 
-        placeholder="Search ..." type="search">		
+        placeholder="Type your search and press enter..." type="search">		
 		<input name="option" value="com_mymuse" type="hidden">
 		<input name="Itemid" value="<?php echo $Itemid; ?>" type="hidden">
         <input name="view" value="category" type="hidden">
@@ -108,7 +104,7 @@ $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams
         <input name="filter_alpha" value="" type="hidden">
         <input name="lang" value="en-GB" type="hidden">
         <input name="language" value="en-GB" type="hidden">
-        <input name="limit" value="10" type="hidden">
+        <input name="limit" value="1000" type="hidden">
 
 	</form>
 </div>	
