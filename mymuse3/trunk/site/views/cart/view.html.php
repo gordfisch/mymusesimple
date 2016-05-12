@@ -219,7 +219,7 @@ class myMuseViewCart extends JViewLegacy
 					}
 				}
 				
-				if($order->notes && $params->get('my_registration') == "no_reg" ){
+				if(isset($order->notes) && $params->get('my_registration') == "no_reg" ){
 
 					$registry = new JRegistry;
 					$registry->loadString($order->notes);
@@ -403,8 +403,8 @@ class myMuseViewCart extends JViewLegacy
 		if(2 == $params->get('my_price_by_product',0)){
 			$session = JFactory::getSession();
 			$my_licence = $session->get("my_licence",0);
-			$my_licence_text = '';
 			$this->assignRef('my_licence', $my_licence);
+			$my_licence_text = '';
 			for ($i = 0; $i < 5; $i++){
 				if(null != $params->get('my_license_'.$i.'_name')
 						&& null != $params->get('my_license_'.$i.'_price')){
@@ -421,7 +421,7 @@ class myMuseViewCart extends JViewLegacy
 					'class="inputbox" size="1" id="licence"', 'value', 'text', $this->my_licence );
 			$this->assignRef('licence', $licence);	
 			$this->assignRef('lists', $lists);
-			$this->assignRef('my_licence', $my_licence);
+			
 			$this->assignRef('my_licence_text', $my_licence_text);
 		}
 

@@ -377,7 +377,7 @@ jQuery(document).ready(function(){
 			}else{
 				echo '<span class="licence-text">'.$this->my_licence_text.'</span>';
 			}
-			if(isset($this->lists['licences'])){
+			if(isset($this->lists['licences']) && $task != "confirm"){
 				foreach($this->licence as $i=>$licence){
 					if($i == $this->my_licence){
 						$display = "block";
@@ -387,7 +387,7 @@ jQuery(document).ready(function(){
 					$style = 'style="display:'.$display.'"';
 					echo '<div id="licence_desc_'.$i.'" class="licence-text" '.$style.'>'.nl2br($licence['desc']).'</div>';
 				}
-			}elseif(isset($this->my_licence_desc)){
+			}elseif(isset($this->my_licence_desc) && $task != "confirm"){
 				echo '<div id="licence_desc_'.$params->get('my_price_by_product',0).'" class="licence-text">'.nl2br($this->my_licence_desc).'</div>';
 			}
 		}
