@@ -648,7 +648,9 @@ class MymuseTableproduct extends JTable
 			$res = $dispatcher->trigger('onFinderAfterSave', array('com_mymuse.product', $this, $isNew));
 			JPluginHelper::importPlugin('mymuse');
 			$res = $dispatcher->trigger('onMyMuseAfterSave', array('com_mymuse.product', $this, $isNew));
-			$app->enqueueMessage($res[0], 'Notice');
+			if(isset($res[0])){
+				$app->enqueueMessage($res[0], 'Notice');
+			}
 			
 		}else{
 			
