@@ -203,7 +203,7 @@ class MymuseTableproduct extends JTable
 	
 		$date			= JFactory::getDate();
 		$user			= JFactory::getUser();
-		
+	
 		jimport('joomla.filesystem.file');
 		jimport('joomla.filesystem.folder');
 		$db = JFactory::getDBO();

@@ -1465,8 +1465,7 @@ class MymuseModelproduct extends JModelAdmin
 				$artist_array [$artist_alias] = $artist_id;
 			}
 			$this->logMessage ( $string );
-		}
-		
+		}		
 		
 		
 		$csv = $this::readCSV($mycsv);
@@ -1566,10 +1565,10 @@ class MymuseModelproduct extends JModelAdmin
 				
 				$have_payload = $path.DS.$product_name.DS."Download".DS.$name;
 				if(file_exists($have_payload)){
-					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;\">PAYLOAD EXISTS: ".$have_payload."</span></td></tr>";
+					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;\">PAYLOAD EXISTS: ".$product_name.DS."Download".DS.$name."</span></td></tr>";
 				}else{
 					JFile::copy($filename, $have_payload);
-					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;\">PAYLOAD copied to: ".$have_payload."</span></td></tr>";
+					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;\">PAYLOAD copied: ".$product_name.DS."Download".DS.$name."</span></td></tr>";
 					
 				}
 		
@@ -1588,14 +1587,14 @@ class MymuseModelproduct extends JModelAdmin
 				$name = JApplication::stringURLSafe(JFile::stripExt($preview)).'.'.$ext;
 				$have_demo = $path.DS.$product_name.DS."Preview".DS.$name;
 				if(file_exists($have_demo)){
-					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;;\">Preview Exists: ".$have_demo."</span></td></tr>";
+					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;;\">Preview Exists: ".$product_name.DS."Preview".DS.$name."</span></td></tr>";
 				}else{
 					JFile::copy($filename, $have_demo);
-					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;;\">Preview copied: ".$have_demo."</span></td></tr>";
+					$string .= "<tr><td>$i</td><td><span style=\"color: ##1D854C;;\">Preview copied: ".$product_name.DS."Preview".DS.$name."</span></td></tr>";
 				}
 				//echo "Found Preview $have_demo <br />";
 			}else{
-				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">NO PREVIEW FILE: ".$path.DS.$product_name.DS."Preview".DS.$preview."</span></td></tr>";
+				$string .= "<tr><td>$i</td><td><span style=\"color: #FF0000;\">NO PREVIEW FOUND".$path.DS.$product_name.DS."Preview".DS.$preview."</span></td></tr>";
 				//echo "NO PREVIEW FILE $download <br />";
 			}
 			$this->logMessage($string);
