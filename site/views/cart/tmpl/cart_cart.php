@@ -313,7 +313,7 @@ jQuery(document).ready(function(){
 		    <?php if($order->do_html){ ?>
 		        <td class="mobile-hide cart" >&nbsp;</td>
 		    <?php  } ?>
-		
+		</tr>
 		
 		<?php if($order->do_html){ ?>
 		<tr>

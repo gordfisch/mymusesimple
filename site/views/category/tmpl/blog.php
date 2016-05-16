@@ -30,6 +30,7 @@ $document->setMetaData( 'twitter:creator', $this->params->get('twitter_handle'))
 $document->setMetaData( 'twitter:url', $cat_uri);
 $document->setMetaData( 'twitter:description', strip_tags($description));
 $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams()->get('image'));
+
 ?>
 
 <?php  echo $category->event->beforeDisplayHeader; ?>
@@ -142,7 +143,8 @@ $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams
 	<?php echo $this->loadTemplate('links'); ?>
 
 <?php endif; ?>
-<?php if (($this->params->def('show_pagination', 1) == 1  || ($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
+<?php if (($this->params->def('show_pagination', 1) == 1  || 
+			($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
 		<div class="pagination">
 						<?php  if ($this->params->def('show_pagination_results', 1)) : ?>
 						<p class="counter">

@@ -143,7 +143,7 @@ class plgMymuseAudio_amplitude extends JPlugin
 	
 			$path = JPATH_ROOT . self::$_my_amplitude_playlist_path . $filename;
 			$url = JURI::root(). self::$_my_amplitude_playlist_path . $filename;
-		//echo "Using playlist: ".$path. " view = ".$jinput->get('view'). " id = ".$jinput->get('id');
+		//echo "Using playlist: ".$path. " view = ".$jinput->get('view'). " id = ".$jinput->get('id'). " catid = ".$jinput->get('catid');
 			if (! file_exists ( $path )) {
 				echo "<br /><br />No playlist: ".$path."<br />";
 				echo "Please save a product in MyMuse to generate playlists<br />";
@@ -221,7 +221,7 @@ class plgMymuseAudio_amplitude extends JPlugin
 //echo "index = $index <br />";
             $html = '
 <div class="amplitude-song-container">
-    <div class="amplitude-song-container amplitude-play-pause" amplitude-song-index="'.$index.'">
+    <div class="amplitude-song-container amplitude-play-pause " amplitude-song-index="'.$index.'">
         <div class="play-pause" amplitude-main-play-pause="false"></div>
         <div class="playlist-meta">
             <div class="now-playing-title" style="display:none;">'.$this->playlist[$index]['name'].'</div>
@@ -247,6 +247,12 @@ class plgMymuseAudio_amplitude extends JPlugin
 		return true;
 	}
     
+	/**
+	 * amplitude
+	 * onMyMuseAfterSave
+	 * 
+	 * Create catalog for amplitude
+	 */
     function onMyMuseAfterSave()
     {
 
@@ -256,17 +262,7 @@ class plgMymuseAudio_amplitude extends JPlugin
     	$db 		= JFactory::getDBO();
     	$catid 		= $this->params->get('my_amplitude_catid');
     	$params 	= MyMuseHelper::getParams();
-    	
-        $all = array();
-        $first 					= new StdClass;
-        $first->name 			= " ";
-        $first->artist 			= $this->params->get('my_amplitude_first_artist');
-        $first->album 			= $this->params->get('my_amplitude_first_album');
-        $first->url				= JURI::root().$this->params->get('my_amplitude_first_url');
-        $first->cover_art_url	= $this->params->get('my_amplitude_first_cover');
-        $all['songs'][] 		= $first;
-        $allcats = array();
-        
+   
         $playlist_path = JPATH_ROOT . rtrim($this->params->get('my_amplitude_playlist_path'),'/');
         if(!JFolder::exists($playlist_path)){
         	JFolder::create($playlist_path);
@@ -274,6 +270,18 @@ class plgMymuseAudio_amplitude extends JPlugin
         $playlist_path .= DS;
         $album_art_path = JPATH_ROOT . rtrim($this->params->get('my_amplitude_album_art_path'),'/');
         $album_art_path .= DS;
+        
+        $all = array();
+        $first 					= new StdClass;
+        $first->name 			= " ";
+        $first->artist 			= $this->params->get('my_amplitude_first_artist');
+        $first->album 			= $this->params->get('my_amplitude_first_album');
+        $first->url				= JURI::root() .$this->params->get('my_amplitude_first_url');
+        $first->cover_art_url	= JURI::root() .$this->params->get('my_amplitude_first_cover');
+        $all['songs'][] 		= $first;
+        $allcats = array();
+
+        
 
         $query = "SELECT alias from #__categories WHERE id=$catid";
         $db->setQuery($query);
@@ -308,10 +316,14 @@ class plgMymuseAudio_amplitude extends JPlugin
     		if($tracks = $db->loadObjectList()){
     			
                 $i = 0;
-                echo '<br />';
     			foreach ($tracks as $track){
     				$site_url = MyMuseHelper::getSiteUrl($track->parentid,1);
 					$track->url = $site_url.$track->url;
+					if(!$track->cover_art_url){
+						$track->cover_art_url = $first->cover_art_url;
+					}else{
+						$track->cover_art_url = $site_url.$track->cover_art_url;
+					}
 					unset($track->parentid);
     				$arr['songs'][] = $track;
     			}
@@ -334,7 +346,7 @@ class plgMymuseAudio_amplitude extends JPlugin
     			//echo "<br />";
     		}else{
     			$text .= "No tracks for $filename <br />";
-    			$text .= $track_query;
+    			//$text .= $track_query;
     		//echo $query;
     		}
     	}
@@ -348,6 +360,9 @@ class plgMymuseAudio_amplitude extends JPlugin
             foreach ($tracks as $track){
             	$site_url = MyMuseHelper::getSiteUrl($track->parentid,1);
             	$track->url = $site_url.$track->url;
+            	if(!$track->cover_art_url){
+            		$track->cover_art_url = $first->cover_art_url;
+            	}
             	unset($track->parentid);
                 $all['songs'][] = $track;
             }
@@ -367,6 +382,7 @@ class plgMymuseAudio_amplitude extends JPlugin
     		fwrite($fh,$jstring);
     		fclose($fh);
     		$text .= $file." <br />";
+    		//$text .= $jstring." <br />";
     	}else{
     		$text .=  "Could not open file for writing $file";
     	}
@@ -392,7 +408,7 @@ class plgMymuseAudio_amplitude extends JPlugin
             WHERE p.parentid>0 
         		AND (parent.catid IN (".$catin.") OR parent.artistid IN (".$catin.") )
         		AND p.product_allfiles=0
-            ORDER BY parent.product_made_date DESC, parent.created DESC, p.product_sku"; //
+            ORDER BY parent.product_made_date DESC, parent.created DESC, p.title"; //
         return $track_query;
     }
 }

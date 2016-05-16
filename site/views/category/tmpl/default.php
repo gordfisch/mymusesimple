@@ -59,7 +59,9 @@ $category = $this->category;
 
 	<?php if ($this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>
 	<div class="category-desc">
-		<?php if ($this->params->get('show_description_image') && $this->category->getParams()->get('image')) : ?>
+		<?php if ($this->params->get('show_description_image') && $this->category->getParams()->get('image')) : 
+		echo $this->category->getParams()->get('image');
+		?>
 			<img src="<?php echo $this->category->getParams()->get('image'); ?>"
 			<?php if ($this->params->get('category_image_height')) : ?>
 				style="height: <?php echo $this->params->get('category_image_height'); ?>px; "
