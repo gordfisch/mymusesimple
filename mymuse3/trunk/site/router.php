@@ -289,7 +289,7 @@ function MymuseBuildRoute(&$query)
  */
 function MymuseParseRoute($segments)
 {
-	//echo 'segments'; print_r($segments); exit;
+	
 	$vars = array();
 	if(!defined('DS')){
 		define('DS',DIRECTORY_SEPARATOR);
@@ -313,7 +313,7 @@ function MymuseParseRoute($segments)
 
 	// Count route segments
 	$count = count($segments);
-
+	
 	// Standard routing for products.  If we don't pick up an Itemid then we get the view from the segments
 	// the first segment is the view and the last segment is the id of the product or category.
 	if (!isset($item)) {
@@ -440,14 +440,14 @@ function MymuseParseRoute($segments)
         	return $vars;
         }
         
-        
+
 		if($params->get('my_use_alias')){
 			
 			if(strpos($segments[0],':')){
                 $orig_segments = $segments;
 				$segments[0] = preg_replace('/:/',"-",$segments[0]);
 			}
-			
+		print_pre($segments); exit;	
 			//check if this is a category alias.
 			$query = 'SELECT id from #__categories WHERE alias="'.$segments[0].'" and extension="com_mymuse"';
 			
@@ -456,6 +456,7 @@ function MymuseParseRoute($segments)
 				$vars['option'] = 'com_mymuse';
 				$vars['view'] = 'category';
 				$vars['id'] = (int)$category->id;
+				print_pre($vars); exit;
 				return $vars;
 			}
 			
@@ -468,7 +469,7 @@ function MymuseParseRoute($segments)
 				$vars['view'] = 'product';
 				$vars['id'] = (int)$product->id;
 				$vars['catid'] = (int)$product->catid;
-
+				print_pre($vars); exit;
 				return $vars;
 			}
 			
@@ -519,26 +520,26 @@ function MymuseParseRoute($segments)
 			$segments[0] = preg_replace('/:/',"-",$segments[0]);
 			$segments[1] = preg_replace('/:/',"-",$segments[1]);
 		}
-		$query = 'SELECT id,catid from #__mymuse_product WHERE alias="'.$segments[0].'"';
+		$query = 'SELECT id,artistid from #__mymuse_product WHERE alias="'.$segments[0].'"';
 	
 		$dbo->setQuery($query);
 		if($product = $dbo->loadObject()){
 			$vars['option'] = 'com_mymuse';
 			$vars['view'] = 'product';
 			$vars['id'] = (int)$product->id;
-			$vars['catid'] = (int)$product->catid;
+			$vars['catid'] = (int)$product->artistid;
 	
 			return $vars;
 		}
 		
-		$query = 'SELECT id,catid from #__mymuse_product WHERE alias="'.$segments[1].'"';
+		$query = 'SELECT id,artistid from #__mymuse_product WHERE alias="'.$segments[1].'"';
 		
 		$dbo->setQuery($query);
 		if($product = $dbo->loadObject()){
 			$vars['option'] = 'com_mymuse';
 			$vars['view'] = 'product';
 			$vars['id'] = (int)$product->id;
-			$vars['catid'] = (int)$product->catid;
+			$vars['catid'] = (int)$product->artistid;
 		
 			return $vars;
 		}

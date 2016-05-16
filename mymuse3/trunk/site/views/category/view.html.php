@@ -69,8 +69,7 @@ class MymuseViewCategory extends JViewLegacy
 			$pagination = $res[2];
 		}else{
 			$category	= $this->get('Category');
-			//$items		= $this->get('Items');
-			$items = array();
+			$items		= $this->get('Items');
 			$pagination = $this->get('Pagination');
 		}
 		// Setup the category parameters.
@@ -78,9 +77,6 @@ class MymuseViewCategory extends JViewLegacy
 		$category->params = clone($params);
 		$category->params->merge($cparams);
 		
-		
-	
-		//params[category_layout] => _:tracks
 		
 		$children	= $this->get('Children');
 		$parent		= $this->get('Parent');

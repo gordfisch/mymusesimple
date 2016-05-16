@@ -14,11 +14,13 @@ div#play-pause.amplitude-paused, div#play-pause.amplitude-playing, div.play-paus
 	background-color: #222;
 }
 
+
+
 #footer-player-wrapper {
 	background:#222;	
 	width: 100%;
-	position: fixed;
-	bottom: 0px;
+
+	height: 50px;
 	z-index: 100;
 	box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.8);	
 }
@@ -147,7 +149,7 @@ span.album-information{
 div#song-time-visualization{
     height: 5px;
     width: 100%;
-    margin-top: 7px;
+   
     background-color: #bcbcbc;
 }
 div#song-time-visualization div.amplitude-song-time-visualization-status{

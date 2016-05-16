@@ -146,7 +146,7 @@ if(count($params->get('my_formats') > 1) && $params->get('my_price_by_product'))
 			jQuery(formats[jQuery(select_id).val()]+"_"+id).show();'."\n}";
 }
 
-   // print_pre($params);
+   //print_pre($params);
         
 
 $url = JURI::Root()."index.php?option=com_mymuse&task=ajaxtogglecart";

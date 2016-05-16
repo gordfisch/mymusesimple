@@ -779,12 +779,17 @@ class MyMuseCart {
 
 		$order->colspan=3;
 		if($params->get("my_show_cart_preview")){
-			$order->colspan=4;
+			$order->colspan = 4;
 		} 
+		if($params->get("my_show_sku")){
+			$order->colspan = 5;
+		}
+		
 		$order->colspan2 = 1;
 		if(@$order->do_html){
 			$order->colspan2 = 1;
 		}
+		
 		
 		//licence and notes
 		$order->licence = isset($this->cart["licence"])? $this->cart["licence"] : '';

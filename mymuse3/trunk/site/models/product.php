@@ -437,6 +437,7 @@ class MyMuseModelProduct extends JModelItem
 			
 			$orderby = "ORDER BY $ordering $listDirn
 			";
+
 			if($secondaryOrder){
 				//$orderby .= ", $secondaryOrder ";
 			}
