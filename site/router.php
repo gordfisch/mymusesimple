@@ -447,7 +447,7 @@ function MymuseParseRoute($segments)
                 $orig_segments = $segments;
 				$segments[0] = preg_replace('/:/',"-",$segments[0]);
 			}
-		print_pre($segments); exit;	
+		
 			//check if this is a category alias.
 			$query = 'SELECT id from #__categories WHERE alias="'.$segments[0].'" and extension="com_mymuse"';
 			
@@ -456,7 +456,6 @@ function MymuseParseRoute($segments)
 				$vars['option'] = 'com_mymuse';
 				$vars['view'] = 'category';
 				$vars['id'] = (int)$category->id;
-				print_pre($vars); exit;
 				return $vars;
 			}
 			
@@ -469,7 +468,6 @@ function MymuseParseRoute($segments)
 				$vars['view'] = 'product';
 				$vars['id'] = (int)$product->id;
 				$vars['catid'] = (int)$product->catid;
-				print_pre($vars); exit;
 				return $vars;
 			}
 			

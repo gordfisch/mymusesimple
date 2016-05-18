@@ -387,7 +387,7 @@ class MyMuseModelProduct extends JModelItem
 			$othercats = array_unique($othercats);
 			$this->_item[$pk]->othercats = $othercats;
 
-			
+	
 			
 			// TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS 
 			// get child tracks with prices
