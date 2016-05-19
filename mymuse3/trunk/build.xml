@@ -13,6 +13,10 @@
         <fileset dir="./administrator" id="admin_files">
                 <include name="**" />
         </fileset>
+        
+        <fileset dir="./plugins/audio_amplitude/media" id="plugin_amplitude_media_files">
+                <include name="**" />
+        </fileset>
 
         <fileset dir="${src}" id="allfiles">
                 <include name="administrator/*" />
@@ -439,7 +443,11 @@
         	            todir="${test}/plugins/content/mymuse_shortcode" />
         	    <copy file="${src}/plugins/mymuse_shortcode/mymuse_shortcode.xml"
         	              todir="${test}/plugins/content/mymuse_shortcode" /> 
-        	
+        	              
+        	              
+        		<copy todir="${test}/media/com_mymuse/images">
+                        <fileset refid="plugin_amplitude_media_files" />
+                </copy>
                 <!--  modules -->
                 <copy todir="${test}/modules/mod_mymuse_minicart">
                         <fileset refid="mod_minicart_files" />

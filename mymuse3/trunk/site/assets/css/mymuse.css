@@ -294,32 +294,45 @@ td.mynewsubtotal, td.mytaxname, td.mytax, td.mytotal, td.mydiscount,
 /* end of hide player */
 
 /* Minicart on page */
-#mini-cart-top{
-	width: 240px;
+#parent {
+ float:left;
+position: relative;
+padding-bottom: 10px;
+}
+#mini-cart {
+ float:right;
+position: relative;
+padding-bottom: 10px;
+}
+
+
+.mini-cart-top{
+	width: 300px;
 	background: rgba(0, 0, 0, 0.2);
 	border-radius: 14px;
 	padding: 8px;
 }
-#mini-cart-content{
+.mini-cart-content{
 	border-radius: 8px;
 	background: #FFF none repeat scroll 0% 0%;
 	padding: 10px;
+	height: 40px;
 }
-#mini-cart-cart, #mini-cart-text, #mini-cart-link {
+.mini-cart-cart, .mini-cart-text, .mini-cart-link {
     display: table-cell;
     vertical-align: middle;
     text-align: center;
     font-size: 125%;
 }
-#mini-cart-cart {
+.mini-cart-cart {
 	background: url('../images/cart.png') no-repeat scroll 0% 0%;
 	width: 34px;
 	height: 24px;
 }
-#mini-cart-text {
-    padding: 5px 10px;
-
+.mini-cart-text, .mini-cart-link {
+    padding: 1px 10px;
 }
+
 
 
 

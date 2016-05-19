@@ -146,9 +146,6 @@ if(count($params->get('my_formats') > 1) && $params->get('my_price_by_product'))
 			jQuery(formats[jQuery(select_id).val()]+"_"+id).show();'."\n}";
 }
 
-   //print_pre($params);
-        
-
 $url = JURI::Root()."index.php?option=com_mymuse&task=ajaxtogglecart";
 foreach($tracks as $track){
 
@@ -272,9 +269,9 @@ $document->addScriptDeclaration($js);
 	
 <!--  INLINE PARENT  -->
 <div id="parent">
-<div id="mini-cart-top">
-<div id="mini-cart-content">
-<div id="mini-cart-text">
+<div class="mini-cart-top">
+<div class="mini-cart-content">
+<div class="mini-cart-text">
 <a href="<?php echo JRoute::_("index.php?option=com_mymuse&view=category&id=".$product->artist->parent_id); ?>">
 <?php echo $product->artist->parent_title; ?></a>
 </div>
@@ -287,16 +284,16 @@ $document->addScriptDeclaration($js);
 <!--  INLINE MINICART  -->
 <!--  the cart box  -->
 <div id="mini-cart">
-<div id="mini-cart-top">
-<div id="mini-cart-content">
-<div id="mini-cart-cart"></div>
-<div id="mini-cart-text"><?php
+<div class="mini-cart-top">
+<div class="mini-cart-content">
+<div class="mini-cart-cart"></div>
+<div class="mini-cart-text"><?php
 if($this->cart['idx']) :
     $word = ($this->cart['idx'] == 1) ? "item" : "items"; 
     echo $this->cart['idx']." $word";
 endif;
 ?></div>
-<div id="mini-cart-link"><?php
+<div class="mini-cart-link"><?php
 if($this->cart['idx']) :
     echo '<a href="'.JRoute::_('index.php?option=com_mymuse&view=cart&task=showcart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>';
 else :

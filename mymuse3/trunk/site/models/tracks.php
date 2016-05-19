@@ -503,7 +503,7 @@ class MyMuseModelTracks extends JModelList
         		}
         	}
         }
-        
+     
         $preview_tracks = array();
 		//check date, prices add flash
 		while (list($i,$track)= each( $tracks))
@@ -588,8 +588,13 @@ class MyMuseModelTracks extends JModelList
         $prev_dir .= $params->get('my_use_s3')? '' :  $params->get('my_preview_dir');
          
 
-        if(count($preview_tracks) && ($params->get('product_player_type') == "each" || 
-            $params->get('product_player_type') == "single")){
+        if(count($preview_tracks) && 
+        		($params->get('product_player_type') == "each" || 
+            	$params->get('product_player_type') == "single" ||
+        		$params->get('product_player_type') == "module"
+        		)
+        		
+        	){
             reset($preview_tracks);
             $count = count($tracks);
             while (list($i,$track) = each( $preview_tracks )){
@@ -605,9 +610,6 @@ class MyMuseModelTracks extends JModelList
                 //echo "artist alias $album_alias $artist_alias";
                 if($track->file_preview){
 
-                   
-                    
-                    
                     $track->path = $prev_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->file_preview;
                     $track->real_path = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview;
                     if($track->file_preview_2){
@@ -661,9 +663,13 @@ class MyMuseModelTracks extends JModelList
 
             }//end for each track
         }
-
         
-        if(count($preview_tracks) && $params->get('product_player_type') == "single"){
+        if(count($preview_tracks) 
+        		&& ( $params->get('product_player_type') == "single"
+        		|| $params->get('product_player_type') == "module" )
+        		){
+        	
+        
         	// make a controller for the play/pause buttons
         	$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$preview_tracks) );
             
@@ -737,7 +743,7 @@ class MyMuseModelTracks extends JModelList
                 }
                 
             }
-            
+ 
             if($type == "video"){
                 // movie
                 $flash = '<!-- Begin Player -->';

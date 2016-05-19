@@ -61,9 +61,9 @@ class MymuseViewCategory extends JViewLegacy
 		$item	= $menu->getItem($this->Itemid);
 
 		$top_cat = $item->query['id'];
+
 		if($params->get('category_layout') == "_:tracks" && $this->getLayout() != "alpha" ){
 			$res	= $this->get('Items');
-			//echo "here"; print_pre($res); exit;
 			$items = $res[0];
 			$category = $res[1];
 			$pagination = $res[2];

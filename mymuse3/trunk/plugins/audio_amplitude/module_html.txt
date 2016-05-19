@@ -1,0 +1,21 @@
+<div id="footer-player">
+	<div id="footer-player-wrapper">
+		<div>
+			<div id="large-player">
+				<div id="top-bar">
+					<div id="window-size-buttons">&nbsp;</div>
+					<div id="large-player-controls">&nbsp;</div>
+					<div id="now-playing-song-display"><img id="top-bar-album-art" alt="" />
+						<div id="now-playing-song-meta-container">
+							<div class="current-time"><span class="amplitude-current-minutes">0</span>:<span class="amplitude-current-seconds">00</span>
+							</div><span class="now-playing-title"></span><br /><span class="album-information"><span></span> - <span></span></span>
+							<div class="time-duration"><span class="amplitude-duration-minutes">0</span>:<span class="amplitude-duration-seconds">00</span>
+							</div>
+							<div id="song-time-visualization" class="amplitude-song-time-visualization">&nbsp;</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

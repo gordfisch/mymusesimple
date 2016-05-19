@@ -188,6 +188,7 @@ class plgMymuseAudio_amplitude extends JPlugin
 	 */
 	function onPrepareMyMuseMp3Player(&$track, $type='single', $height=0, $width=0, $index=0, $count=0)
 	{
+
         $arr 			= self::getPlaylist();
         $this->indexes 	= $arr[0];
         $this->playlist = $arr[1];
@@ -197,7 +198,7 @@ class plgMymuseAudio_amplitude extends JPlugin
 		$match 		= 0;
 		$params 	= MyMuseHelper::getParams();
 
-		if($type == 'singleplayer' || $type == 'single'){
+		if($type == 'singleplayer' || $type == 'single' || $type = 'module'){
 			$id = 1;
 		}else{
 			$id = $index + 1;
@@ -208,7 +209,7 @@ class plgMymuseAudio_amplitude extends JPlugin
         }
 
 		//SINGLE PLAYER MAKE PLAY BUTTONS//
-		if($type=='single'){
+		if($type == 'single' || $type == 'module'){
             //get index
 			$site_url = MyMuseHelper::getSiteUrl($track->parentid,1);
             $preview = $site_url.$track->file_preview;
@@ -218,7 +219,7 @@ class plgMymuseAudio_amplitude extends JPlugin
             }else{
                 $index = '0';
             }
-//echo "index = $index <br />";
+			//echo "index = $index <br />";
             $html = '
 <div class="amplitude-song-container">
     <div class="amplitude-song-container amplitude-play-pause " amplitude-song-index="'.$index.'">
@@ -230,6 +231,19 @@ class plgMymuseAudio_amplitude extends JPlugin
     </div>
 </div>
 ';
+            $html = '
+            		play
+ 			<div class="amplitude-song-container amplitude-play-pause playlist-item" amplitude-song-index="'.$index.'">
+				
+				<div class="playlist-meta">
+					<div class="now-playing-title" style="display:none;">'.$this->playlist[$index]['name'].'</div>
+					<div class="album-information" style="display:none;">'.$this->playlist[$index]['album'].' -
+							 '.$this->playlist[$index]['artist'].'</span></div>
+				</div>
+				<div style="clear: both;"></div>
+			</div>          		
+            		';
+
             return $html;
             
 			
@@ -276,8 +290,9 @@ class plgMymuseAudio_amplitude extends JPlugin
         $first->name 			= " ";
         $first->artist 			= $this->params->get('my_amplitude_first_artist');
         $first->album 			= $this->params->get('my_amplitude_first_album');
-        $first->url				= JURI::root() .$this->params->get('my_amplitude_first_url');
-        $first->cover_art_url	= JURI::root() .$this->params->get('my_amplitude_first_cover');
+        $first->url				= JURI::root(true) .$this->params->get('my_amplitude_first_url');
+        $first->cover_art_url	= JURI::root(true) .$this->params->get('my_amplitude_first_cover');
+        $default_album_art = '"default_album_art":'.json_encode($first->cover_art_url).'';
         $all['songs'][] 		= $first;
         $allcats = array();
 
@@ -318,7 +333,7 @@ class plgMymuseAudio_amplitude extends JPlugin
                 $i = 0;
     			foreach ($tracks as $track){
     				$site_url = MyMuseHelper::getSiteUrl($track->parentid,1);
-					$track->url = $site_url.$track->url;
+					$track->url = $site_url.ltrim("/",$track->url);
 					if(!$track->cover_art_url){
 						$track->cover_art_url = $first->cover_art_url;
 					}else{
@@ -327,8 +342,9 @@ class plgMymuseAudio_amplitude extends JPlugin
 					unset($track->parentid);
     				$arr['songs'][] = $track;
     			}
-    			//print_pre($tracks); exit;
+				
     			$jstring = "Amplitude.init(".json_encode($arr).");";
+    			
     			$jstring = preg_replace("~,~",",\n",$jstring);
     			$jstring = preg_replace("~\[~","[\n",$jstring);
     			$jstring = preg_replace("~\{~","{\n",$jstring);
