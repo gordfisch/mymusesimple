@@ -108,7 +108,95 @@ function tableOrdering( order, dir, task )
 	form.filter_order_Dir.value	= dir;
 	document.adminForm.submit( task );
 }
+			
+			
 ';
+
+$js .= "
+		var expanded = false;
+		var playlistEpxanded = false;
+		/*
+			jQuery Visual Helpers
+		*/
+	jQuery(document).ready(function($){
+		jQuery('#small-player').hover(function(){
+			jQuery('#small-player-middle-controls').show();
+			jQuery('#small-player-middle-meta').hide();
+		}, function(){
+			jQuery('#small-player-middle-controls').hide();
+			jQuery('#small-player-middle-meta').show();
+
+		});
+
+		jQuery('#top-large-album').hover(function(){
+			jQuery('#top-header').show();
+			jQuery('#small-player').show();
+		}, function(){
+			if( !jQuery('#top-header').is(':hover') && !jQuery('#small-player').is(':hover') ){
+				jQuery('#top-header').fadeOut(1000);
+				jQuery('#small-player').fadeOut(1000);
+			}
+		});
+
+		jQuery('#top-header').hover(function(){
+			jQuery('#top-header').show();
+			jQuery('#small-player').show();
+		}, function(){
+
+		});
+
+		/*
+			Toggles Album Art
+		*/
+		jQuery('#small-player-toggle').click(function(){
+			jQuery('.hidden-on-collapse').show();
+			jQuery('.hidden-on-expanded').hide();
+			/*
+				Is expanded
+			*/
+			expanded = true;
+
+			jQuery('#small-player').css('border-top-left-radius', '0px');
+			jQuery('#small-player').css('border-top-right-radius', '0px');
+		});
+
+		jQuery('#top-header-toggle').click(function(){
+			jQuery('.hidden-on-collapse').hide();
+			jQuery('.hidden-on-expanded').show();
+			/*
+				Is collapsed
+			*/
+			expanded = false;
+
+			jQuery('#small-player').css('border-top-left-radius', '5px');
+			jQuery('#small-player').css('border-top-right-radius', '5px');
+		});
+
+		jQuery('.playlist-toggle').click(function(){
+			if( playlistEpxanded ){
+				jQuery('#small-player-playlist').hide();
+
+				jQuery('#small-player').css('border-bottom-left-radius', '5px');
+				jQuery('#small-player').css('border-bottom-right-radius', '5px');
+
+				jQuery('#large-album-art').css('border-bottom-left-radius', '5px');
+				jQuery('#large-album-art').css('border-bottom-right-radius', '5px');
+
+				playlistEpxanded = false;
+			}else{
+				jQuery('#small-player-playlist').show();
+
+				jQuery('#small-player').css('border-bottom-left-radius', '0px');
+				jQuery('#small-player').css('border-bottom-right-radius', '0px');
+
+				jQuery('#large-album-art').css('border-bottom-left-radius', '0px');
+				jQuery('#large-album-art').css('border-bottom-right-radius', '0px');
+
+				playlistEpxanded = true;
+			}
+		})
+	});
+	";
 
 //flip price between formats
 if(count($params->get('my_formats') > 1) && $params->get('my_price_by_product')){			
@@ -208,9 +296,9 @@ $document->addScriptDeclaration($js);
 <!--  INLINE PARENT  -->
 <?php  if($this->parent->id > 0){	?>
 <div id="parent">
-<div id="mini-cart-top">
-<div id="mini-cart-content">
-<div id="mini-cart-parent-text">
+<div class="mini-cart-top">
+<div class="mini-cart-content">
+<div class="mini-cart-parent-text">
 <a href="<?php echo JRoute::_("index.php?option=com_mymuse&view=category&layout=alpha&id=".$this->parent->id); ?>">
 <?php echo $this->parent->title; ?></a>
 </div>
@@ -224,16 +312,16 @@ $document->addScriptDeclaration($js);
 <?php if($this->params->get('show_minicart')) :?>
 <!--  INLINE MINICART  -->
 <div id="mini-cart">
-<div id="mini-cart-top">
-<div id="mini-cart-content">
-<div id="mini-cart-cart"></div>
-<div id="mini-cart-text"><?php
+<div class="mini-cart-top">
+<div class="mini-cart-content">
+<div class="mini-cart-cart"></div>
+<div class="mini-cart-text"><?php
 if($this->cart['idx']) :
     $word = ($this->cart['idx'] == 1) ? "item" : "items"; 
     echo $this->cart['idx']." $word";
 endif;
 ?></div>
-<div id="mini-cart-link"><?php
+<div class="mini-cart-link"><?php
 if($this->cart['idx']) :
     echo '<a href="'.JRoute::_('index.php?option=com_mymuse&view=cart&task=showcart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>';
 else :
@@ -568,7 +656,7 @@ endif; ?>
 
 <?php if(count($tracks)) : ?>
 <!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
-		<h3><?php echo JText::_('MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
+		<h3><?php echo JText::_('MYMUSE_TRACKS'); ?></h3>
 
 		<?php if($params->get('product_player_type') == "single") : ?>
 			<div id="product_player" 
@@ -589,7 +677,7 @@ endif; ?>
 		<?php } ?>
 		<div style="clear: both"></div>
 		
-		<div class="clips petrol" 
+		<div class="" 
 		<?php if($params->get('product_player_type') == "each"){ ?>
 		id="product_player"
 		<?php } ?>
