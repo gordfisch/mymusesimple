@@ -141,11 +141,11 @@ class plgMymusePayment_Paypal extends JPlugin
 			$order->items[0]->title = JText::_('MYMUSE_REGISTRATION_FEE');
 			$order->tax_total = 0.00;
 		}
-		$path = JURI::root(true);
+		//$path = JURI::root(true);
 		$return = JRoute::_('index.php?option=com_mymuse&task=thankyou&view=cart&pp=paypal&st=Completed&Itemid='.$Itemid);
-		$return = rtrim(JURI::root(),"/").preg_replace("#$path#",'',$return);
+		$return = JURI::root().$return;
 		$cancel_return = JRoute::_('index.php?option=com_mymuse&task=paycancel&view=cart&Itemid='.$Itemid);
-		$cancel_return = rtrim(JURI::root(),"/").preg_replace("#$path#",'',$cancel_return);
+		$cancel_return = JURI::root().$cancel_return;
 		
 		$string = '
 		<form action="'.PAYPAL_URL.'" method="post" name="adminFormPayPal" >
