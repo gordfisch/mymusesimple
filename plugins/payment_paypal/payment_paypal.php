@@ -161,7 +161,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		
 		<input type="hidden" name="upload"          value="1" />
 		<input type="hidden" name="currency_code"   value="'. $store->currency.'" />
-		<input type="hidden" name="invoice"     	value="'. $order->id.'" />
+		<input type="hidden" name="invoice"     	value="'. $order->order_number.'" />
 		<input type="hidden" name="item_name"       value="'. $store->title.'" />
 		<input type="hidden" name="item_number"     value="'. $order->id.'" />
 		<input type="hidden" name="first_name"      value="'. $shopper->first_name.'" />
@@ -305,8 +305,8 @@ class plgMymusePayment_Paypal extends JPlugin
 				$custom[$key] = $val;
 			}
 		}
-		$result['order_number'] 		= isset($custom['order_number'])? $custom['order_number'] : '';
-		$result['order_id']				= $_POST['invoice'];
+		$result['order_number'] 		= isset($custom['order_number'])? $custom['order_number'] : $_POST['invoice'];
+		
 		$result['payer_email'] 			= urldecode($_POST['payer_email']);
 		$result['user_email'] 			= $custom['email'];
 		$result['userid'] 				= $custom['userid'];
@@ -534,7 +534,7 @@ class plgMymusePayment_Paypal extends JPlugin
         		// Get the Order Details from the database
         		
         		$query = "SELECT * FROM `#__mymuse_order`
-                    WHERE `id`='".$result['order_id']."'";
+                    WHERE `order_number`='".$result['order_number']."'";
         		$date = date('Y-m-d h:i:s');
         		$debug = "$date  4.1 $query \n\n";
         		
