@@ -309,7 +309,7 @@ function MymuseParseRoute($segments)
 	$advanced = $params->get('sef_advanced_link', 0);
 	$dbo = JFactory::getDBO();
 
-
+	//print_pre($segments);exit;
 
 	// Count route segments
 	$count = count($segments);
@@ -324,6 +324,7 @@ function MymuseParseRoute($segments)
     if (!isset($item)) {
 		$vars['view']	= $segments[0];
 		$vars['id']		= $segments[$count - 1];
+		//print_pre($vars);exit;
 		return $vars;
 	}
 
@@ -332,7 +333,7 @@ function MymuseParseRoute($segments)
 	// then we assume it is a category.  If they don't we assume it is an product
     // or it could be a cart thing
 	if ($count == 1) {
-		//print_pre($segments);exit;
+		
         //shipping|addtocart|updatecart|cartdelete|showcart|checkout
         if($segments[0] == "checkout"){
             $vars['option'] = 'com_mymuse';

@@ -151,7 +151,7 @@ class plgMymuseShipping_Price extends JPlugin
      */
 	function calculateShipping($order, $shipMethod){
 
-
+print_pre($order); exit;
 		$shipping_total = 0.00;
 		// find the level based on sub_total
 		$level = 1;
@@ -165,9 +165,9 @@ class plgMymuseShipping_Price extends JPlugin
 			if(!$ship_maximum){
 				$ship_maximum = 1000000000;
 			}
-			if(round($order->order_subtotal,2) >= round($ship_minimum, 2)
+			if(round($order->order_subtotal_physical,2) >= round($ship_minimum, 2)
 					&&
-				round($order->order_subtotal,2) <= round($ship_maximum, 2)				
+				round($order->order_subtotal_physical,2) <= round($ship_maximum, 2)				
 			){
 				$percent = "ship_percent_".$shipMethod->id.($k-1);
 				$amount = $this->params->get($percent);
@@ -184,7 +184,7 @@ class plgMymuseShipping_Price extends JPlugin
 		}
 
 		if($this->params->get('ship_percent') && isset($amount)){
-			$shipping_total = $order->order_subtotal * $amount / 100;
+			$shipping_total = $order->order_subtotal_physical * $amount / 100;
 		}elseif(isset($amount)){
 			$shipping_total = $amount;
 		}

@@ -77,14 +77,11 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function __construct()
 	{
-
-		$mainframe 	= JFactory::getApplication();
-    	$params 	= MyMuseHelper::getParams();
 		parent::__construct();
 
 		$this->MyMuseStore		=& MyMuse::getObject('store','models');
 		$this->store			= $this->MyMuseStore->getStore();
-		$this->params			= $params;
+		$this->params			= MyMuseHelper::getParams();
 		$this->MyMuseCart		=& MyMuse::getObject('cart','helpers');
 		$this->MyMuseCheckout 	=& MyMuse::getObject('checkout','helpers');
 		$this->MyMuseShopper 	=& MyMuse::getObject('shopper','models');
@@ -99,7 +96,7 @@ class MyMuseController extends JControllerLegacy
             $view = $this->getView( 'store', 'html' );
             $view->setModel( $this->getModel( 'category', 'MyMuseModel' ), false );
         }
-        $this->Itemid = $this->jinput->get('Itemid', '');
+        $this->Itemid = $this->jinput->get('Itemid', $this->params->get('mymuse_default_itemid'));
 	}
 
 	
@@ -135,11 +132,10 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function addtocart()
 	{
-		$Itemid = $this->jinput->get('Itemid',''); 
 
 		if(!$this->MyMuseCart->addToCart( )){
 			$msg = $this->MyMuseCart->error;
-			$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid), $msg );
+			$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid), $msg );
 			return false;
 		}
 		if($this->jinput->get('return','')){
@@ -166,10 +162,10 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function updatecart()
 	{
-		$Itemid = $this->jinput->get('Itemid','');
+
 		if(!$this->MyMuseCart->updateCart( )){
 			$msg = $this->MyMuseCart->error;
-			$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid), $msg );
+			$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid), $msg );
 			return false;
 		}
 		$this->jinput->set('view', 'cart');
@@ -185,14 +181,13 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function cartdelete()
 	{
-		$Itemid = $this->jinput->get('Itemid','');
 		$product_id = $this->jinput->get('product_id',0);
 		if(!$this->MyMuseCart->delete($product_id )){
 			$msg = $this->MyMuseCart->error;
-			$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid), $msg );
+			$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid), $msg );
 			return false;
 		}
-		$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid) );
+		$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid) );
 		return;
 	}
 	
@@ -230,17 +225,47 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function couponadd()
 	{
-		$Itemid = $this->jinput->get('Itemid','');
+		
 		if(!$this->MyMuseCart->couponadd()){
 			$msg = $this->MyMuseCart->error;
-			$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid), $msg );
+			$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid), $msg );
 			return false;
 		}
 		$msg = JText::_("MYMUSE_COUPON_ADDED");
 		
-		$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid), $msg );
+		$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid), $msg );
 		
 	}
+	
+	/**
+	 * checkoutasguest
+	 * clear the guest buyer's profile and log them in
+	 *
+	 * @access	public
+	 */
+	
+	function guestcheckout()
+	{
+		
+		$db = JFactory::getDBO();
+		$query = "SELECT id from #__users WHERE username = 'buyer'";
+		$db->setQuery($query);
+		if(!$guestid = $db->loadResult()){
+			$msg = JText::_("MYMUSE_COULD_NOT_FIND_GUEST");
+			$this->setRedirect( JRoute::_("index.php?option=com_mymuse&task=checkout&Itemid=$this->Itemid", $msg));
+		}
+		$query = "DELETE FROM #__user_profiles WHERE user_id ='$guestid'";
+		
+		$db->setQuery($query);
+		if(!$db->execute()){
+			$msg = $db->getErrorMsg();
+			$this->setRedirect( JRoute::_("index.php?option=com_mymuse&task=checkout&Itemid=$this->Itemid", $msg));
+
+		}
+		
+		return $this->savenoreg();
+	}
+	
 	
 	/**
 	 * savenoreg
@@ -250,16 +275,16 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function savenoreg()
 	{	
-		$Itemid = $this->jinput->get('Itemid','');
+		
 		if($this->MyMuseShopper->savenoreg()){
-			$this->setRedirect( JRoute::_("index.php?option=com_mymuse&task=checkout&Itemid=$Itemid"));
+			$this->setRedirect( JRoute::_("index.php?option=com_mymuse&task=checkout&Itemid=$this->Itemid"));
 			//$this->jinput->set('task','checkout');
 			return true;
 		}else{
 			// Redirect back to the registration screen.
 			$err = $this->MyMuseShopper->getError();
 			$msg = '';
-			$this->setRedirect( JRoute::_("index.php?option=com_mymuse&view=shopper&task=register&Itemid=$Itemid", $msg));
+			$this->setRedirect( JRoute::_("index.php?option=com_mymuse&view=shopper&task=register&Itemid=$this->Itemid", $msg));
 			return false;
 		}
 	}
@@ -274,12 +299,12 @@ class MyMuseController extends JControllerLegacy
 	{
 	
 		$mainframe = JFactory::getApplication();
-		$params = MyMuseHelper::getParams();
+		
 		$user = JFactory::getUser();
-        $Itemid = $this->jinput->get('Itemid','');
+        
         
 		//no_reg and not logged in
-        if(!$user->get('id') && $params->get('my_registration') == "no_reg"){
+        if(!$user->get('id') && $this->params->get('my_registration') == "no_reg"){
         	
         	$plugin = JPluginHelper::getPlugin('user', 'mymusenoreg');
         	
@@ -292,31 +317,31 @@ class MyMuseController extends JControllerLegacy
         			return false;
         		}else{
         			$this->shopper 			=  $this->MyMuseShopper->getShopper();
-        			$url = JRoute::_("index.php?option=com_mymuse&task=checkout&view=cart&Itemid=$Itemid");
+        			$url = JRoute::_("index.php?option=com_mymuse&task=checkout&view=cart&Itemid=$this->Itemid");
         			$this->setRedirect( $url );
         			return true;
         		}
         	    
         	}else{
-        		$url = JRoute::_(JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$Itemid");
+        		$url = JRoute::_(JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$this->Itemid");
         		$return = base64_encode($url);
 
         		$msg = JText::_("MYMUSE_PLEASE_COMPLETE_THE_FORM");
-        		$this->setRedirect( JRoute::_("index.php?option=com_mymuse&view=shopper&task=register&Itemid=$Itemid"), $msg );
+        		$this->setRedirect( JRoute::_("index.php?option=com_mymuse&view=shopper&task=register&Itemid=$this->Itemid"), $msg );
         		return true;
         	}
         }
         //
         //no_reg, logged in but no form yet
-        if($user->get('id') && $params->get('my_registration') == "no_reg" && !$this->shopper->perms){
+        if($user->get('id') && $this->params->get('my_registration') == "no_reg" && !$this->shopper->perms){
         	$msg = JText::_("MYMUSE_PLEASE_COMPLETE_THE_FORM");
-        	$this->setRedirect( JRoute::_("index.php?option=com_mymuse&view=shopper&task=register&Itemid=$Itemid"), $msg );
+        	$this->setRedirect( JRoute::_("index.php?option=com_mymuse&view=shopper&task=register&Itemid=$this->Itemid"), $msg );
         	return false;
         	
         }
         
         // not logged in and jomsocial
-        if(!$user->get('id') && $params->get('my_registration') == "jomsocial"){
+        if(!$user->get('id') && $this->params->get('my_registration') == "jomsocial"){
             $msg = JText::_("MYMUSE_PLEASE_LOGIN_OR_REGISTER_BELOW");
             $this->setRedirect( JRoute::_('index.php?option=com_community'), $msg );
             return false;
@@ -325,31 +350,31 @@ class MyMuseController extends JControllerLegacy
         //user and shopper but missing fields, so no shopper perms
         if($user->get('id') && $this->shopper->id && !$this->shopper->perms){
         	
-        	$url = JRoute::_(JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$Itemid");
+        	$url = JRoute::_(JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$this->Itemid");
         	$return = base64_encode($url);
 
             $msg = JText::_("MYMUSE_PLEASE_FILL_IN_MISSING_ITEMS").": ".$this->MyMuseShopper->getError();
-        	$this->setRedirect( JRoute::_('index.php?option=com_users&view=profile&layout=edit&return='.$return."&Itemid=$Itemid"), $msg );
+        	$this->setRedirect( JRoute::_('index.php?option=com_users&view=profile&layout=edit&return='.$return."&Itemid=$this->Itemid"), $msg );
             return false;
         }
         
         //normal registration 
 		if(!$this->shopper->perms){
 			
-			$url = JRoute::_(JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$Itemid");
+			$url = JRoute::_(JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=$this->Itemid");
         	$return = base64_encode($url);
 			
-			$rpage = strtolower($params->get('my_registration_redirect'));
+			$rpage = strtolower($this->params->get('my_registration_redirect'));
 			$msg = JText::_("MYMUSE_PLEASE_LOGIN_OR_REGISTER");
-        	$this->setRedirect( JRoute::_('index.php?option=com_users&view='.$rpage.'&return='.$return."&Itemid=$Itemid"), $msg );
+        	$this->setRedirect( JRoute::_('index.php?option=com_users&view='.$rpage.'&return='.$return."&Itemid=$this->Itemid"), $msg );
             return false;
 		}
 
 		// see if any plugins want to check the cart
-		$Itemid		= $this->jinput->get('Itemid', 0);
+		$this->Itemid		= $this->jinput->get('Itemid', 0);
 		$dispatcher	= JDispatcher::getInstance();
 		$results 	= $dispatcher->trigger('onBeforeMyMuseCheckout',
-				array(&$this->shopper, &$this->store, &$this->MyMuseCart->cart, &$params, &$Itemid) );
+				array(&$this->shopper, &$this->store, &$this->MyMuseCart->cart, &$this->params, &$this->Itemid) );
 		
 		if(is_array($results)){
 			foreach($results as $result){
@@ -369,12 +394,12 @@ class MyMuseController extends JControllerLegacy
 		
 		
 		//See if we want to skip the confirm page
-		if($params->get('my_checkout','regular') == "skip_confirm"){
+		if($this->params->get('my_checkout','regular') == "skip_confirm"){
 			$this->jinput->set('task','confirm');
 			$this->confirm();
 			return true;
 		}
-	
+
 		$this->jinput->set('view', 'cart');
 		$this->jinput->set('layout', 'cart');
 		
@@ -390,13 +415,12 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function shipping()
 	{
-		$Itemid = $this->jinput->get('Itemid','');
-		$params = MyMuseHelper::getParams();
+
 		if(!isset($this->shopper->perms)){
-			$url = JRoute::_(JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$Itemid);
+			$url = JRoute::_(JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$this->Itemid);
         	$return = base64_encode($url);
 			$msg = JText::_("MYMUSE_PLEASE_LOGIN_OR_REGISTER");;
-        	$rpage = strtolower($params->get('my_registration_redirect','login'));
+        	$rpage = strtolower($this->params->get('my_registration_redirect','login'));
         	$this->setRedirect( JRoute::_('index.php?option=com_users&view='.$rpage.'&return='.$return), $msg );
             return false;
 		}else{
@@ -405,14 +429,14 @@ class MyMuseController extends JControllerLegacy
 			$dispatcher		= JDispatcher::getInstance();
 			$this->order		= $this->MyMuseCart->buildOrder();
 			$results = $dispatcher->trigger('onListMyMuseShipping',
-					array($this->shopper, $this->store, $this->order, $params) );
+					array($this->shopper, $this->store, $this->order, $this->params) );
 			if(isset($results[0])){
 				$res = $results[0];
 			}else{
 				$res = array();
 			}
 			//if we only have one shipping, add it to the order
-			if(count($res) == 1 && $params->get('my_add_shipping_auto',0)){
+			if(count($res) == 1 && $this->params->get('my_add_shipping_auto',0)){
 				$url =  'index.php?option=com_mymuse&task=confirm&shipmethodid='.$res['0']->id;
 				$url .= '&Itemid='.$this->Itemid;
 				$url = JRoute::_($url);
@@ -438,15 +462,14 @@ class MyMuseController extends JControllerLegacy
 	function confirm()
 	{
 		$mainframe = JFactory::getApplication();
-		$params = MyMuseHelper::getParams();
-		$Itemid = $this->jinput->get('Itemid','');
+		
 
 		// are they logged in?
 		if(!$this->shopper->perms){
-			$url = JRoute::_(JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$Itemid);
+			$url = JRoute::_(JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$this->Itemid);
         	$return = base64_encode($url);
 			$msg = JText::_("MYMUSE_PLEASE_LOGIN_OR_REGISTER");;
-        	$rpage = strtolower($params->get('my_registration_redirect','login'));
+        	$rpage = strtolower($this->params->get('my_registration_redirect','login'));
         	$this->setRedirect( 'index.php?option=com_users&view='.$rpage.'&return='.$return, $msg );
             return false;
 		}
@@ -456,7 +479,7 @@ class MyMuseController extends JControllerLegacy
 			$shipmethodid = $this->jinput->get('shipmethodid', 0);
 			if(!$shipmethodid){
 				$msg = JText::_('MYMUSE_SHIP_METHOD_ID_IS_NOT_VALID');
-				$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=shipping&Itemid='.$Itemid), $msg );
+				$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=shipping&Itemid='.$this->Itemid), $msg );
 				return false;
 			}else{
                 $order 		= $this->MyMuseCart->buildOrder( 0, 1 );
@@ -474,11 +497,11 @@ class MyMuseController extends JControllerLegacy
 			$this->jinput->set('view', 'cart');
 			$this->jinput->set('layout', 'cart');
 	
-			if($params->get('my_saveorder') != "after"){
+			if($this->params->get('my_saveorder') != "after"){
 				// save the order
 				if(!$this->MyMuseShopper->order = $this->MyMuseCheckout->save( )){
 					$msg = $this->MyMuseCheckout->error;
-					$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid), $msg );
+					$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid), $msg );
 					return false;
 				}
 				
@@ -516,25 +539,24 @@ class MyMuseController extends JControllerLegacy
 	function makepayment()
 	{
 		$mainframe = JFactory::getApplication();
-		$params = MyMuseHelper::getParams();
-		$Itemid = $this->jinput->get('Itemid','');
+		
 		
 		if(!$this->shopper->perms){
-			$url = JRoute::_(JURI::base().'index.php?option=com_mymuse&view=cart&layout=cart&Itemid='.$Itemid);
+			$url = JRoute::_(JURI::base().'index.php?option=com_mymuse&view=cart&layout=cart&Itemid='.$this->Itemid);
         	$return = base64_encode($url);
 			$msg = JText::_("MYMUSE_PLEASE_LOGIN_OR_REGISTER");;
-        	$rpage = strtolower($params->get('my_registration_redirect','login'));
+        	$rpage = strtolower($this->params->get('my_registration_redirect','login'));
         	$this->setRedirect( JRoute::_('index.php?option=com_users&view='.$rpage.'&return='.$return), $msg );
             return false;
 
 		}  
             
 		if(!$this->MyMuseCart->cart['orderid'] && $this->params->get('my_shop_test')){
-			if($params->get('my_saveorder') != "after"){
+			if($this->params->get('my_saveorder') != "after"){
 				// save the order
 				if(!$this->MyMuseShopper->order = $this->MyMuseCheckout->save( )){
 					$msg = $this->MyMuseCheckout->error;
-					$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid), $msg );
+					$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid), $msg );
 					return false;
 				}
 				$this->MyMuseShopper->order = $this->MyMuseCheckout->getOrder($this->MyMuseShopper->order->id);
@@ -581,9 +603,8 @@ class MyMuseController extends JControllerLegacy
 		}
 		
 		
-		$params = MyMuseHelper::getParams();
 		
-		$Itemid = $this->jinput->get("Itemid",$params->get('mymuse_default_itemid'));
+
 		//get order
 		$db 			= JFactory::getDBO();
 		$user			= JFactory::getUser();
@@ -604,7 +625,7 @@ class MyMuseController extends JControllerLegacy
 			$order_number = $pesapal_merchant_reference;
 		}
 
-		if($after || $params->get('my_saveorder') == "after"){
+		if($after || $this->params->get('my_saveorder') == "after"){
 			// See if there is a transaction value
 			
 			if($tx){
@@ -612,19 +633,19 @@ class MyMuseController extends JControllerLegacy
 				transaction_id='$tx'";
 				$db->setQuery($q);
 				$orderid = $db->loadResult();
-				if($params->get('my_debug')){
+				if($this->params->get('my_debug')){
 					$debug = "$date: Got orderid from transaction: $orderid";
 					MyMuseHelper::logMessage( $debug  );
 				}
 			}
 			
-			if(!$orderid && $pp !== 'paymentoffline' && $params->get('my_registration') == "no_reg"){
+			if(!$orderid && $pp !== 'paymentoffline' && $this->params->get('my_registration') == "no_reg"){
 				//get the last orderid
 				$q1 = "SELECT id from #__mymuse_order WHERE 
 				notes LIKE '%". $user->get('email')  ."%' ORDER BY id DESC LIMIT 0,1";
 				$db->setQuery($q1);
 				$orderid = $db->loadResult();
-				if($params->get('my_debug')){
+				if($this->params->get('my_debug')){
 					$debug = "$date: Got last orderid : $orderid";
 					MyMuseHelper::logMessage( $debug  );
 				}
@@ -647,7 +668,7 @@ class MyMuseController extends JControllerLegacy
 			$orderid = $db->loadResult();
 		}
 		
-		if(!$orderid && $params->get('my_saveorder') == "after"){
+		if(!$orderid && $this->params->get('my_saveorder') == "after"){
 			// no id
 			
 			$msg = JText::_("MYMUSE_NO_ORDER_WAITING");
@@ -721,7 +742,7 @@ class MyMuseController extends JControllerLegacy
 			//already confirmed 
 			$dispatcher		= JDispatcher::getInstance();
 			$results = $dispatcher->trigger('onAfterMyMuseConfirm', 
-				array(&$this->shopper, &$this->store, &$params, &$Itemid) );
+				array(&$this->shopper, &$this->store, &$this->params, &$this->Itemid) );
 
 			if(is_array($results)){
 				foreach($results as $result){
@@ -770,16 +791,16 @@ class MyMuseController extends JControllerLegacy
 		$session 	= JFactory::getSession();
 		$order_number = $session->get("order_number",0);
 		$st 		= $this->jinput->get('st', 0);
-		$params 	= MyMuseHelper::getParams();
+		$this->params 	= MyMuseHelper::getParams();
 		
 		if(!$user_id ){
 			// not a user!!
-			if($params->get('my_registration') == "no_reg"){
+			if($this->params->get('my_registration') == "no_reg"){
 				$msg = JText::_("JGLOBAL_AUTH_ACCESS_DENIED");;
 				$this->setRedirect( JRoute('index.php'), $msg );
 			}else{
 				$msg = JText::_("MYMUSE_PLEASE_LOGIN_OR_REGISTER");;
-        		$rpage = strtolower($params->get('my_registration_redirect','login'));
+        		$rpage = strtolower($this->params->get('my_registration_redirect','login'));
         		$this->setRedirect( JRoute::_('index.php?option=com_users&view='.$rpage.'&return='.$return), $msg );
             return false;
 			}
@@ -825,9 +846,9 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function paycancel()
 	{
-		$params 	= MyMuseHelper::getParams();
+		$this->params 	= MyMuseHelper::getParams();
 		
-		if($params->get('my_saveorder') == "after"){
+		if($this->params->get('my_saveorder') == "after"){
 			//there won't be an order
 		}else{
 			// get order
@@ -877,7 +898,7 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function downloads()
 	{
-		$params = MyMuseHelper::getParams();
+		
 		$shopper = $this->shopper;
 		$uri = JFactory::getURI();
 		$current = $uri->toString();
@@ -886,7 +907,7 @@ class MyMuseController extends JControllerLegacy
 			$url = $current;;
 			$return = base64_encode($url);
 			$msg = JText::_("MYMUSE_PLEASE_LOGIN_OR_REGISTER");;
-			$rpage = strtolower($params->get('my_registration_redirect','login'));
+			$rpage = strtolower($this->params->get('my_registration_redirect','login'));
         	$this->setRedirect( 'index.php?option=com_users&view='.$rpage.'&return='.$return, $msg );
 			return false;
 		}
@@ -920,13 +941,13 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function downloadfile()
 	{
-		$params = MyMuseHelper::getParams();
+		
 		$shopper =  $this->MyMuseShopper->getShopper();
 		if(!isset($shopper->perms)){
 			$url = JURI::root()."index.php?option=com_mymuse&view=cart&layout=cart";
 			$return = base64_encode($url);
 			$msg = JText::_("MYMUSE_PLEASE_LOGIN_OR_REGISTER");;
-			$rpage = strtolower($params->get('my_registration_redirect','login'));
+			$rpage = strtolower($this->params->get('my_registration_redirect','login'));
         	$this->setRedirect( 'index.php?option=com_users&view='.$rpage.'&return='.$return, $msg );
 			return false;
 		}
@@ -935,7 +956,7 @@ class MyMuseController extends JControllerLegacy
 		if(!$this->display()){
 			$id = $this->jinput->get('id',0);
 			$msg = $this->jinput->get('msg',0);
-			if($params->get('my_registration') == "no_reg"){
+			if($this->params->get('my_registration') == "no_reg"){
 				$current =  JRoute::_("index.php?option=com_mymuse&view=cart&task=accdownloads&id=".$id."&item_id=");
 			}else{
 				$current =  JRoute::_("index.php?option=com_mymuse&view=cart&task=downloads&id=".$id."&item_id=");

@@ -545,6 +545,7 @@ class MyMuseCart {
 	    // FOR THE ORDER
 		$order = new stdClass();
 		$order->order_subtotal    		= 0.00;
+		$order->order_subtotal_physical = 0.00;
 		$order->must_pay_now    		= 0.00;
 		$order->tax_total     			= 0.00;
 		$order->reservation_fee 		= 0.00;
@@ -670,6 +671,9 @@ class MyMuseCart {
 			
 			// add to order sub_total
 			$order->order_subtotal += $order->items[$i]->product_item_subtotal ;
+			if($order->items[$i]->product_physical){
+				$order->order_subtotal_physical += $order->items[$i]->product_item_subtotal;
+			}
 			if(!$order->items[$i]->not_in_total){
 				$order->non_res_total += $order->items[$i]->product_item_subtotal;
 			}
