@@ -167,7 +167,7 @@ jQuery(document).ready(function(){
 		    <?php } ?>
 		    
 		        <td class="myprice cart">
-		        <?php if(isset($this->licence) &&  !in_array($task, $post_order)){
+		        <?php if( isset($this->licence) &&  !in_array($task, $post_order) && isset($order_item[$i]->price['licence']) ){
 		        	foreach($order_item[$i]->price['licence'] as $j=>$licence){ 
 		        		if($this->my_licence == $j){
 		        			echo '<div id="item_price_'.$i.'" class="price" >'.

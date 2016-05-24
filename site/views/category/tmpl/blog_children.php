@@ -31,8 +31,14 @@ if($columns == 1){
 $total_shown = 0;
 $column = 1;
 $i=0;
+if ($this->params->get('category_image_height')) : ?>
+<style>
+div.cat-children li > span.subcat-image > a > img {
+	height: <?php echo $this->params->get('category_image_height'); ?>px;
+}
+</style>
 
-?>
+<?php endif; ?>
 <div style="clear: both"></div>
 <div class="cols-<?php echo $columns; ?>">
 
