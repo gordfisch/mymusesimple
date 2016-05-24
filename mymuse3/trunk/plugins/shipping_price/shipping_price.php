@@ -151,7 +151,7 @@ class plgMymuseShipping_Price extends JPlugin
      */
 	function calculateShipping($order, $shipMethod){
 
-print_pre($order); exit;
+
 		$shipping_total = 0.00;
 		// find the level based on sub_total
 		$level = 1;
