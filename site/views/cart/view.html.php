@@ -1031,20 +1031,27 @@ class myMuseViewCart extends JViewLegacy
 				$mailfrom,
 				$fromname );
 		$mailer->setSender($sender);
-		 
+		
 		//recipient
+		$recipient = array($user_email);
+		$mailer->addRecipient($recipient);
+		
+		//bcc_recipient
+		$bcc_recipient = '';
 		if($params->get('my_plugin_email')){
-			//cc admin
-			$recipient = array($user_email, $mailfrom);
-		}else{
-			//don't cc admin
-			$recipient = array($user_email);
+			//bcc admin
+			$bcc_recipient = array($mailfrom);
 		}
 		
 		if($params->get('my_cc_webmaster')){
-			$recipient = array($user_email, $mailfrom, $params->get('my_webmaster'));
+			//bcc webmaster
+			$bcc_recipient = array($mailfrom, $params->get('my_webmaster'));
 		}
-		$mailer->addRecipient($recipient);
+		if($bcc_recipient){
+			$mailer->addBcc($bcc_recipient);
+		}
+		
+		
 		$mailer->setSubject($subject);
 		$mailer->setBody($message);
 		$rs = $mailer->Send();

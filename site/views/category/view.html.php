@@ -143,33 +143,51 @@ class MymuseViewCategory extends JViewLegacy
 		$numIntro	= $params->def('num_intro_articles', 4);
 		$numLinks	= $params->def('num_links', 4);
 
+
 		// Compute the product slugs and prepare introtext (runs content plugins).
 		for ($i = 0, $n = count($items); $i < $n; $i++)
 		{
-			$item = &$items[$i];
-			$item->slug = $item->alias ? ($item->id . ':' . $item->alias) : $item->id;
-
-			// No link for ROOT category
-			if ($item->parent_alias == 'root') {
-				$item->parent_slug = null;
-			}
-
-			$item->event = new stdClass();
-
-			$dispatcher = JDispatcher::getInstance();
-
-			// Ignore content plugins on links.
-			if ($i < $numLeading + $numIntro) {
-				$item->introtext = JHtml::_('content.prepare', $item->introtext, '', 'com_mymuse.category');
-
-				$results = $dispatcher->trigger('onContentAfterTitle', array('com_mymuse.article', &$item, &$item->params, 0));
-				$item->event->afterDisplayTitle = trim(implode("\n", $results));
-
-				$results = $dispatcher->trigger('onContentBeforeDisplay', array('com_mymuse.article', &$item, &$item->params, 0));
-				$item->event->beforeDisplayContent = trim(implode("\n", $results));
-
-				$results = $dispatcher->trigger('onContentAfterDisplay', array('com_mymuse.article', &$item, &$item->params, 0));
-				$item->event->afterDisplayContent = trim(implode("\n", $results));
+			if(isset($items [$i]->id)){
+				$item = &$items [$i];
+				$item->slug = isset($item->alias) ? ($item->id . ':' . $item->alias) : $item->id;
+				
+				// No link for ROOT category
+				if (isset($item->parent_alias) && $item->parent_alias == 'root') {
+					$item->parent_slug = null;
+				}
+				
+				$item->event = new stdClass ();
+				
+				$dispatcher = JDispatcher::getInstance ();
+				
+				// Ignore content plugins on links.
+				if ($i < $numLeading + $numIntro && isset($item->introtext)) {
+					$item->introtext = JHtml::_ ( 'content.prepare', $item->introtext, '', 'com_mymuse.category' );
+					
+					$results = $dispatcher->trigger ( 'onContentAfterTitle', array (
+							'com_mymuse.article',
+							&$item,
+							&$item->params,
+							0 
+					) );
+					$item->event->afterDisplayTitle = trim ( implode ( "\n", $results ) );
+					
+					$results = $dispatcher->trigger ( 'onContentBeforeDisplay', array (
+							'com_mymuse.article',
+							&$item,
+							&$item->params,
+							0 
+					) );
+					$item->event->beforeDisplayContent = trim ( implode ( "\n", $results ) );
+					
+					$results = $dispatcher->trigger ( 'onContentAfterDisplay', array (
+							'com_mymuse.article',
+							&$item,
+							&$item->params,
+							0 
+					) );
+					$item->event->afterDisplayContent = trim ( implode ( "\n", $results ) );
+				}
 			}
 		}
 

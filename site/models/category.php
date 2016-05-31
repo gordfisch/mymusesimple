@@ -223,8 +223,9 @@ class MyMuseModelCategory extends JModelList
 		$app	= JFactory::getApplication('site');
 		$jinput = $app->input;
 		$itemid = $jinput->get('id', 0, 'INT') . ':' . $jinput->get('Itemid', 0, 'INT');
-
+		
 		if($params->get('category_layout') == "_:tracks"){
+			
 			//TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS 
 			if ($this->_tracks === null && $category = $this->getCategory()) {
 		
@@ -274,6 +275,7 @@ class MyMuseModelCategory extends JModelList
 		
 		//PRODUCTS PRODUCTS PRODUCTS PRODUCTS PRODUCTS PRODUCTS PRODUCTS PRODUCTS 
 		if ($this->_products === null && $category = $this->getCategory()) {
+
 			$model = JModelList::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
 			$model->setState('params', $params);
 			$model->setState('filter.category_id', $category->id);
