@@ -770,6 +770,7 @@ class MyMuseHelper extends JObject
 	static function getNoRegFields()
 	{
 		$fields = array(
+				'name',
 				'first_name',
 				'last_name',
 				'email',

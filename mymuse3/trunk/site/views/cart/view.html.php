@@ -129,7 +129,7 @@ class myMuseViewCart extends JViewLegacy
 		$MyMuseCart 	=& MyMuse::getObject('cart','helpers');
 		$cart 			= $MyMuseCart->cart;
 		$MyMuseStore	=& MyMuse::getObject('store','models');
-		
+	
 		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
 		$shopper 		= $MyMuseShopper->getShopper();
 
@@ -187,6 +187,7 @@ class myMuseViewCart extends JViewLegacy
 				$edit 		= false;
 				
 				if($params->get('my_saveorder') != "after" && isset($MyMuseShopper->order->id)){
+		
 					$this->order = $order 		= $MyMuseCheckout->getOrder($MyMuseShopper->order->id);
 					if($order->order_total == 0.00){
 						$heading 	= Jtext::_('MYMUSE_CONFIRM');

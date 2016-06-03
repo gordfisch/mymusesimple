@@ -369,7 +369,7 @@ jQuery(document).ready(function(){
 	</table>
 		<?php 
 		//LICENCE MODEL?
-		if(2 == $params->get('my_price_by_product',0)){
+		if(2 == $params->get('my_price_by_product',0) && $user->username == 'buyer'){
 			echo '<h3>'.JText::_('MYMUSE_LICENCE').'</h3>';
 
 			if(!in_array($task, $post_order) && isset($this->lists['licences'])){
@@ -395,7 +395,7 @@ jQuery(document).ready(function(){
 		
 		
     <?php 
-if($notes_required){
+if($notes_required  && $user->username == 'buyer'){
 	
     $notes = isset($order->notes['notes'])? $order->notes['notes'] : @$order->notes; 
     $jason = json_decode($notes);
@@ -428,11 +428,12 @@ if($notes_required){
 }
 ?>
         
-    <?php if(!in_array($task, $post_order)){ ?>
+    <?php if(!in_array($task, $post_order) && $user->username == 'buyer'){ ?>
         <div class="pull-left myupdate cart"><button class="button uk-button " 
 				type="submit" >
-				<?php echo JText::_('MYMUSE_UPDATE_CART'); ?></button></div>
-		<div class="clear"></div>
+				<?php echo JText::_('MYMUSE_UPDATE_CART'); ?></button>
+		</div>
+		
 	<?php } ?>	
 		<?php if($order->do_html){ ?>
 		</form>
@@ -443,19 +444,37 @@ if($notes_required){
 		if(isset($order->show_checkout) && $order->show_checkout){ 
 		    // add the checkout link
 		?> 
-		<div class="mymuse-wrap">
-	  		<?php if($notes_required && $notes){ ?>
-				<div class="pull-left mymuse-button-left cart"><button class="button uk-button" 
-				type="button" 
-				onclick="location.href='<?php echo JRoute::_("index.php?option=com_mymuse&task=checkout&Itemid=$Itemid") ?>'">
-				<?php echo JText::_('MYMUSE_CHECKOUT'); ?></button></div>
+	
+			<?php if($user->username == ''){ ?>
+				<div class="pull-left  mymuse-button-left cart">
+					<button class="button uk-button" type="button"
+					onclick="location.href='<?php echo JRoute::_("index.php?option=com_mymuse&task=guestcheckout&view=cart&Itemid=$Itemid") ?>'">
+					Checkout as a guest.</button>
+				</div>
 			<?php } ?>
-				<div class="pull-right  mymuse-button-right cart"><button class="button uk-button" 
+			
+	  		<?php if(($user->username == 'buyer' && $notes_required && isset($notes) && $notes != '')
+				|| $user->username == ''){ 
+	  			?>
+				<div class="pull-right mymuse-button-right cart">
+					<button class="button uk-button" type="button" 
+					onclick="location.href='<?php echo JRoute::_("index.php?option=com_mymuse&task=checkout&Itemid=$Itemid") ?>'">
+					<?php echo JText::_('MYMUSE_CHECKOUT'); ?></button>
+				</div>
+			<?php } ?>
+				
+			<!-- 
+				<div class="pull-right  mymuse-button-right cart">
+				<button class="button uk-button" 
 				type="button" 
 				onclick="location.href='<?php echo $params->get('my_continue_shopping'); ?>'">
-				<?php echo JText::_('MYMUSE_CONTINUE_SHOPPING'); ?></button></div>
-	  		<div style="clear: both;"></div>
-		</div>
+				<?php echo JText::_('MYMUSE_CONTINUE_SHOPPING'); ?></button>
+				</div>
+			 -->	
+
+	  		
+	
+
 
 	
 		<?php } 

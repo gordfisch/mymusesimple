@@ -223,7 +223,7 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 					<tr valign="top">
 						<td><?php echo JText::_('MYMUSE_ADDRESS') ?>:</td>
 						<td><?php echo $this->item->user->profile['address1'] ?> <BR>
-						<?php echo $this->item->user->profile['address2'] ?></td>
+						<?php echo isset($this->item->user->profile['address2'])? $this->item->user->profile['address2'] : '' ?></td>
 					</tr>
 					<?php }?>
 					<?php if(isset($this->item->user->profile['city'])){ ?>

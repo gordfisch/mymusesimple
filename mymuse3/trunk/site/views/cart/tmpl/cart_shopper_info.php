@@ -15,7 +15,6 @@ $shopper 	= $this->shopper;
 $params 	= $this->params;
 if($params->get('my_registration') == "no_reg"){
 	$fields = MyMuseHelper::getNoRegFields();
-
 	foreach($fields as $field){
 		if(!isset($shopper->profile[$field]) && isset($shopper->$field) && $shopper->$field != ''){
 			$shopper->profile[$field] = $shopper->$field;
