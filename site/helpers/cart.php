@@ -745,7 +745,8 @@ class MyMuseCart {
 				$order->discount += $res;
 			}
 		}
-		$order->order_subtotal = $order->order_subtotal - $order->discount;
+
+		$order->order_subtotal = $order->order_subtotal - $order->discount - $order->shopper_group_discount;
 		if($order->order_subtotal < 0){
 			$order->order_subtotal = 0.00;
 		}
@@ -898,7 +899,7 @@ class MyMuseCart {
 		$row = new MymuseTableproduct($db);
 
 		if(!$row->load($id)){
-			echo "Error: id not available";
+			echo "Error: id $id could not be loaded. ".$row->getError();
 			$this->delete($id);
 			return false;
 		}

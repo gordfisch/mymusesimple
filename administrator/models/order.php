@@ -90,13 +90,69 @@ class MymuseModelorder extends JModelAdmin
 	{
 		$params = MyMuseHelper::getParams();
 		$this->setState('order.id',JRequest::getVar('id'));
+		$db = JFActory::getDBO();
+		
 		if ($item = parent::getItem($pk)) {
+			
+			// get user details
+			$item->user = JFactory::getUser($item->user_id);
+			$profile_key = $params->get('my_profile_key', 'mymuse');
 
-			// Lets load the items
-			$query = "SELECT * FROM #__mymuse_order_item
-  				WHERE order_id=".$item->id;
+			//if we are using no_reg
+			if($params->get('my_registration') == "no_reg" || $item->user->username == "buyer"){
+				$fields = MyMuseHelper::getNoRegFields();
+				$registry = new JRegistry;
+				$registry->loadString($item->notes);
+				$item->notes = $registry->toArray();
+			
+				foreach($fields as $field){
+					if($registry->get($field)){
+						$item->user->profile[$field] = $item->notes[$field];
+						//echo $field." ".$registry->get($field)."<br />";
+					}else{
+						$item->user->profile[$field] = '';
+					}
+				}
+				if(isset($item->user->profile['first_name'])){
+					$item->user->name = $item->user->profile['first_name']." ".@$item->user->profile['last_name'];
+				}
+				if($item->user->profile['email']){
+					$item->user->email = $item->user->profile['email'];
+				}
+				if($item->user->profile['name']){
+					$item->user->name = $item->user->profile['name'];
+				}
+			
+				$notes = '';
+				foreach($item->notes as $key => $val){
+					$notes .= $key.'='.$val."\n";
+				}
+				$item->notes = $notes;
+			
+			}else{
+				// Load the profile data from the database.
+				$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
+						' WHERE user_id = '.(int) $item->user_id .
+						' AND profile_key LIKE \''.$profile_key.'.%\'' .
+						' ORDER BY ordering';
+				$db->setQuery($query);
+				$results = $db->loadRowList();
+					
+				// Check for a database error.
+				if ($db->getErrorNum()) {
+					$this->setError($db->getErrorMsg());
+					return false;
+				}
+				// Merge the profile data.
+				$item->user->profile = array();
+				foreach ($results as $v) {
+					$k = str_replace("$profile_key.", '', $v[0]);
+					$item->user->profile[$k] = trim(json_decode($v[1], true),'"');
+				}
+			}
 
-			$db = JFActory::getDBO();
+			// Lets load the order items
+			$query = "SELECT * FROM #__mymuse_order_item WHERE order_id=".$item->id;
 			$db->setQuery( $query );
 			$item->items = $db->loadObjectList();
 			
@@ -134,7 +190,7 @@ class MymuseModelorder extends JModelAdmin
   			
 
   			if($downloadable){
-  				if($params->get('my_registration') == "no_reg"){
+  				if($params->get('my_registration') == "no_reg" || $item->user->username == "buyer"){
   					$item->downloadlink = JURI::root()."index.php?option=com_mymuse&task=accdownloads&id=".$item->order_number;
   				}else{
   					$item->downloadlink = JURI::root()."index.php?option=com_mymuse&task=downloads&id=".$item->order_number;
@@ -193,60 +249,7 @@ class MymuseModelorder extends JModelAdmin
 			$db->setQuery($q);
 			$item->order_shipments = $db->loadObjectList();
         			
-			// get user details
-			$item->user = JFactory::getUser($item->user_id);
-			$profile_key = $params->get('my_profile_key', 'mymuse');
 			
-			// Load the profile data from the database.
-			$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
-			' WHERE user_id = '.(int) $item->user_id .
-			' AND profile_key LIKE \''.$profile_key.'.%\'' .
-			' ORDER BY ordering';
-			$db->setQuery($query);
-			$results = $db->loadRowList();
-
-			// Check for a database error.
-			if ($db->getErrorNum()) {
-				$this->_subject->setError($db->getErrorMsg());
-				return false;
-			}
-			// Merge the profile data.
-			$item->user->profile = array();
-			foreach ($results as $v) {
-				$k = str_replace("$profile_key.", '', $v[0]);
-				$item->user->profile[$k] = trim(json_decode($v[1], true),'"');
-				
-			}
-			
-			//if we are using no_reg
-			if($params->get('my_registration') == "no_reg"){
-				$fields = MyMuseHelper::getNoRegFields();
-				$registry = new JRegistry;
-				$registry->loadString($item->notes);
-				$item->notes = $registry->toArray();
-				
-				foreach($fields as $field){
-					if($registry->get($field)){
-						$item->user->profile[$field] = $item->notes[$field];
-						//echo $field." ".$registry->get($field)."<br />";
-					}else{
-						$item->user->profile[$field] = '';
-					}
-				}
-				if(isset($item->user->profile['first_name'])){
-					$item->user->name = $item->user->profile['first_name']." ".@$item->user->profile['last_name'];
-				}
-				if($item->user->profile['email']){
-					$item->user->email = $item->user->profile['email'];
-				}
-				
-				$notes = '';
-				foreach($item->notes as $key => $val){
-					$notes .= $key.'='.$val."\n";
-				}
-				$item->notes = $notes;
-				
-			}
 			
 			
 			if(isset($item->user->profile['shopper_group'])){

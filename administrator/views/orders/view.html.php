@@ -30,16 +30,21 @@ class MymuseViewOrders extends JViewLegacy
 		$this->items		= $this->get('Items');
 		
 		$params = MyMuseHelper::getParams();
-		if($params->get('my_registration') == "no_reg"){
+		//if($params->get('my_registration')){
 
 			foreach($this->items as $item){
-				$registry = new JRegistry;
-				$registry->loadString($item->notes);
-				if($registry->get('first_name')){
-					$item->shopper = $registry->get('first_name')." ".$registry->get('last_name');
+				if(isset($item->notes) and $item->notes){
+					$registry = new JRegistry;
+					$registry->loadString($item->notes);
+					if($registry->get('first_name')){
+						$item->shopper = $registry->get('first_name')." ".$registry->get('last_name');
+					}
+					if($registry->get('name')){
+						$item->shopper = $registry->get('name');
+					}
 				}
 			}
-		}
+		//}
 		
 		$this->pagination	= $this->get('Pagination');
 

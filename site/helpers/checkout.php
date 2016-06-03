@@ -58,13 +58,13 @@ class MyMuseCheckout
 		$MyMuseCart  	=& MyMuse::getObject('cart','helpers');
 
 		$shopper 		=& $MyMuseShopper->getShopper();
-		//print_pre($shopper); exit;
+
 		$store 			= $MyMuseStore->getStore();
 		$cart 			= $MyMuseCart->cart;
 		$cart_order 	= $MyMuseCart->buildOrder(0,1);
 		$d 				= $jinput->post->getArray();
 		$session 		= JFactory::getSession();
-
+	
 		// TODO stop repeat orders on reload
 		if($params->get('my_debug')){
 			$date = date('Y-m-d h:i:s');
@@ -107,8 +107,8 @@ class MyMuseCheckout
 				$cart[$i]['product']->ext = pathinfo($cart[$i]['product']->file_name, PATHINFO_EXTENSION);
 			}
 			$cart[$i]['product']->price = MyMuseModelProduct::getPrice($cart[$i]["product"]);
+			
 			// SEE IF IT IS AN ALL_FILES, ADD ALL FILES TO CART
-
 			if($cart[$i]['product']->product_allfiles && !$params->get('my_use_zip')){
 				$query = "SELECT id from #__mymuse_product WHERE parentid='".$cart[$i]['product']->parentid."'
 				AND product_downloadable='1' AND product_allfiles !='1' ORDER BY ordering ";
@@ -184,7 +184,6 @@ class MyMuseCheckout
 		$tzoffset 	= $config->get('config.offset');
 		$date 		= JFactory::getDate('now', $tzoffset);
 		
-		// We used to keep separate shopper,user id's
 		$order->user_id 				= $shopper->id;
 		$order->order_number 			= md5(time().mt_rand());
 		$order->store_id 				= $store->id;
@@ -222,7 +221,7 @@ class MyMuseCheckout
 		}
 		
 
-		if($params->get('my_registration') == "no_reg"){
+		if($params->get('my_registration') == "no_reg" || $shopper->username == 'buyer'){
 			$fields = MyMuseHelper::getNoRegFields();
 
 			if(isset($order->notes)){
@@ -232,6 +231,8 @@ class MyMuseCheckout
 			foreach($fields as $field){
 				if(isset($shopper->$field)){
 					$notes[$field] = $shopper->$field;
+				}elseif(isset($shopper->profile[$field])){
+					$notes[$field] = $shopper->profile[$field];
 				}
 			}
 			$registry = new JRegistry;
@@ -250,7 +251,7 @@ class MyMuseCheckout
 			$my_licence = $session->get("my_licence",0);
 			$licence_name = $params->get('my_license_'.$my_licence.'_name');
 			$licence_price = $params->get('my_license_'.$my_licence.'_price');
-			$order->licence = $my_licence."|".$licence_name.'|'.$licence_price;
+			$order->licence = $my_licence." | ".$licence_name.' | '.$licence_price;
 		}
 
 		//save the order number in the session
@@ -283,6 +284,7 @@ class MyMuseCheckout
 			}
 
 			$query = "SELECT * FROM #__mymuse_product WHERE id='".$cart[$i]["product_id"]."'";
+		
 			$this->_db->setQuery($query);
 			$prod = $this->_db->loadObject();
 			$parentid = $prod->parentid;

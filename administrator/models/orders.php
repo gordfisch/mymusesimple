@@ -117,7 +117,7 @@ class MymuseModelorders extends JModelList
 		$query->join('LEFT', '#__users AS uc ON uc.id=a.checked_out');
 
 		// Join over the users for the order owner.
-		$query->select('u.name AS shopper');
+		$query->select('u.name AS shopper, u.username AS username');
 		$query->join('LEFT', '#__users AS u ON u.id=a.user_id');
 
 		// Join over the order_status for the status name.

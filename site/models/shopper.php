@@ -72,7 +72,9 @@ class mymuseModelShopper extends JModelForm
         	$jinput = JFactory::getApplication()->input;
         	$task 	= $jinput->get('task');
         	$db 	= JFactory::getDBO();
-        	
+    //print_pre($user);   
+    //print_pre($_POST);
+    //print_pre($user); 
         	//if this is no reg coming in for a download
         	if($params->get('my_registration') == "no_reg" && !$user->get('id') 
         			&& ($task == 'accdownloads' || $task == 'downloads') ){

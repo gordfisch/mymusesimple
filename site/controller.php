@@ -306,7 +306,8 @@ class MyMuseController extends JControllerLegacy
 		}else{
 			// Redirect back to the registration screen.
 			$err = $this->MyMuseShopper->getError();
-			$msg = '';
+			$msg = $err;
+			echo $err; exit;
 			$this->setRedirect( JRoute::_("index.php?option=com_mymuse&view=shopper&task=register&Itemid=".$this->Itemid, $msg));
 			return false;
 		}
@@ -527,7 +528,7 @@ class MyMuseController extends JControllerLegacy
 					$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid), $msg );
 					return false;
 				}
-				
+		
 				if($this->MyMuseShopper->order->order_status == "C"){
 					$this->jinput->set('task', 'makemail');
 					$this->display();
