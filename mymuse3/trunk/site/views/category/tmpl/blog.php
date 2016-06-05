@@ -33,6 +33,16 @@ $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams
 
 ?>
 
+<?php if ($this->params->get('category_product_image_height')) : ?>
+<style>
+.product-image {
+max-height: <?php echo $this->params->get('category_product_image_height'); ?>px !important;
+max-width: <?php echo $this->params->get('category_product_image_height'); ?>px !important;
+</style>
+<?php endif; ?>
+
+
+<!-- HEADING - TITLE -->
 <?php  echo $category->event->beforeDisplayHeader; ?>
 
 <div class="blog<?php echo $this->pageclass_sfx;?>">
@@ -53,7 +63,7 @@ $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams
 <?php echo $category->event->afterDisplayTitle; ?>
 
 
-
+<!-- DESCRIPTION -->
 <?php if ($this->params->get('show_description', 1) || $this->params->def('show_description_image', 1)) : ?>
 	<div class="category-desc">
 	<?php if ($this->params->get('show_description_image') && $this->category->getParams()->get('image')) : ?>
@@ -71,24 +81,27 @@ $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams
 <?php endif; ?>
 
 
-
+<!-- CHILDREN - SUBCATEGORIES -->
 <?php if (!empty($this->children[$this->category->id])&& $this->maxLevel != 0) : ?>
 		<div class="cat-children cat-items">
 		<h3><?php echo JTEXT::_('JGLOBAL_SUBCATEGORIES'); ?></h3>
 			<?php echo $this->loadTemplate('children'); ?>
 		</div>
+		<div class="clear"></div>
 <?php endif; ?>
 
-<div class="clear"></div>
 
 <?php echo $category->event->beforeDisplayProduct; ?>
 
 <?php if($this->params->get('category_show_all_products')) : ?>
+<!-- ITEMS - PRODUCTS -->
 <div class="cat-items">
 <h3><?php echo JText::_("MYMUSE_PRODUCTS"); ?></h3>
 
+
 <?php $leadingcount=0 ; ?>
 <?php if (!empty($this->lead_items)) : ?>
+<!-- LEADING ITEMS-->
 <div class="items-leading">
 	<?php foreach ($this->lead_items as &$item) : ?>
 		<div class="leading-<?php echo $leadingcount; ?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
@@ -111,7 +124,7 @@ $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams
 	$counter=0;
 ?>
 <?php if (!empty($this->intro_items)) : ?>
-	
+	<!-- INTRO ITEMS-->
 	<?php foreach ($this->intro_items as $key => &$item) : ?>
 		<?php
 		$key= ($key-$leadingcount)+1;
@@ -119,11 +132,10 @@ $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams
 		$row = $counter / $this->columns ;
 		$this->key = $key;
 		if ($rowcount==1) : ?>
-		<div
-			class="items-row cols-<?php echo (int) $this->columns;?> <?php echo 'row-'.$row ; ?>">
+		<div class="items-row cols-<?php echo (int) $this->columns;?> <?php echo 'row-'.$row ; ?>">
 			<?php endif; ?>
 			<div
-				class="item column-<?php echo $rowcount;?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
+				class="item column-<?php echo $rowcount;?> <?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
 				<?php
 				$this->item = &$item;
 				echo $this->loadTemplate('item');
@@ -138,8 +150,9 @@ $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams
 	<div class="clear"></div>
 <?php endif; ?>
 
-<?php if (!empty($this->link_items)) : ?>
 
+<?php if (!empty($this->link_items)) : ?>
+	<!-- LINK ITEMS-->
 	<?php echo $this->loadTemplate('links'); ?>
 
 <?php endif; ?>
