@@ -10,12 +10,13 @@
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
-$path = JURI::root(true);
-if($params->get('my_registration') == "no_reg"){
-	$link = JRoute::_("index.php?option=com_mymuse&view=store&task=accdownloads&id=".$order->order_number);
+
+if($params->get('my_registration') == "no_reg" || $order->user->username == "buyer"){
+	$link = "index.php?option=com_mymuse&view=store&task=accdownloads&id=".$order->order_number;
 }else{
-	$link = JRoute::_("index.php?option=com_mymuse&view=store&task=downloads&id=".$order->order_number);
+	$link = "index.php?option=com_mymuse&view=store&task=downloads&id=".$order->order_number;
 }
+
 $link = JURI::root().$link;
 if($params->get('my_default_itemid','')){
 	$link .= "&Itemid=".$params->get('my_default_itemid');	

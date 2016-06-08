@@ -23,39 +23,13 @@ JHtmlBehavior::framework();
 <div class="system-unpublished">
 <?php endif; ?>
 
-
-
-<?php if ($params->get('show_print_icon') || $params->get('show_email_icon') || $canEdit) : ?>
-	<ul class="actions">
-		<?php if ($params->get('show_print_icon')) : ?>
-		<li class="print-icon">
-			<?php echo JHtml::_('icon.print_popup', $this->item, $params); ?>
-		</li>
-		<?php endif; ?>
-		<?php if ($params->get('show_email_icon')) : ?>
-		<li class="email-icon">
-			<?php echo JHtml::_('icon.email', $this->item, $params); ?>
-		</li>
-		<?php endif; ?>
-		<?php if ($canEdit) : ?>
-		<!--   
-		<li class="edit-icon">
-			<?php echo JHtml::_('icon.edit', $this->item, $params); ?>
-		</li>
-		-->
-		<?php endif; ?>
-	</ul>
-<?php endif; ?>
-
 <?php if ($params->get('category_show_product_image') && $this->item->list_image): ?>
-<div class="list_image">
-<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->category->id)); ?>"
-><img src="<?php echo $this->item->list_image; ?>" 
-alt="<?php echo htmlspecialchars($this->item->list_image); ?>" border="0" 
-<?php if ($params->get('category_product_image_height')) : ?>
-style="height: <?php echo $params->get('category_product_image_height'); ?>px !important;"
-<?php endif; ?>
-/></a></div>
+	<div class="list-image">
+		<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->category->id)); ?>"
+		><img class="product-image" src="<?php echo $this->item->list_image; ?>" 
+		alt="<?php echo htmlspecialchars($this->item->list_image); ?>" border="0" 
+		/></a>&nbsp;
+	</div>
 <?php endif; ?>
 
 <?php if ($params->get('show_title')) : ?>
@@ -74,6 +48,7 @@ style="height: <?php echo $params->get('category_product_image_height'); ?>px !i
 <?php endif; ?>
 
 <?php echo $this->item->event->beforeDisplayContent; ?>
+
 
 <?php // to do not that elegant would be nice to group the params ?>
 
@@ -177,7 +152,7 @@ style="height: <?php echo $params->get('category_product_image_height'); ?>px !i
 		$link->setVar('return', base64_encode($returnURL));
 	endif;
 ?>
-		<p class="readmore">
+		<div class="readmore">
 				<a href="<?php echo $link; ?>">
 					<?php if (!$params->get('access-view')) :
 						echo JText::_('MYMUSE_REGISTER_TO_READ_MORE');
@@ -192,7 +167,7 @@ style="height: <?php echo $params->get('category_product_image_height'); ?>px !i
 						echo JText::_('MYMUSE_READ_MORE');
 						echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
 					endif; ?></a>
-		</p>
+		</div>
 <?php endif; ?>
 
 <?php if ($this->item->state == 0) : ?>
@@ -201,4 +176,3 @@ style="height: <?php echo $params->get('category_product_image_height'); ?>px !i
 
 
 <?php echo $this->item->event->afterDisplayContent; ?>
-<div class="clear"></div>

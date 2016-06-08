@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $shopper 	= $this->shopper;
 $params 	= $this->params;
-if($params->get('my_registration') == "no_reg"){
+if($params->get('my_registration') == "no_reg" || $this->user->username == "buyer"){
 	$fields = MyMuseHelper::getNoRegFields();
 	foreach($fields as $field){
 		if(!isset($shopper->profile[$field]) && isset($shopper->$field) && $shopper->$field != ''){
@@ -156,9 +156,11 @@ if($params->get('my_registration') == "no_reg"){
        
         if($this->user->id 
         		&& $this->params->get('my_registration') != 'no_reg'
+        		&& $this->user->username != 'buyer'
         		&& $this->task != 'notify'
         		&& $this->task != 'thankyou'
         		&& $this->task != 'confirm'
+        		&& $this->task != 'makemail'
         		){ 
         		$url = JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$this->Itemid;
         		$return = base64_encode($url);

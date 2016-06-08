@@ -454,7 +454,7 @@ if($notes_required  && $user->username == 'buyer'){
 			<?php } ?>
 			
 	  		<?php if(($user->username == 'buyer' && $notes_required && isset($notes) && $notes != '')
-				|| $user->username == ''){ 
+				|| $user->username != 'buyer'){ 
 	  			?>
 				<div class="pull-right mymuse-button-right cart">
 					<button class="button uk-button" type="button" 
