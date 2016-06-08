@@ -64,7 +64,7 @@ class MyMuseCheckout
 		$cart_order 	= $MyMuseCart->buildOrder(0,1);
 		$d 				= $jinput->post->getArray();
 		$session 		= JFactory::getSession();
-	
+
 		// TODO stop repeat orders on reload
 		if($params->get('my_debug')){
 			$date = date('Y-m-d h:i:s');
@@ -407,10 +407,14 @@ class MyMuseCheckout
 			$debug = "$date Order saved:  ".$order->order_number."\n\n";
 			MyMuseHelper::logMessage( $debug  );
 		}
+		
 		// SEND EMAIL CONFIRMATION MESSAGES IF STATUS IS CONFIRMED
 		// or if payment offline is enabled
 		jimport( 'joomla.plugin.helper' );
 		 
+		
+		
+		
 		if(!$params->get('my_shop_test') && !$params->get('my_debug')){
 			$MyMuseCart->reset();
 		}
@@ -684,8 +688,17 @@ class MyMuseCheckout
 		$query = "SELECT * from #__mymuse_order WHERE id='$id'";
 		$db->setQuery($query);
 		$order = $db->loadObject();
+		$order->user = $shopper;
+		
+		if(is_array($order->order_currency)){
+			$order->currency_code = $order->order_currency['currency_code'];
+		}else{
+			$order->currency_code = $order->order_currency;
+		}
+
+		
 		$order->shopper_group_name = @$shopper->shopper_group_name;
-		$order->shopper_group_discount = @$shopper->discount;
+	
 
 		//get the taxes
 		$order->tax_array = array();

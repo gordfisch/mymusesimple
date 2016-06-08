@@ -528,7 +528,7 @@ class MyMuseController extends JControllerLegacy
 					$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid), $msg );
 					return false;
 				}
-		
+				
 				if($this->MyMuseShopper->order->order_status == "C"){
 					$this->jinput->set('task', 'makemail');
 					$this->display();

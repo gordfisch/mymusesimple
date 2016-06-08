@@ -489,8 +489,9 @@ class myMuseViewStore extends JViewLegacy
         		if($product->price == 0.00 || $product->price == '' || !$product->price){
         			$free = 1;
         			if(is_array($jason)){
+        				
         				if($params->get('my_encode_filenames')){
-        					$filename = $jason[0]->file_alias;
+        					$filename = $product->title_alias;
         					$realname = $jason[0]->file_name;
         				}else{
         					$filename = $jason[0]->file_name;
@@ -507,7 +508,6 @@ class myMuseViewStore extends JViewLegacy
         			}
         		}
         	}
-  
         	if(!$free && !$owned){
         		$message = JText::_('MYMUSE_NOT_AVAILABLE');
         		$this->assignRef( 'message', $message );
@@ -593,7 +593,7 @@ class myMuseViewStore extends JViewLegacy
         			return false;
         		}
         	
-        		if(!$object->set_byfile($full_filename,$filename)){ //Download from a file
+        		if(!$object->set_byfile($full_filename,$realname)){ //Download from a file
         			$message = JText::_('MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_FILE')." ".$full_filename;
         			if($params->get('my_debug')){
         				$message .= $name;

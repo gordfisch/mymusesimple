@@ -33,15 +33,6 @@ $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams
 
 ?>
 
-<?php if ($this->params->get('category_product_image_height')) : ?>
-<style>
-.product-image {
-max-height: <?php echo $this->params->get('category_product_image_height'); ?>px !important;
-max-width: <?php echo $this->params->get('category_product_image_height'); ?>px !important;
-</style>
-<?php endif; ?>
-
-
 <!-- HEADING - TITLE -->
 <?php  echo $category->event->beforeDisplayHeader; ?>
 
@@ -125,28 +116,24 @@ max-width: <?php echo $this->params->get('category_product_image_height'); ?>px 
 ?>
 <?php if (!empty($this->intro_items)) : ?>
 	<!-- INTRO ITEMS-->
+	<style>
+	.intro-items {
+	 	-webkit-columns: <?php echo $this->columns; ?> <?php echo $this->params->get('category_product_image_height',150); ?>px;
+     	-moz-columns: <?php echo $this->columns; ?> <?php echo $this->params->get('category_product_image_height',150); ?>px;
+      	columns: <?php echo $this->columns; ?> <?php echo $this->params->get('category_product_image_height',150); ?>px;
+      	
+      }
+	</style>
+	<div class="intro-items">
 	<?php foreach ($this->intro_items as $key => &$item) : ?>
-		<?php
-		$key= ($key-$leadingcount)+1;
-		$rowcount=( ((int)$key-1) %	(int) $this->columns) +1;
-		$row = $counter / $this->columns ;
-		$this->key = $key;
-		if ($rowcount==1) : ?>
-		<div class="items-row cols-<?php echo (int) $this->columns;?> <?php echo 'row-'.$row ; ?>">
-			<?php endif; ?>
-			<div
-				class="item column-<?php echo $rowcount;?> <?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
+		<div class="intro-item">
 				<?php
 				$this->item = &$item;
 				echo $this->loadTemplate('item');
 				?>
-			</div>
-			<?php $counter++; ?>
-			<?php if (($rowcount == $this->columns) or ($counter ==$introcount)): ?>
-			<span class="row-separator"></span>
 		</div>
-		<?php endif; ?>
 	<?php endforeach; ?>
+	</div>
 	<div class="clear"></div>
 <?php endif; ?>
 
@@ -154,8 +141,9 @@ max-width: <?php echo $this->params->get('category_product_image_height'); ?>px 
 <?php if (!empty($this->link_items)) : ?>
 	<!-- LINK ITEMS-->
 	<?php echo $this->loadTemplate('links'); ?>
-
 <?php endif; ?>
+
+
 <?php if (($this->params->def('show_pagination', 1) == 1  || 
 			($this->params->get('show_pagination') == 2)) && ($this->pagination->get('pages.total') > 1)) : ?>
 		<div class="pagination">

@@ -12,12 +12,8 @@
 defined('_JEXEC') or die('Restricted access');
 
 $params 		= $this->params;
-
-$MyMuseShopper  =& MyMuse::getObject('shopper','models');
-$shopper 		=& $MyMuseShopper->getShopper();
-$user_email 	= $shopper->email;
-$MyMuseStore  	=& MyMuse::getObject('store','models');
-$store 			= $MyMuseStore->_store;
+$shopper 		= $this->shopper;
+$store 			= $this->store;
 
 ?>
 <!DOCTYPE HTML>

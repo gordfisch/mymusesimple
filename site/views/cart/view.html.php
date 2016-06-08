@@ -28,6 +28,7 @@ class myMuseViewCart extends JViewLegacy
 		$jinput = JFactory::getApplication()->input;
 		$this->Itemid = $jinput->get("Itemid",'');
 		$this->task = $task	= $jinput->get('task', '', 'CMD');
+		
 	
 		if($task == "notify"){
 			$this->notify();
@@ -39,9 +40,10 @@ class myMuseViewCart extends JViewLegacy
 			
 			$this->MyMuseShopper 	=& MyMuse::getObject('shopper','models');
 			$order = $this->MyMuseShopper->order;
+			$order->user = JFactory::getUser($order->user_id);
 			
 			//if we are using no_reg
-			if($params->get('my_registration') == "no_reg"){
+			if($params->get('my_registration') == "no_reg" || $order->user->username == "buyer"){
 				$fields = MyMuseHelper::getNoRegFields();
 				$registry = new JRegistry;
 				$registry->loadString($order->notes);
@@ -56,10 +58,13 @@ class myMuseViewCart extends JViewLegacy
 				if(isset($order->user->profile['first_name'])){
 					$order->user->name = $order->user->profile['first_name']." ".@$order->user->profile['last_name'];
 				}
+				if(isset($order->user->profile['name'])){
+					$order->user->name = $order->user->profile['name'];
+				}
 				
 			}else{
 				// get user details
-				$order->user = JFactory::getUser($order->user_id);
+				
 				$profile_key = $params->get('my_profile_key', 'mymuse');
 				
 				// Load the profile data from the database.
@@ -220,7 +225,7 @@ class myMuseViewCart extends JViewLegacy
 					}
 				}
 				
-				if(isset($order->notes) && $params->get('my_registration') == "no_reg" ){
+				if(isset($order->notes) && $params->get('my_registration') == "no_reg" ||  $user->username == "buyer"){
 
 					$registry = new JRegistry;
 					$registry->loadString($order->notes);
@@ -874,39 +879,102 @@ class myMuseViewCart extends JViewLegacy
         $store_params->loadString($store->params);
         $date = date('Y-m-d h:i:s');
      	
-     	$params = MyMuseHelper::getParams();
-		$jinput = JFactory::getApplication()->input;
-		$db	= JFactory::getDBO();
+     	$params 		= MyMuseHelper::getParams();
+		$jinput 		= JFactory::getApplication()->input;
+		$db				= JFactory::getDBO();
 		$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
 		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
+		$order 			= $MyMuseCheckout->getOrder($result['order_id']);
+		$order->user	= JFactory::getUser($order->user_id);
+			
+		//if we are using no_reg
+		if($params->get('my_registration') == "no_reg" || $order->user->username == "buyer"){
+			$fields = MyMuseHelper::getNoRegFields();
+			$registry = new JRegistry;
+			$registry->loadString($order->notes);
+			foreach($fields as $field){
+				if($registry->get($field)){
+					$order->user->profile[$field] = $registry->get($field);
+					//echo $field." ".$registry->get($field)."<br />";
+				}else{
+					$order->user->profile[$field] = '';
+				}
+			}
+			if(isset($order->user->profile['first_name'])){
+				$order->user->name = $order->user->profile['first_name']." ".@$order->user->profile['last_name'];
+			}
+			if(isset($order->user->profile['name'])){
+				$order->user->name = $order->user->profile['name'];
+			}
+		
+		}else{
+			// get user details
+		
+			$profile_key = $params->get('my_profile_key', 'mymuse');
+		
+			// Load the profile data from the database.
+			$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
+					' WHERE user_id = '.(int) $order->user_id .
+					' AND profile_key LIKE \''.$profile_key.'.%\'' .
+					' ORDER BY ordering';
+			$db->setQuery($query);
+			$results = $db->loadRowList();
+				
+			// Check for a database error.
+			if ($db->getErrorNum()) {
+				$this->setError($db->getErrorMsg());
+				return false;
+			}
+			// Merge the profile data.
+			$order->user->profile = array();
+			foreach ($results as $v) {
+				$k = str_replace("$profile_key.", '', $v[0]);
+				$order->user->profile[$k] = trim(json_decode($v[1], true),'"');
+			}
+			if(!isset($order->user->profile['email'])){
+				$order->user->profile['email'] = $order->user->email;
+			}
+		}
+
+		if(!isset($order->user->profile['shopper_group']) || $order->user->profile['shopper_group'] < 1){
+			$order->user->profile['shopper_group'] = 1;
+		}
+		$query = 'SELECT *'
+				. ' FROM #__mymuse_shopper_group'
+				. ' WHERE id = '.$order->user->profile['shopper_group']
+				;
+		
+		$db->setQuery( $query );
+		$order->user->shopper_group = $db->loadObject();
+		$order->user->discount = $order->user->shopper_group->discount;
+		$order->user->shopper_group_name = $order->user->shopper_group->shopper_group_name;
+		
+		
+		$user = $shopper = $order->user;
 		
 		if(2 == $params->get('my_price_by_product',0)){
-			$session = JFactory::getSession();
-			$my_licence = $session->get("my_licence",0);
+			$licence = explode("|", $order->licence);
+			$my_licence = trim($licence[0]);
+
 			$my_licence_text = $params->get('my_license_'.$my_licence.'_name');
 			$my_licence_desc = $params->get('my_license_'.$my_licence.'_desc');
 			$this->assignRef('my_licence', $my_licence);
 			$this->assignRef('my_licence_text', $my_licence_text);
 			$this->assignRef('my_licence_desc', $my_licence_desc);
 		}
-		$query = "SELECT user_id FROM `#__mymuse_order` WHERE `order_number`='".$result['order_number']."'";
-		$db->setQuery($query);
-		$user_id = $db->loadResult();
-		 
-		$order 	= $MyMuseCheckout->getOrder($result['order_id']);
+		
+
 		if(is_object($order) && $params->get('my_debug')){
 			$debug = "$date makeMail Order = ".$order->id."\n";
+			$debug .= "makeMail user = ".print_r($user,true)."\n";
 			MyMuseHelper::logMessage( $debug  );
 		}
 		
-		
-		$shopper 		= $MyMuseShopper->getShopperByUser($user_id );
-		$user 			= JFactory::getUser($user_id);
 		$currency 		= $order->order_currency;
 		$heading 		= Jtext::_('MYMUSE_THANK_YOU');
 		$message 		= Jtext::_('MYMUSE_HERE_IS_YOUR_ORDER');
 		
-		if($order->notes && $params->get('my_registration') == "no_reg" ){
+		if($order->notes && ($params->get('my_registration') == "no_reg" || $user->username == "buyer") ){
 
 			$debug = "makeMail Order Notes = ".print_r($order->notes,true)."\n";
 			MyMuseHelper::logMessage( $debug  );
@@ -914,21 +982,10 @@ class myMuseViewCart extends JViewLegacy
 			$registry = new JRegistry;
 			$accparams = $registry->loadString($order->notes);
 			$order->notes = $registry->toArray();
-			/*
-			 first_name=Gord
-			 last_name=Fisch
-			 email=gord@arboreta.ca
-			 address1=5380 King Edward
-			 address2=
-			 city=Montreal
-			 country=CA
-			 region_name=QC
-			 postal_code=H4V 2K1
-		
-			*/
-		
+
 			$user->set('email',$accparams->get('email'));
 			$user->set('name',$accparams->get('first_name')." ".$accparams->get('last_name'));
+			$shopper->name          = isset($order->notes['name'])? $order->notes['name'] : '';
 			$shopper->email         = isset($order->notes['email'])? $order->notes['email'] : '';
 			$shopper->first_name    = isset($order->notes['first_name'])? $order->notes['first_name'] : '';
 			$shopper->last_name     = isset($order->notes['last_name'])? $order->notes['last_name'] : '';
