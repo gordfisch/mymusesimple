@@ -399,7 +399,8 @@ jQuery(document).ready(function(){
 		
 		
 		//SINGLE PLAYER MAKE PLAY BUTTONS//
-		if($type=='single'){
+		
+		if($type=='single' || $type=='module'){
 			$word = JText::_('MYMUSE_PLAY');
 			if($params->get('my_play_downloads')){
 				$word = JText::_('MYMUSE_PLAY_PREVIEW');

@@ -136,6 +136,7 @@
 	<modules>
         <module name="mod_mymuse_latest" folder="modules/mod_mymuse_latest" client="site">Mod MyMuse Latest</module>
 		<module name="mod_mymuse_minicart" folder="modules/mod_mymuse_minicart" client="site">Mod MyMuse Minicart</module>
+		<module name="mod_mymuse_jplayer" folder="modules/mod_mymuse_jplayer" client="site">Mod MyMuse JPlayer</module>
 	</modules>
 
 

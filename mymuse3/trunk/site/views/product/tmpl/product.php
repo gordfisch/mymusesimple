@@ -834,6 +834,8 @@ endif; ?>
 <!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
 		<h3><?php echo JText::_('MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
 
+		
+<!-- PLAYER -->
 		<?php if($params->get('product_player_type') == "single") : ?>
 			<div id="product_player" 
 			<?php if($params->get('product_player_height')) : ?>
@@ -845,11 +847,12 @@ endif; ?>
 			<div><?php echo JText::_('MYMUSE_NOW_PLAYING');?> <span id="jp-title-li"></span></div>
 			<?php endif; ?>
 		<?php endif; ?>
+		
 		<?php if($params->get('product_player_type') == "playlist"){ ?>
 			<div id="product_player" ><?php echo $product->flash; ?>
 			</div>
-			
 		<?php } ?>
+		
 		<div style="clear: both"></div>
 		
 		<div class="clips petrol" 
@@ -858,11 +861,12 @@ endif; ?>
 		<?php } ?>
 		>
 		
-		
 		<div class="track-count"><?php echo count($tracks); 
         if(count($tracks) == 1){ $word = "Track"; }else{ $word = "Tracks";} ?> 
             <?php echo $word; ?> Total</div>
+<!-- END PLAYER -->   
             
+                     
 		<table class="mymuse_cart tracks">
 			<thead>
 		    <tr>
