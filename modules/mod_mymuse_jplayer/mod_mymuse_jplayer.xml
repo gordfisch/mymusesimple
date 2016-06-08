@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="module" client="site">
+	<name>mod_mymuse_jplayer</name>
+	<author>Arboreta</author>
+	<creationDate>June 2016</creationDate>
+	<copyright>Copyright (C) 2016 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>3.0.0</version>
+	<description>MYMUSE_MOD_JPLAYER_DESC</description>
+	<files>
+		<filename module="mod_mymuse_minicart">mod_mymuse_jplayer.php</filename>
+        <filename module="mod_mymuse_minicart">index.html</filename>
+        <filename module="mod_mymuse_minicart">tmpl/default.php</filename>
+        <filename module="mod_mymuse_minicart">tmpl/index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.mod_mymuse_jplayer.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_mymuse_jplayer.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+			<fieldset
+				name="advanced">
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+				<field
+					name="moduleclass_sfx"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+				<field
+					name="cache"
+					type="list"
+					default="0"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC">
+					<option
+						value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+			</fieldset>
+		</fields>
+	</config>
+</extension>
+

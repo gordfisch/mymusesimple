@@ -1,10 +1,11 @@
+/* put in a fixed position near the top
 #product_player{
 	position:fixed;
 	left: 350px;
 	top: 100px;
 	z-index: 5000;
 }
-
+*/
 
 .jp-gui {
 	position:relative;

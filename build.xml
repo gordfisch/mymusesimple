@@ -30,6 +30,9 @@
         <fileset dir="./modules/mod_mymuse_latest" id="mod_latest_files">
                 <include name="**" />
         </fileset>
+        <fileset dir="./modules/mod_mymuse_jplayer" id="mod_jplayer_files">
+                <include name="**" />
+        </fileset>
  
         <!-- Copy Target -->
         <target name="copy_to_test351" description="copy target">
@@ -64,22 +67,37 @@
                         todir="${test}/administrator/language/en-GB" />    
         		<copy file="${src}/plugins/payment_moneybookers/language/en-GB/en-GB.plg_mymuse_payment_moneybookers.sys.ini"
         	             todir="${test}/administrator/language/en-GB" /> 
+        	             
                 <copy file="${src}/plugins/payment_paypal/language/en-GB/en-GB.plg_mymuse_payment_paypal.ini"
                         todir="${test}/administrator/language/en-GB" />
+                <copy file="${src}/plugins/payment_paypal/language/en-GB/en-GB.plg_mymuse_payment_paypal.sys.ini"
+                        todir="${test}/administrator/language/en-GB" />
+                        
                 <copy file="${src}/plugins/payment_monsterpay/language/en-GB/en-GB.plg_mymuse_payment_monsterpay.ini"
                         todir="${test}/administrator/language/en-GB" />
         		<copy file="${src}/plugins/payment_monsterpay/language/en-GB/en-GB.plg_mymuse_payment_monsterpay.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />
+        	            
                 <copy file="${src}/plugins/payment_payfast/language/en-GB/en-GB.plg_mymuse_payment_payfast.ini"
                         todir="${test}/administrator/language/en-GB" />
+             	<copy file="${src}/plugins/payment_payfast/language/en-GB/en-GB.plg_mymuse_payment_payfast.sys.ini"
+                        todir="${test}/administrator/language/en-GB" />    
+                               
                 <copy file="${src}/plugins/payment_offline/language/en-GB/en-GB.plg_mymuse_payment_offline.ini"
                         todir="${test}/administrator/language/en-GB" />
+                <copy file="${src}/plugins/payment_offline/language/en-GB/en-GB.plg_mymuse_payment_offline.sys.ini"
+                        todir="${test}/administrator/language/en-GB" />
+                               
                 <copy file="${src}/plugins/payment_pesapal/language/en-GB/en-GB.plg_mymuse_payment_pesapal.ini"
                         todir="${test}/administrator/language/en-GB" />
+                <copy file="${src}/plugins/payment_pesapal/language/en-GB/en-GB.plg_mymuse_payment_pesapal.sys.ini"
+                        todir="${test}/administrator/language/en-GB" />
+                                
         		<copy file="${src}/plugins/payment_virtualmerchant/language/en-GB/en-GB.plg_mymuse_payment_virtualmerchant.ini"
         	        	todir="${test}/administrator/language/en-GB" />
         	    <copy file="${src}/plugins/payment_virtualmerchant/language/en-GB/en-GB.plg_mymuse_payment_virtualmerchant.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" />
+        	        	
         		<copy file="${src}/plugins/payment_paypalpro/language/en-GB/en-GB.plg_mymuse_payment_paypalpro.ini"
         	        	todir="${test}/administrator/language/en-GB" />
         	    <copy file="${src}/plugins/payment_paypalpro/language/en-GB/en-GB.plg_mymuse_payment_paypalpro.sys.ini"
@@ -90,16 +108,24 @@
         	    <copy file="${src}/plugins/payment_paypalproexpress/language/en-GB/en-GB.plg_mymuse_payment_paypalproexpress.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" />
         	        	
-        	     <copy file="${src}/plugins/payment_payunity/language/en-GB/en-GB.plg_mymuse_payment_payunity.ini"
+        	    <copy file="${src}/plugins/payment_payunity/language/en-GB/en-GB.plg_mymuse_payment_payunity.ini"
         	        	todir="${test}/administrator/language/en-GB" />
         	    <copy file="${src}/plugins/payment_payunity/language/en-GB/en-GB.plg_mymuse_payment_payunity.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" />
         	
                 <copy file="${src}/plugins/shipping_standard/language/en-GB/en-GB.plg_mymuse_shipping_standard.ini"
                         todir="${test}/administrator/language/en-GB" />
+                <copy file="${src}/plugins/shipping_standard/language/en-GB/en-GB.plg_mymuse_shipping_standard.sys.ini"
+                        todir="${test}/administrator/language/en-GB" />
+                                
                 <copy file="${src}/plugins/shipping_price/language/en-GB/en-GB.plg_mymuse_shipping_price.ini"
                         todir="${test}/administrator/language/en-GB" />
+                <copy file="${src}/plugins/shipping_price/language/en-GB/en-GB.plg_mymuse_shipping_price.sys.ini"
+                        todir="${test}/administrator/language/en-GB" />
+                        
                 <copy file="${src}/plugins/shoppergroupview/language/en-GB/en-GB.plg_mymuse_shoppergroupview.ini"
+                        todir="${test}/administrator/language/en-GB" />
+                <copy file="${src}/plugins/shoppergroupview/language/en-GB/en-GB.plg_mymuse_shoppergroupview.sys.ini"
                         todir="${test}/administrator/language/en-GB" />
         	
         		<copy file="${src}/plugins/audio_html5/language/en-GB/en-GB.plg_mymuse_audio_html5.ini"
@@ -116,6 +142,7 @@
                         todir="${test}/administrator/language/en-GB" />
         		<copy file="${src}/plugins/mp3player_dewplayer/language/en-GB/en-GB.plg_mymuse_mp3player_dewplayer.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />
+        	            
                 <copy file="${src}/plugins/mp3player_flowplayer/language/en-GB/en-GB.plg_mymuse_mp3player_flowplayer.ini"
                         todir="${test}/administrator/language/en-GB" />
         		<copy file="${src}/plugins/mp3player_flowplayer/language/en-GB/en-GB.plg_mymuse_mp3player_flowplayer.sys.ini"
@@ -130,6 +157,7 @@
                         todir="${test}/administrator/language/en-GB" />    
         		<copy file="${src}/plugins/vidplayer_flowplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_flowplayer.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />  
+        	            
                 <copy file="${src}/plugins/vidplayer_html5/language/en-GB/en-GB.plg_mymuse_vidplayer_html5.ini"
                         todir="${test}/administrator/language/en-GB" />
         		<copy file="${src}/plugins/vidplayer_html5/language/en-GB/en-GB.plg_mymuse_vidplayer_html5.sys.ini"
@@ -175,38 +203,46 @@
         	    <copy file="${src}/plugins/user_mymusenoreg/language/en-GB/en-GB.plg_user_mymusenoreg.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />
         	
-        	
-        	
         		<copy file="${src}/plugins/finder_mymuse/language/en-GB/en-GB.plg_finder_mymuse.ini"
         	        	 todir="${test}/administrator/language/en-GB" />
         	    <copy file="${src}/plugins/finder_mymuse/language/en-GB/en-GB.plg_finder_mymuse.sys.ini"
         	        	 todir="${test}/administrator/language/en-GB" />
-        	
-        	
-        	
-                <copy file="${src}/modules/mod_mymuse_minicart/language/en-GB/en-GB.mod_mymuse_minicart.ini"
-                        todir="${test}/language/en-GB" />
-        		<copy file="${src}/modules/mod_mymuse_minicart/language/en-GB/en-GB.mod_mymuse_minicart.sys.ini"
-        	            todir="${test}/language/en-GB" />
-                <copy file="${src}/modules/mod_mymuse_latest/language/en-GB/en-GB.mod_mymuse_latest.ini"
-                        todir="${test}/language/en-GB" />
-        		<copy file="${src}/modules/mod_mymuse_latest/language/en-GB/en-GB.mod_mymuse_latest.sys.ini"
-        	             todir="${test}/language/en-GB" />
-        	            
+        	        	 
         	    <copy file="${src}/plugins/mymuse_shortcode/language/en-GB/en-GB.plg_content_mymuse_shortcode.ini"
         	            todir="${test}/administrator/language/en-GB" />
         	    <copy file="${src}/plugins/mymuse_shortcode/language/en-GB/en-GB.plg_content_mymuse_shortcode.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />
+        	
+        	
+        	<!-- module languages -->
+                <copy file="${src}/modules/mod_mymuse_minicart/language/en-GB/en-GB.mod_mymuse_minicart.ini"
+                        todir="${test}/language/en-GB" />
+        		<copy file="${src}/modules/mod_mymuse_minicart/language/en-GB/en-GB.mod_mymuse_minicart.sys.ini"
+        	            todir="${test}/language/en-GB" />
+        	            
+                <copy file="${src}/modules/mod_mymuse_latest/language/en-GB/en-GB.mod_mymuse_latest.ini"
+                        todir="${test}/language/en-GB" />
+        		<copy file="${src}/modules/mod_mymuse_latest/language/en-GB/en-GB.mod_mymuse_latest.sys.ini"
+        	             todir="${test}/language/en-GB" />
+        	             
+      			<copy file="${src}/modules/mod_mymuse_jplayer/language/en-GB/en-GB.mod_mymuse_jplayer.ini"
+                        todir="${test}/language/en-GB" />
+        		<copy file="${src}/modules/mod_mymuse_jplayer/language/en-GB/en-GB.mod_mymuse_jplayer.sys.ini"
+        	             todir="${test}/language/en-GB" />
+        	               	            
+        	    
 				
 				<!--  plugins -->
                 <copy file="${src}/plugins/payment_payfast/payment_payfast.php"
                         todir="${test}/plugins/mymuse/payment_payfast" />
                 <copy file="${src}/plugins/payment_payfast/payment_payfast.xml"
                         todir="${test}/plugins/mymuse/payment_payfast" />
+                        
                 <copy file="${src}/plugins/payment_monsterpay/payment_monsterpay.php"
                         todir="${test}/plugins/mymuse/payment_monsterpay" />
                 <copy file="${src}/plugins/payment_monsterpay/payment_monsterpay.xml"
                         todir="${test}/plugins/mymuse/payment_monsterpay" /> 
+                        
                 <copy file="${src}/plugins/payment_moneybookers/payment_moneybookers.php"
                         todir="${test}/plugins/mymuse/payment_moneybookers" />
                 <copy file="${src}/plugins/payment_moneybookers/payment_moneybookers.xml"
@@ -247,11 +283,11 @@
                         todir="${test}/plugins/mymuse/payment_pesapal" />
                 <copy file="${src}/plugins/payment_pesapal/OAuth.php"
                         todir="${test}/plugins/mymuse/payment_pesapal" /> 
+                        
         		<copy file="${src}/plugins/payment_virtualmerchant/payment_virtualmerchant.php"
         	        	todir="${test}/plugins/mymuse/payment_virtualmerchant" />
         	    <copy file="${src}/plugins/payment_virtualmerchant/payment_virtualmerchant.xml"
         	        	todir="${test}/plugins/mymuse/payment_virtualmerchant" />
-                        
                         
                 <copy file="${src}/plugins/preorder/preorder.php"
                         todir="${test}/plugins/mymuse/preorder" />
@@ -333,7 +369,6 @@
         	        	todir="${test}/plugins/mymuse/audio_html5" /> 
         		<copy file="${src}/plugins/audio_html5/js/jplayer.playlist.min.js"
         	        	todir="${test}/plugins/mymuse/audio_html5/js" /> 
-        		
         		<copy file="${src}/plugins/audio_html5/js/jquery.jplayer.inspector.js"
         	        	todir="${test}/plugins/mymuse/audio_html5/js" /> 
         		<copy file="${src}/plugins/audio_html5/js/jquery.jplayer.min.js"
@@ -361,8 +396,7 @@
         	        	todir="${test}/plugins/mymuse/audio_amplitude/css" /> 
         		<copy file="${src}/plugins/audio_amplitude/media/sprite.png"
         	        	todir="${test}/media/com_mymuse" /> 
-        	        	
-        	        	
+        	        	   	
                 <copy file="${src}/plugins/mp3player_flowplayer/mp3player_flowplayer.php"
                         todir="${test}/plugins/mymuse/mp3player_flowplayer" />  
                 <copy file="${src}/plugins/mp3player_flowplayer/mp3player_flowplayer.xml"
@@ -379,7 +413,6 @@
                         todir="${test}/plugins/mymuse/mp3player_flowplayer/mp3players" /> 
                 <copy file="${src}/plugins/mp3player_flowplayer/mp3players/flowplayer.playlist-3.0.8.min.js"
                         todir="${test}/plugins/mymuse/mp3player_flowplayer/mp3players" />
-        	
         		<copy file="${src}/plugins/mp3player_flowplayer/css/flowplayer.css"
         	             todir="${test}/plugins/mymuse/mp3player_flowplayer/css" />
                  
@@ -448,12 +481,16 @@
         		<copy todir="${test}/media/com_mymuse/images">
                         <fileset refid="plugin_amplitude_media_files" />
                 </copy>
+                
                 <!--  modules -->
                 <copy todir="${test}/modules/mod_mymuse_minicart">
                         <fileset refid="mod_minicart_files" />
                 </copy>
                 <copy todir="${test}/modules/mod_mymuse_latest">
                         <fileset refid="mod_latest_files" />
+                </copy>
+                <copy todir="${test}/modules/mod_mymuse_jplayer">
+                        <fileset refid="mod_jplayer_files" />
                 </copy>
         </target>
 </project>
