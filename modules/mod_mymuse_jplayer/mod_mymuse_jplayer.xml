@@ -12,7 +12,7 @@
 	<files>
 		<filename module="mod_mymuse_jplayer">mod_mymuse_jplayer.php</filename>
         <filename module="mod_mymuse_jplayer">index.html</filename>
-        <filename module="mod_mymuse_jplayert">tmpl/default.php</filename>
+        <filename module="mod_mymuse_jplayer">tmpl/default.php</filename>
         <filename module="mod_mymuse_jplayer">tmpl/index.html</filename>
 	</files>
 	<languages>
