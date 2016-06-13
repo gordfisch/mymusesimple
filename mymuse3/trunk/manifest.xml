@@ -99,10 +99,6 @@
 	<!-- Plugins -->
 	<plugins>
         <plugin name="audio_html5" folder="plugins/audio_html5">MyMuse Audio HTML5 jPlayer</plugin>
-        <plugin name="mp3player_dewplayer" folder="plugins/mp3player_dewplayer">mp3player Dewplayer</plugin>
-        <plugin name="mp3player_flowplayer" folder="plugins/mp3player_flowplayer">mp3player Flowplayer</plugin>
-        <plugin name="vidplayer_dewplayer" folder="plugins/vidplayer_dewplayer">Vidplayer Dewplayer</plugin>
-        <plugin name="vidplayer_flowplayer" folder="plugins/vidplayer_flowplayer">Vidplayer Flowplayer</plugin>
 		<plugin name="vidplayer_html5" folder="plugins/vidplayer_html5">Vidplayer HTML5</plugin>
 		
 		<plugin name="payment_moneybookers" folder="plugins/payment_moneybookers">Moneybookers</plugin>
@@ -112,7 +108,7 @@
         <plugin name="payment_paypal" folder="plugins/payment_paypal">Paypal</plugin>
         <plugin name="payment_paypalpro" folder="plugins/payment_paypalpro">PayPalPro</plugin>
         <plugin name="payment_paypalproexpress" folder="plugins/payment_paypalproexpress">PayPalPro Express</plugin>
-        <plugin name="payment_paypunity" folder="plugins/payment_payunity">PayUnity</plugin>
+        <plugin name="payment_payunity" folder="plugins/payment_payunity">PayUnity</plugin>
         <plugin name="payment_pesapal" folder="plugins/payment_pesapal">Payfast</plugin>
 		<plugin name="payment_virtualmerchant" folder="plugins/payment_virtualmerchant">Virtual Merchant</plugin>
 		
