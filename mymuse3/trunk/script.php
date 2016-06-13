@@ -199,7 +199,6 @@ class com_mymuseInstallerScript
 		// $parent is the class calling this method
 		// $type is the type of change (install, update or discover_install)
 
-		echo "type = $type"; exit;
 		$db = JFactory::getDBO();
 		$actions = array();
 		
