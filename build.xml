@@ -50,6 +50,8 @@
         	            todir="${test}/administrator/components/com_mymuse" />
         		<copy file="${src}/script.php"
         	        	todir="${test}/administrator/components/com_mymuse" />
+        	        	
+        	        	
 				<!--  languages -->
 
                 <copy file="${src}/administrator/language/en-GB/en-GB.com_mymuse.sys.ini"
@@ -61,8 +63,6 @@
                 <copy file="${src}/site/language/en-GB/en-GB.com_mymuse.ini"
                         todir="${test}/language/en-GB" />
 
-                
-        	
                 <copy file="${src}/plugins/payment_moneybookers/language/en-GB/en-GB.plg_mymuse_payment_moneybookers.ini"
                         todir="${test}/administrator/language/en-GB" />    
         		<copy file="${src}/plugins/payment_moneybookers/language/en-GB/en-GB.plg_mymuse_payment_moneybookers.sys.ini"
@@ -196,6 +196,11 @@
         		<copy file="${src}/plugins/user_redirectonlogin/language/en-GB/en-GB.plg_user_redirectonlogin.ini"
         	        	todir="${test}/administrator/language/en-GB" />
         	    <copy file="${src}/plugins/user_redirectonlogin/language/en-GB/en-GB.plg_user_redirectonlogin.sys.ini"
+        	        	todir="${test}/administrator/language/en-GB" />
+        	        	
+        	    <copy file="${src}/plugins/user_redirectonprofile/language/en-GB/en-GB.plg_user_redirectonprofile.ini"
+        	        	todir="${test}/administrator/language/en-GB" />
+        	    <copy file="${src}/plugins/user_redirectonprofile/language/en-GB/en-GB.plg_user_redirectonprofile.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" />
         	
         		<copy file="${src}/plugins/user_mymusenoreg/language/en-GB/en-GB.plg_user_mymusenoreg.ini"
@@ -466,6 +471,11 @@
         	            todir="${test}/plugins/user/redirectonlogin" /> 
         	    <copy file="${src}/plugins/user_redirectonlogin/redirectonlogin.php"
         	            todir="${test}/plugins/user/redirectonlogin" />
+        	            
+        	    <copy file="${src}/plugins/user_redirectonprofile/redirectonprofile.xml"
+        	            todir="${test}/plugins/user/redirectonprofile" /> 
+        	    <copy file="${src}/plugins/user_redirectonprofile/redirectonprofile.php"
+        	            todir="${test}/plugins/user/redirectonprofile" />
         	
         		<copy file="${src}/plugins/finder_mymuse/mymuse.xml"
         	        	todir="${test}/plugins/finder/mymuse" /> 
