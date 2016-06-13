@@ -98,8 +98,10 @@
 
 	<!-- Plugins -->
 	<plugins>
-        <plugin name="audio_html5" folder="plugins/audio_html5">MyMuse Audio HTML5 jPlayer</plugin>
-		<plugin name="vidplayer_html5" folder="plugins/vidplayer_html5">Vidplayer HTML5</plugin>
+        <plugin name="audio_jplayer" folder="plugins/audio_jplayer">MyMuse Audio HTML5 jPlayer</plugin>
+		<plugin name="video_jplayer" folder="plugins/video_jplayer">MyMuse Video HTML5 jPlayer</plugin>
+		
+		
 		
 		<plugin name="payment_moneybookers" folder="plugins/payment_moneybookers">Moneybookers</plugin>
 		<plugin name="payment_monsterpay" folder="plugins/payment_monsterpay">Monsterpay</plugin>
