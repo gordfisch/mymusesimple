@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="user">
+	<name>plg_user_redirectonprofile</name>
+	<author>Arboreta</author>
+	<creationDate>May 2016</creationDate>
+	<copyright>Copyright (C) 2016 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>3.0.0</version>
+	<description>MYMUSE_REDIRECTONPROFILE_DESC</description>
+	<files>
+		<filename plugin="redirectonprofile">redirectonprofile.php</filename>
+		<filename>index.html</filename>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_user_redirectonprofile.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_user_redirectonprofile.sys.ini</language>
+	</languages>
+</extension>

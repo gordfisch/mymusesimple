@@ -124,7 +124,8 @@
 		<plugin name="mymuse_discount" folder="plugins/mymuse_discount">MyMuse Discount</plugin>
 		<plugin name="mymuse_licenceprice" folder="plugins/mymuse_licenceprice">MyMuse LicencePrice</plugin>
 		
-		<plugin name="redirectonlogin" folder="plugins/user_redirectonlogin">MyMuse Redirect on Log In</plugin>
+		<plugin name="redirectonlogin" folder="plugins/user_redirectonprofile">MyMuse Redirect on Edit Profile</plugin>
+		<plugin name="redirectonprofile" folder="plugins/user_redirectonlogin">MyMuse Redirect on Log In</plugin>
         <plugin name="mymuse" folder="plugins/user_mymuse">MyMuse User Profile</plugin>
         <plugin name="mymusenoreg" folder="plugins/user_mymusenoreg">MyMuse No Registration Profile</plugin>
         <plugin name="searchmymuse" folder="plugins/searchmymuse">Search</plugin>
