@@ -128,9 +128,9 @@
                 <copy file="${src}/plugins/shoppergroupview/language/en-GB/en-GB.plg_mymuse_shoppergroupview.sys.ini"
                         todir="${test}/administrator/language/en-GB" />
         	
-        		<copy file="${src}/plugins/audio_html5/language/en-GB/en-GB.plg_mymuse_audio_html5.ini"
+        		<copy file="${src}/plugins/audio_jplayer/language/en-GB/en-GB.plg_mymuse_audio_jplayer.ini"
         	        	todir="${test}/administrator/language/en-GB" /> 
-        		<copy file="${src}/plugins/audio_html5/language/en-GB/en-GB.plg_mymuse_audio_html5.sys.ini"
+        		<copy file="${src}/plugins/audio_jplayer/language/en-GB/en-GB.plg_mymuse_audio_jplayer.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" /> 
         	        	
         	    <copy file="${src}/plugins/audio_amplitude/language/en-GB/en-GB.plg_mymuse_audio_amplitude.ini"
@@ -158,9 +158,9 @@
         		<copy file="${src}/plugins/vidplayer_flowplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_flowplayer.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />  
         	            
-                <copy file="${src}/plugins/vidplayer_html5/language/en-GB/en-GB.plg_mymuse_vidplayer_html5.ini"
+                <copy file="${src}/plugins/video_jplayer/language/en-GB/en-GB.plg_mymuse_video_jplayer.ini"
                         todir="${test}/administrator/language/en-GB" />
-        		<copy file="${src}/plugins/vidplayer_html5/language/en-GB/en-GB.plg_mymuse_vidplayer_html5.sys.ini"
+        		<copy file="${src}/plugins/video_jplayer/language/en-GB/en-GB.plg_mymuse_video_jplayer.sys.ini"
         	             todir="${test}/administrator/language/en-GB" />
         	
         		<copy file="${src}/plugins/mymuse_socialshare/language/en-GB/en-GB.plg_mymuse_mymuse_socialshare.ini"
@@ -349,7 +349,58 @@
         	    <copy file="${src}/plugins/mymuse_vote/mymuse_vote.xml"
         	            todir="${test}/plugins/mymuse/mymuse_vote" />
         	
-        		<copy file="${src}/plugins/mp3player_dewplayer/mp3player_dewplayer.php"
+
+        	
+        		<copy file="${src}/plugins/audio_jplayer/audio_jplayer.php"
+        	            todir="${test}/plugins/mymuse/audio_jplayer" /> 
+        		<copy file="${src}/plugins/audio_jplayer/audio_jplayer.xml"
+        	        	todir="${test}/plugins/mymuse/audio_jplayer" /> 
+        		<copy file="${src}/plugins/audio_jplayer/Jplayer.swf"
+        	        	todir="${test}/plugins/mymuse/audio_jplayer" /> 
+        		<copy file="${src}/plugins/audio_jplayer/js/jplayer.playlist.min.js"
+        	        	todir="${test}/plugins/mymuse/audio_jplayer/js" /> 
+        		<copy file="${src}/plugins/audio_jplayer/js/jquery.jplayer.inspector.js"
+        	        	todir="${test}/plugins/mymuse/audio_jplayer/js" /> 
+        		<copy file="${src}/plugins/audio_jplayer/js/jquery.jplayer.min.js"
+        	        	todir="${test}/plugins/mymuse/audio_jplayer/js" /> 
+        		<copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.css"
+        	        	todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+        		<copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.rtl.css"
+        	        	todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+        		<copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.jpg"
+        	        	todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+        		<copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.seeking.gif"
+        	        	todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+        		<copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.video.play.png"
+        		        todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+        		        
+        		        
+                <copy file="${src}/plugins/video_jplayer/video_jplayer.php"
+                        todir="${test}/plugins/mymuse/video_jplayer" />  
+                <copy file="${src}/plugins/video_jplayer/video_jplayer.xml"
+                        todir="${test}/plugins/mymuse/video_jplayer" /> 
+                        
+                        
+    			<copy file="${src}/plugins/audio_amplitude/audio_amplitude.php"
+        	            todir="${test}/plugins/mymuse/audio_amplitude" /> 
+        		<copy file="${src}/plugins/audio_amplitude/audio_amplitude.xml"
+        	        	todir="${test}/plugins/mymuse/audio_amplitude" /> 
+        		<copy file="${src}/plugins/audio_amplitude/js/amplitude.js"
+        	        	todir="${test}/plugins/mymuse/audio_amplitude/js" /> 
+        		<copy file="${src}/plugins/audio_amplitude/js/amplitude.min.js"
+        	        	todir="${test}/plugins/mymuse/audio_amplitude/js" /> 
+        	    <copy file="${src}/plugins/audio_amplitude/css/amplitude.css"
+        	        	todir="${test}/plugins/mymuse/audio_amplitude/css" /> 
+        		<copy file="${src}/plugins/audio_amplitude/media/sprite.png"
+        	        	todir="${test}/media/com_mymuse" /> 
+ 
+ 
+ 
+ 
+ 
+       <!-- removed dewplayer and flowplayer 
+ 
+         		<copy file="${src}/plugins/mp3player_dewplayer/mp3player_dewplayer.php"
         	            todir="${test}/plugins/mymuse/mp3player_dewplayer" />
                 <copy file="${src}/plugins/mp3player_dewplayer/mp3player_dewplayer.php"
                         todir="${test}/plugins/mymuse/mp3player_dewplayer" />  
@@ -365,43 +416,8 @@
                         todir="${test}/plugins/mymuse/mp3player_dewplayer/mp3players" /> 
                 <copy file="${src}/plugins/mp3player_dewplayer/mp3players/dewplayer.js"
                         todir="${test}/plugins/mymuse/mp3player_dewplayer/mp3players" /> 
-        	
-        		<copy file="${src}/plugins/audio_html5/audio_html5.php"
-        	            todir="${test}/plugins/mymuse/audio_html5" /> 
-        		<copy file="${src}/plugins/audio_html5/audio_html5.xml"
-        	        	todir="${test}/plugins/mymuse/audio_html5" /> 
-        		<copy file="${src}/plugins/audio_html5/Jplayer.swf"
-        	        	todir="${test}/plugins/mymuse/audio_html5" /> 
-        		<copy file="${src}/plugins/audio_html5/js/jplayer.playlist.min.js"
-        	        	todir="${test}/plugins/mymuse/audio_html5/js" /> 
-        		<copy file="${src}/plugins/audio_html5/js/jquery.jplayer.inspector.js"
-        	        	todir="${test}/plugins/mymuse/audio_html5/js" /> 
-        		<copy file="${src}/plugins/audio_html5/js/jquery.jplayer.min.js"
-        	        	todir="${test}/plugins/mymuse/audio_html5/js" /> 
-        		<copy file="${src}/plugins/audio_html5/skin/jplayer.blue.monday.css"
-        	        	todir="${test}/plugins/mymuse/audio_html5/skin" />
-        		<copy file="${src}/plugins/audio_html5/skin/jplayer.blue.monday.rtl.css"
-        	        	todir="${test}/plugins/mymuse/audio_html5/skin" />
-        		<copy file="${src}/plugins/audio_html5/skin/jplayer.blue.monday.jpg"
-        	        	todir="${test}/plugins/mymuse/audio_html5/skin" />
-        		<copy file="${src}/plugins/audio_html5/skin/jplayer.blue.monday.seeking.gif"
-        	        	todir="${test}/plugins/mymuse/audio_html5/skin" />
-        		<copy file="${src}/plugins/audio_html5/skin/jplayer.blue.monday.video.play.png"
-        		        todir="${test}/plugins/mymuse/audio_html5/skin" />
-        	
-    			<copy file="${src}/plugins/audio_amplitude/audio_amplitude.php"
-        	            todir="${test}/plugins/mymuse/audio_amplitude" /> 
-        		<copy file="${src}/plugins/audio_amplitude/audio_amplitude.xml"
-        	        	todir="${test}/plugins/mymuse/audio_amplitude" /> 
-        		<copy file="${src}/plugins/audio_amplitude/js/amplitude.js"
-        	        	todir="${test}/plugins/mymuse/audio_amplitude/js" /> 
-        		<copy file="${src}/plugins/audio_amplitude/js/amplitude.min.js"
-        	        	todir="${test}/plugins/mymuse/audio_amplitude/js" /> 
-        	    <copy file="${src}/plugins/audio_amplitude/css/amplitude.css"
-        	        	todir="${test}/plugins/mymuse/audio_amplitude/css" /> 
-        		<copy file="${src}/plugins/audio_amplitude/media/sprite.png"
-        	        	todir="${test}/media/com_mymuse" /> 
-        	        	   	
+                        
+                               	        	   	
                 <copy file="${src}/plugins/mp3player_flowplayer/mp3player_flowplayer.php"
                         todir="${test}/plugins/mymuse/mp3player_flowplayer" />  
                 <copy file="${src}/plugins/mp3player_flowplayer/mp3player_flowplayer.xml"
@@ -420,12 +436,8 @@
                         todir="${test}/plugins/mymuse/mp3player_flowplayer/mp3players" />
         		<copy file="${src}/plugins/mp3player_flowplayer/css/flowplayer.css"
         	             todir="${test}/plugins/mymuse/mp3player_flowplayer/css" />
-                 
-                <copy file="${src}/plugins/vidplayer_html5/vidplayer_html5.php"
-                        todir="${test}/plugins/mymuse/vidplayer_html5" />  
-                <copy file="${src}/plugins/vidplayer_html5/vidplayer_html5.xml"
-                        todir="${test}/plugins/mymuse/vidplayer_html5" /> 
-                                                             
+                             
+                                                      
                 <copy file="${src}/plugins/vidplayer_dewplayer/vidplayer_dewplayer.php"
                         todir="${test}/plugins/mymuse/vidplayer_dewplayer" />  
                 <copy file="${src}/plugins/vidplayer_dewplayer/vidplayer_dewplayer.xml"
@@ -448,6 +460,8 @@
                         todir="${test}/plugins/mymuse/vidplayer_flowplayer/vidplayers" /> 
         		<copy file="${src}/plugins/vidplayer_flowplayer/css/flowplayer.css"
         	            todir="${test}/plugins/mymuse/vidplayer_flowplayer/css" /> 
+ --> 
+                        
                         
                 <copy file="${src}/plugins/user_mymuse/mymuse.xml"
                         todir="${test}/plugins/user/mymuse" /> 
