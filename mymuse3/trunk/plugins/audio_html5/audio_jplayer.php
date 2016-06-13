@@ -17,12 +17,12 @@ jimport( 'joomla.html.parameter' );
 
 
 /**
-* MyMuse Audio HTML5 plugin
+* MyMuse Audio jplayer plugin
 *
 * @package 		MyMuse
 * @subpackage	mymuse
 */
-class plgMymuseAudio_html5 extends JPlugin
+class plgMymuseAudio_jplayer extends JPlugin
 {
 
 	/**
@@ -39,7 +39,7 @@ class plgMymuseAudio_html5 extends JPlugin
 	 * @param   object  $subject  The object to observe
 	 * @param   array   $config   An array that holds the plugin configuration
 	 */
-	function plgMymuseAudio_html5(&$subject, $config)  {
+	function plgMymuseAudio_jplayer(&$subject, $config)  {
 		parent::__construct($subject, $config);
 			
 		JHtml::_('jquery.framework',  true, true);
@@ -53,7 +53,7 @@ class plgMymuseAudio_html5 extends JPlugin
 		
 
         if($this->params->get("my_player_errors")){
-        	$js_path = $site_url.'plugins/mymuse/audio_html5/js/jquery.jplayer.inspector.js';
+        	$js_path = $site_url.'plugins/mymuse/audio_jplayer/js/jquery.jplayer.inspector.js';
         	$document->addScript( $js_path );
         }
         
@@ -76,7 +76,7 @@ class plgMymuseAudio_html5 extends JPlugin
 	}
 
 	/**
-	 * HTML5
+	 * jplayer
 	 * onPrepareMyMuseMp3Player
 	 */
 	function onPrepareMyMuseMp3Player(&$track, $type='single', $height=0, $width=0, $index=0, $count=0)
@@ -99,22 +99,22 @@ class plgMymuseAudio_html5 extends JPlugin
 			}
 		}
 		if(!$match){
-			$js_path = $site_url.'plugins/mymuse/audio_html5/js/jquery.jplayer.min.js';
+			$js_path = $site_url.'plugins/mymuse/audio_jplayer/js/jquery.jplayer.min.js';
 			$document->addScript( $js_path );
 		}
 		
 		if($this->direction == "rtl"){
-			$css_path = $site_url.'plugins/mymuse/audio_html5/skin/jplayer.blue.monday.rtl.css';
+			$css_path = $site_url.'plugins/mymuse/audio_jplayer/skin/jplayer.blue.monday.rtl.css';
 		}else{
-			$css_path = $site_url.'plugins/mymuse/audio_html5/skin/jplayer.blue.monday.css';
-			//$css_path = $site_url.'plugins/mymuse/audio_html5/skin/premium-pixels.css';
+			$css_path = $site_url.'plugins/mymuse/audio_jplayer/skin/jplayer.blue.monday.css';
+			//$css_path = $site_url.'plugins/mymuse/audio_jplayer/skin/premium-pixels.css';
 		}
 		
 	//echo "type = $type, index = $index  count = $count<br />";
 	
 		$params 	= MyMuseHelper::getParams();
 
-		$swf_path = JURI::root() .'/plugins/mymuse/audio_html5/Jplayer.swf';
+		$swf_path = JURI::root() .'/plugins/mymuse/audio_jplayer/Jplayer.swf';
 		//$swf_path = "http://www.jplayer.org/latest/js/Jplayer.swf";
 		$extarray = array(
 				'mp3' => 'audio/mpeg',
@@ -497,7 +497,7 @@ jQuery(document).ready(function(){  ';
 		//Playlist ** Playlist ** Playlist ** Playlist ** Playlist ** Playlist ** //
 		
 		if($type == 'playlist'){
-			$js_path = $site_url.'plugins/mymuse/audio_html5/js/jplayer.playlist.min.js';
+			$js_path = $site_url.'plugins/mymuse/audio_jplayer/js/jplayer.playlist.min.js';
 			$document->addScript( $js_path );
 			
 				$list = '';
