@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.1"  type="plugin" group="mymuse">
+	<name>PLG_MYMUSE_AUDIO_JPLAYER</name>
+	<author>Arboreta</author>
+	<creationDate>April 2014</creationDate>
+	<copyright>Copyright (C) 2013 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>3.4.0</version>
+	<description>MYMUSE_AUDIO_JPLAYER_DESC</description>
+	
+	<files>
+		<filename plugin="audio_jplayer">audio_jplayer.php</filename>
+		<filename plugin="audio_jplayer">Jplayer.swf</filename>
+		<folder>js</folder>
+		<folder>skin</folder>
+	</files>
+
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_audio_jplayer.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_audio_jplayer.sys.ini</language>
+	</languages>
+	<config>
+	<fields  name="params">
+		<fieldset name="basic">
+
+		<field name="my_player_errors" type="radio" default="0" label="MYMUSE_AUDIO_JPLAYER_SHOW_ERRORS_LABEL" 
+		description="MYMUSE_AUDIO_JPLAYER_SHOW_ERRORS_DESC">
+		  <option value="0">JNO</option>
+		  <option value="1">JYES</option>
+		</field>
+		</fieldset>
+	</fields>
+	</config>
+<updateservers>
+    <server type="extension" priority="1"
+        name="Plug MyMuse Audio HTML5 JPlayer">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=34&amp;dummy=extension.xml</server>
+</updateservers>
+</extension>
