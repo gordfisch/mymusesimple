@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension version="3.3.0" type="plugin" group="mymuse" method="upgrade">
 	<name>MyMuse Payments - PayUnity</name>
-	<author>Gord Fisch</author>
+	<author>Arboreta</author>
 	<authorEmail>gord@arboreta.ca</authorEmail>
 	<authorUrl>http://www.joomlamymuse.ca</authorUrl>
 	<copyright>Copyright (c)2015 Arboreta Internet Services</copyright>
