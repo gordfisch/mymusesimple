@@ -2,8 +2,8 @@
 <extension version="3.1"  type="plugin" group="mymuse">
 	<name>PLG_MYMUSE_AUDIO_JPLAYER</name>
 	<author>Arboreta</author>
-	<creationDate>April 2014</creationDate>
-	<copyright>Copyright (C) 2013 Arboreta Internet Services. All rights reserved.</copyright>
+	<creationDate>June 2016</creationDate>
+	<copyright>Copyright (C) 2016 Arboreta Internet Services. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@arboreta.ca</authorEmail>
 	<authorUrl>www.arboreta.ca</authorUrl>

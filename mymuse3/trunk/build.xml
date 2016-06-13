@@ -51,7 +51,10 @@
         		<copy file="${src}/script.php"
         	        	todir="${test}/administrator/components/com_mymuse" />
         	        	
-        	        	
+        	    <copy file="${src}/build35.sh"
+                        todir="/var/www/html/mymuse35" />
+                        
+                        
 				<!--  languages -->
 
                 <copy file="${src}/administrator/language/en-GB/en-GB.com_mymuse.sys.ini"
