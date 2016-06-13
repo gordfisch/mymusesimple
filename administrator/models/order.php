@@ -388,7 +388,11 @@ class MymuseModelorder extends JModelAdmin
 			$this->setError("MYMUSE_COULD_NOT_UPDATE_ORDER");
 			return false;
 		}
-		$enddate = time() + $params->get('my_download_expire');
+		if($params->get('my_download_expire') == "-"){
+			$enddate = time() + 1000000;
+		}else{
+			$enddate = time() + $params->get('my_download_expire');
+		}
 		$query = "UPDATE #__mymuse_order_item
 		SET downloads='0',
 		end_date='$enddate'

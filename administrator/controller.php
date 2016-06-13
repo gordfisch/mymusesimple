@@ -103,8 +103,7 @@ class MymuseController extends JControllerLegacy
 	
 		$order = $model->getItem($id);
 	
-		$user 			= JFactory::getUser($order->user_id);;
-		$user_email 	= $user->email;
+		$user_email 	= $order->user->email;
 	
 		// SEND MAIL TO BUYER
 		$subject = Jtext::_('MYMUSE_ORDER_STATUS_CHANGED')." ".$store->title;
