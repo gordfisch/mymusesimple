@@ -625,7 +625,8 @@ function makeProductObject($p)
 				(
 						'title' => 'Are You My Sister',
 						'alias' => '',
-						'catid' => "$ironbrewid",
+						'catid' => "$genreid",
+						'artistid' => "$ironbrewid",
 						'product_sku' => "mm001$artcatid",
 						'product_physical' => '1',
 						'price' => '20.00',
