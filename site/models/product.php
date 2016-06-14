@@ -1245,7 +1245,7 @@ class MyMuseModelProduct extends JModelItem
   		$productid 	= $this->getState('product.id');
   		$product 	= $this->_item[$productid];
   		$cats[]		= $product->catid;
- 
+
   		$query = "SELECT * FROM #__mymuse_product_recommend_xref
 				WHERE product_id = '".$productid."'";
   		$db->setQuery($query);
@@ -1276,7 +1276,7 @@ class MyMuseModelProduct extends JModelItem
 				WHERE catid IN ($catsin) AND parentid = 0
   		AND id != $productid
   		ORDER BY FIELD(catid, $catsin), product_made_date DESC 
-  		LIMIT ".$params->get('my_max_recommended');
+  		LIMIT ".$params->get('my_max_recommended', 4);
   		$db->setQuery($query);
   		$recommends = $db->loadObjectList();
 

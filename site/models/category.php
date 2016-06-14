@@ -485,7 +485,7 @@ class MyMuseModelCategory extends JModelList
 		if (!is_object($this->_item)) {
 			$this->getCategory();
 		}
-		$db = JFactory::getDBO();
+		
 
 		// Order subcategories
 		if (sizeof($this->_children)) {
@@ -495,6 +495,10 @@ class MyMuseModelCategory extends JModelList
 				JArrayHelper::sortObjects($this->_children, 'title', ($params->get('orderby_pri') == 'alpha') ? 1 : -1);
 			}
 			
+			return $this->_children;
+			
+			
+			$db = JFactory::getDBO();
 			$nullDate	= $db->Quote($db->getNullDate());
 			$nowDate	= $db->Quote(JFactory::getDate()->toSql());
 			foreach($this->_children as $child){
@@ -502,12 +506,18 @@ class MyMuseModelCategory extends JModelList
 				LEFT JOIN #__mymuse_product_category_xref as x
 				ON p.id=x.product_id 
 				WHERE 
-				x.catid=".$child->id." AND
+				(x.catid=".$child->id." 
+				OR
+				p.catid=".$child->id."
+				OR
+				p.artistid=".$child->id."	)	
+						
+				AND
 				(p.publish_up = ".$nullDate." OR p.publish_up <= ".$nowDate.")
 				AND (p.publish_down = ".$nullDate." OR p.publish_down >= ".$nowDate.")
 				AND p.parentid=0 
 				";
-			//echo $query."<br />";
+			echo $query."<br />";
 				$db->setQuery($query);
 				$total = $db->loadResult();
 				$child->product_total = $total;
