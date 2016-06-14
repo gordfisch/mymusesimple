@@ -385,4 +385,38 @@ class MymuseViewCategory extends JViewLegacy
 			$this->document->addHeadLink(JRoute::_($link . '&type=atom'), 'alternate', 'rel', $attribs);
 		}
 	}
+	
+	function getCategoryNoProducts(&$category)
+	{
+		$total = 0;
+		$db = JFactory::getDBO();
+		$nullDate	= $db->Quote($db->getNullDate());
+		$nowDate	= $db->Quote(JFactory::getDate()->toSql());
+		$catid = $category->id;
+			$query = "SELECT count(*) as total from #__mymuse_product as p
+				LEFT JOIN #__mymuse_product_category_xref as x
+				ON p.id=x.product_id
+				WHERE
+				(x.catid=".$catid."
+				OR
+				p.catid=".$catid."
+				OR
+				p.artistid=".$catid."	)
+		
+				AND
+				(p.publish_up = ".$nullDate." OR p.publish_up <= ".$nowDate.")
+				AND (p.publish_down = ".$nullDate." OR p.publish_down >= ".$nowDate.")
+				AND p.parentid=0
+				";
+			//echo $query."<br />";
+			$db->setQuery($query);
+			$total += $db->loadResult();
+			$children = $category->getChildren();
+			foreach($children as $id => $child){
+				$total += $this->getCategoryNoProducts($child);
+			}
+			return $total;
+				
+
+	}
 }
