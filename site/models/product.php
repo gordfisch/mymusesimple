@@ -836,6 +836,7 @@ class MyMuseModelProduct extends JModelItem
 					WHERE c.id='".$this->_item[$pk]->artistid."'";
 			$db->setQuery($query);
 			$this->_item[$pk]->artist = $db->loadObject();
+			print_pre($this->_item[$pk]); exit;
 			$this->_item[$pk]->artist->link = myMuseHelperRoute::getCategoryRoute($this->_item[$pk]->artistid);
 			
 		}
