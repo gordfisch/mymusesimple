@@ -1168,7 +1168,7 @@ class MymuseTableproduct extends JTable
     	}
     }
     
-    public function folder($src, $dest)
+    public function folderMove($src, $dest)
     {
     	$application = JFactory::getApplication();
     	$params = MyMuseHelper::getParams();
