@@ -486,7 +486,7 @@ class MyMuseModelTracks extends JModelList
         // Compute ordered products.
         $user	= JFactory::getUser();
         $myOrders = array();
-        if (!$user->get('guest') && $params->get('my_play_downloads')) {
+        if (!$user->get('guest') && $user->get('username') != 'buyer' && $params->get('my_play_downloads')) {
         	$userId	= $user->get('id');
         	$my_download_enable_status = $params->get('my_download_enable_status','C');
         	$query = "SELECT i.product_id from #__mymuse_order_item as i, #__mymuse_order as o
@@ -506,82 +506,83 @@ class MyMuseModelTracks extends JModelList
      
         $preview_tracks = array();
 		//check date, prices add flash
-		while (list($i,$track)= each( $tracks))
-		{
-			// get display date
-			switch ($params->get('order_date'))
-			{
-				case 'product_made_date':
-					$tracks[$i]->displayDate = $tracks[$i]->product_made_date;
-					break;
-			
-				case 'modified':
-					$tracks[$i]->displayDate = $tracks[$i]->modified;
-					break;
-						
-				case 'published':
-					$tracks[$i]->displayDate = ($tracks[$i]->publish_up == 0) ? $tracks[$i]->created : $tracks[$i]->publish_up;
-					break;
-						
-				default:
-				case 'created':
-					$tracks[$i]->displayDate = $tracks[$i]->created;
-					break;
+		if(count($tracks)){
+			while ( list ( $i, $track ) = each ( $tracks ) ) {
+				// get display date
+				switch ($params->get ( 'order_date' )) {
+					case 'product_made_date' :
+						$tracks [$i]->displayDate = $tracks [$i]->product_made_date;
+						break;
+					
+					case 'modified' :
+						$tracks [$i]->displayDate = $tracks [$i]->modified;
+						break;
+					
+					case 'published' :
+						$tracks [$i]->displayDate = ($tracks [$i]->publish_up == 0) ? $tracks [$i]->created : $tracks [$i]->publish_up;
+						break;
+					
+					default :
+					case 'created' :
+						$tracks [$i]->displayDate = $tracks [$i]->created;
+						break;
+				}
+				$tracks [$i]->flash = '';
+				$tracks [$i]->flash_type = '';
+				$product_model = JModelLegacy::getInstance ( 'Product', 'MyMuseModel', array (
+						'ignore_request' => true 
+				) );
+				$tracks [$i]->price = $product_model->getPrice ( $track );
+				if ($params->get ( 'my_add_taxes' )) {
+					$tracks [$i]->price ["product_price"] = MyMuseCheckout::addTax ( $tracks [$i]->price ["product_price"] );
+				}
+				$track->params = clone $this->getState ( 'params' );
+				
+				$artist_alias = $track->category_alias;
+				$album_alias = $track->parent_alias;
+				
+				// get download file
+				if ($params->get ( 'my_encode_filenames' )) {
+					$track->download_name = $track->title_alias;
+				} else {
+					$track->download_name = $track->file_name;
+				}
+				
+				$down_dir = str_replace ( $root, '', $params->get ( 'my_download_dir' ) );
+				$track->download_path = JURI::base () . '/' . $down_dir . '/' . $artist_alias . '/' . $album_alias . '/' . $track->download_name;
+				$track->download_real_path = $params->get ( 'my_download_dir' ) . DS . $artist_alias . DS . $album_alias . DS . $track->download_name;
+				
+				if ((! $track->price ["product_price"] || $track->price ["product_price"] == "FREE") && $params->get ( 'my_play_downloads' )) {
+					$track->file_preview = 1;
+				}
+				
+				// Audio/Video or some horrid mix of both
+				
+				if ($this->_category->flash_type != "mix") {
+					if ($this->_category->flash_type == "audio" && $track->file_type == "video") {
+						// oh christ it's a mix
+						$this->_category->flash_type = "mix";
+						$track->flash_type = "mix";
+					} elseif ($this->_category->flash_type == "video" && $track->file_type == "audio") {
+						// oh christ it's a mix
+						$this->_category->flash_type = "mix";
+						$track->flash_type = "mix";
+					} else {
+						$this->_category->flash_type = $track->file_type;
+						$track->flash_type = $track->file_type;
+					}
+				} else {
+					$track->flash_type = "mix";
+				}
+				
+				if ($track->file_preview) {
+					$preview_tracks [] = $track;
+				} else {
+					$track->flash = '';
+				}
 			}
-            $tracks[$i]->flash = '';
-			$tracks[$i]->flash_type = '';
-            $product_model = JModelLegacy::getInstance('Product', 'MyMuseModel', array('ignore_request' => true));
-            $tracks[$i]->price = $product_model->getPrice($track);
-			if($params->get('my_add_taxes')){
-				$tracks[$i]->price["product_price"] = MyMuseCheckout::addTax($tracks[$i]->price["product_price"]);
-			}
-			$track->params = clone $this->getState('params');
-			
-			$artist_alias = $track->category_alias;
-			$album_alias = $track->parent_alias;
-
-            //get download file
-            if($params->get('my_encode_filenames')){
-                $track->download_name = $track->title_alias;
-            }else{
-                $track->download_name = $track->file_name;
-            }
-
-            $down_dir = str_replace($root,'',$params->get('my_download_dir'));
-            $track->download_path = JURI::base().'/'.$down_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->download_name;
-            $track->download_real_path = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$track->download_name;
-            
-            if((!$track->price["product_price"] || $track->price["product_price"] == "FREE")
-                    && $params->get('my_play_downloads')){
-                $track->file_preview = 1;
-            }
-            
-            //Audio/Video or some horrid mix of both
-            
-            if($this->_category->flash_type != "mix"){
-                if($this->_category->flash_type == "audio" && $track->file_type == "video"){
-                    //oh christ it's a mix
-                    $this->_category->flash_type = "mix";
-                    $track->flash_type = "mix";
-                }elseif($this->_category->flash_type == "video" && $track->file_type == "audio"){
-                    //oh christ it's a mix
-                    $this->_category->flash_type = "mix";
-                    $track->flash_type = "mix";
-                }else{
-                    $this->_category->flash_type = $track->file_type;
-                    $track->flash_type = $track->file_type;
-                }
-            }else{
-                $track->flash_type = "mix";
-            }
-            
-            
-            if($track->file_preview){
-            	$preview_tracks[] = $track;
-            }else{
-            	$track->flash= '';
-            }
-        }
+		}
+		
         $dispatcher		= JDispatcher::getInstance();
         //$prev_dir = $site_url.str_replace($root,'',$params->get('my_preview_dir'));
         $prev_dir = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base());

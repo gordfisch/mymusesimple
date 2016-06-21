@@ -141,25 +141,7 @@
         		<copy file="${src}/plugins/audio_amplitude/language/en-GB/en-GB.plg_mymuse_audio_amplitude.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" /> 
 
-                <copy file="${src}/plugins/mp3player_dewplayer/language/en-GB/en-GB.plg_mymuse_mp3player_dewplayer.ini"
-                        todir="${test}/administrator/language/en-GB" />
-        		<copy file="${src}/plugins/mp3player_dewplayer/language/en-GB/en-GB.plg_mymuse_mp3player_dewplayer.sys.ini"
-        	            todir="${test}/administrator/language/en-GB" />
-        	            
-                <copy file="${src}/plugins/mp3player_flowplayer/language/en-GB/en-GB.plg_mymuse_mp3player_flowplayer.ini"
-                        todir="${test}/administrator/language/en-GB" />
-        		<copy file="${src}/plugins/mp3player_flowplayer/language/en-GB/en-GB.plg_mymuse_mp3player_flowplayer.sys.ini"
-        	            todir="${test}/administrator/language/en-GB" />
-                
-                <copy file="${src}/plugins/vidplayer_dewplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_dewplayer.ini"
-                        todir="${test}/administrator/language/en-GB" />
-        		<copy file="${src}/plugins/vidplayer_dewplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_dewplayer.sys.ini"
-        	            todir="${test}/administrator/language/en-GB" />
-        	
-                <copy file="${src}/plugins/vidplayer_flowplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_flowplayer.ini"
-                        todir="${test}/administrator/language/en-GB" />    
-        		<copy file="${src}/plugins/vidplayer_flowplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_flowplayer.sys.ini"
-        	            todir="${test}/administrator/language/en-GB" />  
+  
         	            
                 <copy file="${src}/plugins/video_jplayer/language/en-GB/en-GB.plg_mymuse_video_jplayer.ini"
                         todir="${test}/administrator/language/en-GB" />
@@ -402,6 +384,26 @@
  
  
        <!-- removed dewplayer and flowplayer 
+       
+                <copy file="${src}/plugins/mp3player_dewplayer/language/en-GB/en-GB.plg_mymuse_mp3player_dewplayer.ini"
+                        todir="${test}/administrator/language/en-GB" />
+        		<copy file="${src}/plugins/mp3player_dewplayer/language/en-GB/en-GB.plg_mymuse_mp3player_dewplayer.sys.ini"
+        	            todir="${test}/administrator/language/en-GB" />
+        	            
+                <copy file="${src}/plugins/mp3player_flowplayer/language/en-GB/en-GB.plg_mymuse_mp3player_flowplayer.ini"
+                        todir="${test}/administrator/language/en-GB" />
+        		<copy file="${src}/plugins/mp3player_flowplayer/language/en-GB/en-GB.plg_mymuse_mp3player_flowplayer.sys.ini"
+        	            todir="${test}/administrator/language/en-GB" />
+                
+                <copy file="${src}/plugins/vidplayer_dewplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_dewplayer.ini"
+                        todir="${test}/administrator/language/en-GB" />
+        		<copy file="${src}/plugins/vidplayer_dewplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_dewplayer.sys.ini"
+        	            todir="${test}/administrator/language/en-GB" />
+        	
+                <copy file="${src}/plugins/vidplayer_flowplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_flowplayer.ini"
+                        todir="${test}/administrator/language/en-GB" />    
+        		<copy file="${src}/plugins/vidplayer_flowplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_flowplayer.sys.ini"
+        	            todir="${test}/administrator/language/en-GB" />
  
          		<copy file="${src}/plugins/mp3player_dewplayer/mp3player_dewplayer.php"
         	            todir="${test}/plugins/mymuse/mp3player_dewplayer" />
