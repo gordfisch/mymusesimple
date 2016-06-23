@@ -311,13 +311,12 @@ class MymuseTableproduct extends JTable
 			}
 		}
 		
+		$download_path = MyMuseHelper::getdownloadPath($this->parentid,1);
 		
-		$download_path = MyMuseHelper::getdownloadPath($this->id,0);
+		//converting old style file_name to json
 		if(!$isNew && $this->file_name){
-	
 			$current_files = json_decode($this->file_name);
 			if(!is_array($current_files) && $this->file_name){
-				//converting old style
 				$ext = MyMuseHelper::getExt($this->file_name);
 				$current_files[] = (object) array(
 						'file_name' => $this->file_name,
@@ -331,7 +330,6 @@ class MymuseTableproduct extends JTable
 			$current_files = array();
 		}
 		
-	
 		// if they selected a file from drop down
 		$select_files = isset( $post['select_file'] )? $post['select_file']: '';
 		
@@ -368,7 +366,7 @@ class MymuseTableproduct extends JTable
 						$file_name = $select_file;
 					}
 				
-					if($params->get('my_download_dir_format') == 1){
+					if( 1 == $params->get('my_download_dir_format')){
 						//by format
 						$download_path .= $ext;
 					}
@@ -428,10 +426,9 @@ class MymuseTableproduct extends JTable
 			$this->file_name = json_encode($current_files);
 		}
 		
+		//all files
 		if(isset($post['product_allfiles']) && $post['product_allfiles']){
-		
-			
-			
+
 			for($p = 0; $p < count($params->get('my_formats')); $p++){
 				$current_files[$p] = array(
 							'file_name' => JFilterOutput::stringURLSafe($form['product_sku']."-full-release-". $params->get('my_formats')[$p]),

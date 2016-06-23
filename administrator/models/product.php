@@ -182,6 +182,9 @@ class MymuseModelproduct extends JModelAdmin
 		if (empty($data)) {
 			$data = $this->getItem();
 		}
+		if($data->product_made_date == "0000-00-00"){
+			$data->product_made_date = '';
+		}
 
 		return $data;
 	}
@@ -467,8 +470,12 @@ class MymuseModelproduct extends JModelAdmin
     			$jason = json_decode($track->file_name);
     			if(is_array($jason)){
     				$track->file_name = '';
+    				$track->file_length = '';
+    				$track->file_downloads = '';
     				foreach($jason as $j){
     					$track->file_name .= $j->file_name."<br />";
+    					$track->file_length .= $j->file_length."<br />";
+    					$track->file_downloads .= $j->file_downloads."<br />";
     				}
     			}
                 
@@ -1816,6 +1823,7 @@ class MymuseModelproduct extends JModelAdmin
 		
 		require_once (JPATH_COMPONENT.DS.'helpers'.DS.'update.php');
 		$helper = new MyMuseUpdateHelper;
+		$date = JFactory::getDate()->format('%Y-%m-%d');
 		$p = new stdClass;
 		$p->id = 0;
 		$p->title = $title;
@@ -1843,7 +1851,7 @@ class MymuseModelproduct extends JModelAdmin
 		$p->product_downloadable = $downloadable;
 		$p->product_allfiles = 0;
 		$p->product_sku = $sku;
-		$p->product_made_date = "2016-02-14 23:43:40";
+		$p->product_made_date = "$date";
 		$p->product_special = 0;
 		$p->product_discount = 0;
 		$p->reservation_fee = 0;

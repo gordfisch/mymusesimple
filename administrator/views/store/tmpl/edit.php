@@ -124,7 +124,7 @@ method="post" name="adminForm" id="store-form" class="form-validate">
 										</div>
 									<?php 
 									
-									if($field->name == "jform[params][my_show_cart_preview]") :
+									if($field->name == "jform[params][my_notes_msg]") :
 									?></div><div class="span6 float-right"><?php
 									endif;
 									

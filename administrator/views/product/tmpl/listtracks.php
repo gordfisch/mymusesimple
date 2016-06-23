@@ -182,31 +182,23 @@ Joomla.orderTable = function()
 					<th width="1%" style="min-width:55px" class="nowrap center">
 						<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
 					</th>
-					<th width="25%">
+					<th width="20%">
 						<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 					</th>
-					<th width="10%" class="nowrap hidden-phone">
-						<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
-					</th>
+					<th width="5%" class="nowrap hidden-phone">
+						<?php echo JHtml::_('grid.sort',  'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?></th>
 				<?php if(!$this->params->get('my_price_by_product')){ ?>
-					<th class="title"><?php echo JText::_('MYMUSE_PRICE');?>
-					</th>
-					<th class="title"><?php echo JText::_('MYMUSE_DISCOUNT');?>
-					</th>
+					<th class="title"><?php echo JText::_('MYMUSE_PRICE');?></th>
+					<th class="title"><?php echo JText::_('MYMUSE_DISCOUNT');?></th>
 				<?php } ?>
 					
 					<th class="title" colspan="2"><?php echo JText::_('MYMUSE_FILE_NAME');?>
-					</th>
-					<th class="title"><?php echo JText::_('MYMUSE_FILE_SIZE');?>
-					</th>
-					<th class="title" colspan="2"><?php echo JText::_('MYMUSE_PREVIEW_NAME');?>
-					</th>
-					<th class="title"><?php echo JText::_('MYMUSE_DOWNLOADS');?>
-					</th>
-					<th width="1%" class="title">ID
-					</th>
-					<th width="1%" class="title">Order
-					</th>
+					<th class="title"><?php echo JText::_('MYMUSE_DOWNLOADS');?></th></th>
+					<th class="title"><?php echo JText::_('MYMUSE_FILE_SIZE');?></th>
+					<th class="title" colspan="2"><?php echo JText::_('MYMUSE_PREVIEW_NAME');?></th>
+					
+					<th width="1%" class="title">ID</th>
+					<th width="1%" class="title">Order</th>
 				</tr>
 			</thead>
 			<tfoot>
@@ -289,9 +281,12 @@ Joomla.orderTable = function()
 					<td  align="center">
 						<?php echo stripslashes($file->file_name); ?>
 						<?php if($params->get('my_encode_filenames',0)){ ?>
-						<p class="smallsub">
-						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($file->title_alias));?></p>
+							<p class="smallsub">
+							<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($file->title_alias));?></p>
 						<?php } ?>
+					</td>
+					<td nowrap="nowrap" align="center">
+						<?php echo $file->file_downloads; ?>
 					</td>
 					<td  align="center">
 						<?php echo MyMuseHelper::ByteSize($file->file_length); ?>
@@ -299,12 +294,17 @@ Joomla.orderTable = function()
 					
 					<td><div id="product_player"><?php echo $file->flash; ?></div></td>
 					<td  align="center">
-						<?php echo htmlspecialchars($file->file_preview, ENT_QUOTES); ?>
+						<?php echo htmlspecialchars($file->file_preview, ENT_QUOTES); 
+						if($file->file_preview_2){
+							echo "<br />".htmlspecialchars($file->file_preview_2, ENT_QUOTES);
+						}
+						if($file->file_preview_3){
+							echo "<br />".htmlspecialchars($file->file_preview_3, ENT_QUOTES);
+						}
 						
+						?>
 					</td>
-					<td nowrap="nowrap" align="center">
-						<?php echo $file->file_downloads; ?>
-					</td>
+					
 
 					<td>
 						<?php echo $file->id; ?>

@@ -264,17 +264,19 @@ class MyMuseController extends JControllerLegacy
 			$this->setRedirect( JRoute::_("index.php?option=com_mymuse&task=checkout&Itemid=".$this->Itemid, $msg));
 			return false;
 		}
-		
-		$query = "UPDATE #__users set email='', name='' WHERE id ='$guestid'";
+
+		/**
+		 * 
+		 $query = "UPDATE #__users set email='', name='' WHERE id ='$guestid'";
 		$db->setQuery($query);
 		if(!$db->execute()){
 			$msg = $db->getErrorMsg();
 			$this->setRedirect( JRoute::_("index.php?option=com_mymuse&task=checkout&Itemid=".$this->Itemid, $msg));
 			return false;
 		}
-		
+		*/
 		$res = $this->savenoreg();
-		//echo "guestid = $guestid:  res =  $res"; exit;
+
 		if($res){
 			$session = JFactory::getSession();
 			$user	= JFactory::getUser();
@@ -301,14 +303,11 @@ class MyMuseController extends JControllerLegacy
 		
 		if($this->MyMuseShopper->savenoreg()){
 			$this->setRedirect( JRoute::_("index.php?option=com_mymuse&task=checkout&Itemid=".$this->Itemid));
-			//$this->jinput->set('task','checkout');
 			return true;
 		}else{
 			// Redirect back to the registration screen.
-			$err = $this->MyMuseShopper->getError();
-			$msg = $err;
-			echo $err; exit;
-			$this->setRedirect( JRoute::_("index.php?option=com_mymuse&view=shopper&task=register&Itemid=".$this->Itemid, $msg));
+			// enqueued messages will display
+			$this->setRedirect( JRoute::_("index.php?option=com_mymuse&view=shopper&task=register&Itemid=".$this->Itemid));
 			return false;
 		}
 	}
@@ -321,14 +320,12 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function checkout()
 	{
-	
-		$mainframe = JFactory::getApplication();
-		
+
 		$user = JFactory::getUser();
-        
-        
+
 		//no_reg and not logged in
-        if(!$user->get('id') && $this->params->get('my_registration') == "no_reg"){
+        if(!$user->get('id') && 
+        		($this->params->get('my_registration') == "no_reg" || $this->params->get('my_registration') == "full_guest")){
         	
         	$plugin = JPluginHelper::getPlugin('user', 'mymusenoreg');
         	
@@ -340,7 +337,7 @@ class MyMuseController extends JControllerLegacy
         			echo "Could not Log in"; 
         			return false;
         		}else{
-        			$this->shopper 			=  $this->MyMuseShopper->getShopper();
+        			$this->shopper 	=  $this->MyMuseShopper->getShopper();
         			$url = JRoute::_("index.php?option=com_mymuse&task=checkout&view=cart&Itemid=".$this->Itemid);
         			$this->setRedirect( $url );
         			return true;
@@ -357,7 +354,7 @@ class MyMuseController extends JControllerLegacy
         }
         //
         //no_reg, logged in but no form yet
-        if($user->get('id') && $this->params->get('my_registration') == "no_reg" && !$this->shopper->perms){
+        if($user->get('id') && ($this->params->get('my_registration') == "no_reg") && !$this->shopper->perms){
         	$msg = JText::_("MYMUSE_PLEASE_COMPLETE_THE_FORM");
         	$this->setRedirect( JRoute::_("index.php?option=com_mymuse&view=shopper&task=register&Itemid=".$this->Itemid), $msg );
         	return false;
@@ -485,8 +482,6 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function confirm()
 	{
-		$mainframe = JFactory::getApplication();
-		
 
 		// are they logged in?
 		if(!$this->shopper->perms){

@@ -528,7 +528,7 @@
 				name="show_base_description" 
 				type="radio"
 				class="btn-group"
-				default="0"
+				default="1"
 				label="JGLOBAL_FIELD_SHOW_BASE_DESCRIPTION_LABEL"
 				description="JGLOBAL_FIELD_SHOW_BASE_DESCRIPTION_DESC"
 			>

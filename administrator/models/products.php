@@ -104,6 +104,9 @@ class MymuseModelproducts extends JModelList
 		$category_id = $app->getUserStateFromRequest($this->context.'.filter.category_id', 'filter_category_id', '', 'string');
 		$this->setState('filter.category_id', $category_id);
 		
+		$artist_id = $app->getUserStateFromRequest($this->context.'.filter.artist_id', 'filter_artist_id', '', 'string');
+		$this->setState('filter.artist_id', $artist_id);
+		
 		$access = $app->getUserStateFromRequest($this->context.'.filter.access', 'filter_access', '', 'string');
 		$this->setState('filter.access', $access);
 		
@@ -181,6 +184,10 @@ class MymuseModelproducts extends JModelList
 		// Join over the categories.
 		$query->select('c.title AS category_title');
 		$query->join('LEFT', '#__categories AS c ON c.id = a.catid');
+		
+		// Join over the artist categories.
+		$query->select('art.title AS artist_title');
+		$query->join('LEFT', '#__categories AS art ON art.id = a.artistid');
 
 		// Join over the users for the author.
 		$query->select('ua.name AS author_name');
@@ -231,6 +238,24 @@ class MymuseModelproducts extends JModelList
 			$query->where('a.catid IN ('.$categoryId.')');
 		}
 
+		// Filter by a single or group of artists.
+		$baselevel = 1;
+		$artistId = $this->getState('filter.artist_id');
+		if (is_numeric($artistId)) {
+			$art_tbl = JTable::getInstance('Category', 'JTable');
+			$art_tbl->load($categoryId);
+			$rgt = $art_tbl->rgt;
+			$lft = $art_tbl->lft;
+			$baselevel = (int) $art_tbl->level;
+			$query->where('art.lft >= '.(int) $lft);
+			$query->where('art.rgt <= '.(int) $rgt);
+		}
+		elseif (is_array($artistId)) {
+			JArrayHelper::toInteger($artistId);
+			$artistId = implode(',', $artistId);
+			$query->where('a.artistid IN ('.$artistId.')');
+		}
+		
 		// Filter on the level.
 		if ($level = $this->getState('filter.level')) {
 			$query->where('c.level <= '.((int) $level + (int) $baselevel - 1));

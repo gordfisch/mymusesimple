@@ -150,6 +150,7 @@ class myMuseViewCart extends JViewLegacy
 		$this->assignRef('params', $params);
 		$this->assignRef('task', $task);
 		$this->assignRef('shopper', $shopper);
+
 		$this->assignRef('store', $MyMuseStore->_store);
 		$this->assignRef('currency', $currency);
 

@@ -125,7 +125,13 @@ class MyMuseUpdateHelper extends JObject
 	
 	function upgradeProduct($p)
 	{
-		
+		if(!is_object($p)){
+			$p = (object) $p;
+		}
+		if(!$p->product_sku){
+				print_pre($p);
+				echo "Did not have an SKU";
+		}
 		//Add a main product
 		$db = JFactory::getDBO();
 		$app = JFactory::getApplication();
@@ -303,6 +309,9 @@ class MyMuseUpdateHelper extends JObject
 		$res = $db->loadResult();
 	
 		if($res > 0){
+			echo "$query <bre />had product with id $res";
+			print_pre($data);
+			exit;
 			return $this->upgradeProduct($data);
 		}
 	
@@ -560,7 +569,7 @@ function makeProductObject($p)
 		$title = 'MyMuse';
 		$parent = '1';
 		$description = 'Top Level Sample MyMuse Category';
-		$image = 'mymuse.jpg';
+		$image = 'images/A_MyMuseImages/mymuse.jpg';
 		if(!$topcatid = $this->makeCategory($title,$parent,$description,$image)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -573,7 +582,7 @@ function makeProductObject($p)
 		$title = 'Artists';
 		$parent = $topcatid;
 		$description = 'All Artist Unite!';
-		$image = 'artists.png';
+		$image = 'images/A_MyMuseImages/artists.png';
 		if(!$artcatid = $this->makeCategory($title,$parent,$description,$image)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -585,7 +594,7 @@ function makeProductObject($p)
 		$title = 'Genres';
 		$parent = $topcatid;
 		$description = 'Genres make the world go round. Can I be in BOTH genres?';
-		$image = 'genres.png';
+		$image = 'images/A_MyMuseImages/genres.png';
 		if(!$genreid = $this->makeCategory($title,$parent,$description,$image)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -597,7 +606,7 @@ function makeProductObject($p)
 		$title = 'Iron Brew';
 		$parent = $artcatid;
 		$description = 'Iron Brew. Warning: Celtic Nuts.';
-		$image = 'ironbrew.jpg';
+		$image = 'images/A_MyMuseImages/ironbrew.jpg';
 		if(!$ironbrewid = $this->makeCategory($title,$parent,$description,$image)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -609,7 +618,7 @@ function makeProductObject($p)
 		$title = 'World Beat';
 		$parent = $genreid;
 		$description = 'And the beat goes on.';
-		$image = 'worldbeat.jpg';
+		$image = 'images/A_MyMuseImages/worldbeat.jpg';
 		if(!$worldbeatid = $this->makeCategory($title,$parent,$description,$image)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -625,7 +634,7 @@ function makeProductObject($p)
 				(
 						'title' => 'Are You My Sister',
 						'alias' => '',
-						'catid' => "$genreid",
+						'catid' => "$worldbeatid",
 						'artistid' => "$ironbrewid",
 						'product_sku' => "mm001$artcatid",
 						'product_physical' => '1',
@@ -635,10 +644,7 @@ function makeProductObject($p)
 						'featured' => '0',
 						'language' => '*',
 						'id' => '0',
-						'articletext' => '
-	
-						The great first album
-						',
+						'articletext' => '<p>The great first album</p>',
 						'attribs' => Array
 						(
 								'product_made_date' => '2012-05-25 23:43:40',
@@ -661,7 +667,7 @@ function makeProductObject($p)
 						'list_image' => 'images/A_MyMuseImages/sister.jpg',
 						'detail_image' => 'images/A_MyMuseImages/sister.jpg',
 						'version' => '0',
-						'othercats' => array('0' => "$worldbeatid")
+						'othercats' => array()
 				),
 	
 				'task' => 'product.apply',
@@ -676,7 +682,7 @@ function makeProductObject($p)
 			$msg .= "Created product 'Are You My Sister'<br />";
 		}else{
 			$application->enqueueMessage($this->error, 'error');
-			echo $this->error;
+			echo $this->error; exit;
 			return false;
 		}
 		
@@ -786,7 +792,7 @@ function makeProductObject($p)
 		}
 		$msg .= "Downloaded 'Foggy Dew' track and previews<br />";
 	
-		//make a track for Are You My Sister
+		//make a track for Are You My Sister Song
 		$preview_dir = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
 		$data = Array(
 	
@@ -811,13 +817,13 @@ function makeProductObject($p)
 					'file_preview_3' => '',
 					'articletext' =>'<p>This file is mp3 for download with two previews, one in mp3 and one in ogg</p>',
 					'parentid' => "$parentid",
-					'catid' => "$genreid",
+					'catid' => "$worldbeatid",
 					'artistid' => "$ironbrewid",
 					'version' => '',
 					'product_downloadable' => '1',
 			),
 	
-			'select_file' => 'Are_You_My_Sister.mp3',
+			'select_file[0]' => 'Are_You_My_Sister.mp3',
 			'download_dir' => $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias,
 				'preview_dir' => $preview_dir,
 				'file_preview' => 'sister-preview.mp3',
@@ -835,12 +841,14 @@ function makeProductObject($p)
 				'task' => 'product.applyfile',
 				$token => '1'
 			);
+		
+
 		if($track1id = $this->makeProduct($data)){
 			$msg .= "Created a track 'Are You My Sister' :: Trackid = $track1id.<br />";
 		}else{
 			echo "Could not create a sample track. <br />";
 			$application->enqueueMessage("Could not create a sample track. <br />".$this->error, 'error');
-			echo $this->error;
+			echo $this->error; exit;
 			return false;
 		}
 	
@@ -866,18 +874,15 @@ function makeProductObject($p)
 						'file_preview' => 'foggy-preview.mp3',
 						'file_preview_2' => 'foggy-preview.ogg',
 						'file_preview_3' => '',
-						'articletext' => '
-
-						This file is mp3 for download with two previews, one in mp3 and one in ogg
-						',
+						'articletext' => '<p>This file is mp3 for download with two previews, one in mp3 and one in ogg</p>',
 						'parentid' => "$parentid",
-						'catid' => "$genreid",
+						'catid' => "$worldbeatid",
 						'artistid' => "$ironbrewid",
 						'version' => '',
 						'product_downloadable' => '1',
 				),
 
-				'select_file' => 'The_Foggy_Dew.mp3',
+				'select_file[0]' => 'The_Foggy_Dew.mp3',
 				'download_dir' => $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias,
 				'preview_dir' => $preview_dir,
 				'file_preview' => 'foggy-preview.mp3',
