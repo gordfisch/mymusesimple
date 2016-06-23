@@ -465,11 +465,12 @@ class plgUserMyMuse extends JPlugin
 						$data['profile']['region_name'] = $db->loadResult();
 					}
 				}
+				$data['profile']['name'] = $data['name'];
+				$data['profile']['email'] = $data['email'];
 				if($user->username == "buyer")
 				{
-					//it is a guest login, save the profile n the session
-					$data['profile']['name'] = $data['name'];	
-					$data['profile']['email'] = $data['email'];
+					//it is a guest login, save the profile in the session
+					
 					$session->set('myprofile', $data['profile']);
 					return true;
 				}

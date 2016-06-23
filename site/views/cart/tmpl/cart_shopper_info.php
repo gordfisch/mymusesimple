@@ -13,7 +13,7 @@ defined('_JEXEC') or die('Restricted access');
 
 $shopper 	= $this->shopper;
 $params 	= $this->params;
-if($params->get('my_registration') == "no_reg" || $this->user->username == "buyer"){
+//if($this->user->username == "buyer"){
 	$fields = MyMuseHelper::getNoRegFields();
 	foreach($fields as $field){
 		if(!isset($shopper->profile[$field]) && isset($shopper->$field) && $shopper->$field != ''){
@@ -21,8 +21,8 @@ if($params->get('my_registration') == "no_reg" || $this->user->username == "buye
 			
 		}
 	}
-}
-
+//}
+print_pre($shopper->profile);
 ?>     <!-- Begin 2 column bill-ship to -->
         <h2><?php echo JText::_('MYMUSE_SHOPPER_INFORMATION') ?></h2>
 		<table class="mymuse_cart">
@@ -37,12 +37,12 @@ if($params->get('my_registration') == "no_reg" || $this->user->username == "buye
                 <tr>
                 	<td class="mobile-hide"><?php echo JText::_('MYMUSE_FULL_NAME') ?>:</td>
                 	<td class="myfullname">
-                	<?php echo $shopper->name ?>
+                	<?php echo $shopper->profile['name'] ?>
                 	</td>
                 </tr>
                 <tr>
                 	<td class="mobile-hide"><?php echo JText::_('MYMUSE_EMAIL') ?>:</td>
-                	<td class="myemail"><?php echo $shopper->email ?></td>
+                	<td class="myemail"><?php echo $shopper->profile['email'] ?></td>
                 </tr>
                 
             <?php if(isset($shopper->profile)){ ?>

@@ -221,7 +221,7 @@ class MyMuseCheckout
 		}
 		
 
-		if($params->get('my_registration') == "no_reg" || $shopper->username == 'buyer'){
+		if($shopper->username == 'buyer'){
 			$fields = MyMuseHelper::getNoRegFields();
 
 			if(isset($order->notes)){
@@ -229,10 +229,10 @@ class MyMuseCheckout
 			}
 
 			foreach($fields as $field){
-				if(isset($shopper->$field)){
-					$notes[$field] = $shopper->$field;
-				}elseif(isset($shopper->profile[$field])){
+				if(isset($shopper->profile[$field])){
 					$notes[$field] = $shopper->profile[$field];
+				}elseif(isset($shopper->$field)){
+					$notes[$field] = $shopper->$field;
 				}
 			}
 			$registry = new JRegistry;

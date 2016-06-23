@@ -56,13 +56,11 @@ class mymuseModelShopper extends JModelForm
 	/**
 	 * getShopper
 	 * 
-	 * @param object $user The user object
 	 * @return mixed object The shopper object or false
 	 */
 	function &getShopper()
 	{
 
-		
 		// Lets load the data if it doesn't already exist
 
         if (empty( $this->_shopper ))
@@ -115,10 +113,10 @@ class mymuseModelShopper extends JModelForm
 			if($user->get('id') > 0)
 			{
 				
-				$this->_shopper = $user;
+				$this->_shopper = clone $user;
 				$this->_id = $user->get('id');
 				$this->_shopper->user_id = $user->get('id');
-				
+	
 				$profile = $this->_shopper->get('profile');
 				
 				if(count($profile) < 1) {
@@ -157,6 +155,7 @@ class mymuseModelShopper extends JModelForm
     							//this guy needs to update profile
 								$this->setError(JText::_('MYMUSE_MISSING').$field);
     							$this->_shopper->perms = 0;
+    							return $this->_shopper;
     						}
     					}
     				}
@@ -328,15 +327,16 @@ class mymuseModelShopper extends JModelForm
 	 *
 	 * @return	boolean	True on success
 	 */
-	public function loadProfile(&$user, $options = array())
+	public function loadProfile(&$shopper, $options = array())
 	{
 	
 		$jinput = JFactory::getApplication()->input;
 		$task 	= $jinput->get('task');
 		$session = JFactory::getSession();
 		
-		if($user->username == 'buyer'){
-			$user->profile = $session->get('myprofile');
+		if($shopper->username == 'buyer'){
+			$shopper->profile = $session->get('myprofile');
+			$shopper->profile['loaded'] = 1;
 			return true;
 		}
 		
@@ -345,7 +345,7 @@ class mymuseModelShopper extends JModelForm
 		$app = JFactory::getApplication();
 		$myparams = MyMuseHelper::getParams();
 		$profile_key = $myparams->get('my_profile_key', 'mymuse');
-		$userId = $user->get('id');
+		$userId = $shopper->get('id');
 		$db = JFactory::getDbo();
 		$query = 'SELECT profile_key, profile_value FROM #__user_profiles' .
 				' WHERE user_id = '.(int) $userId." AND profile_key LIKE '$profile_key.%'" .
@@ -375,13 +375,19 @@ class mymuseModelShopper extends JModelForm
 				$user->profile[$k] = $v[1];
 			}
 		}
+		if(!isset($user->profile['name'])){
+			$user->profile['name'] = $user->name;
+		}
+		if(!isset($user->profile['email'])){
+			$user->profile['email'] = $user->email;
+		}
 		if(isset($user->profile['region']) && !isset($user->profile['region_name']) && $profile_key != 'mymuse'){
 			$user->profile['region_name'] = $user->profile['region'];
 		}
 		if(!isset($user->profile['shopper_group'])){
 			$user->profile['shopper_group'] = 1;
 		}
-		
+
 		$session->set('user', $user);
 		
 		return true;

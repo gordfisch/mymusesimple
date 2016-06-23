@@ -374,7 +374,6 @@ function MymuseParseRoute($segments)
             $vars['option'] = 'com_mymuse';
             $vars['view'] = 'cart';
             $vars['task'] = 'showcart';
-            
             return $vars;
         }
         if($segments[0] == "register"){
