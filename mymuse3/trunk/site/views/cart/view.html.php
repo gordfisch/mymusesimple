@@ -130,6 +130,8 @@ class myMuseViewCart extends JViewLegacy
 			parent::display("coupon");
 		}
 		
+		
+		//regular cart functions
 		$MyMuseCheckout =& MyMuse::getObject('checkout','helpers');
 		$MyMuseCart 	=& MyMuse::getObject('cart','helpers');
 		$cart 			= $MyMuseCart->cart;
@@ -284,7 +286,7 @@ class myMuseViewCart extends JViewLegacy
 				}
 				break;
 		}
-
+echo "wha";
 		// check for order
 		if(!isset($order->items) || !count($order->items)) {
 			//Hmm nothing to display...
@@ -981,11 +983,11 @@ class myMuseViewCart extends JViewLegacy
 			MyMuseHelper::logMessage( $debug  );
 			//$accparams = new JRegistry( $order->notes);
 			$registry = new JRegistry;
-			$accparams = $registry->loadString($order->notes);
+			$notes_params = $registry->loadString($order->notes);
 			$order->notes = $registry->toArray();
 
-			$user->set('email',$accparams->get('email'));
-			$user->set('name',$accparams->get('first_name')." ".$accparams->get('last_name'));
+			$user->set('email',$notes_params->get('email'));
+			$user->set('name',$notes_params->get('first_name')." ".$notes_params->get('last_name'));
 			$shopper->name          = isset($order->notes['name'])? $order->notes['name'] : '';
 			$shopper->email         = isset($order->notes['email'])? $order->notes['email'] : '';
 			$shopper->first_name    = isset($order->notes['first_name'])? $order->notes['first_name'] : '';

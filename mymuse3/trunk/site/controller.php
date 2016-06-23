@@ -324,8 +324,7 @@ class MyMuseController extends JControllerLegacy
 		$user = JFactory::getUser();
 
 		//no_reg and not logged in
-        if(!$user->get('id') && 
-        		($this->params->get('my_registration') == "no_reg" || $this->params->get('my_registration') == "full_guest")){
+        if(!$user->get('id') && $this->params->get('my_registration') == "no_reg"){
         	
         	$plugin = JPluginHelper::getPlugin('user', 'mymusenoreg');
         	
@@ -374,7 +373,7 @@ class MyMuseController extends JControllerLegacy
         	$url = JRoute::_(JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$this->Itemid);
         	$return = base64_encode($url);
 
-            $msg = JText::_("MYMUSE_PLEASE_FILL_IN_MISSING_ITEMS").": ".$this->MyMuseShopper->getError();
+            $msg = JText::_("MYMUSE_PLEASE_FILL_IN_MISSING_ITEMS") .": ".$this->MyMuseShopper->getError();
         	$this->setRedirect( JRoute::_('index.php?option=com_users&view=profile&layout=edit&return='.$return.'&Itemid='.$this->Itemid), $msg );
             return false;
         }
@@ -899,15 +898,6 @@ class MyMuseController extends JControllerLegacy
 	}
 
 		 
-	/**
-	 * logout
-	 *
-	 * @access	public
-	 */
-	function logout()
-	{
-		$this->MyMuseShopper->logout();
-	}
 
 	/**
 	 * downloads
