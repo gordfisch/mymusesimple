@@ -302,15 +302,22 @@ function MymuseParseRoute($segments)
 	//Get the active menu item.
 	$app	= JFactory::getApplication();
 	$jinput = $app->input;
+	$task = $jinput->get('task','');
+	if($task == "user.logout"){
+		return $segments;
+	}
+	
 	$jinput->set('option', 'com_mymuse');
 	$menu	= $app->getMenu();
 	$item	= $menu->getActive();
 	$params = MyMuseHelper::getParams();
 	$advanced = $params->get('sef_advanced_link', 0);
 	$dbo = JFactory::getDBO();
+	
+	
 
 	//print_pre($segments);exit;
-
+	//print_pre($item);exit;
 	// Count route segments
 	$count = count($segments);
 	
@@ -318,8 +325,13 @@ function MymuseParseRoute($segments)
 	// the first segment is the view and the last segment is the id of the product or category.
 	if (!isset($item)) {
         if($params->get('my_default_itemid','')){
-            $item	= $menu->getItem($params->get('my_default_itemid',''));
+            $item	= $menu->getItem($params->get('my_default_itemid'));
         }
+    }
+    if (!isset($item)) {
+    	if($params->get('top_menu_item','')){
+    		$item	= $menu->getItem($params->get('top_menu_item'));
+    	}
     }
     if (!isset($item)) {
 		$vars['view']	= $segments[0];
@@ -374,6 +386,7 @@ function MymuseParseRoute($segments)
             $vars['option'] = 'com_mymuse';
             $vars['view'] = 'cart';
             $vars['task'] = 'showcart';
+
             return $vars;
         }
         if($segments[0] == "register"){

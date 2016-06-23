@@ -228,7 +228,7 @@ class myMuseViewCart extends JViewLegacy
 					}
 				}
 				
-				if(isset($order->notes) && $params->get('my_registration') == "no_reg" ||  $user->username == "buyer"){
+				if(isset($order->notes) && $user->username == "buyer"){
 
 					$registry = new JRegistry;
 					$registry->loadString($order->notes);
@@ -286,7 +286,7 @@ class myMuseViewCart extends JViewLegacy
 				}
 				break;
 		}
-echo "wha";
+
 		// check for order
 		if(!isset($order->items) || !count($order->items)) {
 			//Hmm nothing to display...
@@ -474,12 +474,19 @@ echo "wha";
 		}
 
 		//display the shopper info, if we have one
-		if($heading && $user->get('id') > 0 && $user->get('name') != "Guest Buyer"){
-			ob_start();
-			parent::display('shopper_info'); 
-			$shopper_info = ob_get_contents();
-			ob_end_clean();
-			$this->assignRef('shopper_info', $shopper_info);
+		
+		if($heading && $user->get('id') > 0){
+			if($params->get('my_notes_required',0) && !$order->notes && $user->username == 'buyer')
+			{
+				
+			}else{
+			
+				ob_start();
+				parent::display('shopper_info'); 
+				$shopper_info = ob_get_contents();
+				ob_end_clean();
+				$this->assignRef('shopper_info', $shopper_info);
+			}
 		}
 
 		if($task == "checkout"){
@@ -491,11 +498,17 @@ echo "wha";
 				$button  = JText::_("MYMUSE_CONFIRM_BUTTON");
 			}
 			$this->assignRef('button', $button);
-			ob_start();
-			parent::display("next_form");
-			$next_form = ob_get_contents();
-			ob_end_clean();
-			$this->assignRef('next_form', $next_form);
+			
+			if($params->get('my_notes_required',0) && !$order->notes && $user->username == 'buyer')
+			{
+			
+			}else{
+				ob_start();
+				parent::display("next_form");
+				$next_form = ob_get_contents();
+				ob_end_clean();
+				$this->assignRef('next_form', $next_form);
+			}
 			
 		}elseif($task== "shipping"){
 

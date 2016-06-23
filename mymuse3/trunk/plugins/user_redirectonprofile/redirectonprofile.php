@@ -53,7 +53,7 @@ class plgUserRedirectonprofile extends JPlugin
 		$cart = $session->get('cart');
 
 		if($result && $cart && $cart['idx'] > 0){
-			$return = JRoute::_("index.php?option=com_mymuse&task=confirm");
+			$return = JRoute::_("index.php?option=com_mymuse&task=checkout");
 			$app->redirect($return);
             $app->close();
 		}
