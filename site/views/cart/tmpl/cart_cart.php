@@ -21,7 +21,7 @@ $task		= $this->task;
 $got_flash  = 0;
 $post_order = array('confirm','makepayment','thankyou','vieworder', 'notify');
 $notes_required = $params->get('my_notes_required',0);
-
+		
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidator');
 JHtml::_('formbehavior.chosen', 'select');

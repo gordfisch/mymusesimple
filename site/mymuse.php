@@ -55,7 +55,7 @@ if(!$params->get('my_disable_css',0)){
 
 JPluginHelper::importPlugin('mymuse');
 $jinput 	= JFactory::getApplication()->input;
-print_pre($jinput); exit;
+//print_pre($jinput); exit;
 // return URL
 $return 	= $jinput->get('return','');
 if(!$return){
@@ -74,17 +74,18 @@ $controller = $jinput->get('controller','');
 
 // Execute the task.
 $controller	= JControllerLegacy::getInstance('Mymuse');
- //print_pre($jinput); exit;
-$controller->execute(JFactory::getApplication()->input->get('task'));
+$controller->execute($task);
 
 //save the cart in the session
 $session = JFactory::getSession();
 $MyMuseCart = MyMuse::getObject('cart','helpers');
 $session->set("cart",$MyMuseCart->cart);
 
-$MyMuseShopper = MyMuse::getObject('shopper','models');
-$shopper 		=  $MyMuseShopper->getShopper();
-$user = JFactory::getUser();
-echo "user"; print_pre($user);
-echo "shopper"; print_pre($shopper);
+if($params->get('my_debug','')){
+	$MyMuseShopper = MyMuse::getObject('shopper','models');
+	$shopper 		=  $MyMuseShopper->getShopper();
+	$user = JFactory::getUser();
+	echo "user"; print_pre($user);
+	echo "shopper"; print_pre($shopper);
+}
 $controller->redirect();

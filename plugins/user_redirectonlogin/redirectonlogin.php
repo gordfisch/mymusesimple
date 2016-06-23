@@ -43,15 +43,16 @@ class plgUserRedirectonlogin extends JPlugin
 	 * @return	boolean	True on success
 	 * @since	1.5
 	 */
-	public function onUserLogin($user, $options = array())
+	public function onUserAfterLogin($options)
 	{
 
 		$app = JFactory::getApplication();
 		$session = JFactory::getSession();
 		$cart = $session->get('cart');
+		$user = $options['user'];
 
-		if($cart && $cart['idx'] > 0){
-			$return = JRoute::_("index.php?option=com_mymuse&task=showcart&view=cart&layout=cart");
+		if($cart && $cart['idx'] > 0 && $user->username != ''){
+			$return = "index.php?option=com_mymuse&view=cart&layout=cart";
 			$app->setUserState('users.login.form.return', $return);
 		}
 		return true;

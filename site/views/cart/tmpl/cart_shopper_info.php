@@ -22,7 +22,7 @@ $params 	= $this->params;
 		}
 	}
 //}
-print_pre($shopper->profile);
+
 ?>     <!-- Begin 2 column bill-ship to -->
         <h2><?php echo JText::_('MYMUSE_SHOPPER_INFORMATION') ?></h2>
 		<table class="mymuse_cart">

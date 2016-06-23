@@ -351,6 +351,7 @@ class mymuseModelShopper extends JModelForm
 				' WHERE user_id = '.(int) $userId." AND profile_key LIKE '$profile_key.%'" .
 				' ORDER BY ordering';
 		$db->setQuery( $query);
+
 		if(!$results = $db->loadRowList()){
 
 			return false;
@@ -364,31 +365,31 @@ class mymuseModelShopper extends JModelForm
 		}
 	
 		// Merge the profile data.
-		$user->profile = array();
+		$shopper->profile = array();
 	
 		foreach ($results as $v)
 		{
 			$k = str_replace($profile_key.'.', '', $v[0]);
-			$user->profile[$k] = json_decode($v[1], true);
-			if ($user->profile[$k] === null)
+			$shopper->profile[$k] = json_decode($v[1], true);
+			if ($shopper->profile[$k] === null)
 			{
-				$user->profile[$k] = $v[1];
+				$shopper->profile[$k] = $v[1];
 			}
 		}
-		if(!isset($user->profile['name'])){
-			$user->profile['name'] = $user->name;
+		if(!isset($shopper->profile['name'])){
+			$shopper->profile['name'] = $shopper->name;
 		}
-		if(!isset($user->profile['email'])){
-			$user->profile['email'] = $user->email;
+		if(!isset($shopper->profile['email'])){
+			$shopper->profile['email'] = $shopper->email;
 		}
-		if(isset($user->profile['region']) && !isset($user->profile['region_name']) && $profile_key != 'mymuse'){
-			$user->profile['region_name'] = $user->profile['region'];
+		if(isset($shopper->profile['region']) && !isset($shopper->profile['region_name']) && $profile_key != 'mymuse'){
+			$shopper->profile['region_name'] = $shopper->profile['region'];
 		}
-		if(!isset($user->profile['shopper_group'])){
-			$user->profile['shopper_group'] = 1;
+		if(!isset($shopper->profile['shopper_group'])){
+			$shopper->profile['shopper_group'] = 1;
 		}
 
-		$session->set('user', $user);
+		$session->set('user', $shopper);
 		
 		return true;
 	}
