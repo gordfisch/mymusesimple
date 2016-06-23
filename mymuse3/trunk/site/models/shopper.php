@@ -72,11 +72,11 @@ class mymuseModelShopper extends JModelForm
         	$jinput = JFactory::getApplication()->input;
         	$task 	= $jinput->get('task');
         	$db 	= JFactory::getDBO();
-    //print_pre($user);   
-    //print_pre($_POST);
-    //print_pre($user); 
+
+ 
         	//if this is no reg coming in for a download
-        	if($params->get('my_registration') == "no_reg" && !$user->get('id') 
+        	if(($params->get('my_registration') == "no_reg" || $params->get('my_registration') == "full_guest") 
+        			&& !$user->get('id') 
         			&& ($task == 'accdownloads' || $task == 'downloads') ){
         		$id = $jinput->get('id','');
         		if(!$id){
@@ -108,35 +108,38 @@ class mymuseModelShopper extends JModelForm
         		return $this->_shopper;
         	}
         	
+        	
         	// regular user
 			$my_profile_key = $params->get('my_profile_key','mymuse');
+		
 			if($user->get('id') > 0)
 			{
 				
-				$this->_shopper = &$user;
+				$this->_shopper = $user;
 				$this->_id = $user->get('id');
 				$this->_shopper->user_id = $user->get('id');
-				$this->_shopper->perms = 1;
-				$profile = $user->get('profile');
-				//$this->loadProfile($user);
-
-				if(!$profile){
+				
+				$profile = $this->_shopper->get('profile');
+				
+				if(count($profile) < 1) {
 					//try to load their profile
-					if($this->loadProfile($user)){
-						//echo "loaded profile";
+					if(!$this->loadProfile($this->_shopper)){
+						$this->_shopper->perms = 0;
+						return $this->_shopper;
+					}else{
+						$profile = $this->_shopper->get('profile');
 					}
 				}
 				if(!isset($profile['shopper_group'])){
 					$profile['shopper_group'] = 1;
 				}
-	
+				$this->_shopper->perms = 1;
 				
 				//is there a profile to fill in?
-				if($params->get('my_registration') == "full" && $my_profile_key != ''){
+				if(($params->get('my_registration') == "full" || $params->get('my_registration') == "full_guest")
+						&& $my_profile_key != ''){
 					
 					//I want to see if any fields that are required have not been filled in
-					$profile = $user->get('profile');
-			
 					$plugin = JPluginHelper::getPlugin('user', $my_profile_key);
     				$profile_params = new JRegistry();
     				if(isset($plugin->params)){
@@ -325,10 +328,19 @@ class mymuseModelShopper extends JModelForm
 	 *
 	 * @return	boolean	True on success
 	 */
-	public function loadProfile($user, $options = array())
+	public function loadProfile(&$user, $options = array())
 	{
 	
-	
+		$jinput = JFactory::getApplication()->input;
+		$task 	= $jinput->get('task');
+		$session = JFactory::getSession();
+		
+		if($user->username == 'buyer'){
+			$user->profile = $session->get('myprofile');
+			return true;
+		}
+		
+
 		// Load the profile data from the database.
 		$app = JFactory::getApplication();
 		$myparams = MyMuseHelper::getParams();
@@ -339,8 +351,11 @@ class mymuseModelShopper extends JModelForm
 				' WHERE user_id = '.(int) $userId." AND profile_key LIKE '$profile_key.%'" .
 				' ORDER BY ordering';
 		$db->setQuery( $query);
-		$results = $db->loadRowList();
-	
+		if(!$results = $db->loadRowList()){
+
+			return false;
+		}
+		
 		// Check for a database error.
 		if ($db->getErrorNum())
 		{
@@ -366,8 +381,10 @@ class mymuseModelShopper extends JModelForm
 		if(!isset($user->profile['shopper_group'])){
 			$user->profile['shopper_group'] = 1;
 		}
-		$session = JFactory::getSession();
+		
 		$session->set('user', $user);
+		
+		return true;
 	}
 	
 	
@@ -384,7 +401,7 @@ class mymuseModelShopper extends JModelForm
 		$user	= JFactory::getUser();
 		$fields = MyMuseHelper::getNoRegFields();
 		$myparams = MyMuseHelper::getParams();
-		
+	
 		if($user->get('id')){
 			return true;
 		}
@@ -392,6 +409,7 @@ class mymuseModelShopper extends JModelForm
 		$query = "SELECT * FROM #__users WHERE username='buyer'";
 		$db->setQuery($query);
 		$guest = $db->loadObject();
+
 		if(!$guest){
 			if(!$this->createGuestUser()){
 				return false;
@@ -414,6 +432,7 @@ class mymuseModelShopper extends JModelForm
 			JError::raiseError(500, $this->getError());
 			return false;
 		}
+
 		// Save the data in the session.
 		$app->setUserState('com_users.registration.data', $requestData);
 		
@@ -451,8 +470,6 @@ class mymuseModelShopper extends JModelForm
 		$queue = $app->getMessageQueue();
 
 		if(count($queue)){
-			//$this->setError(JText::_($error->code));
-			//print_pre($queue); exit;
 			return false;
 		}
 		
@@ -487,7 +504,9 @@ class mymuseModelShopper extends JModelForm
 		}
 		
 		if(isset($post['jform'])){
-			$user->set('profile',$post['jform']['profile']);
+
+			$session->set('myprofile', $post['jform']['profile']);
+			/**
 			foreach($fields as $field){
 				if(isset($post['jform']['profile'][$field])){
 					$user->set($field,$post['jform']['profile'][$field]);
@@ -497,10 +516,10 @@ class mymuseModelShopper extends JModelForm
 			if(isset($post['jform']['profile']['first_name']) || isset($post['jform']['profile']['last_name']) ){
 				$user->set('name',@$post['jform']['profile']['first_name']." ".@$post['jform']['profile']['last_name']);
 			}
+			*/
 		}
-//print_pre($post);
-//print_pre($user); exit;
-		$session->set('user', $user);
+		
+		//$session->set('user', $user);
 		
 		return true;
 	}

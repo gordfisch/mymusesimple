@@ -419,7 +419,8 @@ class plgUserMyMuse extends JPlugin
 	function onUserAfterSave($data, $isNew, $result, $error)
 	{
 		$userId	= JArrayHelper::getValue($data, 'id', 0, 'int');
-
+		$user = JFactory::getUser();
+		$session = JFactory::getSession();
 
 		if ($userId && $result && isset($data['profile']) && (count($data['profile'])))
 		{
@@ -464,6 +465,15 @@ class plgUserMyMuse extends JPlugin
 						$data['profile']['region_name'] = $db->loadResult();
 					}
 				}
+				if($user->username == "buyer")
+				{
+					//it is a guest login, save the profile n the session
+					$data['profile']['name'] = $data['name'];	
+					$data['profile']['email'] = $data['email'];
+					$session->set('myprofile', $data['profile']);
+					return true;
+				}
+				
 
 				$tuples = array();
 				$order	= 1;
@@ -485,10 +495,10 @@ class plgUserMyMuse extends JPlugin
 				$this->_subject->setError($e->getMessage());
 				return false;
 			}
-			$session = JFactory::getSession();
+			
 			$user = $session->get("user");
 			$user->profile = $data['profile'];
-			
+
 			$session->set('user', $user);
 		}
 

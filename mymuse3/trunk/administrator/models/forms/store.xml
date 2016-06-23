@@ -680,6 +680,7 @@
 				<option value="full">MYMUSE_FULL</option>
 				<option value="jomsocial">MYMUSE_JOMSOCIAL</option>
 				<option value="no_reg">MYMUSE_NO_REGISTRATION</option>
+				<option value="full_guest">MYMUSE_FULL_OR_GUEST</option>
         </field>
         
          <field
@@ -728,7 +729,6 @@
                 label="MYMUSE_TOP_MENU_LABEL"
                 description="MYMUSE_TOP_MENU_DESC"
                 class="inputbox"
-            
                 required="false"
                 />
         <field
@@ -751,6 +751,37 @@
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>>
         </field>
+        
+         <field
+                name="my_notes_required"
+                type="radio"
+                label="MYMUSE_NOTES_REQUIRED_LABEL"
+                description="MYMUSE_NOTES_REQUIRED_DESC"
+                class="btn-group"
+                default="0">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>>
+        </field>
+        
+        <field
+                name="my_notes_header"
+                type="text"
+                label="MYMUSE_NOTES_HEADER_LABEL"
+                description="MYMUSE_NOTES_HEADER_DESC"
+                class="inputbox"
+                size="15"
+        />
+        
+        <field 
+        		name="my_notes_msg" 
+        		type="textarea"  
+        		rows="3" 
+        		cols="35" 
+        		default="" 
+        		label="MYMUSE_NOTES_MSG_LABEL" 
+        		description="MYMUSE_NOTES_MSG_DESC" 
+        		filter="raw"
+        />
 
         <field
                 name="my_disable_css"
@@ -836,6 +867,7 @@
         		default="" 
         		label="MYMUSE_EMAIL_MSG_LABEL" 
         		description="MYMUSE_EMAIL_MSG_DESC" 
+        		filter="raw"
         />
         <field
                 name="my_max_recommended"

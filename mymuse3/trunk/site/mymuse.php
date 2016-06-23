@@ -82,4 +82,9 @@ $session = JFactory::getSession();
 $MyMuseCart = MyMuse::getObject('cart','helpers');
 $session->set("cart",$MyMuseCart->cart);
 
+$MyMuseShopper = MyMuse::getObject('shopper','models');
+$shopper 		=  $MyMuseShopper->getShopper();
+$user = JFactory::getUser();
+echo "user"; print_pre($user);
+echo "shopper"; print_pre($shopper);
 $controller->redirect();

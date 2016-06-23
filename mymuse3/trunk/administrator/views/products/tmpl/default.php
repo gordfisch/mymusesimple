@@ -106,7 +106,7 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 				<th width="1%">
 					Ordering
 				</th>
-				<th width="25%">
+				<th width="10%">
 					<?php echo JHtml::_('grid.sort', 'MYMUSE_SKU', 'a.product_sku', $listDirn, $listOrder); ?>
 				</th>
 				<th width="25%">
@@ -122,11 +122,16 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 					<?php echo JHtml::_('grid.sort', 'JCATEGORY', 'category_title', $listDirn, $listOrder); ?>
 				</th>
 				<th width="10%">
+					<?php echo JHtml::_('grid.sort', 'MYMUSE_ARTIST', 'artist_title', $listDirn, $listOrder); ?>
+				</th>
+				<th width="10%">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
 				</th>
+				<!--  
 				<th width="10%">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_CREATED_BY', 'a.created_by', $listDirn, $listOrder); ?>
 				</th>
+				-->
 				<th width="5%">
 					<?php echo JHtml::_('grid.sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
 				</th>
@@ -184,7 +189,7 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 				<td class="center">
 					<?php echo $item->ordering; ?>
 				</td>
-				<td class="center">
+				<td>
 					<?php echo $item->product_sku; ?>
 				</td>
 				<td>
@@ -218,13 +223,18 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 						echo "<br />(".$item->subcats.")";
 					} ?>
 				</td>
+				<td class="center">
+					<?php echo $this->escape($item->artist_title);  ?>
+				</td>
 
 				<td class="center">
 					<?php echo $this->escape($item->access_level); ?>
 				</td>
+				<!--  
 				<td class="center">
 					<?php echo $this->escape($item->author_name); ?>
 				</td>
+				-->
 				<td class="center nowrap">
 					<?php echo JHtml::_('date',$item->created, JText::_('DATE_FORMAT_LC4')); ?>
 				</td>

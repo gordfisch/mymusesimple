@@ -20,7 +20,11 @@ $params 	= $this->params;
 $task		= $this->task;
 $got_flash  = 0;
 $post_order = array('confirm','makepayment','thankyou','vieworder', 'notify');
-$notes_required = $params->get('notes_required',1);
+$notes_required = $params->get('my_notes_required',0);
+
+JHtml::_('behavior.keepalive');
+JHtml::_('behavior.formvalidator');
+JHtml::_('formbehavior.chosen', 'select');
 
 for ($i=0;$i<count($order->items); $i++) { 
     if(!isset($order->items[$i])){
@@ -395,34 +399,35 @@ jQuery(document).ready(function(){
 		
 		
     <?php 
+    //NOTES REQUIRED?
 if($notes_required  && $user->username == 'buyer'){
 	
     $notes = isset($order->notes['notes'])? $order->notes['notes'] : @$order->notes; 
-    $jason = json_decode($notes);
-    if(is_array($jason)){
-    	$notes = $jason['notes'];
-    }
-    if(is_object($jason)){
-    	$notes = $jason->notes;
+
+    if(!is_array($notes)){
+    	$jason = json_decode($notes);
+    	if(is_array($jason)){
+    		$notes = $jason['notes'];
+    	}
+    	if(is_object($jason)){
+    		$notes = $jason->notes;
+    	}
+    }else{
+    	$notes = '';
     }
 
-    
-    
+
     if(!in_array($task, $post_order)){ ?>		
-		<h3>Tell us about your project</h3>
-        <span class="licence-text">How the track will be used: Website/ Shop/ Corporate video.. etc<br />
-		The name of the project:<br />
-		A URL link to the project if available:<br />
-		(Optional): Any further information on your project: <br />
-		THIS IS VITAL IN ORDER FOR A LICENSE TO BE ISSUED<br /></span>
-        <textarea style="height: 200px; width:90%;" name="notes" rows="10" cols="5"><?php 
+		<h3><?php echo JText::_($params->get("my_notes_header"))?></h3>
+        <?php echo JText::_($params->get("my_notes_msg"))?>
+        <textarea class="required" style="height: 200px; width:90%;" name="notes" rows="10" cols="5"><?php 
         
         echo $notes; 
         
         ?></textarea>
 <?php 
 	}elseif($notes) { ?>
-		<h3>Project Description</h3>
+		<h3><?php echo JText::_($params->get("my_notes_header"))?></h3>
 		<?php echo nl2br($notes);
 	}
 }
@@ -445,7 +450,7 @@ if($notes_required  && $user->username == 'buyer'){
 		    // add the checkout link
 		?> 
 	
-			<?php if($user->username == ''){ ?>
+			<?php if($user->username == '' && $params->get('my_registration') == "full_guest"){ ?>
 				<div class="pull-left  mymuse-button-left cart">
 					<button class="button uk-button" type="button"
 					onclick="location.href='<?php echo JRoute::_("index.php?option=com_mymuse&task=guestcheckout&view=cart&Itemid=$Itemid") ?>'">
