@@ -10,8 +10,14 @@
 // no direct access
 defined('_JEXEC') or die;
 
+JHtml::_('behavior.switcher');
+JHtml::_('behavior.multiselect');
+
 JHtml::_('behavior.tooltip');
 JHtml::_('behavior.formvalidation');
+JHtml::_('behavior.keepalive');
+JHtml::_('formbehavior.chosen', 'select');
+jimport ('joomla.html.html.bootstrap');
 ?>
 <script type="text/javascript">
 	Joomla.submitbutton = function(task)
