@@ -107,6 +107,7 @@
 		<plugin name="payment_monsterpay" folder="plugins/payment_monsterpay">Monsterpay</plugin>
         <plugin name="payment_offline" folder="plugins/payment_offline">Payment Offline</plugin>
         <plugin name="payment_payfast" folder="plugins/payment_payfast">Payfast</plugin>
+        <plugin name="payment_paynow" folder="plugins/payment_now">Paynow</plugin>
         <plugin name="payment_paypal" folder="plugins/payment_paypal">Paypal</plugin>
         <plugin name="payment_paypalpro" folder="plugins/payment_paypalpro">PayPalPro</plugin>
         <plugin name="payment_paypalproexpress" folder="plugins/payment_paypalproexpress">PayPalPro Express</plugin>
