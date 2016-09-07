@@ -472,36 +472,40 @@ class MyMuseHelper extends JObject
 	 * getArtistAlias. alias from artist record
 	 * 
 	 * @param $id int
-	 * @param $parent // is this the parent?
+	 * @param $parent boolean // is this the parent?
 	 * @return string
 	 */
 	
 	static function getArtistAlias($id,$parent=0){
 		
 		$db	= JFactory::getDBO();
-		if(!$parent){
+		if(!$parent){ //not the parent, find the parent
+			
 			$query = "SELECT parentid from #__mymuse_product
 			WHERE id ='$id'";
 			$db->setQuery($query);
 			$parentid = $db->loadResult();
+			if(!$parentid){ // I guess that was the parent
+				$parentid = $id;
+			}
 			$query = "SELECT artistid from #__mymuse_product
 			WHERE id ='$parentid'";
 			$db->setQuery($query);
-			$id = $db->loadResult();
+			$artistid = $db->loadResult();
 
 		}else{
+			
 			$query = "SELECT artistid from #__mymuse_product
 			WHERE id ='$id'";
 			$db->setQuery($query);
-   			$id = $db->loadResult();
+   			$artistid = $db->loadResult();
 		}
 
-		$query = "SELECT title FROM #__categories 
-   		WHERE id='".$id."'";
+		$query = "SELECT alias FROM #__categories 
+   		WHERE id='".$artistid."'";
 
    		$db->setQuery($query);
-   		$title = $db->loadResult();
-   		$alias = JApplication::stringURLSafe($title);
+   		$alias = $db->loadResult();
 
 		return $alias;
 		
@@ -519,23 +523,27 @@ class MyMuseHelper extends JObject
 
 		
 		$db	= JFactory::getDBO();
-		if($parent){
-			$query = "SELECT catid from #__mymuse_product
-			WHERE id ='$id'";
-			$db->setQuery($query);
-   			$id = $db->loadResult();
-		}else{
+		if(!$parent){ //not the parent, find the parent
 			$query = "SELECT parentid from #__mymuse_product
 			WHERE id ='$id'";
 			$db->setQuery($query);
-   			$parentid = $db->loadResult();
-   			$query = "SELECT catid from #__mymuse_product
+			$parentid = $db->loadResult();
+			if(!$parentid){ // I guess that was the parent
+				$parentid = $id;
+			}
+			$query = "SELECT artistid from #__mymuse_product
+			WHERE id ='$parentid'";
+			$db->setQuery($query);
+			$artistid = $db->loadResult();
+			
+		}else{
+			$query = "SELECT catid from #__mymuse_product
 			WHERE id ='$id'";
 			$db->setQuery($query);
-   			$id = $db->loadResult();
+			$artistid = $db->loadResult();
 		}
 
-		return $id;
+		return $artistid;
 		
 	}
 	
@@ -549,7 +557,7 @@ class MyMuseHelper extends JObject
 	static function getAlbumAlias($id,$parent=0){
 		
 		$db	= JFactory::getDBO();
-		if(!$parent){
+		if(!$parent){ //not the parent, find the parent
 			$query = "SELECT parentid from #__mymuse_product
 			WHERE id ='$id'";
 			$db->setQuery($query);
@@ -566,10 +574,10 @@ class MyMuseHelper extends JObject
 	}
 	
 	/**
-	 * getSiteUrl get url for previews/downloads
+	 * getSiteUrl get url for previews
 	 *
 	 * @param $id int
-	 * @param $parent int
+	 * @param $parent boolean // is this the parent?
 	 * @return string
 	 */
 	static function getSiteUrl($id, $parent=0)
@@ -590,9 +598,10 @@ class MyMuseHelper extends JObject
 	}
 	
 	/**
-	 * getSitePath get path for previews/downloads
+	 * getSitePath get path for previews
 	 *
 	 * @param $id int
+	 * @param $parent boolean // is this the parent?
 	 * @return string
 	 */
 	static function getSitePath($id, $parent=0)
@@ -610,7 +619,7 @@ class MyMuseHelper extends JObject
 	}
 	
 	/**
-	 * getSitePath get path for previews/downloads
+	 * getDownloadPath get path for downloads
 	 *
 	 * @param $id int
 	 * @return string
@@ -619,7 +628,7 @@ class MyMuseHelper extends JObject
 	{
 		$params = self::$_params;
 		
-		if(1 == $params->get('my_download_dir_format')){
+		if(1 == $params->get('my_download_dir_format')){ //downloads by format, we don't know the format here
 			$site_path = $params->get('my_download_dir').DS;
 		}else{
 			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
