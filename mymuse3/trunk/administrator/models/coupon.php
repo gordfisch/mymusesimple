@@ -143,12 +143,14 @@ class MymuseModelcoupon extends JModelAdmin
     	$parents = $this->_db->loadObjectList();
     	foreach($parents as $parent){
     		$products[] = $parent;
+    		//$products[] = JHTML::_('select.option',  $parent, $parent );
     		$query = "SELECT id as value, CONCAT('&nbsp;-&nbsp;',title,': ',product_sku) as text from #__mymuse_product
 				WHERE parentid='".$parent->value."' ORDER BY title ASC";
     		$this->_db->setQuery($query);
     		$children = $this->_db->loadObjectList();
     		foreach($children as $child){
     			$products[] = $child;
+    			//$products[] = JHTML::_('select.option',  $child, $child );
     		}
     	}
 
