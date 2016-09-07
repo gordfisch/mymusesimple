@@ -183,7 +183,7 @@ class MymuseTablestore extends JTable
     				$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file , 'error');
     				return false;
     			}
-    			 
+    		} 
     		
     	}
     	
