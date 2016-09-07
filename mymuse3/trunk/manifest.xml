@@ -102,7 +102,7 @@
 		<plugin name="video_jplayer" folder="plugins/video_jplayer">MyMuse Video HTML5 jPlayer</plugin>
 		
 		
-		
+		<plugin name="payment_authorizenet" folder="plugins/payment_authorizenet">Authorizenet</plugin>
 		<plugin name="payment_moneybookers" folder="plugins/payment_moneybookers">Moneybookers</plugin>
 		<plugin name="payment_monsterpay" folder="plugins/payment_monsterpay">Monsterpay</plugin>
         <plugin name="payment_offline" folder="plugins/payment_offline">Payment Offline</plugin>
