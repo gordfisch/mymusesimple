@@ -27,6 +27,7 @@ class MymuseViewCoupon extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
+		
 		$this->state	= $this->get('State');
 		$this->item		= $this->get('Item');
 		$this->form		= $this->get('Form');
@@ -37,9 +38,10 @@ class MymuseViewCoupon extends JViewLegacy
 			JError::raiseError(500, implode("\n", $errors));
 			return false;
 		}
-
 		$this->addToolbar();
+
 		parent::display($tpl);
+
 	}
 
 	/**
