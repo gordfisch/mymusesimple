@@ -98,7 +98,18 @@ class MymuseTablestore extends JTable
     	}
     	
     	
+    	//if encode filenames has changed
+    	$my_encode_filenames = $form['params']['my_encode_filenames'];
     	
+    	if($my_encode_filenames !== $myparams->get('my_encode_filenames') ){
+    		
+    		if(!$this->change_encoding($my_encode_filenames)){
+    			$this->setError("Encode Filenames has changed and I wasn't able to change the files!");
+    			return false;
+    		}
+    	}
+
+
     	//if my_noreg_password has changed
     	$my_noreg_password = $form['params']['my_noreg_password'];
 
@@ -135,6 +146,52 @@ class MymuseTablestore extends JTable
     	return parent::store($updateNulls);
     }
     	
+    
+    /**
+     * Change encoding of files
+     * 
+     * @param    integer The new state of encode filenames.
+     * @return    boolean    True on success.
+     */
+    function change_encoding($my_encode_filenames)
+    {
+    	$db = JFactory::getDBO();
+    	$params = MyMuseHelper::getParams();
+    	JLoader::import('joomla.filesystem.folder');
+    	JLoader::import('joomla.filesystem.file');
+    	
+    	if($my_encode_filenames) // we want to encode them
+    	{
+    	
+    	}else{ // we want to change back to regular names
+    		$query = "SELECT p.id, p.title, p.alias, p.title_alias, p.file_name,  c.alias as cat_alias, parent.alias as parent_alias
+			FROM `garx5_mymuse_product` AS p
+			LEFT JOIN `garx5_mymuse_product` AS parent ON parent.id = p.parentid
+			LEFT JOIN `garx5_categories` AS c ON c.id = parent.catid
+			WHERE p.product_downloadable =1
+			AND p.product_allfiles = 0
+			ORDER BY cat_alias, parent_alias, p.title ";
+    		
+    		$db->setQuery($query);
+    		$products = $db->loadObjectList();
+    		foreach($products as $product){
+    			$path = MyMuseHelper::getDownloadPath($id);
+    			$old_file = $path.DS.$product->title_alias;
+    			$new_file = $path.DS.$product->file_name;
+    			if(!JFile::copy("$old_file", "$new_file")){
+    				$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file);
+    				$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file , 'error');
+    				return false;
+    			}
+    			 
+    		
+    	}
+    	
+    	
+    }
+    
+    
+    
     /**
      * Method to set the publishing state for a row or list of rows in the database
      * table.  The method respects checked out rows by other users and will attempt
