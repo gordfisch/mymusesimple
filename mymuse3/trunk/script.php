@@ -243,6 +243,23 @@ class com_mymuseInstallerScript
 
 				}
 			}
+			
+			//now add MODULES
+			if(count($manifest->modules->module)){
+					
+				$super = $parent->getParent();
+				foreach ($manifest->modules->module as $module) {
+						
+					$extensions[] = array(
+							'name' => (string) $module,
+							'type' => (string) $module['name'],
+							'folder' => $super->getPath('source').'/'.(string) $module['folder'],
+							'installer' => new JInstaller,
+							'status' => false);
+				}
+			}
+			
+			
 
 			// install additional extensions
 			for ($i = 0; $i < count($extensions); $i++) {
@@ -270,49 +287,7 @@ class com_mymuseInstallerScript
 				}
 			}
 			
-			
-			//now try MODULES
-			$add = NULL;
-			$error = false;
-			$extensions = array();
-			if(count($manifest->modules->module)){
 					
-				$super = $parent->getParent();
-				foreach ($manifest->modules->module as $module) {
-					
-					$extensions[] = array(
-							'name' => (string) $module,
-							'type' => (string) $module['name'],
-							'folder' => $super->getPath('source').'/'.(string) $module['folder'],
-							'installer' => new JInstaller,
-							'status' => false);
-				}
-			}
-			
-			// install additional extensions
-			for ($i = 0; $i < count($extensions); $i++) {
-			$extension =& $extensions[$i];
-
-				$extension['installer']->setOverwrite(true);
-				if ($extension['installer']->install($extension['folder'])) {
-					$extension['status'] = true;
-				} else {
-					echo $extension['name']. "threw an error ".$extension['installer']->getError(); 
-					$error = $extension['installer']->getError();
-					break;
-				}
-			}
-			
-			// rollback on installation errors
-			if ($error) {
-				$this->parent->abort(JText::_('Component').' '.JText::_('Install').': '.JText::_('Error'), 'component');
-				for ($i = 0; $i < count($extensions); $i++) {
-					if ($extensions[$i]['status']) {
-						$extensions[$i]['installer']->abort(JText::_($extensions[$i]['type']).' '.JText::_('Install').': '.JText::_('Error'), $extensions[$i]['type']);
-						$extensions[$i]['status'] = false;
-					}
-				}
-			}		
 			?>
 <table cellpadding="4" cellspacing="0" border="0" width="800">
 	<tr>
