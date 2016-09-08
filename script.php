@@ -253,8 +253,9 @@ class com_mymuseInstallerScript
 				if ($extension['installer']->install($extension['folder'])) {
 					$extension['status'] = true;
 				}else{
-					$error = $extension['installer']->getErrors();
-					print_r($error);
+					echo $extension['name']. "threw an error ".$extension['installer']->getError(); 
+					$error = $extension['installer']->getError();
+					break;
 				}
 			}
 	
@@ -296,7 +297,8 @@ class com_mymuseInstallerScript
 				if ($extension['installer']->install($extension['folder'])) {
 					$extension['status'] = true;
 				} else {
-					echo $extension['name']. "threw an error, possibly already installed"; 
+					echo $extension['name']. "threw an error ".$extension['installer']->getError(); 
+					$error = $extension['installer']->getError();
 					break;
 				}
 			}
