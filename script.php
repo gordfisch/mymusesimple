@@ -213,7 +213,7 @@ class com_mymuseInstallerScript
 			$db->execute();
 		}
 		
-		//update store table
+	
 		if($type == "install" || $type == "update"){
 			// init vars
 			$error = false;
@@ -246,11 +246,15 @@ class com_mymuseInstallerScript
 
 			// install additional extensions
 			for ($i = 0; $i < count($extensions); $i++) {
+				$error = false;
 				$extension =& $extensions[$i];
 
 				$extension['installer']->setOverwrite(true);
 				if ($extension['installer']->install($extension['folder'])) {
 					$extension['status'] = true;
+				}else{
+					$error = $extension['installer']->getErrors();
+					print_r($error);
 				}
 			}
 	
@@ -268,6 +272,8 @@ class com_mymuseInstallerScript
 			
 			//now try MODULES
 			$add = NULL;
+			$error = false;
+			$extensions = array();
 			if(count($manifest->modules->module)){
 					
 				$super = $parent->getParent();
