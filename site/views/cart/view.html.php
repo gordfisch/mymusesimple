@@ -563,7 +563,7 @@ class myMuseViewCart extends JViewLegacy
 				if(!isset($order->order_number)){
 					$order->order_number = '';
 				}
-					
+
 				$session = JFactory::getSession();
 				$session->set("order_number",$order->order_number);
 				

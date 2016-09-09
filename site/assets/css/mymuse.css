@@ -3,10 +3,11 @@
 .clear {
 	clear: both;
 }
+/**  needed with some templates
 *, *::after, *::before {
     box-sizing: border-box;
 }
-
+*/
 
 /* those dickey print and email icons */
 ul.actions {
@@ -236,7 +237,7 @@ table.mymuse_cart_inner {
 
 
 table.mymuse_cart td, table.mymuse_cart th, div.mymuse_cart {
-	padding: 4px;
+	padding: 4px 0 4px;
 	vertical-align: middle;
 	border: 1px solid #CCCCCC;
 }

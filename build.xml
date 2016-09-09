@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="MyMuse3.5" basedir="." default="copy_to_test351">
- 		<property name="myversion" value="3.5.1" override="true" />
+<project name="MyMuse3.4.0" basedir="." default="copy_to_test351">
+ 		<property name="myversion" value="3.4.0" override="true" />
 	<!-- arboreta/joomlamy3/callinish || mymusetest35 || nexgen || singsong -->
-        <property name="test" value="/var/www/html/singsong" override="true" />
+        <property name="test" value="/var/www/html/mymusetest35" override="true" />
         <property name="testadmincomp"
-                value="/var/www/html/singsong/administrator/components/com_mymuse"
+                value="/var/www/html/mymusetest35/administrator/components/com_mymuse"
                 override="true" />
         <property name="src" value="${project.basedir}" override="true" />
         <fileset dir="./site" id="site_files">
@@ -36,7 +36,7 @@
  
         <!-- Copy Target -->
         <target name="copy_to_test351" description="copy target">
-                <echo>Copying files from MyMuse3.5 to mymusetest35...
+                <echo>Copying files from MyMuse3.4.0 to mymusetest35...
                 </echo>
         	
         		<copy todir="${test}/components/com_mymuse">
@@ -85,6 +85,11 @@
                         todir="${test}/administrator/language/en-GB" />
              	<copy file="${src}/plugins/payment_payfast/language/en-GB/en-GB.plg_mymuse_payment_payfast.sys.ini"
                         todir="${test}/administrator/language/en-GB" />    
+                        
+                <copy file="${src}/plugins/payment_paynow/language/en-GB/en-GB.plg_mymuse_payment_paynow.ini"
+                        todir="${test}/administrator/language/en-GB" />
+             	<copy file="${src}/plugins/payment_paynow/language/en-GB/en-GB.plg_mymuse_payment_paynow.sys.ini"
+                        todir="${test}/administrator/language/en-GB" /> 
                                
                 <copy file="${src}/plugins/payment_offline/language/en-GB/en-GB.plg_mymuse_payment_offline.ini"
                         todir="${test}/administrator/language/en-GB" />
@@ -227,6 +232,13 @@
                         todir="${test}/plugins/mymuse/payment_payfast" />
                 <copy file="${src}/plugins/payment_payfast/payment_payfast.xml"
                         todir="${test}/plugins/mymuse/payment_payfast" />
+                <copy file="${src}/plugins/payment_payfast/payfast_common.inc"
+                        todir="${test}/plugins/mymuse/payment_payfast" />
+                        
+                <copy file="${src}/plugins/payment_paynow/payment_paynow.php"
+                        todir="${test}/plugins/mymuse/payment_paynow" />
+                <copy file="${src}/plugins/payment_paynow/payment_paynow.xml"
+                        todir="${test}/plugins/mymuse/payment_paynow" />
                         
                 <copy file="${src}/plugins/payment_monsterpay/payment_monsterpay.php"
                         todir="${test}/plugins/mymuse/payment_monsterpay" />

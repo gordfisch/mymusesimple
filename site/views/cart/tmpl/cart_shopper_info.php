@@ -22,7 +22,11 @@ $params 	= $this->params;
 		}
 	}
 //}
-
+$colspan = 1;
+if($params->get('my_use_shipping') && isset($this->order->need_shipping)
+			&& $this->order->need_shipping && isset($shopper->profile['shipping_first_name'])){
+	$colspan = 2;
+}
 ?>     <!-- Begin 2 column bill-ship to -->
         <h2><?php echo JText::_('MYMUSE_SHOPPER_INFORMATION') ?></h2>
 		<table class="mymuse_cart">
@@ -31,7 +35,7 @@ $params 	= $this->params;
 
             <table class="mymuse_cart" >
                 <tr class="mymuse_cart_top">
-                	<td class="mymuse_cart_top" COLSPAN="2"><b><?php echo JText::_('MYMUSE_BILLING_ADDRESS') ?></b></td>
+                	<td class="mymuse_cart_top" colspan="<?php echo $colspan; ?>"><b><?php echo JText::_('MYMUSE_BILLING_ADDRESS') ?></b></td>
                 </tr>
                 
                 <tr>
@@ -103,14 +107,16 @@ $params 	= $this->params;
 			<?php } //end if profile?>
                 
             </table>
-            <!-- End BillTo --> </td>
+            <!-- End BillTo --> 
+            </td>
         
-            <td style="vertical-align:top">
+            
     
         <?php 
         if($params->get('my_use_shipping') && isset($this->order->need_shipping) 
         		&& $this->order->need_shipping && isset($shopper->profile['shipping_first_name'])){
         ?>
+        <td style="vertical-align:top">
             <table class="mymuse_cart">
                 <tr class="mymuse_cart_top">
                 <td class="mymuse_cart_top" COLSPAN="2"><b><?php echo JText::_('MYMUSE_SHIPPING_ADDRESS') ?></b></td>
@@ -145,10 +151,10 @@ $params 	= $this->params;
                 </tr>
             </table>
             <!-- End ShipTo -->
-
+		</td>
           <?php 
         }
-        ?></td>
+        ?>
             <!-- End Customer Information --> 
         </tr>
 

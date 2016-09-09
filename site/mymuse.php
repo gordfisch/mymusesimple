@@ -85,7 +85,7 @@ if($params->get('my_debug','')){
 	$MyMuseShopper = MyMuse::getObject('shopper','models');
 	$shopper 		=  $MyMuseShopper->getShopper();
 	$user = JFactory::getUser();
-	echo "user"; print_pre($user);
-	echo "shopper"; print_pre($shopper);
+	//echo "user"; print_pre($user);
+	//echo "shopper"; print_pre($shopper);
 }
 $controller->redirect();
