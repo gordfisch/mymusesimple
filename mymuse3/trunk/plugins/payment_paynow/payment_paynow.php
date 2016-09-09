@@ -75,6 +75,7 @@ class plgMymusePayment_Paynow extends JPlugin
 	//Integration Key: 186a8d6e-8d91-4924-93e7-3312c2ea5ef6
 	
 	
+	
 
 	/**
 	 * PayNow initiate and redirect
@@ -83,6 +84,29 @@ class plgMymusePayment_Paynow extends JPlugin
 	function onBeforeMyMusePayment($shopper, $store, $order, $params, $Itemid=1 )
 	{
 
+		$session = JFactory::getSession();
+		$paynow_process = $session->get("paynow_process",0);
+		
+		if(!$paynow_process){
+			
+			$session->set("paynow_process",'1');
+			// make a form and return
+			$string = '<form action="index.php">
+					<input type="hidden" name="option" value="com_mymuse">
+					<input type="hidden" name="task" value="confirm">
+					<input type="hidden" name="layout" value="cart">
+					<input type="hidden" name="view" value="cart">
+					<div id="paynow_form" class="pull-right">
+					<button class="button uk-button shopper-info" type="submit">'.JText::_('MYMUSE_PAY_AT_PAYNOW').'</button>
+					</div>
+					</form>
+					';
+			return $string;
+			
+			
+			
+		}
+		
 		$app = JFactory::getApplication();
 		if($params->get('my_debug')){
 			$debug = "#####################\nPayNow PLUGIN onBeforeMyMusePayment\n";

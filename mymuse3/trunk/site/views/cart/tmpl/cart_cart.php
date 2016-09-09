@@ -6,7 +6,7 @@
  * @license		GNU/GPL
  * @author		Gordon Fisch
  * @author mail	info@mymuse.ca
- * @website		http://www.mymuse.ca
+ * @website		htp://www.mymuse.ca
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');
@@ -434,12 +434,14 @@ if($notes_required  && $user->username == 'buyer'){
 ?>
         
     <?php if(!in_array($task, $post_order) && $user->username == 'buyer'){ ?>
+    <!--  
         <div class="pull-left myupdate cart"><button class="button uk-button " 
 				type="submit" >
 				<?php echo JText::_('MYMUSE_UPDATE_CART'); ?></button>
 		</div>
-		
+	-->
 	<?php } ?>	
+	
 		<?php if($order->do_html){ ?>
 		</form>
 		<?php } ?>
