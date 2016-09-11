@@ -481,7 +481,8 @@ class MyMuseController extends JControllerLegacy
 	 */
 	function confirm()
 	{
-
+		
+		
 		// are they logged in?
 		if(!$this->shopper->perms){
 			$url = JRoute::_(JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$this->Itemid);
@@ -548,6 +549,36 @@ class MyMuseController extends JControllerLegacy
 		}
 	}
 
+	/**
+	 * process_payment
+	 * process a payment
+	 *
+	 * @access	public
+	 */
+	function process_payment()
+	{
+		$session 		= JFactory::getSession();
+		$plugin 		= $session->get('process_payment',0);
+		$orderid 		= $this->jinput->get('orderid',0);
+		
+		
+		if($plugin && $orderid){
+			$dispatcher		= JDispatcher::getInstance();
+			$this->order 	= $this->MyMuseCheckout->getOrder($orderid);
+			$func 			= 'on'.ucfirst($plugin).'ProcessPayment';
+			JPluginHelper::importPlugin('mymuse');
+			$results = $dispatcher->trigger($func,
+				array($this->shopper, $this->store, $this->order, $this->params, $this->Itemid) );
+		}else{
+			$msg = "Could not find plugin or orderid";
+			$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid), $msg );
+			return false;
+			
+		}
+	}
+	
+	
+	
 	/**
 	 * makepayment
 	 * make a payment
