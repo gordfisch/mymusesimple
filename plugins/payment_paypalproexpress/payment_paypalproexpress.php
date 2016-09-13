@@ -294,6 +294,53 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 					'BUTTONSOURCE'						=> 'Arboreta_SP'
 			);
 			
+			$j = 0;
+			$requestData->ITEMS = 0;
+			for ($i=0;$i<$order->idx;$i++) {
+				if(isset($order->items[$i]->title) && $order->items[$i]->title != ''){
+					$item_name = 'L_PAYMENTREQUEST_0_NAME'. $i;
+					$quant_name = 'L_PAYMENTREQUEST_0_QTY'. $i;
+					$amount_name = 'L_PAYMENTREQUEST_0_AMT'. $i;
+			
+					$requestData->$item_name = $order->items[$i]->title;
+					$requestData->$quant_name = $order->items[$i]->product_quantity;
+					$requestData->$amount_name = $order->items[$i]->product_item_price;
+					$j++;
+				}
+					
+			}
+			//coupon discount
+			if(isset($order->coupon_discount) && $order->coupon_discount > 0){
+			
+				$item_name = 'L_PAYMENTREQUEST_0_NAME'. $i;
+				$quant_name = 'L_PAYMENTREQUEST_0_QTY'. $i;
+				$amount_name = 'L_PAYMENTREQUEST_0_AMT'. $i;
+				$requestData->$item_name = JText::_('MYMUSE_DISCOUNT');
+				$requestData->$quant_name = 1;
+				$requestData->$amount_name = -sprintf("%01.2f", $order->coupon_discount);
+				$j++;
+				$i++;
+			}
+				
+			//plugin discount
+			if(isset($order->discount) && $order->discount > 0){
+			
+				$item_name = 'L_PAYMENTREQUEST_0_NAME'. $i;
+				$quant_name = 'L_PAYMENTREQUEST_0_QTY'. $i;
+				$amount_name = 'L_PAYMENTREQUEST_0_AMT'. $i;
+				$requestData->$item_name = JText::_('MYMUSE_DISCOUNT');
+				$requestData->$quant_name = 1;
+				$requestData->$amount_name = -sprintf("%01.2f", $order->discount);
+				$j++;
+				$i++;
+			}
+			//shopper_group_discount is figured in price for each item
+			
+				
+			$requestData->ITEMS = $j;
+			
+			
+			
 			
 			if($params->get('my_debug')){
 				$debug = "FormCallBack requestData = \n".print_r($requestData,true);			
