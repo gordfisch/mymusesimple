@@ -66,6 +66,8 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		$cancelUrl = JURI::root().'index.php?option=com_mymuse&task=paycancel';
 		$requestData = (object)array(
 			'METHOD'							=> 'SetExpressCheckout',
+			'TRXTYPE'							=> 'S',
+			'ACTION'							=> 'S',
 			'USER'								=> $this->getMerchantUsername(),
 			'PWD'								=> $this->getMerchantPassword(),
 			'SIGNATURE'							=> $this->getMerchantSignature(),
@@ -591,6 +593,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		$sandbox = $this->params->get('sandbox',0);
 		if($sandbox) {
 			return 'https://api-3t.sandbox.paypal.com/nvp';
+			return 'https://pilot-payflowpro.paypal.com';
 		} else {
 			return 'https://api-3t.paypal.com/nvp';
 		}
@@ -601,6 +604,7 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		$sandbox = $this->params->get('sandbox',0);
 		if($sandbox) {
 			return 'https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&token=' . $token;
+			return 'https://pilot-payflowpro.paypal.com';
 		} else {
 			return 'https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=' . $token;
 		}

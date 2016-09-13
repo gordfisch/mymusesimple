@@ -165,9 +165,9 @@ class MymuseTablestore extends JTable
     	
     	}else{ // we want to change back to regular names
     		$query = "SELECT p.id, p.title, p.alias, p.title_alias, p.file_name,  c.alias as cat_alias, parent.alias as parent_alias
-			FROM `garx5_mymuse_product` AS p
-			LEFT JOIN `garx5_mymuse_product` AS parent ON parent.id = p.parentid
-			LEFT JOIN `garx5_categories` AS c ON c.id = parent.catid
+			FROM `#__mymuse_product` AS p
+			LEFT JOIN `#__mymuse_product` AS parent ON parent.id = p.parentid
+			LEFT JOIN `#__categories` AS c ON c.id = parent.catid
 			WHERE p.product_downloadable =1
 			AND p.product_allfiles = 0
 			ORDER BY cat_alias, parent_alias, p.title ";
