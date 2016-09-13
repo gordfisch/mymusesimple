@@ -99,13 +99,14 @@ class MymuseModelproductattributesku extends JModelAdmin
 	
 	public function getParent()
 	{
-	
-		$this->item		= $this->getItem();
-		if(!$this->item->id){
+		
+		$app 				= JFactory::getApplication();
+		$input 				= $app->input;
+		$parentid 				= $input->get('parentid', 0);
+
+		if(!$parentid){
 			$app = JFactory::getApplication();
 			$parentid = $app->getUserStateFromRequest("com_mymuse.parentid", 'parentid');
-		}else{
-			$parentid = $this->item->product_parent_id;
 		}
 		$db = JFactory::getDBO();
 		$query = "SELECT * from #__mymuse_product WHERE id=$parentid";
