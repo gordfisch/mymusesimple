@@ -67,7 +67,7 @@ if($params->get('my_registration') == "no_reg"){
 if($params->get('my_default_itemid','')){
 	$link .= "&Itemid=".$params->get('my_default_itemid');
 }
-//echo " link = $link <br />";
+
 $app    = JApplication::getInstance('site');
 $router = $app->getRouter();
 $uri = $router->build($link);

@@ -335,7 +335,7 @@ class myMuseViewStore extends JViewLegacy
         			$object->use_resume = true; //Enable Resume Mode
         			$object->download(); //Download File
         		}
-        		
+      //Downloaderunabletoloadfilevarwwwvhostsnexgenmusicgroup.comaudiomp3migrat013-full-release-full-release-mp3.zipmigrat013-full-release-full-release-mp3  		
         		$this->_logDownload($user, $product, $order_item);
         		
         		exit;
