@@ -147,6 +147,12 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 		}
 		$requestQuery = http_build_query($requestData);
 
+		if($params->get('my_debug')){
+			$debug = "\npayment URL\n";
+			$debug .= $this->getPaymentURL();
+			MyMuseHelper::logMessage( $debug  );
+		}
+		
 		if(!$responseQuery = $this->myCurl($this->getPaymentURL (), $requestQuery, $params)){
 			return false;
 		}
@@ -168,7 +174,11 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 			$data['URL'] = $this->getPaypalURL($responseData['TOKEN']);
 		} else {
 			$jinput = JFactory::getApplication()->input;
-			$msg = isset($responseData['L_LONGMESSAGE0'])? $responseData['L_LONGMESSAGE0'] : "Did not get a response from PayPal";
+			if(isset($responseData['L_LONGMESSAGE0'])){
+				$msg = $responseData['L_LONGMESSAGE0'];
+			}else{
+				$msg = $responseData['RESPMSG'];
+			}
 			$error_url = 'index.php?option=com_mymuse&view=cart&layout=cart&Itemid='.$Itemid;
 			$error_url = JRoute::_($error_url,false);
 			JFactory::getApplication()->redirect($error_url,$msg,'error');
@@ -592,8 +602,8 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 	{
 		$sandbox = $this->params->get('sandbox',0);
 		if($sandbox) {
-			return 'https://api-3t.sandbox.paypal.com/nvp';
-			return 'https://pilot-payflowpro.paypal.com';
+			//return 'https://api-3t.sandbox.paypal.com/nvp';
+			return 'https://pilot-payflowpro.paypal.com/';
 		} else {
 			return 'https://api-3t.paypal.com/nvp';
 		}
@@ -603,8 +613,8 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 	{
 		$sandbox = $this->params->get('sandbox',0);
 		if($sandbox) {
-			return 'https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&token=' . $token;
-			return 'https://pilot-payflowpro.paypal.com';
+			//return 'https://www.sandbox.paypal.com/webscr?cmd=_express-checkout&token=' . $token;
+			return 'https://pilot-payflowpro.paypal.com/webscr?cmd=_express-checkout&token=' . $token;
 		} else {
 			return 'https://www.paypal.com/cgi-bin/webscr?cmd=_express-checkout&token=' . $token;
 		}
@@ -612,32 +622,32 @@ class plgMyMusePayment_Paypalproexpress extends JPlugin
 
 	private function getMerchantUsername()
 	{
-		$sandbox = $this->params->get('sandbox',0);
-		if($sandbox) {
-			return trim($this->params->get('sb_apiuser',''));
-		} else {
+		//$sandbox = $this->params->get('sandbox',0);
+		//if($sandbox) {
+			//return trim($this->params->get('sb_apiuser',''));
+		//} else {
 			return trim($this->params->get('apiuser',''));
-		}
+		//}
 	}
 
 	private function getMerchantPassword()
 	{
-		$sandbox = $this->params->get('sandbox',0);
-		if($sandbox) {
-			return trim($this->params->get('sb_apipw',''));
-		} else {
+		//$sandbox = $this->params->get('sandbox',0);
+		//if($sandbox) {
+			//return trim($this->params->get('sb_apipw',''));
+		//} else {
 			return trim($this->params->get('apipw',''));
-		}
+		//}
 	}
 
 	private function getMerchantSignature()
 	{
-		$sandbox = $this->params->get('sandbox',0);
-		if($sandbox) {
-			return trim($this->params->get('sb_apisig',''));
-		} else {
+		//$sandbox = $this->params->get('sandbox',0);
+		//if($sandbox) {
+			//return trim($this->params->get('sb_apisig',''));
+		//} else {
 			return trim($this->params->get('apisig',''));
-		}
+		//}
 	}
 	
 	function onAfterMyMusePayment()
