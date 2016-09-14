@@ -74,7 +74,7 @@ function mydownload(url,item_id){
 				if($item->downloads < $my_download_max && $end_date > time()){
 						$url = JRoute::_('index.php?option=com_mymuse&view=store&task=downloadfile&id='.$id.'&item_id='.$item->id);
 					
-				?><a href="javascript:void(0);" onclick="mydownload('<?php echo $url; ?>','<?php echo $item->id; ?>');">
+						?><a href="javascript:void(0);" onclick="mydownload('<?php echo $url; ?>','<?php echo $item->id; ?>');">
 				<?php } ?>
 				
 				<?php echo $item->product_name; ?>
