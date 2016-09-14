@@ -651,8 +651,6 @@ class MyMuseController extends JControllerLegacy
 			$this->setRedirect("index.php", $msg);
 		}
 		
-		
-		
 
 		//get order
 		$db 			= JFactory::getDBO();
@@ -719,7 +717,6 @@ class MyMuseController extends JControllerLegacy
 		
 		if(!$orderid && $this->params->get('my_saveorder') == "after"){
 			// no id
-			
 			$msg = JText::_("MYMUSE_NO_ORDER_WAITING");
 			$this->setRedirect(JRoute::_("index.php?option=com_mymuse&view=shopper&layout=waiting"), $msg);
 			return false;
@@ -750,17 +747,12 @@ class MyMuseController extends JControllerLegacy
 	
 		$notifyCustomer = $this->jinput->get('notifyCustomer', 0);
 		if($notifyCustomer){
-		
 			$this->jinput->set('task', 'makemail');
 			$this->jinput->set('view', 'cart');
 			$this->display();
-			$this->jinput->set('task', 'thankyou');
-		
 		}
 
 	
-
-				
 		if($st === "Completed" && $this->MyMuseShopper->order != "C"){
 			// waiting for IPN
 			sleep(3);

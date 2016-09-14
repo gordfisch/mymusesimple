@@ -556,7 +556,7 @@ class myMuseViewCart extends JViewLegacy
 				$this->assignRef('makepayment_form', $makepayment_form);
 			}
 			
-			else{
+			elseif(!$jinput->get('pp')){
 				
 				 /* payment plugins */
 				//save the order number in the session
