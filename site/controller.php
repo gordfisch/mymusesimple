@@ -650,7 +650,8 @@ class MyMuseController extends JControllerLegacy
 			$msg = $errorName." : ".$errorMsg;
 			$this->setRedirect("index.php", $msg);
 		}
-		
+		$session = JFactory::getSession();
+		$session->set("process_payment","");
 
 		//get order
 		$db 			= JFactory::getDBO();
