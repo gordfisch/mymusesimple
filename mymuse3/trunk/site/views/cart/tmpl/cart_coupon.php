@@ -14,7 +14,7 @@ defined('_JEXEC') or die('Restricted access');
 <form action="index.php" method="post" name="adminForm">
 <input type="hidden" name="option" value="com_mymuse">
 <input type="hidden" name="task" value="couponadd">
-<input type="hidden" name="Itemid" value="Itemid">
+<input type="hidden" name="Itemid" value="<?php echo @$this->Itemid; ?>">
 <div class="componentheading"><?php echo Jtext::_('MYMUSE_ENTER_A_COUPON'); ?></div>
 <table class="mymuse_cart" >
 	<tr class="mymuse_cart_top">

@@ -24,7 +24,7 @@
      
          <field
              	name="recommend"
-                type="recommendtree"
+                type="producttree"
                 extension="com_mymuse"
                 label="MYMUSE_PRODUCT_RECOMMEND_LABEL"
                 description="MYMUSE_PRODUCT_RECOMMEND_DESC"

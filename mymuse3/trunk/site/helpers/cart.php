@@ -813,7 +813,7 @@ class MyMuseCart {
 		$params 	= MyMuseHelper::getParams();
 		$prods 		= array();
 		$recommends = array();
-		
+
 		for ($i=0;$i<$this->cart["idx"];$i++) {
 			if(isset($this->cart[$i]["coupon_id"])){
 				continue;
@@ -843,30 +843,31 @@ class MyMuseCart {
 		$num = min($params->get('my_max_recommended'),count($prods));
 
 		for($i = 0; $i<$num; $i++){
-		
 			$query = "SELECT * FROM #__mymuse_product
 					WHERE id = '".$prods[$i]."'";
 			$db->setQuery($query);
 		
-			$recommends[$i] = $db->loadObject();
+			;
 			// Build URL
-			if($recommends[$i]->parentid){
-				$parent = new MymuseTableproduct($db);
-				$parent->load($recommends[$i]->parentid);
-				$recommends[$i]->parent = $parent;
-				$recommends[$i]->list_image = $recommends[$i]->parent->list_image;
-				$recommends[$i]->detail_image = $recommends[$i]->parent->detail_image;
-				$pid = $recommends[$i]->parentid;
-				$aid = $recommends[$i]->parent->catid;
-			} else {
-				$pid = $recommends[$i]->id;
-				$aid = $recommends[$i]->catid;
+			if($recommends[$i] = $db->loadObject()){
+				if (isset ( $recommends [$i]->parentid ) && $recommends [$i]->parentid) {
+					$parent = new MymuseTableproduct ( $db );
+					$parent->load ( $recommends [$i]->parentid );
+					$recommends [$i]->parent = $parent;
+					$recommends [$i]->list_image = $recommends [$i]->parent->list_image;
+					$recommends [$i]->detail_image = $recommends [$i]->parent->detail_image;
+					$pid = $recommends [$i]->parentid;
+					$aid = $recommends [$i]->parent->catid;
+				} else {
+					$pid = $recommends [$i]->id;
+					$aid = $recommends [$i]->catid;
+				}
+				$recommends[$i]->url = myMuseHelperRoute::getProductRoute ( $pid, $aid );
+				$recommends[$i]->cat_url = myMuseHelperRoute::getCategoryRoute ( $aid );
 			}
 		
-			$recommends[$i]->url = myMuseHelperRoute::getProductRoute ( $pid, $aid );
-			$recommends[$i]->cat_url = myMuseHelperRoute::getCategoryRoute ( $aid );
+			
 		}
-
 		return $recommends;
 	}
 

@@ -160,7 +160,7 @@ class myMuseViewCart extends JViewLegacy
 		$message 			= '';
 		$footer 			= '';
 		$edit 				= true;
-	
+
 		// set the heading for the top of page
 		// find the order attached to the shopper object, or build it from session cart
 		switch ($task)

@@ -74,7 +74,7 @@ $controller = $jinput->get('controller','');
 
 // Execute the task.
 $controller	= JControllerLegacy::getInstance('Mymuse');
-$controller->execute($task);
+$controller->execute(JFactory::getApplication()->input->get('task', 'display'));
 
 //save the cart in the session
 $session = JFactory::getSession();

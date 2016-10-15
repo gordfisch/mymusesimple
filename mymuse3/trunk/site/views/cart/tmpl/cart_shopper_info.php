@@ -13,6 +13,13 @@ defined('_JEXEC') or die('Restricted access');
 
 $shopper 	= $this->shopper;
 $params 	= $this->params;
+
+if(!isset($shopper->profile['name']) && 
+		( isset($shopper->profile['first_name']) && isset($shopper->profile['last_name']) )
+	){
+	$shopper->profile['name'] = $shopper->profile['first_name'].' '.$shopper->profile['last_name'];
+	
+}
 //if($this->user->username == "buyer"){
 	$fields = MyMuseHelper::getNoRegFields();
 	foreach($fields as $field){
@@ -114,7 +121,8 @@ if($params->get('my_use_shipping') && isset($this->order->need_shipping)
     
         <?php 
         if($params->get('my_use_shipping') && isset($this->order->need_shipping) 
-        		&& $this->order->need_shipping && isset($shopper->profile['shipping_first_name'])){
+        		&& $this->order->need_shipping && isset($shopper->profile['shipping_first_name'])
+        		&& $shopper->profile['shipping_first_name'] != ''){
         ?>
         <td style="vertical-align:top">
             <table class="mymuse_cart">

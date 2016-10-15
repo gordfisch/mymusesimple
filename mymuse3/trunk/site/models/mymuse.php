@@ -18,7 +18,7 @@ JTable::addIncludePath(JPATH_ROOT . '/administrator/components/com_mymuse/tables
 /**
  * Model
  */
-class MymuseModelMymuse extends JModel
+class MymuseModelMymuse extends JModelLegacy
 {
 	protected $_item;
 

@@ -37,12 +37,15 @@ class plgMymuseShipping_Standard extends JPlugin
 	 * @param   object  $subject  The object to observe
 	 * @param   array   $config   An array that holds the plugin configuration
 	 */
-	function plgMymuseShipping_Standard(&$subject, $config)  {
+	function __construct(&$subject, $config)  {
 		parent::__construct($subject, $config);
 		
 
 	}
 		
+	function plgMymuseShipping_Standard(&$subject, $config)  {
+		self::__construct($subject, $config);
+	}
 		
 	/**
 	 * onListMyMuseShipping

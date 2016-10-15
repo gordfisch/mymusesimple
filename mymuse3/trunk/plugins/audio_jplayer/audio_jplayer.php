@@ -39,7 +39,7 @@ class plgMymuseAudio_jplayer extends JPlugin
 	 * @param   object  $subject  The object to observe
 	 * @param   array   $config   An array that holds the plugin configuration
 	 */
-	function plgMymuseAudio_jplayer(&$subject, $config)  {
+	function __construct(&$subject, $config)  {
 		parent::__construct($subject, $config);
 			
 		JHtml::_('jquery.framework',  true, true);
@@ -73,6 +73,11 @@ class plgMymuseAudio_jplayer extends JPlugin
         	$document->addStyleSheet('http://code.jquery.com/ui/1.9.2/themes/base/jquery-ui.css');
         }
         
+	}
+	
+	function plgMymuseAudio_jplayer(&$subject, $config)  {
+		
+		$this->__construct($subject, $config);
 	}
 
 	/**

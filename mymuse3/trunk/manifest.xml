@@ -99,39 +99,13 @@
 	<!-- Plugins -->
 	<plugins>
         <plugin name="audio_jplayer" folder="plugins/audio_jplayer">MyMuse Audio HTML5 jPlayer</plugin>
-		<plugin name="video_jplayer" folder="plugins/video_jplayer">MyMuse Video HTML5 jPlayer</plugin>
-		
-		
-		<plugin name="payment_authorizenet" folder="plugins/payment_authorizenet">Authorizenet</plugin>
-		<plugin name="payment_moneybookers" folder="plugins/payment_moneybookers">Moneybookers</plugin>
-		<plugin name="payment_monsterpay" folder="plugins/payment_monsterpay">Monsterpay</plugin>
-        <plugin name="payment_offline" folder="plugins/payment_offline">Payment Offline</plugin>
-        <plugin name="payment_payfast" folder="plugins/payment_payfast">Payfast</plugin>
-        <plugin name="payment_paynow" folder="plugins/payment_paynow">Paynow</plugin>
-        <plugin name="payment_paypal" folder="plugins/payment_paypal">Paypal</plugin>
-        <plugin name="payment_paypalpro" folder="plugins/payment_paypalpro">PayPalPro</plugin>
-        <plugin name="payment_paypalproexpress" folder="plugins/payment_paypalproexpress">PayPalPro Express</plugin>
-        <plugin name="payment_payunity" folder="plugins/payment_payunity">PayUnity</plugin>
-        <plugin name="payment_pesapal" folder="plugins/payment_pesapal">Payfast</plugin>
-		<plugin name="payment_virtualmerchant" folder="plugins/payment_virtualmerchant">Virtual Merchant</plugin>
-		
-        <plugin name="preorder" folder="plugins/preorder">Preorder</plugin>
-        <plugin name="shipping_price" folder="plugins/shipping_price">Shipping Price</plugin>
-        <plugin name="shipping_standard" folder="plugins/shipping_standard">Shipping Standard</plugin>
-        <plugin name="shoppergroupview" folder="plugins/shoppergroupview">Shopper group</plugin>
-		<plugin name="mymuse_vote" folder="plugins/mymuse_vote">MyMuse Vote</plugin>
 		<plugin name="mymuse_discount" folder="plugins/mymuse_discount">MyMuse Discount</plugin>
-		<plugin name="mymuse_licenceprice" folder="plugins/mymuse_licenceprice">MyMuse LicencePrice</plugin>
-		
-		<plugin name="redirectonlogin" folder="plugins/user_redirectonprofile">MyMuse Redirect on Edit Profile</plugin>
-		<plugin name="redirectonprofile" folder="plugins/user_redirectonlogin">MyMuse Redirect on Log In</plugin>
-        <plugin name="mymuse" folder="plugins/user_mymuse">MyMuse User Profile</plugin>
+        <plugin name="payment_offline" folder="plugins/payment_offline">Payment Offline</plugin>
+        <plugin name="payment_paypal" folder="plugins/payment_paypal">Paypal</plugin>
+		<plugin name="searchmymuse" folder="plugins/searchmymuse">Search</plugin>
+		<plugin name="shipping_standard" folder="plugins/shipping_standard">Shipping Standard</plugin>
+		<plugin name="mymuse" folder="plugins/user_mymuse">MyMuse User Profile</plugin>
         <plugin name="mymusenoreg" folder="plugins/user_mymusenoreg">MyMuse No Registration Profile</plugin>
-        <plugin name="searchmymuse" folder="plugins/searchmymuse">Search</plugin>
-        
-        <plugin name="mymuse" folder="plugins/finder_mymuse">Smart Search - MyMuse</plugin>
-        
-        <plugin name="mymuse_socialshare" folder="plugins/mymuse_socialshare">MyMuse Social Share</plugin>
 	</plugins>
 	<modules>
         <module name="mod_mymuse_latest" folder="modules/mod_mymuse_latest" client="site">Mod MyMuse Latest</module>

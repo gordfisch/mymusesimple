@@ -66,107 +66,30 @@
                 <copy file="${src}/site/language/en-GB/en-GB.com_mymuse.ini"
                         todir="${test}/language/en-GB" />
 
-                <copy file="${src}/plugins/payment_moneybookers/language/en-GB/en-GB.plg_mymuse_payment_moneybookers.ini"
-                        todir="${test}/administrator/language/en-GB" />    
-        		<copy file="${src}/plugins/payment_moneybookers/language/en-GB/en-GB.plg_mymuse_payment_moneybookers.sys.ini"
-        	             todir="${test}/administrator/language/en-GB" /> 
         	             
                 <copy file="${src}/plugins/payment_paypal/language/en-GB/en-GB.plg_mymuse_payment_paypal.ini"
                         todir="${test}/administrator/language/en-GB" />
                 <copy file="${src}/plugins/payment_paypal/language/en-GB/en-GB.plg_mymuse_payment_paypal.sys.ini"
                         todir="${test}/administrator/language/en-GB" />
                         
-                <copy file="${src}/plugins/payment_monsterpay/language/en-GB/en-GB.plg_mymuse_payment_monsterpay.ini"
-                        todir="${test}/administrator/language/en-GB" />
-        		<copy file="${src}/plugins/payment_monsterpay/language/en-GB/en-GB.plg_mymuse_payment_monsterpay.sys.ini"
-        	            todir="${test}/administrator/language/en-GB" />
-        	            
-                <copy file="${src}/plugins/payment_payfast/language/en-GB/en-GB.plg_mymuse_payment_payfast.ini"
-                        todir="${test}/administrator/language/en-GB" />
-             	<copy file="${src}/plugins/payment_payfast/language/en-GB/en-GB.plg_mymuse_payment_payfast.sys.ini"
-                        todir="${test}/administrator/language/en-GB" />    
-                        
-                <copy file="${src}/plugins/payment_paynow/language/en-GB/en-GB.plg_mymuse_payment_paynow.ini"
-                        todir="${test}/administrator/language/en-GB" />
-             	<copy file="${src}/plugins/payment_paynow/language/en-GB/en-GB.plg_mymuse_payment_paynow.sys.ini"
-                        todir="${test}/administrator/language/en-GB" /> 
                                
                 <copy file="${src}/plugins/payment_offline/language/en-GB/en-GB.plg_mymuse_payment_offline.ini"
                         todir="${test}/administrator/language/en-GB" />
                 <copy file="${src}/plugins/payment_offline/language/en-GB/en-GB.plg_mymuse_payment_offline.sys.ini"
                         todir="${test}/administrator/language/en-GB" />
                                
-                <copy file="${src}/plugins/payment_pesapal/language/en-GB/en-GB.plg_mymuse_payment_pesapal.ini"
-                        todir="${test}/administrator/language/en-GB" />
-                <copy file="${src}/plugins/payment_pesapal/language/en-GB/en-GB.plg_mymuse_payment_pesapal.sys.ini"
-                        todir="${test}/administrator/language/en-GB" />
-                                
-        		<copy file="${src}/plugins/payment_virtualmerchant/language/en-GB/en-GB.plg_mymuse_payment_virtualmerchant.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/payment_virtualmerchant/language/en-GB/en-GB.plg_mymuse_payment_virtualmerchant.sys.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
-        	        	
-        		<copy file="${src}/plugins/payment_paypalpro/language/en-GB/en-GB.plg_mymuse_payment_paypalpro.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/payment_paypalpro/language/en-GB/en-GB.plg_mymuse_payment_paypalpro.sys.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
-        	        	        	
-        	    <copy file="${src}/plugins/payment_paypalproexpress/language/en-GB/en-GB.plg_mymuse_payment_paypalproexpress.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/payment_paypalproexpress/language/en-GB/en-GB.plg_mymuse_payment_paypalproexpress.sys.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
-        	        	
-        	    <copy file="${src}/plugins/payment_payunity/language/en-GB/en-GB.plg_mymuse_payment_payunity.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/payment_payunity/language/en-GB/en-GB.plg_mymuse_payment_payunity.sys.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
         	
                 <copy file="${src}/plugins/shipping_standard/language/en-GB/en-GB.plg_mymuse_shipping_standard.ini"
                         todir="${test}/administrator/language/en-GB" />
                 <copy file="${src}/plugins/shipping_standard/language/en-GB/en-GB.plg_mymuse_shipping_standard.sys.ini"
                         todir="${test}/administrator/language/en-GB" />
-                                
-                <copy file="${src}/plugins/shipping_price/language/en-GB/en-GB.plg_mymuse_shipping_price.ini"
-                        todir="${test}/administrator/language/en-GB" />
-                <copy file="${src}/plugins/shipping_price/language/en-GB/en-GB.plg_mymuse_shipping_price.sys.ini"
-                        todir="${test}/administrator/language/en-GB" />
-                        
-                <copy file="${src}/plugins/shoppergroupview/language/en-GB/en-GB.plg_mymuse_shoppergroupview.ini"
-                        todir="${test}/administrator/language/en-GB" />
-                <copy file="${src}/plugins/shoppergroupview/language/en-GB/en-GB.plg_mymuse_shoppergroupview.sys.ini"
-                        todir="${test}/administrator/language/en-GB" />
+ 
         	
         		<copy file="${src}/plugins/audio_jplayer/language/en-GB/en-GB.plg_mymuse_audio_jplayer.ini"
         	        	todir="${test}/administrator/language/en-GB" /> 
         		<copy file="${src}/plugins/audio_jplayer/language/en-GB/en-GB.plg_mymuse_audio_jplayer.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" /> 
-        	        	
-        	    <copy file="${src}/plugins/audio_amplitude/language/en-GB/en-GB.plg_mymuse_audio_amplitude.ini"
-        	        	todir="${test}/administrator/language/en-GB" /> 
-        		<copy file="${src}/plugins/audio_amplitude/language/en-GB/en-GB.plg_mymuse_audio_amplitude.sys.ini"
-        	        	todir="${test}/administrator/language/en-GB" /> 
 
-  
-        	            
-                <copy file="${src}/plugins/video_jplayer/language/en-GB/en-GB.plg_mymuse_video_jplayer.ini"
-                        todir="${test}/administrator/language/en-GB" />
-        		<copy file="${src}/plugins/video_jplayer/language/en-GB/en-GB.plg_mymuse_video_jplayer.sys.ini"
-        	             todir="${test}/administrator/language/en-GB" />
-        	
-        		<copy file="${src}/plugins/mymuse_socialshare/language/en-GB/en-GB.plg_mymuse_mymuse_socialshare.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/mymuse_socialshare/language/en-GB/en-GB.plg_mymuse_mymuse_socialshare.sys.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
-        	        	
-        	    <copy file="${src}/plugins/mymuse_discount/language/en-GB/en-GB.plg_mymuse_mymuse_discount.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/mymuse_discount/language/en-GB/en-GB.plg_mymuse_mymuse_discount.sys.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
-        	        	
-        	    <copy file="${src}/plugins/mymuse_licenceprice/language/en-GB/en-GB.plg_mymuse_mymuse_licenceprice.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/mymuse_licenceprice/language/en-GB/en-GB.plg_mymuse_mymuse_licenceprice.sys.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
         	
         		<copy file="${src}/plugins/searchmymuse/language/en-GB/en-GB.plg_search_searchmymuse.ini"
         	        	todir="${test}/administrator/language/en-GB" />
@@ -178,36 +101,17 @@
                 <copy file="${src}/plugins/user_mymuse/language/en-GB/en-GB.plg_user_mymuse.sys.ini"
                         todir="${test}/administrator/language/en-GB" />
         	
-        		<copy file="${src}/plugins/mymuse_vote/language/en-GB/en-GB.plg_mymuse_mymuse_vote.ini"
-        	            todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/mymuse_vote/language/en-GB/en-GB.plg_mymuse_mymuse_vote.sys.ini"
-        	            todir="${test}/administrator/language/en-GB" />
-        	
         		<copy file="${src}/plugins/user_redirectonlogin/language/en-GB/en-GB.plg_user_redirectonlogin.ini"
         	        	todir="${test}/administrator/language/en-GB" />
         	    <copy file="${src}/plugins/user_redirectonlogin/language/en-GB/en-GB.plg_user_redirectonlogin.sys.ini"
         	        	todir="${test}/administrator/language/en-GB" />
         	        	
-        	    <copy file="${src}/plugins/user_redirectonprofile/language/en-GB/en-GB.plg_user_redirectonprofile.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/user_redirectonprofile/language/en-GB/en-GB.plg_user_redirectonprofile.sys.ini"
-        	        	todir="${test}/administrator/language/en-GB" />
         	
         		<copy file="${src}/plugins/user_mymusenoreg/language/en-GB/en-GB.plg_user_mymusenoreg.ini"
         	            todir="${test}/administrator/language/en-GB" />
         	    <copy file="${src}/plugins/user_mymusenoreg/language/en-GB/en-GB.plg_user_mymusenoreg.sys.ini"
         	            todir="${test}/administrator/language/en-GB" />
-        	
-        		<copy file="${src}/plugins/finder_mymuse/language/en-GB/en-GB.plg_finder_mymuse.ini"
-        	        	 todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/finder_mymuse/language/en-GB/en-GB.plg_finder_mymuse.sys.ini"
-        	        	 todir="${test}/administrator/language/en-GB" />
-        	        	 
-        	    <copy file="${src}/plugins/mymuse_shortcode/language/en-GB/en-GB.plg_content_mymuse_shortcode.ini"
-        	            todir="${test}/administrator/language/en-GB" />
-        	    <copy file="${src}/plugins/mymuse_shortcode/language/en-GB/en-GB.plg_content_mymuse_shortcode.sys.ini"
-        	            todir="${test}/administrator/language/en-GB" />
-        	
+
         	
         	<!-- module languages -->
                 <copy file="${src}/modules/mod_mymuse_minicart/language/en-GB/en-GB.mod_mymuse_minicart.ini"
@@ -228,28 +132,7 @@
         	    
 				
 				<!--  plugins -->
-                <copy file="${src}/plugins/payment_payfast/payment_payfast.php"
-                        todir="${test}/plugins/mymuse/payment_payfast" />
-                <copy file="${src}/plugins/payment_payfast/payment_payfast.xml"
-                        todir="${test}/plugins/mymuse/payment_payfast" />
-                <copy file="${src}/plugins/payment_payfast/payfast_common.inc"
-                        todir="${test}/plugins/mymuse/payment_payfast" />
-                        
-                <copy file="${src}/plugins/payment_paynow/payment_paynow.php"
-                        todir="${test}/plugins/mymuse/payment_paynow" />
-                <copy file="${src}/plugins/payment_paynow/payment_paynow.xml"
-                        todir="${test}/plugins/mymuse/payment_paynow" />
-                        
-                <copy file="${src}/plugins/payment_monsterpay/payment_monsterpay.php"
-                        todir="${test}/plugins/mymuse/payment_monsterpay" />
-                <copy file="${src}/plugins/payment_monsterpay/payment_monsterpay.xml"
-                        todir="${test}/plugins/mymuse/payment_monsterpay" /> 
-                        
-                <copy file="${src}/plugins/payment_moneybookers/payment_moneybookers.php"
-                        todir="${test}/plugins/mymuse/payment_moneybookers" />
-                <copy file="${src}/plugins/payment_moneybookers/payment_moneybookers.xml"
-                        todir="${test}/plugins/mymuse/payment_moneybookers" /> 
-        	
+
                 <copy file="${src}/plugins/payment_offline/payment_offline.php"
                         todir="${test}/plugins/mymuse/payment_offline" />
                 <copy file="${src}/plugins/payment_offline/payment_offline.xml"
@@ -259,93 +142,18 @@
                         todir="${test}/plugins/mymuse/payment_paypal" />
                 <copy file="${src}/plugins/payment_paypal/payment_paypal.xml"
                         todir="${test}/plugins/mymuse/payment_paypal" />
-        	
-        		<copy file="${src}/plugins/payment_paypalpro/payment_paypalpro.php"
-        	        	todir="${test}/plugins/mymuse/payment_paypalpro" />
-        		<copy file="${src}/plugins/payment_paypalpro/payment_paypalpro.xml"
-        	            todir="${test}/plugins/mymuse/payment_paypalpro" /> 
-        		<copy file="${src}/plugins/payment_paypalpro/tmpl/default.php"
-        	        	todir="${test}/plugins/mymuse/payment_paypalpro/tmpl" />
-        	        	
-        	    <copy file="${src}/plugins/payment_paypalproexpress/payment_paypalproexpress.php"
-        	        	todir="${test}/plugins/mymuse/payment_paypalproexpress" />
-        		<copy file="${src}/plugins/payment_paypalproexpress/payment_paypalproexpress.xml"
-        	            todir="${test}/plugins/mymuse/payment_paypalproexpress" /> 
-        		<copy file="${src}/plugins/payment_paypalproexpress/tmpl/default.php"
-        	        	todir="${test}/plugins/mymuse/payment_paypalproexpress/tmpl" />
-        	        	
-        	    <copy file="${src}/plugins/payment_payunity/payment_payunity.php"
-        	        	todir="${test}/plugins/mymuse/payment_payunity" />
-        	    <copy file="${src}/plugins/payment_payunity/payment_payunity.xml"
-        	        	todir="${test}/plugins/mymuse/payment_payunity" />
-        	
-                <copy file="${src}/plugins/payment_pesapal/payment_pesapal.php"
-                        todir="${test}/plugins/mymuse/payment_pesapal" />
-                <copy file="${src}/plugins/payment_pesapal/payment_pesapal.xml"
-                        todir="${test}/plugins/mymuse/payment_pesapal" />
-                <copy file="${src}/plugins/payment_pesapal/OAuth.php"
-                        todir="${test}/plugins/mymuse/payment_pesapal" /> 
-                        
-        		<copy file="${src}/plugins/payment_virtualmerchant/payment_virtualmerchant.php"
-        	        	todir="${test}/plugins/mymuse/payment_virtualmerchant" />
-        	    <copy file="${src}/plugins/payment_virtualmerchant/payment_virtualmerchant.xml"
-        	        	todir="${test}/plugins/mymuse/payment_virtualmerchant" />
-                        
-                <copy file="${src}/plugins/preorder/preorder.php"
-                        todir="${test}/plugins/mymuse/preorder" />
-                <copy file="${src}/plugins/preorder/preorder.xml"
-                        todir="${test}/plugins/mymuse/preorder" /> 
-        	
-        		<copy file="${src}/plugins/mymuse_socialshare/mymuse_socialshare.php"
-        	            todir="${test}/plugins/mymuse/mymuse_socialshare" />
-        	    <copy file="${src}/plugins/mymuse_socialshare/mymuse_socialshare.xml"
-        	              todir="${test}/plugins/mymuse/mymuse_socialshare" /> 
-        	    <copy file="${src}/plugins/mymuse_socialshare/images/views.png"
-        	            todir="${test}/plugins/mymuse/mymuse_socialshare/images" />
-        	    <copy file="${src}/plugins/mymuse_socialshare/images/views2.png"
-        	              todir="${test}/plugins/mymuse/mymuse_socialshare/images" /> 
-        	    <copy file="${src}/plugins/mymuse_socialshare/elements/header.php"
-        	            todir="${test}/plugins/mymuse/mymuse_socialshare/elements" />
-        	    <copy file="${src}/plugins/mymuse_socialshare/elements/index.html"
-        	              todir="${test}/plugins/mymuse/mymuse_socialshare/elements" /> 
-        	    <copy file="${src}/plugins/mymuse_socialshare/elements/positionbutton.php"
-        	            todir="${test}/plugins/mymuse/mymuse_socialshare/elements" />
-        	            
-        	    <copy file="${src}/plugins/mymuse_discount/mymuse_discount.php"
-        	            todir="${test}/plugins/mymuse/mymuse_discount" />
-        	    <copy file="${src}/plugins/mymuse_discount/mymuse_discount.xml"
-        	              todir="${test}/plugins/mymuse/mymuse_discount" />
-        	              
-        	    <copy file="${src}/plugins/mymuse_licenceprice/mymuse_licenceprice.php"
-        	            todir="${test}/plugins/mymuse/mymuse_licenceprice" />
-        	    <copy file="${src}/plugins/mymuse_licenceprice/mymuse_licenceprice.xml"
-        	              todir="${test}/plugins/mymuse/mymuse_licenceprice" /> 
+ 
         	
                 <copy file="${src}/plugins/searchmymuse/searchmymuse.php"
                         todir="${test}/plugins/search/searchmymuse" />
                 <copy file="${src}/plugins/searchmymuse/searchmymuse.xml"
                         todir="${test}/plugins/search/searchmymuse" />
         	
-                <copy file="${src}/plugins/shipping_price/shipping_price.php"
-                        todir="${test}/plugins/mymuse/shipping_price" />
-                <copy file="${src}/plugins/shipping_price/shipping_price.xml"
-                        todir="${test}/plugins/mymuse/shipping_price" />
         	
                 <copy file="${src}/plugins/shipping_standard/shipping_standard.php"
                         todir="${test}/plugins/mymuse/shipping_standard" />
                 <copy file="${src}/plugins/shipping_standard/shipping_standard.xml"
                         todir="${test}/plugins/mymuse/shipping_standard" />   
-        	
-                <copy file="${src}/plugins/shoppergroupview/shoppergroupview.php"
-                        todir="${test}/plugins/mymuse/shoppergroupview" />
-                <copy file="${src}/plugins/shoppergroupview/shoppergroupview.xml"
-                        todir="${test}/plugins/mymuse/shoppergroupview" />
-        	
-        		<copy file="${src}/plugins/mymuse_vote/mymuse_vote.php"
-        	            todir="${test}/plugins/mymuse/mymuse_vote" />
-        	    <copy file="${src}/plugins/mymuse_vote/mymuse_vote.xml"
-        	            todir="${test}/plugins/mymuse/mymuse_vote" />
-        	
 
         	
         		<copy file="${src}/plugins/audio_jplayer/audio_jplayer.php"
@@ -370,115 +178,8 @@
         	        	todir="${test}/plugins/mymuse/audio_jplayer/skin" />
         		<copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.video.play.png"
         		        todir="${test}/plugins/mymuse/audio_jplayer/skin" />
-        		        
-        		        
-                <copy file="${src}/plugins/video_jplayer/video_jplayer.php"
-                        todir="${test}/plugins/mymuse/video_jplayer" />  
-                <copy file="${src}/plugins/video_jplayer/video_jplayer.xml"
-                        todir="${test}/plugins/mymuse/video_jplayer" /> 
-                        
-                        
-    			<copy file="${src}/plugins/audio_amplitude/audio_amplitude.php"
-        	            todir="${test}/plugins/mymuse/audio_amplitude" /> 
-        		<copy file="${src}/plugins/audio_amplitude/audio_amplitude.xml"
-        	        	todir="${test}/plugins/mymuse/audio_amplitude" /> 
-        		<copy file="${src}/plugins/audio_amplitude/js/amplitude.js"
-        	        	todir="${test}/plugins/mymuse/audio_amplitude/js" /> 
-        		<copy file="${src}/plugins/audio_amplitude/js/amplitude.min.js"
-        	        	todir="${test}/plugins/mymuse/audio_amplitude/js" /> 
-        	    <copy file="${src}/plugins/audio_amplitude/css/amplitude.css"
-        	        	todir="${test}/plugins/mymuse/audio_amplitude/css" /> 
-        		<copy file="${src}/plugins/audio_amplitude/media/sprite.png"
-        	        	todir="${test}/media/com_mymuse" /> 
- 
- 
- 
- 
- 
-       <!-- removed dewplayer and flowplayer 
-       
-                <copy file="${src}/plugins/mp3player_dewplayer/language/en-GB/en-GB.plg_mymuse_mp3player_dewplayer.ini"
-                        todir="${test}/administrator/language/en-GB" />
-        		<copy file="${src}/plugins/mp3player_dewplayer/language/en-GB/en-GB.plg_mymuse_mp3player_dewplayer.sys.ini"
-        	            todir="${test}/administrator/language/en-GB" />
-        	            
-                <copy file="${src}/plugins/mp3player_flowplayer/language/en-GB/en-GB.plg_mymuse_mp3player_flowplayer.ini"
-                        todir="${test}/administrator/language/en-GB" />
-        		<copy file="${src}/plugins/mp3player_flowplayer/language/en-GB/en-GB.plg_mymuse_mp3player_flowplayer.sys.ini"
-        	            todir="${test}/administrator/language/en-GB" />
-                
-                <copy file="${src}/plugins/vidplayer_dewplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_dewplayer.ini"
-                        todir="${test}/administrator/language/en-GB" />
-        		<copy file="${src}/plugins/vidplayer_dewplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_dewplayer.sys.ini"
-        	            todir="${test}/administrator/language/en-GB" />
-        	
-                <copy file="${src}/plugins/vidplayer_flowplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_flowplayer.ini"
-                        todir="${test}/administrator/language/en-GB" />    
-        		<copy file="${src}/plugins/vidplayer_flowplayer/language/en-GB/en-GB.plg_mymuse_vidplayer_flowplayer.sys.ini"
-        	            todir="${test}/administrator/language/en-GB" />
- 
-         		<copy file="${src}/plugins/mp3player_dewplayer/mp3player_dewplayer.php"
-        	            todir="${test}/plugins/mymuse/mp3player_dewplayer" />
-                <copy file="${src}/plugins/mp3player_dewplayer/mp3player_dewplayer.php"
-                        todir="${test}/plugins/mymuse/mp3player_dewplayer" />  
-                <copy file="${src}/plugins/mp3player_dewplayer/mp3player_dewplayer.xml"
-                        todir="${test}/plugins/mymuse/mp3player_dewplayer" />    
-				<copy file="${src}/plugins/mp3player_dewplayer/mp3players/dewplayer.swf"
-                        todir="${test}/plugins/mymuse/mp3player_dewplayer/mp3players" /> 
-                <copy file="${src}/plugins/mp3player_dewplayer/mp3players/dewplayer-vol.swf"
-                        todir="${test}/plugins/mymuse/mp3player_dewplayer/mp3players" /> 
-                <copy file="${src}/plugins/mp3player_dewplayer/mp3players/dewplayer-playlist.swf"
-                        todir="${test}/plugins/mymuse/mp3player_dewplayer/mp3players" /> 
-                <copy file="${src}/plugins/mp3player_dewplayer/mp3players/dewplayer-mini.swf"
-                        todir="${test}/plugins/mymuse/mp3player_dewplayer/mp3players" /> 
-                <copy file="${src}/plugins/mp3player_dewplayer/mp3players/dewplayer.js"
-                        todir="${test}/plugins/mymuse/mp3player_dewplayer/mp3players" /> 
-                        
-                               	        	   	
-                <copy file="${src}/plugins/mp3player_flowplayer/mp3player_flowplayer.php"
-                        todir="${test}/plugins/mymuse/mp3player_flowplayer" />  
-                <copy file="${src}/plugins/mp3player_flowplayer/mp3player_flowplayer.xml"
-                        todir="${test}/plugins/mymuse/mp3player_flowplayer" />    
-				<copy file="${src}/plugins/mp3player_flowplayer/mp3players/flowplayer-3.2.7.swf"
-                        todir="${test}/plugins/mymuse/mp3player_flowplayer/mp3players" /> 
-                <copy file="${src}/plugins/mp3player_flowplayer/mp3players/flowplayer-3.2.6.min.js"
-                        todir="${test}/plugins/mymuse/mp3player_flowplayer/mp3players" /> 
-                <copy file="${src}/plugins/mp3player_flowplayer/mp3players/flowplayer.controls-3.2.5.swf"
-                        todir="${test}/plugins/mymuse/mp3player_flowplayer/mp3players" /> 
-                <copy file="${src}/plugins/mp3player_flowplayer/mp3players/flowplayer.audio-3.2.1.swf"
-                        todir="${test}/plugins/mymuse/mp3player_flowplayer/mp3players" /> 
-                <copy file="${src}/plugins/mp3player_flowplayer/mp3players/flowplayer.content-3.2.0.swf"
-                        todir="${test}/plugins/mymuse/mp3player_flowplayer/mp3players" /> 
-                <copy file="${src}/plugins/mp3player_flowplayer/mp3players/flowplayer.playlist-3.0.8.min.js"
-                        todir="${test}/plugins/mymuse/mp3player_flowplayer/mp3players" />
-        		<copy file="${src}/plugins/mp3player_flowplayer/css/flowplayer.css"
-        	             todir="${test}/plugins/mymuse/mp3player_flowplayer/css" />
-                             
-                                                      
-                <copy file="${src}/plugins/vidplayer_dewplayer/vidplayer_dewplayer.php"
-                        todir="${test}/plugins/mymuse/vidplayer_dewplayer" />  
-                <copy file="${src}/plugins/vidplayer_dewplayer/vidplayer_dewplayer.xml"
-                        todir="${test}/plugins/mymuse/vidplayer_dewplayer" />    
-				<copy file="${src}/plugins/vidplayer_dewplayer/vidplayers/dewtube.swf"
-                        todir="${test}/plugins/mymuse/vidplayer_dewplayer/vidplayers" /> 
-                <copy file="${src}/plugins/vidplayer_dewplayer/vidplayers/dewplayervid.js"
-                        todir="${test}/plugins/mymuse/vidplayer_dewplayer/vidplayers" /> 
-        		
-                        
-                <copy file="${src}/plugins/vidplayer_flowplayer/vidplayer_flowplayer.php"
-                        todir="${test}/plugins/mymuse/vidplayer_flowplayer" />  
-                <copy file="${src}/plugins/vidplayer_flowplayer/vidplayer_flowplayer.xml"
-                        todir="${test}/plugins/mymuse/vidplayer_flowplayer" />    
-				<copy file="${src}/plugins/vidplayer_flowplayer/vidplayers/flowplayer-3.2.7.swf"
-                        todir="${test}/plugins/mymuse/vidplayer_flowplayer/vidplayers" /> 
-                <copy file="${src}/plugins/vidplayer_flowplayer/vidplayers/flowplayer-3.2.6.min.js"
-                        todir="${test}/plugins/mymuse/vidplayer_flowplayer/vidplayers" /> 
-                <copy file="${src}/plugins/vidplayer_flowplayer/vidplayers/flowplayer.controls-3.2.5.swf"
-                        todir="${test}/plugins/mymuse/vidplayer_flowplayer/vidplayers" /> 
-        		<copy file="${src}/plugins/vidplayer_flowplayer/css/flowplayer.css"
-        	            todir="${test}/plugins/mymuse/vidplayer_flowplayer/css" /> 
- --> 
-                        
+
+                 
                         
                 <copy file="${src}/plugins/user_mymuse/mymuse.xml"
                         todir="${test}/plugins/user/mymuse" /> 
@@ -502,26 +203,7 @@
         	            todir="${test}/plugins/user/redirectonlogin" /> 
         	    <copy file="${src}/plugins/user_redirectonlogin/redirectonlogin.php"
         	            todir="${test}/plugins/user/redirectonlogin" />
-        	            
-        	    <copy file="${src}/plugins/user_redirectonprofile/redirectonprofile.xml"
-        	            todir="${test}/plugins/user/redirectonprofile" /> 
-        	    <copy file="${src}/plugins/user_redirectonprofile/redirectonprofile.php"
-        	            todir="${test}/plugins/user/redirectonprofile" />
-        	
-        		<copy file="${src}/plugins/finder_mymuse/mymuse.xml"
-        	        	todir="${test}/plugins/finder/mymuse" /> 
-        	    <copy file="${src}/plugins/finder_mymuse/mymuse.php"
-        	        	todir="${test}/plugins/finder/mymuse" />
-        	        	
-        	    <copy file="${src}/plugins/mymuse_shortcode/mymuse_shortcode.php"
-        	            todir="${test}/plugins/content/mymuse_shortcode" />
-        	    <copy file="${src}/plugins/mymuse_shortcode/mymuse_shortcode.xml"
-        	              todir="${test}/plugins/content/mymuse_shortcode" /> 
-        	              
-        	              
-        		<copy todir="${test}/media/com_mymuse/images">
-                        <fileset refid="plugin_amplitude_media_files" />
-                </copy>
+
                 
                 <!--  modules -->
                 <copy todir="${test}/modules/mod_mymuse_minicart">

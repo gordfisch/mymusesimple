@@ -17,10 +17,18 @@ if(count($this->footer)) :
 	<div id="mymuse-container-wrap">
 	
 	<h3><?php echo JText::_('MYMUSE_WE_RECOMMEND'); ?></h3>
-	<?php foreach($this->footer as $item) : ?>
-		<div class="related-item">
+	<?php foreach($this->footer as $item) : 
+
+	?>
+		<div class="recommended-item">
+		
+		<?php if(isset($item->list_image) && $item->list_image != '') {?>
+		<div class="recommended-item-image">
 		<a href="<?php echo $item->url; ?>"><img src="<?php echo $item->list_image; ?>"></a>
-		<div>
+		</div>
+		<?php } ?>
+		
+		<div class="recommended-title">
 		<a href="<?php echo $item->url; ?>"><?php  echo $item->title; ?></a>
 		</div>
 

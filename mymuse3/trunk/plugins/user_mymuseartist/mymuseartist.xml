@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="user">
+	<name>plg_user_mymuseartist</name>
+	<author>Arboreta</author>
+	<creationDate>Sept 2016</creationDate>
+	<copyright>Copyright (C) 2016 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>3.4.0</version>
+	<description>MYMUSE_ARTIST_PROFILE_DESC</description>
+
+	<files>
+		<filename plugin="mymuseartist">mymuseartist.php</filename>
+		<filename>index.html</filename>
+		<folder>profiles</folder>
+		<folder>fields</folder>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_user_mymuseartist.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_user_mymuseartist.sys.ini</language>
+	</languages>
+	<config>
+		<fields name="params">
+
+			<fieldset name="basic"
+			addfieldpath="/administrator/components/com_content/models/fields">
+				<field name="register-require-user" type="spacer" class="text"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_NAME_REGISTER_REQUIRE_USER"
+				/>
+
+				<field name="register-require_address1" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_ADDRESS1_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_ADDRESS1_LABEL"
+					default="2"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+
+				<field name="register-require_address2" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_ADDRESS2_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_ADDRESS2_LABEL"
+					default="1"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+
+				<field name="register-require_city" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_CITY_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_CITY_LABEL"
+					default="2"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+
+				<field name="register-require_region" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_REGION_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_REGION_LABEL"
+					default="2"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+
+				<field name="register-require_country" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_COUNTRY_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_COUNTRY_LABEL"
+					default="2"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+
+
+				<field name="register-require_postal_code" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_POSTAL_CODE_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_POSTAL_CODE_LABEL"
+					default="2"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+				
+				<field name="register-require_vat_number" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_VAT_NUMBER_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_VAT_NUMBER_LABEL"
+					default="0"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+
+				<field name="register-require_phone" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_PHONE_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_PHONE_LABEL"
+					default="1"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+				
+				<field name="register-require_mobile" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_MOBILE_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_MOBILE_LABEL"
+					default="1"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+
+				<field name="register-require_fax" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_FAX_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_FAX_LABEL"
+					default="0"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+
+				<field
+					name="register-require_tos"
+					type="list"
+
+					label="MYMUSE_ARTIST_PROFILE_FIELD_TOS_LABEL"
+					description="MYMUSE_ARTIST_PROFILE_FIELD_TOS_DESC"
+					default="0"
+				>
+					<option	value="2">JOPTION_REQUIRED</option>
+					<option	value="1">JOPTION_OPTIONAL</option>
+					<option	value="0">JDISABLED</option>
+				</field>
+				<field
+					name="register_tos_article"
+					type="modal_article"
+
+					label="MYMUSE_ARTIST_PROFILE_FIELD_TOS_ARTICLE_LABEL"
+					description="MYMUSE_ARTIST_PROFILE_FIELD_TOS_ARTICLE_DESC"
+				/>
+				<field
+					name="register-require_shopper_group"
+					type="list"
+					description="MYMUSE_ARTIST_PROFILE_FIELD_SHOPPER_GROUP_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_SHOPPER_GROUP_LABEL"
+					default="2"
+				>
+					<option	value="2">JOPTION_REQUIRED</option>
+					<option	value="1">JOPTION_OPTIONAL</option>
+					<option	value="0">JDISABLED</option>
+				</field>
+				<field
+					name="register-require_category_owner"
+					type="list"
+					description="MYMUSE_ARTIST_PROFILE_FIELD_CATEGORY_OWNER_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_CATEGORY_OWNER_LABEL"
+					default="0"
+				>
+					<option	value="2">JOPTION_REQUIRED</option>
+					<option	value="1">JOPTION_OPTIONAL</option>
+					<option	value="0">JDISABLED</option>
+				</field>
+
+
+				<field name="spacer1" type="spacer"
+					hr="true"
+				/>
+				<field name="profile-require-user" type="spacer" class="text"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_NAME_PROFILE_REQUIRE_USER"
+				/>
+
+				<field name="profile-require_address1" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_ADDRESS1_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_ADDRESS1_LABEL"
+					default="2"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+
+				<field name="profile-require_address2" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_ADDRESS2_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_ADDRESS2_LABEL"
+					default="1"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+
+				<field name="profile-require_city" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_CITY_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_CITY_LABEL"
+					default="2"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+
+				<field name="profile-require_region" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_REGION_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_REGION_LABEL"
+					default="2"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+
+				<field name="profile-require_country" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_COUNTRY_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_COUNTRY_LABEL"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+
+				<field name="profile-require_postal_code" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_POSTAL_CODE_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_POSTAL_CODE_LABEL"
+					default="2"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+
+				<field name="profile-require_phone" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_PHONE_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_PHONE_LABEL"
+					default="1"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+				
+				<field name="profile-require_mobile" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_MOBILE_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_MOBILE_LABEL"
+					default="1"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+
+				<field name="profile-require_fax" type="list"
+
+					description="MYMUSE_ARTIST_PROFILE_FIELD_FAX_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_FAX_LABEL"
+					default="0"
+				>
+					<option value="2">JOPTION_REQUIRED</option>
+					<option value="1">JOPTION_OPTIONAL</option>
+					<option value="0">JDISABLED</option>
+				</field>
+				<field
+					name="profile-require_tos"
+					type="list"
+
+					label="MYMUSE_ARTIST_PROFILE_FIELD_TOS_LABEL"
+					description="MYMUSE_ARTIST_PROFILE_FIELD_TOS_DESC"
+					default="0"
+				>
+					<option	value="2">JOPTION_REQUIRED</option>
+					<option	value="1">JOPTION_OPTIONAL</option>
+					<option	value="0">JDISABLED</option>
+				</field>
+				<field
+					name="profile-require_shopper_group"
+					type="list"
+					description="MYMUSE_ARTIST_PROFILE_FIELD_SHOPPER_GROUP_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_SHOPPER_GROUP_LABEL"
+					default="2"
+				>
+					<option	value="2">JOPTION_REQUIRED</option>
+					<option	value="1">JOPTION_OPTIONAL</option>
+					<option	value="0">JDISABLED</option>
+				</field>
+				<field
+					name="profile-require_category_owner"
+					type="list"
+					description="MYMUSE_ARTIST_PROFILE_FIELD_CATEGORY_OWNER_DESC"
+					label="MYMUSE_ARTIST_PROFILE_FIELD_CATEGORY_OWNER_LABEL"
+					default="0"
+				>
+					<option	value="2">JOPTION_REQUIRED</option>
+					<option	value="1">JOPTION_OPTIONAL</option>
+					<option	value="0">JDISABLED</option>
+				</field>
+			/>
+
+			</fieldset>
+
+		</fields>
+	</config>
+	<updateservers>
+    <server type="extension" priority="1"
+        name="Plug MyMuse User Profile">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=49</server>
+</updateservers>
+</extension>
