@@ -617,15 +617,18 @@ class MymuseTableproduct extends JTable
 				}
 			}
 			
+			
+			
 			// recommends
-			if(isset($form['recommend']) && $this->id){
 			
-				// clear product_recommend_xref
-				$query = "DELETE FROM #__mymuse_product_recommend_xref WHERE product_id=".$this->id;
-				$db->setQuery($query);
-				$db->execute();
-			
-				foreach($form['recommend'] as $recommend_id){
+			// clear product_recommend_xref
+			$query = "DELETE FROM #__mymuse_product_recommend_xref WHERE product_id=".$this->id;
+			$db->setQuery($query);
+			$db->execute();
+
+			if(isset($form['recommended']) && $this->id){
+
+				foreach($form['recommended'] as $recommend_id){
 					$query = "INSERT INTO #__mymuse_product_recommend_xref
         			(product_id, recommend_id) VALUES (".$this->id.",".$recommend_id.")";
 					$db->setQuery($query);

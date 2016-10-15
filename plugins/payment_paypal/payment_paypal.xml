@@ -2,12 +2,12 @@
 <extension version="3.0" type="plugin" group="mymuse">
 	<name>plg_mymuse_payment_paypal</name>
 	<author>Arboreta</author>
-	<creationDate>June 2013</creationDate>
-	<copyright>Copyright (C) 2013 Arboreta Internet Services. All rights reserved.</copyright>
+	<creationDate>Sept 2016</creationDate>
+	<copyright>Copyright (C) 2016 Arboreta Internet Services. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@arboreta.ca</authorEmail>
 	<authorUrl>www.arboreta.ca</authorUrl>
-	<version>3.3.2</version>
+	<version>3.4.0</version>
 	<description>MYMUSE_BUILD_PAYPAL_PAYMENT_FORM</description>
 	
 	<files>

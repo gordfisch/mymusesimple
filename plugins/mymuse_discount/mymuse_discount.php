@@ -36,12 +36,17 @@ class plgMymuseMymuse_discount extends JPlugin
 	 * @param   object  $subject  The object to observe
 	 * @param   array   $config   An array that holds the plugin configuration
 	 */
-	function plgMymuseMymuse_discount(&$subject, $config)  {
+	function __construct(&$subject, $config)  {
 		
 		parent::__construct($subject, $config);
 
 	}
 		
+	function plgMymuseMymuse_discount(&$subject, $config)  {
+	
+		self::__construct($subject, $config);
+	
+	}
 		
 	/**
 	 * onBeforeMyMuseCheckout

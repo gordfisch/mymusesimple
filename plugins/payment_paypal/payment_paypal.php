@@ -36,10 +36,15 @@ class plgMymusePayment_Paypal extends JPlugin
 	 * @param   object  $subject  The object to observe
 	 * @param   array   $config   An array that holds the plugin configuration
 	 */
+	public function __construct(&$subject, $config)
+	{
+		$this->plgMyMusePayment_Paypal($subject, $config);
+	}
+	
 	function plgMyMusePayment_Paypal(&$subject, $config)  {
 		parent::__construct($subject, $config);
 		
-
+		
 		//PAYMENT URL
 		if($this->params->get('my_paypal_sandbox'))
 		{
@@ -142,7 +147,7 @@ class plgMymusePayment_Paypal extends JPlugin
 			$order->tax_total = 0.00;
 		}
 		//$path = JURI::root(true);
-		$return = JRoute::_('index.php?option=com_mymuse&task=thankyou&view=cart&pp=paypal&st=Completed&Itemid='.$Itemid);
+		$return = 'index.php?option=com_mymuse&task=thankyou&view=cart&pp=paypal&st=Completed&Itemid='.$Itemid;
 		$return = JURI::root().$return;
 		$cancel_return = JRoute::_('index.php?option=com_mymuse&task=paycancel&view=cart&Itemid='.$Itemid);
 		$cancel_return = JURI::root().$cancel_return;

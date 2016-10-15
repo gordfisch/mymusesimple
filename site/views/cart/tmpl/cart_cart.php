@@ -448,6 +448,7 @@ if($notes_required  && $user->username == 'buyer'){
 		
 		
 		<?php 
+
 		if(isset($order->show_checkout) && $order->show_checkout){ 
 		    // add the checkout link
 		?> 
@@ -460,7 +461,10 @@ if($notes_required  && $user->username == 'buyer'){
 				</div>
 			<?php } ?>
 			
-	  		<?php if(($user->username == 'buyer' && $notes_required && isset($notes) && $notes != '')
+	  		<?php
+
+	  		 if(($user->username == 'buyer' && $notes_required && isset($notes) && $notes != '')
+				|| $user->username == 'buyer' && !$notes_required
 				|| $user->username != 'buyer'){ 
 	  			?>
 				<div class="pull-right mymuse-button-right cart">
