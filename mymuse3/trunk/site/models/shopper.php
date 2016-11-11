@@ -125,7 +125,7 @@ class mymuseModelShopper extends JModelForm
 						$this->_shopper->perms = 0;
 						return $this->_shopper;
 					}else{
-						$profile = $this->_shopper->get('profile');
+						$profile = $this->_shopper->profile;
 					}
 				}
 				if(!isset($profile['shopper_group'])){
@@ -390,6 +390,7 @@ class mymuseModelShopper extends JModelForm
 		}
 
 		$session->set('user', $shopper);
+		$session->set('myprofile', $shopper->profile);
 		
 		return true;
 	}
