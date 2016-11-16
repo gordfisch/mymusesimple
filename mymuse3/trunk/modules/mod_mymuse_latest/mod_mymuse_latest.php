@@ -27,12 +27,6 @@ require_once (dirname(__FILE__).DS.'helper.php');
 require_once(MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php');
 $MyMuseHelper 	= new MyMuseHelper;
 
-$lang = JFactory::getLanguage();
-$extension = 'com_mymuse';
-$base_dir = JPATH_SITE;
-$language_tag = 'en-GB';
-$reload = true;
-$lang->load($extension, $base_dir, $language_tag, $reload);
 
 $mparams 	= MyMuseHelper::getParams();
 $params->merge($mparams);
