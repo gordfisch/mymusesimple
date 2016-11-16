@@ -11,10 +11,10 @@
 
 // no direct access
 defined('_JEXEC') or die('Restricted access');
+
 if(!defined('DS')){
 	define('DS',DIRECTORY_SEPARATOR);
 }
-
 if(!defined('MYMUSE_ADMIN_PATH')){
 	define('MYMUSE_ADMIN_PATH',JPATH_SITE.DS.'administrator'.DS.'components'.DS.'com_mymuse'.DS);
 }
@@ -23,12 +23,7 @@ if(!defined('MYMUSE_PATH')){
 }
 require_once( MYMUSE_PATH.'mymuse.class.php');
 
-$lang = JFactory::getLanguage();
-$extension = 'com_mymuse';
-$base_dir = JPATH_SITE;
-$language_tag = 'en-GB';
-$reload = true;
-$lang->load($extension, $base_dir, $language_tag, $reload);
+
 
 
 
