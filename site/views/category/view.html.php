@@ -195,7 +195,8 @@ class MymuseViewCategory extends JViewLegacy
 		// Check for layout override only if this is not the active menu item
 		// If it is the active menu item, then the view and category id will match
 		$active	= $app->getMenu()->getActive();
-		if ((!$active) || ((strpos($active->link, 'view=category') === false) || (strpos($active->link, '&id=' . (string) $category->id) === false))) {
+			if ((!$active) || ((strpos($active->link, 'view=category') === false) || (
+		strpos($active->link, '&id=' . (string) $category->id) === false && strpos($active->link, '&id=' . (string) $category->parent_id) === false))) {
 			// Get the layout from the merged category params
 			if ($layout = $category->params->get('category_layout')) {
 				$this->setLayout($layout);
