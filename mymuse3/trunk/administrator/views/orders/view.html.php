@@ -44,6 +44,7 @@ class MymuseViewOrders extends JViewLegacy
 					}
 				}
 			}
+			
 		//}
 		
 		$this->pagination	= $this->get('Pagination');
