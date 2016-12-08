@@ -417,7 +417,48 @@ class MymuseViewCategory extends JViewLegacy
 				$total += $this->getCategoryNoProducts($child);
 			}
 			return $total;
-				
-
+	}
+	
+	function getCategoryNoTracks(&$category)
+	{
+		$total = 0;
+		$db = JFactory::getDBO();
+		$nullDate	= $db->Quote($db->getNullDate());
+		$nowDate	= $db->Quote(JFactory::getDate()->toSql());
+		$catid = $category->id;
+		$query = "SELECT count(*) as total from #__mymuse_product as track
+	
+            LEFT JOIN #__mymuse_product as parent ON parent.id=track.parentid
+			LEFT JOIN #__mymuse_product_category_xref as x ON parent.id=x.product_id
+            WHERE
+            (x.catid=".$catid."
+            OR
+            parent.catid=".$catid."
+            OR
+            parent.artistid=".$catid."	)
+	
+            AND
+            (parent.publish_up = ".$nullDate." OR parent.publish_up <= ".$nowDate.")
+            AND (parent.publish_down = ".$nullDate." OR parent.publish_down >= ".$nowDate.")
+	
+            AND parent.state=1
+	
+            AND
+            (track.publish_up = ".$nullDate." OR track.publish_up <= ".$nowDate.")
+            AND (track.publish_down = ".$nullDate." OR track.publish_down >= ".$nowDate.")
+	
+            AND track.state=1
+	
+            AND parent.parentid=0
+	
+            GROUP BY track.title";
+	
+		$db->setQuery($query);
+		$total += $db->loadResult();
+		$children = $category->getChildren();
+		foreach($children as $id => $child){
+			$total += $this->getCategoryNoProducts($child);
+		}
+		return $total;
 	}
 }
