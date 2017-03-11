@@ -538,6 +538,28 @@ class com_mymuseInstallerScript
 			$db->execute();
 		}
 		
+		//Mar 2017 update old product names to json encoded strings
+		$query = "SELECT * FROM #__mymuse_product WHERE product_downloadable = '1' AND file_name != '' AND file_name !LIKE '{%}";
+		$db->setQuery($query);
+		$res = $db->loadObjectList();
+		foreach ($res as $r){
+			$current_files = json_decode($r->file_name);
+			if(!is_array($current_files)){
+				$ext = MyMuseHelper::getExt($r->file_name);
+				$current_files[] = (object) array(
+						'file_name' => $r->file_name,
+						'file_length' => $r->file_length,
+						'file_ext' => $ext,
+						'file_alias'=> $r->alias,
+						'file_downloads'=> $r->file_downloads
+				);
+			}
+			$query = "UPDATE #__mymuse_product SET file_name='".json_encode($current_files)."' WHERE id='".$r->id."'";
+			$db->setQuery($query);
+			$db->execute();
+			
+		}
+		
 		
 		
 		
