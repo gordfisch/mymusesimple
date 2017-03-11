@@ -81,6 +81,7 @@ class MymuseTablestore extends JTable
     {
 
     	jimport('joomla.filesystem.file');
+    	$app = JFactory::getApplication();
     	$this->checkin();
     	$myparams = MyMuseHelper::getParams();
     	$jinput = JFactory::getApplication()->input;
@@ -155,33 +156,42 @@ class MymuseTablestore extends JTable
      */
     function change_encoding($my_encode_filenames)
     {
+    
     	$db = JFactory::getDBO();
     	$params = MyMuseHelper::getParams();
     	JLoader::import('joomla.filesystem.folder');
     	JLoader::import('joomla.filesystem.file');
+    	$app = JFactory::getApplication();
     	
     	if($my_encode_filenames) // we want to encode them
     	{
-    	
+    		$app->enqueueMessage(JText::_("MYMUSE_ENCODING_FILENAMES_NO_LONGER_SUPPORTED"), 'error');
+    		return false;
     	}else{ // we want to change back to regular names
-    		$query = "SELECT p.id, p.title, p.alias, p.title_alias, p.file_name,  c.alias as cat_alias, parent.alias as parent_alias
+    		$query = "SELECT p.id, p.title, p.alias, p.title_alias, p.file_name
 			FROM `#__mymuse_product` AS p
-			LEFT JOIN `#__mymuse_product` AS parent ON parent.id = p.parentid
-			LEFT JOIN `#__categories` AS c ON c.id = parent.catid
 			WHERE p.product_downloadable =1
+    		AND	p.title_alias != ''
 			AND p.product_allfiles = 0
-			ORDER BY cat_alias, parent_alias, p.title ";
+			ORDER BY p.title ";
     		
     		$db->setQuery($query);
     		$products = $db->loadObjectList();
     		foreach($products as $product){
-    			$path = MyMuseHelper::getDownloadPath($id);
-    			$old_file = $path.DS.$product->title_alias;
-    			$new_file = $path.DS.$product->file_name;
+    			$path = MyMuseHelper::getDownloadPath($product->id);
+ 
+    			$old_file = $path.$product->title_alias;
+    			
+    			$new_file = $path.$product->file_name;
     			if(!JFile::copy("$old_file", "$new_file")){
     				$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file);
-    				$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file , 'error');
-    				return false;
+    				$app->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file , 'error');
+   
+    			}
+    			if(!JFile::delete("$old_file")){
+    				$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old_file);
+    				$app->enqueueMessage(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old_file , 'error');
+
     			}
     		} 
     		
