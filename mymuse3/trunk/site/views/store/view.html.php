@@ -238,7 +238,7 @@ class myMuseViewStore extends JViewLegacy
 			$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
 			$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
 			$realname = stripslashes($order_item->file_name);
-	
+			
 			$jason = json_decode($product->file_name);
 			if(is_array($jason)){
 				foreach($jason as $j){
@@ -335,7 +335,7 @@ class myMuseViewStore extends JViewLegacy
         			$object->use_resume = true; //Enable Resume Mode
         			$object->download(); //Download File
         		}
-      //Downloaderunabletoloadfilevarwwwvhostsnexgenmusicgroup.comaudiomp3migrat013-full-release-full-release-mp3.zipmigrat013-full-release-full-release-mp3  		
+     		
         		$this->_logDownload($user, $product, $order_item);
         		
         		exit;
@@ -385,7 +385,7 @@ class myMuseViewStore extends JViewLegacy
         			$ext = MyMuseHelper::getExt($filename);
         			$download_path .= $ext;
         		
-        		}
+       		}
         		
         		$full_filename = $download_path.$filename;
         		$full_filename1 = $full_filename;

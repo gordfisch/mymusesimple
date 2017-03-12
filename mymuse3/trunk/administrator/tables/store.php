@@ -98,19 +98,6 @@ class MymuseTablestore extends JTable
     		}
     	}
     	
-    	
-    	//if encode filenames has changed
-    	$my_encode_filenames = $form['params']['my_encode_filenames'];
-    	
-    	if($my_encode_filenames !== $myparams->get('my_encode_filenames') ){
-    		
-    		if(!$this->change_encoding($my_encode_filenames)){
-    			$this->setError("Encode Filenames has changed and I wasn't able to change the files!");
-    			return false;
-    		}
-    	}
-
-
     	//if my_noreg_password has changed
     	$my_noreg_password = $form['params']['my_noreg_password'];
 
@@ -143,8 +130,23 @@ class MymuseTablestore extends JTable
     		}
     		
     	}
-
+    	
+    	//if encode filenames has changed
+    	$my_encode_filenames = $form['params']['my_encode_filenames'];
+    	
+    	 
+    	if($my_encode_filenames !== $myparams->get('my_encode_filenames') ){
+    		echo "encode_filenames submitted: $my_encode_filenames , encode_filenames_params = ".$myparams->get('my_encode_filenames');
+    		if(!$this->change_encoding($my_encode_filenames)){
+    			$this->setError("Encode Filenames has changed and I wasn't able to change the files!");
+    			return false;
+    		}
+    	}
+    	$jinput->set('jform[params][my_encode_filenames]', 0);
     	return parent::store($updateNulls);
+    
+
+    	
     }
     	
     
@@ -196,7 +198,7 @@ class MymuseTablestore extends JTable
     		} 
     		
     	}
-    	
+    	return true;
     	
     }
     
