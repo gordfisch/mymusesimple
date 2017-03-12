@@ -541,7 +541,7 @@ class com_mymuseInstallerScript
 		
 		
 		//Mar 2017 update old product names to json encoded strings
-		$query = "SELECT * FROM #__mymuse_product WHERE product_downloadable = '1' AND file_name != '' AND file_name !LIKE '{%}'";
+		$query = "SELECT * FROM #__mymuse_product WHERE product_downloadable = '1' AND file_name != '' AND file_name NOT LIKE '{%}'";
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
 		foreach ($res as $r){
