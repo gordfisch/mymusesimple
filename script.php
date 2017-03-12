@@ -556,7 +556,7 @@ class com_mymuseInstallerScript
 						'file_downloads'=> $r->file_downloads
 				);
 			}
-			$query = "UPDATE #__mymuse_product SET file_name='".json_encode($current_files)."' WHERE id='".$r->id."'";
+			$query = "UPDATE #__mymuse_product SET file_name=".$db->quote(json_encode($current_files))." WHERE id='".$r->id."'";
 			$db->setQuery($query);
 			$db->execute();
 			
