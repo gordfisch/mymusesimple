@@ -23,7 +23,6 @@ class MymuseModelstore extends JModelAdmin
 	 */
 	protected $text_prefix = 'COM_MYMUSE';
 
-
 	/**
 	 * Returns a reference to the a Table object, always creating it.
 	 *

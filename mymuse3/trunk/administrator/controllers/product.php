@@ -575,5 +575,7 @@ class MymuseControllerProduct extends JControllerForm
     	echo "<a href='index.php?option=com_mymuse&view=mymuse'>Stop</a>";
     
     }
+    
+
 
 }
