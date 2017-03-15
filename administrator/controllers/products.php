@@ -40,7 +40,7 @@ class MymuseControllerProducts extends JControllerAdmin
     function delete()
     {
 
-    	$input 	= $JFactory::getApplication()->input;
+    	$input 	= Factory::getApplication()->input;
         $cid 	= $input->get('cid');
         JArrayHelper::toInteger($cid);
         if (count( $cid ) < 1) {
@@ -71,7 +71,7 @@ class MymuseControllerProducts extends JControllerAdmin
 		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
-		$input 	= $JFactory::getApplication()->input;
+		$input 	= JFactory::getApplication()->input;
 		$user	= JFactory::getUser();
 		$ids	= $input->get('cid', array());
 		$values	= array('featured' => 1, 'unfeatured' => 0);
@@ -137,14 +137,15 @@ class MymuseControllerProducts extends JControllerAdmin
 	{
 		// Check for request forgeries.
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-
+		$input 		= JFactory::getApplication()->input;
 		// Initialise variables.
-		$ids 	= JRequest::getVar('cid', null, 'post', 'array');
-		$inc 	= ($this->getTask() == 'orderup') ? -1 : +1;
-		$view 	= JRequest::getVar('view','');
-		$parentid 	= JRequest::getVar('parentid','');
-		$layout = JRequest::getVar('layout','');
-		$subtype = JRequest::getVar('subtype', '');
+		$ids 		= $input->post->get('cid', array(), 'array');
+		$inc 		= ($this->getTask() == 'orderup') ? -1 : +1;
+		$view 		= $input->get('view','');
+		$parentid 	= $input->get('parentid','');
+		$layout 	= $input->get('layout','');
+		$subtype 	= $input->get('subtype', '');
+		
 		if($subtype){
 			$subtype = "&subtype=$subtype";
 		}
@@ -197,10 +198,12 @@ class MymuseControllerProducts extends JControllerAdmin
 	{
 		// Check for request forgeries.
 		JSession::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
-		$view 	= JRequest::getVar('view','');
-		$parentid 	= JRequest::getVar('parentid','');
-		$layout = JRequest::getVar('layout','');
-		$subtype = JRequest::getVar('subtype', '');
+		$input 		= JFactory::getApplication()->input;
+		$view 		= $input->get('view','');
+		$parentid 	= $input->get('parentid','');
+		$layout 	= $input->get('layout','');
+		$subtype 	= $input->get('subtype', '');
+		
 		if($subtype){
 			$subtype = "&subtype=$subtype";
 		}
@@ -260,17 +263,18 @@ class MymuseControllerProducts extends JControllerAdmin
 	{
 		// Check for request forgeries
 		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
-		$view 	= JRequest::getVar('view','');
-		$parentid 	= JRequest::getVar('parentid','');
-		$layout = JRequest::getVar('layout','');
-		$id = JRequest::getVar('id','');
-		$subtype = JRequest::getVar('subtype', '');
+		$input 		= JFactory::getApplication()->input;
+		$view 		= $input->get('view','');
+		$parentid 	= $input->get('parentid','');
+		$layout 	= $input->get('layout','');
+		$id 		= $input->get('id','');
+		$subtype 	= $input->get('subtype', '');
 
 		// Get items to publish from the request.
-		$cid = JRequest::getVar('cid', array(), '', 'array');
-		$data = array('publish' => 1, 'unpublish' => 0, 'archive' => 2, 'trash' => -2, 'report' => -3);
-		$task = $this->getTask();
-		$value = JArrayHelper::getValue($data, $task, 0, 'int');
+		$cid 		= $input->post->get('cid', array(), 'array');
+		$data 		= array('publish' => 1, 'unpublish' => 0, 'archive' => 2, 'trash' => -2, 'report' => -3);
+		$task 		= $this->getTask();
+		$value 		= JArrayHelper::getValue($data, $task, 0, 'int');
 
 		if (empty($cid))
 		{
@@ -339,6 +343,9 @@ x.product_id=p.id AND c.id=x.catid";
 		}
 	}
 	
-
+	function check()
+	{
+		$this->setRedirect(JRoute::_('index.php?option=com_mymuse&view=products&layout=check', false));
+	}
 	
 }
