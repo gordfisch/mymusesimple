@@ -475,7 +475,27 @@ class MymuseModelproducts extends JModelList
         return true;
 	}
 	
+	/**
+	 * check_products
+	 *
+	 *
+	 *  @return object
+	 */
+	
+	function getCheck()
+	{
 
+		$products = $this->getItems();
+		foreach ($products as $product){
+			//echo $product->id.' '.$product->title.'<br />';
+			$model = new MymuseModelproducts;
+			$model->setState('filter.downloadable', 1);
+			$model->setState('filter.parentid', $product->id);
+			$product->items = $model->getItems();
+		}
+		return $products;
+	
+	}
 
     
 }

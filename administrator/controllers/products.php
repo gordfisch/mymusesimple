@@ -40,7 +40,8 @@ class MymuseControllerProducts extends JControllerAdmin
     function delete()
     {
 
-        $cid = JRequest::getVar( 'cid', array(), 'post', 'array' );
+    	$input 	= $JFactory::getApplication()->input;
+        $cid 	= $input->get('cid');
         JArrayHelper::toInteger($cid);
         if (count( $cid ) < 1) {
             JError::raiseError(500, JText::_( 'MYMUSE_SELECT_AN_ITEM_TO_DELETE' ) );
@@ -70,14 +71,15 @@ class MymuseControllerProducts extends JControllerAdmin
 		JRequest::checkToken() or jexit(JText::_('JINVALID_TOKEN'));
 
 		// Initialise variables.
+		$input 	= $JFactory::getApplication()->input;
 		$user	= JFactory::getUser();
-		$ids	= JRequest::getVar('cid', array(), '', 'array');
+		$ids	= $input->get('cid', array());
 		$values	= array('featured' => 1, 'unfeatured' => 0);
 		$task	= $this->getTask();
 		$value	= JArrayHelper::getValue($values, $task, 0, 'int');
 		
-		$view 	= JRequest::getVar('view','');
-		$parentid 	= JRequest::getVar('parentid','');
+		$view 	= $input->get('view');
+		$parentid 	= $input->get('parentid');
 		$layout = JRequest::getVar('layout','');
 		$id = JRequest::getVar('id','');
 
@@ -336,5 +338,7 @@ x.product_id=p.id AND c.id=x.catid";
 			}
 		}
 	}
+	
+
 	
 }

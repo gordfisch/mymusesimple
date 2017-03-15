@@ -68,14 +68,13 @@ if($params->get('my_default_itemid','')){
 	$link .= "&Itemid=".$params->get('my_default_itemid');
 }
 
-$app    = JApplication::getInstance('site');
-$router = $app->getRouter();
-$uri = $router->build($link);
-$link = rtrim(JURI::root(),'/').$uri->toString(array('path', 'query', 'fragment'));
-$link = preg_replace("#/administrator#",'',$link);
-//echo " link = $link <br />"; exit;
-
-
+$routerOptions = [];
+if (JFactory::getConfig()->get('sef')) {
+	$routerOptions['mode'] = JROUTER_MODE_SEF;
+}
+$siteRouter = JRouter::getInstance('site', $routerOptions);
+$link = ltrim($siteRouter->build($link)->toString(),'/');
+$link = rtrim(JURI::Root(false,'/'),'/').'/'.preg_replace('#/administrator#', '', $link);
 
 $download_header .= '
 		</ul>
