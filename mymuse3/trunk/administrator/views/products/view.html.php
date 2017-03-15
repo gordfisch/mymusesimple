@@ -29,6 +29,7 @@ class MymuseViewProducts extends JViewLegacy
 
 		$input = JFactory::getApplication()->input;
 		$layout = $input->get('layout', '');
+
 		if($layout == "check"){
 			$this->products = $this->get('Check');
 			$this->sidebar = JHtmlSidebar::render();
@@ -101,7 +102,6 @@ class MymuseViewProducts extends JViewLegacy
         }
 
 		if ($canDo->get('core.edit.state')) {
-
             if (isset($this->items[0]->state)) {
 			    JToolBarHelper::divider();
 			    JToolBarHelper::custom('products.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
@@ -119,6 +119,7 @@ class MymuseViewProducts extends JViewLegacy
             if (isset($this->items[0]->checked_out)) {
             	JToolBarHelper::custom('products.checkin', 'checkin.png', 'checkin_f2.png', 'JTOOLBAR_CHECKIN', true);
             }
+            JToolBarHelper::custom('products.check', 'publish.png', 'publish.png', 'MYMUSE_TEST_PRODUCTS', false);
 		}
         
         //Show trash and delete for components that uses the state field
