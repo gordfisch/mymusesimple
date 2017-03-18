@@ -666,9 +666,10 @@ class MyMuseController extends JControllerLegacy
 		$tx 			= $this->jinput->get('tx', 0);
 		$date 			= date('Y-m-d h:i:s');
 		
-		$pesapal_merchant_reference = $this->jinput->get('pesapal_merchant_reference', 0);
+		
 		$pp 			= $this->jinput->get('pp', 0);
 		
+		$pesapal_merchant_reference = $this->jinput->get('pesapal_merchant_reference', 0);
 		if($pesapal_merchant_reference){
 			$order_number = $pesapal_merchant_reference;
 		}
@@ -754,27 +755,30 @@ class MyMuseController extends JControllerLegacy
 		}
 
 	
-		if($st === "Completed" && $this->MyMuseShopper->order != "C"){
+		if($st === "Completed" && $this->MyMuseShopper->order->order_status != "C"){
 			// waiting for IPN
 			sleep(3);
 			$this->MyMuseShopper->order = $this->MyMuseCheckout->getOrder( $orderid );
 			$this->MyMuseShopper->order->waited = 3;
 		}
-		if($st === "Completed" && $this->MyMuseShopper->order != "C"){
+		if($st === "Completed" && $this->MyMuseShopper->order->order_status != "C"){
 			// waiting for IPN
 			sleep(3);
 			$this->MyMuseShopper->order = $this->MyMuseCheckout->getOrder( $orderid );
 			$this->MyMuseShopper->order->waited = 6;
 		}
-		if($st === "Completed" && $this->MyMuseShopper->order != "C"){
+		if($st === "Completed" && $this->MyMuseShopper->order->order_status != "C"){
 			// waiting for IPN
 			sleep(3);
 			$this->MyMuseShopper->order = $this->MyMuseCheckout->getOrder( $orderid );
 			$this->MyMuseShopper->order->waited = 9;
 		}
-		if($st === "Completed" && $this->MyMuseShopper->order != "C"){
-			$msg = JText::_("MYMUSE_WAITING_FOR_IPN");
-			$this->setRedirect(JURI::current(), $msg);
+		if($st === "Completed" && $this->MyMuseShopper->order->order_status != "C"){
+
+			$uri = JUri::getInstance();
+			$msg = JText::_("MYMUSE_WAITING_FOR_IPN"). " <a href='".$uri->toString()."'>".$uri->toString()."</a>";
+			
+			$this->setRedirect('index.php', $msg);
 			return false;
 		}
 		
