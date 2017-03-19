@@ -1067,8 +1067,13 @@ endif; ?>
 </form>
 <div style="clear: both"></div>
 <?php endif; ?>
+<?php if($product->introtext && $product->fulltext && $params->get('show_readmore')) : ?>
+<a name="readmore"></a>
+<?php 
+echo $product->fulltext;
 
-
+endif;
+?>
 
 <?php if(isset($this->recommends_display)) : ?>
 <!-- START RECOMMENDS -->
