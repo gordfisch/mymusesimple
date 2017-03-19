@@ -183,22 +183,24 @@ class MymuseTablestore extends JTable
     			$path = MyMuseHelper::getDownloadPath($product->id);
  
     			$old_file = $path.$product->title_alias;
+    			
     			$current_files = json_decode($product->file_name);
+    		
     			if(is_array($current_files) && $current_files[0]->file_name){
-    				$new_file = $current_files[0]->file_name;
+    				$new_file = $path.$current_files[0]->file_name;
     			}else{
     				$new_file = $path.$product->file_name;
     			}
-    			
-    			if(!JFile::copy("$old_file", "$new_file")){
-    				$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file);
-    				$app->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file , 'error');
-   
-    			}
-    			if(!JFile::delete("$old_file")){
-    				$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old_file);
-    				$app->enqueueMessage(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old_file , 'error');
-
+			
+    			if($new_file){
+					if (! JFile::copy ( "$old_file", "$new_file" )) {
+						$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_MOVE_FILE" ) . ": " . $old_file . " " . $new_file );
+						$app->enqueueMessage ( JText::_ ( "MYMUSE_COULD_NOT_MOVE_FILE" ) . ": " . $old_file . " " . $new_file, 'error' );
+					}
+					if (! JFile::delete ( "$old_file" )) {
+						$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_DELETE_FILE" ) . ": " . $old_file );
+						$app->enqueueMessage ( JText::_ ( "MYMUSE_COULD_NOT_DELETE_FILE" ) . ": " . $old_file, 'error' );
+					}
     			}
     		} 
     		

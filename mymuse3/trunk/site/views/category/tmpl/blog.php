@@ -118,15 +118,15 @@ $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams
 	<!-- INTRO ITEMS-->
 	<style>
 	.intro-items {
-	 	-webkit-columns: <?php echo $this->columns; ?> <?php echo $this->params->get('category_product_image_height',150); ?>px;
-     	-moz-columns: <?php echo $this->columns; ?> <?php echo $this->params->get('category_product_image_height',150); ?>px;
-      	columns: <?php echo $this->columns; ?> <?php echo $this->params->get('category_product_image_height',150); ?>px;
+	 	//-webkit-columns: <?php echo $this->columns; ?> <?php echo $this->params->get('category_product_image_height',150); ?>px;
+     	//-moz-columns: <?php echo $this->columns; ?> <?php echo $this->params->get('category_product_image_height',150); ?>px;
+      	//columns: <?php echo $this->columns; ?> <?php echo $this->params->get('category_product_image_height',150); ?>px;
       	
       }
 	</style>
-	<div class="intro-items">
+	<div class="intro-items row">
 	<?php foreach ($this->intro_items as $key => &$item) : ?>
-		<div class="intro-item">
+		<div class="intro-item span<?php echo 12/$this->columns; ?>">
 				<?php
 				$this->item = &$item;
 				echo $this->loadTemplate('item');
