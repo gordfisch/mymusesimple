@@ -113,18 +113,9 @@ method="post" name="adminForm" id="store-form" class="form-validate">
 				<?php endif; ?>
 				<div class="span6">
 					<?php foreach ($this->form->getFieldset($name) as $field) : ?>
-	
-										<div class="control-group">
-											<div class="control-label">
-												<?php echo $field->label; ?>
-											</div>
-											<div class="controls">
-												<?php echo $field->input; ?>
-											</div>
-										</div>
-									<?php 
+						<?php echo $field->renderField(); ?>
 									
-									if($field->name == "jform[params][my_notes_msg]") :
+									<?php if($field->name == "jform[params][my_notes_msg]") :
 									?></div><div class="span6 float-right"><?php
 									endif;
 									
