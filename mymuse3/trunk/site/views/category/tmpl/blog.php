@@ -115,25 +115,30 @@ $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams
 	$counter=0;
 ?>
 <?php if (!empty($this->intro_items)) : ?>
-	<!-- INTRO ITEMS-->
-	<style>
-	.intro-items {
-	 	//-webkit-columns: <?php echo $this->columns; ?> <?php echo $this->params->get('category_product_image_height',150); ?>px;
-     	//-moz-columns: <?php echo $this->columns; ?> <?php echo $this->params->get('category_product_image_height',150); ?>px;
-      	//columns: <?php echo $this->columns; ?> <?php echo $this->params->get('category_product_image_height',150); ?>px;
-      	
-      }
-	</style>
-	<div class="intro-items row">
+	
 	<?php foreach ($this->intro_items as $key => &$item) : ?>
-		<div class="intro-item span<?php echo 12/$this->columns; ?>">
+		<?php
+		$key= ($key-$leadingcount)+1;
+		$rowcount=( ((int)$key-1) %	(int) $this->columns) +1;
+		$row = $counter / $this->columns ;
+		$this->key = $key;
+		if ($rowcount==1) : ?>
+		<div
+			class="items-row cols-<?php echo (int) $this->columns;?> <?php echo 'row-'.$row ; ?>">
+			<?php endif; ?>
+			<div
+				class="item column-<?php echo $rowcount;?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
 				<?php
 				$this->item = &$item;
 				echo $this->loadTemplate('item');
 				?>
+			</div>
+			<?php $counter++; ?>
+			<?php if (($rowcount == $this->columns) or ($counter ==$introcount)): ?>
+			<span class="row-separator"></span>
 		</div>
+		<?php endif; ?>
 	<?php endforeach; ?>
-	</div>
 	<div class="clear"></div>
 <?php endif; ?>
 

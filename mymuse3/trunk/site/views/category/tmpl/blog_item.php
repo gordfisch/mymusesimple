@@ -22,7 +22,7 @@ JHtmlBehavior::framework();
 <?php if ($this->item->state == 0) : ?>
 <div class="system-unpublished">
 <?php endif; ?>
-
+<div class="intro-item">
 <?php if ($params->get('category_show_product_image') && $this->item->list_image): ?>
 	<div class="list-image">
 		<a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->id, $this->category->id)); ?>"
@@ -169,7 +169,7 @@ JHtmlBehavior::framework();
 					endif; ?></a>
 		</div>
 <?php endif; ?>
-
+</div>
 <?php if ($this->item->state == 0) : ?>
 </div>
 <?php endif; ?>
