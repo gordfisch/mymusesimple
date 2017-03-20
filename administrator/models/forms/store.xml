@@ -952,6 +952,7 @@
                 description="MYMUSE_LICENSE_0_NAME"
                 class="inputbox"
                 default=""
+                showon="my_price_by_product:2"
         />
         <field
                 name="my_license_0_price"
@@ -960,6 +961,7 @@
                 description="MYMUSE_LICENSE_0_PRICE"
                 class="inputbox"
                 default=""
+                showon="my_price_by_product:2"
         />
         <field
                 name="my_license_0_desc"
@@ -968,6 +970,7 @@
                 description="MYMUSE_LICENS_0_DESC"
                 class="inputbox"
                 default=""
+                showon="my_price_by_product:2"
         />
         <field
                 name="my_license_1_name"
@@ -976,6 +979,7 @@
                 description="MYMUSE_LICENSE_1_NAME"
                 class="inputbox"
                 default=""
+                showon="my_price_by_product:2"
         />
         <field
                 name="my_license_1_price"
@@ -984,6 +988,7 @@
                 description="MYMUSE_LICENSE_1_PRICE"
                 class="inputbox"
                 default=""
+                showon="my_price_by_product:2"
         />
         <field
                 name="my_license_1_desc"
@@ -992,6 +997,7 @@
                 description="MYMUSE_LICENSE_1_DESC"
                 class="inputbox"
                 default=""
+                showon="my_price_by_product:2"
         />
         <field
                 name="my_license_2_name"
@@ -1000,6 +1006,7 @@
                 description="MYMUSE_LICENSE_2_NAME"
                 class="inputbox"
                 default=""
+                showon="my_price_by_product:2"
         />
         <field
                 name="my_license_2_price"
@@ -1008,6 +1015,7 @@
                 description="MYMUSE_LICENSE_2_PRICE"
                 class="inputbox"
                 default=""
+                showon="my_price_by_product:2"
         />
         <field
                 name="my_license_2_desc"
@@ -1016,6 +1024,7 @@
                 description="MYMUSE_LICENSE_2_DESC"
                 class="inputbox"
                 default=""
+                showon="my_price_by_product:2"
         />
         <field
                 name="my_license_3_name"
@@ -1024,6 +1033,7 @@
                 description="MYMUSE_LICENSE_3_NAME"
                 class="inputbox"
                 default=""
+                showon="my_price_by_product:2"
         />
         <field
                 name="my_license_3_price"
@@ -1032,6 +1042,7 @@
                 description="MYMUSE_LICENSE_3_PRICE"
                 class="inputbox"
                 default=""
+                showon="my_price_by_product:2"
         />
         <field
                 name="my_license_3_desc"
@@ -1040,6 +1051,7 @@
                 description="MYMUSE_LICENSE_3_DESC"
                 class="inputbox"
                 default=""
+                showon="my_price_by_product:2"
         />
         <field
                 name="my_license_4_name"
@@ -1048,6 +1060,7 @@
                 description="MYMUSE_LICENSE_4_NAME"
                 class="inputbox"
                 default=""
+                showon="my_price_by_product:2"
         />
         <field
                 name="my_license_4_price"
@@ -1056,6 +1069,7 @@
                 description="MYMUSE_LICENSE_4_PRICE"
                 class="inputbox"
                 default=""
+                showon="my_price_by_product:2"
         />
         <field
                 name="my_license_4_desc"
@@ -1064,6 +1078,7 @@
                 description="MYMUSE_LICENSE_4_DESC"
                 class="inputbox"
                 default=""
+                showon="my_price_by_product:2"
         />
 	
 	</fieldset>

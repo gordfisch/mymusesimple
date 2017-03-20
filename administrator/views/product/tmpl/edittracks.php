@@ -306,7 +306,6 @@ $fieldSets = $this->form->getFieldsets('attribs');
 		<!-- -->
 
 		
-		
 		<table class="table table-striped" id="articleList">
 				<thead>
 					<tr>
@@ -327,7 +326,7 @@ $fieldSets = $this->form->getFieldsets('attribs');
 				<tbody>
 				<?php for($i = 0; $i < count($lists['select_file']); $i++){ 
 					$class = '';
-					if($i >= count($item->file_name)){
+					if($i > count($item->file_name)){
 						$class = "hidden";
 					}
 					?>
@@ -441,6 +440,7 @@ $fieldSets = $this->form->getFieldsets('attribs');
 		<input type="hidden" name="parentid" value="<?php echo $item->parentid ?>" />
 		<input type="hidden" name="jform[parentid]" value="<?php echo $item->parentid ?>" />
 		<input type="hidden" name="jform[catid]" value="<?php echo $item->parent->catid ?>" />
+		<input type="hidden" name="jform[artistid]" value="<?php echo $item->parent->artistid ?>" />
 		<input type="hidden" name="current_preview" value="<?php echo stripslashes($item->file_preview) ?>" />
 		<input type="hidden" name="current_preview_2" value="<?php echo stripslashes($item->file_preview_2) ?>" />
 		<input type="hidden" name="current_preview_3" value="<?php echo stripslashes($item->file_preview_3) ?>" />

@@ -182,7 +182,7 @@ class MymuseModelproduct extends JModelAdmin
 		if (empty($data)) {
 			$data = $this->getItem();
 		}
-		if($data->product_made_date == "0000-00-00"){
+		if(isset($data->product_made_date) && $data->product_made_date == "0000-00-00"){
 			$data->product_made_date = '';
 		}
 

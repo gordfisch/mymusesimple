@@ -265,7 +265,7 @@ class MymuseTableproduct extends JTable
 			$this->file_name = JFilterOutput::stringURLSafe($_FILES['product_file']['name']).'.'.$ext;
 			$tmpName  = $_FILES['product_file']['tmp_name'];
 			$this->file_length = $_FILES['product_file']['size'];
-			$new_file = $tmpName;
+
 
 			// do we save it to the database?
 			if($params->get('my_use_database')){
@@ -286,28 +286,10 @@ class MymuseTableproduct extends JTable
 				}
 				
         		$new_file = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
-        		
-        		if (file_exists($tmpName)){
-        			if(!file_exists($new_file)){
-        				if(is_writable(dirname($new_file))){
-        					rename($tmpName, $new_file);
-        				}else{
-        					if($this->folderNew(dirname($new_file))){
-								rename($tmpName, $new_file);
-							}else{
-								$application->enqueueMessage(JText::_("MYMUSE_FOLDER_NOT_WRITABLE").": ".dirname($new_file), 'error');
-							}
-        				}
-        			}else{
-        				echo "File exists $new_file";
-        			}
-        			
-        		}else{
-        			echo "file does not exist $tmpName";
-        		}
-				//if(!$this->fileUpload($tmpName, $new_file)){
-            	//	return false;
-				//}
+
+				if(!$this->fileUpload($tmpName, $new_file)){
+            		return false;
+				}
 			}
 		}
 		
@@ -727,7 +709,6 @@ class MymuseTableproduct extends JTable
 				}
 						
 			}else{
-					echo "file does not exist $tmpName"; exit;
 					$application->enqueueMessage(JText::_("MYMUSE_FILE_DOES_NOT_EXIST").": ".$tmpName, 'error');
 			}
 			//if(!JFile::move($tmpName2, $new)){

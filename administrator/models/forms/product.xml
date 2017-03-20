@@ -102,7 +102,7 @@
 				label="MYMUSE_ARTIST_CATEGORY_LABEL" 
 				description="MYMUSE_ARTIST_CATEGORY_DESC"
 				class="inputbox" 
-				required="false"
+				required="true"
 				multiple="false" 
 		/>
 		
@@ -482,7 +482,7 @@
                 name="product_full_time"
                 type="text"
                 label="MYMUSE_PRODUCT_FULL_TIME_LABEL"
-                description="MYMUSE_PRODUCT_FULL_DESC"
+                description="MYMUSE_PRODUCT_FULL_TIME_DESC"
                 class="inputbox"
                 size="20"
                 required="false"

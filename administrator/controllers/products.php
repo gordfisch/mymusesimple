@@ -40,7 +40,7 @@ class MymuseControllerProducts extends JControllerAdmin
     function delete()
     {
 
-    	$input 	= Factory::getApplication()->input;
+    	$input 	= JFactory::getApplication()->input;
         $cid 	= $input->get('cid');
         JArrayHelper::toInteger($cid);
         if (count( $cid ) < 1) {
