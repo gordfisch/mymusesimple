@@ -107,14 +107,15 @@ div.cat-items div.items-row{
 
 .intro-item {
 	margin: 0;
-	position: relative;
-	height: 200px;
+	float: left;
 }
 
 div.intro-item .list-image img {
 	width: 100%; 
 	margin: 2px;
 }
+
+
 div.intro-item .title { 
 	font-weight: bold;
   	margin-bottom: 10px;
