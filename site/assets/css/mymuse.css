@@ -227,7 +227,6 @@ table.mymuse_cart_inner {
 	border: 1px solid #CCCCCC;
 	border-spacing: 0px;    
 	width: 100%;
-
 }
 
 .mymuse_cart thead th{ 
@@ -236,9 +235,8 @@ table.mymuse_cart_inner {
 	border: 1px solid #999999; 
 }
 
-
 table.mymuse_cart td, table.mymuse_cart th, div.mymuse_cart {
-	padding: 4px 0 4px;
+	padding: 4px;
 	vertical-align: middle;
 	border: 1px solid #CCCCCC;
 }

@@ -286,10 +286,38 @@ class MymuseTableproduct extends JTable
 				}
 				
         		$new_file = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
-
-				if(!$this->fileUpload($tmpName, $new_file)){
-            		return false;
-				}
+        		
+        		if(!$this->fileUpload($tmpName, $new_file)){
+        			return false;
+        		}
+        		
+        		
+        		
+        		if (file_exists($tmpName)){
+        			if(!file_exists($new)){
+        				if(is_writable(dirname($new))){
+        					rename($tmpName, $new);
+        				}else{
+        					if($this->folderNew(dirname($new))){
+        						rename($tmpName, $new);
+        					}else{
+        						$app->enqueueMessage(JText::_("MYMUSE_FOLDER_NOT_WRITABLE").": ".dirname($new), 'error');
+        					}
+        				}
+        			}else{
+        				$app->enqueueMessage(JText::_("MYMUSE_FILE_EXISTS").": ".$new, 'error');
+        			}
+        		
+        		}else{
+        			$app->enqueueMessage(JText::_("MYMUSE_FILE_DOES_NOT_EXIST").": ".$tmpName, 'error');
+        			echo JText::_("MYMUSE_FILE_DOES_NOT_EXIST");
+        			exit;
+        		}
+        		
+        		
+				//if(!$this->fileUpload($tmpName, $new_file)){
+            	//	return false;
+				//}
 			}
 		}
 		
