@@ -143,9 +143,9 @@ class MymuseControllerProduct extends JControllerForm
 				}
 			}else {
 
-        		$this->msg = JText::_( 'MYMUSE_ERROR_SAVING_FILE' ).": ".$table->getError();
+        		$this->msg = $this->getError();
 
-        		JFactory::getApplication()->enqueueMessage($this->msg, 'notice');
+        		JFactory::getApplication()->enqueueMessage($this->msg, 'error');
         		if($this->id){
         			$this->setRedirect( "index.php?option=com_mymuse&view=product&task=product.editfile&parentid=".$this->parentid.'&id='.$this->id.'&subtype='.$post['subtype'], $this->msg );
         		}else{

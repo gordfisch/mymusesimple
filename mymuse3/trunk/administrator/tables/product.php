@@ -235,94 +235,6 @@ class MymuseTableproduct extends JTable
 			$isNew = 1;
 		}
 
-        // get artist alias
-        if($this->parentid){
-        	$artist_alias = MyMuseHelper::getArtistAlias($this->parentid, 1);
-        	$album_alias = MyMuseHelper::getAlbumAlias($this->parentid, 1);
-        }else{
-        	$artist_alias = MyMuseHelper::getArtistAlias($this->id, 1);
-        	$album_alias = $this->alias;
-        }
-        if(isset($post['upgrade']) && isset($form['title_alias'])){
-        	$this->title_alias = $form['title_alias'];
-        }
-
- 
-		// Uploaded product file
-		$new = 0;
-		
-		if(isset($_FILES['product_file']['name']) && $_FILES['product_file']['name'] != ""){
-			
-			if(isset($_FILES['product_file']['error']) && $_FILES['product_file']['error'])
-			{
-				$this->setError(Jtext::_($this->_upload_errors[$_FILES['product_file']['error']]) );
-				return false;
-			}
-			$this->product_downloadable = 1;
-			$new = 1;
-			$ext = MyMuseHelper::getExt($_FILES['product_file']['name']);
-			$_FILES['product_file']['name'] = preg_replace("/$ext$/","",$_FILES['product_file']['name']);
-			$this->file_name = JFilterOutput::stringURLSafe($_FILES['product_file']['name']).'.'.$ext;
-			$tmpName  = $_FILES['product_file']['tmp_name'];
-			$this->file_length = $_FILES['product_file']['size'];
-
-
-			// do we save it to the database?
-			if($params->get('my_use_database')){
-				$fp      = fopen($tmpName, 'r');
-				$this->file_contents = fread($fp, filesize($tmpName));
-				fclose($fp);
-				//echo "stored in DB";
-				
-			}else{
-				
-			    // make name and copy it to the download dir
-				if($params->get('my_encode_filenames') ){
-					$ext = MyMuseHelper::getExt($this->file_name);
-					$name = md5($this->file_name . time()).'.'.$ext;
-					$this->title_alias = $name;
-				}else{
-					$name = $this->file_name;
-				}
-				
-        		$new_file = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
-        		
-        		if(!$this->fileUpload($tmpName, $new_file)){
-        			return false;
-        		}
-        		
-        		
-        		
-        		if (file_exists($tmpName)){
-        			if(!file_exists($new)){
-        				if(is_writable(dirname($new))){
-        					rename($tmpName, $new);
-        				}else{
-        					if($this->folderNew(dirname($new))){
-        						rename($tmpName, $new);
-        					}else{
-        						$app->enqueueMessage(JText::_("MYMUSE_FOLDER_NOT_WRITABLE").": ".dirname($new), 'error');
-        					}
-        				}
-        			}else{
-        				$app->enqueueMessage(JText::_("MYMUSE_FILE_EXISTS").": ".$new, 'error');
-        			}
-        		
-        		}else{
-        			$app->enqueueMessage(JText::_("MYMUSE_FILE_DOES_NOT_EXIST").": ".$tmpName, 'error');
-        			echo JText::_("MYMUSE_FILE_DOES_NOT_EXIST");
-        			exit;
-        		}
-        		
-        		
-				//if(!$this->fileUpload($tmpName, $new_file)){
-            	//	return false;
-				//}
-			}
-		}
-		
-		$download_path = MyMuseHelper::getdownloadPath($this->parentid,1);
-		
 		//converting old style file_name to json
 		if(!$isNew && $this->file_name){
 			$current_files = json_decode($this->file_name);
@@ -340,9 +252,99 @@ class MymuseTableproduct extends JTable
 			$current_files = array();
 		}
 		
-		// if they selected a file from drop down
-		$select_files = isset( $post['select_file'] )? $post['select_file']: '';
 		
+        // get artist alias
+        if($this->parentid){
+        	$artist_alias = MyMuseHelper::getArtistAlias($this->parentid, 1);
+        	$album_alias = MyMuseHelper::getAlbumAlias($this->parentid, 1);
+        	$download_path = MyMuseHelper::getdownloadPath($this->parentid,1);
+        }else{
+        	$artist_alias = MyMuseHelper::getArtistAlias($this->id, 1);
+        	$album_alias = $this->alias;
+        }
+        if(isset($post['upgrade']) && isset($form['title_alias'])){
+        	$this->title_alias = $form['title_alias'];
+        }
+        
+
+ 		// if they selected a file from drop down
+ 		$select_files = isset( $post['select_file'] )? $post['select_file']: '';
+ 		$arr = array();
+ 		for( $i = 0; $i < count($select_files); $i++ ){
+ 			if($select_files[$i] != ''){
+ 				$arr[] = $select_files[$i];
+ 			}
+ 		}
+ 		$select_files = $arr;
+ 		$done = 0;
+
+ 		//one format
+ 		if(1 == count($params->get('my_formats'))){
+ 			
+ 			//we only have one format, upload should be only $_FILES OR select_files
+ 			if( (isset($_FILES['product_file']['name']) && $_FILES['product_file']['name'] != "") 
+ 					&& (count($select_files) && $select_files[0] != $current_files[0]->file_name) ){
+ 				$this->setError ( JText::_('MYMUSE_DOUBLE_UPLOAD') );
+ 				return false;
+ 			}
+ 			
+			// Uploaded product file
+			$new = 0;
+			if (isset ( $_FILES['product_file']['name'] ) && $_FILES['product_file']['name'] != "") {
+
+				if(!file_exists($_FILES['product_file']['tmp_name'])){
+					print_pre($_FILES['product_file']);
+					echo "File does not exist ".$_FILES['product_file']['tmp_name']; exit;
+				}
+				if (isset ( $_FILES['product_file']['error'] ) && $_FILES['product_file']['error']) {
+					$this->setError ( Jtext::_ ( $this->_upload_errors [$_FILES['product_file']['error']] ) );
+					return false;
+				}
+				$this->product_downloadable = 1;
+				$new = 1;
+				$tmpName = $_FILES['product_file']['tmp_name'];
+				$ext = MyMuseHelper::getExt ( $_FILES['product_file']['name'] );
+				$_FILES['product_file']['name'] = preg_replace ( "/$ext$/", "", $_FILES['product_file']['name'] );
+				if($params->get('my_use_sring_url_safe')){
+					$current_files[0]->file_name = JFilterOutput::stringURLSafe ( $_FILES['product_file']['name'] ) . '.' . $ext;
+				}else{
+					$current_files[0]->file_name = $_FILES['product_file']['name'] . '.' . $ext;
+				}
+					
+				$current_files[0]->file_ext = $ext;
+				$current_files[0]->file_length = $_FILES['product_file']['size'];
+				$current_files[0]->file_downloads = isset($current_files[0]->file_downloads)? $current_files[0]->file_downloads : 0;
+				
+				// do we save it to the database?
+				if ($params->get ( 'my_use_database' )) {
+					$fp = fopen ( $tmpName, 'r' );
+					$this->file_contents = fread ( $fp, filesize ( $tmpName ) );
+					fclose ( $fp );
+					// echo "stored in DB";
+				} else {
+					
+					// make name and copy it to the download dir
+					if ($params->get ( 'my_encode_filenames' )) {
+						$ext = MyMuseHelper::getExt ( $current_files[0]->file_name );
+						$name = md5 ( $current_files[0]->file_name . time () ) . '.' . $ext;
+						$this->title_alias = $name;
+					} else {
+						$name = $current_files[0]->file_name;
+					}
+					
+					$new_file = $download_path . DS . $name;
+					
+					if (! $this->fileUpload ( $tmpName, $new_file )) {
+						return false;
+					}
+				}
+				$this->file_name = json_encode($current_files);
+				$done = 1;
+			}
+		
+ 		}
+ 		
+
 		//removing one of the variations
 		if($task == 'deletevariation'){
 			$variationid = $input->get('variation','');
@@ -361,12 +363,16 @@ class MymuseTableproduct extends JTable
 			
 		}
 
-		
-		if(is_array( $select_files )){
+		//chosen from select dropdown
+		if(is_array( $select_files ) && !$done){
+			
 			for( $i = 0; $i < count($select_files); $i++ ){
 				//rename if necessary
 				$select_file = $select_files[$i];
+				print_pre($select_file); print_pre($current_files);
 				if($select_file &&  $select_file != @$current_files[$i]->file_name){
+					
+					
 					// tidy up name and copy it to the download dir
 					$ext = MyMuseHelper::getExt($select_file);
 					$name = preg_replace("/$ext$/","",$select_file);
@@ -394,11 +400,6 @@ class MymuseTableproduct extends JTable
 
 					if($old_file != $new_file){
 						
-						// DO we put a limit on size?
-						//if($params->get('my_use_s3') && $this->file_length > 10240000){ // over 10 megs
-						//	$this->file_name = $select_file;
-						//	JFactory::getApplication()->enqueueMessage(JText::sprintf('MYMUSE_S3_FILE_TOO_LARGE_TO_COPY', $old_file, $new_file), 'warning');
-						//}else{
 						if(!$this->fileCopy($old_file, $new_file)){
 							return false;
 						}
@@ -435,7 +436,7 @@ class MymuseTableproduct extends JTable
 			
 			$this->file_name = json_encode($current_files);
 		}
-		
+	
 		//all files
 		if(isset($post['product_allfiles']) && $post['product_allfiles']){
 
@@ -1055,6 +1056,10 @@ class MymuseTableproduct extends JTable
      */
     public function fileUpload($tmpName, $new_file)
     {
+    	if(!file_exists($tmpName)){
+    		$this->setError(JText::_("MYMUSE_FILE_DOES_NOT_EXIST").": ".$tmpName);
+    		return false;
+    	}
     	$application = JFactory::getApplication();
     	$params = MyMuseHelper::getParams();
     	if($params->get('my_use_s3')){
@@ -1085,7 +1090,6 @@ class MymuseTableproduct extends JTable
     		
     		if(!JFile::upload($tmpName, $new_file)){
     			$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$tmpName." ".$new_file);
-    			$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$tmpName." ".$new_file , 'error');
     			return false;
     		}
     	}
