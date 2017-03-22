@@ -154,17 +154,7 @@ $fieldSets = $this->form->getFieldsets('attribs');
 				</div>
 			</div>
 			
-		<?php if(!$this->params->get('my_use_database')){ ?>
-			<div class="control-group">
-				<div class="control-label">
-				<?php echo JText::_( 'MYMUSE_DOWNLOAD_PATH' ); ?>
-				</div>
-				<div class="controls">
-				<input  type="text" name="download_dir" id="jform_download_dir" value="<?php echo $lists['download_dir']; ?>" 
-				class="readonly" readonly="readonly" style="font-weight:normal; font-size: 10px;" size="60" />
-				</div>
-			</div>
-		<?php } ?>
+
 		<?php if(!$this->params->get('my_price_by_product')){ ?>
 		 
 			<div class="control-group">
@@ -291,7 +281,7 @@ $fieldSets = $this->form->getFieldsets('attribs');
 
 	<legend><?php echo JText::_('MYMUSE_TRACKS'); ?></legend>
 	<div class="pull-left span10">
-		<!--  -->
+		<?php if(1 == count($this->params->get('my_formats')) ){ ?>
 			<div class="control-group">
 				<div class="control-label">
 				<?php echo JText::_( 'MYMUSE_UPLOAD_NEW_FILE' ); ?>
@@ -303,9 +293,18 @@ $fieldSets = $this->form->getFieldsets('attribs');
 				
 				</div>
 			</div>
-		<!-- -->
-
-		
+		<?php } ?>
+		<?php if(!$this->params->get('my_use_database')){ ?>
+			<div class="control-group">
+				<div class="control-label">
+				<?php echo JText::_( 'MYMUSE_DOWNLOAD_PATH' ); ?>
+				</div>
+				<div class="controls">
+				<input  type="text" name="download_dir" id="jform_download_dir" value="<?php echo $lists['download_dir']; ?>" 
+				class="readonly" readonly="readonly" style="font-weight:normal; font-size: 10px;" size="60" />
+				</div>
+			</div>
+		<?php } ?>
 		<table class="table table-striped" id="articleList">
 				<thead>
 					<tr>
@@ -326,7 +325,7 @@ $fieldSets = $this->form->getFieldsets('attribs');
 				<tbody>
 				<?php for($i = 0; $i < count($lists['select_file']); $i++){ 
 					$class = '';
-					if($i > count($item->file_name)){
+					if($i >= count($this->params->get('my_formats'))){
 						$class = "hidden";
 					}
 					?>
@@ -345,10 +344,12 @@ $fieldSets = $this->form->getFieldsets('attribs');
 						</td>
 					</tr>
 				<?php } ?>
+				
+				<?php if(count($this->params->get('my_formats')) > 1){ ?>
 					<tr>
 						<td colspan="7"><a href="javascript:addvariation();"><?php echo JText::_('MYMUSE_ADD_VARIATION')?></a></td>
 					</tr>
-				
+				<?php } ?>
 				</tbody>
 			</table>
 		</div>			
