@@ -135,6 +135,10 @@ class MymuseControllerProduct extends JControllerForm
 					$this->msg = JText::_( 'MYMUSE_CHANGES_TO_FILE_SAVED' );
 					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.editfile&id='. $this->id.'&subtype='.$post['subtype'], $this->msg );
 					break;
+				case 'deletevariation':
+					$this->msg = JText::_( 'MYMUSE_CHANGES_TO_FILE_SAVED' );
+					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.editfile&id='. $this->id.'&subtype='.$post['subtype'], $this->msg );
+					break;
 				case 'savefile':
 				default:
 					$this->msg = JText::_( 'MYMUSE_FILE_SAVED' );;

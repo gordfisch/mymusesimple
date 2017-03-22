@@ -121,9 +121,10 @@ class MymuseTableproduct extends JTable
 		//	return false;
 		//}
 
+		
 		// Check the publish down date is not earlier than publish up.
 		if ($this->publish_down > $this->_db->getNullDate() && $this->publish_down < $this->publish_up) {
-			// Swap the dates.
+			echo "Swap the dates.";
 			$temp = $this->publish_up;
 			$this->publish_up = $this->publish_down;
 			$this->publish_down = $temp;
@@ -133,7 +134,12 @@ class MymuseTableproduct extends JTable
 		if(!isset($this->publish_up) || $this->publish_up == "" || $this->publish_up == "0000-00-00 00:00:00"){
 			$this->publish_up = JFactory::getDate()->format('Y-m-d H:i:s');
 		}
-
+		
+		if($this->publish_down == "1970-01-01 00:00:01" || $this->publish_down == $this->publish_up){
+			$this->publish_down = '';
+		}
+		
+	//$this->publish_down print_pre($this); exit;
 		// Clean up keywords -- eliminate extra spaces between phrases
 		// and cr (\r) and lf (\n) characters from string
 		if (!empty($this->metakey)) {
@@ -344,7 +350,7 @@ class MymuseTableproduct extends JTable
 		
  		}
  		
-
+ 
 		//removing one of the variations
 		if($task == 'deletevariation'){
 			$variationid = $input->get('variation','');
@@ -360,8 +366,11 @@ class MymuseTableproduct extends JTable
 			}
 			$select_files = $new_select;
 			$current_files = $new_current;
+			$this->file_name = json_encode($current_files);
+			$done = 1;
 			
 		}
+
 
 		//chosen from select dropdown
 		if(is_array( $select_files ) && !$done){
