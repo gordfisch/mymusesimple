@@ -323,9 +323,12 @@ $fieldSets = $this->form->getFieldsets('attribs');
 					</tr>
 				</thead>
 				<tbody>
-				<?php for($i = 0; $i < count($lists['select_file']); $i++){ 
+				<?php 
+				$formats = $this->params->get('my_formats');
+
+				for($i = 0; $i < count($formats); $i++){ 
 					$class = '';
-					if($i >= count($this->params->get('my_formats'))){
+					if($i >= count($formats)){
 						$class = "hidden";
 					}
 					?>
@@ -346,9 +349,9 @@ $fieldSets = $this->form->getFieldsets('attribs');
 				<?php } ?>
 				
 				<?php if(count($this->params->get('my_formats')) > 1){ ?>
-					<tr>
+					<!--   <tr>
 						<td colspan="7"><a href="javascript:addvariation();"><?php echo JText::_('MYMUSE_ADD_VARIATION')?></a></td>
-					</tr>
+					</tr> -->
 				<?php } ?>
 				</tbody>
 			</table>
