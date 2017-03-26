@@ -549,7 +549,7 @@ class MymuseTableproduct extends JTable
 						$this->setError ( JText::_ ( "MYMUSE_COULD_NOT_MOVE_DIR" ) . $src . " " . $dest );
 						return false;
 					}
-					$msg = JText::sprintf ( "MYMUSE_PRODUCT_CHANGED_CATEGORY_SUCCESS", $msg );
+					$msg = JText::sprintf ( "MYMUSE_PRODUCT_CHANGED_CATEGORY_SUCCESS", $src.' '.$dest );
 					JFactory::getApplication ()->enqueueMessage ( $msg, 'notice' );
 				}
 				

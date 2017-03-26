@@ -255,8 +255,6 @@ class MymuseViewProduct extends JViewLegacy
 		if($layout == "listtracks"){
 			// LIST TRACKS
 			JToolBarHelper::custom('product.uploadtrack', 'save-new.png', 'save-new_f2.png', 'MYMUSE_UPLOAD_TRACKS', false);
-			
-			
 			JToolBarHelper::custom('product.uploadpreview', 'save-new.png', 'save-new_f2.png', 'MYMUSE_UPLOAD_PREVIEWS', false);
 			JToolBarHelper::editList('product.edit', 'MYMUSE_EDIT_TRACK');
 			JToolBarHelper::addNew('product.addfile', 'MYMUSE_NEW_TRACK');
