@@ -342,7 +342,7 @@
 				<option value="1">MYMUSE_YES</option>
             </field>
             <field
-                name="my_use_sring_url_safe"
+                name="my_use_string_url_safe"
                 type="radio"
                 label="MYMUSE_STR_URL_SAFE_LABEL"
                 description="MYMUSE_STR_URL_SAFE_DESC"

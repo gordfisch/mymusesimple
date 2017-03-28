@@ -143,7 +143,7 @@ if(count($params->get('my_formats') > 1) && $params->get('my_price_by_product'))
 	}   		
 	$js .= '
 			alert(formats[jQuery(select_id).val()]+"_"+id);
-			jQuery(formats[jQuery(select_id).val()]+"_"+id).show();'."\n}";
+			jQuery("#"+formats[jQuery(select_id).val()]+"_"+id).show();'."\n}";
 }
 
 $url = JURI::Root()."index.php?option=com_mymuse&task=ajaxtogglecart";
@@ -268,16 +268,20 @@ $document->addScriptDeclaration($js);
 
 	
 <!--  INLINE PARENT  -->
+<!-- 
 <div id="parent">
 <div class="mini-cart-top">
 <div class="mini-cart-content">
 <div class="mini-cart-text">
-<a href="<?php echo JRoute::_("index.php?option=com_mymuse&view=category&id=".$product->artist->parent_id); ?>">
+<a href="<?php 
+
+echo myMuseHelperRoute::getCategoryRoute($product->artist->parent_id); ?>">
 <?php echo $product->artist->parent_title; ?></a>
 </div>
 </div>
 </div>
 </div>
+-->
 <!--  END INLINE PARENT  -->
 
 <?php if($this->params->get('show_minicart')) :?>
@@ -996,7 +1000,7 @@ endif; ?>
         							echo ' style="display:none" ';
       							endif;
       							$first = 0;
- 								echo '>'.MyMuseHelper::printMoneyPublic($$product_price).'<div>';
+ 								echo '>'.MyMuseHelper::printMoneyPublic($$product_price).'</div>';
  							endforeach;
  							
         				elseif($params->get('my_free_downloads') && isset($track->free_download) && $track->free_download) :
@@ -1023,7 +1027,7 @@ endif; ?>
                     
                     <!--  FORMAT COLUMN -->
         			<?php if(count($params->get('my_formats')) > 1) :?>
-        				<td class="myselect">
+        				<td class="myformat">
         				<?php if(isset($track->variation_select)) :
       							echo $track->variation_select;
       						 endif;

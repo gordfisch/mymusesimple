@@ -106,6 +106,7 @@
 		<plugin name="shipping_standard" folder="plugins/shipping_standard">Shipping Standard</plugin>
 		<plugin name="mymuse" folder="plugins/user_mymuse">MyMuse User Profile</plugin>
         <plugin name="mymusenoreg" folder="plugins/user_mymusenoreg">MyMuse No Registration Profile</plugin>
+        <plugin name="redirectonlogin" folder="plugins/user_redirectonlogin">MyMuse Redirect on Login</plugin>
 	</plugins>
 	<modules>
         <module name="mod_mymuse_latest" folder="modules/mod_mymuse_latest" client="site">Mod MyMuse Latest</module>

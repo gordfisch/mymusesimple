@@ -30,7 +30,7 @@ var my_modal = (function(){
     	jQuery(window).bind('resize.my_modal', method.center);
     	jQuery("#my_overlay").show();
 		jQuery("#my_modal").show();
-		//jQuery("#my_modal").fadeOut(2000,method.close);
+		jQuery("#my_modal").fadeOut(3000,method.close);
 	};
 		
 
