@@ -21,7 +21,7 @@ $task		= $this->task;
 $got_flash  = 0;
 $post_order = array('confirm','makepayment','thankyou','vieworder', 'notify');
 $notes_required = $params->get('my_notes_required',0);
-		
+
 JHtml::_('behavior.keepalive');
 JHtml::_('behavior.formvalidator');
 JHtml::_('formbehavior.chosen', 'select');
@@ -94,7 +94,7 @@ jQuery(document).ready(function(){
 
 		<h2><?php echo JText::_('MYMUSE_SHOPPING_CART'); ?></h2> 
 		  
-		<?php if($params->get('product_player_type') == "single" && isset($order->flash)) : ?>
+		<?php if($params->get("my_show_cart_preview") && $params->get('product_player_type') == "single" && isset($order->flash)) : ?>
 			<div id="product_player" 
 			<?php if($params->get('product_player_height')) : ?>
 			style="height: <?php echo $params->get('product_player_height'); ?>px"
@@ -109,11 +109,10 @@ jQuery(document).ready(function(){
 		<?php } ?>
 		<div style="clear: both"></div>
 		
-		<div class="clips petrol" 
+		 
 		<?php if($params->get('product_player_type') == "each"){ ?>
-		id="product_player"
+		<div class="" id="product_player" ></div>
 		<?php } ?>
-		>
 		
 		       
 	<table class="mymuse_cart cart">
@@ -155,8 +154,8 @@ jQuery(document).ready(function(){
 		        <?php } ?>
 		        <?php echo $order_item[$i]->title; ?>
 		        
-		        <?php if(isset($order_item[$i]->file_ext)){ ?>
-		        	 :<?php echo $order_item[$i]->file_ext ?> 
+		        <?php if(isset($order_item[$i]->ext)){ ?>
+		        	 : <?php echo $order_item[$i]->ext ?> 
 		        <?php } ?>
 		        
 		        <?php if(

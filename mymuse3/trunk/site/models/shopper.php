@@ -354,7 +354,7 @@ class mymuseModelShopper extends JModelForm
 
 		if(!$results = $db->loadRowList()){
 
-			return false;
+			//return false;
 		}
 		
 		// Check for a database error.
@@ -366,14 +366,13 @@ class mymuseModelShopper extends JModelForm
 	
 		// Merge the profile data.
 		$shopper->profile = array();
-	
-		foreach ($results as $v)
-		{
-			$k = str_replace($profile_key.'.', '', $v[0]);
-			$shopper->profile[$k] = json_decode($v[1], true);
-			if ($shopper->profile[$k] === null)
-			{
-				$shopper->profile[$k] = $v[1];
+		if($results) {
+			foreach ( $results as $v ) {
+				$k = str_replace ( $profile_key . '.', '', $v [0] );
+				$shopper->profile [$k] = json_decode ( $v [1], true );
+				if ($shopper->profile [$k] === null) {
+					$shopper->profile [$k] = $v [1];
+				}
 			}
 		}
 		if(!isset($shopper->profile['name'])){

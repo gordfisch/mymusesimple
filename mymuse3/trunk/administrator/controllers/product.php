@@ -348,6 +348,7 @@ class MymuseControllerProduct extends JControllerForm
     
     	//current file name
     	$fileNameFromReq = $app->input->get('name', '');
+    	$old_ext = JFile::getExt(fileNameFromReq);
     	// Clean the fileName for security reasons
     	$fileName = JFile::makeSafe($fileNameFromReq);
     
