@@ -223,7 +223,7 @@ class MyMuseModelCategory extends JModelList
 		$app	= JFactory::getApplication('site');
 		$jinput = $app->input;
 		$itemid = $jinput->get('id', 0, 'INT') . ':' . $jinput->get('Itemid', 0, 'INT');
-		
+	
 		if($params->get('category_layout') == "_:tracks"){
 			
 			//TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS 

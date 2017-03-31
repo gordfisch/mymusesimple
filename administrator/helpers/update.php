@@ -742,16 +742,25 @@ function makeProductObject($p)
 	
 	
 		// get some mp3's
+		//downloads
+		$download_path = MyMuseHelper::getDownloadPath($parentid, 1);
+		if(1 == $params->get('my_download_dir_format')){ //downloads by format
+			$download_path .= 'mp3';
+		}
+		//previews
+		$preview_path = MyMuseHelper::getSitePath($parentid, 1);
+		
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/Are_You_My_Sister.mp3";
-		$to = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS."Are_You_My_Sister.mp3";
+		$to = $download_path.DS."Are_You_My_Sister.mp3";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			//return false;
 		}
 	
+		
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/sister-preview.mp3";
-		$to = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."sister-preview.mp3";
+		$to = $preview_path.DS."sister-preview.mp3";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -759,7 +768,7 @@ function makeProductObject($p)
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/sister-preview.ogg";
-		$to = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."sister-preview.ogg";
+		$to = $preview_path.DS."sister-preview.ogg";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -768,7 +777,7 @@ function makeProductObject($p)
 		$msg .= "Downloaded 'Are You My Sister' track and previews<br />";
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/The_Foggy_Dew.mp3";
-		$to = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS."The_Foggy_Dew.mp3";
+		$to = $download_path.DS."The_Foggy_Dew.mp3";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -776,7 +785,7 @@ function makeProductObject($p)
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/foggy-preview.mp3";
-		$to = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."foggy-preview.mp3";
+		$to = $preview_path.DS."foggy-preview.mp3";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -784,7 +793,7 @@ function makeProductObject($p)
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/foggy-preview.ogg";
-		$to = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS."foggy-preview.ogg";
+		$to = $preview_path.DS."foggy-preview.ogg";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -793,7 +802,6 @@ function makeProductObject($p)
 		$msg .= "Downloaded 'Foggy Dew' track and previews<br />";
 	
 		//make a track for Are You My Sister Song
-		$preview_dir = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias;
 		$data = Array(
 	
 			'jform' => Array
@@ -824,7 +832,7 @@ function makeProductObject($p)
 			),
 	
 			'select_file[0]' => 'Are_You_My_Sister.mp3',
-			'download_dir' => $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias,
+			'download_dir' => $download_dir,
 				'preview_dir' => $preview_dir,
 				'file_preview' => 'sister-preview.mp3',
 				'file_preview_2' => 'sister-preview.ogg',

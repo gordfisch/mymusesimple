@@ -488,21 +488,43 @@ class MyMuseModelProduct extends JModelItem
 					
 					$jason = json_decode($track->file_name);
 					if(is_array($jason)){
-						$track->file_name = $jason;
+						$track->file_name = $jason[0]->file_name;
+						$track->file_alias = $jason[0]->file_alias;
 					}
-					
 					if($params->get('my_encode_filenames')){
 						$track->download_name = $track->title_alias;
 					}else{
 						$track->download_name = $track->file_name;
 					}
 					
+					
 					//TO DO work with formats
+					
+					
+					
+					
 					//get download file NOTE NOT available while using Amazon s3
 					if(!$params->get('my_use_s3',0) && !is_array($track->file_name)){
-						$down_dir = str_replace($root,'',$params->get('my_download_dir'));
-						$track->download_path = $site_url.$track->download_name;
-						$track->download_real_path = $site_path.$track->download_name;
+						$track->download_path = MyMuseHelper::getDownloadPath($track->parentid, 1);
+						
+						
+						$jason = json_decode($track->file_name);
+						if(is_array($jason)){
+							$track->file_name = $jason[0]->file_name;
+							$track->file_alias = isset($jason[0]->file_alias)? $jason[0]->file_alias : '';
+						}
+						if($params->get('my_encode_filenames')){
+							$track->download_name = $track->title_alias;
+						}else{
+							$track->download_name = $track->file_name;
+						}
+						
+						
+						if(1 == $params->get('my_download_dir_format')){ //downloads by format
+							$ext = MyMuseHelper::getExt ( $track->download_name );
+							$track->download_path .= DS.$ext;
+						}
+						$track->download_real_path = $track->download_path . $track->download_name;me;
 							
 						if((!$track->price["product_price"] || $track->price["product_price"] == "FREE")
 								&& $params->get('my_play_downloads')){

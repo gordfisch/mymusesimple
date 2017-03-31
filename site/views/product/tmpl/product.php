@@ -559,7 +559,7 @@ endif; ?>
     <?php endif; ?>
     
     
-    	<?php  if ($params->get('show_intro')) : ?>
+    	<?php  if ($params->get('show_intro') && $product->introtext) : ?>
     	<ul class="product-content">
         <li class="product-content-item">
             <span class="category"><?php echo JText::_('MYMUSE_DESCRIPTION');?></span>

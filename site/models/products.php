@@ -169,7 +169,7 @@ class MyMuseModelProducts extends JModelList
 		$query->select(
 			$this->getState(
 				'list.select',
-				'a.id, a.title, a.alias, a.title_alias, a.introtext, a.product_sku,' .
+				'a.id as my_product_id, a.id, a.title, a.alias, a.title_alias, a.introtext, a.product_sku,' .
 				'a.metakey, a.metadesc, a.access, a.hits, a.metadata, a.product_special, ' .
 				'a.checked_out, a.checked_out_time, a.list_image, a.detail_image, a.price,' .
 				'a.product_discount, a.catid, a.artistid, a.created, a.created_by, a.created_by_alias, ' .
@@ -278,8 +278,8 @@ class MyMuseModelProducts extends JModelList
 i.product_name, CASE WHEN parentid > 0 THEN parentid ELSE product_id END as all_id
 FROM #__mymuse_order_item as i
 LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
-GROUP BY i.product_id ) 
-as x GROUP BY x.all_id) as s ON s.product_id = a.id");
+GROUP BY i.product_id,i.product_name ) 
+as x GROUP BY x.all_id, x.product_name, x.product_id) as s ON s.product_id = a.id");
 
 		// Filter by published state
 		$published = $this->getState('filter.published');
@@ -338,6 +338,7 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 			$includeSubcategories = $this->getState('filter.subcategories', false);
 			
 			$categoryEquals = 'a.catid '.$type.(int) $categoryId;
+			$artistEquals = 'a.artistid '.$type.(int) $categoryId;
 
 			//ARBORETA
 			//get other sub cats
@@ -396,10 +397,13 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 				}
 
 				// Add the subquery to the main query
-				$query->where('('.$categoryEquals.' OR a.catid IN ('.$subQuery->__toString().') OR a.id IN '.$IN.')');
+				$query->where('('.$categoryEquals.' OR '. $artistEquals .' 
+						OR a.catid IN ('.$subQuery->__toString().') 
+						OR a.artistid IN ('.$subQuery->__toString().')
+						OR a.id IN '.$IN.')');
 			}
 			else {
-				$query->where('('.$categoryEquals.' OR a.id IN '.$IN.')');
+				$query->where('('.$categoryEquals.' OR  '. $artistEquals .' OR a.id IN '.$IN.')');
 			}
 			
 			
@@ -560,7 +564,7 @@ as x GROUP BY x.all_id) as s ON s.product_id = a.id");
 		a.metadesc, a.access, a.hits, a.featured, a.fulltext, a.state, a.publish_down, badcats.id, 
 		c.title, c.path, c.access, c.alias, uam.id, ua.name, ua.email, contact.id, parent.title, 
 		parent.id, parent.path, parent.alias, v.rating_sum, v.rating_count, c.published, c.lft, 
-		a.ordering, parent.lft,  c.id, a.urls');
+		a.ordering, parent.lft,  c.id, a.urls, s.sales');
 
 		return $query;
 	}

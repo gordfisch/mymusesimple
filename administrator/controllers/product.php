@@ -559,7 +559,9 @@ class MymuseControllerProduct extends JControllerForm
     {
     	
     	$model = $this->getModel('product');
-    	$model->import_products();
+    	if(!$model->import_products()){
+    		return false;
+    	}
     
     }
     

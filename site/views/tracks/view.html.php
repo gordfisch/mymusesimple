@@ -40,7 +40,6 @@ class mymuseViewtracks extends JViewLegacy
 		$params		= $state->params;
 
 		$category	= $this->get('Category');
-		
         $products   = $this->get('Products');// sets list.prods for tracks query
     
         $MyMuseCart =& MyMuse::getObject('cart','helpers');
@@ -77,19 +76,20 @@ class mymuseViewtracks extends JViewLegacy
 
 		//items!
         $result = $this->get('Items');
-        $items = $result[0];
-
-        $category->flash = $result[1]->flash;
-        $pagination = $result[2];
-        
-        if($params->get('show_alphabet')){
-			$alpha = array ();
-			$alphabet = explode ( ":", JText::_ ( 'MYMUSE_ALPHABET' ) );
-			$IN = $state->get ( 'list.prods', '' );
-			$featured = $params->get ( 'featured', '0' );
+        if($result){
+			$items = $result [0];
 			
-			foreach ( $alphabet as $letter ) {
-				$query = "SELECT count(*) as total
+			$category->flash = $result [1]->flash;
+			$pagination = $result [2];
+			
+			if ($params->get ( 'show_alphabet' )) {
+				$alpha = array ();
+				$alphabet = explode ( ":", JText::_ ( 'MYMUSE_ALPHABET' ) );
+				$IN = $state->get ( 'list.prods', '' );
+				$featured = $params->get ( 'featured', '0' );
+				
+				foreach ( $alphabet as $letter ) {
+					$query = "SELECT count(*) as total
             FROM #__mymuse_product as a
             LEFT JOIN #__mymuse_product as p ON a.parentid = p.id
             LEFT JOIN #__categories as c ON a.artistid = c.id
@@ -103,41 +103,47 @@ class mymuseViewtracks extends JViewLegacy
 			AND sub.rgt < this.rgt WHERE this.id = " . $category->id . ") 
 			OR a.id IN (0)) 
             ";
-				//echo $query."<br />";
-				if ($featured) {
-					$query .= " AND a.featured=1
+					// echo $query."<br />";
+					if ($featured) {
+						$query .= " AND a.featured=1
             	";
+					}
+					
+					$db->setQuery ( $query );
+					$total = $db->loadResult ();
+					/**
+					 * $total = 0;
+					 * foreach($items as $item){
+					 * //echo $item->category_name."<br />";
+					 * if(strtolower($letter) == strtolower(mb_substr($item->category_name, 0, 1))){
+					 * $total = 1;
+					 *
+					 * }
+					 * }
+					 */
+					
+					$class = "";
+					if ($filter_alpha == $letter) {
+						$class = "selected";
+					}
+					if ($total) {
+						$alpha [] = '<a class="letter ' . $class . '" href="' . JRoute::_ ( 'index.php?option=com_mymuse&view=tracks&layout=alphatunes&id=' . $category->id . '&filter_alpha=' . $letter . '&Itemid=' . $this->Itemid ) . '">' . $letter . '</a>';
+					} else {
+						$alpha [] = '<span class="letter">' . $letter . '</span>';
+					}
 				}
-				
-				$db->setQuery ( $query );
-				$total = $db->loadResult ();
-				/**
-				 * $total = 0;
-				 * foreach($items as $item){
-				 * //echo $item->category_name."<br />";
-				 * if(strtolower($letter) == strtolower(mb_substr($item->category_name, 0, 1))){
-				 * $total = 1;
-				 *
-				 * }
-				 * }
-				 */
-				
-				$class = "";
-				if ($filter_alpha == $letter) {
-					$class = "selected";
-				}
-				if ($total) {
-					$alpha [] = '<a class="letter ' . $class . '" href="' . JRoute::_ ( 'index.php?option=com_mymuse&view=tracks&layout=alphatunes&id=' . $category->id . '&filter_alpha=' . $letter . '&Itemid=' . $this->Itemid ) . '">' . $letter . '</a>';
-				} else {
-					$alpha [] = '<span class="letter">' . $letter . '</span>';
-				}
+				$this->assignRef ( 'alpha', $alpha );
+				$this->filterAlpha = $jinput->get ( 'filter_alpha', '' );
 			}
-			$this->assignRef ( 'alpha', $alpha );
-			$this->filterAlpha = $jinput->get( 'filter_alpha', '' );
+			$this->total = $this->get ( 'Total' );
+			$this->limit = $params->get ( 'display_num', 10 );
+        }else{
+        	$app->enQueueMessage(JText::_('MYMUSE_NO_PRODUCTS'));
+        	return false;
         }
-		$this->total = $this->get('Total');
-		$this->limit = $params->get('display_num', 10);
-
+        
+        
+        
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
 			JError::raiseError(500, implode("\n", $errors));

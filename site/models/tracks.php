@@ -127,7 +127,8 @@ class MyMuseModelTracks extends JModelList
 		}
 
 		//over ride primary if we have filter request
-		$filter_order	= $jinput->get('filter_order', '');
+		$filter_order	= $jinput->get('filter_order', 'category_name');
+
 		if ($filter_order){
 			if(!in_array($filter_order, $this->filter_fields)) {
 				$filter_order = 'category_name';
@@ -174,7 +175,7 @@ class MyMuseModelTracks extends JModelList
 			$this->setState('filter.access', false);
 		}
         
-        		// set the depth of the category query based on parameter
+        // set the depth of the category query based on parameter
 		$showSubcategories = $params->get('show_subcategory_content', '0');
 		if ($showSubcategories) {
 			$this->setState('filter.max_category_levels', $params->get('show_subcategory_content', '1'));
@@ -250,7 +251,7 @@ class MyMuseModelTracks extends JModelList
 
        // TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS 
         // get child tracks with prices
-        $query = "SELECT a.id, a.title, a.title_alias,a.alias, a.introtext, a.fulltext, a.parentid, a.product_physical, 
+        $query = "SELECT a.id as my_track_id,a.id, a.title, a.title_alias,a.alias, a.introtext, a.fulltext, a.parentid, a.product_physical, 
         a.product_downloadable, a.product_allfiles, a.product_sku, a.hits,
         a.price, a.featured, a.product_discount, a.product_package_ordering, a.file_downloads,
         a.product_package,
@@ -281,7 +282,6 @@ class MyMuseModelTracks extends JModelList
     
         if($params->get('category_match_level') == "track"){
         	
-        	
         	if($this->getState('filter.subcategories')){
         		$cats = array();
         		$cats[] = $categoryId;
@@ -298,17 +298,6 @@ class MyMuseModelTracks extends JModelList
         		WHERE xref.catid = $categoryId ";
         	}
         		
-        	
-        	
-            // get prodids from xref for the top level cat
-			//$subQuery = "SELECT product_id FROM #__mymuse_product_category_xref WHERE catid = ".$categoryId;
-			//$db->setQuery($subQuery);
-			//$pids = $db->loadObjectList();
-			//foreach($pids as $pid){
-			//	$in[] = $pid->product_id;
-			//}
-			//$IN = "(".implode(",",$in).")";
-			//$query .= "WHERE a.id IN $IN ";
 		}else{			
         		
         	$query .= " WHERE a.parentid IN ".$IN ." ";
@@ -339,6 +328,7 @@ class MyMuseModelTracks extends JModelList
         	$query .= " ".$params->get('group_by',0)."
         	";
         }
+
         $orderby = "ORDER BY $ordering $listDirn
         ";
         if($secondaryOrder){
@@ -395,7 +385,7 @@ class MyMuseModelTracks extends JModelList
 			}
 
 		}
-        
+  
 		$IN = '(';
 		foreach($this->_products as $p){
 			$IN .= $p->id.',';
@@ -469,7 +459,10 @@ class MyMuseModelTracks extends JModelList
 	public function getItems()
 	{
 		
-
+		if($this->getState('list.prods','') == "()"){
+			return array();
+		}
+		
 		$params = MyMuseHelper::getParams();
 		$tracks	= parent::getItems();
 
@@ -538,19 +531,30 @@ class MyMuseModelTracks extends JModelList
 				}
 				$track->params = clone $this->getState ( 'params' );
 				
-				$artist_alias = $track->category_alias;
-				$album_alias = $track->parent_alias;
 				
-				// get download file
-				if ($params->get ( 'my_encode_filenames' )) {
+				// get download path for first variation
+				$track->download_path = MyMuseHelper::getDownloadPath($track->parentid, 1);
+				$jason = json_decode($track->file_name);
+				if(is_array($jason)){
+					$track->file_name = $jason[0]->file_name;
+					$track->file_alias = isset($jason[0]->file_alias)? $jason[0]->file_alias : '';
+				}
+				if($params->get('my_encode_filenames')){
 					$track->download_name = $track->title_alias;
-				} else {
+				}else{
 					$track->download_name = $track->file_name;
 				}
 				
-				$down_dir = str_replace ( $root, '', $params->get ( 'my_download_dir' ) );
-				$track->download_path = JURI::base () . '/' . $down_dir . '/' . $artist_alias . '/' . $album_alias . '/' . $track->download_name;
-				$track->download_real_path = $params->get ( 'my_download_dir' ) . DS . $artist_alias . DS . $album_alias . DS . $track->download_name;
+				
+				if(1 == $params->get('my_download_dir_format')){ //downloads by format
+					$ext = MyMuseHelper::getExt ( $track->download_name );
+					$track->download_path .= DS.$ext;
+				}
+				$track->download_real_path = $track->download_path . $track->download_name;
+				
+				
+				
+				
 				
 				if ((! $track->price ["product_price"] || $track->price ["product_price"] == "FREE") && $params->get ( 'my_play_downloads' )) {
 					$track->file_preview = 1;
@@ -584,10 +588,7 @@ class MyMuseModelTracks extends JModelList
 		}
 		
         $dispatcher		= JDispatcher::getInstance();
-        //$prev_dir = $site_url.str_replace($root,'',$params->get('my_preview_dir'));
-        $prev_dir = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base());
-        $prev_dir .= $params->get('my_use_s3')? '' :  $params->get('my_preview_dir');
-         
+        
 
         if(count($preview_tracks) && 
         		($params->get('product_player_type') == "each" || 
@@ -603,24 +604,23 @@ class MyMuseModelTracks extends JModelList
                     continue;
                 }
                 
-                $artist_alias = $track->artist_alias;
-				$album_alias = $track->parent_alias;
-			
                 $flash = '';
                 $track->purchased = 0;
                 //echo "artist alias $album_alias $artist_alias";
                 if($track->file_preview){
-
-                    $track->path = $prev_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->file_preview;
-                    $track->real_path = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview;
+                	$prev_url 		= MyMuseHelper::getSiteUrl($track->parentid, 1);
+                	$prev_path 		= MyMuseHelper::getSitePath($track->parentid, 1);
+                    $track->path = $prev_url.$track->file_preview;
+                    $track->real_path = $prev_path .$track->file_preview;
                     if($track->file_preview_2){
-                        $track->path_2 = $prev_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->file_preview_2;
-                        $track->real_path_2 = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview_2;
+                        $track->path_2 = $prev_url.$track->file_preview_2;
+                        $track->real_path_2 = $track->real_path.$track->file_preview_2;
                     }
                     if($track->file_preview_3){
-                        $track->path_3 = $prev_dir.'/'.$artist_alias.'/'.$album_alias.'/'.$track->file_preview_3;
-                        $track->real_path_3 = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview_3;
+                        $track->path_3 = $prev_url.$track->file_preview_3;
+                        $track->real_path_3 = $track->real_path.$track->file_preview_3;
                     }
+                    
                     
                     //should we use the real download file?
                     if(!$params->get('my_use_s3') && $params->get('my_play_downloads', 0) && in_array($track->id, $myOrders)){

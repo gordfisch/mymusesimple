@@ -341,16 +341,7 @@
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
             </field>
-            <field
-                name="my_use_string_url_safe"
-                type="radio"
-                label="MYMUSE_STR_URL_SAFE_LABEL"
-                description="MYMUSE_STR_URL_SAFE_DESC"
-                class="btn-group"
-                default="1">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>
-            </field>
+            
         <field
                 name="my_use_s3"
                 type="radio"
@@ -421,7 +412,16 @@
             
 	</fieldset>
 	<fieldset name="uploads" label="MYMUSE_UPLOADS_LABEL">
-  			
+  		<field
+                name="my_use_string_url_safe"
+                type="radio"
+                label="MYMUSE_STR_URL_SAFE_LABEL"
+                description="MYMUSE_STR_URL_SAFE_DESC"
+                class="btn-group"
+                default="1">
+                <option value="0">MYMUSE_NO</option>
+				<option value="1">MYMUSE_YES</option>
+            </field>
 		<field 
 		  		name="my_plupload_runtime" 
 		  		type="list" 

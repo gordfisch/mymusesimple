@@ -25,7 +25,7 @@ $item_params->loadString($item->params);
 		$class = ' class="last"';
 	}
 	?>
-	<li<?php echo $class; ?>>
+	<li <?php echo $class; ?>>
 	<?php $class = ''; ?>
 		<span class="item-title"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($item->id));?>">
 			<?php echo $this->escape($item->title); ?></a> 
@@ -59,6 +59,7 @@ alt="<?php echo htmlspecialchars($item_params->get('image')); ?>" border="0" /><
 		
 
 		<?php if (count($item->getChildren()) > 0) :
+
 			$this->items[$item->id] = $item->getChildren();
 			$this->parent = $item;
 			$this->maxLevelcat--;

@@ -132,7 +132,7 @@ class mymuseViewCategories extends JViewLegacy
 		LEFT JOIN #__mymuse_product_category_xref as x
 		ON p.id=x.product_id
 		WHERE
-		(x.catid IN ($catids) OR p.catid IN ($catids) )
+		(x.catid IN ($catids) OR p.catid IN ($catids) OR p.artistid IN ($catids) )
 		
 		AND
 		(p.publish_up = ".$nullDate." OR p.publish_up <= ".$nowDate.")
