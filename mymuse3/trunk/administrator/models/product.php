@@ -1358,19 +1358,22 @@ class MymuseModelproduct extends JModelAdmin
 		$q = "SELECT id from #__categories where alias='genres'";
 		$db->setQuery($q);
 		$catid_genre = $db->loadResult();
+		
 		if(!$limitstart){
 			JFile::delete(JPATH_ADMINISTRATOR .DS.'components'.DS.'com_mymuse'.DS.'log.html');
 		}
 		$artists = JFolder::folders($path, '.');
-		
+		if(!file_exists($path)){
+			//echo "Missing $path";
+			$app->enqueueMessage("Missing $path", 'error');
+			return false;
+		}
 
 		//$files = JFolder::files($path, '.', false, true );
 		
 		$clear = JRequest::getVar('clear','0');
 	
 		if($clear){
-			
-			
 			$good = 0;
 			$q = "SELECT id from #__categories where parent_id='$catid_artist' OR parent_id='$catid_genre'";
 		echo $q."<br />";

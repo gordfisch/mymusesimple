@@ -28,6 +28,21 @@
 <fields name="params">
 <fieldset name="basic" label="JGLOBAL_CATEGORY_OPTIONS">
 
+		<field 
+			name="show_subcategory_content" 
+			type="list"
+			description="MYMUSE_SHOW_SUBCATEGORY_CONTENT_DESC"
+			label="MYMUSE_SHOW_SUBCATEGORY_CONTENT_LABEL"
+		>	<option value="">JGLOBAL_USE_GLOBAL</option>
+			<option value="0">JNONE</option>
+			<option value="-1">JALL</option>
+			<option value="1">J1</option>
+			<option value="2">J2</option>
+			<option value="3">J3</option>
+			<option value="4">J4</option>
+			<option value="5">J5</option>
+		</field>
+		
 			<field name="show_category_title" type="list"
 				label="JGLOBAL_SHOW_CATEGORY_TITLE"
 				description="JGLOBAL_SHOW_CATEGORY_TITLE_DESC"
@@ -65,6 +80,19 @@
 	 			label="MYMUSE_CATEGORY_IMAGE_HEIGHT" 
 	 			description="MYMUSE_CATEGORY_IMAGE_HEIGHT_DESC">
 	 		</field>
+	 		
+	 		<field 
+			name="category_match_level"
+			type="radio"
+			class="btn-group"
+			default="product"
+			label="MYMUSE_CATEGORY_MATCH_LEVEL_LABEL"
+			description="MYMUSE_CATEGORY_MATCH_LEVEL_DESC"
+		>
+			<option value="">JGLOBAL_USE_GLOBAL</option>
+			<option value="product">MYMUSE_CATEGORY_MATCH_PRODUCT</option>
+			<option value="track">MYMUSE_CATEGORY_MATCH_TRACK</option>
+		</field>
 
 </fieldset>
 

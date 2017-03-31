@@ -218,9 +218,8 @@ class MymuseTableproduct extends JTable
         	$this->id = $this->_id	= isset( $form['id'] )? $form['id'] : '' ;
 		}
 		
-		$this->file_preview = isset($post['current_preview'])? $post['current_preview'] : $this->file_preview;
-		$this->file_preview_2 = isset($post['current_preview_2'])? $post['current_preview_2'] : $this->file_preview_2;
-		$this->file_preview_3 = isset($post['current_preview_3'])? $post['current_preview_3'] : $this->file_preview_3;
+		
+		
 		$this->version = isset($form['version'])? $form['version'] +1 : 1;
 
 		if ($this->id) {
@@ -264,6 +263,7 @@ class MymuseTableproduct extends JTable
         	$artist_alias = MyMuseHelper::getArtistAlias($this->parentid, 1);
         	$album_alias = MyMuseHelper::getAlbumAlias($this->parentid, 1);
         	$download_path = MyMuseHelper::getdownloadPath($this->parentid,1);
+        	
         }else{
         	$artist_alias = MyMuseHelper::getArtistAlias($this->id, 1);
         	$album_alias = $this->alias;
@@ -337,7 +337,9 @@ class MymuseTableproduct extends JTable
 					} else {
 						$name = $current_files[0]->file_name;
 					}
-					
+					if(1 == $params->get('my_download_dir_format')){ //downloads by format
+						$download_path .= DS.$ext;
+					}
 					$new_file = $download_path . DS . $name;
 					
 					if (! $this->fileUpload ( $tmpName, $new_file )) {
@@ -465,6 +467,16 @@ class MymuseTableproduct extends JTable
 		}
 		
 		// Previews
+		
+		//from select boxes
+		$this->file_preview = isset($post['current_preview'])? $post['current_preview'] : $this->file_preview;
+		$this->file_preview_2 = isset($post['current_preview_2'])? $post['current_preview_2'] : $this->file_preview_2;
+		$this->file_preview_3 = isset($post['current_preview_3'])? $post['current_preview_3'] : $this->file_preview_3;
+		if($params->get('my_use_sring_url_safe')){
+			
+			
+		}
+		
 		//check for errors with upload previews
 		if(isset($_FILES['product_preview']['name']) && $_FILES['product_preview']['name'] != ""){
 			if(isset($_FILES['product_preview']['error']) && $_FILES['product_preview']['error'])
@@ -489,7 +501,7 @@ class MymuseTableproduct extends JTable
 		}
 		
 		
-		$path = ($params->get('my_use_s3')? '' : JPATH_ROOT.DS) . $params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS;
+		$path = MyMuseHelper::getSitePath($parentid, 1);
 		// Previews 1
 	
 		if(!$this->managePreview('preview', $path)){
@@ -720,13 +732,13 @@ class MymuseTableproduct extends JTable
 		//upload a file
 		if(isset($_FILES[$preview_name]) && $_FILES[$preview_name]['size'] >  0){
 			$ext = MyMuseHelper::getExt($_FILES[$preview_name]['name']);
-			$_FILES[$preview_name]['name'] = preg_replace("/$ext$/","",$_FILES[$preview_name]['name']);
+			$_FILES[$preview_name]['name'] = preg_replace("/\.$ext$/","",$_FILES[$preview_name]['name']);
 			if($params->get('my_use_sring_url_safe')){
 				$this->$file_preview_name = JFilterOutput::stringURLSafe($_FILES[$preview_name]['name']).'.'.$ext;
 			}else{
 				$this->$file_preview_name = $_FILES[$preview_name]['name'].'.'.$ext;
 			}
-			
+			echo $this->$file_preview_name; exit;
 			$tmpName  = $_FILES[$preview_name]['tmp_name'];
 			 
 			$new = $path.$this->$file_preview_name;

@@ -116,7 +116,7 @@ method="post" name="adminForm" id="store-form" class="form-validate">
 						<?php 
 						echo $field->renderField(); ?>
 									
-									<?php if($field->name == "jform[params][my_notes_msg]" || $field->name == "jform[params][my_use_string_url_safe]") :
+									<?php if($field->name == "jform[params][my_notes_msg]" || $field->name == "jform[params][my_previews_in_one_dir]") :
 									?></div><div class="span6 float-right"><?php
 									endif;
 									

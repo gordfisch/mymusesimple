@@ -383,21 +383,17 @@ class myMuseViewStore extends JViewLegacy
         		if($params->get('my_download_dir_format') == 1){
         			//by format
         			$ext = MyMuseHelper::getExt($filename);
-        			$download_path .= $ext;
+        			$download_path .= $ext.DS;
         		
        		}
         		
         		$full_filename = $download_path.$filename;
-        		$full_filename1 = $full_filename;
 
         		if(!file_exists($full_filename)){
-        			//try with the root
-        			$full_filename = JPATH_ROOT.DS.$params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$filename;
-        		}
-        		if(!file_exists($full_filename)){
+        			echo $full_filename; exit;
         			$message = JText::_('MYMUSE_NO_FILE_FOUND')." ";
         			if($params->get('my_debug')){
-        				$message .= ": ".$full_filename1;
+        				$message .= ": ".$full_filename;
         			}
         			$jinput->set('msg',$message);
         			return false;
