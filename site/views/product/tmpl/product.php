@@ -142,7 +142,7 @@ if(count($params->get('my_formats') > 1) && $params->get('my_price_by_product'))
     	$js .= 'jQuery('.$params->get('my_formats')[$i].'_id).hide();'."\n";
 	}   		
 	$js .= '
-			alert(formats[jQuery(select_id).val()]+"_"+id);
+			//alert(formats[jQuery(select_id).val()]+"_"+id);
 			jQuery("#"+formats[jQuery(select_id).val()]+"_"+id).show();'."\n}";
 }
 
@@ -834,7 +834,9 @@ endif; ?>
 
 		
 
-<?php if(count($tracks)) : ?>
+<?php if(count($tracks)) : 
+
+?>
 <!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
 		<h3><?php echo JText::_('MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
 
@@ -987,20 +989,21 @@ endif; ?>
         				</td>
         			<?php endif; ?>
         			
-					<!--  COST COLUMN -->
+					<!--  PRICE COLUMN -->
         			<?php  if($params->get('product_show_cost_column', 1)) :?>	
         				<td class="myprice">
         				<?php 
         				if("1" == $params->get('my_price_by_product')) :
         					$first = 1;
+        					
 							foreach($this->params->get('my_formats') as $format) :
-								$product_price = 'product_price_'.$format;
+								$product_price = $track->price[$format];
         						echo '<div id="'.$format.'_'.$track->id.'" class="price"';
         						if(!$first):
         							echo ' style="display:none" ';
       							endif;
       							$first = 0;
- 								echo '>'.MyMuseHelper::printMoneyPublic($$product_price).'</div>';
+ 								echo '>'.MyMuseHelper::printMoneyPublic($product_price).'</div>';
  							endforeach;
  							
         				elseif($params->get('my_free_downloads') && isset($track->free_download) && $track->free_download) :

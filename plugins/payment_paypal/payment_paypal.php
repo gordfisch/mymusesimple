@@ -149,6 +149,12 @@ class plgMymusePayment_Paypal extends JPlugin
 		//$path = JURI::root(true);
 		$return = 'index.php?option=com_mymuse&task=thankyou&view=cart&pp=paypal&st=Completed&Itemid='.$Itemid;
 		$return = JURI::root().$return;
+		
+		$path = JURI::root(true);
+		$return = JRoute::_('index.php?option=com_mymuse&task=thankyou&view=cart&pp=paypal&st=Completed&Itemid='.$Itemid);
+		$return = rtrim(JURI::root(),"/").preg_replace("#$path#",'',$return);
+		
+		
 		$cancel_return = JRoute::_('index.php?option=com_mymuse&task=paycancel&view=cart&Itemid='.$Itemid);
 		$cancel_return = JURI::root().$cancel_return;
 		

@@ -34,7 +34,6 @@ class mymuseViewtracks extends JViewLegacy
 		$app 	= JFactory::getApplication();
 		$menu 	= $app->getMenu()->getActive()->id;
 
-		
 		// Get some data from the models
 		$state		= $this->get('State');
 		$params		= $state->params;
@@ -167,7 +166,22 @@ class mymuseViewtracks extends JViewLegacy
 			return JError::raiseError(403, JText::_('JERROR_ALERTNOAUTHOR'));
 		}
 
-
+		//if multiple variations, create select box
+		for($i=0; $i < count($items); $i++){
+			if(is_array($items[$i]->file_name) && count($items[$i]->file_name) > 1){
+				$items[$i]->variation_select = '<select name="variation['.$items[$i]->id.']"
+						id = "variation_'.$items[$i]->id.'_id" class="inputbox variation_select" style="width: 5em;"
+						onchange="javascript:flip_price(\''.$items[$i]->id.'\')"
+						>
+								';
+				for($j = 0; $j < count($items[$i]->file_name); $j++){
+					$items[$i]->variation_select .= '<option value="'.$j.'">'
+							.$items[$i]->file_name[$j]->file_ext.'</option>'."\n";
+				}
+				$items[$i]->variation_select .= "</select>";
+			}
+				
+		}
 
 		//Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($params->get('pageclass_sfx'));

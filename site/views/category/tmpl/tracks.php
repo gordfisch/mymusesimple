@@ -64,7 +64,7 @@ if("1" == $this->params->get('my_price_by_product')){//price by product
 }
 
 $all_tracks = 0;
-if(count($tracks)){ 
+if(is_array($tracks) && count($tracks)){ 
     foreach($tracks as $track){ 
         if($track->product_allfiles == 1){
             $all_tracks = $track;
@@ -222,22 +222,23 @@ if(count($params->get('my_formats') > 1) && $params->get('my_price_by_product'))
         
 
 $url = JURI::Root()."index.php?option=com_mymuse&task=ajaxtogglecart";
-foreach($tracks as $track){
-
-	$js .= '
+if(is_array($tracks && count($tracks))){
+	foreach ( $tracks as $track ) {
+		
+		$js .= '
 	jQuery(document).ready(function($){
-		$("#box_'.$track->id.'").click(function(e){
-			if(typeof document.mymuseform.variation_'.$track->id.'_id !== "undefined"){	
-				myvariation = document.mymuseform.variation_'.$track->id.'_id.value;
+		$("#box_'. $track->id . '").click(function(e){
+			if(typeof document.mymuseform.variation_' . $track->id . '_id !== "undefined"){	
+				myvariation = document.mymuseform.variation_' . $track->id . '_id.value;
 				//alert("variation = "+myvariation);
 
 			}else{
 				myvariation = 0;
 			}
-            $.post("'.$url.'",
+            $.post("' . $url . '",
             {
-                "productid":"'.$track->id.'",
-                "variation['.$track->id.']":myvariation
+                "productid":"' . $track->id . '",
+                "variation[' . $track->id . ']":myvariation
                 		
             },
             function(data,status)
@@ -249,9 +250,9 @@ foreach($tracks as $track){
                 action = res.action;
                 //alert(res.msg);
                 if(action == "deleted"){
-                    $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/checkbox.png");
+                    $("#img_' . $track->id . '").attr("src","' . JURI::root () . '/components/com_mymuse/assets/images/checkbox.png");
                 }else{
-                    $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/cart.png");
+                    $("#img_' . $track->id . '").attr("src","' . JURI::root () . '/components/com_mymuse/assets/images/cart.png");
                 }
                 if(idx){
                     if(idx == 1){
@@ -259,14 +260,14 @@ foreach($tracks as $track){
                     }else{
                         txt = idx+" "+"items";
                     }
-                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>\';
+                    link = \'' . '<a href="' . JRoute::_ ( 'index.php?option=com_mymuse&task=showcart&view=cart&Itemid=' . $Itemid ) . '">' . JText::_ ( 'MYMUSE_VIEW_CART' ) . '</a>\';
                     //alert(txt+" "+"mini-cart-text");
                     $("#mini-cart-text").html(txt);
                     $("#mini-cart-link").html(link);
                 }else{
 
                     $("#mini-cart-text").html(" ");
-                    $("#mini-cart-links").html("'.JText::_('MYMUSE_YOUR_CART_IS_EMPTY').'");
+                    $("#mini-cart-links").html("' . JText::_ ( 'MYMUSE_YOUR_CART_IS_EMPTY' ) . '");
                 }
                 my_modal.open({content: msg+"<br />"+link, width: 300 });
             });
@@ -276,7 +277,7 @@ foreach($tracks as $track){
 
 	';
 	}
-	
+}	
 
 $document->addScriptDeclaration($js);
 
@@ -286,7 +287,7 @@ $document->addScriptDeclaration($js);
 <?php //echo $this->item->event->beforeDisplayHeader; ?>
 
 <?php if ($this->params->get('show_page_heading', 0)) : ?>
-	<h1>
+<h1>
 	<?php echo $this->escape($this->params->get('page_heading','')); ?>
 	</h1>
 <?php endif; ?>
@@ -296,40 +297,41 @@ $document->addScriptDeclaration($js);
 <!--  INLINE PARENT  -->
 <?php  if($this->parent->id > 0){	?>
 <div id="parent">
-<div class="mini-cart-top">
-<div class="mini-cart-content">
-<div class="mini-cart-parent-text">
-<a href="<?php echo JRoute::_("index.php?option=com_mymuse&view=category&layout=alpha&id=".$this->parent->id); ?>">
+	<div class="mini-cart-top">
+		<div class="mini-cart-content">
+			<div class="mini-cart-parent-text">
+				<a
+					href="<?php echo JRoute::_("index.php?option=com_mymuse&view=category&layout=alpha&id=".$this->parent->id); ?>">
 <?php echo $this->parent->title; ?></a>
-</div>
-</div>
-</div>
+			</div>
+		</div>
+	</div>
 </div>
 <?php }?>
 <!--  END INLINE PARENT  -->
 
-	
+
 <?php if($this->params->get('show_minicart')) :?>
 <!--  INLINE MINICART  -->
 <div id="mini-cart">
-<div class="mini-cart-top">
-<div class="mini-cart-content">
-<div class="mini-cart-cart"></div>
-<div class="mini-cart-text"><?php
+	<div class="mini-cart-top">
+		<div class="mini-cart-content">
+			<div class="mini-cart-cart"></div>
+			<div class="mini-cart-text"><?php
 if($this->cart['idx']) :
     $word = ($this->cart['idx'] == 1) ? "item" : "items"; 
     echo $this->cart['idx']." $word";
 endif;
 ?></div>
-<div class="mini-cart-link"><?php
+			<div class="mini-cart-link"><?php
 if($this->cart['idx']) :
     echo '<a href="'.JRoute::_('index.php?option=com_mymuse&view=cart&task=showcart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>';
 else :
     echo JText::_('MYMUSE_YOUR_CART_IS_EMPTY');
 endif;
 ?></div>
-</div>
-</div>
+		</div>
+	</div>
 </div>
 <!--  END INLINE MINICART  -->
 <?php  endif; ?>
@@ -337,27 +339,30 @@ endif;
 <?php 
 if ( ($this->params->get('filter_field') != 'hide' || $this->params->get('show_pagination_limit'))) : ?>
 <!--  FILTERS  -->
-	<form method="post" action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>" id="adminForm">
-	<input type="hidden" name="option" value="com_mymuse" />
-	<input type="hidden" name="view" value="category" />
-	<input type="hidden" name="catid" value="<?php echo $category->catid; ?>" />
-	<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
-	<input type="hidden" name="filter_order" value="<?php echo $this->sortColumn; ?>" />
-	<input type="hidden" name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
-	<input type="hidden" name="filter_alpha" value="<?php echo $this->filterAlpha; ?>" />	
+<form method="post"
+	action="<?php echo htmlspecialchars(JUri::getInstance()->toString()); ?>"
+	id="adminForm">
+	<input type="hidden" name="option" value="com_mymuse" /> <input
+		type="hidden" name="view" value="category" /> <input type="hidden"
+		name="catid" value="<?php echo $category->catid; ?>" /> <input
+		type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" /> <input
+		type="hidden" name="filter_order"
+		value="<?php echo $this->sortColumn; ?>" /> <input type="hidden"
+		name="filter_order_Dir" value="<?php echo $this->sortDirection; ?>" />
+	<input type="hidden" name="filter_alpha"
+		value="<?php echo $this->filterAlpha; ?>" />
 	<table class="mymuse_cart">
 		<tr>
 		<?php if ($this->params->get('filter_field') != 'hide') : ?>
-			<td align="left" width="60%" nowrap="nowrap">
-				Filter
-				<input type="text" name="searchword" value="<?php echo $this->escape($this->state->get('list.searchword')); ?>" 
-				style="width:80%"
-				onchange="this.start.value=0;this.form.submit();" />
+			<td align="left" width="60%" nowrap="nowrap">Filter <input
+				type="text" name="searchword"
+				value="<?php echo $this->escape($this->state->get('list.searchword')); ?>"
+				style="width: 80%" onchange="this.start.value=0;this.form.submit();" />
 			</td>
 		<?php endif; ?>
         
 		<?php if ($this->params->get('show_pagination_limit')) : ?>
-			<td  nowrap="nowrap">
+			<td nowrap="nowrap">
 			<?php
 				echo '&nbsp;&nbsp;&nbsp;'.JText::_('MYMUSE_DISPLAY_NUM').'&nbsp;';
 				echo $this->pagination->getLimitBox();
@@ -367,7 +372,7 @@ if ( ($this->params->get('filter_field') != 'hide' || $this->params->get('show_p
 		</tr>
 	</table>
 	<br />
-	</form>
+</form>
 <!--  END FILTERS  -->
 <?php endif; ?>
 
@@ -375,7 +380,7 @@ if ( ($this->params->get('filter_field') != 'hide' || $this->params->get('show_p
 <div class="clear"></div>
 <?php if ($canEdit ||  $params->get('show_print_icon') || $params->get('show_email_icon')) : ?>
 <!-- ICONS -->
-	<ul class="actions">
+<ul class="actions">
 	<?php if (!$this->print) : ?>
 		<?php if ($params->get('show_print_icon')) : ?>
 			<li class="print-icon">
@@ -412,7 +417,7 @@ endif; ?>
 <?php //echo $this->item->event->beforeDisplayProduct; ?>
 
 <!--  END HEADING -->
-	
+
 
 <?php $useDefList = (($params->get('show_author')) or ($params->get('show_category')) or ($params->get('show_parent_category'))
 	or ($params->get('show_create_date')) or ($params->get('show_modify_date')) or ($params->get('show_publish_date'))
@@ -420,7 +425,7 @@ endif; ?>
 
 <?php if ($useDefList) : ?>
 <!-- PRODUCT ATTRIBUTES -->
-	<dl class="article-info">
+<dl class="article-info">
 	<dt class="article-info-term"><?php  echo JText::_('MYMUSE_PRODUCT_INFO'); ?></dt>
 <?php endif; ?>
 <?php if ($params->get('show_parent_category') && $this->item->parent_slug != '1:root') : ?>
@@ -489,10 +494,10 @@ endif; ?>
 
 
 
-<!--  START PRODUCT VIEW -->	
+<!--  START PRODUCT VIEW -->
 <div class="mymuse">
 
-<!-- IMAGE  -->
+	<!-- IMAGE  -->
 
 
    
@@ -516,7 +521,7 @@ endif; ?>
 <!-- END IMAGE  -->
 
 
-<div class="product-content">
+	<div class="product-content">
 <?php if( $params->get('show_title') ): ?>
     <h2 class="product-title">
     <?php if($searchword){ ?>
@@ -532,19 +537,17 @@ endif; ?>
   
  <?php if( $params->get('show_rlease_info') ): ?>
  <!-- START RELEASE INFO  -->
-    <ul class="product-content">
+		<ul class="product-content">
 
-        <!--  PRODUCT ALL TRACKS -->
+			<!--  PRODUCT ALL TRACKS -->
         <?php if($all_tracks) : ?>
-        <li class="product-content-item-actions">
-            <span class="mypreviews tracks jp-gui ui-widget"><?php echo $tracks[0]->flash; ?></span>
-            <span class="value">
-                
-                <span class="product-full">
-                    <span class="product-full-title">
-                  <a href="javascript:void(0)" id="box_<?php echo $all_tracks->id; ?>">
+        <li class="product-content-item-actions"><span
+				class="mypreviews tracks jp-gui ui-widget"><?php echo $tracks[0]->flash; ?></span>
+				<span class="value"> <span class="product-full"> <span
+						class="product-full-title"> <a href="javascript:void(0)"
+							id="box_<?php echo $all_tracks->id; ?>">
                   <?php echo JText::_('MYMUSE_BUY_FULL_RELEASE'); ?> &#10010;</a>
-                    </span>
+					</span>
             <?php
             if($this->params->get('my_price_by_product')) :
                 foreach($params->get('my_formats') as $format) : 
@@ -569,20 +572,19 @@ endif; ?>
             		</span>
             <?php 
             endif;?>
-            </span>
-        </li>
+            </span></li>
       <?php endif;?>
   </ul>
-<br />  
+		<br />  
  <?php endif;?>   
     <ul class="product-content">
     	<?php  if ($params->get('show_intro')) : ?>
 
          <?php endif ?>
 
-  <!-- END RELEASE INFO --> 
-  
- <!-- START RECORDING INFO  -->
+  <!-- END RELEASE INFO -->
+
+			<!-- START RECORDING INFO  -->
  <?php if( $params->get('show_recording_details') ): ?>   
 
 <?php if ($this->item->product_made_date && $this->item->product_made_date > 0) : ?>
@@ -626,37 +628,41 @@ endif; ?>
 	
 <?php endif; ?>
  </div>
-<div style="clear: both"></div>
-<!-- END RECORDING INFO -->
-<div class="moduletable ">
-	<div class="search">
-	<form action="" method="get" class="form-inline">
-		<label for="mod-search-searchword" class="element-invisible">Type your search and press enter...</label> 
-        <input name="searchword" id="mod-search-searchword" maxlength="200" class="inputbox search-query" 
-        placeholder="Type your search and press enter..." type="search">		
-		<input name="option" value="com_mymuse" type="hidden">
-		<input name="Itemid" value="<?php echo $Itemid; ?>" type="hidden">
-        <input name="view" value="category" type="hidden">
-        <input name="catid" value="<?php echo $category->id; ?>" type="hidden">
-        <input name="id" value="<?php echo $category->id; ?>" type="hidden">
-        <input name="layout" value="tracks" type="hidden">
-        <input name="filter_order" value="a.ordering" type="hidden">
-        <input name="filter_order_Dir" value="" type="hidden">
-        <input name="filter_alpha" value="" type="hidden">
-        <input name="lang" value="en-GB" type="hidden">
-        <input name="language" value="en-GB" type="hidden">
-        <input name="limit" value="1000" type="hidden">
-	</form>
-</div>
-<form method="post" action="<?php JRoute::_('index.php?lang='.$langtag) ?>" onsubmit="return hasProduct(this,<?php echo $count; ?>);" name="mymuseform">
-<input type="hidden" name="option" value="com_mymuse" />
-<input type="hidden" name="task" value="addtocart" />
-<input type="hidden" name="catid" value="<?php echo $category->catid; ?>" />
-<input type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
+	<div style="clear: both"></div>
+	<!-- END RECORDING INFO -->
+	<div class="moduletable ">
+		<div class="search">
+			<form action="" method="get" class="form-inline">
+				<label for="mod-search-searchword" class="element-invisible">Type
+					your search and press enter...</label> <input name="searchword"
+					id="mod-search-searchword" maxlength="200"
+					class="inputbox search-query"
+					placeholder="Type your search and press enter..." type="search"> <input
+					name="option" value="com_mymuse" type="hidden"> <input
+					name="Itemid" value="<?php echo $Itemid; ?>" type="hidden"> <input
+					name="view" value="category" type="hidden"> <input name="catid"
+					value="<?php echo $category->id; ?>" type="hidden"> <input
+					name="id" value="<?php echo $category->id; ?>" type="hidden"> <input
+					name="layout" value="tracks" type="hidden"> <input
+					name="filter_order" value="a.ordering" type="hidden"> <input
+					name="filter_order_Dir" value="" type="hidden"> <input
+					name="filter_alpha" value="" type="hidden"> <input name="lang"
+					value="en-GB" type="hidden"> <input name="language" value="en-GB"
+					type="hidden"> <input name="limit" value="1000" type="hidden">
+			</form>
+		</div>
+		<form method="post"
+			action="<?php JRoute::_('index.php?lang='.$langtag) ?>"
+			onsubmit="return hasProduct(this,<?php echo $count; ?>);"
+			name="mymuseform">
+			<input type="hidden" name="option" value="com_mymuse" /> <input
+				type="hidden" name="task" value="addtocart" /> <input type="hidden"
+				name="catid" value="<?php echo $category->catid; ?>" /> <input
+				type="hidden" name="Itemid" value="<?php echo $Itemid; ?>" />
 
 <?php if(count($tracks)) : ?>
 <!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
-		<h3><?php echo JText::_('MYMUSE_TRACKS'); ?></h3>
+			<h3><?php echo JText::_('MYMUSE_TRACKS'); ?></h3>
 
 		<?php if($params->get('product_player_type') == "single") : ?>
 			<div id="product_player" 
@@ -666,35 +672,36 @@ endif; ?>
 			><?php echo $category->flash; ?>
 			
 			<?php if($category->flash) : ?>
-			<div><?php echo JText::_('MYMUSE_NOW_PLAYING');?> <span id="jp-title-li"></span></div>
+			<div><?php echo JText::_('MYMUSE_NOW_PLAYING');?> <span
+						id="jp-title-li"></span>
+				</div>
 			<?php endif; ?>
 			</div>
 		<?php endif; ?>
 		<?php if($params->get('product_player_type') == "playlist"){ ?>
-			<div id="product_player" ><?php echo $category->flash; ?>
+			<div id="product_player"><?php echo $category->flash; ?>
 			</div>
 			
 		<?php } ?>
 		<div style="clear: both"></div>
-		
-		<div class="" 
-		<?php if($params->get('product_player_type') == "each"){ ?>
-		id="product_player"
-		<?php } ?>
-		>
-			
-		<div class="track-count"><?php echo count($tracks); 
+
+			<div class=""
+				<?php if($params->get('product_player_type') == "each"){ ?>
+				id="product_player" <?php } ?>>
+
+				<div class="track-count"><?php echo count($tracks); 
         if(count($tracks) == 1){ $word = "Track"; }else{ $word = "Tracks";} ?> 
             <?php echo $word; ?> Total</div>
-            
-		<table class="mymuse_cart tracks">
-			<thead>
-		    <tr>
-        	<th class="mymuse_cart_top mytitle" align="center" width="40%">
+
+				<table class="mymuse_cart tracks">
+					<thead>
+						<tr>
+							<th class="mymuse_cart_top mytitle" align="center" width="40%">
         	<?php echo JHtml::_('grid.sort', 'MYMUSE_NAME', 'a.title', $listDirn, $listOrder); ?></th>
        		
        		<?php  if($params->get('product_show_artist', 0)) :?>
-       			<th class="mymuse_cart_top myartist" align="center" width="30%">
+       			<th class="mymuse_cart_top myartist" align="center"
+								width="30%">
        			<?php echo JHtml::_('grid.sort', 'MYMUSE_ARTIST', 'artist_name', $listDirn, $listOrder); ?></th>
        		<?php endif; ?>
        		
@@ -704,7 +711,8 @@ endif; ?>
        		<?php endif; ?>
        		
        		<?php  if($params->get('product_show_filesize', 0)) :?>
-       			<th class="mymuse_cart_top myfilesize" align="center" width="10%">
+       			<th class="mymuse_cart_top myfilesize" align="center"
+								width="10%">
        			<?php echo JHtml::_('grid.sort', 'MYMUSE_FILE_SIZE', 'ABS(file_length)', $listDirn, $listOrder); ?></th>
        		<?php endif; ?>
        		
@@ -714,7 +722,8 @@ endif; ?>
       		<?php endif; ?>
       		
       		<?php if($params->get('product_show_downloads', 0)) : ?>
-        		<th class="mymuse_cart_top mydownloads" align="left" width="10%">
+        		<th class="mymuse_cart_top mydownloads" align="left"
+								width="10%">
         		<?php echo JHtml::_('grid.sort', 'FILE_DOWNLOADS', 'file_downloads', $listDirn, $listOrder); ?></th>
       		<?php endif; ?>
        		
@@ -724,19 +733,20 @@ endif; ?>
        		<?php endif; ?>
             
             <?php if(count($params->get('my_formats')) > 1) :?>
-		    	<th class="mymuse_cart_top myselect" align="left" width="20%" ><?php echo JText::_('MYMUSE_FORMAT'); ?></th>
+		    	<th class="mymuse_cart_top myselect" align="left" width="20%"><?php echo JText::_('MYMUSE_FORMAT'); ?></th>
         	<?php endif;?>
             
             <?php  if($params->get('product_show_select_column', 1)) :?>
-		    	<th class="mymuse_cart_top myselect" align="left" width="20%" ><?php echo JText::_('MYMUSE_SELECT'); ?></th>
+		    	<th class="mymuse_cart_top myselect" align="left" width="20%"><?php echo JText::_('MYMUSE_SELECT'); ?></th>
         	<?php endif; ?>
 
        		<?php if($params->get('product_show_preview_column', 1) && $params->get('product_player_type') != "playlist") : ?>
-        		<th class="mymuse_cart_top mypreviews" align="left" width="10%"><?php echo JText::_('MYMUSE_PREVIEWS'); ?></th>
+        		<th class="mymuse_cart_top mypreviews" align="left"
+								width="10%"><?php echo JText::_('MYMUSE_PREVIEWS'); ?></th>
       		<?php endif; ?>
             
       		</tr>
-      		</thead>
+					</thead>
 
       		
       		<?php 
@@ -747,8 +757,8 @@ endif; ?>
              	?>
 			  		<tr>
 
-      				
-      				<!--  TITLE COLUMN -->	
+
+						<!--  TITLE COLUMN -->
 						<td class="mytitle"><?php echo $track->title; ?>
       						<?php if($track->product_allfiles == "1") : 
 								echo "(".JText::_("MYMUSE_ALL_TRACKS").")";
@@ -760,11 +770,10 @@ endif; ?>
       					
       				<?php  if($params->get('product_show_artist', 0)) :?>
       				<!-- ARTIST COLUMN -->
-      				<td class="myartist">
-        				<a href="<?php 
+						<td class="myartist"><a
+							href="<?php 
 						echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($track->artistid, true));?>">
-						<?php echo $track->artist_name ?></a>
-        			</td>
+						<?php echo $track->artist_name ?></a></td>
       				<?php endif; ?>	
       				
       				<!--  TIME COLUMN -->
@@ -832,9 +841,12 @@ endif; ?>
                     <?php endif; ?>
                     <!--  SELECT COLUMN -->
 			  		<?php  if($params->get('product_show_select_column', 1)) :?>
-        				<td class="myselect"  nowrap>
+        				<td class="myselect" nowrap>
                         <?php if($track->file_name || $track->product_allfiles) :?>
-                        <a href="javascript:void(0)" id="box_<?php echo $track->id; ?>"><img id="img_<?php echo $track->id; ?>" src="<?php
+                        <a href="javascript:void(0)"
+							id="box_<?php echo $track->id; ?>"><img
+								id="img_<?php echo $track->id; ?>"
+								src="<?php
                             if(in_array($track->id, $products)) :
                                 echo "components/com_mymuse/assets/images/cart.png";
                             else :
@@ -844,9 +856,10 @@ endif; ?>
       					<?php  endif; ?>
                         
         				<?php if($track->file_name || $track->product_allfiles) :?>
-        				<span class="mycheckbox"><input style="display:none;" type="checkbox" name="productid[]" 
-        				value="<?php echo $track->id; ?>" id="box<?php echo $check; $check++; ?>" />
-      					</span>
+        				<span class="mycheckbox"><input style="display: none;"
+								type="checkbox" name="productid[]"
+								value="<?php echo $track->id; ?>"
+								id="box<?php echo $check; $check++; ?>" /> </span>
 
       					<?php  endif; ?>
       					</td>
@@ -855,16 +868,16 @@ endif; ?>
         			
         			<?php  if($params->get('product_show_preview_column', 1)) :?>
         				<!--  PREVIEW COLUMN -->
-        				<td class="mypreviews tracks jp-gui ui-widget"><?php echo $track->flash; ?></td>
+						<td class="mypreviews tracks jp-gui ui-widget"><?php echo $track->flash; ?></td>
         			<?php  endif; ?>	
 
       				</tr>
       		<?php  endforeach; ?>
 		</table>
-	</div>
-<!-- END TRACKS -->
-</form>
-<div style="clear: both"></div>
+			</div>
+			<!-- END TRACKS -->
+		</form>
+		<div style="clear: both"></div>
 <?php endif; ?>
 
 
@@ -877,13 +890,12 @@ endif; ?>
 
 <?php //echo $this->item->event->afterDisplayProduct; ?>
 
-<!--  end PRODUCT VIEW -->	
-</div>
+<!--  end PRODUCT VIEW -->
+	</div>
 
 
-<div id='my_overlay' style="display:none"></div>
-<div id='my_modal' style="display:none">
-    <div id='my_content'>No JavaScript!</div>
-    <a href='#' id='my_close'>close</a>
-</div>
-
+	<div id='my_overlay' style="display: none"></div>
+	<div id='my_modal' style="display: none">
+		<div id='my_content'>No JavaScript!</div>
+		<a href='#' id='my_close'>close</a>
+	</div>

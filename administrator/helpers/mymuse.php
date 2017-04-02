@@ -418,7 +418,7 @@ class MyMuseHelper extends JObject
 		/**
 		 * $price[item] = 0/1
 		 * $price[product_original_price]
-		 * $pricd[product_price]
+		 * $price[product_price]
 		 * $price[product_discount]
 		 * $price[product_shopper_group_discount]
 		 * $price[product_shopper_group_discount_amount]

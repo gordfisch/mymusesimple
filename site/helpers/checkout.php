@@ -293,12 +293,19 @@ class MyMuseCheckout
 			if(is_array($jason)){
 				$cart[$i]['product']->file_name = $jason[$cart[$i]["variation"]]->file_name;
 			}
-		
+			$cart[$i]['product']->file_ext = MyMuseHelper::getExt($cart[$i]['product']->file_name);
+			
 			$order->items[$i] = new MymuseTableorderitem( $this->_db );
 			$order->idx++;
 			$order->items[$i]->order_id = $order->id;
 			$order->items[$i]->product_id = $cart[$i]["product_id"];
 			$order->items[$i]->product_quantity = $cart[$i]["quantity"];
+			
+
+			
+			if("1" == $params->get('my_price_by_product')){
+				$cart[$i]['product']->price = $cart[$i]['product']->price[$cart[$i]['product']->file_ext];
+			}
 			$order->items[$i]->product_item_price = $cart[$i]['product']->price['product_price'];
 				
 			$order->items[$i]->product_sku = $cart[$i]['product']->product_sku;
