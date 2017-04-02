@@ -660,6 +660,9 @@ class MyMuseCart {
 
 			// GET PRICES
 			$price = MyMuseModelProduct::getPrice($order->items[$i]);	
+			if("1" == $params->get('my_price_by_product')){
+				$price = $price[$order->items[$i]->ext];
+			}
 			$order->items[$i]->product_item_price = $price['product_price'];
 			$order->items[$i]->product_item_subtotal = $price['product_price'] * $order->items[$i]->quantity;
 			$order->items[$i]->price = $price;

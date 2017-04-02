@@ -18,6 +18,7 @@ if (count($this->children[$this->category->id]) > 0 && $this->maxLevel != 0) :
 $count = count($this->children[$this->category->id]) ;
 $alpha = explode(":",JText::_('MYMUSE_ALPHABET'));
 $alphaarr = array();
+
 foreach($alpha as $letter){
 	$n = 0;
 	foreach($this->children[$this->category->id] as $id => $child){
@@ -25,6 +26,11 @@ foreach($alpha as $letter){
 		if(substr_compare($letter, $child->title,0,1,TRUE) === 0 || preg_match("/^[$letter]/",$child->title)){
 			$alphaarr[$letter][$n] = $child;
 			if ( $this->params->get('show_cat_num_articles', 1)) :
+				if($this->params->get('category_layout') == "_:tracks"){
+					$child->product_total = $this->_getTrackCount($child);
+				}else{
+					$child->product_total = $this->_getProductCount($child);
+				}
 				$alphaarr[$letter][$n]->title .= ' ('.$child->product_total.')';
 			endif;
 			$n++;

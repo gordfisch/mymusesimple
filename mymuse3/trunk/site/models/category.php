@@ -255,7 +255,7 @@ class MyMuseModelCategory extends JModelList
 				$model->setState('filter.subcategories', $this->getState('filter.subcategories'));
 				$model->setState('filter.max_category_levels', $this->getState('filter.max_category_levels'));
 				$model->setState('list.links', $this->getState('list.links'));
-			
+				$model->getProducts();
 				if ($limit >= 0) {
 					$res = $model->getItems();
 					if ($res  === false) {
@@ -265,7 +265,7 @@ class MyMuseModelCategory extends JModelList
 
 				}
 				else {
-					$this->_tracks =array();
+					$this->_tracks = array();
 				}
 			
 				$this->_pagination = $res[2];
@@ -486,7 +486,6 @@ class MyMuseModelCategory extends JModelList
 			$this->getCategory();
 		}
 		
-
 		// Order subcategories
 		if (sizeof($this->_children)) {
 			$params = $this->getState()->get('params');
@@ -496,42 +495,9 @@ class MyMuseModelCategory extends JModelList
 			}
 			
 			return $this->_children;
-			
-			
-			$db = JFactory::getDBO();
-			$nullDate	= $db->Quote($db->getNullDate());
-			$nowDate	= $db->Quote(JFactory::getDate()->toSql());
-			foreach($this->_children as $child){
-				$query = "SELECT count(*) as total from #__mymuse_product as p 
-				LEFT JOIN #__mymuse_product_category_xref as x
-				ON p.id=x.product_id 
-				WHERE 
-				(x.catid=".$child->id." 
-				OR
-				p.catid=".$child->id."
-				OR
-				p.artistid=".$child->id."	)	
-						
-				AND
-				(p.publish_up = ".$nullDate." OR p.publish_up <= ".$nowDate.")
-				AND (p.publish_down = ".$nullDate." OR p.publish_down >= ".$nowDate.")
-				AND p.parentid=0 
-				";
-			echo $query."<br />";
-				$db->setQuery($query);
-				$total = $db->loadResult();
-				$child->product_total = $total;
-			
-			}
-			
 		}
-		
 		return $this->_children;
 	}
-
-
-    
-
 
 
 	/**

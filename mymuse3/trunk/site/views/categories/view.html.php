@@ -115,10 +115,10 @@ class mymuseViewCategories extends JViewLegacy
 		}
 	}
 	
-	function _getProductCount($item){
+	function _getProductCount($category){
 
-		$catid[] = $item->id;
-		$children = $item->getChildren();
+		$catid[] = $category->id;
+		$children = $category->getChildren();
 		foreach($children as $child){
 			$catid[] = $child->id;
 		}
@@ -143,10 +143,52 @@ class mymuseViewCategories extends JViewLegacy
 	
 		$db->setQuery($query);
 		$res = $db->loadObjectList();
-		//print_pre($res); 
+
 		$total = count($res);
 
 		return $total;
 		
+	}
+	
+	function _getTrackCount($category)
+	{
+		$total = 0;
+		$db = JFactory::getDBO();
+		$nullDate	= $db->Quote($db->getNullDate());
+		$nowDate	= $db->Quote(JFactory::getDate()->toSql());
+		$catid[] = $category->id;
+		$children = $category->getChildren();
+		foreach($children as $child){
+			$catid[] = $child->id;
+		}
+	
+		$catids = implode(",",$catid);
+		$query = "SELECT count(*) as total FROM #__mymuse_product as track
+	
+		LEFT JOIN #__mymuse_product as parent ON parent.id=track.parentid
+		LEFT JOIN #__mymuse_product_category_xref as x ON parent.id=x.product_id
+		WHERE
+		(x.catid IN ($catids) OR parent.catid IN ($catids) OR parent.artistid IN ($catids) )
+	
+		AND
+		(parent.publish_up = ".$nullDate." OR parent.publish_up <= ".$nowDate.")
+            AND (parent.publish_down = ".$nullDate." OR parent.publish_down >= ".$nowDate.")
+	
+            AND parent.state=1
+	
+            AND
+            (track.publish_up = ".$nullDate." OR track.publish_up <= ".$nowDate.")
+            AND (track.publish_down = ".$nullDate." OR track.publish_down >= ".$nowDate.")
+	
+            AND track.state=1
+	
+            AND parent.parentid=0
+	
+		";
+	
+		$db->setQuery($query);
+		$total += $db->loadResult();
+	
+		return $total;
 	}
 }

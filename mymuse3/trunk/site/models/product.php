@@ -482,20 +482,17 @@ class MyMuseModelProduct extends JModelItem
 					
 					$tracks[$i]->price = $this->getPrice($track);
 
-					if($params->get('my_add_taxes')){
-						$tracks[$i]->price["product_price"] = MyMuseCheckout::addTax($tracks[$i]->price["product_price"]);
+
+					if ($params->get ( 'my_add_taxes' )) {
+						if(count($params->get('my_formats') > 1) && $params->get('my_price_by_product')){
+							foreach($params->get('my_formats') as $format){
+								$tracks [$i]->price [$format]["product_price"] = MyMuseCheckout::addTax ( $tracks [$i]->price [$format]["product_price"] );
+							}
+						}else{
+							$tracks [$i]->price ["product_price"] = MyMuseCheckout::addTax ( $tracks [$i]->price ["product_price"] );
+						}
 					}
 					
-					$jason = json_decode($track->file_name);
-					if(is_array($jason)){
-						$track->file_name = $jason[0]->file_name;
-						$track->file_alias = $jason[0]->file_alias;
-					}
-					if($params->get('my_encode_filenames')){
-						$track->download_name = $track->title_alias;
-					}else{
-						$track->download_name = $track->file_name;
-					}
 					
 					
 					//TO DO work with formats
@@ -503,34 +500,7 @@ class MyMuseModelProduct extends JModelItem
 					
 					
 					
-					//get download file NOTE NOT available while using Amazon s3
-					if(!$params->get('my_use_s3',0) && !is_array($track->file_name)){
-						$track->download_path = MyMuseHelper::getDownloadPath($track->parentid, 1);
-						
-						
-						$jason = json_decode($track->file_name);
-						if(is_array($jason)){
-							$track->file_name = $jason[0]->file_name;
-							$track->file_alias = isset($jason[0]->file_alias)? $jason[0]->file_alias : '';
-						}
-						if($params->get('my_encode_filenames')){
-							$track->download_name = $track->title_alias;
-						}else{
-							$track->download_name = $track->file_name;
-						}
-						
-						
-						if(1 == $params->get('my_download_dir_format')){ //downloads by format
-							$ext = MyMuseHelper::getExt ( $track->download_name );
-							$track->download_path .= DS.$ext;
-						}
-						$track->download_real_path = $track->download_path . $track->download_name;me;
-							
-						if((!$track->price["product_price"] || $track->price["product_price"] == "FREE")
-								&& $params->get('my_play_downloads')){
-							$track->file_preview = 1;
-						}
-					}
+
 				
 					//Audio/Video or some horrid mix of both
 					if($this->_item[$pk]->flash_type != "mix"){
@@ -555,9 +525,13 @@ class MyMuseModelProduct extends JModelItem
 					}else{
 						$track->flash= '';
 					}
-
-					
+					$jason = json_decode($track->file_name);
+					if(is_array($jason)){
+						$track->file_name = $jason;
+					}
 				}
+				
+			
 			
 				$dispatcher	= JDispatcher::getInstance();
 				if(count($preview_tracks) && ($params->get('product_player_type') == "each" || 
@@ -728,28 +702,49 @@ class MyMuseModelProduct extends JModelItem
 
 				}
 				
-				// free downloads
-				if(isset($tracks) && $params->get('my_free_downloads')){
+				
+				
+				// free downloads if price = free. NOTE NOT available while using Amazon s3
+				if(isset($tracks) && $params->get('my_free_downloads') && !$params->get('my_use_s3',0)){
 					reset($tracks);
 					foreach($tracks as $track){
-						if(
-								(!$track->price["product_price"] || $track->price["product_price"] == "FREE")
-								|| ($params->get('my_play_downloads') && in_array($track->id, $myOrders))
-								
-							){
-							$track->free_download = 1;
-							//$track->free_download_link = $track->download_path;
-							$track->free_download_link = "index.php?option=com_mymuse&view=store&task=downloadit&id=".$track->id;
-							if($track->access > 1 && !$user->get('id')){
-								$view = $params->get('my_registration_redirect', 'login');
-								$track->free_download_link = "index.php?option=com_users&view=$view";
+						if($params->get('my_formats') > 1) {
+							foreach($params->get('my_formats') as $format){
+								if(!isset($track->price[$format]['product_price']) ||
+									$track->price[$format]['product_price'] == "FREE" ||
+									!$track->price[$format]['product_price']) {
+										foreach($track->file_name as $file){
+											if($format == $file['file_ext']){
+												$track->download_path .= $file->file_name;
+												$track->free_download_link = "index.php?option=com_mymuse&view=store&task=downloadit&id=".$track->id;
+												if($track->access > 1 && !$user->get('id')){
+													$view = $params->get('my_registration_redirect', 'login');
+													$track->free_download_link = "index.php?option=com_users&view=$view";
+												}
+											}
+										}
+												 
+								}
 							}
 						}else{
-							$track->free_download = 0;
+							if(!isset($track->price['product_price']) ||
+									$track->price['product_price'] == "FREE" ||
+									!$track->price['product_price']) {
+								if(1 == $params->get('my_download_dir_format')){ //downloads by format
+									$track->download_path .= $ext.DS;
+								}
+								$track->download_path .= $file->file_name;
+								if($track->access > 1 && !$user->get('id')){
+									$view = $params->get('my_registration_redirect', 'login');
+									$track->free_download_link = "index.php?option=com_users&view=$view";
+								}
+							}
+							
 						}
+							
 					}
 				}
-			}
+				
 			
 			
 			$this->_item[$pk]->tracks = $tracks;
@@ -1021,105 +1016,125 @@ class MyMuseModelProduct extends JModelItem
 		
 		// Get the product_parent_id for this product/item
 		$product_parent_id = 0;
-
-
-			if(0 == $params->get('my_price_by_product') || $product->product_physical ){ 
-				//price by track
-				$price_info["product_price"] = $product->price;
-				
-			}elseif(1 == $params->get('my_price_by_product')){ 
-				//price by product
-				if($product->parentid > 0){
-					$query = "SELECT attribs FROM #__mymuse_product WHERE id='".$product->parentid."'";
-					$db->setQuery($query);
-					if(!$product->attribs = $db->loadResult()){
-						$price_info["product_price"] = $product_price = $product->price;
-					}
-				}
-				$registry = new JRegistry;
-				$registry->loadString($product->attribs);
-				$product->attribs = $registry;
-				if($product->product_physical){
-					$key = 'product_price_physical';
-					$product->price = $product->attribs->get($key);
-					$price_info["product_price"] = $product->price;
-				}elseif($product->product_allfiles && isset($product->ext)){
-					$key = 'product_price_'.$product->ext.'_all';
-					$product->price = $product->attribs->get($key);
-					$price_info["product_price"] = $product->price;
-				}elseif(isset($product->ext)){
-					$key = 'product_price_'.$product->ext;
-					$product->price = $product->attribs->get($key);
-					$price_info["product_price"] = $product->price;
-				}else{
-					$price_info["product_price"] = $product->price;
-				}
-				$product_price = $product->price;
-				$price_info["product_shopper_group_discount"] = $shopper_group_discount;
-				$price_info["product_shopper_group_discount_amount"] = $product_price*$shopper_group_discount/100;
-				
-				$price_info["product_price"] = round($price_info["product_price"],2);
-				$price_info["product_shopper_group_discount_amount"] = round($price_info["product_shopper_group_discount_amount"],2);
-				
-				
-				return $price_info;
-				
-			}elseif(2 == $params->get('my_price_by_product') && 1 != $product->product_physical){ 
-				//price by licence
-				
-				$session = JFactory::getSession();
-				$jinput = JFactory::getApplication()->input;
-				$my_licence  = $jinput->get('my_licence', $session->get("my_licence",0));
-				if (!$session->get("cart",0)) {
-					self::$cart = array();
-					self::$cart["idx"] = 0;
-				}else{
-					self::$cart = $session->get("cart");
-				}
-
-				
-
-				$session = JFactory::getSession();
-				$my_licence = $jinput->get('my_licence',$session->get("my_licence",0));
 		
-				$price_info["product_price"] = $params->get('my_license_'.$my_licence.'_price');
-				for ($i = 0; $i < 5; $i++){
-					if(null != $params->get('my_license_'.$i.'_name')
-							&& null != $params->get('my_license_'.$i.'_price')){
-						$price_info['licence'][$i]['name'] = $params->get('my_license_'.$i.'_name');
-						$price_info['licence'][$i]['price'] = $params->get('my_license_'.$i.'_price');
-						
-					}
+		if (0 == $params->get ( 'my_price_by_product' ) || $product->product_physical) {
+			// price by track
+			$price_info ["product_price"] = $product->price;
+			
+		} elseif (1 == $params->get ( 'my_price_by_product' )) {
+			// price by product
+			if ($product->parentid > 0) {
+				$query = "SELECT attribs FROM #__mymuse_product WHERE id='" . $product->parentid . "'";
+				$db->setQuery ( $query );
+				if (! $product->attribs = $db->loadResult ()) {
+					$price_info ["product_price"] = $product_price = $product->price;
 				}
-				$product->price = $price_info["product_price"];
-				$product_price = $product->price;
-				$price_info["product_shopper_group_discount"] = $shopper_group_discount;
-				$price_info["product_shopper_group_discount_amount"] = $product_price*$shopper_group_discount/100;
-				
-				$price_info["product_price"] = round($price_info["product_price"],2);
-				$price_info["product_shopper_group_discount_amount"] = round($price_info["product_shopper_group_discount_amount"],2);
-				
-				
-				//DISCOUNTS FROM PLUGINS
-				JPluginHelper::importPlugin('mymuse');
-				$dispatcher	= JDispatcher::getInstance();
-				//echo "here";
-				$result = $dispatcher->trigger('onCalculatePrice', array(&$price_info, self::$cart));
-				if(count($result)){
-					//print_pre($price_info);
-				}
-				
-				
-				return $price_info;
 			}
+			$registry = new JRegistry ();
+			$registry->loadString ( $product->attribs );
+			$product->attribs = $registry;
+			if ($product->product_physical) {
+				$key = 'product_price_physical';
+				$product->price = $product->attribs->get ( $key );
+				$price_info ["product_price"] = $product->price;
+				
+			} elseif ($product->product_allfiles && isset ( $product->ext )) {
+				$key = 'product_price_' . $product->ext . '_all';
+				$product->price = $product->attribs->get ( $key );
+				$price_info ["product_price"] = $product->price;
+				
+			} elseif($product->product_downloadable) {
+				foreach($params->get('my_formats') as $format) {
+			
+					$key = 'product_price_' . $format;
+					$price_info [$format]["product_price"] = $product->attribs->get ( $key );
+					$product_price = $price_info [$format]["product_price"];
+					$price_info[$format]["product_original_price"] = round ( $price_info [$format]["product_price"], 2);
+			
+					$price_info [$format]["product_shopper_group_discount"] = $shopper_group_discount;
+					$price_info [$format]["product_shopper_group_discount_amount"] = $product_price * $shopper_group_discount / 100;
+					$price_info [$format]["product_shopper_group_discount_amount"] = round ( $price_info [$format] ["product_shopper_group_discount_amount"], 2 );
+			
+					$discount = $product->product_discount;
+					//echo "discount = $discount";
+					$price_info[$format]["product_discount"] = $discount;
+			
+					$price_info[$format]["product_price"] = $price_info [$format]["product_price"] - ($product_price * $shopper_group_discount/100) - $discount;
+					$price_info [$format]["product_price"] = round ( $price_info [$format]["product_price"], 2 );		
+				}
+
+				return $price_info;
+				
+			} else {
+				$price_info ["product_price"] = $product->price;
+			}
+			$product_price = $price_info ["product_price"];
+			$price_info["product_original_price"] = round ( $price_info ["product_price"], 2);
+			
+			$price_info ["product_shopper_group_discount"] = $shopper_group_discount;
+			$price_info ["product_shopper_group_discount_amount"] = $product_price * $shopper_group_discount / 100;
+			$price_info ["product_shopper_group_discount_amount"] = round ( $price_info ["product_shopper_group_discount_amount"], 2 );
+			
+			$discount = $product->product_discount;
+			//echo "discount = $discount";
+			$price_info["product_discount"] = $discount;
+			
+			$price_info["product_price"]= $price_info ["product_price"] - ($product_price * $shopper_group_discount/100) - $discount;
+			$price_info ["product_price"] = round ( $price_info ["product_price"], 2 );		
+			
+			return $price_info;
+			
+		} elseif (2 == $params->get ( 'my_price_by_product' ) && 1 != $product->product_physical) {
+			// price by licence
+			
+			$session = JFactory::getSession ();
+			$jinput = JFactory::getApplication ()->input;
+			$my_licence = $jinput->get ( 'my_licence', $session->get ( "my_licence", 0 ) );
+			if (! $session->get ( "cart", 0 )) {
+				self::$cart = array ();
+				self::$cart ["idx"] = 0;
+			} else {
+				self::$cart = $session->get ( "cart" );
+			}
+			
+			$session = JFactory::getSession ();
+			$my_licence = $jinput->get ( 'my_licence', $session->get ( "my_licence", 0 ) );
+			
+			$price_info ["product_price"] = $params->get ( 'my_license_' . $my_licence . '_price' );
+			for($i = 0; $i < 5; $i ++) {
+				if (null != $params->get ( 'my_license_' . $i . '_name' ) && null != $params->get ( 'my_license_' . $i . '_price' )) {
+					$price_info ['licence'] [$i] ['name'] = $params->get ( 'my_license_' . $i . '_name' );
+					$price_info ['licence'] [$i] ['price'] = $params->get ( 'my_license_' . $i . '_price' );
+				}
+			}
+			$product->price = $price_info ["product_price"];
+			$product_price = $product->price;
+			$price_info ["product_shopper_group_discount"] = $shopper_group_discount;
+			$price_info ["product_shopper_group_discount_amount"] = $product_price * $shopper_group_discount / 100;
+			
+			$price_info ["product_price"] = round ( $price_info ["product_price"], 2 );
+			$price_info ["product_shopper_group_discount_amount"] = round ( $price_info ["product_shopper_group_discount_amount"], 2 );
+			
+			// DISCOUNTS FROM PLUGINS
+			JPluginHelper::importPlugin ( 'mymuse' );
+			$dispatcher = JDispatcher::getInstance ();
+			// echo "here";
+			$result = $dispatcher->trigger ( 'onCalculatePrice', array (
+					&$price_info,
+					self::$cart 
+			) );
+			if (count ( $result )) {
+				// print_pre($price_info);
+			}
+			
+			return $price_info;
+		}
 			
 		//}
 		$product_price = $product->price;
 			
 		// see if this product has a discount
 		$discount = $product->product_discount;
-
-		
 		
 
 		// DEBUG

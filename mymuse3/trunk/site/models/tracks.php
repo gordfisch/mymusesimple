@@ -499,7 +499,8 @@ class MyMuseModelTracks extends JModelList
      
         $preview_tracks = array();
 		//check date, prices add flash
-		if(count($tracks)){
+
+		if($tracks && count($tracks)){
 			while ( list ( $i, $track ) = each ( $tracks ) ) {
 				// get display date
 				switch ($params->get ( 'order_date' )) {
@@ -527,62 +528,78 @@ class MyMuseModelTracks extends JModelList
 				) );
 				$tracks [$i]->price = $product_model->getPrice ( $track );
 				if ($params->get ( 'my_add_taxes' )) {
-					$tracks [$i]->price ["product_price"] = MyMuseCheckout::addTax ( $tracks [$i]->price ["product_price"] );
+					if(count($params->get('my_formats') > 1) && $params->get('my_price_by_product')){
+						foreach($params->get('my_formats') as $format){
+							$tracks [$i]->price [$format]["product_price"] = MyMuseCheckout::addTax ( $tracks [$i]->price [$format]["product_price"] );
+						}
+					}else{
+						$tracks [$i]->price ["product_price"] = MyMuseCheckout::addTax ( $tracks [$i]->price ["product_price"] );
+					}
 				}
 				$track->params = clone $this->getState ( 'params' );
 				
 				
-				// get download path for first variation
-				$track->download_path = MyMuseHelper::getDownloadPath($track->parentid, 1);
-				$jason = json_decode($track->file_name);
+				// get download path for first variation for free download
+				// not available for multiple formats
+				$tracks [$i]->download_path = MyMuseHelper::getDownloadPath($tracks [$i]->parentid, 1);
+				
+				
+				$jason = json_decode($tracks [$i]->file_name);
 				if(is_array($jason)){
-					$track->file_name = $jason[0]->file_name;
-					$track->file_alias = isset($jason[0]->file_alias)? $jason[0]->file_alias : '';
+					$tracks [$i]->first_file_name = $jason[0]->file_name;
+					$tracks [$i]->first_file_alias = isset($jason[0]->file_alias)? $jason[0]->file_alias : '';
+					$tracks [$i]->first_file_ext = isset($jason[0]->file_ext)? $jason[0]->file_ext : '';
+					$tracks [$i]->first_price = $tracks [$i]->price [$track->first_file_ext];
 				}
+				
+				
+				
 				if($params->get('my_encode_filenames')){
-					$track->download_name = $track->title_alias;
+					$tracks [$i]->download_name = $tracks [$i]->first_title_alias;
 				}else{
-					$track->download_name = $track->file_name;
+					$tracks [$i]->download_name = $tracks [$i]->first_file_name;
 				}
 				
 				
 				if(1 == $params->get('my_download_dir_format')){ //downloads by format
-					$ext = MyMuseHelper::getExt ( $track->download_name );
-					$track->download_path .= DS.$ext;
+					$tracks [$i]->download_path .= DS.$tracks [$i]->first_file_ext;
 				}
-				$track->download_real_path = $track->download_path . $track->download_name;
+				$tracks [$i]->download_real_path = $tracks [$i]->download_path . $tracks [$i]->download_name;	
 				
 				
 				
-				
-				
-				if ((! $track->price ["product_price"] || $track->price ["product_price"] == "FREE") && $params->get ( 'my_play_downloads' )) {
-					$track->file_preview = 1;
+				if ((! $tracks [$i]->first_price || $tracks [$i]->first_price == "FREE") && $params->get ( 'my_play_downloads' )) {
+					$tracks [$i]->file_preview = 1;
 				}
+				
 				
 				// Audio/Video or some horrid mix of both
-				
 				if ($this->_category->flash_type != "mix") {
-					if ($this->_category->flash_type == "audio" && $track->file_type == "video") {
+					if ($this->_category->flash_type == "audio" && $tracks [$i]->file_type == "video") {
 						// oh christ it's a mix
 						$this->_category->flash_type = "mix";
-						$track->flash_type = "mix";
-					} elseif ($this->_category->flash_type == "video" && $track->file_type == "audio") {
+						$tracks [$i]->flash_type = "mix";
+					} elseif ($this->_category->flash_type == "video" && $tracks [$i]->file_type == "audio") {
 						// oh christ it's a mix
 						$this->_category->flash_type = "mix";
-						$track->flash_type = "mix";
+						$tracks [$i]->flash_type = "mix";
 					} else {
-						$this->_category->flash_type = $track->file_type;
-						$track->flash_type = $track->file_type;
+						$this->_category->flash_type = $tracks [$i]->file_type;
+						$tracks [$i]->flash_type = $tracks [$i]->file_type;
 					}
 				} else {
-					$track->flash_type = "mix";
+					$tracks [$i]->flash_type = "mix";
 				}
 				
-				if ($track->file_preview) {
-					$preview_tracks [] = $track;
+				if ($tracks [$i]->file_preview) {
+					$preview_tracks [] = $tracks [$i];
 				} else {
-					$track->flash = '';
+					$tracks [$i]->flash = '';
+				}
+				
+				$jason = json_decode($tracks [$i]->file_name);
+				if(is_array($jason)){
+					$track->file_name = $jason;
 				}
 			}
 		}

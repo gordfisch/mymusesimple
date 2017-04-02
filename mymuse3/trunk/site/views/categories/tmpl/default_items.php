@@ -29,8 +29,13 @@ $item_params->loadString($item->params);
 	<?php $class = ''; ?>
 		<span class="item-title"><a href="<?php echo JRoute::_(MyMuseHelperRoute::getCategoryRoute($item->id));?>">
 			<?php echo $this->escape($item->title); ?></a> 
-			<?php if ($this->params->get('show_cat_num_articles_cat') == 1) :?>
-			(<?php echo $this->_getProductCount($item); ?>)
+			<?php if ($this->params->get('show_cat_num_articles_cat') == 1) :
+					if($this->params->get('category_layout') == "_:tracks"){ ?>
+						(<?php echo $this->_getTrackCount($item); ?>)
+					<?php  }else{ ?>
+						(<?php echo $this->_getProductCount($item); ?>)
+					<?php }?>
+			
 		<?php endif; ?>
 		</span>
 		<?php if ($this->params->get('show_cat_subcat_image') && $item_params->get('image')): ?>

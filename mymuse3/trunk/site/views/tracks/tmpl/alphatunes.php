@@ -74,6 +74,27 @@ jQuery(document).ready(function($){
 			
     $count++;
 }
+
+//flip price between formats
+if(count($params->get('my_formats') > 1) && $params->get('my_price_by_product')){
+	$js .= 'function flip_price(id) {'."\n";
+	$js .= ' var formats = new Array();'."\n";
+	foreach($params->get('my_formats') as $index=>$format) {
+		$js .= 'formats['.$index.'] = "'.$format.'"'."\n";
+	}
+	foreach($params->get('my_formats') as $format) {
+		$js .= 'var  '.$format.'_id = "#'.$format.'_"+id'."\n";
+	}
+	$js .= 'var select_id = "#variation_"+id+"_id"'."\n";
+
+	for($i=0; $i < count($params->get('my_formats')); $i++){
+		$js .= 'jQuery('.$params->get('my_formats')[$i].'_id).hide();'."\n";
+	}
+	$js .= '
+			//alert(formats[jQuery(select_id).val()]+"_"+id);
+			jQuery("#"+formats[jQuery(select_id).val()]+"_"+id).show();'."\n}";
+}
+
 $document->addScriptDeclaration($js);
 
 ?>
@@ -121,12 +142,7 @@ function tableOrdering( order, dir, task )
 	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") 0 -42px no-repeat;
 }
 */
-
-
-
 </style>
-
-
 
 <div class="track-list<?php echo $this->pageclass_sfx;?>">
 
@@ -234,15 +250,12 @@ endif;
 	<br />
 <?php endif; ?>
 
-
-
-<?php 
-
-?>
 <!--  the tracks  -->
-<?php if(count($this->items)) : 
+<?php if(count($this->items)) {
 	$tracks = $this->items;
-	?><div class="tracks">
+	?>
+	<!--  PLAYER -->
+	<div class="tracks">
 		<?php if($params->get('product_player_type') == "single"){ ?>
 			<div id="product_player" 
 			<?php if($params->get('product_player_height')){ ?>
@@ -293,6 +306,9 @@ endif;
         			<?php echo JHtml::_('grid.sort', 'MYMUSE_CART_PRICE', 'a.price', $listDirn, $listOrder); ?>
         			</th>
                 <?php } ?>
+                <?php if(count($params->get('my_formats')) > 1) :?>
+		    		<th class="mymuse_cart_top myselect" align="left" width="20%" ><?php echo JText::_('MYMUSE_FORMAT'); ?></th>
+        		<?php endif;?>
                 <?php if($params->get('list_show_discount')) { ?>
         			<th class="mymuse_cart_top mydiscount" align="left" width="20%">
         			<?php echo JHtml::_('grid.sort', 'MYMUSE_DISCOUNT', 'a.product_discount', $listDirn, $listOrder); ?>
@@ -384,30 +400,64 @@ endif;
 					 			} ?>
       						</td>
 
-        			<?php  if($params->get('product_show_filetime', 0)) : ?>
+        			<?php  if($params->get('product_show_filetime', 0)) { ?>
         			<!--  TIME COLUMN -->	
         				<td class="mytime">
         				<?php echo $track->file_time ?>
         				</td>
-        			<?php endif; ?>
-        			<?php if($params->get('list_show_price')) { ?>
+        			<?php } ?>
         			
+        			<?php if($params->get('list_show_price')) : ?>
         			<!--  PRICE COLUMN -->	
         				<td class="myprice">
-        				<?php if($params->get('my_free_downloads') || $params->get('my_downloads_enable')){
-        				if(isset($track->free_download) && isset($track->free_download_link)){ ?>
-        					<a class="free_download_link" 
-        					target="_new"
-        					href="<?php echo $track->free_download_link; ?>"><img src="components/com_mymuse/assets/images/download_dark.png" border="0" /></a>
-        				<?php }else{ 
-							echo MyMuseHelper::printMoneyPublic($track->price); 
-        					 } 
-        				}else{ 
+        				<?php 
+        				if("1" == $params->get('my_price_by_product')) :
+        					$first = 1;
+        					
+							foreach($this->params->get('my_formats') as $format) :
+								$product_price = $track->price[$format];
+        						echo '<div id="'.$format.'_'.$track->id.'" class="price"';
+        						if(!$first):
+        							echo ' style="display:none" ';
+      							endif;
+      							$first = 0;
+ 								echo '>'.MyMuseHelper::printMoneyPublic($product_price).'</div>';
+ 							endforeach;
+ 							
+        				elseif($params->get('my_free_downloads') && isset($track->free_download) && $track->free_download) :
+        					if($user->get('guest')) :
+        						$menu = JFactory::getApplication()->getMenu();
+        						$active = $menu->getActive();
+        						$itemId = $active->id;
+        						$link = new JUri(JRoute::_('index.php?option=com_users&view=login&Itemid=' . $itemId, false));
+        						$link->setVar('return', base64_encode(JRoute::_(myMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language))));
+        					else :
+        						$link = $track->free_download_link;
+        					endif;
+        					?>
+        				    <a class="free_download_link" href="<?php echo $link; ?>"
+        				    ><img src="components/com_mymuse/assets/images/download_dark.png" border="0" /></a>
+							<?php 
+        				else :
+        					
         					echo MyMuseHelper::printMoneyPublic($track->price);
-        				} 
-        				?>
+        				
+        				endif; ?>
         				</td>
-        			<?php } ?>
+        			<?php endif; ?>	
+        			
+        			
+        			<?php if(count($params->get('my_formats')) > 1) :?>
+        			<!--  FORMAT COLUMN -->
+        				<td class="myformat">
+        				<?php if(isset($track->variation_select)) :
+      							echo $track->variation_select;
+      						 endif;
+      					?>
+        				</td>
+        			
+                    <?php endif; ?>
+                    
         			
         			<?php if($params->get('list_show_discount')) { ?>
         			<!--  DISCOUNT COLUMN -->	
@@ -458,7 +508,8 @@ endif;
       				</tr>
       		<?php  } ?>
 		</table>
-<?php endif; ?>
+
+<?php } ?>
 </div>
 </div>
 <?php // Add pagination links ?>
