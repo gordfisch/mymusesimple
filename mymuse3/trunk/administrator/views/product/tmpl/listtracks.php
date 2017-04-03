@@ -12,10 +12,10 @@
 defined('_JEXEC') or die;
 
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');
-JHtml::_('behavior.tooltip');
+JHtml::_('bootstrap.tooltip');
 JHtml::_('behavior.multiselect');
-JHtml::_('dropdown.init');
 JHtml::_('formbehavior.chosen', 'select');
+
 
 $app		= JFactory::getApplication();
 $user		= JFactory::getUser();
@@ -255,9 +255,17 @@ Joomla.orderTable = function()
 					</td>
 					<td class="center">
 						<div class="btn-group">
-							<?php echo JHtml::_('jgrid.published', $file->state, $i, 'products.', $canChange, 'cb', $file->publish_up, $file->publish_down); ?>
-							<?php echo JHtml::_('mymuseadministrator.featured', $file->featured, $i, $canChange); ?>
-						</div>
+								<?php echo JHtml::_('jgrid.published', $file->state, $i, 'products.', $canChange, 'cb', $file->publish_up, $file->publish_down); ?>
+								<?php echo JHtml::_('mymuseadministrator.featured', $file->featured, $i, $canChange); ?>
+								<?php // Create dropdown items and render the dropdown list.
+								if ($canChange)
+								{
+									JHtml::_('actionsdropdown.' . ((int) $file->state === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'products');
+									JHtml::_('actionsdropdown.' . ((int) $file->state === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'products');
+									echo JHtml::_('actionsdropdown.render', $this->escape($file->title));
+								}
+								?>
+							</div>
 					</td>
 					
 					<td>

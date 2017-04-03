@@ -102,7 +102,7 @@ class MymuseControllerProduct extends JControllerForm
 			$subtype = 'item';
 		}
 
-
+		$task = $input->get('task');
 		if($subtype == "file" || $subtype == "allfiles"){
 			
 			if ($this->save()) {
@@ -115,7 +115,7 @@ class MymuseControllerProduct extends JControllerForm
 					return false;
 				}
 			
-				$task = $input->get('task');
+				
 			
 				switch ($task )
 				{
@@ -148,14 +148,27 @@ class MymuseControllerProduct extends JControllerForm
 			}else {
 
         		$this->msg = $this->getError();
-
         		JFactory::getApplication()->enqueueMessage($this->msg, 'error');
-        		if($this->id){
-        			$this->setRedirect( "index.php?option=com_mymuse&view=product&task=product.editfile&parentid=".$this->parentid.'&id='.$this->id.'&subtype='.$post['subtype'], $this->msg );
-        		}else{
-        			$this->setRedirect( "index.php?option=com_mymuse&view=product&task=product.addfile&parentid=".$this->parentid.'&id='.$this->id.'&subtype='.$post['subtype'], $this->msg );
-				}
-
+        		switch ($task )
+        		{
+        			case 'apply_allfiles':
+        				
+        				
+        			case 'save_allfiles':
+        				if($this->id){
+        					$this->setRedirect( "index.php?option=com_mymuse&view=product&task=product.edit_allfiles&parentid=".$this->parentid.'&id='.$this->id.'&subtype='.$post['subtype'], $this->msg );
+        				}else{
+        					$this->setRedirect( "index.php?option=com_mymuse&view=product&task=product.new_allfiles&parentid=".$this->parentid.'&subtype='.$post['subtype'], $this->msg );
+        				}
+        				break;
+        			default:
+        				if($this->id){
+        					$this->setRedirect( "index.php?option=com_mymuse&view=product&task=product.editfile&parentid=".$this->parentid.'&id='.$this->id.'&subtype='.$post['subtype'], $this->msg );
+        				}else{
+        					$this->setRedirect( "index.php?option=com_mymuse&view=product&task=product.addfile&parentid=".$this->parentid.'&id='.$this->id.'&subtype='.$post['subtype'], $this->msg );
+						}
+						break;
+        		}
         	}
  
 		//save an item

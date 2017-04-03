@@ -14,7 +14,6 @@ defined('_JEXEC') or die('Restricted access');
 $item = $this->item;
 $params = $this->params;
 
-
 JFilterOutput::objectHTMLSafe( $item );
 JHTML::_('behavior.tooltip');
 ?>
@@ -100,6 +99,7 @@ JHTML::_('behavior.tooltip');
 		<input type="hidden" name="jform[parentid]" value="<?php echo $item->parent->id ?>" />
 		<input type="hidden" name="parentid" value="<?php echo $item->parent->id ?>" />
 		<input type="hidden" name="jform[catid]" value="<?php echo $item->parent->catid ?>" />
+		<input type="hidden" name="jform[artistid]" value="<?php echo $item->parent->artistid ?>" />
 		<input type="hidden" name="view" value="product" />
 		<input type="hidden" name="id" value="<?php echo $item->id; ?>" />
 		<input type="hidden" name="jform[version]" value="<?php echo $item->version; ?>" />
