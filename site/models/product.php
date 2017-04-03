@@ -350,6 +350,8 @@ class MyMuseModelProduct extends JModelItem
 				}
 			}
 			
+			
+			
 			// Compute ordered products.
 			$user	= JFactory::getUser();
 			$myOrders = array();
@@ -529,10 +531,9 @@ class MyMuseModelProduct extends JModelItem
 					if(is_array($jason)){
 						$track->file_name = $jason;
 					}
-				}
+				} // each track
 				
-			
-			
+
 				$dispatcher	= JDispatcher::getInstance();
 				if(count($preview_tracks) && ($params->get('product_player_type') == "each" || 
 					$params->get('product_player_type') == "single")){
@@ -599,8 +600,8 @@ class MyMuseModelProduct extends JModelItem
 						}
 						$track->flash = $flash;
 
-					}//end for each track
-				}
+					}//end for each preview track 
+				} // if count previews for 'each'
 				
 				
 				if(count($preview_tracks) && $params->get('product_player_type') == "single"){
@@ -645,8 +646,8 @@ class MyMuseModelProduct extends JModelItem
 							}
 							
 						}
-					}
-				}
+					}//end for each preview track 
+				}// if count previews for single
 				
 				if(count($preview_tracks) && $params->get('product_player_type') == "playlist"){
 					//get the main flash for the product
@@ -676,7 +677,7 @@ class MyMuseModelProduct extends JModelItem
 							$type = "audio";
 						}
 						
-					}
+					}//end for each preview track 
 					
 					if($type == "video"){
 						// movie
@@ -700,17 +701,17 @@ class MyMuseModelProduct extends JModelItem
 					$this->_item[$pk]->flash = $flash;
 					$this->_item[$pk]->flash_id = $pk;
 
-				}
+				}// if count previews for playlist
 				
+			}// if count tracks
 				
-				
-				// free downloads if price = free. NOTE NOT available while using Amazon s3
-				if(isset($tracks) && $params->get('my_free_downloads') && !$params->get('my_use_s3',0)){
-					reset($tracks);
-					foreach($tracks as $track){
-						if($params->get('my_formats') > 1) {
-							foreach($params->get('my_formats') as $format){
-								if(!isset($track->price[$format]['product_price']) ||
+			// free downloads if price = free. NOTE NOT available while using Amazon s3
+			if(isset($tracks) && $params->get('my_free_downloads') && !$params->get('my_use_s3',0)){
+				reset($tracks);
+				foreach($tracks as $track){
+					if($params->get('my_formats') > 1) {
+						foreach($params->get('my_formats') as $format){
+							if(!isset($track->price[$format]['product_price']) ||
 									$track->price[$format]['product_price'] == "FREE" ||
 									!$track->price[$format]['product_price']) {
 										foreach($track->file_name as $file){
@@ -723,32 +724,32 @@ class MyMuseModelProduct extends JModelItem
 												}
 											}
 										}
-												 
-								}
-							}
-						}else{
-							if(!isset($track->price['product_price']) ||
-									$track->price['product_price'] == "FREE" ||
-									!$track->price['product_price']) {
-								if(1 == $params->get('my_download_dir_format')){ //downloads by format
-									$track->download_path .= $ext.DS;
-								}
-								$track->download_path .= $file->file_name;
-								if($track->access > 1 && !$user->get('id')){
-									$view = $params->get('my_registration_redirect', 'login');
-									$track->free_download_link = "index.php?option=com_users&view=$view";
-								}
-							}
-							
+											
+									}
 						}
-							
-					}
-				}
+					}else{
+						if(!isset($track->price['product_price']) ||
+								$track->price['product_price'] == "FREE" ||
+								!$track->price['product_price']) {
+									if(1 == $params->get('my_download_dir_format')){ //downloads by format
+										$track->download_path .= $ext.DS;
+									}
+									$track->download_path .= $file->file_name;
+									if($track->access > 1 && !$user->get('id')){
+										$view = $params->get('my_registration_redirect', 'login');
+										$track->free_download_link = "index.php?option=com_users&view=$view";
+									}
+								}
+									
+					}//end formats
+						
+				}//foreach track
+			}//isset tracks
 				
-			
-			
 			$this->_item[$pk]->tracks = $tracks;
-
+			//end of tracks
+			
+			
 			// get child items with prices
 			$query = "SELECT * FROM #__mymuse_product as p
 			WHERE p.parentid='".$pk."'
@@ -792,7 +793,7 @@ class MyMuseModelProduct extends JModelItem
 				}
 				
 
-			}		
+			}//each item
 			
 			if(count($items) && $params->get('product_item_selectbox',0)){ 
 				$newitems = array();
@@ -835,7 +836,7 @@ class MyMuseModelProduct extends JModelItem
 				}
 
 				$items = $newitems;
-			}		
+			}//if count items
 
 					
 			$this->_item[$pk]->items = $items;

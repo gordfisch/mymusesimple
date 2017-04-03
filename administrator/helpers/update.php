@@ -745,13 +745,13 @@ function makeProductObject($p)
 		//downloads
 		$download_path = MyMuseHelper::getDownloadPath($parentid, 1);
 		if(1 == $params->get('my_download_dir_format')){ //downloads by format
-			$download_path .= 'mp3';
+			$download_path .= 'mp3'.DS;
 		}
 		//previews
 		$preview_path = MyMuseHelper::getSitePath($parentid, 1);
 		
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/Are_You_My_Sister.mp3";
-		$to = $download_path.DS."Are_You_My_Sister.mp3";
+		$to = $download_path."Are_You_My_Sister.mp3";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -760,7 +760,7 @@ function makeProductObject($p)
 	
 		
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/sister-preview.mp3";
-		$to = $preview_path.DS."sister-preview.mp3";
+		$to = $preview_path."sister-preview.mp3";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -768,7 +768,7 @@ function makeProductObject($p)
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/sister-preview.ogg";
-		$to = $preview_path.DS."sister-preview.ogg";
+		$to = $preview_path."sister-preview.ogg";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -777,7 +777,7 @@ function makeProductObject($p)
 		$msg .= "Downloaded 'Are You My Sister' track and previews<br />";
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/The_Foggy_Dew.mp3";
-		$to = $download_path.DS."The_Foggy_Dew.mp3";
+		$to = $download_path."The_Foggy_Dew.mp3";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -785,7 +785,7 @@ function makeProductObject($p)
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/foggy-preview.mp3";
-		$to = $preview_path.DS."foggy-preview.mp3";
+		$to = $preview_path."foggy-preview.mp3";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -793,7 +793,7 @@ function makeProductObject($p)
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/foggy-preview.ogg";
-		$to = $preview_path.DS."foggy-preview.ogg";
+		$to = $preview_path."foggy-preview.ogg";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -832,8 +832,8 @@ function makeProductObject($p)
 			),
 	
 			'select_file[0]' => 'Are_You_My_Sister.mp3',
-			'download_dir' => $download_dir,
-				'preview_dir' => $preview_dir,
+			'download_dir' => $download_path,
+				'preview_dir' => $preview_path,
 				'file_preview' => 'sister-preview.mp3',
 				'file_preview_2' => 'sister-preview.ogg',
 				'file_preview_3' => '',
@@ -891,8 +891,8 @@ function makeProductObject($p)
 				),
 
 				'select_file[0]' => 'The_Foggy_Dew.mp3',
-				'download_dir' => $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias,
-				'preview_dir' => $preview_dir,
+				'download_dir' => $download_path,
+				'preview_dir' => $preview_path,
 				'file_preview' => 'foggy-preview.mp3',
 			'file_preview_2' => 'foggy-preview.ogg',
 			'file_preview_3' => '',

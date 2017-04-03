@@ -281,7 +281,9 @@ $fieldSets = $this->form->getFieldsets('attribs');
 
 	<legend><?php echo JText::_('MYMUSE_TRACKS'); ?></legend>
 	<div class="pull-left span10">
-		<?php if(1 == count($this->params->get('my_formats')) ){ ?>
+		<?php
+
+		if(1 == count($this->params->get('my_formats')) ){ ?>
 			<div class="control-group">
 				<div class="control-label">
 				<?php echo JText::_( 'MYMUSE_UPLOAD_NEW_FILE' ); ?>

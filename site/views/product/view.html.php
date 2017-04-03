@@ -40,7 +40,7 @@ class myMuseViewProduct extends JViewLegacy
 		$dispatcher	= JDispatcher::getInstance();
 		$MyMuseCart =& MyMuse::getObject('cart','helpers');
 		$this->cart =& $MyMuseCart->cart;
-		
+
 		$this->MyMuseStore		=& MyMuse::getObject('store','models');
 		$this->store			= $this->MyMuseStore->getStore();
 
