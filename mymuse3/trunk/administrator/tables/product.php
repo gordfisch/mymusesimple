@@ -97,6 +97,7 @@ class MymuseTableproduct extends JTable
 	{
 		$app = JFactory::getApplication();
 		$this->title = trim($this->title);
+		
 		if ($this->title == '') {
 			$this->setError(JText::_('MYMUSE_FILE_MUST_HAVE_A_TITLE').print_pre($this));
 			return false;
@@ -139,7 +140,6 @@ class MymuseTableproduct extends JTable
 			$this->publish_down = '';
 		}
 		
-	//$this->publish_down print_pre($this); exit;
 		// Clean up keywords -- eliminate extra spaces between phrases
 		// and cr (\r) and lf (\n) characters from string
 		if (!empty($this->metakey)) {
@@ -165,17 +165,19 @@ class MymuseTableproduct extends JTable
 		}
 
 		if(!$this->_db->setQuery($query)){
+			
 			$this->setError(JText::_('DB Error'). $db->getErrorMsg());
 			$app->enqueueMessage(JText::_('DB Error'). $db->getErrorMsg(), 'error');
 			return false;
 		}
 		
 		$this->_db->setQuery($query);
-		if($this->_db->loadResult()){
+		if($sku = $this->_db->loadResult()){
+			$this->setError(JText::_("MYMUSE_FILE_MUST_HAVE_A_UNIQUE_SKU").' '.$this->product_sku);
 			$app->enqueueMessage(JText::_("MYMUSE_FILE_MUST_HAVE_A_UNIQUE_SKU").' '.$this->product_sku, 'error');
 			return false;
 		}
-		
+
 		//If there is an ordering column and this is a new row then get the next ordering value
 		if (property_exists($this, 'ordering') && $this->id == 0) {
 			$this->ordering = self::getNextOrder();
@@ -202,7 +204,7 @@ class MymuseTableproduct extends JTable
 		$app = JFactory::getApplication();
 		$input = $app->input;
 		$task 	= $input->get('task');
-		
+
 		$post 			= JRequest::get('post');
 		$form 			= JRequest::getVar('jform', array());
 		$subtype 		= JRequest::getVar('subtype');
@@ -283,7 +285,7 @@ class MymuseTableproduct extends JTable
  		}
  		$select_files = $arr;
  		$done = 0;
-
+ 		
  		//one format
  		if(1 == count($params->get('my_formats'))){
  			
@@ -373,14 +375,13 @@ class MymuseTableproduct extends JTable
 			
 		}
 
-
+	
 		//chosen from select dropdown
 		if(is_array( $select_files ) && !$done){
 			
 			for( $i = 0; $i < count($select_files); $i++ ){
 				//rename if necessary
 				$select_file = $select_files[$i];
-				print_pre($select_file); print_pre($current_files);
 				if($select_file &&  $select_file != @$current_files[$i]->file_name){
 					
 					
@@ -447,7 +448,7 @@ class MymuseTableproduct extends JTable
 			
 			$this->file_name = json_encode($current_files);
 		}
-	
+		
 		//all files
 		if(isset($post['product_allfiles']) && $post['product_allfiles']){
 
@@ -502,8 +503,8 @@ class MymuseTableproduct extends JTable
 		
 		
 		$path = MyMuseHelper::getSitePath($parentid, 1);
+		
 		// Previews 1
-	
 		if(!$this->managePreview('preview', $path)){
 			$this->setError(JText::_("MYMUSE_COULD_NOT_SET_PREVIEW")." preview ".$path);
 			return false;
@@ -519,8 +520,8 @@ class MymuseTableproduct extends JTable
 			return false;
 		}
 		//END of previews
-		
-		
+	
+
         // if it is the parent. Parentid will be 0
         if(!isset($this->parentid) || !$this->parentid){
 			//must be  a parent
@@ -593,7 +594,7 @@ class MymuseTableproduct extends JTable
         	
         	//create preview dirs if needed
         	if(!$params->get('my_previews_in_one_dir')){
-				// only create dirs if my_previews_in_one_dir is default 0
+				// only create dirs if my_previews_in_one_dir is 0
 				$preview_dir = ($params->get ( 'my_use_s3' ) ? '' : JPATH_ROOT . DS) . $params->get ( 'my_preview_dir' ) . DS . $artist_alias . DS . $album_alias;
 				if (! $this->fileExists ( $preview_dir )) {
 					// see if artist dir exists
@@ -618,20 +619,23 @@ class MymuseTableproduct extends JTable
 			}
 
         } // end of if parent
-       
+   
 		$this->checkin();
 		if($this->parentid){
 			$this->checkin($this->parentid);
 		}
-
+echo "almost"; 
 		$result = parent::store($updateNulls);
+		
+echo "result = $result"; print_pre($this); exit;
 		if($result){
+
 			// clear product_category_xref
 			$query = "DELETE FROM #__mymuse_product_category_xref WHERE product_id=".$this->id;
 			$db->setQuery($query);
 			$db->execute();
 			// other categories
-			if(isset($form['othercats'])  && $this->id){
+			if(isset($form['othercats'])  && count($form['othercats']) && $this->id){
 				
 				if(in_array($form['catid'], $form['othercats']) ){
 					unset($form['othercats'][$form['catid']]);
@@ -685,7 +689,7 @@ class MymuseTableproduct extends JTable
 			}
 			
 		}else{
-			
+
 		}
 		
 		return $result; 
