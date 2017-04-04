@@ -107,6 +107,7 @@ class MymuseControllerProduct extends JControllerForm
 			
 			if ($this->save()) {
 				//get the product id
+	echo "saved"; print_pre($this->product); exit;
 				$query = "SELECT id FROM #__mymuse_product WHERE product_sku='".$db->escape($this->product_sku)."'";			
 				$db->setQuery($query);
 				if(!$this->id = $db->loadResult()){
@@ -146,7 +147,7 @@ class MymuseControllerProduct extends JControllerForm
 					break;
 				}
 			}else {
-
+				echo "not saved"; $this->getError(); exit;
         		$this->msg = $this->getError();
         		JFactory::getApplication()->enqueueMessage($this->msg, 'error');
         		switch ($task )

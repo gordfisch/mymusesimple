@@ -32,6 +32,7 @@ class myMuseViewProduct extends JViewLegacy
 
 	function display($tpl = null)
 	{
+
 		// Initialise variables.
 		$app		= JFactory::getApplication();
 		$jinput 	= $app->input;
@@ -45,7 +46,7 @@ class myMuseViewProduct extends JViewLegacy
 		$this->store			= $this->MyMuseStore->getStore();
 
 		$this->item		= $this->get('Item');
-		//print_pre($this->item);
+
 		if($this->item->parentid > 0){
 			//send them to the parent
 			$item->route = MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language);

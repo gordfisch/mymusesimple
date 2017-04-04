@@ -161,6 +161,7 @@ class MyMuseModelProduct extends JModelItem
 	 */
 	public function &getItem($pk = null)
 	{
+
 		$this->populateState();
 		$params = MyMuseHelper::getParams();
 		$params->merge($this->state->get('params'));
@@ -704,12 +705,13 @@ class MyMuseModelProduct extends JModelItem
 				}// if count previews for playlist
 				
 			}// if count tracks
-				
+print_pre($tracks); exit;
 			// free downloads if price = free. NOTE NOT available while using Amazon s3
 			if(isset($tracks) && $params->get('my_free_downloads') && !$params->get('my_use_s3',0)){
 				reset($tracks);
 				foreach($tracks as $track){
-					if($params->get('my_formats') > 1) {
+					print_pre($params->get('my_formats')); exit;
+					if(count($params->get('my_formats')) > 1) {
 						foreach($params->get('my_formats') as $format){
 							if(!isset($track->price[$format]['product_price']) ||
 									$track->price[$format]['product_price'] == "FREE" ||

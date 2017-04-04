@@ -519,7 +519,7 @@ class com_mymuseInstallerScript
 		$query = "SHOW FIELDS FROM `#__mymuse_order` WHERE Field = 'notes'";
 		$db->setQuery($query);
 		$res = $db->loadObject();
-		if($res->Type != 'text')
+		if($res->Type != 'text') {
 		
 			$query = "ALTER TABLE `#__mymuse_order` CHANGE `notes` `notes` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL";
 			$db->setQuery($query);
