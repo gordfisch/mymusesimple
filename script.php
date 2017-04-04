@@ -7,7 +7,7 @@
  * @author      Gord Fisch arboreta.ca
  */
 // No direct access to this file
-defined('_JEXEC') or die('Restricted access');
+//defined('_JEXEC') or die('Restricted access');
  
 if(!defined('DS')){
 	define('DS',DIRECTORY_SEPARATOR);
@@ -287,137 +287,132 @@ class com_mymuseInstallerScript
 				}
 			}
 			
-					
+			
 			?>
-<table cellpadding="4" cellspacing="0" border="0" width="800">
-	<tr>
-		<td valign="top" width="40%"><img
-			src="<?php echo 'components/com_mymuse/assets/images/logo325.jpg'; ?>"
-			height="325" width="190" alt="MyMuse Logo" align="left" /></td>
-		<td valign="top" width="60%"><strong>MyMuse</strong><br /> <span>MyMuse
-				for Joomla! 3</span><br /> <font class="small">by <a
-				href="http://www.arboreta.ca" target="_blank">Arboreta.ca</a>
-		</font><br /> To get started
-			<ol>
-				<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE');?> <a
-					href="index.php?option=com_mymuse&view=store&layout=edit&id=1"><?php echo JText::_('STORE'); ?></a></li>
-				<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE');?> <a
-					href="index.php?option=com_plugins&view=plugins&filter_folder=mymuse"><?php echo JText::_('COM_MYMUSE_PLUGINS'); ?></a>
-				</li>
-				<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE_CREATE_CATEGORY');?>
-						</li>
-				<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE_USER_PROFILE');?>
-						</li>
-			</ol></td>
-	</tr>
-</table>
-<h3>
-			<?php echo JText::_('Additional Extensions'); ?>
-		</h3>
-<table class="adminlist">
-	<thead>
-		<tr>
-			<th class="title"><?php echo JText::_('Extension'); ?></th>
-			<th width="60%"><?php echo JText::_('Status'); ?></th>
-		</tr>
-	</thead>
-	<tfoot>
-		<tr>
-			<td colspan="2">&nbsp;</td>
-		</tr>
-	</tfoot>
-	<tbody>
+			<table cellpadding="4" cellspacing="0" border="0" width="800">
+				<tr>
+					<td valign="top" width="40%"><img
+						src="<?php echo 'components/com_mymuse/assets/images/logo325.jpg'; ?>"
+						height="325" width="190" alt="MyMuse Logo" align="left" /></td>
+					<td valign="top" width="60%"><strong>MyMuse</strong><br /> <span>MyMuse
+							for Joomla! 3</span><br /> <font class="small">by <a
+							href="http://www.arboreta.ca" target="_blank">Arboreta.ca</a>
+					</font><br /> To get started
+						<ol>
+							<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE');?> <a
+								href="index.php?option=com_mymuse&view=store&layout=edit&id=1"><?php echo JText::_('STORE'); ?></a></li>
+							<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE');?> <a
+								href="index.php?option=com_plugins&view=plugins&filter_folder=mymuse"><?php echo JText::_('COM_MYMUSE_PLUGINS'); ?></a>
+							</li>
+							<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE_CREATE_CATEGORY');?>
+									</li>
+							<li><?php echo JText::_('MYMUSE_INSTALL_CONFIGURE_USER_PROFILE');?>
+									</li>
+						</ol></td>
+				</tr>
+			</table>
+			
+			<h3><?php echo JText::_('Additional Extensions'); ?></h3>
+			<table class="adminlist">
+				<thead>
+					<tr>
+						<th class="title"><?php echo JText::_('Extension'); ?></th>
+						<th width="60%"><?php echo JText::_('Status'); ?></th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<td colspan="2">&nbsp;</td>
+					</tr>
+				</tfoot>
+				<tbody>
 				<?php foreach ($extensions as $i => $ext) : ?>
-				<tr class="row<?php echo $i % 2; ?>">
-			<td class="key"><?php echo $ext['name']; ?> (<?php echo JText::_($ext['type']); ?>)</td>
-			<td align="center"><?php $style = $ext['status'] ? 'font-weight: bold; color: green;' : 'font-weight: bold; color: red;'; ?>
-						<span style="<?php echo $style; ?>"><?php echo $ext['status'] ? JText::_('Installed successfully') : JText::_('NOT Installed'); ?>
-					</span></td>
-		</tr>
+					<tr class="row<?php echo $i % 2; ?>">
+						<td class="key"><?php echo $ext['name']; ?> (<?php echo JText::_($ext['type']); ?>)</td>
+						<td align="center"><?php $style = $ext['status'] ? 'font-weight: bold; color: green;' : 'font-weight: bold; color: red;'; ?>
+							<span style="<?php echo $style; ?>"><?php echo $ext['status'] ? JText::_('Installed successfully') : JText::_('NOT Installed'); ?>
+						</span></td>
+					</tr>
 				<?php endforeach; ?>
-			</tbody>
-</table>
+				</tbody>
+			</table>
 
-<h3>
-			<?php echo JText::_('Actions'); ?>
-		</h3>
-
-
-
-
-
-<?php
-		// see if db needs updating
-		$db = JFactory::getDBO();
+			<h3><?php echo JText::_('Actions'); ?></h3>
+			
+			
+			
+			<?php
+			// see if db needs updating
+			$db = JFactory::getDBO();
 		
 
-		$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'ordering'";
-		$db->setQuery($query);
-		if(!$col = $db->loadObject()){
-			$query = "ALTER TABLE `#__mymuse_country` ADD `ordering` int(11) NOT NULL AFTER `country_2_code`  ";
+			$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'ordering'";
 			$db->setQuery($query);
-			$db->execute();
-		}
-		
-		$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'plugin'";
-		$db->setQuery($query);
-		if(!$col = $db->loadObject()){
-			$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'zone_id'";
-			$db->setQuery($query);
-			if($col = $db->loadObject()){
-				$query = "ALTER TABLE `#__mymuse_country` CHANGE `zone_id` `plugin` TINYTEXT NOT NULL ";
-			}else{
-				$query = "ALTER TABLE `#__mymuse_country` ADD `plugin` TINYTEXT NOT NULL AFTER `id`  ";
+			if(!$col = $db->loadObject()){
+				$query = "ALTER TABLE `#__mymuse_country` ADD `ordering` int(11) NOT NULL AFTER `country_2_code`  ";
+				$db->setQuery($query);
+				$db->execute();
 			}
-			$db->setQuery($query);
-			$db->execute();
-			
-			$paypal_countries = '
-			"Australia",
-			"Austria",
-			"Belgium",
-			"Bulgaria",
-			"Canada",
-			"Croatia",
-			"Cyprus",
-			"Czech Republic",
-			"Denmark",
-			"Estonia",
-			"Finland",
-			"France",
-			"Germany",
-			"Greece",
-			"Hong Kong",
-			"Hungary",
-			"Ireland",
-			"Israel",
-			"Italy",
-			"Japan",
-			"Kenya",
-			"Latvia",
-			"Liechtenstein",
-			"Lithuania",
-			"Luxembourg",
-			"Malta",
-			"Mexico",
-			"Netherlands",
-			"New Zealand",
-			"Norway"';
-			
-			$query = "UPDATE #__mymuse_country set plugin='paypal' WHERE country_name IN ($paypal_countries)";
-			$db->setQuery($query);
-			$db->execute();	
-				
-		}
 		
-		//add EU bloc
-		$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'bloc'";
-		$db->setQuery($query);
-		if(!$col = $db->loadObject()){
-			$query = "ALTER TABLE `#__mymuse_country` ADD `bloc` TINYTEXT NOT NULL AFTER `id`  ";
+			$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'plugin'";
 			$db->setQuery($query);
-			$db->execute();
-			$eu_countries = '
+			if(!$col = $db->loadObject()){
+				$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'zone_id'";
+				$db->setQuery($query);
+				if($col = $db->loadObject()){
+					$query = "ALTER TABLE `#__mymuse_country` CHANGE `zone_id` `plugin` TINYTEXT NOT NULL ";
+				}else{
+					$query = "ALTER TABLE `#__mymuse_country` ADD `plugin` TINYTEXT NOT NULL AFTER `id`  ";
+				}
+				$db->setQuery($query);
+				$db->execute();
+			
+				$paypal_countries = '
+				"Australia",
+				"Austria",
+				"Belgium",
+				"Bulgaria",
+				"Canada",
+				"Croatia",
+				"Cyprus",
+				"Czech Republic",
+				"Denmark",
+				"Estonia",
+				"Finland",
+				"France",
+				"Germany",
+				"Greece",
+				"Hong Kong",
+				"Hungary",
+				"Ireland",
+				"Israel",
+				"Italy",
+				"Japan",
+				"Kenya",
+				"Latvia",
+				"Liechtenstein",
+				"Lithuania",
+				"Luxembourg",
+				"Malta",
+				"Mexico",
+				"Netherlands",
+				"New Zealand",
+				"Norway"';
+			
+				$query = "UPDATE #__mymuse_country set plugin='paypal' WHERE country_name IN ($paypal_countries)";
+				$db->setQuery($query);
+				$db->execute();	
+				
+			}
+		
+			//add EU bloc
+			$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'bloc'";
+			$db->setQuery($query);
+			if(!$col = $db->loadObject()){
+				$query = "ALTER TABLE `#__mymuse_country` ADD `bloc` TINYTEXT NOT NULL AFTER `id`  ";
+				$db->setQuery($query);
+				$db->execute();
+				$eu_countries = '
 				"AUT",
 "BEL",
 "BGR",
@@ -480,240 +475,296 @@ class com_mymuseInstallerScript
 			$db->execute();
 			
 		}
-		
-		//see if mymuse_downloads table needs updating
-		$query = "SHOW COLUMNS FROM #__mymuse_downloads LIKE 'user_email'";
-		$db->setQuery($query);
-		if(!$col = $db->loadObject()){
-			$query = "ALTER TABLE `#__mymuse_downloads` ADD `user_email` VARCHAR(255)";
-			$db->setQuery($query);
-			$db->execute();
-		}
-		$query = "SHOW COLUMNS FROM #__mymuse_downloads LIKE 'order_id'";
-		$db->setQuery($query);
-		if(!$col = $db->loadObject()){
-			$query = "ALTER TABLE `#__mymuse_downloads` ADD `order_id` INT( 11 ) NOT NULL AFTER `user_email`";
-			$db->setQuery($query);
-			$db->execute();
-		}
-		
-		
-		//see if mymuse_orders table needs updating
-		$query = "SHOW COLUMNS FROM #__mymuse_order LIKE 'shopper_group_discount'";
-		$db->setQuery($query);
-		if(!$col = $db->loadObject()){
-			$query = "ALTER TABLE `#__mymuse_order` ADD `shopper_group_discount` decimal(10,2) NOT NULL DEFAULT '0.00' AFTER `discount`";
-			$db->setQuery($query);
-			$db->execute();
-		}
-		
-		$query = "SHOW COLUMNS FROM #__mymuse_order LIKE 'licence'";
-		$db->setQuery($query);
-		if(!$col = $db->loadObject()){
-			$query = "ALTER TABLE `#__mymuse_order` ADD `licence` varchar(255) NOT NULL AFTER `ordering`  ";
-			$db->setQuery($query);
-			$db->execute();
-		}
-		
-		//see if notes field needs updating
-		$query = "SHOW FIELDS FROM `#__mymuse_order` WHERE Field = 'notes'";
-		$db->setQuery($query);
-		$res = $db->loadObject();
-		if($res->Type != 'text') {
-		
-			$query = "ALTER TABLE `#__mymuse_order` CHANGE `notes` `notes` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL";
-			$db->setQuery($query);
-			$db->execute();
-		}
-		
-		//Nov 2015 3.4.0 see if mymuse_product table needs updating
-		$query = "SHOW COLUMNS FROM #__mymuse_product LIKE 'artistid'";
-		$db->setQuery($query);
-		if(!$col = $db->loadObject()){
-			$query = "ALTER TABLE `#__mymuse_product` ADD `artistid` INT( 11 ) NOT NULL AFTER `catid`";
-			$db->setQuery($query);
-			$db->execute();
-			$query = "UPDATE `#__mymuse_product` SET `artistid` = `catid` WHERE 1";
-			$db->setQuery($query);
-			$db->execute();
-		}
-		
-		
-		
-		//Mar 2017 update old product names to json encoded strings
-		$query = "SELECT * FROM #__mymuse_product WHERE product_downloadable = '1' AND file_name != '' AND file_name NOT LIKE '{%}'";
-		$db->setQuery($query);
-		$res = $db->loadObjectList();
-		foreach ($res as $r){
-			$current_files = json_decode($r->file_name);
-			if(!is_array($current_files)){
-				$ext = MyMuseHelper::getExt($r->file_name);
-				$current_files[] = (object) array(
-						'file_name' => $r->file_name,
-						'file_length' => $r->file_length,
-						'file_ext' => $ext,
-						'file_alias'=> $r->alias,
-						'file_downloads'=> $r->file_downloads
+				
+				// see if mymuse_downloads table needs updating
+			$query = "SHOW COLUMNS FROM #__mymuse_downloads LIKE 'user_email'";
+			$db->setQuery ( $query );
+			if (! $col = $db->loadObject ()) {
+				$query = "ALTER TABLE `#__mymuse_downloads` ADD `user_email` VARCHAR(255)";
+				$db->setQuery ( $query );
+				$db->execute ();
+			}
+			$query = "SHOW COLUMNS FROM #__mymuse_downloads LIKE 'order_id'";
+			$db->setQuery ( $query );
+			if (! $col = $db->loadObject ()) {
+				$query = "ALTER TABLE `#__mymuse_downloads` ADD `order_id` INT( 11 ) NOT NULL AFTER `user_email`";
+				$db->setQuery ( $query );
+				$db->execute ();
+			}
+			
+			// see if mymuse_orders table needs updating
+			$query = "SHOW COLUMNS FROM #__mymuse_order LIKE 'shopper_group_discount'";
+			$db->setQuery ( $query );
+			if (! $col = $db->loadObject ()) {
+				$query = "ALTER TABLE `#__mymuse_order` ADD `shopper_group_discount` decimal(10,2) NOT NULL DEFAULT '0.00' AFTER `discount`";
+				$db->setQuery ( $query );
+				$db->execute ();
+			}
+			
+			$query = "SHOW COLUMNS FROM #__mymuse_order LIKE 'licence'";
+			$db->setQuery ( $query );
+			if (! $col = $db->loadObject ()) {
+				$query = "ALTER TABLE `#__mymuse_order` ADD `licence` varchar(255) NOT NULL AFTER `ordering`  ";
+				$db->setQuery ( $query );
+				$db->execute ();
+			}
+			
+			// see if notes field needs updating
+			$query = "SHOW FIELDS FROM `#__mymuse_order` WHERE Field = 'notes'";
+			$db->setQuery ( $query );
+			$res = $db->loadObject ();
+			if ($res->Type != 'text') {
+				
+				$query = "ALTER TABLE `#__mymuse_order` CHANGE `notes` `notes` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL";
+				$db->setQuery ( $query );
+				$db->execute ();
+			}
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			// Nov 2015 3.4.0 see if mymuse_product table needs updating
+			$query = "SHOW COLUMNS FROM #__mymuse_product LIKE 'artistid'";
+			$db->setQuery ( $query );
+			if (! $col = $db->loadObject ()) {
+				$query = "ALTER TABLE `#__mymuse_product` ADD `artistid` INT( 11 ) NOT NULL AFTER `catid`";
+				$db->setQuery ( $query );
+				$db->execute ();
+				$query = "UPDATE `#__mymuse_product` SET `artistid` = `catid` WHERE 1";
+				$db->setQuery ( $query );
+				$db->execute ();
+			}
+			
+			// Mar 2017 update old product names to json encoded strings
+			$query = "SELECT * FROM #__mymuse_product WHERE product_downloadable = '1' AND file_name != '' AND file_name NOT LIKE '{%}'";
+			$db->setQuery ( $query );
+			$res = $db->loadObjectList ();
+			foreach ( $res as $r ) {
+				$current_files = json_decode ( $r->file_name );
+				if (! is_array ( $current_files )) {
+					$ext = MyMuseHelper::getExt ( $r->file_name );
+					$current_files [] = ( object ) array (
+							'file_name' => $r->file_name,
+							'file_length' => $r->file_length,
+							'file_ext' => $ext,
+							'file_alias' => $r->alias,
+							'file_downloads' => $r->file_downloads 
+					);
+				}
+				$query = "UPDATE #__mymuse_product SET file_name=" . $db->quote ( json_encode ( $current_files ) ) . " WHERE id='" . $r->id . "'";
+				$db->setQuery ( $query );
+				$db->execute ();
+			}
+				
+			// DEFAULT DOWNLOAD DIRECTORY
+			$name = JText::_ ( "MYMUSE_MAKE_DOWNLOAD_DIR" );
+			$download_dir = JPATH_ROOT . DS . "images" . DS . "A_MyMuseDownloads";
+			if (! file_exists ( $download_dir )) {
+				if (! JFolder::create ( $download_dir )) {
+					$alt = JText::_ ( "MYMUSE_FAILED" );
+					$astatus = 0;
+					$message = JText::_ ( "MYMUSE_COULD_NOT_MAKE_DIR" ) . "<br />$download_dir";
+				} else {
+					$alt = JText::_ ( "MYMUSE_INSTALLED" );
+					$astatus = 1;
+					$message = JText::_ ( "MYMUSE_DIR_CREATED" ) . " " . $download_dir;
+				}
+			} else {
+				$alt = JText::_ ( "MYMUSE_INSTALLED" );
+				$astatus = 1;
+				$message = JText::_ ( "MYMUSE_DIR_EXISTS" );
+			}
+			$actions [] = array (
+					'name' => $name,
+					'message' => $message,
+					'status' => $astatus 
+			);
+			
+			// DEFAULT PREVIEW DIRECTORY
+			$name = JText::_ ( "MYMUSE_MAKE_PREVIEW_DIR" );
+			$preview_dir = JPATH_ROOT . DS . "images" . DS . "A_MyMusePreviews";
+			if (! file_exists ( $preview_dir )) {
+				if (! JFolder::create ( $preview_dir )) {
+					$alt = JText::_ ( "MYMUSE_FAILED" );
+					$astatus = 0;
+					$message = JText::_ ( "MYMUSE_COULD_NOT_MAKE_DIR" ) . "<br />$preview_dir";
+				} else {
+					$alt = JText::_ ( "MYMUSE_INSTALLED" );
+					$astatus = 1;
+					$message = JText::_ ( "MYMUSE_DIR_CREATED" ) . " " . $preview_dir;
+				}
+			} else {
+				$alt = JText::_ ( "MYMUSE_INSTALLED" );
+				$astatus = 1;
+				$message = JText::_ ( "MYMUSE_DIR_EXISTS" );
+			}
+			$actions [] = array (
+					'name' => $name,
+					'message' => $message,
+					'status' => $astatus 
+			);
+			
+			// DIRECTORY FOR GRAPHICS
+			$name = JText::_ ( "MYMUSE_MAKE_ALBUM_DIR" );
+			$album_dir = JPATH_ROOT . DS . "images" . DS . "A_MyMuseImages";
+			if (! file_exists ( $album_dir )) {
+				if (! JFolder::create ( $album_dir )) {
+					$alt = JText::_ ( "MYMUSE_FAILED" );
+					$astatus = 0;
+					$message = JText::_ ( "MYMUSE_COULD_NOT_MAKE_DIR" ) . "<br />$album_dir";
+				} else {
+					$alt = JText::_ ( "MYMUSE_INSTALLED" );
+					$astatus = 1;
+					$message = JText::_ ( "MYMUSE_DIR_CREATED" ) . " " . $album_dir;
+				}
+			} else {
+				$alt = JText::_ ( "MYMUSE_INSTALLED" );
+				$astatus = 1;
+				$message = JText::_ ( "MYMUSE_DIR_EXISTS" );
+			}
+			$actions [] = array (
+					'name' => $name,
+					'message' => $message,
+					'status' => $astatus 
+			);
+			
+			// copy index.html to Download Dir
+			$name = Jtext::_ ( "index.html to Download Dir" );
+			if (! JFile::copy ( JPATH_ROOT . DS . "administrator" . DS . "components" . DS . "com_mymuse" . DS . "assets" . DS . "index.html", $download_dir . DS . "index.html" )) {
+				$alt = JText::_ ( "MYMUSE_FAILED" );
+				$astatus = 0;
+				$message = JText::_ ( "MYMUSE_COULD_NOT_COPY_FILE" );
+			} else {
+				$alt = JText::_ ( "MYMUSE_INSTALLED" );
+				$astatus = 1;
+				$message = JText::_ ( "MYMUSE_FILE_COPIED" );
+			}
+			$actions [] = array (
+					'name' => $name,
+					'message' => $message,
+					'status' => $astatus 
+			);
+			
+			// copy htaccess to Download Dir
+			if (stristr ( PHP_OS, 'win' )) {
+				// skip the htaccess
+			} else {
+				$name = Jtext::_ ( "htaccess to Download Dir" );
+				if (! JFile::copy ( JPATH_ROOT . DS . "administrator" . DS . "components" . DS . "com_mymuse" . DS . "assets" . DS . "htaccess.txt", $download_dir . DS . ".htaccess" )) {
+					$alt = JText::_ ( "MYMUSE_FAILED" );
+					$astatus = 0;
+					$message = JText::_ ( "MYMUSE_COULD_NOT_COPY_FILE" );
+				} else {
+					$alt = JText::_ ( "MYMUSE_INSTALLED" );
+					$astatus = 1;
+					$message = JText::_ ( "MYMUSE_FILE_COPIED" );
+				}
+				$actions [] = array (
+						'name' => $name,
+						'message' => $message,
+						'status' => $astatus 
 				);
 			}
-			$query = "UPDATE #__mymuse_product SET file_name=".$db->quote(json_encode($current_files))." WHERE id='".$r->id."'";
-			$db->setQuery($query);
-			$db->execute();
 			
+			// copy index.html to Preview Dir
+			$name = Jtext::_ ( "index.html to Preview Dir" );
+			if (! JFile::copy ( JPATH_ROOT . DS . "administrator" . DS . "components" . DS . "com_mymuse" . DS . "assets" . DS . "index.html", $preview_dir . DS . "index.html" )) {
+				$alt = JText::_ ( "MYMUSE_FAILED" );
+				$astatus = 0;
+				$message = JText::_ ( "MYMUSE_COULD_NOT_COPY_FILE" );
+			} else {
+				$alt = JText::_ ( "MYMUSE_INSTALLED" );
+				$astatus = 1;
+				$message = JText::_ ( "MYMUSE_FILE_COPIED" );
+			}
+			$actions [] = array (
+					'name' => $name,
+					'message' => $message,
+					'status' => $astatus 
+			);
+			
+			// copy index.html to Album Dir
+			$name = Jtext::_ ( "MYMUSE_COPY_INDEX_TO_ALBUM_DIR" );
+			if (! JFile::copy ( JPATH_ROOT . DS . "administrator" . DS . "components" . DS . "com_mymuse" . DS . "assets" . DS . "index.html", $album_dir . DS . "index.html" )) {
+				$alt = JText::_ ( "MYMUSE_FAILED" );
+				$astatus = 0;
+				$message = JText::_ ( "MYMUSE_COULD_NOT_COPY_FILE" );
+			} else {
+				$alt = JText::_ ( "MYMUSE_INSTALLED" );
+				$astatus = 1;
+				$message = JText::_ ( "MYMUSE_FILE_COPIED" );
+			}
+			$actions [] = array (
+					'name' => $name,
+					'message' => $message,
+					'status' => $astatus 
+			);
+			
+			// MOVE LOGO
+			$name = JText::_ ( "MYMUSE_COPY_LOGO" ) . " /images/logo150sq.jpg";
+			$logo = JPATH_ROOT . DS . "administrator" . DS . "components" . DS . "com_mymuse" . DS . "assets" . DS . "images" . DS . "logo150sq.jpg";
+			if (! file_exists ( $logo )) {
+				$alt = JText::_ ( "MYMUSE_FAILED" );
+				$astatus = 0;
+				$message = JText::_ ( "MYMUSE_COPY_LOGO_FAILED" ) . " File does not exist: " . $logo;
+			} elseif (! JFile::copy ( $logo, JPATH_ROOT . DS . "images" . DS . "logo150sq.jpg" )) {
+				$alt = JText::_ ( "MYMUSE_FAILED" );
+				$astatus = 0;
+				$message = JText::_ ( "MYMUSE_COPY_LOGO_FAILED" ) . $logo . " " . JPATH_ROOT . DS . "images" . DS . "logo150sq.jpg";
+			} else {
+				$alt = JText::_ ( "MYMUSE_INSTALLED" );
+				$astatus = 1;
+				$message = JText::_ ( "MYMUSE_COPY_LOGO_SUCCESS" );
+			}
+			$actions [] = array (
+					'name' => $name,
+					'message' => $message,
+					'status' => $astatus 
+			);
+		
+		
 		}
-		
-		
-		
-		
-		
-				// DEFAULT DOWNLOAD DIRECTORY
-				$name = JText::_("MYMUSE_MAKE_DOWNLOAD_DIR");
-				$download_dir =  JPATH_ROOT.DS."images".DS."A_MyMuseDownloads";
-				if(!file_exists($download_dir)){
-					if(!JFolder::create($download_dir)){
-						$alt = JText::_( "MYMUSE_FAILED" );
-						$astatus = 0;
-						$message = JText::_("MYMUSE_COULD_NOT_MAKE_DIR")."<br />$download_dir";
-					}else{
-						$alt = JText::_( "MYMUSE_INSTALLED" );
-						$astatus = 1;
-						$message = JText::_("MYMUSE_DIR_CREATED")." ".$download_dir;
-					}
-				}else{
-					$alt = JText::_( "MYMUSE_INSTALLED" );
-					$astatus = 1;
-					$message = JText::_("MYMUSE_DIR_EXISTS");
-				}
-				$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
-		
-				// DEFAULT PREVIEW DIRECTORY
-				$name = JText::_("MYMUSE_MAKE_PREVIEW_DIR");
-				$preview_dir =  JPATH_ROOT.DS."images".DS."A_MyMusePreviews";
-				if(!file_exists($preview_dir)){
-					if(!JFolder::create($preview_dir)){
-						$alt = JText::_( "MYMUSE_FAILED" );
-						$astatus = 0;
-						$message = JText::_("MYMUSE_COULD_NOT_MAKE_DIR")."<br />$preview_dir";
-					}else{
-						$alt = JText::_( "MYMUSE_INSTALLED" );
-						$astatus = 1;
-						$message = JText::_("MYMUSE_DIR_CREATED")." ".$preview_dir;
-					}
-				}else{
-					$alt = JText::_( "MYMUSE_INSTALLED" );
-					$astatus = 1;
-					$message = JText::_("MYMUSE_DIR_EXISTS");
-				}
-				$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
-		
-		
-				//DIRECTORY FOR GRAPHICS
-				$name = JText::_("MYMUSE_MAKE_ALBUM_DIR");
-				$album_dir =  JPATH_ROOT.DS."images".DS."A_MyMuseImages";
-				if(!file_exists($album_dir)){
-					if(!JFolder::create($album_dir)){
-						$alt = JText::_( "MYMUSE_FAILED" );
-						$astatus = 0;
-						$message = JText::_("MYMUSE_COULD_NOT_MAKE_DIR")."<br />$album_dir";
-					}else{
-						$alt = JText::_( "MYMUSE_INSTALLED" );
-						$astatus = 1;
-						$message = JText::_("MYMUSE_DIR_CREATED")." ". $album_dir;
-					}
-				}else{
-					$alt = JText::_( "MYMUSE_INSTALLED" );
-					$astatus = 1;
-					$message = JText::_("MYMUSE_DIR_EXISTS");
-				}
-				$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
-		
-		
-				// copy index.html to Download Dir
-				$name = Jtext::_("index.html to Download Dir");
-				if(!JFile::copy (JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
-						$download_dir.DS."index.html")){
-					$alt = JText::_( "MYMUSE_FAILED" );
-					$astatus = 0;
-					$message = JText::_("MYMUSE_COULD_NOT_COPY_FILE");
-				}else{
-					$alt = JText::_( "MYMUSE_INSTALLED" );
-					$astatus = 1;
-					$message = JText::_("MYMUSE_FILE_COPIED");
-				}
-				$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
-		
-				// copy htaccess to Download Dir
-				if(stristr(PHP_OS, 'win')){
-					//skip the htaccess
-				}else{
-					$name = Jtext::_("htaccess to Download Dir");
-					if(!JFile::copy (JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."htaccess.txt",
-							$download_dir.DS.".htaccess")){
-						$alt = JText::_( "MYMUSE_FAILED" );
-						$astatus = 0;
-						$message = JText::_("MYMUSE_COULD_NOT_COPY_FILE");
-					}else{
-						$alt = JText::_( "MYMUSE_INSTALLED" );
-						$astatus = 1;
-						$message = JText::_("MYMUSE_FILE_COPIED");
-					}
-					$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
-				}
-		
-		
-				// copy index.html to Preview Dir
-				$name = Jtext::_("index.html to Preview Dir");
-				if(!JFile::copy (JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
-						$preview_dir.DS."index.html")){
-					$alt = JText::_( "MYMUSE_FAILED" );
-					$astatus = 0;
-					$message = JText::_("MYMUSE_COULD_NOT_COPY_FILE");
-				}else{
-					$alt = JText::_( "MYMUSE_INSTALLED" );
-					$astatus = 1;
-					$message = JText::_("MYMUSE_FILE_COPIED");
-				}
-				$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
-		
-		
-		
-				// copy index.html to Album Dir
-				$name = Jtext::_("MYMUSE_COPY_INDEX_TO_ALBUM_DIR");
-				if(!JFile::copy (JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
-						$album_dir.DS."index.html")){
-					$alt = JText::_( "MYMUSE_FAILED" );
-					$astatus = 0;
-					$message = JText::_("MYMUSE_COULD_NOT_COPY_FILE");
-				}else{
-					$alt = JText::_( "MYMUSE_INSTALLED" );
-					$astatus = 1;
-					$message = JText::_("MYMUSE_FILE_COPIED");
-				}
-				$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
-		
-				//MOVE LOGO
-				$name = JText::_("MYMUSE_COPY_LOGO")." /images/logo150sq.jpg";
-				$logo = JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."images".DS."logo150sq.jpg";
-				if(!file_exists($logo)){
-					$alt = JText::_( "MYMUSE_FAILED" );
-					$astatus = 0;
-					$message =  JText::_("MYMUSE_COPY_LOGO_FAILED")." File does not exist: ".$logo;
-				}
-				elseif(!JFile::copy ($logo,
-						JPATH_ROOT.DS."images".DS."logo150sq.jpg")){
-					$alt = JText::_( "MYMUSE_FAILED" );
-					$astatus = 0;
-					$message =  JText::_("MYMUSE_COPY_LOGO_FAILED"). $logo." ".JPATH_ROOT.DS."images".DS."logo150sq.jpg";
-				}else{
-					$alt = JText::_( "MYMUSE_INSTALLED" );
-					$astatus = 1;
-					$message =  JText::_("MYMUSE_COPY_LOGO_SUCCESS");
-		
-				}
-				$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
-		
-		
-			
 				
 		if(!$this->already_installed && $type == "install"){
 	
