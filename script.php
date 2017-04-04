@@ -201,7 +201,7 @@ class com_mymuseInstallerScript
 
 		$db = JFactory::getDBO();
 		$actions = array();
-		?> echo "<h3>TYPE = $type</h3>";
+		echo "<h3>TYPE = $type</h3>";
 		// add params
 		if ($type == 'install') {
 			$query = $db->getQuery(true);

@@ -39,5 +39,5 @@ DROP TABLE IF EXISTS `#__mymuse_shopper_group`;
 DROP TABLE IF EXISTS `#__mymuse_state`;
 DROP TABLE IF EXISTS `#__mymuse_store`;
 DROP TABLE IF EXISTS `#__mymuse_tax_rate`;
-DELETE FROM `#_assets` WHERE name LIKE "%mymuse%"
+DELETE FROM `#_assets` WHERE name LIKE "%mymuse%";
 
