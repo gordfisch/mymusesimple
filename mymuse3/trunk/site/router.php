@@ -38,13 +38,25 @@ function MymuseBuildRoute(&$query)
 	$menu		= $app->getMenu();
 	$advanced	= $params->get('sef_advanced_link', 0);
 	$dbo = JFactory::getDbo();
-	if($params->get('my_default_itemid','')){
-		$q = 'SELECT alias from #__menu WHERE id="'.$params->get('my_default_itemid').'"';
+	
+	/*
+	if($params->get('top_menu_item','')){
+		$q = 'SELECT alias from #__menu WHERE id="'.$params->get('top_menu_item').'"';
 		$dbo->setQuery($q);
 		$alias = $dbo->loadResult();
-		//$segments[] = $alias;
+		$segments[] = $alias;
 	}
-	
+
+	if($params->get('top_menu_item','') && $params->get('my_use_alias','')){
+		$product_id = isset($query['product_id'])? $query['product_id'] : '';
+		$q = 'SELECT alias from #__mymuse_product WHERE id="'.$product_id.'"';
+		$dbo->setQuery($q);
+		if($alias = $dbo->loadResult()){
+			$segments[] = $alias;
+		}
+	}
+	*/
+
 	
 	// we need a menu item.  Either the one specified in the query, or the current active one if none specified
 	if (empty($query['Itemid'])) {
@@ -186,14 +198,35 @@ function MymuseBuildRoute(&$query)
 	//Array([option]=com_mymuse,[view]=product,[id]=1,[catid]=9,[lang]=en-GB,[Itemid]=90)
 	if ($view == 'category' || $view == 'product')
 	{
-	
+		if($params->get('top_menu_item','')){
+			$query['Itemid'] = $params->get('top_menu_item');
+		}
+		
 		if (!$menuItemGiven) {
 			$segments[] = $view;
 		}
-//print_pre($segments);
-		unset($query['view']);
 
+		unset($query['view']);
+		
 		if ($view == 'product') {
+			
+			
+			
+			if($params->get('top_menu_item','') && $params->get('my_use_alias','')){
+					$aquery = $dbo->setQuery($dbo->getQuery(true)
+						->select('alias')
+						->from('#__mymuse_product')
+						->where('id='.(int)$query['id'])
+					);
+					$alias = $dbo->loadResult();
+					$segments[] = $alias;
+					unset($query['id']);
+					unset($query['catid']);
+					return $segments;
+			}
+			
+			
+			
 			if (isset($query['id']) && isset($query['catid']) && $query['catid']) {
 				$catid = $query['catid'];
 				
@@ -207,6 +240,7 @@ function MymuseBuildRoute(&$query)
 					);
 					$alias = $dbo->loadResult();
 					$query['id'] = $query['id'].':'.$alias;
+					
 				}
 			} else {
 				// we should have these two set for this view.  If we don't, it is an error
@@ -260,6 +294,7 @@ function MymuseBuildRoute(&$query)
 		$segments = array_merge($segments, $array);
 
 		if ($view == 'product') {
+			print_pre($segments);
 			if ($advanced || $params->get('my_use_alias')) {
 				list($tmp, $id) = explode(':', $query['id'], 2);
 			}

@@ -543,13 +543,16 @@ class MyMuseModelTracks extends JModelList
 				// not available for multiple formats
 				$tracks [$i]->download_path = MyMuseHelper::getDownloadPath($tracks [$i]->parentid, 1);
 				
-				
 				$jason = json_decode($tracks [$i]->file_name);
 				if(is_array($jason)){
 					$tracks [$i]->first_file_name = $jason[0]->file_name;
 					$tracks [$i]->first_file_alias = isset($jason[0]->file_alias)? $jason[0]->file_alias : '';
 					$tracks [$i]->first_file_ext = isset($jason[0]->file_ext)? $jason[0]->file_ext : '';
-					$tracks [$i]->first_price = $tracks [$i]->price [$track->first_file_ext];
+					if(1 == $params->get('my_price_by_product')){
+						$tracks [$i]->first_price = $tracks [$i]->price [$track->first_file_ext];
+					}else{
+						$tracks [$i]->first_price = $tracks [$i]->price;
+					}
 				}
 				
 				

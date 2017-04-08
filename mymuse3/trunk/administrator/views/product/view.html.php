@@ -278,7 +278,7 @@ class MymuseViewProduct extends JViewLegacy
 			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-items?tmpl=component');
 		
 		}elseif($subtype == "file" && $parentid){
-			//TRAC
+			//TRACK
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
 			{

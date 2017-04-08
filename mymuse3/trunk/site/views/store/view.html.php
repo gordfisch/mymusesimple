@@ -436,6 +436,7 @@ class myMuseViewStore extends JViewLegacy
         	$db	= JFactory::getDBO();
         	$user = JFactory::getUser();
         	$user_id = $user->get('id');
+        	$format = $jinput->get('format','');
 
         	
         	if(!$id){
@@ -449,7 +450,10 @@ class myMuseViewStore extends JViewLegacy
         	$query = "SELECT * FROM #__mymuse_product WHERE id = '".$id."'";
         	$db->setQuery($query);
         	$product = $db->loadObject();
+        	$product->price = MyMuseModelProduct::getPrice($product);
+        	
         	$jason = json_decode($product->file_name);
+        	
         	$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
         	$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
   	
@@ -482,18 +486,33 @@ class myMuseViewStore extends JViewLegacy
         		
         	if(!$owned){
         		// See if it is free
-        		if($product->price == 0.00 || $product->price == '' || !$product->price){
+        		
+        		if(1 == $params->get('my_price_by_product', 0) && isset($product->price[$format]) ){
+        				$price = $product->price[$format];
+        			}else{
+        				$price = $product->price;
+        		}
+        	
+        		if(!isset($price) || 
+        				$price['product_price'] == 0.00 || 
+        				$price['product_price'] == '' || 
+        				!$price['product_price']){
+
         			$free = 1;
         			if(is_array($jason)){
-        				
-        				if($params->get('my_encode_filenames')){
-        					$filename = $product->title_alias;
-        					$realname = $jason[0]->file_name;
-        				}else{
-        					$filename = $jason[0]->file_name;
-        					$realname = $jason[0]->file_name;
+        				foreach($jason as $file){
+        					if($file->file_ext == $format){
+        						if($params->get('my_encode_filenames')){
+        							$filename = $file->file_alias;
+        							$realname = $file->file_name;
+        						}else{
+        							$filename = $realname = $file->file_name;
+        						}
+        					}
         				}
+        				
         			}else{
+        				//old style
         				if($params->get('my_encode_filenames')){
         					$filename = $product->title_alias;
         					$realname = $product->file_name;
@@ -504,6 +523,7 @@ class myMuseViewStore extends JViewLegacy
         			}
         		}
         	}
+
         	if(!$free && !$owned){
         		$message = JText::_('MYMUSE_NOT_AVAILABLE');
         		$this->assignRef( 'message', $message );
@@ -571,12 +591,17 @@ class myMuseViewStore extends JViewLegacy
         		}
         		
 
-        		 
-        		$full_filename = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$filename;
+        		$download_dir = MyMuseHelper::getDownloadPath($product->parentid, 1);
+        		if(1 == $params->get('my_download_dir_format',0)){ //downloads by format
+        			$download_dir .= $format.DS;
+        		}
+        		
+        		
+        		$full_filename = $download_dir.$filename;
         		$full_filename1 = $full_filename;
         		if(!file_exists($full_filename)){
         			//try with the root
-        			$full_filename = JPATH_ROOT.DS.$params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$filename;
+        			$full_filename = JPATH_ROOT.DS.$download_dir.$filename;
         		}
         		if(!file_exists($full_filename)){
         			$message = JText::_('MYMUSE_NO_FILE_FOUND')." ";
