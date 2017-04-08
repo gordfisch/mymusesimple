@@ -107,10 +107,7 @@ class MymuseControllerProduct extends JControllerForm
 			
 			if ($this->save()) {
 				//get the product id
-	echo "saved"; print_pre($this->product); exit;
-				$query = "SELECT id FROM #__mymuse_product WHERE product_sku='".$db->escape($this->product_sku)."'";			
-				$db->setQuery($query);
-				if(!$this->id = $db->loadResult()){
+				if(!$this->id){
 					$this->msg = JText::_( 'MYMUSE_COULD_NOT_FIND_ID' );
 					$this->setRedirect( 'index.php?option=com_mymuse&iew=product&task=product.edit&id='. $this->parentid, $this->msg );
 					return false;
@@ -147,7 +144,7 @@ class MymuseControllerProduct extends JControllerForm
 					break;
 				}
 			}else {
-				echo "not saved"; $this->getError(); exit;
+
         		$this->msg = $this->getError();
         		JFactory::getApplication()->enqueueMessage($this->msg, 'error');
         		switch ($task )
@@ -230,6 +227,8 @@ class MymuseControllerProduct extends JControllerForm
         	$this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=listtracks&id='.$parentid,$this->msg );
         }elseif($subtype == 'item'){
         	$this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=listitems&id='.$parentid,$this->msg );
+        }elseif($subtype == 'allfiles'){
+        	$this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=listtracks&id='.$parentid,$this->msg );
         }else{
         	$this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=edit&id='.$parentid,$this->msg );
         }

@@ -397,9 +397,16 @@ class MyMuseModelProduct extends JModelItem
 			$alpha = $this->getState('list.alpha','');
 			$searchword = $this->getState('list.searchword','');
 			$listDirn	= $this->getState('list.direction', 'ASC');
-			$ordering 	= $this->getState('list.ordering', 'title');
+			$this->setState('list.ordering', ProductHelperQuery::orderbySecondary($params->get('orderby_track', 'rdate'), $params->get('order_track_date')));
+			$ordering 	= $this->getState('list.ordering', 'a.title');
+			if(preg_match("/ASC|DESC/", strtoupper($ordering))){
+				$listDirn = '';
+			}
+				
 			//echo $ordering; exit;
 			$secondaryOrder = $this->getState('list.secondaryOrder', '');
+			
+			
 			
 			$track_query = "SELECT a.id,a.title,title_alias,introtext,`fulltext`, parentid, catid, artistid, 
 			product_physical, product_downloadable, product_allfiles, product_sku,
@@ -487,7 +494,7 @@ class MyMuseModelProduct extends JModelItem
 
 
 					if ($params->get ( 'my_add_taxes' )) {
-						if(count($params->get('my_formats') > 1) && $params->get('my_price_by_product')){
+						if(count($params->get('my_formats') > 1) && 1 == $params->get('my_price_by_product')){
 							foreach($params->get('my_formats') as $format){
 								$tracks [$i]->price [$format]["product_price"] = MyMuseCheckout::addTax ( $tracks [$i]->price [$format]["product_price"] );
 							}
@@ -496,15 +503,9 @@ class MyMuseModelProduct extends JModelItem
 						}
 					}
 					
-					
-					
 					//TO DO work with formats
 					
-					
-					
-					
 
-				
 					//Audio/Video or some horrid mix of both
 					if($this->_item[$pk]->flash_type != "mix"){
 						if($this->_item[$pk]->flash_type == "audio" && $track->file_type == "video"){
@@ -605,6 +606,7 @@ class MyMuseModelProduct extends JModelItem
 				} // if count previews for 'each'
 				
 				
+				//get player buttons to play previews
 				if(count($preview_tracks) && $params->get('product_player_type') == "single"){
 					// make a controller for the play/pause buttons
 					$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$preview_tracks) );					
@@ -705,25 +707,40 @@ class MyMuseModelProduct extends JModelItem
 				}// if count previews for playlist
 				
 			}// if count tracks
-print_pre($tracks); exit;
+			
+			
 			// free downloads if price = free. NOTE NOT available while using Amazon s3
 			if(isset($tracks) && $params->get('my_free_downloads') && !$params->get('my_use_s3',0)){
+				
 				reset($tracks);
 				foreach($tracks as $track){
-					print_pre($params->get('my_formats')); exit;
-					if(count($params->get('my_formats')) > 1) {
+					if($track->product_allfiles){
+						continue;
+					}
+					
+					if(count($params->get('my_formats'))) {
 						foreach($params->get('my_formats') as $format){
-							if(!isset($track->price[$format]['product_price']) ||
-									$track->price[$format]['product_price'] == "FREE" ||
-									!$track->price[$format]['product_price']) {
+							if(1 == $params->get('my_price_by_product', 0) && isset($track->price[$format]) ){
+								$price = $track->price[$format];
+							}else{
+								$price = $track->price;
+							}
+							
+							if(!isset($price['product_price']) ||
+									$price['product_price'] == "FREE" ||
+									!$price['product_price']) {
 										foreach($track->file_name as $file){
-											if($format == $file['file_ext']){
-												$track->download_path .= $file->file_name;
-												$track->free_download_link = "index.php?option=com_mymuse&view=store&task=downloadit&id=".$track->id;
+					
+											if(isset($file->file_ext) && $format == $file->file_ext){
+												
+												$track->free_download_link[$file->file_ext] = "index.php?option=com_mymuse&view=store&task=downloadit&id=".$track->id."&format=".$format;
 												if($track->access > 1 && !$user->get('id')){
 													$view = $params->get('my_registration_redirect', 'login');
 													$track->free_download_link = "index.php?option=com_users&view=$view";
+													
 												}
+												$track->free_download = 1;
+												echo $track->title;
 											}
 										}
 											
@@ -733,14 +750,12 @@ print_pre($tracks); exit;
 						if(!isset($track->price['product_price']) ||
 								$track->price['product_price'] == "FREE" ||
 								!$track->price['product_price']) {
-									if(1 == $params->get('my_download_dir_format')){ //downloads by format
-										$track->download_path .= $ext.DS;
-									}
-									$track->download_path .= $file->file_name;
+									$track->free_download_link = "index.php?option=com_mymuse&view=store&task=downloadit&id=".$track->id;
 									if($track->access > 1 && !$user->get('id')){
 										$view = $params->get('my_registration_redirect', 'login');
 										$track->free_download_link = "index.php?option=com_users&view=$view";
 									}
+									$track->free_download = 1;
 								}
 									
 					}//end formats
@@ -748,9 +763,15 @@ print_pre($tracks); exit;
 				}//foreach track
 			}//isset tracks
 				
+			/*
+			 * $track->download_path = MYmUseHelper::getDownloadPath($track->parentid, 1);
+										if(1 == $params->get('my_download_dir_format',0)){ //downloads by format
+											$track->download_path .= $format.DS;
+										}
+			 */
 			$this->_item[$pk]->tracks = $tracks;
 			//end of tracks
-			
+		
 			
 			// get child items with prices
 			$query = "SELECT * FROM #__mymuse_product as p

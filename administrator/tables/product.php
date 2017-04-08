@@ -277,17 +277,19 @@ class MymuseTableproduct extends JTable
 
  		// if they selected a file from drop down
  		$select_files = isset( $post['select_file'] )? $post['select_file']: '';
- 		$arr = array();
- 		for( $i = 0; $i < count($select_files); $i++ ){
- 			if($select_files[$i] != ''){
- 				$arr[] = $select_files[$i];
+ 		if(count($select_files)){
+ 			$arr = array();
+ 			for( $i = 0; $i < count($select_files); $i++ ){
+ 				if(isset($select_files[$i]) && $select_files[$i] != ''){
+ 					$arr[] = $select_files[$i];
+ 				}
  			}
+ 			$select_files = $arr;
  		}
- 		$select_files = $arr;
  		$done = 0;
  		
- 		//one format
- 		if(1 == count($params->get('my_formats'))){
+ 		//one format and it's a child product
+ 		if(1 == count($params->get('my_formats'))&& $this->parentid ){
  			
  			//we only have one format, upload should be only $_FILES OR select_files
  			if( (isset($_FILES['product_file']['name']) && $_FILES['product_file']['name'] != "") 
@@ -501,8 +503,12 @@ class MymuseTableproduct extends JTable
 			}
 		}
 		
+		if($this->parentid){
+			$path = MyMuseHelper::getSitePath($this->parentid, 1);
+		}elseif ($this->id){
+			$path = MyMuseHelper::getSitePath($this->id, 0);
+		}
 		
-		$path = MyMuseHelper::getSitePath($parentid, 1);
 		
 		// Previews 1
 		if(!$this->managePreview('preview', $path)){
@@ -523,12 +529,12 @@ class MymuseTableproduct extends JTable
 	
 
         // if it is the parent. Parentid will be 0
-        if(!isset($this->parentid) || !$this->parentid){
+        if((!isset($this->parentid) || !$this->parentid) && $this->id){
 			//must be  a parent
         	// get artist alias
         	if(!$params->get('my_download_dir_format')){
 				// only create dirs if my_download_dir_format is default 0
-				$artist_alias = MyMuseHelper::getArtistAlias ( $this->catid );
+				$artist_alias = MyMuseHelper::getArtistAlias ( $this->id, 1 );
 				$artistdir = $params->get ( 'my_download_dir' ) . DS . $artist_alias;
 				$albumdir = $params->get ( 'my_download_dir' ) . DS . $artist_alias . DS . $this->alias;
 				
@@ -624,10 +630,9 @@ class MymuseTableproduct extends JTable
 		if($this->parentid){
 			$this->checkin($this->parentid);
 		}
-echo "almost"; 
+
 		$result = parent::store($updateNulls);
 		
-echo "result = $result"; print_pre($this); exit;
 		if($result){
 
 			// clear product_category_xref
