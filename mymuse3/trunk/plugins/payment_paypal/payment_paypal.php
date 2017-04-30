@@ -13,7 +13,6 @@
 defined( '_JEXEC' ) or die( 'Restricted access' );
 
 jimport( 'joomla.plugin.plugin');
-
 /**
 * MyMuse PaymnetPaypal plugin
 *
@@ -124,17 +123,17 @@ class plgMymusePayment_Paypal extends JPlugin
 		}
 		
 		//custom field
-		$custom = 'custom=1&userid='.$shopper->id;
+		$custom = 'custom=1&userid='.$shopper->id.'&email='.$shopper->email;
 		//if($params->get('my_registration') == "no_reg"){
 			foreach($shopper->profile as $key=>$val){
-				$custom .= '&'.$key.'='.$val;
+				//$custom .= '&'.$key.'='.$val;
 			}
 		//}
 		if(isset($order->order_number)){
-			$custom .= '&order_number='.$order->order_number.'&email='.$shopper->email;
+			//$custom .= '&order_number='.$order->order_number.'&email='.$shopper->email;
 		}
 		if($params->get('my_use_shipping') && isset($order->order_shipping->id)){
-			$custom .= '&order_shipping_id='.$order->order_shipping->id;
+			//$custom .= '&order_shipping_id='.$order->order_shipping->id;
 		}
 		
 		//does this order have reservation fees? How much is the "Pay_now" field?
@@ -170,7 +169,6 @@ class plgMymusePayment_Paypal extends JPlugin
 		<input type="hidden" name="upload"          value="1" />
 		<input type="hidden" name="business"        value="'. $merchant_email.'" />
 		
-		<input type="hidden" name="upload"          value="1" />
 		<input type="hidden" name="currency_code"   value="'. $store->currency.'" />
 		<input type="hidden" name="invoice"     	value="'. $order->order_number.'" />
 		<input type="hidden" name="item_name"       value="'. $store->title.'" />
