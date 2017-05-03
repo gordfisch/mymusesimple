@@ -19,7 +19,11 @@ foreach($alpha as $letter){
 	$n = 0;
 	foreach($this->items as $id => $child){
 
-		if(mb_stripos($child->title, $letter ) === 0){
+		if(function_exists('mb_stripos') && mb_stripos($child->title, $letter ) === 0){
+			$alphaarr[$letter][$n] = $child;
+			$n++;
+			$lets[$letter]= 1;
+		}elseif(stripos($child->title, $letter ) === 0){
 			$alphaarr[$letter][$n] = $child;
 			$n++;
 			$lets[$letter]= 1;
