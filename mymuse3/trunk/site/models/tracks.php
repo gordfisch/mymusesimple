@@ -458,7 +458,7 @@ class MyMuseModelTracks extends JModelList
 	 */
 	public function getItems()
 	{
-		
+		$db = $this->getDbo();
 		if($this->getState('list.prods','') == "()"){
 			return array();
 		}
