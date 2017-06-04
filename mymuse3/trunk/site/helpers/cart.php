@@ -603,8 +603,10 @@ class MyMuseCart {
 				}
 				$order->items[$i]->variation_select  .= "</select>";
 				
-				$order->items[$i]->file_name = $jason[$this->cart[$i]["variation"]]->file_name;
-				$order->items[$i]->ext = $jason[$this->cart[$i]["variation"]]->file_ext;
+				$order->items[$i]->file_name = isset($jason[$this->cart[$i]["variation"]]->file_name)?
+				$jason[$this->cart[$i]["variation"]]->file_name : '';
+				$order->items[$i]->ext = isset($jason[$this->cart[$i]["variation"]]->file_ext)?
+				$jason[$this->cart[$i]["variation"]]->file_ext : '';
 			}else{
 				$order->items[$i]->ext = pathinfo($order->items[$i]->file_name, PATHINFO_EXTENSION);
 			}

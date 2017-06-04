@@ -87,7 +87,7 @@ jQuery(document).ready(function(){
 </script>
 <?php } ?>
 		<?php if($order->do_html){ ?>
-			<form action="index.php?Itemid=<?php echo $Itemid; ?>" method="post" name="adminForm">
+			<form action="<?php JRoute::_("index.php?option=com_mymuse&view=cart&task=checkout") ?>" method="post" name="adminForm">
 		<?php } ?>
 
 		<!-- start of basket -->
@@ -468,8 +468,8 @@ if($notes_required  && $user->username == 'buyer'){
 	  			?>
 				<div class="pull-right mymuse-button-right cart">
 					<button class="button uk-button" type="button" 
-					onclick="location.href='<?php echo JRoute::_("index.php?option=com_mymuse&task=checkout&Itemid=$Itemid") ?>'">
-					<?php echo JText::_('MYMUSE_CHECKOUT'); ?></button>
+					onclick="location.href='<?php echo JRoute::_("index.php?option=com_mymuse&view=cart&task=checkout") ?>'">
+					<?php echo JText::_('MYMUSE_CHECKOUT'); ?></button><?php echo JRoute::_("index.php?option=com_mymuse&view=cart&task=checkout") ?>
 				</div>
 			<?php } ?>
 				

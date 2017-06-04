@@ -52,7 +52,7 @@ class plgUserRedirectonlogin extends JPlugin
 		$user = $options['user'];
 
 		if($cart && $cart['idx'] > 0 && $user->username != ''){
-			$return = "index.php?option=com_mymuse&view=cart&layout=cart";
+			$return = JRoute::_("index.php?option=com_mymuse&view=cart&task=showcart");
 			$app->setUserState('users.login.form.return', $return);
 		}
 		return true;

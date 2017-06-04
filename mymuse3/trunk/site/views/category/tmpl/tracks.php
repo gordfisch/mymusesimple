@@ -222,7 +222,7 @@ if(count($params->get('my_formats') > 1) && $params->get('my_price_by_product'))
         
 
 $url = JURI::Root()."index.php?option=com_mymuse&task=ajaxtogglecart";
-if(is_array($tracks && count($tracks))){
+if(is_array($tracks) && count($tracks)){
 	foreach ( $tracks as $track ) {
 		
 		$js .= '
@@ -301,7 +301,7 @@ $document->addScriptDeclaration($js);
 		<div class="mini-cart-content">
 			<div class="mini-cart-parent-text">
 				<a
-					href="<?php echo JRoute::_("index.php?option=com_mymuse&view=category&layout=alpha&id=".$this->parent->id); ?>">
+					href="<?php echo JRoute::_("index.php?option=com_mymuse&view=category&id=".$this->parent->id); ?>">
 <?php echo $this->parent->title; ?></a>
 			</div>
 		</div>

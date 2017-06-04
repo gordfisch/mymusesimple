@@ -31,31 +31,42 @@ function MymuseBuildRoute(&$query)
 	require_once( MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php' );
 	$params = MyMuseHelper::getParams();
 
-	$segments	= array();
+	
+
 
 	// get a menu item based on Itemid or currently active
 	$app		= JFactory::getApplication();
 	$menu		= $app->getMenu();
 	$advanced	= $params->get('sef_advanced_link', 0);
+	$segments = array();
 	$dbo = JFactory::getDbo();
-	
-	/*
-	if($params->get('top_menu_item','')){
-		$q = 'SELECT alias from #__menu WHERE id="'.$params->get('top_menu_item').'"';
-		$dbo->setQuery($q);
-		$alias = $dbo->loadResult();
-		$segments[] = $alias;
+	$q = 'SELECT id from #__menu WHERE home=1';
+	$dbo->setQuery($q);
+	$home_id = $dbo->loadResult();
+	if($params->get('top_menu_item') == $home_id){
+		$params->set('top_menu_item', '');
 	}
 
-	if($params->get('top_menu_item','') && $params->get('my_use_alias','')){
-		$product_id = isset($query['product_id'])? $query['product_id'] : '';
-		$q = 'SELECT alias from #__mymuse_product WHERE id="'.$product_id.'"';
+	if($params->get('top_menu_item','') && $params->get('top_menu_item') != $home_id){
+		if(!isset($query['Itemid'])){
+			$query['Itemid']= $params->get('top_menu_item','');
+		}
+		/*elseif($query['Itemid'] == $params->get('top_menu_item','')){
+			$q = 'SELECT alias from #__menu WHERE id="'.$params->get('top_menu_item').'"';
+			$dbo->setQuery($q);
+			$alias = $dbo->loadResult();
+			$segments[] = $alias;
+		}*/
+	}
+
+	if($params->get('top_menu_item','') && $params->get('my_use_alias','') && isset($query['product_id'])){
+		$q = 'SELECT alias from #__mymuse_product WHERE id="'.$query['product_id'].'"';
 		$dbo->setQuery($q);
 		if($alias = $dbo->loadResult()){
 			$segments[] = $alias;
 		}
 	}
-	*/
+
 
 	
 	// we need a menu item.  Either the one specified in the query, or the current active one if none specified
@@ -67,15 +78,16 @@ function MymuseBuildRoute(&$query)
 		$menuItem = $menu->getItem($query['Itemid']);
 		$menuItemGiven = true;
 	}
-	
+
+	// we need to have a view in the query or it is an invalid URL
 	if (isset($query['view'])) {
 		$view = $query['view'];
 	}
 	else {
-		// we need to have a view in the query or it is an invalid URL
+
 		return $segments;
 	}
-
+	
 
     if(isset($query['task']) && $query['task'] == "checkout"){
     	unset($query['task']);
@@ -294,7 +306,7 @@ function MymuseBuildRoute(&$query)
 		$segments = array_merge($segments, $array);
 
 		if ($view == 'product') {
-			print_pre($segments);
+			//print_pre($segments);
 			if ($advanced || $params->get('my_use_alias')) {
 				list($tmp, $id) = explode(':', $query['id'], 2);
 			}
@@ -345,13 +357,14 @@ function MymuseParseRoute($segments)
 	$jinput->set('option', 'com_mymuse');
 	$menu	= $app->getMenu();
 	$item	= $menu->getActive();
+	
 	$params = MyMuseHelper::getParams();
 	$advanced = $params->get('sef_advanced_link', 0);
 	$dbo = JFactory::getDBO();
 	
 	
 
-	//print_pre($segments);exit;
+	//print_pre($segments);
 	//print_pre($item);exit;
 	// Count route segments
 	$count = count($segments);
@@ -369,7 +382,7 @@ function MymuseParseRoute($segments)
     	}
     }
     if (!isset($item)) {
-		$vars['view']	= $segments[0];
+		$vars['view			}']	= $segments[0];
 		$vars['id']		= $segments[$count - 1];
 		//print_pre($vars);exit;
 		return $vars;
@@ -565,6 +578,11 @@ function MymuseParseRoute($segments)
 			$orig_segments = $segments;
 			$segments[0] = preg_replace('/:/',"-",$segments[0]);
 			$segments[1] = preg_replace('/:/',"-",$segments[1]);
+		}elseif(strpos($segments[1],':')){
+			$orig_segments = $segments;
+			$segments[0] = preg_replace('/:/',"-",$segments[0]);
+			$segments[1] = preg_replace('/:/',"-",$segments[1]);
+
 		}
 		$query = 'SELECT id,artistid from #__mymuse_product WHERE alias="'.$segments[0].'"';
 	
@@ -590,7 +608,16 @@ function MymuseParseRoute($segments)
 			return $vars;
 		}
 			
-		//check if this is a category alias.
+		//check if this is a category alias. Check last segment first
+		$query = 'SELECT id from #__categories WHERE alias="'.$segments[1].'" and extension="com_mymuse"';
+		$dbo->setQuery($query);
+		if($category = $dbo->loadObject()){
+			$vars['option'] = 'com_mymuse';
+			$vars['view'] = 'category';
+			$vars['id'] = (int)$category->id;
+			return $vars;
+		}
+		
 		$query = 'SELECT id from #__categories WHERE alias="'.$segments[0].'" and extension="com_mymuse"';
 	
 		$dbo->setQuery($query);
@@ -601,7 +628,29 @@ function MymuseParseRoute($segments)
 			return $vars;
 		}
 	}
-	
+	if($count == 2){
+		
+		//check if this is a category alias. Check last segment first
+		$query = 'SELECT id from #__categories WHERE alias="'.$segments[1].'" and extension="com_mymuse"';
+		
+		$dbo->setQuery($query);
+		if($category = $dbo->loadObject()){
+			$vars['option'] = 'com_mymuse';
+			$vars['view'] = 'category';
+			$vars['id'] = (int)$category->id;
+			return $vars;
+		}
+		
+		$query = 'SELECT id from #__categories WHERE alias="'.$segments[0].'" and extension="com_mymuse"';
+		
+		$dbo->setQuery($query);
+		if($category = $dbo->loadObject()){
+			$vars['option'] = 'com_mymuse';
+			$vars['view'] = 'category';
+			$vars['id'] = (int)$category->id;
+			return $vars;
+		}
+	}
 	
 	if (!$advanced) {
 		$cat_id = (int)$segments[0];
