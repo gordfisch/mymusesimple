@@ -29,6 +29,7 @@ class mymuseViewCategories extends JViewLegacy
 	 */
 	function display($tpl = null)
 	{
+		
 		// Initialise variables
 		$state		= $this->get('State');	
 		$items		= $this->get('Items');
