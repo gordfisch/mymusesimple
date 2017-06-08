@@ -836,7 +836,7 @@ endif; ?>
 <!--  TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS  -->
 		<h3><?php echo JText::_('MYMUSE_DOWNLOADABLE_ITEMS'); ?></h3>
 
-
+<?php if (!$this->hide_player){ ?>
 		<!-- PLAYER -->
 		<?php if($params->get('product_player_type') == "single") : ?>
 			<div id="product_player" 
@@ -859,7 +859,7 @@ endif; ?>
 		
 		<div style="clear: both"></div>
 
-		<div class="clips petrol"
+		<div class=""
 			<?php if($params->get('product_player_type') == "each"){ ?>
 			id="product_player" <?php } ?>>
 
@@ -867,12 +867,12 @@ endif; ?>
         if(count($tracks) == 1){ $word = "Track"; }else{ $word = "Tracks";} ?> 
             <?php echo $word; ?> Total</div>
 			<!-- END PLAYER -->
+<?php } ?>
 
-
-			<table class="mymuse_cart tracks">
-				<thead>
-					<tr>
-						<th class="mymuse_cart_top mytitle" align="center" width="40%">
+	<table class="mymuse_cart tracks">
+		<thead>
+			<tr>
+				<th class="mymuse_cart_top mytitle" align="center" width="40%">
         	<?php echo JHtml::_('grid.sort', 'MYMUSE_NAME', 'title', $listDirn, $listOrder); ?></th>
        		
        		<?php  if($params->get('product_show_artist', 0)) :?>
@@ -1094,8 +1094,8 @@ endif; ?>
       				</tr>
       		<?php  endforeach; ?>
 		</table>
-		</div>
-		<!-- END TRACKS -->
+	</div>
+	<!-- END TRACKS -->
 
 </form>
 <div style="clear: both"></div>

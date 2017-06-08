@@ -170,6 +170,8 @@
         	        	todir="${test}/plugins/mymuse/audio_jplayer/js" /> 
         		<copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.css"
         	        	todir="${test}/plugins/mymuse/audio_jplayer/skin" />
+        	    <copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.orig.css"
+        	        	todir="${test}/plugins/mymuse/audio_jplayer/skin" />
         		<copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.rtl.css"
         	        	todir="${test}/plugins/mymuse/audio_jplayer/skin" />
         		<copy file="${src}/plugins/audio_jplayer/skin/jplayer.blue.monday.jpg"

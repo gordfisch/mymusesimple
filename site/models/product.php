@@ -663,7 +663,7 @@ class MyMuseModelProduct extends JModelItem
 					$type = "";
 					foreach($preview_tracks as $track){
 						if($track->file_preview){
-							$track->path .= $site_url.$track->file_preview;
+							$track->path = $site_url.$track->file_preview;
 						}
 
 						if($track->file_preview_2){

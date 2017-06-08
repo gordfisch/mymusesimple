@@ -305,6 +305,7 @@ class MyMuseModelTracks extends JModelList
         		
         $query .= " AND a.product_downloadable = 1
         AND a.state=1
+        		AND a.product_allfiles = 0
         ";
         if($alpha != ''){
             $query .= "AND ar.title LIKE '$alpha%' ";

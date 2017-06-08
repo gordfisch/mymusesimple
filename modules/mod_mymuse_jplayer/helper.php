@@ -29,33 +29,45 @@ class modMyMuseLatestHelper
 		$document 		= JFactory::getDocument();
 
 		$type = $params->get('type_shown','tracks');
-		$product_ids = $params->get('product_ids', 0);
+		
 		$maximum_shown = $params->get('maximum_shown',5);
 		$datenow = JFactory::getDate();
-		$search = $params->get('type_search');
+		$search = $params->get('type_search','p.created');
+		
+		$jinput 	= JFactory::getApplication()->input;
 
-		if($product_ids && $type =="albums"){
-			$query = 'SELECT p.id, p.title as product_name, 
-					p.list_image, p.parentid, p.hits,
-			c.id as artist_id, c.title as artist_name, s.sales as sales
-			from #__mymuse_product as p
-			LEFT JOIN #__categories as c on c.id=p.catid
+		if($jinput->get('view') == 'product' && $jinput->get('id')){
+			$product_ids = $jinput->get('id');
+		}
+		if($jinput->get('view') == 'categories' && $jinput->get('id')){
+			$catid = $jinput->get('id');
+			//mymuseModelCategories
+
+		}
+		if($jinput->get('view') == 'category' && $jinput->get('id')){
+			$catid = $jinput->get('id');
+			//MyMuseModelCategory
+			$model = JModelList::getInstance('Category', 'MyMuseModel', array('ignore_request' => false));
+			//$model->populateState();
 			
-			LEFT JOIN (SELECT sum(quantity) as sales, x.product_name, x.product_id FROM
-			(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
-			i.product_name, CASE WHEN parentid > 0 THEN parentid ELSE product_id END as all_id
-			FROM #__mymuse_order_item as i
-			LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
-			GROUP BY i.product_id )
-			as x GROUP BY x.all_id) as s ON s.product_id = p.id
-			
-			WHERE c.published=1
-			AND p.state=1
-			AND ( p.publish_up = '.$db->Quote($nullDate).' OR p.publish_up <= '.$db->Quote($now).' )
-			AND ( p.publish_down = '.$db->Quote($nullDate).' OR p.publish_down >= '.$db->Quote($now).' )
-			AND p.id IN('.$product_ids.')';
-			
-		}elseif($product_ids && $type =="tracks"){
+			if(!$state = $model->getState()){
+				echo "no state";
+				exit;
+			}
+			$params = $state->get('params');
+			$params->set('category_layout',"_:tracks");
+			$model->setState('params', $params);
+			$tracks = $model->getItems();
+			$results = $tracks[0];
+			//print_pre($results);
+			return $results;
+		}
+
+		
+		
+		echo "product_ids = $product_ids";
+		
+		if($product_ids && $type =="tracks"){
 			
 			//type = tracks
 			$query = 'SELECT p.id, p.title, p.file_preview, p.file_preview_2, p.file_preview_3, p.parentid, p.file_downloads, p.file_type,
@@ -69,46 +81,19 @@ class modMyMuseLatestHelper
 			i.product_name, CASE WHEN parentid > 0 THEN parentid ELSE product_id END as all_id
 			FROM #__mymuse_order_item as i
 			LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
-			GROUP BY i.product_id ) as s ON s.product_id = p.id
+			GROUP BY i.product_id,i.product_name ) as s ON s.product_id = p.id
 			
 			WHERE c.published=1
-			AND p.product_downloadable=1
 			AND p.product_allfiles = 0
+			AND p.product_downloadable=1
 			AND p.state=1
 			AND ( p.publish_up = '.$db->Quote($nullDate).' OR p.publish_up <= '.$db->Quote($now).' )
 			AND ( p.publish_down = '.$db->Quote($nullDate).' OR p.publish_down >= '.$db->Quote($now).' )
 			AND p.parentid > 0
 			AND pa.state=1
-			AND p.id IN('.$product_ids.');
+			AND pa.id IN('.$product_ids.');
 			';
 			
-		}elseif($type =="albums"){
-			if($search == "pa.hits"){
-				$search = "p.hits";
-			}
-			$query = 'SELECT p.id, p.title as product_name, p.list_image, p.parentid, p.hits,
-			c.id as artist_id, c.title as artist_name, s.sales as sales
-			from #__mymuse_product as p
-			LEFT JOIN #__categories as c on c.id=p.catid
-				
-			LEFT JOIN (SELECT sum(quantity) as sales, x.product_name, x.product_id FROM
-			(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
-			i.product_name, CASE WHEN parentid > 0 THEN parentid ELSE product_id END as all_id
-			FROM #__mymuse_order_item as i
-			LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
-			GROUP BY i.product_id )
-			as x GROUP BY x.all_id) as s ON s.product_id = p.id
-
-			WHERE c.published=1
-			AND p.state=1
-			AND ( p.publish_up = '.$db->Quote($nullDate).' OR p.publish_up <= '.$db->Quote($now).' )
-			AND ( p.publish_down = '.$db->Quote($nullDate).' OR p.publish_down >= '.$db->Quote($now).' )
-			AND p.parentid=0 
-			';
-			if($search == 'p.featured'){
-				$query .= 'AND p.featured = 1 ';
-			}
-			$query .= 'ORDER BY '.$search.' DESC, artist_name ASC LIMIT 0,'.$maximum_shown;
 		}else{
 			//type = tracks
 			$query = 'SELECT p.id, p.title, p.file_preview, p.file_preview_2, p.file_preview_3, p.parentid, p.file_downloads, p.file_type,
@@ -122,7 +107,7 @@ class modMyMuseLatestHelper
 			i.product_name, CASE WHEN parentid > 0 THEN parentid ELSE product_id END as all_id
 			FROM #__mymuse_order_item as i
 			LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
-			GROUP BY i.product_id ) as s ON s.product_id = p.id
+			GROUP BY i.product_id,i.product_name ) as s ON s.product_id = p.id
 
 			WHERE c.published=1
 			AND p.product_allfiles = 0
@@ -146,13 +131,16 @@ class modMyMuseLatestHelper
 			return $results;
 		}
 		
+		
+		
+		
 		for($i=0; $i < count($results); $i++){
 			$id = ($results[$i]->parentid)? $results[$i]->parentid : $results[$i]->id;
 			$results[$i]->product_link = myMuseHelperRoute::getProductRoute($id,$results[$i]->artist_id );
 			$results[$i]->artist_link = myMuseHelperRoute::getCategoryRoute($results[$i]->artist_id);
 			$results[$i]->flash = '';
 			
-			if($params->get('type_shown') == "tracks" && $results[$i]->file_preview){
+			if($params->get('type_shown', 'tracks') == "tracks" && $results[$i]->file_preview){
 				$trs = array();
 				
 				$artist_alias = MyMuseHelper::getArtistAlias($results[$i]->parentid, '1');
@@ -269,7 +257,7 @@ class modMyMuseLatestHelper
 
 			});
 				';
-				$document->addScriptDeclaration($js);
+				//$document->addScriptDeclaration($js);
 				$results[$i]->flash .= '<!-- End Player -->';
 			}
 		}
