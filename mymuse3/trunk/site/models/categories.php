@@ -85,7 +85,7 @@ class mymuseModelCategories extends JModelList
 	}
 
 	/**
-	 * Redefine the function an add some properties to make the styling more easy
+	 * Get the child categories
 	 *
 	 * @param	bool	$recursive	True if you want to return children recursively.
 	 *

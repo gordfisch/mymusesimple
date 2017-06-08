@@ -61,6 +61,7 @@ class myMuseViewProduct extends JViewLegacy
 		$this->sortColumn       = $this->state->get('list.ordering');
 		$this->filterAlpha     	= $jinput->get('filter_alpha', '', 'STRING');
 		$this->pagination 		= $this->get('Pagination');
+		$this->hide_player = JModuleHelper::isEnabled('mod_mymuse_jplayer');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
