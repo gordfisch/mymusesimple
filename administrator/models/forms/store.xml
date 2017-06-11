@@ -942,9 +942,9 @@
                 default="0">
                 <option value="0">MYMUSE_PRICE_BY_TRACK</option>
 				<option value="1">MYMUSE_PRICE_BY_PRODUCT</option>
-				<option value="2">MYMUSE_PRICE_BY_LICENSE</option>
+				
         </field>
-
+<!-- <option value="2">MYMUSE_PRICE_BY_LICENSE</option> -->
         <field
                 name="my_license_0_name"
                 type="text"

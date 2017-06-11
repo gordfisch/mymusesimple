@@ -469,7 +469,7 @@ if($notes_required  && $user->username == 'buyer'){
 				<div class="pull-right mymuse-button-right cart">
 					<button class="button uk-button" type="button" 
 					onclick="location.href='<?php echo JRoute::_("index.php?option=com_mymuse&view=cart&task=checkout") ?>'">
-					<?php echo JText::_('MYMUSE_CHECKOUT'); ?></button><?php echo JRoute::_("index.php?option=com_mymuse&view=cart&task=checkout") ?>
+					<?php echo JText::_('MYMUSE_CHECKOUT'); ?></button>
 				</div>
 			<?php } ?>
 				
