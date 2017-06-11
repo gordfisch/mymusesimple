@@ -402,12 +402,10 @@ class MyMuseModelProduct extends JModelItem
 			if(preg_match("/ASC|DESC/", strtoupper($ordering))){
 				$listDirn = '';
 			}
-				
-			//echo $ordering; exit;
+
 			$secondaryOrder = $this->getState('list.secondaryOrder', '');
 			
-			
-			
+
 			$track_query = "SELECT a.id,a.title,title_alias,introtext,`fulltext`, parentid, catid, artistid, 
 			product_physical, product_downloadable, product_allfiles, product_sku,
 			product_made_date, price, featured, product_discount, product_package_ordering, 
@@ -740,7 +738,7 @@ class MyMuseModelProduct extends JModelItem
 													
 												}
 												$track->free_download = 1;
-												echo $track->title;
+												//echo $track->title;
 											}
 										}
 											

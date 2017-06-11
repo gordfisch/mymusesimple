@@ -66,7 +66,27 @@ class MymuseTablestore extends JTable
         return parent::check();
     }
 
-
+    public function enablePlugin($name, $enable = 1)
+    {
+    	// Enable plugin
+    	$db  = JFactory::getDbo();
+    	$query = $db->getQuery(true);
+    	$query->update('#__extensions');
+    	$query->set($db->quoteName('enabled') . " = $enable");
+    	$query->where($db->quoteName('element') . ' = ' . $db->quote($name));
+    	$query->where($db->quoteName('type') . ' = ' . $db->quote('plugin'));
+    	$db->setQuery($query);
+    	try {
+    		$db->execute();
+    	}
+    	catch (Exception $e){
+    		$this->setError(JText::_('MYMSUE_ENABLE_PLUGIN_FAILED', $e->getMessage()));
+    		return false;
+    	}
+    	return true;
+    	
+    	
+    }
     
     /**
      * Overrides JTable::store to set modified data and user id.
@@ -86,14 +106,52 @@ class MymuseTablestore extends JTable
     	$myparams = MyMuseHelper::getParams();
     	$jinput = JFactory::getApplication()->input;
     	$form 	= $jinput->get('jform',array(), 'ARRAY');
+    	//$user_plugin = JPluginHelper::getPlugin('user', 'mymuse');
+    	//$noreg_plugin = JPluginHelper::getPlugin('user', 'mymusenoreg');
     	
+    	//if registration type has changed
+    	//joomla, full, jossocial, no_reg, full_guest
+    	if($form['params']['my_registration'] !== $myparams->get('my_registration')){
+    		if ($form ['params'] ['my_registration'] == 'joomla') {
+    			if (! $this->enablePlugin ( 'mymuse', 0 ) || ! $this->enablePlugin ( 'mymusenoreg', 0 )) {
+    				$app->enqueueMessage ( JText::_ ( 'MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check user_mymuse and user_mymusenoreg', 'notice' );
+    				return false;
+    			} else {
+    				$app->enqueueMessage ( JText::_ ( 'MYMUSE_DISABLE_PLUGIN' ) . ' user_mymuse and user_mymusenoreg', 'notice' );
+    			}
+    		}
+			if ($form ['params'] ['my_registration'] == 'full_guest') {
+				if (! $this->enablePlugin ( 'mymuse', 1 ) || ! $this->enablePlugin ( 'mymusenoreg', 1 )) {
+					$app->enqueueMessage ( JText::_ ( 'MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check user_mymuse and user_mymusenoreg', 'notice' );
+					return false;
+				} else {
+					$app->enqueueMessage ( JText::_ ( 'MYMUSE_ENABLE_PLUGIN' ) . ' user_mymuse and user_mymusenoreg', 'notice' );
+				}
+			}
+			if ($form ['params'] ['my_registration'] == 'full') {
+				if (! $this->enablePlugin ( 'mymuse', 1 ) || ! $this->enablePlugin ( 'mymusenoreg', 0 )) {
+					$app->enqueueMessage ( JText::_ ( 'MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check user_mymuse and user_mymusenoreg', 'notice' );
+					return false;
+				} else {
+					$app->enqueueMessage ( JText::_ ( 'MYMUSE_ENABLE_PLUGIN' ) . ' user_mymuse,' . JText::_ ( 'MYMUSE_DISABLE_PLUGIN' ) . ' user_mymusenoreg', 'notice' );
+				}
+			}
+			if ($form ['params'] ['my_registration'] == 'no_reg') {
+				if (! $this->enablePlugin ( 'mymuse', 0 ) || ! $this->enablePlugin ( 'mymusenoreg', 1 )) {
+					$app->enqueueMessage ( JText::_ ( 'MYMUSE_ENABLE_PLUGIN_FAILED' ) . ' check user_mymuse and user_mymusenoreg', 'notice' );
+					return false;
+				} else {
+					$app->enqueueMessage ( JText::_ ( 'MYMUSE_ENABLE_PLUGIN' ) . ' user_mymusenoreg,' . JText::_ ( 'MYMUSE_DISABLE_PLUGIN' ) . ' user_mymuse', 'notice' );
+				}
+			}
+    	}
+
     	//save the css file
     	$mymuse_css = $jinput->get('mymuse_css','', 'RAW');
 
     	if($mymuse_css){
     		$myFile = JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'assets'.DS.'css'.DS.'mymuse.css';
     		if(!JFILE::write($myFile, $mymuse_css)){
-    			$app = JFactory::getApplication();
     			$app->enqueueMessage(JText::_('MYMUSE_COULD_NOT_OPEN_CSS_FILE').' '.$myFile, 'notice');
     		}
     	}
@@ -128,7 +186,6 @@ class MymuseTablestore extends JTable
     			$this->setError($user->getError());
     			return false;
     		}
-    		
     	}
     	
     	//if encode filenames has changed

@@ -266,7 +266,6 @@ $document->addScriptDeclaration($js);
 	</h1>
 <?php endif; ?>
 
-
 <!--  INLINE PARENT  -->
 <!-- 
 <div id="parent">
@@ -276,7 +275,7 @@ $document->addScriptDeclaration($js);
 <a href="<?php 
 
 echo myMuseHelperRoute::getCategoryRoute($product->artist->parent_id); ?>">
-<?php echo $product->artist->parent_title; ?></a>
+<?php echo $product->artist->parent_title; ?>ggggg</a>
 </div>
 </div>
 </div>
@@ -287,7 +286,7 @@ echo myMuseHelperRoute::getCategoryRoute($product->artist->parent_id); ?>">
 <?php if($this->params->get('show_minicart')) :?>
 <!--  INLINE MINICART  -->
 <!--  the cart box  -->
-<div id="mini-cart">
+<div id="mini-cart pull-left">
 	<div class="mini-cart-top">
 		<div class="mini-cart-content">
 			<div class="mini-cart-cart"></div>

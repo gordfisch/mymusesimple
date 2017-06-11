@@ -70,8 +70,9 @@ class mymuseModelShopper extends JModelForm
         	$jinput = JFactory::getApplication()->input;
         	$task 	= $jinput->get('task');
         	$db 	= JFactory::getDBO();
+        	$session = JFactory::getSession();
+        	$guestcheckout = $session->get('guestcheckout');
 
- 
         	//if this is no reg coming in for a download
         	if(($params->get('my_registration') == "no_reg" || $params->get('my_registration') == "full_guest") 
         			&& !$user->get('id') 
@@ -107,9 +108,13 @@ class mymuseModelShopper extends JModelForm
         	}
         	
         	
-        	// regular user
-			$my_profile_key = $params->get('my_profile_key','mymuse');
-		
+        	// guest or regular user
+        	if($task == 'guestcheckout' || $guestcheckout){
+				$my_profile_key = 'mymusenoreg';
+        	}else{
+        		$my_profile_key = $params->get('my_profile_key','mymuse');
+        	}
+//echo "guestcheckout = $guestcheckout"; print_pre($user); echo $my_profile_key; exit;
 			if($user->get('id') > 0)
 			{
 				
@@ -139,13 +144,13 @@ class mymuseModelShopper extends JModelForm
 					
 					//I want to see if any fields that are required have not been filled in
 					$plugin = JPluginHelper::getPlugin('user', $my_profile_key);
+
     				$profile_params = new JRegistry();
     				if(isset($plugin->params)){
     					$profile_params->loadString($plugin->params);
 
     					$fields = array_keys(json_decode($plugin->params, true));
-    					//print_pre($fields);
-    						
+
     					foreach ($fields as $f) {
     						$field = preg_replace("/register-require_/",'',$f);
     						if (
@@ -436,7 +441,7 @@ class mymuseModelShopper extends JModelForm
 		// Validate the posted data.
 		$form	= $this->getForm();
 		if (!$form) {
-			JError::raiseError(500, $this->getError());
+			$app->enqueueMessage("No form. ".$this->getError(), 'warning');
 			return false;
 		}
 

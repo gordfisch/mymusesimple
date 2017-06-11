@@ -248,6 +248,8 @@ class MyMuseController extends JControllerLegacy
 	{
 		
 		$db = JFactory::getDBO();
+		$session = JFactory::getSession();
+		
 		
 		$query = "SELECT id from #__users WHERE username = 'buyer'";
 		$db->setQuery($query);
@@ -265,6 +267,9 @@ class MyMuseController extends JControllerLegacy
 			return false;
 		}
 
+		$session->set('guestcheckout', 1);
+		$this->setRedirect( JRoute::_("index.php?option=com_mymuse&view=shopper&task=register&Itemid=".$this->Itemid));
+		return true;
 		/**
 		 * 
 		 $query = "UPDATE #__users set email='', name='' WHERE id ='$guestid'";
@@ -274,21 +279,23 @@ class MyMuseController extends JControllerLegacy
 			$this->setRedirect( JRoute::_("index.php?option=com_mymuse&task=checkout&Itemid=".$this->Itemid, $msg));
 			return false;
 		}
-		*/
+		
 		$res = $this->savenoreg();
 
 		if($res){
-			$session = JFactory::getSession();
 			$user	= JFactory::getUser();
 			$user->email = '';
 			$user->email1 = '';
 			$user->email2 = '';
 			$user->name = '';
 			$user->profile = array();
+			$user->guestcheckout = 1;
 			$session->set('user', $user);
+			$session->set('guestcheckout', 1);
 		}
 		
 		return $res;
+		*/
 	}
 	
 	
