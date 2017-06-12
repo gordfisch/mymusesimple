@@ -561,14 +561,14 @@ class MyMuseModelProduct extends JModelItem
 							//should we use the real download file? Not available in AmazonS3
 							if(!$params->get('my_use_s3')){
 								if($params->get('my_play_downloads', 0) && in_array($track->id, $myOrders)){
-									$track->path = $track->download_path;
-									$track->real_path = $track->download_real_path;
+									$track->path = isset($track->download_path)? $track->download_path : '';
+									$track->real_path = isset($track->download_real_path)? $track->download_real_path : '';
 									$track->purchased = 1;
 								}
 								if($params->get('my_play_downloads', 0) &&
 										(!$track->price["product_price"] || $track->price["product_price"] == "FREE")){
-									$track->path = $track->download_path;
-									$track->real_path = $track->download_real_path;
+									$track->path = isset($track->download_path)? $track->download_path : '';
+									$track->real_path = isset($track->download_real_path)? $track->download_real_path : '';
 									$track->purchased = 1;
 								}
 							}

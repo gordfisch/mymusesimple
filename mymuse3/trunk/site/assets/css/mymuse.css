@@ -342,7 +342,7 @@ padding-bottom: 10px;
 }
 .mini-cart-content{
 	border-radius: 8px;
-	background: #FFF none repeat scroll 0% 0%;
+	background: #fff none repeat scroll 0% 0%;
 	padding: 10px;
 
 }
@@ -350,12 +350,12 @@ padding-bottom: 10px;
     display: table-cell;
     vertical-align: middle;
     text-align: center;
-    font-size: 125%;
+
 }
 .mini-cart-cart {
 	background: url('../images/cart.png') no-repeat scroll 0% 0%;
 	width: 34px;
-	height: 24px;
+	height: 34px;
 }
 .mini-cart-text, .mini-cart-link {
     padding: 1px 10px;

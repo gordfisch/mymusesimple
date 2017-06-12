@@ -86,7 +86,7 @@ style="height: <?php echo $params->get('store_product_image_height'); ?>px"
 					elseif ($params->get('show_readmore_title', 0) == 0) :
 						echo JText::sprintf('MYMUSE_READ_MORE_TITLE');
 					else :
-						echo JText::_('MYMUSE_READ_MORE');
+						echo JText::_('MYMUSE_READ_MORE').' ';
 						echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
 					endif; ?></a>
 		</p>
