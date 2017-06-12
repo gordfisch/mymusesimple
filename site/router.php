@@ -47,28 +47,6 @@ function MymuseBuildRoute(&$query)
 		$params->set('top_menu_item', '');
 	}
 
-	if($params->get('top_menu_item','') && $params->get('top_menu_item') != $home_id){
-		if(!isset($query['Itemid'])){
-			$query['Itemid']= $params->get('top_menu_item','');
-		}
-		/*elseif($query['Itemid'] == $params->get('top_menu_item','')){
-			$q = 'SELECT alias from #__menu WHERE id="'.$params->get('top_menu_item').'"';
-			$dbo->setQuery($q);
-			$alias = $dbo->loadResult();
-			$segments[] = $alias;
-		}*/
-	}
-
-	if($params->get('top_menu_item','') && $params->get('my_use_alias','') && isset($query['product_id'])){
-		$q = 'SELECT alias from #__mymuse_product WHERE id="'.$query['product_id'].'"';
-		$dbo->setQuery($q);
-		if($alias = $dbo->loadResult()){
-			$segments[] = $alias;
-		}
-	}
-
-
-	
 	// we need a menu item.  Either the one specified in the query, or the current active one if none specified
 	if (empty($query['Itemid'])) {
 		$menuItem = $menu->getActive();
@@ -77,6 +55,7 @@ function MymuseBuildRoute(&$query)
 	else {
 		$menuItem = $menu->getItem($query['Itemid']);
 		$menuItemGiven = true;
+		//$query = $menuItem->query;
 	}
 
 	// we need to have a view in the query or it is an invalid URL
@@ -84,11 +63,24 @@ function MymuseBuildRoute(&$query)
 		$view = $query['view'];
 	}
 	else {
-
 		return $segments;
 	}
 	
-
+	// is there a top menu item specified?
+	if($params->get('top_menu_item','') && $params->get('top_menu_item') != $home_id){
+		if(!isset($query['Itemid'])){
+			$query['Itemid']= $params->get('top_menu_item','');
+		}
+	}
+	// use product alias in URL?
+	if($params->get('top_menu_item','') && $params->get('my_use_alias','') && isset($query['product_id'])){
+		$q = 'SELECT alias from #__mymuse_product WHERE id="'.$query['product_id'].'"';
+		$dbo->setQuery($q);
+		if($alias = $dbo->loadResult()){
+			$segments[] = $alias;
+		}
+	}
+	
     if(isset($query['task']) && $query['task'] == "checkout"){
     	unset($query['task']);
     	unset($query['view']);
