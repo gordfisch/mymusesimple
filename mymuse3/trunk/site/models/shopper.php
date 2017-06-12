@@ -114,7 +114,7 @@ class mymuseModelShopper extends JModelForm
         	}else{
         		$my_profile_key = $params->get('my_profile_key','mymuse');
         	}
-//echo "guestcheckout = $guestcheckout"; print_pre($user); echo $my_profile_key; exit;
+
 			if($user->get('id') > 0)
 			{
 				

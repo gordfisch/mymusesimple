@@ -337,14 +337,14 @@ padding-bottom: 10px;
 .mini-cart-top{
 	width: 300px;
 	background: rgba(0, 0, 0, 0.2);
-	border-radius: 14px;
-	padding: 8px;
+	border-radius: 4px;
+	padding: 4px;
 }
 .mini-cart-content{
 	border-radius: 8px;
 	background: #FFF none repeat scroll 0% 0%;
 	padding: 10px;
-	height: 40px;
+
 }
 .mini-cart-cart, .mini-cart-text, .mini-cart-link {
     display: table-cell;
