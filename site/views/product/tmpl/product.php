@@ -1087,7 +1087,7 @@ endif; ?>
         			
         			<?php  if($params->get('product_show_preview_column', 1)) :?>
         				<!--  PREVIEW COLUMN -->
-					<td class="mypreviews tracks jp-gui ui-widget"><?php echo $track->flash; ?></td>
+					<td class="mypreviews tracks jp-gui ui-widget"><?php echo isset($track->flash)? $track->flash : ''; ?></td>
         			<?php  endif; ?>	
 
       				</tr>

@@ -542,7 +542,6 @@ class MyMuseModelProduct extends JModelItem
 					while (list($i,$track) = each( $preview_tracks )){
 						$flash = '';
 						$track->purchased = 0;
-						
 						if($track->file_preview){
 
 							//echo $site_url." ".$track->file_preview."<br />";
