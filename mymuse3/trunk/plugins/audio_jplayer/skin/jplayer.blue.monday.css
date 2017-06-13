@@ -91,6 +91,11 @@ li.jp-unmute,
 	clear:both;
 }
 
+.jp-playlist li {
+	padding: 5px 0 5px 5px;
+}
+.jp-playlist li:nth-child(even) {background: #ddd;}
+.jp-playlist li:nth-child(odd) {background: #fff;}
 /* Only Phones */  
 @media (max-width: 767px) { 
 	

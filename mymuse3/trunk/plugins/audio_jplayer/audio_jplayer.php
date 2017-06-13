@@ -147,6 +147,7 @@ class plgMymuseAudio_jplayer extends JPlugin
 
 		$site_url = preg_replace("#administrator/#","",JURI::base());
 
+		/* SINGLE PLAYER =============================================================== */
 		if($type == 'singleplayer'){
 				// player set to play the first track 
 				$supplied = array();
@@ -499,8 +500,8 @@ jQuery(document).ready(function(){  ';
 			
 		}
 		
-		//Playlist ** Playlist ** Playlist ** Playlist ** Playlist ** Playlist ** //
 		
+		/* PLAYLIST =============================================================== */
 		if($type == 'playlist'){
 			$js_path = $site_url.'plugins/mymuse/audio_jplayer/js/jplayer.playlist.min.js';
 			$document->addScript( $js_path );
@@ -528,7 +529,7 @@ jQuery(document).ready(function(){  ';
 					$playlist .= '
 					{
 					title: "'.addslashes($t->title).'",
-					artist: "'.$track->category_title.'",
+					artist: "'.$track->artist_title.'",
 					poster: "'.$site_url.$track->detail_image.'",
 					'.$ext.':"'.$preview_file.'"';
 					if(isset($t->path_2) && $t->path_2 != ''){
@@ -726,7 +727,8 @@ jQuery(document).ready(function(jQuery){
 	
 			$document->addScriptDeclaration($js);
 
-			$text = '				
+			$text = '	
+		<link rel="stylesheet" href="'.$css_path .'" type="text/css" />			
 		<section>
 		<div id="jquery_jplayer_1" class="jp-jplayer"></div>
 
@@ -748,7 +750,7 @@ jQuery(document).ready(function(jQuery){
 				<div class="jp-duration"></div>
 				<div class="jp-clearboth"></div>
 			</div>
-            <div class="jp-playlist">
+            <div class="jp-playlist ui-widget ui-widget-content ui-corner-all">
 					<ul>
 						<!-- The method Playlist.displayPlaylist() uses this unordered list -->
 						<li></li>

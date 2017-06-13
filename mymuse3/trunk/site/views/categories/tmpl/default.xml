@@ -789,7 +789,6 @@
 				description="MYMUSE_PRODUCT_PLAYERTYPE_DESC">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 	 			<option value="single">MYMUSE_SINGLE</option>
-	 			<option value="each">MYMUSE_EACH</option>
 	 			<option value="playlist">MYMUSE_PLAYLIST</option>
 	 		</field>
 	 		<field name="product_player_width" 
