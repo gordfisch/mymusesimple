@@ -893,8 +893,8 @@ endif; ?>
        		<?php endif; ?>
        		
        		<?php if($params->get('product_show_sales', 0)) : ?>
-        		<th class="mymuse_cart_top mysales" align="left" width="10%">sales
-        		<?php echo JHtml::_('grid.sort', 'FILE_SALES', 'sales', $listDirn, $listOrder); ?></th>
+        		<th class="mymuse_cart_top mysales" align="left" width="10%">
+        		<?php echo JHtml::_('grid.sort', 'MYMUSE_SALES', 'sales', $listDirn, $listOrder); ?></th>
       		<?php endif; ?>
       		
       		<?php if($params->get('product_show_downloads', 0)) : ?>
