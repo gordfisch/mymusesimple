@@ -1118,7 +1118,6 @@ endif;
 <!--  end PRODUCT VIEW -->
 </div>
 
-
 <div id='my_overlay' style="display: none"></div>
 <div id='my_modal' style="display: none">
 	<div id='my_content'>No JavaScript!</div>
