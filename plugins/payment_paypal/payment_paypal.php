@@ -196,6 +196,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		if($order->idx < 100){
 			for ($i=0;$i<$order->idx;$i++) {
 				if(isset($order->items[$i]->title) && $order->items[$i]->title != ''){
+					$order->items[$i]->title = preg_replace('/"/','',$order->items[$i]->title);
 					$string .= '
 					<input type="hidden" name="item_name_'. $j .'"
 					value="'. $order->items[$i]->title;
