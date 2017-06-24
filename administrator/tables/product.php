@@ -436,7 +436,7 @@ class MymuseTableproduct extends JTable
 						}
 					}
 					
-					$file_downloads = @$current[$i]->file_downloads;
+					$file_downloads = isset($current[$i]->file_downloads)? $current[$i]->file_downloads : "0";
 					//  save this to the file_name
 					$current_files[$i] = array(
 							'file_name' => $file_name,

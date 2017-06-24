@@ -475,9 +475,10 @@ class com_mymuseInstallerScript
 			$db->execute();
 			
 		}
-				
-				// see if mymuse_downloads table needs updating
-			$query = "SHOW COLUMNS FROM #__mymuse_downloads LIKE 'user_email'";
+
+			
+			// see if mymuse_downloads table needs updating
+			$query = "c'";
 			$db->setQuery ( $query );
 			if (! $col = $db->loadObject ()) {
 				$query = "ALTER TABLE `#__mymuse_downloads` ADD `user_email` VARCHAR(255)";
@@ -520,51 +521,17 @@ class com_mymuseInstallerScript
 				$db->execute ();
 			}
 			
+			// June 2017 see if product->file_name field needs updating
+			$query = "SHOW FIELDS FROM `#__mymuse_product` WHERE Field = 'file_name'";
+			$db->setQuery ( $query );
+			$res = $db->loadObject ();
+			if ($res->Type != 'text') {
+				$query = "ALTER TABLE `#__mymuse_product` CHANGE `file_name` `file_name` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT NULL";
+				$db->setQuery ( $query );
+				$db->execute ();
+			}
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			
-			// Nov 2015 3.4.0 see if mymuse_product table needs updating
+			// Nov 2015 3.4.0 see if mymuse_product table needs artistid
 			$query = "SHOW COLUMNS FROM #__mymuse_product LIKE 'artistid'";
 			$db->setQuery ( $query );
 			if (! $col = $db->loadObject ()) {
