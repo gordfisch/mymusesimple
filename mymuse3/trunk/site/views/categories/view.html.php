@@ -138,6 +138,8 @@ class mymuseViewCategories extends JViewLegacy
 		AND
 		(p.publish_up = ".$nullDate." OR p.publish_up <= ".$nowDate.")
 		AND (p.publish_down = ".$nullDate." OR p.publish_down >= ".$nowDate.")
+		AND p.state = 1
+
 		AND p.parentid=0 GROUP BY p.id
 		";
 

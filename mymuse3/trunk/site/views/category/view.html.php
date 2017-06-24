@@ -57,7 +57,7 @@ class MymuseViewCategory extends JViewLegacy
 		if($layout){
 			$this->setLayout($layout);
 		}
-
+	
 		$menu	= $app->getMenu();
 		$item	= $menu->getItem($this->Itemid);
 
@@ -73,16 +73,16 @@ class MymuseViewCategory extends JViewLegacy
 			$items		= $this->get('Items');
 			$pagination = $this->get('Pagination');
 		}
+
 		// Setup the category parameters.
 		$cparams = $category->getParams();
 		$category->params = clone($params);
 		$category->params->merge($cparams);
-		
+
 		
 		$children	= $this->get('Children');
 		$parent		= $this->get('Parent');
-	
-		
+
 		$task = $jinput->get('task', 'notask');
 		
 		$this->total 			= count($items);
@@ -414,7 +414,7 @@ class MymuseViewCategory extends JViewLegacy
 				AND (p.publish_down = " . $nullDate . " OR p.publish_down >= " . $nowDate . ")
 				AND p.parentid=0
 		";
-
+//echo $query;
 		$db->setQuery($query);
 		$total += $db->loadResult();
 			

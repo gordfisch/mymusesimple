@@ -12,11 +12,18 @@ defined('_JEXEC') or die;
 $class = ' class="first"';
 
 if (count($this->items[$this->parent->id]) > 0 && $this->maxLevelcat != 0) :
+
+
 ?>
 <ul>
 <?php foreach($this->items[$this->parent->id] as $id => $item) : 
 $item_params = new JRegistry();
 $item_params->loadString($item->params);
+if($this->params->get('category_layout') == "_:tracks"){
+	$item->numitems = $this->_getTrackCount($item);
+}else{
+	$item->numitems = $this->_getProductCount($item);
+}
 ?>
 	<?php
 	if ($this->params->get('show_empty_categories_cat') || $item->numitems || count($item->getChildren())) :

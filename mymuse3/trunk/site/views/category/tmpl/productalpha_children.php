@@ -18,7 +18,7 @@ if($r){
 $total_shown = 0;
 $column = 1;
 $i=0;
-//echo "count = $count break = $break";
+
 ?>
 
 <div class="cols-<?php echo $this->params->get('subcat_columns', 1); ?>">

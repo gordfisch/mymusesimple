@@ -72,14 +72,16 @@ function MymuseBuildRoute(&$query)
 			$query['Itemid']= $params->get('top_menu_item','');
 		}
 	}
-	// use product alias in URL?
-	if($params->get('top_menu_item','') && $params->get('my_use_alias','') && isset($query['product_id'])){
-		$q = 'SELECT alias from #__mymuse_product WHERE id="'.$query['product_id'].'"';
+
+	/* use product alias in URL?
+	if( $params->get('top_menu_item','') && $params->get('my_use_alias','') && isset($query['view']) &&  $query['view'] == 'product' && isset($query['id']) ){
+		$q = 'SELECT alias from #__mymuse_product WHERE id="'.$query['id'].'"';
 		$dbo->setQuery($q);
 		if($alias = $dbo->loadResult()){
-			$segments[] = $alias;
+			//$segments[] = $alias;
 		}
 	}
+	*/
 	
     if(isset($query['task']) && $query['task'] == "checkout"){
     	unset($query['task']);
@@ -290,7 +292,7 @@ function MymuseBuildRoute(&$query)
 
 		$array = array_reverse($array);
 		if($params->get('my_use_alias')){
-			//echo "use the alias only";
+
 		}elseif (!$advanced && count($array)) {
 			$array[0] = (int)$catid.':'.$array[0];
 		}
