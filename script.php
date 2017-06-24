@@ -526,7 +526,7 @@ class com_mymuseInstallerScript
 			$db->setQuery ( $query );
 			$res = $db->loadObject ();
 			if ($res->Type != 'text') {
-				$query = "ALTER TABLE `#__mymuse_product` CHANGE `file_name` `file_name` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL DEFAULT NULL";
+				$query = "ALTER TABLE `#__mymuse_product` CHANGE `file_name` `file_name` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL";
 				$db->setQuery ( $query );
 				$db->execute ();
 			}
