@@ -375,8 +375,7 @@ class MymuseModelproducts extends JModelList
 	*/
 	function delete($cid = array())
 	{
-		global $params;
-		
+		global $params;;
         $result = false;
         if (count( $cid ))
         {
@@ -398,7 +397,6 @@ class MymuseModelproducts extends JModelList
             // Let's get rid of associated entries
 
             // first the product_category_xref
-            $cids = implode(',', $cid);
             $query = "DELETE FROM #__mymuse_product_category_xref WHERE"
             . " product_id IN (". $cids  .")";
             $this->_db->setQuery($query);
