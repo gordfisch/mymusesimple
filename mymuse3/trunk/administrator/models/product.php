@@ -477,6 +477,10 @@ class MymuseModelproduct extends JModelAdmin
     					$track->file_length .= $j->file_length."<br />";
     					$track->file_downloads .= $j->file_downloads."<br />";
     				}
+    			}else{
+    				echo "NOT JASON";
+    				$track->file_name = myMuseHelper::getJsonError();
+    				//echo $track->file_name; exit;
     			}
                 
                 if($track->product_allfiles){
@@ -815,6 +819,7 @@ class MymuseModelproduct extends JModelAdmin
     			}
     		}
     	}
+
     	return $this->_items;
     }
     

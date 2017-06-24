@@ -53,6 +53,7 @@ class MymuseViewProduct extends JViewLegacy
 		//listtracks
 		if($layout == "listtracks"){
 			$this->tracks 	= $this->get('Tracks');
+
 			//See if there is an all files zip
 			$this->all_files = 0;
 			for ($i=0, $n=count( $this->tracks ); $i < $n; $i++){
