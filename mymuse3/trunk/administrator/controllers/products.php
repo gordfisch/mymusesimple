@@ -42,15 +42,16 @@ class MymuseControllerProducts extends JControllerAdmin
 
     	$input 	= JFactory::getApplication()->input;
         $cid 	= $input->get('cid');
-        JArrayHelper::toInteger($cid);
+
         if (count( $cid ) < 1) {
             JError::raiseError(500, JText::_( 'MYMUSE_SELECT_AN_ITEM_TO_DELETE' ) );
         }
         $model = $this->getModel('products');
 
         if(!$model->delete($cid)) {
-            echo "<script> alert('Error: ".$model->getError()."'); window.history.go(-1); </script>
-            ";
+        	
+        	$this->msg = $model->getError();
+            $this->setRedirect( 'index.php?option=com_mymuse&view=products',$this->msg  );
             return false;
         }else{
         	$this->msg = JText::_( 'MYMUSE_ITEM_DELETED' );
@@ -72,6 +73,7 @@ class MymuseControllerProducts extends JControllerAdmin
 
 		// Initialise variables.
 		$input 	= JFactory::getApplication()->input;
+		
 		$user	= JFactory::getUser();
 		$ids	= $input->get('cid', array());
 		$values	= array('featured' => 1, 'unfeatured' => 0);
