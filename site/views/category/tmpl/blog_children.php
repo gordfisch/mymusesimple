@@ -51,7 +51,7 @@ if(!$total_shown){
 ?>
 	<ul>
 	<?php foreach($this->children[$this->category->id] as $id => $child) : 
-	
+		$child->numitems = $this->_getProductCount($child);
 		if ($this->params->get('show_empty_categories') || $child->numitems || count($child->getChildren())) :
 			if (!isset($this->children[$this->category->id][$id + 1])) :
 				$class = ' class="last"';
@@ -80,9 +80,7 @@ if(!$total_shown){
 			<br />
 			<?php if ( $this->params->get('show_cat_num_articles', 1)) : ?>
 			<span class="item_products">
-					<?php echo JText::_('MYMUSE_NUM_ITEMS') ; ?> <?php 
-					$child->product_total = $this->_getProductCount($child);
-					echo $child->product_total; ?>
+					<?php echo JText::_('MYMUSE_NUM_ITEMS') ; ?> <?php echo $child->numitems; ?>
 			</span>
 			<?php endif ; ?>
 

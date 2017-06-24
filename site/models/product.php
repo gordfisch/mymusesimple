@@ -461,6 +461,7 @@ class MyMuseModelProduct extends JModelItem
 			$this->_item[$pk]->flash = '';
 			$this->_item[$pk]->flash_type = '';
 			$preview_tracks = array();
+			
 			if(count($tracks)){
 				$root = JPATH_ROOT.DS;
 				while (list($i,$track)= each( $tracks )){
@@ -507,11 +508,11 @@ class MyMuseModelProduct extends JModelItem
 					//Audio/Video or some horrid mix of both
 					if($this->_item[$pk]->flash_type != "mix"){
 						if($this->_item[$pk]->flash_type == "audio" && $track->file_type == "video"){
-							//oh christ it's a mix
+							//oh no it's a mix
 							$this->_item[$pk]->flash_type = "mix";
 							$track->flash_type = "mix";
 						}elseif($this->_item[$pk]->flash_type == "video" && $track->file_type == "audio"){
-							//oh christ it's a mix
+							//oh no it's a mix
 							$this->_item[$pk]->flash_type = "mix";
 							$track->flash_type = "mix";
 						}else{
@@ -540,11 +541,11 @@ class MyMuseModelProduct extends JModelItem
 					reset($preview_tracks);
 					$count = count($preview_tracks);
 					while (list($i,$track) = each( $preview_tracks )){
+						
 						$flash = '';
 						$track->purchased = 0;
 						if($track->file_preview){
 
-							//echo $site_url." ".$track->file_preview."<br />";
 							$track->path = $site_url.$track->file_preview;
 							$track->real_path = $site_path.$track->file_preview;
 						
@@ -559,6 +560,10 @@ class MyMuseModelProduct extends JModelItem
 							
 							//should we use the real download file? Not available in AmazonS3
 							if(!$params->get('my_use_s3')){
+								$track->download_real_path = MyMuseHelper::getDownloadPath($track->parentid, 1);
+								if(1 == $params->get('my_download_dir_format',0)){ //downloads by format
+									$track->download_real_path .= $format.DS;
+								}
 								if($params->get('my_play_downloads', 0) && in_array($track->id, $myOrders)){
 									$track->path = isset($track->download_path)? $track->download_path : '';
 									$track->real_path = isset($track->download_real_path)? $track->download_real_path : '';
@@ -737,7 +742,6 @@ class MyMuseModelProduct extends JModelItem
 													
 												}
 												$track->free_download = 1;
-												//echo $track->title;
 											}
 										}
 											
@@ -1029,7 +1033,7 @@ class MyMuseModelProduct extends JModelItem
 			$q = "SELECT * FROM #__mymuse_shopper_group WHERE  \n";
 			$q .= "id='";
 			$q .= $shopper_group_id . "'";
-			//echo $q;
+
 			$db->setQuery($q);
 			$shopper->shopper_group = $db->loadObject();
 		}
@@ -1077,7 +1081,6 @@ class MyMuseModelProduct extends JModelItem
 					$price_info [$format]["product_shopper_group_discount_amount"] = round ( $price_info [$format] ["product_shopper_group_discount_amount"], 2 );
 			
 					$discount = $product->product_discount;
-					//echo "discount = $discount";
 					$price_info[$format]["product_discount"] = $discount;
 			
 					$price_info[$format]["product_price"] = $price_info [$format]["product_price"] - ($product_price * $shopper_group_discount/100) - $discount;
@@ -1097,7 +1100,6 @@ class MyMuseModelProduct extends JModelItem
 			$price_info ["product_shopper_group_discount_amount"] = round ( $price_info ["product_shopper_group_discount_amount"], 2 );
 			
 			$discount = $product->product_discount;
-			//echo "discount = $discount";
 			$price_info["product_discount"] = $discount;
 			
 			$price_info["product_price"]= $price_info ["product_price"] - ($product_price * $shopper_group_discount/100) - $discount;
@@ -1139,7 +1141,6 @@ class MyMuseModelProduct extends JModelItem
 			// DISCOUNTS FROM PLUGINS
 			JPluginHelper::importPlugin ( 'mymuse' );
 			$dispatcher = JDispatcher::getInstance ();
-			// echo "here";
 			$result = $dispatcher->trigger ( 'onCalculatePrice', array (
 					&$price_info,
 					self::$cart 

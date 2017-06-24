@@ -651,7 +651,7 @@ class mymuseModelShopper extends JModelForm
 		$credentials['password'] = $myparams->get('my_noreg_password');
 		$options = array();
 		;
-		//echo "login options "; print_pre($credentials); exit;
+
 		//preform the login action
 		$error = $app->login($credentials, $options);
 		

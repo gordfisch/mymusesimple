@@ -108,6 +108,7 @@ div.cat-items div.items-row{
 .intro-item {
 	margin: 0;
 	float: left;
+	width: 90%;
 }
 
 div.intro-item .list-image img {

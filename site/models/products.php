@@ -368,7 +368,6 @@ as x GROUP BY x.all_id, x.product_name, x.product_id) as s ON s.product_id = a.i
                 $cats_in = "(".implode(",",$cats_in).")";   
                   
                 $subQuery = "SELECT product_id FROM #__mymuse_product_category_xref WHERE catid IN ".$cats_in;
-                //echo $subQuery;
                 $db->setQuery($subQuery);
                 $pids = $db->loadObjectList();
 						

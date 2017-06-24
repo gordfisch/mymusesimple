@@ -40,7 +40,7 @@ $l= 0;
 $total_shown = 0;
 $column = 1;
 $done = 0;
-//echo "count = $count break = $break letters = ".count($lets);
+
 ?>
 
 <h3><?php echo JText::_('MYMUSE_PRODUCTS'); ?></h3>
@@ -73,7 +73,6 @@ $done = 0;
 	?>
 	<span class="alphabet"><?php echo $letter;
 	
-	//echo " lettercount=$lettercount, break = $break, l = $l, i=$i, total_shown = $total_shown";
 	?></span>
 		<ul>
 		<?php

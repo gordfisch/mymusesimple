@@ -223,7 +223,7 @@ class MyMuseModelCategory extends JModelList
 		$app	= JFactory::getApplication('site');
 		$jinput = $app->input;
 		$itemid = $jinput->get('id', 0, 'INT') . ':' . $jinput->get('Itemid', 0, 'INT');
-	
+
 		if($params->get('category_layout') == "_:tracks"){
 			
 			//TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS TRACKS 
@@ -279,7 +279,7 @@ class MyMuseModelCategory extends JModelList
 			$model = JModelList::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
 			$model->setState('params', $params);
 			$model->setState('filter.category_id', $category->id);
-			$model->setState('filter.published', $this->getState('filter.published'));
+			$model->setState('filter.published', $this->getState('filter.published',1));
 			$model->setState('filter.access', $this->getState('filter.access'));
 			$model->setState('filter.language', $this->getState('filter.language'));
 			$ordering = $this->getState('list.ordering');
@@ -426,7 +426,7 @@ class MyMuseModelCategory extends JModelList
 	}
 
 	/**
-	 * Get the parent categorie.
+	 * Get the parent category.
 	 *
 	 * @param	int		An optional category id. If not supplied, the model state 'category.id' will be used.
 	 *
@@ -493,9 +493,8 @@ class MyMuseModelCategory extends JModelList
 				jimport('joomla.utilities.arrayhelper');
 				JArrayHelper::sortObjects($this->_children, 'title', ($params->get('orderby_pri') == 'alpha') ? 1 : -1);
 			}
-			
-			return $this->_children;
 		}
+		
 		return $this->_children;
 	}
 

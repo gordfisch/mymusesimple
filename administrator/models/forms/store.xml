@@ -398,7 +398,7 @@
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
             </field>
-            
+           <!-- 
             <field
                 name="my_play_downloads"
                 type="radio"
@@ -409,7 +409,7 @@
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
             </field>
-            
+            -->
 	</fieldset>
 	<fieldset name="uploads" label="MYMUSE_UPLOADS_LABEL">
   		<field
