@@ -200,6 +200,7 @@ class com_mymuseInstallerScript
 		// $type is the type of change (install, update or discover_install)
 
 		$db = JFactory::getDBO();
+		$app = JFactory::getApplication();
 		$actions = array();
 		echo "<h3>TYPE = $type</h3>";
 		// add params
@@ -483,14 +484,18 @@ class com_mymuseInstallerScript
 			if (! $col = $db->loadObject ()) {
 				$query = "ALTER TABLE `#__mymuse_downloads` ADD `user_email` VARCHAR(255)";
 				$db->setQuery ( $query );
-				$db->execute ();
+				if(!$db->execute ()){
+					$app->enqueueMessage($query, 'error');
+				}
 			}
 			$query = "SHOW COLUMNS FROM #__mymuse_downloads LIKE 'order_id'";
 			$db->setQuery ( $query );
 			if (! $col = $db->loadObject ()) {
 				$query = "ALTER TABLE `#__mymuse_downloads` ADD `order_id` INT( 11 ) NOT NULL AFTER `user_email`";
 				$db->setQuery ( $query );
-				$db->execute ();
+				if(!$db->execute ()){
+					$app->enqueueMessage($query, 'error');
+				}
 			}
 			
 			// see if mymuse_orders table needs updating
@@ -507,7 +512,9 @@ class com_mymuseInstallerScript
 			if (! $col = $db->loadObject ()) {
 				$query = "ALTER TABLE `#__mymuse_order` ADD `licence` varchar(255) NOT NULL AFTER `ordering`  ";
 				$db->setQuery ( $query );
-				$db->execute ();
+				if(!$db->execute ()){
+					$app->enqueueMessage($query, 'error');
+				}
 			}
 			
 			// see if notes field needs updating
@@ -528,7 +535,9 @@ class com_mymuseInstallerScript
 			if ($res->Type != 'text') {
 				$query = "ALTER TABLE `#__mymuse_product` CHANGE `file_name` `file_name` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL";
 				$db->setQuery ( $query );
-				$db->execute ();
+				if(!$db->execute ()){
+					$app->enqueueMessage($query, 'error');
+				}
 			}
 			
 			// Nov 2015 3.4.0 see if mymuse_product table needs artistid
@@ -540,7 +549,9 @@ class com_mymuseInstallerScript
 				$db->execute ();
 				$query = "UPDATE `#__mymuse_product` SET `artistid` = `catid` WHERE 1";
 				$db->setQuery ( $query );
-				$db->execute ();
+				if(!$db->execute ()){
+					$app->enqueueMessage($query, 'error');
+				}
 			}
 			
 			// Mar 2017 update old product names to json encoded strings
@@ -561,7 +572,9 @@ class com_mymuseInstallerScript
 				}
 				$query = "UPDATE #__mymuse_product SET file_name=" . $db->quote ( json_encode ( $current_files ) ) . " WHERE id='" . $r->id . "'";
 				$db->setQuery ( $query );
-				$db->execute ();
+				if(!$db->execute ()){
+					$app->enqueueMessage($query, 'error');
+				}
 			}
 				
 			// DEFAULT DOWNLOAD DIRECTORY
