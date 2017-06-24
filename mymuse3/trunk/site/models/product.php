@@ -1048,6 +1048,7 @@ class MyMuseModelProduct extends JModelItem
 			
 		} elseif (1 == $params->get ( 'my_price_by_product' )) {
 			// price by product
+			//print_pre($product); exit;
 			if ($product->parentid > 0) {
 				$query = "SELECT attribs FROM #__mymuse_product WHERE id='" . $product->parentid . "'";
 				$db->setQuery ( $query );
@@ -1063,10 +1064,31 @@ class MyMuseModelProduct extends JModelItem
 				$product->price = $product->attribs->get ( $key );
 				$price_info ["product_price"] = $product->price;
 				
-			} elseif ($product->product_allfiles && isset ( $product->ext )) {
-				$key = 'product_price_' . $product->ext . '_all';
-				$product->price = $product->attribs->get ( $key );
-				$price_info ["product_price"] = $product->price;
+			} elseif ($product->product_allfiles) {
+			
+				//$key = 'product_price_' . $product->ext . '_all';
+				//$product->price = $product->attribs->get ( $key );
+				//$price_info ["product_price"] = $product->price;
+				
+				foreach($params->get('my_formats') as $format) {
+						
+					$key = 'product_price_' . $format . '_all';
+					$price_info [$format]["product_price"] = $product->attribs->get ( $key );
+					$product_price = $price_info [$format]["product_price"];
+					$price_info[$format]["product_original_price"] = round ( $price_info [$format]["product_price"], 2);
+						
+					$price_info [$format]["product_shopper_group_discount"] = $shopper_group_discount;
+					$price_info [$format]["product_shopper_group_discount_amount"] = $product_price * $shopper_group_discount / 100;
+					$price_info [$format]["product_shopper_group_discount_amount"] = round ( $price_info [$format] ["product_shopper_group_discount_amount"], 2 );
+						
+					$discount = $product->product_discount;
+					$price_info[$format]["product_discount"] = $discount;
+						
+					$price_info[$format]["product_price"] = $price_info [$format]["product_price"] - ($product_price * $shopper_group_discount/100) - $discount;
+					$price_info [$format]["product_price"] = round ( $price_info [$format]["product_price"], 2 );
+				}
+				
+				return $price_info;
 				
 			} elseif($product->product_downloadable) {
 				foreach($params->get('my_formats') as $format) {
