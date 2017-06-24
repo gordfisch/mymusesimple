@@ -97,6 +97,7 @@ class MyMuseCheckout
 			}
 			$cart[$i]['product'] = $MyMuseCart->getProduct($cart[$i]["product_id"]);
 			$ext = '';
+			
 			$jason = json_decode($cart[$i]['product']->file_name);
 			if(is_array($jason)){
 				$cart[$i]['product']->file_name = $jason[$cart[$i]["variation"]]->file_name;
@@ -106,9 +107,11 @@ class MyMuseCheckout
 				
 				$cart[$i]['product']->ext = pathinfo($cart[$i]['product']->file_name, PATHINFO_EXTENSION);
 			}
+
+			
 			$cart[$i]['product']->price = MyMuseModelProduct::getPrice($cart[$i]["product"]);
 			
-			// SEE IF IT IS AN ALL_FILES, ADD ALL FILES TO CART
+			// SEE IF IT IS AN ALL_FILES and NOT ZIP, ADD ALL FILES TO CART
 			if($cart[$i]['product']->product_allfiles && !$params->get('my_use_zip')){
 				$query = "SELECT id from #__mymuse_product WHERE parentid='".$cart[$i]['product']->parentid."'
 				AND product_downloadable='1' AND product_allfiles !='1' ORDER BY ordering ";
@@ -271,8 +274,6 @@ class MyMuseCheckout
 			return false;
 		}
 
-
-
 		// LOOP OVER CART ITEMS TO STORE TO DB
 		$order->idx = 0;
 		for($i = 0; $i < $cart["idx"]; $i++) {
@@ -283,28 +284,16 @@ class MyMuseCheckout
 				continue;
 			}
 
-			$query = "SELECT * FROM #__mymuse_product WHERE id='".$cart[$i]["product_id"]."'";
-		
-			$this->_db->setQuery($query);
-			$prod = $this->_db->loadObject();
-			$parentid = $prod->parentid;
-			
-			$jason = json_decode($cart[$i]['product']->file_name);
-			if(is_array($jason)){
-				$cart[$i]['product']->file_name = $jason[$cart[$i]["variation"]]->file_name;
-			}
-			$cart[$i]['product']->file_ext = MyMuseHelper::getExt($cart[$i]['product']->file_name);
-			
+			$parentid = $cart[$i]['product']->parentid;
+	
 			$order->items[$i] = new MymuseTableorderitem( $this->_db );
 			$order->idx++;
 			$order->items[$i]->order_id = $order->id;
 			$order->items[$i]->product_id = $cart[$i]["product_id"];
 			$order->items[$i]->product_quantity = $cart[$i]["quantity"];
 			
-
-			
 			if("1" == $params->get('my_price_by_product')){
-				$cart[$i]['product']->price = $cart[$i]['product']->price[$cart[$i]['product']->file_ext];
+				$cart[$i]['product']->price = $cart[$i]['product']->price[$cart[$i]['product']->ext];
 			}
 			$order->items[$i]->product_item_price = $cart[$i]['product']->price['product_price'];
 				
@@ -322,7 +311,6 @@ class MyMuseCheckout
 				}
 				$order->items[$i]->end_date = $enddate;
 				$order->items[$i]->downloads =0;
-			//echo "file name ".$cart[$i]['product']->file_name;
 				if($cart[$i]['product']->file_name != ''){
 					$downloadable++;
 				}
@@ -335,7 +323,7 @@ class MyMuseCheckout
 			}
 
 			// more fields for printing
-			$order->items[$i]->product_sku = $prod->product_sku;
+			$order->items[$i]->product_sku = $cart[$i]['product']->product_sku;
 			$order->items[$i]->title = $cart[$i]['product']->title;
 			$order->items[$i]->file_length = MyMuseHelper::ByteSize($cart[$i]['product']->file_length);
 			$order->items[$i]->product_item_subtotal = sprintf("%.2f", $order->items[$i]->product_item_price * $order->items[$i]->product_quantity);
@@ -733,14 +721,14 @@ class MyMuseCheckout
 			$order->items[$i]->quantity = $order->items[$i]->product_quantity;
 			$order->items[$i]->product_item_subtotal = $order->items[$i]->product_item_price * $order->items[$i]->product_quantity;
 			$order->items[$i]->product_in_stock = $order->items[$i]->product->product_in_stock;
+			
 			$order->items[$i]->ext = pathinfo($order->items[$i]->file_name, PATHINFO_EXTENSION);
-			
-			
 			$order->items[$i]->attribs = $order->items[$i]->product->attribs;
-			
-			
 			$order->items[$i]->file_length = $order->items[$i]->product->file_length;
 			$order->items[$i]->file_time = $order->items[$i]->product->file_time;
+			
+			
+			
 			
 			$catid = 0;
 			// Does it have a parent?
