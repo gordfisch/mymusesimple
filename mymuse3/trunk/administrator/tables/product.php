@@ -456,7 +456,7 @@ class MymuseTableproduct extends JTable
 
 			for($p = 0; $p < count($params->get('my_formats')); $p++){
 				$current_files[$p] = array(
-							'file_name' => JFilterOutput::stringURLSafe($form['product_sku'])."-full-release.". $params->get('my_formats')[$p],
+							'file_name' => JFilterOutput::stringURLSafe($form['product_sku']."-full-release-". $params->get('my_formats')[$p]),
 							'file_length' => '',
 							'file_ext' => $params->get('my_formats')[$p],
 							'file_alias'=> '',

@@ -39,7 +39,7 @@ class myMuseViewStore extends JViewLegacy
 		$task 		= $jinput->get('task','');
 		$state 		= $this->get('State');
 		$store 		= $this->get('Store');
-		$params 	= $params = MyMuseHelper::getParams();
+		$params 	= MyMuseHelper::getParams();
 		$this->params = $params;
 		$this->params->merge($state->params);
 		$Itemid 	= $jinput->get('Itemid');
@@ -294,16 +294,16 @@ class myMuseViewStore extends JViewLegacy
         		$parts = explode('-',$product->realname );
         		$ext = array_pop($parts);
         		$files = array();
-   
+        		$path = MyMuseHelper::getDownloadPath($product->parentid, 1);
     			foreach($prods as $prod){
-    				$path = MyMuseHelper::getDownloadPath($prod->id, $prod->parentid);
+    				
     				if(1 == $params->get('my_download_dir_format')){
     					$path.= $ext.DS;
     				}
     				$jason = json_decode($prod->file_name);
     				if(is_array($jason)){
     					foreach($jason as $j){
-    						if($ext == $j->file_ext){
+    						if($ext == $j->file_ext || 'pdf' == $j->file_ext){
     							$files[] = $j->file_name;
     						}
     					}
@@ -312,16 +312,14 @@ class myMuseViewStore extends JViewLegacy
     				}
     				
     			}
-
                 chdir($path);
         		$zip	=& MyMuse::getObject('createzip','helpers');
         		$overwrite = false;
         		$destination = $path.$filename.".zip";
-        		//print_pre($files);
+        		
         		$zip->create_zip($files,$destination,$overwrite);
         		sleep(3);
         		//$zip->forceDownload($destination);
-        		//echo "check $destination"; exit;
        
         		if(!$object->set_byfile($destination,$filename.".zip")){
         			//Download from a file
@@ -329,6 +327,7 @@ class myMuseViewStore extends JViewLegacy
         			if($params->get('my_debug')){
         				$message .= $name;
         			}
+        			echo $message; exit;
         			$jinput->set('msg',$message);
         			return false;
         		}else{

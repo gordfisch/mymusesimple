@@ -909,9 +909,11 @@ class MyMuseCart {
 			$this->delete($id);
 			return false;
 		}
-//print_pre($row); exit;
+
 		// take out the file_contents
 		$row->file_contents = null;
+		
+		//TODO: check this is the right array index
 		if($name = json_decode($row->file_name) && isset($name[0]->file_length)){
 
 			$row->file_length = $name[0]->file_length;

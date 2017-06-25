@@ -391,11 +391,10 @@ class MyMuseModelCategory extends JModelList
 
 			$this->_item = $categories->get($this->getState('category.id', '0'));
 
-			$params = new JRegistry($this->_item->params);
-			$params->merge( $cparams );
-
 			// Compute selected asset permissions.
 			if (is_object($this->_item)) {
+				$params = new JRegistry($this->_item->params);
+				$params->merge( $cparams );
 				$user	= JFactory::getUser();
 				$userId	= $user->get('id');
 				$asset	= 'com_mymuse.category.'.$this->_item->id;
