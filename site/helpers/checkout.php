@@ -721,8 +721,12 @@ class MyMuseCheckout
 			$order->items[$i]->quantity = $order->items[$i]->product_quantity;
 			$order->items[$i]->product_item_subtotal = $order->items[$i]->product_item_price * $order->items[$i]->product_quantity;
 			$order->items[$i]->product_in_stock = $order->items[$i]->product->product_in_stock;
-			
-			$order->items[$i]->ext = pathinfo($order->items[$i]->file_name, PATHINFO_EXTENSION);
+			if($order->items[$i]->product->product_allfiles){
+				$parts = explode('-',$order->items[$i]->file_name );
+				$order->items[$i]->ext = array_pop($parts);
+			}else{
+				$order->items[$i]->ext = pathinfo($order->items[$i]->file_name, PATHINFO_EXTENSION);
+			}
 			$order->items[$i]->attribs = $order->items[$i]->product->attribs;
 			$order->items[$i]->file_length = $order->items[$i]->product->file_length;
 			$order->items[$i]->file_time = $order->items[$i]->product->file_time;

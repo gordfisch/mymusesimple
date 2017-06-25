@@ -380,6 +380,7 @@ class MyMuseModelProduct extends JModelItem
 					LEFT JOIN #__categories as c ON c.id=x.catid
 				WHERE product_id = '".$pk."' AND catid != ".$this->_item[$pk]->catid." 
 						AND catid !=".$this->_item[$pk]->artistid;
+			
 			$db->setQuery($query);
 			$res = $db->loadObjectList();
 			if(count($res)){
@@ -479,11 +480,12 @@ class MyMuseModelProduct extends JModelItem
 					AND catid != ".$track->catid."
 					AND catid != ".$track->artistid;
 					$db->setQuery($query);
-					
 					if($res = $db->loadObjectList()){
 						foreach($res as $r){
 							$othercats[$r->id] = $r->title;
 						}
+					}else{
+						
 					}
 					$track->othercats = array_unique($othercats);
 					//$track->othercats = implode(', ',$othercats);
