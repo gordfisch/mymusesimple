@@ -39,7 +39,7 @@ class modMyMuseLatestHelper
 					p.list_image, p.parentid, p.hits,
 			c.id as artist_id, c.title as artist_name, s.sales as sales
 			from #__mymuse_product as p
-			LEFT JOIN #__categories as c on c.id=p.catid
+			LEFT JOIN #__categories as c on c.id=p.artistid
 			
 			LEFT JOIN (SELECT sum(quantity) as sales, x.product_name, x.product_id FROM
 			(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
@@ -62,7 +62,7 @@ class modMyMuseLatestHelper
 			pa.title as product_name, pa.list_image, pa.hits,
 			c.id as artist_id, c.title as artist_name, s.sales as sales
 			from #__mymuse_product as p
-			LEFT JOIN #__categories as c on c.id=p.catid
+			LEFT JOIN #__categories as c on c.id=p.artistid
 			LEFT JOIN #__mymuse_product as pa on pa.id=p.parentid
 			
 			LEFT JOIN (SELECT sum(i.product_quantity) as sales, i.product_id, p.parentid,
@@ -89,7 +89,7 @@ class modMyMuseLatestHelper
 			$query = 'SELECT p.id, p.title as product_name, p.list_image, p.parentid, p.hits,
 			c.id as artist_id, c.title as artist_name, s.sales as sales
 			from #__mymuse_product as p
-			LEFT JOIN #__categories as c on c.id=p.catid
+			LEFT JOIN #__categories as c on c.id=p.artistid
 				
 			LEFT JOIN (SELECT sum(quantity) as sales, x.product_name, x.product_id FROM
 			(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
@@ -115,7 +115,7 @@ class modMyMuseLatestHelper
 			pa.title as product_name, pa.list_image, pa.hits,
 			c.id as artist_id, c.title as artist_name, s.sales as sales
 			from #__mymuse_product as p
-			LEFT JOIN #__categories as c on c.id=p.catid
+			LEFT JOIN #__categories as c on c.id=p.artistid
 			LEFT JOIN #__mymuse_product as pa on pa.id=p.parentid
 				
 			LEFT JOIN (SELECT sum(i.product_quantity) as sales, i.product_id, p.parentid,
