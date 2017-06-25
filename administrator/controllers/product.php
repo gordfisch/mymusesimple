@@ -109,8 +109,15 @@ class MymuseControllerProduct extends JControllerForm
 				//get the product id
 				if(!$this->id){
 					$this->msg = JText::_( 'MYMUSE_COULD_NOT_FIND_ID' );
-					$this->setRedirect( 'index.php?option=com_mymuse&iew=product&task=product.edit&id='. $this->parentid, $this->msg );
-					return false;
+					//do we have an SKU?
+					$query = "SELECT id FROM #__mymuse_product WHERE product_sku='".$this->product_sku."'";
+					$db->setQuery($query);
+
+					if(!$this->id = $db->loadResult()){
+						$this->msg .= JText::_( 'MYMUSE_COULD_NOT_FIND_SKU' );
+						$this->setRedirect( 'index.php?option=com_mymuse&iew=product&task=product.edit&id='. $this->parentid, $this->msg );
+						return false;
+					}
 				}
 			
 				
