@@ -179,7 +179,7 @@ if($params->get('my_use_shipping') && isset($this->order->need_shipping)
         		$url = JURI::base()."index.php?option=com_mymuse&view=cart&layout=cart&Itemid=".$this->Itemid;
         		$return = base64_encode($url);
         	?>
-        <tr>index.php?option=com_users&view=profile&layout=edit
+        <tr>
         	<td colspan="2"><form method="post" action="" id="profile_form">
         	<input type="hidden" name="option" value="com_users">
         	<input type="hidden" name="view" value="profile">

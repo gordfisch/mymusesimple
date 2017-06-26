@@ -73,6 +73,14 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 			</div>
 			<div class="control-group">
 				<div class="control-label">
+					<?php echo $this->form->getLabel('order_status'); ?>
+				</div>
+				<div class="controls">
+					<?php echo $this->form->getInput('order_status'); ?>
+				</div>
+			</div>
+			<div class="control-group">
+				<div class="control-label">
 					<?php echo $this->form->getLabel('order_number'); ?>
 				</div>
 				<div class="controls">
@@ -111,14 +119,14 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 					<?php echo $this->form->getInput('order_currency'); ?>
 				</div>
 			</div>
-			<div class="control-group">
+			<!--  div class="control-group">
 				<div class="control-label">
 					<?php echo $this->form->getLabel('licence'); ?>
 				</div>
 				<div class="controls">
 					<?php echo $this->form->getInput('licence'); ?>
 				</div>
-			</div>
+			</div -->
 		</div>
 
 		<div class="pull-right span5">
@@ -171,14 +179,7 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 					<?php echo $this->form->getInput('modified'); ?>
 				</div>
 			</div>
-			<div class="control-group">
-				<div class="control-label">
-					<?php echo $this->form->getLabel('order_status'); ?>
-				</div>
-				<div class="controls">
-					<?php echo $this->form->getInput('order_status'); ?>
-				</div>
-			</div>
+			
 			<div class="control-group">
 				<div class="control-label">
 					<?php echo $this->form->getLabel('notes'); ?>

@@ -255,7 +255,7 @@
                 <option value="webma">WEBMA</option>
                 <option value="webmv">WEBMV</option>
                 <option value="ogv">OGV</option>
-                <option value="m4vmp">M4VMP</option>
+                <option value="m4v">M4V</option>
                 <option value="pdf">PDF</option>
                 <option value="other">OTHER</option>
           </field> 

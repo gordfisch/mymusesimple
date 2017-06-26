@@ -756,19 +756,19 @@
                 required="false"
           	/>
           	<field
-                name="product_price_m4vmp"
+                name="product_price_m4v"
                 type="text"
-                label="MYMUSE_PRODUCT_PRICE_OGV_LABEL"
-                description="MYMUSE_PRODUCT_PRICE_OGV_DESC"
+                label="MYMUSE_PRODUCT_PRICE_M4V_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_M4V_DESC"
                 class="inputbox"
                 size="45"
                 required="false"
           	/>
           	<field
-                name="product_price_m4vmp_all"
+                name="product_price_m4v_all"
                 type="text"
-                label="MYMUSE_PRODUCT_PRICE_M4VMP_ALL_LABEL"
-                description="MYMUSE_PRODUCT_PRICE_M4VMP_ALL_DESC"
+                label="MYMUSE_PRODUCT_PRICE_M4V_ALL_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_M4V_ALL_DESC"
                 class="inputbox"
                 size="45"
                 required="false"

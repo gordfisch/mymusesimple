@@ -604,9 +604,9 @@ class MyMuseCart {
 				$order->items[$i]->variation_select  .= "</select>";
 				
 				$order->items[$i]->file_name = isset($jason[$this->cart[$i]["variation"]]->file_name)?
-				$jason[$this->cart[$i]["variation"]]->file_name : '';
+					$jason[$this->cart[$i]["variation"]]->file_name : '';
 				$order->items[$i]->ext = isset($jason[$this->cart[$i]["variation"]]->file_ext)?
-				$jason[$this->cart[$i]["variation"]]->file_ext : '';
+					$jason[$this->cart[$i]["variation"]]->file_ext : '';
 			}else{
 				$order->items[$i]->ext = pathinfo($order->items[$i]->file_name, PATHINFO_EXTENSION);
 			}
@@ -662,8 +662,9 @@ class MyMuseCart {
 
 			// GET PRICES
 			$price = MyMuseModelProduct::getPrice($order->items[$i]);	
+
 			if("1" == $params->get('my_price_by_product')){
-				$price = $price[$order->items[$i]->ext];
+				$price = isset($price[$order->items[$i]->ext])? $price[$order->items[$i]->ext] : $price[$order->items[$i]->ext];
 			}
 			$order->items[$i]->product_item_price = $price['product_price'];
 			$order->items[$i]->product_item_subtotal = $price['product_price'] * $order->items[$i]->quantity;
