@@ -377,7 +377,7 @@ class MymuseTableproduct extends JTable
 			
 		}
 
-	
+
 		//chosen from select dropdown
 		if(is_array( $select_files ) && !$done){
 			

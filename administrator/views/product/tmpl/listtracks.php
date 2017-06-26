@@ -161,7 +161,6 @@ Joomla.orderTable = function()
 			<?php } ?>
 			><?php if(isset($this->item->flash)){ echo $this->item->flash; }?>
 		</div>
-		<div id="playing_title">Now Playing</div>
 		<div id="jp-title-li"></div>
 
 	<?php 

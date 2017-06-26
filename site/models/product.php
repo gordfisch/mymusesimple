@@ -1110,7 +1110,6 @@ class MyMuseModelProduct extends JModelItem
 					$price_info[$format]["product_price"] = $price_info [$format]["product_price"] - ($product_price * $shopper_group_discount/100) - $discount;
 					$price_info [$format]["product_price"] = round ( $price_info [$format]["product_price"], 2 );		
 				}
-
 				return $price_info;
 				
 			} else {

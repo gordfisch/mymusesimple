@@ -995,15 +995,20 @@ endif; ?>
         				<?php 
         				if("1" == $params->get('my_price_by_product')) :
         					$first = 1;
-        					
+        					$types = array();
+ 							foreach($track->file_name as $file){
+ 								$types[] = $file->file_ext;
+ 							}
 							foreach($this->params->get('my_formats') as $format) :
-								$product_price = $track->price[$format];
-        						echo '<div id="'.$format.'_'.$track->id.'" class="price"';
-        						if(!$first):
-        							echo ' style="display:none" ';
-      							endif;
-      							$first = 0;
- 								echo '>'.MyMuseHelper::printMoneyPublic($product_price).'</div>';
+								if(in_array($format, $types)):
+									$product_price = $track->price[$format];
+        							echo '<div id="'.$format.'_'.$track->id.'" class="price"';
+        							if(!$first):
+        								echo ' style="display:none" ';
+      								endif;
+      								$first = 0;
+ 									echo '>'.MyMuseHelper::printMoneyPublic($product_price).'</div>';
+ 								endif;
  							endforeach;
  							
         				elseif($params->get('my_free_downloads') && isset($track->free_download) && $track->free_download) :
