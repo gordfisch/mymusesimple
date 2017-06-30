@@ -303,7 +303,12 @@ class myMuseViewStore extends JViewLegacy
     				$jason = json_decode($prod->file_name);
     				if(is_array($jason)){
     					foreach($jason as $j){
-    						if($ext == $j->file_ext || 'pdf' == $j->file_ext){
+    						if($ext == $j->file_ext
+    							||	'pdf' == $j->file_ext
+    							||	'zip' == $j->file_ext
+    							||	'jpg' == $j->file_ext
+    							||	'docx' == $j->file_ext
+    							){
     							$files[] = $j->file_name;
     						}
     					}
