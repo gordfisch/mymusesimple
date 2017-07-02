@@ -53,7 +53,7 @@ class MymuseViewCategory extends JViewLegacy
 		$this->filterAlpha      = $jinput->get('filter_alpha', '', 'STRING');
 		$layout   				= $jinput->get("layout",'');
 		$searchword   			= $jinput->get("searchword",'');
-			
+	
 		if($layout){
 			$this->setLayout($layout);
 		}
@@ -206,9 +206,11 @@ class MymuseViewCategory extends JViewLegacy
 		// At this point, we are in a menu item, so we don't override the layout
 		elseif (!$layout && isset($active->query['layout'])) {
 			// We need to set the layout from the query in case this is an alternative menu item (with an alternative layout)
+			$layout = $active->query['layout'];
 			$this->setLayout($active->query['layout']);
 		}
 
+		echo "layout = $layout cat_layout = ".$category->params->get('category_layout');
 		
 		// For blog layouts, preprocess the breakdown of leading, intro and linked articles.
 		// This makes it much easier for the designer to just interrogate the arrays.

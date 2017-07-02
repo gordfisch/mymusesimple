@@ -782,7 +782,21 @@
 	 			<option value="0">MYMUSE_HIDE</option>
 	 			<option value="1">MYMUSE_SHOW</option>
 	 		</field> 
-	 		
+	 		<field name="orderby_track"
+				type="list"
+				label="MYMUSE_TRACK_ORDER_LABEL"
+				description="MYMUSE_TRACK_ORDER_DESC"
+				>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
+				<option value="date">JGLOBAL_OLDEST_FIRST</option>
+				<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
+				<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
+				<option value="hits">JGLOBAL_MOST_HITS</option>
+				<option value="rhits">JGLOBAL_LEAST_HITS</option>
+				<option value="sales">MYMUSE_MOST_SALES_ORDER</option>
+				<option value="order">MYMUSE_PRODUCT_MANAGER_ORDER</option>
+			</field>
 			<field name="product_player_type" 
 				type="list"
 				label="MYMUSE_PRODUCT_PLAYERTYPE_LABEL" 
