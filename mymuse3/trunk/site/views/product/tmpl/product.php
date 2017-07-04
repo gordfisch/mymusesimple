@@ -553,26 +553,26 @@ endif; ?>
     
     
     	<?php  if ($params->get('show_intro') && $product->introtext) : ?>
-    	<ul class="product-content">
+    		<ul class="product-content">
 				<li class="product-content-item"><span class="category"><?php echo JText::_('MYMUSE_DESCRIPTION');?></span>
 					<span class="value">
 						<div class="product-description">
                     
                         <?php echo $product->introtext ?>
-                    <?php endif ?>
+                    
                     
                     <?php if($product->introtext && $product->fulltext && $params->get('show_readmore')) : ?><br />
-							<a href="#readmore" class="readon"><?php echo JText::_("MYMUSE_READ_MORE"); ?>
+						<a href="#readmore" class="readon"><?php echo JText::_("MYMUSE_READ_MORE"); ?>
                         <?php 
                         if ($params->get('show_readmore_title', 0) != 0) :
                             echo JHtml::_('string.truncate', ($this->item->title), $params->get('readmore_limit'));
                         endif;
                         ?></a>
-
+					 <?php endif; ?>
 						</div>
 				</span></li>
 			</ul>
-         <?php endif; ?>
+        <?php endif ?>
 
   
   
