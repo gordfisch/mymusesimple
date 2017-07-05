@@ -32,7 +32,6 @@ $document->setMetaData( 'twitter:description', strip_tags($description));
 $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams()->get('image'));
 
 ?>
-
 <!-- HEADING - TITLE -->
 <?php  echo $category->event->beforeDisplayHeader; ?>
 
