@@ -210,7 +210,7 @@ class MymuseViewCategory extends JViewLegacy
 			$this->setLayout($active->query['layout']);
 		}
 
-		echo "layout = $layout cat_layout = ".$category->params->get('category_layout');
+		//echo "layout = $layout cat_layout = ".$category->params->get('category_layout');
 		
 		// For blog layouts, preprocess the breakdown of leading, intro and linked articles.
 		// This makes it much easier for the designer to just interrogate the arrays.
