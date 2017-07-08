@@ -32,7 +32,7 @@ if(!$total_shown){
 ?>
 	<ul>
 	<?php foreach($this->children[$this->category->id] as $id => $child) : 
-	
+		$child->numitems = $this->_getProductCount($child);
 		if ($this->params->get('show_empty_categories') || $child->numitems || count($child->getChildren())) :
 			if (!isset($this->children[$this->category->id][$id + 1])) :
 				$class = ' class="last"';
