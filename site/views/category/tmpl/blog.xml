@@ -657,32 +657,49 @@
 
 	 		
 			<field name="product_show_tracks" 
-				type="radio"
-				class="btn-group"
+				type="list"
 				label="MYMUSE_SHOW_TRACKS_LABEL" 
 				description="MYMUSE_SHOW_TRACKS_DESC">
 	 			<option value="">JGLOBAL_USE_GLOBAL</option>
 	 			<option value="0">MYMUSE_HIDE</option>
 	 			<option value="1">MYMUSE_SHOW</option>
 	 		</field> 
-	 		<field name="orderby_track"
-				type="list"
-				label="MYMUSE_TRACK_ORDER_LABEL"
-				description="MYMUSE_TRACK_ORDER_DESC"
-				>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
-				<option value="date">JGLOBAL_OLDEST_FIRST</option>
-				<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
-				<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
-				<option value="hits">JGLOBAL_MOST_HITS</option>
-				<option value="rhits">JGLOBAL_LEAST_HITS</option>
-				<option value="sales">MYMUSE_MOST_SALES_ORDER</option>
-				<option value="order">MYMUSE_PRODUCT_MANAGER_ORDER</option>
-			</field>
+
+	 	<field 
+			name="orderby_track"
+			type="list"
+			default="rdate"
+			label="MYMUSE_TRACK_ORDER_LABEL"
+			description="MYMUSE_TRACK_ORDER_DESC"
+		>
+			<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
+			<option value="date">JGLOBAL_OLDEST_FIRST</option>
+			<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
+			<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
+			<option value="hits">JGLOBAL_MOST_HITS</option>
+			<option value="rhits">JGLOBAL_LEAST_HITS</option>
+			<option value="sales">MYMUSE_MOST_SALES_ORDER</option>
+			<option value="order">MYMUSE_PRODUCT_MANAGER_ORDER</option>
+		</field>
+
+		<field 
+			name="order_track_date" 
+			type="list"
+			default="product_made_date"
+			description="JGLOBAL_ORDERING_DATE_DESC"
+			label="JGLOBAL_ORDERING_DATE_LABEL"
+		>
+
+			<option value="created">JGLOBAL_CREATED</option>
+			<option value="modified">JGLOBAL_MODIFIED</option>
+			<option value="published">JPUBLISHED</option>
+			<option value="product_made_date">MYMUSE_PRODUCT_CREATED_LABEL</option>
+				
+		</field>
+	 		
+
 			<field name="product_player_type" 
-				type="radio"
-				class="btn-group"
+				type="list"
 				label="MYMUSE_PRODUCT_PLAYERTYPE_LABEL" 
 				description="MYMUSE_PRODUCT_PLAYERTYPE_DESC">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
@@ -691,25 +708,24 @@
 	 			<option value="module">MYMUSE_PLAYER_IN_A_MODULE</option>
 	 		</field>
 	 		<field name="product_player_width" 
-	 			type="radio"
-				class="btn-group" 
+	 			type="text" 
 	 			size="6"
 				label="MYMUSE_PLAYER_WIDTH_LABEL" 
 				description="MYMUSE_PLAYER_WIDTH_DESC"
 			/>
 			<field name="product_player_height" 
-				type="radio"
-				class="btn-group" 
+				type="text" 
 				size="6"
 				label="MYMUSE_PLAYER_HEIGHT_LABEL" 
 				description="MYMUSE_PLAYER_HEIGHT_DESC"
 			/>
 		
-			<field name="product_show_select_column" 
-				type="radio"
-				class="btn-group" 
-				label="MYMUSE_SHOW_SELECT_COLUMN" 
-				description="MYMUSE_SHOW_SELECT_COLUMN_DESC">
+			<field name="product_show_select_column"
+			 	type="radio"
+				class="btn-group"
+			 	default="1" 
+			 	label="MYMUSE_SHOW_SELECT_COLUMN" 
+			 	description="MYMUSE_SHOW_SELECT_COLUMN_DESC">
 	 			<option value="">JGLOBAL_USE_GLOBAL</option>
 	 			<option value="0">MYMUSE_HIDE</option>
 	 			<option value="1">MYMUSE_SHOW</option>
@@ -718,6 +734,7 @@
 	 		<field name="product_show_filesize" 
 	 			type="radio"
 				class="btn-group"
+	 			default="1" 
 	 			label="MYMUSE_SHOW_FILESIZE" 
 	 			description="MYMUSE_SHOW_FILESIZE_DESC">
 	 			<option value="">JGLOBAL_USE_GLOBAL</option>
