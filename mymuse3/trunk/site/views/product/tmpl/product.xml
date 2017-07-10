@@ -344,11 +344,10 @@
 		<field 
 			name="order_track_date" 
 			type="list"
-			default="product_made_date"
 			description="JGLOBAL_ORDERING_DATE_DESC"
 			label="JGLOBAL_ORDERING_DATE_LABEL"
 		>
-
+			<option value="">JGLOBAL_USE_GLOBAL</option>
 			<option value="created">JGLOBAL_CREATED</option>
 			<option value="modified">JGLOBAL_MODIFIED</option>
 			<option value="published">JPUBLISHED</option>

@@ -460,6 +460,14 @@ if($notes_required  && $user->username == 'buyer'){
 				</div>
 			<?php } ?>
 			
+			<div class="pull-left  mymuse-button-right cart">
+				<button class="button uk-button" 
+				type="button" 
+				onclick="location.href='<?php echo $params->get('my_continue_shopping'); ?>'">
+				<?php echo JText::_('MYMUSE_CONTINUE_SHOPPING'); ?></button>
+			</div>
+				
+				
 	  		<?php
 
 	  		 if(($user->username == 'buyer' && $notes_required && isset($notes) && $notes != '')
@@ -473,14 +481,8 @@ if($notes_required  && $user->username == 'buyer'){
 				</div>
 			<?php } ?>
 				
-			<!-- 
-				<div class="pull-right  mymuse-button-right cart">
-				<button class="button uk-button" 
-				type="button" 
-				onclick="location.href='<?php echo $params->get('my_continue_shopping'); ?>'">
-				<?php echo JText::_('MYMUSE_CONTINUE_SHOPPING'); ?></button>
-				</div>
-			 -->	
+			 
+				
 
 	  		
 	

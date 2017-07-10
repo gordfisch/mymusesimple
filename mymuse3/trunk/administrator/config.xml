@@ -201,6 +201,20 @@
 				<option value="sales">MYMUSE_MOST_SALES_ORDER</option>
 				<option value="order">MYMUSE_PRODUCT_MANAGER_ORDER</option>
 			</field>
+			
+			<field 
+			name="order_track_date" 
+			type="list"
+			description="JGLOBAL_ORDERING_DATE_DESC"
+			label="JGLOBAL_ORDERING_DATE_LABEL"
+			default="product_made_date"
+		>
+			<option value="created">JGLOBAL_CREATED</option>
+			<option value="modified">JGLOBAL_MODIFIED</option>
+			<option value="published">JPUBLISHED</option>
+			<option value="product_made_date">MYMUSE_PRODUCT_CREATED_LABEL</option>
+				
+		</field>
 	 				
 	 		<field 
 	 			name="product_player_type" 

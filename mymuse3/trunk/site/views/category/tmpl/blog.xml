@@ -668,10 +668,10 @@
 	 	<field 
 			name="orderby_track"
 			type="list"
-			default="rdate"
 			label="MYMUSE_TRACK_ORDER_LABEL"
 			description="MYMUSE_TRACK_ORDER_DESC"
 		>
+			<option value="">JGLOBAL_USE_GLOBAL</option>
 			<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
 			<option value="date">JGLOBAL_OLDEST_FIRST</option>
 			<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
@@ -685,11 +685,10 @@
 		<field 
 			name="order_track_date" 
 			type="list"
-			default="product_made_date"
 			description="JGLOBAL_ORDERING_DATE_DESC"
 			label="JGLOBAL_ORDERING_DATE_LABEL"
 		>
-
+			<option value="">JGLOBAL_USE_GLOBAL</option>
 			<option value="created">JGLOBAL_CREATED</option>
 			<option value="modified">JGLOBAL_MODIFIED</option>
 			<option value="published">JPUBLISHED</option>

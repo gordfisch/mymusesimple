@@ -443,7 +443,7 @@ class MyMuseModelProduct extends JModelItem
 
         		)";
 			}
-			
+		
 			$orderby = "ORDER BY $ordering $listDirn
 			";
 
