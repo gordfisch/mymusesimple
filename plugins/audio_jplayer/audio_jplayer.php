@@ -151,7 +151,7 @@ class plgMymuseAudio_jplayer extends JPlugin
 		if($type == 'singleplayer'){
 				// player set to play the first track 
 				$supplied = array();
-				$trs[0]['src'] = $track->path;
+				$trs[0]['src'] = addslashes($track->path);
 				$ext = MyMuseHelper::getExt($track->path);
 				if($ext == "ogg"){
 					$ext = "oga";
@@ -420,7 +420,7 @@ jQuery(document).ready(function(){
 			</ul>';
 			
 			$supplied = array();
-			$trs[0]['src'] = $track->path;
+			$trs[0]['src'] = addslashes($track->path);
 			$ext = MyMuseHelper::getExt($track->path);
 			if($ext == "ogg"){
 				$ext = "oga";
@@ -467,7 +467,7 @@ jQuery(document).ready(function(){
 				$media .= $source['ext'].": '".$source['src']."',\n";
 				
 			}
-			
+		
 			$media = preg_replace("/,\n$/","",$media);		
 
 			

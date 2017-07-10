@@ -33,6 +33,7 @@ $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams
 JHtml::addIncludePath(JPATH_COMPONENT.'/helpers');
 $category = $this->category;
 ?>
+
 <?php  echo $category->event->beforeDisplayHeader; ?>
 
 <div class="category-list<?php echo $this->pageclass_sfx;?>">

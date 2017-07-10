@@ -458,12 +458,16 @@ class MymuseControllerProduct extends JControllerForm
     	{
     		$contentType = $_SERVER["CONTENT_TYPE"];
     	}
-    
+
     	// Handle non multipart uploads older WebKit versions didn't support multipart in HTML5
     	if (strpos($contentType, "multipart") !== false)
     	{
     		if (isset($_FILES['file']['tmp_name']) && is_uploaded_file($_FILES['file']['tmp_name']))
     		{
+
+    			//if(!file_exists($_FILES['file']['tmp_name'])){
+    			//	$this->_setResponse (100, $_FILES['file']['tmp_name']." Does not exist:".$_FILES['file']['error']);
+    			//}else{
     			// Open temp file
     			$out = fopen("{$filePath}.part", $chunk == 0 ? "wb" : "ab");
     			if ($out)
@@ -491,6 +495,7 @@ class MymuseControllerProduct extends JControllerForm
     			{
     				$this->_setResponse (102, "Failed to open output stream.");
     			}
+    			//}
     		}
     		else
     		{
