@@ -184,11 +184,13 @@ foreach($tracks as $track){
                     }else{
                         txt = idx+" "+"items";
                     }
+                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>\';
                     $("#carttop1").html(txt);
                     $("#carttop2").html(link);
                 }else{
 
                     $("#carttop1").html(" ");
+                    $("#carttop2").html("'.JText::_('MYMUSE_YOUR_CART_IS_EMPTY').'");
                 }
                 my_modal.open({content: msg+"<br />"+link, width: 300 });
             });
@@ -234,10 +236,13 @@ jQuery(document).ready(function($){
                     }else{
                         txt = idx+" "+"items";
                     }
-                    $("#carttop1").html(txt);
+                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>\';
+                    $("#mini-cart-text").html(txt);
+                    $("#mini-cart-link").html(link);
                 }else{
 	
-                    $("#carttop1").html(" ");
+                    $("#mini-cart-text").html(" ");
+                    $("#mini-cart-link").html("'.JText::_('MYMUSE_YOUR_CART_IS_EMPTY').'");
                 }
                 my_modal.open({content: msg+"<br />"+link, width: 300 });
             });
@@ -285,7 +290,7 @@ echo myMuseHelperRoute::getCategoryRoute($product->artist->parent_id); ?>">
 	<div class="mini-cart-top">
 		<div class="mini-cart-content">
 			<div class="mini-cart-cart"></div>
-			<div class="mini-cart-text" id="carttop1"><?php
+			<div class="mini-cart-text"><?php
 if($this->cart['idx']) :
     $word = ($this->cart['idx'] == 1) ? "item" : "items"; 
     echo $this->cart['idx']." $word";
