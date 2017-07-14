@@ -305,6 +305,12 @@ class MymuseModelproducts extends JModelList
 			$query->where('a.product_downloadable = 1');
 		}
 		
+		//allfiles??
+		$allfiles = $this->getState('filter.allfiles', '');
+		if (is_int($allfiles)) {
+			$query->where('a.product_allfiles = '.$allfiles);
+		}
+		
 		//physical??
 		if ($physical = $this->getState('filter.physical')) {
 			$query->where('a.product_physical = 1');
@@ -485,9 +491,10 @@ class MymuseModelproducts extends JModelList
 
 		$products = $this->getItems();
 		foreach ($products as $product){
-			//echo $product->id.' '.$product->title.'<br />';
+			
 			$model = new MymuseModelproducts;
 			$model->setState('filter.downloadable', 1);
+			$model->setState('filter.allfiles', 0);
 			$model->setState('filter.parentid', $product->id);
 			$product->items = $model->getItems();
 		}

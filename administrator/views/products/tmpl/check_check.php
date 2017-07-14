@@ -1,4 +1,4 @@
-<h2>File Check</h2><?php
+<?php
 if(!defined('DS')){
 	define('DS',DIRECTORY_SEPARATOR);
 }
@@ -14,10 +14,22 @@ require_once( MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php' );
 <style>
 
 </style>
+
+<form action="<?php echo JRoute::_('index.php?option=com_mymuse&view=products'); ?>" method="post" name="adminForm" id="adminForm">
+
+	<div id="j-sidebar-container" class="span2">
+	<?php
+	echo $this->sidebar; 
+	?>
+	</div>
+	<div style="clear: both'"></div>
+	<div id="j-main-container" class="span10">
+	
+	<h2>File Check</h2>
 <table>
 <?php 
 foreach($this->products as $product){
-	echo "<tr><td colspan='3'>". $product->id ." <b>".$product->title."</b></td></tr>";
+	echo "<tr><td colspan='3'>". $product->id .' <b><a href=\"index.php?option=com_mymuse&view=product&layout=listtracks&id='.$product->id.'">'.$product->title."</b></td></tr>";
 	foreach($product->items as $item){
 		echo "<tr><td>&nbsp;</td><td>". $item->id ."</td><td>". $item->title ."</td></tr>";
 		
@@ -86,3 +98,4 @@ foreach($this->products as $product){
 }
 ?>
 </table>
+</div>

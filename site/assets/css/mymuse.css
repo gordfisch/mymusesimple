@@ -433,8 +433,14 @@ padding-bottom: 10px;
 	font-weight: bold;
 }
 /* Only Phones */  
-@media (max-width: 800px) { 
+@media (max-width: 767px) { 
 	
+	.cat-items .cols-2 .column-1, .cat-items .cols-2 .column-2, 
+	.cat-items .cols-3 .column-1, .cat-items .cols-3 .column-2, .cat-items .cols-3 .column-3,
+	.cat-items .cols-4 .column-1, .cat-items .cols-4 .column-2, .cat-items .cols-4 .column-3, .cat-items .cols-4 .column-4
+	  { width: 100%; }
+
+
 	//.product-image{
 	//	width:100%;
 	//	clear: both;
