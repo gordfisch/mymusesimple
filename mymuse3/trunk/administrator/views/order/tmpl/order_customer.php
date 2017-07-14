@@ -76,6 +76,9 @@ $siteRouter = JRouter::getInstance('site', $routerOptions);
 $link = ltrim($siteRouter->build($link)->toString(),'/');
 $link = rtrim(JURI::Root(false,'/'),'/').'/'.preg_replace('#/administrator#', '', $link);
 
+
+// this is not routered but it works
+$link = $order->downloadlink;
 $download_header .= '
 		</ul>
 		</td>

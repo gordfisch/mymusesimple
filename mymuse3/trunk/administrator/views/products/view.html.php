@@ -33,6 +33,7 @@ class MymuseViewProducts extends JViewLegacy
 		if($layout == "check"){
 			$this->products = $this->get('Check');
 			$this->sidebar = JHtmlSidebar::render();
+
 			parent::display('check');
 		}else{
 			$this->state = $this->get ( 'State' );

@@ -325,24 +325,105 @@ class MymuseControllerProducts extends JControllerAdmin
 	}
 	
 
-	function artistid()
+	function checkFiles()
 	{
+
+		$params 			= MyMuseHelper::getParams();
+		if($params->get('my_use_s3')){
+			echo "Cannot check s3 at this time";
+			return false;
+		}
+		$html = '<h3>&lt;D&gt; = Download<br />&lt;P&gt; = Preview</h3><table cellpadding="5" border="1"><thead>
+				<tr>
+					<th>Title</th>
+					<th>FILES</th>
+					</tr></thead>';
+		
+		
 		$db = JFactory::getDBO();
-		$query = "SELECT x.catid, x.product_id, c.title
-FROM nxgmsc15_mymuse_product_category_xref as x, nxgmsc15_mymuse_product as p, nxgmsc15_categories as c
-WHERE x.catid != p.catid AND
-x.product_id=p.id AND c.id=x.catid";
+		$query = "SELECT id, title, title_alias, artistid, parentid, file_name, file_preview, file_preview_2, file_preview_3
+				FROM #__mymuse_product WHERE product_downloadable=1 AND product_allfiles=0
+				ORDER BY artistid, parentid";
 	
 		$db->setQuery($query);
-		$res = $db->loadObjectList();
-		foreach($res as $r){
-			$query = 'UPDATE nxgmsc15_mymuse_product SET artistid = "'.$r->catid.'" WHERE
-            id="'.$r->product_id.'"';
-			$db->setQuery($query);
-			if($db->execute()){
-				echo "updated ".$r->product_id." to have artistid ".$r->catid." ".$r->title."<br />";
+		$tracks = $db->loadObjectList();
+		foreach($tracks as $track){
+
+			$html .= '<tr>
+					<td valign="top">'.$track->title.'</td>';
+			$track->download_real_path = MyMuseHelper::getDownloadPath($track->parentid, 1);
+			$track->preview_real_path = MyMuseHelper::getSitePath($track->parentid,'1');
+			$track->downloads = array();
+			$track->previews = array();
+
+
+			//downloads
+			$html .= '<td>';
+			if($track->downloads = json_decode($track->file_name)){
+				for($i = 0; $i<count($track->downloads); $i++){
+					
+					$path = $track->download_real_path.$track->downloads[$i]->file_name;
+					if(file_exists($path)){
+						$res = "green";
+					}else{
+						$res = "red";
+					}
+					$html .= '<b>D</b> <span style="color:'.$res.'">'.$path.'</span><br /><br />';
+				}
+			}else{
+				$track->downloads[0] = new stdClass;
+				if($params->get('my_encode_filenames')){
+					$path = $track->download_real_path.$track->title_alias;
+				}else{
+					$path = $track->download_real_path.$track->file_name;
+				}
+				if(file_exists($path)){
+					$res = "green";
+				}else{
+					$res = "red";
+				}
+				$html .= '<b>D</b> <span style="color:'.$res.'">'.$path.'</span><br /><br />';
 			}
+
+			//previews
+			if($track->file_preview){
+				$path = $track->preview_real_path.$track->file_preview;
+				if(file_exists($path)){
+					$res = "green";
+				}else{
+					$res = "red";
+				}
+				$html .= '<b>P</b> <span style="color:'.$res.'">'.$path.'</span><br />';
+			}
+			if($track->file_preview_2){
+				$path = $track->preview_real_path.$track->file_preview_2;
+				if(file_exists($path)){
+					$res = "green";
+				}else{
+					$res = "red";
+				}
+				$html .= '<b>P</b> <span style="color:'.$res.'">'.$path.'</span><br />';
+			}
+			if($track->file_preview_3){
+				$path = $track->preview_real_path.$track->file_preview_3;
+				if(file_exists($path)){
+					$res = "green";
+				}else{
+					$res = "red";
+				}
+				$html .= '<b>P</b> <span style="color:'.$res.'">'.$path.'</span><br />';
+			}
+			
+			$html .= '</td>';
+			
+			$html .= '</tr>';
 		}
+		$html .= '</table>';		
+		
+		return $html;
+		
+		
+		
 	}
 	
 	function check()
