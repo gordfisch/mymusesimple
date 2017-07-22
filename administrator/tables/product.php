@@ -18,6 +18,13 @@ JLoader::import('joomla.filesystem.file');
  */
 class MymuseTableproduct extends JTable
 {
+	
+	/**
+	 * @var		object
+	 */
+	protected $_s3 = null;
+	
+	
 	/**
 	 * Constructor
 	 *
@@ -25,6 +32,8 @@ class MymuseTableproduct extends JTable
 	 */
 	public function __construct(&$db)
 	{
+		require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
+		$this->_s3 = MyMuseHelperAmazons3::getInstance();
 		parent::__construct('#__mymuse_product', 'id', $db);
 	}
 	
@@ -314,7 +323,7 @@ class MymuseTableproduct extends JTable
 				$new = 1;
 				$tmpName = $_FILES['product_file']['tmp_name'];
 				$ext = MyMuseHelper::getExt ( $_FILES['product_file']['name'] );
-				$_FILES['product_file']['name'] = preg_replace ( "/$ext$/", "", $_FILES['product_file']['name'] );
+				$_FILES['product_file']['name'] = preg_replace ( "/\.$ext$/", "", $_FILES['product_file']['name'] );
 				if($params->get('my_use_sring_url_safe')){
 					$current_files[0]->file_name = JFilterOutput::stringURLSafe ( $_FILES['product_file']['name'] ) . '.' . $ext;
 				}else{
@@ -746,7 +755,7 @@ class MymuseTableproduct extends JTable
 			}else{
 				$this->$file_preview_name = $_FILES[$preview_name]['name'].'.'.$ext;
 			}
-			echo $this->$file_preview_name; exit;
+		
 			$tmpName  = $_FILES[$preview_name]['tmp_name'];
 			 
 			$new = $path.$this->$file_preview_name;
@@ -1007,19 +1016,28 @@ class MymuseTableproduct extends JTable
     	$application = JFactory::getApplication();
     	$params = MyMuseHelper::getParams();
     	if($params->get('my_use_s3')){
-    		$s3 = MyMuseHelperAmazons3::getInstance();
+
     		// first section is bucket name
     		$parts = explode(DS,$dir);
     		$bucket = array_shift($parts);
     		$bucket = trim($bucket, DS);
     		$uri = implode(DS, $parts);
     		$uri = trim($uri,DS).DS;
-    		$status = $s3->putObject('', $bucket, $uri);
-    		if(!$status){
-    			$this->setError( 'S3 Error: '.$s3->getError() );
-    			$application->enqueueMessage('S3 Error: '.$s3->getError() , 'error');
+    		//$status = $s3->putObject('', $bucket, $uri);
+    		try{
+    			$result = $this->_s3->putObject([
+    					'Bucket'     => $bucket,
+    					'Key'        => $uri,
+    					'SourceFile' => '',
+    			]);
+    		} catch (S3Exception $e) {
+    			//echo $e->getMessage() . "\n";
+    			$this->setError( 'S3 Error: '.$this->_s3->getError() );
+    			$application->enqueueMessage('S3 Error: '.$this->_s3->getError() , 'error');
     			return false;
     		}
+    		
+
     	}else{
     		$status = JFolder::create($dir);
     		if(!$status){
@@ -1052,18 +1070,29 @@ class MymuseTableproduct extends JTable
     	$params = MyMuseHelper::getParams();
     	if($params->get('my_use_s3')){
     		
-    		$s3 = MyMuseHelperAmazons3::getInstance();
     		// first section is bucket name
     		$parts = explode(DS,$file);
     		$bucket = array_shift($parts);
     		$bucket = trim($bucket, DS);
     		$uri = implode(DS, $parts);
     		$uri = trim($uri,DS);
-    		
+    		/*
     		$status = $s3->deleteObject($bucket, $uri);
     		if(!$status){
     			$this->setError('S3 Error : '.$s3->getError() );
     			$application->enqueueMessage('S3 Error: '.$s3->getError() , 'error');
+    			return false;
+    		}
+    		*/
+    		try{
+    			$result = $this->_s3->deleteObject([
+    					'Bucket'     => $bucket,
+    					'Key'        => $uri
+    			]);
+    		} catch (S3Exception $e) {
+    			//echo $e->getMessage() . "\n";
+    			$this->setError( 'S3 Error: '.$this->_s3->getError() );
+    			$application->enqueueMessage('S3 Error: '.$this->_s3->getError() , 'error');
     			return false;
     		}
     	}else{
@@ -1099,6 +1128,9 @@ class MymuseTableproduct extends JTable
     		$bucket = trim($bucket, DS);
     		$uri = implode(DS, $parts);
     		$uri = trim($uri,DS);
+    		
+    		
+    		/*
     		$input = $s3->inputFile($tmpName);
     		if($bucket == $params->get('my_download_dir')){
     			//we are uploading to the download dir, set additinal request headers
@@ -1113,6 +1145,20 @@ class MymuseTableproduct extends JTable
     		if(!$success){
     			$this->setError('S3 Error: '. $s3->getError() );
     			$application->enqueueMessage('S3 Error: '.$s3->getError() , 'error');
+    			return false;
+    		}
+    		*/
+;
+    		try{
+    			$result = $this->_s3->putObject([
+    					'Bucket'     => $bucket,
+    					'Key'        => $uri,
+    					'SourceFile' => $tmpName,
+    			]);
+    		} catch (S3Exception $e) {
+    			//echo $e->getMessage() . "\n";
+    			$this->setError( 'S3 Error: '.$this->_s3->getError() );
+    			$application->enqueueMessage('S3 Error: '.$this->_s3->getError() , 'error');
     			return false;
     		}
     	}else{
@@ -1140,7 +1186,6 @@ class MymuseTableproduct extends JTable
     	$params = MyMuseHelper::getParams();
     	if($params->get('my_use_s3')){
     		//they are both on s3. Must download one 
-    		$s3 = MyMuseHelperAmazons3::getInstance();
     		$oldParts = explode(DS,$old_file);
     		
     		$oldBucket = array_shift($oldParts);
@@ -1150,6 +1195,12 @@ class MymuseTableproduct extends JTable
     		$jconfig = JFactory::getConfig();
     		$tmpName = $jconfig->get('tmp_path','').DS.array_pop($oldParts );
     		
+    		$parts = explode(DS,$new_file);
+    		$newbucket = array_shift($parts);
+    		$newbucket = trim($newbucket, DS);
+    		$newname = implode(DS, $parts);
+    		
+    		/*
     		if(!$s3->getObject($oldBucket, $uri, $tmpName)){
     			$this->setError('S3 Error: '.$s3->getError() );
     			$application->enqueueMessage('S3 Error: '.$s3->getError() , 'error');
@@ -1171,6 +1222,33 @@ class MymuseTableproduct extends JTable
     		if(!$success){
     			$this->setError('S3 Error: '.$s3->getError() );
     			$application->enqueueMessage('S3 Error: '.$s3->getError() , 'error');
+    			return false;
+    		}
+    		*/
+
+    		try{
+    			$result = $this->_s3->copyObject([
+    				'Bucket' => $newbucket,
+    				'CopySource' => $old_file,
+    				'Key' => $newname,
+    			]);
+    		} catch (S3Exception $e) {
+    			//echo $e->getMessage() . "\n";
+    			$this->setError( 'S3 Error: '.$this->_s3->getError() );
+    			$application->enqueueMessage('S3 Error: '.$this->_s3->getError() , 'error');
+    			return false;
+    		}
+    		
+    		//now delete the old one
+    		try{
+    			$result = $this->_s3->deleteObject([
+    					'Bucket'     => $oldBucket,
+    					'Key'        => $uri
+    			]);
+    		} catch (S3Exception $e) {
+    			//echo $e->getMessage() . "\n";
+    			$this->setError( 'S3 Error: '.$this->_s3->getError() );
+    			$application->enqueueMessage('S3 Error: '.$this->_s3->getError() , 'error');
     			return false;
     		}
     	}else{
@@ -1197,13 +1275,27 @@ class MymuseTableproduct extends JTable
     	$params = MyMuseHelper::getParams();
     	
     	if($params->get('my_use_s3')){
-    		$s3 = MyMuseHelperAmazons3::getInstance();
+
     		$parts = explode(DS,$file);
     		$bucket = array_shift($parts);
     		$bucket = trim($bucket, DS);
     		$uri = implode(DS, $parts);
     		$uri = trim($uri,DS);
+    		/*
     		return $s3->getObject($bucket, $uri);
+    		*/
+    		
+    		try{
+    			$result = $this->_s3->getObject([
+    				'Bucket' => $bucket,
+    				'Key' => $uri
+    			]);
+    		} catch (S3Exception $e) {
+    			//echo $e->getMessage() . "\n";
+    			$this->setError( 'S3 Error: '.$this->_s3->getError() );
+    			$application->enqueueMessage('S3 Error: '.$this->_s3->getError() , 'error');
+    			return false;
+    		}
     		
     	}else{
     		return file_exists($file);
@@ -1218,7 +1310,7 @@ class MymuseTableproduct extends JTable
     		if(!$this->folderNew($dest)){
     			return false;
     		}
-    		$s3 = MyMuseHelperAmazons3::getInstance();
+    		
     		// first section is bucket name
     		$parts = explode(DS,$src);
     		$bucket = array_shift($parts);
@@ -1226,9 +1318,10 @@ class MymuseTableproduct extends JTable
     		$uri = implode(DS, $parts);
     		$uri = trim($uri,DS);
     		echo "get files $uri $bucket <br />";
-    		$old_files = $s3->listS3Contents($uri, $bucket);
+    		//$old_files = $s3->listS3Contents($uri, $bucket);
 
   			$old_folders = array();
+  			/*
     		foreach($old_files as $path=>$info){
     			if($info['size'] > 0 && (substr($path, -1) != '/')){
     				$parts = explode(DS,$path);
@@ -1249,7 +1342,39 @@ class MymuseTableproduct extends JTable
     		foreach($old_folders as $folder){
     			$this->fileDelete($folder);
     		}
+    		*/
+  			try{
+  				$result = $this->_s3->listObjects([
+    				'Bucket' => $bucket,
+    				'Marker' => $folder
+    			]);
+  			} catch (S3Exception $e) {
+  				//echo $e->getMessage() . "\n";
+  				$this->setError( 'S3 Error: '.$this->_s3->getError() );
+  				$application->enqueueMessage('S3 Error: '.$this->_s3->getError() , 'error');
+  				return false;
+  			}
     		
+    		$old_files = $result['Contents'];
+    		foreach($old_files as $info) {
+    			//print_pre($info); exit;
+    			if(array_key_exists('Size', $info) && (substr($info['Key'], -1) != '/')) {
+    				$path = $info ['Key'];
+    				$parts = explode(DS,$path);
+    				$file = array_pop($parts);
+    				$new_file = trim($dest, DS).DS.$file;
+    				
+    				if(!$this->fileCopy($bucket.DS.$path, $new_file)){
+    					return false;
+    				}
+
+    			}else{
+    					$old_folders[] = $path;
+    			}	
+    		}
+    		foreach($old_folders as $folder){
+    			$this->fileDelete($folder);
+    		}
     	}else{
     		if ( !JFolder::create($dest) ) {
                 //Throw error message and stop script
@@ -1260,15 +1385,6 @@ class MymuseTableproduct extends JTable
             foreach ($files as $file) {
                 JFile::move($src. DS . $file, $dest . DS. $file);
             }
-            /**
-    		if(!JFolder::move($src,$dest)){
-        		$this->setError(JText::sprintf("MYMUSE_PRODUCT_CHANGED_CATEGORY", $msg));
-        		
-        		return false;
-    		}else{
-    			$this->setError(JText::sprintf("Folder Moved", $msg));
-    		}
-            * */
     	}
     	return true;
 
@@ -1278,15 +1394,27 @@ class MymuseTableproduct extends JTable
     {
     	$params = MyMuseHelper::getParams();
     	if($params->get('my_use_s3')){
-    		$s3 = MyMuseHelperAmazons3::getInstance();
+    		
     		// first section is bucket name
     		$parts = explode(DS,$src);
     		$bucket = array_shift($parts);
     		$bucket = trim($bucket, DS);
     		$uri = implode(DS, $parts);
     		$uri = trim($uri,DS);
-    		$header  = $s3->getObjectInfo($bucket, $uri);
-    		return $header['size'];
+    		//$header  = $s3->getObjectInfo($bucket, $uri);
+    		try{
+    			$result = $this->_s3->getObject([
+    					'Bucket' => $bucket,
+    					'Key' => $folder
+    			]);
+    		} catch (S3Exception $e) {
+    			//echo $e->getMessage() . "\n";
+    			$this->setError( 'S3 Error: '.$this->_s3->getError() );
+    			$application->enqueueMessage('S3 Error: '.$this->_s3->getError() , 'error');
+    			return false;
+    		}
+    		
+    		return $result['ContentLength'];
     	}else{
     		return filesize($src);
     	}

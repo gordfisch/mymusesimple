@@ -124,7 +124,10 @@ class MymuseModelproduct extends JModelAdmin
 		if($this->_params->get('my_use_s3')){
 			require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
 			$this->_s3 = MyMuseHelperAmazons3::getInstance();
-			$this->_previews = $this->_s3->getBucket($this->_params->get('my_preview_dir'));
+			//$this->_previews = $this->_s3->getBucket($this->_params->get('my_preview_dir'));
+			$this->_previews = $this->_s3->listObjects([
+    			'Bucket' => $this->_params->get('my_preview_dir')
+			]);
 		}
 		
 		parent::__construct($config);
@@ -478,8 +481,8 @@ class MymuseModelproduct extends JModelAdmin
     					$track->file_downloads .= $j->file_downloads."<br />";
     				}
     			}else{
-    				echo "NOT JASON";
-    				$track->file_name = myMuseHelper::getJsonError();
+    				//echo "NOT JASON";
+    				//$track->file_name = myMuseHelper::getJsonError();
     				//echo $track->file_name; exit;
     			}
                 
@@ -857,18 +860,35 @@ class MymuseModelproduct extends JModelAdmin
 		$files = array();
 		// get the preview lists
 		if($this->_params->get('my_use_s3')){
-			$s3 = MyMuseHelperAmazons3::getInstance();
 			$folder = $artist_alias.'/'.$album_alias;
-			$everything = $s3->listS3Contents($folder, $this->_params->get('my_preview_dir'));
+			//$everything = $s3->listS3Contents($folder, $this->_params->get('my_preview_dir'));
+			
+			try{
+				$result = $this->_s3->listObjects([
+					'Bucket' => $this->_params->get('my_preview_dir'), 
+					'Prefix' => $folder
+				]);
+			} catch (S3Exception $e) {
+				//echo $e->getMessage() . "\n";
+				$this->setError( 'S3 Error: '.$this->_s3->getError() );
+				$application->enqueueMessage('S3 Error: '.$this->_s3->getError() , 'error');
+				return false;
+			}
+			$everything = $result['Contents'];
 			$folder = trim($folder,'/');
 			$dirLength = strlen($folder);
-			if(count($everything)) foreach($everything as $path => $info) {
-				if(array_key_exists('size', $info) && (substr($path, -1) != '/')) {
-					if(substr($path, 0, $dirLength) == $folder) {
-						$path = substr($path, $dirLength);
+			//print_pre($everything); exit;
+			if(count($everything)) {
+				foreach($everything as $info) {
+						// print_pre($info); exit;
+					if (array_key_exists ( 'Size', $info ) && (substr ( $info ['Key'], - 1 ) != '/')) {
+						$path = $info ['Key'];
+						if (substr ( $info ['Key'], 0, $dirLength ) == $folder) {
+							$path = substr ( $info ['Key'], $dirLength );
+						}
+						$path = trim ( $path, '/' );
+						$files [] = $path;
 					}
-					$path = trim($path,'/');
-					$files[] = $path;
 				}
 			}
 		}else{
@@ -891,13 +911,19 @@ class MymuseModelproduct extends JModelAdmin
 		if($this->_params->get('my_use_s3')){
 			$folder = $artist_alias.'/'.$album_alias;
 			//echo $this->_params->get('my_download_dir')." ".$folder;
-			$everything = $s3->listS3Contents($folder, $this->_params->get('my_download_dir'));
+			//$everything = $s3->listS3Contents($folder, $this->_params->get('my_download_dir'));
+			$result = $this->_s3->listObjects([
+					'Bucket' => $this->_params->get('my_download_dir'), // REQUIRED
+					'Prefix' => $folder
+			]);
+			$everything = $result['Contents'];
 			$folder = trim($folder,'/');
 			$dirLength = strlen($folder);
-			if(count($everything)) foreach($everything as $path => $info) {
-				if(array_key_exists('size', $info) && (substr($path, -1) != '/')) {
-					if(substr($path, 0, $dirLength) == $folder) {
-						$path = substr($path, $dirLength);
+			if(count($everything)) foreach($everything as $info) {
+				if(array_key_exists('Size', $info) && (substr($info['Key'], -1) != '/')) {
+					$path = $info['Key'];
+					if(substr($info['Key'], 0, $dirLength) == $folder) {
+						$path = substr($info['Key'], $dirLength);
 					}
 					$path = trim($path,'/');
 					$files[] = $path;
