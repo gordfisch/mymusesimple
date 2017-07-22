@@ -122,6 +122,7 @@ class plgMymuseAudio_jplayer extends JPlugin
 		$swf_path = JURI::root() .'/plugins/mymuse/audio_jplayer/Jplayer.swf';
 		//$swf_path = "http://www.jplayer.org/latest/js/Jplayer.swf";
 		$extarray = array(
+				'MP3' => 'audio/mpeg',
 				'mp3' => 'audio/mpeg',
 				'm4a' => 'audio/mp4',
 				'ogg' => 'application/ogg',
@@ -425,11 +426,12 @@ jQuery(document).ready(function(){
 			if($ext == "ogg"){
 				$ext = "oga";
 			}
+
 			if(!isset($extarray[$ext])){
 				return '';
 			}
 			$trs[0]['type'] = @$extarray[$ext];
-			$trs[0]['ext'] = $ext;
+			$trs[0]['ext'] = strtolower($ext);
 			
 			$supplied[] = $ext;
 			
@@ -493,7 +495,6 @@ jQuery(document).ready(function(){  ';
 		})
 
 ';
-
 			$document->addScriptDeclaration($js);
 			return $text;
 
