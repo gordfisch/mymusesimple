@@ -32,8 +32,11 @@ class MymuseTableproduct extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
-		$this->_s3 = MyMuseHelperAmazons3::getInstance();
+		$params = MyMuseHelper::getParams();
+		if($params->get('my_use_s3',0)){
+			require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
+			$this->_s3 = MyMuseHelperAmazons3::getInstance();
+		}
 		parent::__construct('#__mymuse_product', 'id', $db);
 	}
 	
