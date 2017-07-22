@@ -31,14 +31,15 @@ class MymuseViewStore extends JViewLegacy
 		$this->form		= $this->get('Form');
 		$this->css		= $this->get('Css');
 		$this->params 	= MyMuseHelper::getParams();
-
+		
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
 			JError::raiseError(500, implode("\n", $errors));
 			return false;
 		}
-
+		
 		$this->addToolbar();
+
 		parent::display($tpl);
 	}
 

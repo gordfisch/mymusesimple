@@ -375,7 +375,6 @@
 			<option value="43200">MYMUSE_CONFIG_S3_TIME_12HOURS</option>
 			<option value="86400">MYMUSE_CONFIG_S3_TIME_1DAY</option>
 			<option value="604800">MYMUSE_CONFIG_S3_TIME_7DAYS</option>
-			<option value="2592000">MYMUSE_CONFIG_S3_TIME_1MONTH</option>
 		</field>
            
             <field

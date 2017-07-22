@@ -2,16 +2,16 @@ var my_modal = (function(){
     var 
     method = {}
 
-    // Center the my_my_modal in the viewport
-    method.center = function () {
+    // Center the modal in the viewport
+    method.center = function (target) {
 		var top, left;
-
+		
     	top = Math.max(jQuery(window).height() - jQuery("#my_modal").outerHeight(), 0) / 2;
-    	left = Math.max(jQuery(window).width() - jQuery("#my_modal").outerWidth(), 0) / 2;
-
+    	left = Math.max(jQuery(window).width() / 2 - jQuery("#my_modal").outerWidth(), 0) / 2;
+    	
     	jQuery("#my_modal").css({
-        	top:top + jQuery(window).scrollTop(), 
-        	left:left + jQuery(window).scrollLeft()
+        	top:jQuery(window).scrollTop() - top, 
+        	left:left
     	});
 	};
 
@@ -25,7 +25,7 @@ var my_modal = (function(){
         	height: settings.height || "auto"
    		})
 
-    	method.center();
+    	method.center(settings.target);
 
     	jQuery(window).bind('resize.my_modal', method.center);
     	jQuery("#my_overlay").show();

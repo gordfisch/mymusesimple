@@ -6,28 +6,6 @@
  * @license     GNU General Public License version 3 or later; see LICENSE.txt
  * @author      Gord Fisch info@mymuse.ca
  *
- * This file contains the MyMuseHelperAmazons3 class
- * It is a modified version from Akeeba Release System.
- * I have made changes in the constructor and added functions.
- * As a result, this
- * file no longer reflects the original author's work and should not be
- * confused with it.
- * 
- * From Akeeba:
- * Akeeba Engine
- * The modular PHP5 site backup engine
- * This file contains the MyMuseHelperAmazons3 class which allows storing and
- * retrieving files from Amazon's Simple Storage Service (Amazon S3).
- * It is a subset of S3.php, written by Donovan Schonknecht and available
- * at http://undesigned.org.za/2007/10/22/amazon-s3-php-class under a
- * BSD-like license. I have merely removed the parts which weren't useful
- * to ARS and changed the naming.
- *
- * Note for this version: I have added multipart uploads, a feature which
- * wasn't included in the original version of the S3.php. As a result, this
- * file no longer reflects the original author's work and should not be
- * confused with it.
- *
  * Amazon S3 is a trademark of Amazon.com, Inc. or its affiliates.
  */
 
@@ -37,6 +15,11 @@ defined('_JEXEC') or die();
 if(!defined('MYMUSE_CACERT_PEM')) {
 	define('MYMUSE_CACERT_PEM', JPATH_ADMINISTRATOR.'/components/com_mymuse/assets/cacert.pem');
 }
+
+require_once(JPATH_ROOT.DS.'administrator'.DS.'components'.DS.'com_mymuse'.DS.'helpers'.DS.'awsapi'.DS.'aws-autoloader.php');
+use Aws\S3\S3Client;
+use Aws\S3\Exception\S3Exception;
+
 
 class MyMuseHelperAmazons3 extends JObject
 {
@@ -55,6 +38,7 @@ class MyMuseHelperAmazons3 extends JObject
 	private static $__default_bucket = null;
 	private static $__default_acl = 'private'; // Default ACLs to use: private
 	private static $__default_time = 900; // Default timeout for signed URLs: 15 minutes
+	private static $__default_region = 'us-west';
 	
 
 	/**
@@ -62,34 +46,49 @@ class MyMuseHelperAmazons3 extends JObject
 	 */
 	public static function &getInstance($accessKey = null, $secretKey = null, $useSSL = true)
 	{
+		
 		static $instance = null;
+		
+		
 		$params = MyMuseHelper::getParams();
+		//http://mybucket.s3-website.ca-central-1.amazonaws.com
+		$web = $params->get('my_s3web','');
+		if(!$web){
+			JFactory::getApplication()->enqueueMessage(JText::_('MYMUSE_NO_S3_WEBSITE'), 'error');
+			return false;
+		}
+		$parts = explode('.',$web);
+		$region = $parts[2];
+		
+		
 		if(!is_object($instance)) {
 			
-
 			if(empty($accessKey) && empty($secretKey)) {
-				if(version_compare(JVERSION, '3.0', 'ge')) {
+
 					$accessKey	= $params->get('my_s3access','');
 					$secretKey	= $params->get('my_s3secret','');
 					$useSSL		= $params->get('my_s3ssl',true);
-				} else {
-					$accessKey	= $params->getValue('my_s3access','');
-					$secretKey	= $params->getValue('my_s3secret','');
-					$useSSL		= $params->getValue('my_s3ssl',true);
-				}
+				
 			}
+			
+			$instance = new Aws\S3\S3Client([
+					'version' => '2006-03-01',
+					'region'  => $region,
+					'credentials' => [
+        				'key'    => $accessKey,
+        				'secret' => $secretKey
+    				]
+			]);
 
-			$instance = new MyMuseHelperAmazons3($accessKey, $secretKey, $useSSL);
-			if(version_compare(JVERSION, '3.0', 'ge')) {
-				self::$__default_bucket = $params->get('my_download_dir', '');
-				self::$__default_acl = $params->get('my_s3perms','private');
-				self::$__default_time = $params->get('my_s3time', 900);
-			} else {
-				self::$__default_bucket = $params->getValue('my_download_dir', '');
-				self::$__default_acl = $params->getValue('my_s3perms','private');
-				self::$__default_time = $params->getValue('my_s3time', 900);
-			}
 
+
+			self::$__default_bucket = $params->get('my_download_dir', '');
+			self::$__default_acl = $params->get('my_s3perms','private');
+			self::$__default_time = $params->get('my_s3time', 900);
+			self::$__default_region = $region;
+			self::$__accessKey = $accessKey; 
+			self::$__secretKey = $secretKey; 
+			
 		}
 
 		return $instance;
@@ -120,6 +119,58 @@ class MyMuseHelperAmazons3 extends JObject
 		self::$__accessKey = $accessKey;
 		self::$__secretKey = $secretKey;
 	}
+	
+	
+	
+	
+	/**
+	 * Get a query string authenticated URL
+	 *
+	 * @param string $bucket Bucket name
+	 * @param string $uri Object URI
+	 * @param integer $lifetime Lifetime in seconds
+	 * @param boolean $hostBucket Use the bucket name as the hostname
+	 * @param boolean $https Use HTTPS ($hostBucket should be false for SSL verification)
+	 * @return string
+	 */
+	public static function getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false, $realname='') {
+		if(empty($bucket)) $bucket = self::$__default_bucket;
+		if(is_null($lifetime)) $lifetime = self::$__default_time;
+		$expires = time() + $lifetime;
+		$minutes = $lifetime / 60;
+	
+	
+		$cmd = self::$instance->getCommand('GetObject', [
+				'Bucket' => $bucket,
+				'Key'    => $uri
+		]);
+	
+		$request = self::$instance->createPresignedRequest($cmd, '+'.$minutes.' minutes');
+	
+		return $request;
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * Set ACL
@@ -692,40 +743,7 @@ class MyMuseHelperAmazons3 extends JObject
 		return $results;
 	}
 
-	/**
-	* Get a query string authenticated URL
-	*
-	* @param string $bucket Bucket name
-	* @param string $uri Object URI
-	* @param integer $lifetime Lifetime in seconds
-	* @param boolean $hostBucket Use the bucket name as the hostname
-	* @param boolean $https Use HTTPS ($hostBucket should be false for SSL verification)
-	* @return string
-	*/
-	public static function getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false, $realname='') {
-		if(empty($bucket)) $bucket = self::$__default_bucket;
-		if(is_null($lifetime)) $lifetime = self::$__default_time;
-		$expires = time() + $lifetime;
-		
-		$parts = explode(DS,$uri);
-		$filename = array_pop($parts);
-		if(!$realname){
-			$realname = $filename;
-		}
-		
-		
-		$uri = str_replace('%2F', '/', rawurlencode($uri)); // URI should be encoded (thanks Sean O'Dea)
-		$rh = "$uri?response-content-disposition=attachment; filename=$realname";
-		
-		//return sprintf(($https ? 'https' : 'http').'://%s/%s?"AWSAccessKeyId=%s&Expires=%u&Signature=%s',
-		//		$hostBucket ? $bucket : $bucket.'.s3.amazonaws.com', $uri, self::$__accessKey, $expires,
-		//		urlencode(self::__getHash("GET\n\n\n{$expires}\n/{$bucket}/{$uri}")));
-		
-		return sprintf(($https ? 'https' : 'http').
-				'://%s/%s?response-content-disposition=attachment%%3B%%20filename%%3D'.$realname.'&AWSAccessKeyId=%s&Expires=%u&Signature=%s',
-				$hostBucket ? $bucket : $bucket.'.s3.amazonaws.com', $uri, self::$__accessKey, $expires,
-				urlencode(self::__getHash("GET\n\n\n{$expires}\n/{$bucket}/{$rh}")));
-	}
+
 
 	/**
 	* Get MIME type for file

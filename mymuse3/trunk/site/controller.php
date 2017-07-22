@@ -735,10 +735,11 @@ class MyMuseController extends JControllerLegacy
 		
 		if(!$orderid){
 			// no id
-			$msg = JText::_("MYMUSE_NO_ORDER_ID");
+			$msg = JText::_("MYMUSE_NO_ORDER_ID".' ');
 			$this->setRedirect("index.php", $msg);
 			return false;
 		}
+		
 		$this->MyMuseShopper->order = $this->MyMuseCheckout->getOrder( $orderid );
 
 		if(!isset($this->MyMuseShopper->order->id)){

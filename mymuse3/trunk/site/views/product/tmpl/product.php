@@ -145,7 +145,7 @@ if(count($params->get('my_formats') > 1) ){
 			//alert(formats[jQuery(select_id).val()]+"_"+id);
 			jQuery("#"+formats[jQuery(select_id).val()]+"_"+id).show();'."\n}";
 }
-
+https://calendar.google.com/calendar/render?tab=wc#main_7%7Cmonth
 $url = JURI::Root()."index.php?option=com_mymuse&task=ajaxtogglecart";
 foreach($tracks as $track){
 
@@ -192,7 +192,7 @@ foreach($tracks as $track){
                     $("#carttop1").html(" ");
                     $("#carttop2").html("'.JText::_('MYMUSE_YOUR_CART_IS_EMPTY').'");
                 }
-                my_modal.open({content: msg+"<br />"+link, width: 300 });
+                my_modal.open({content: msg+"<br />"+link, width: 300,target:'.$track->id.'});
             });
 
 		});

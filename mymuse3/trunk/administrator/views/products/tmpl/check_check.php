@@ -28,6 +28,7 @@ require_once( MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php' );
 	<h2>File Check</h2>
 <table>
 <?php 
+$missing = array();
 foreach($this->products as $product){
 	echo "<tr><td colspan='3'>". $product->id .' <b><a href=\"index.php?option=com_mymuse&view=product&layout=listtracks&id='.$product->id.'">'.$product->title."</b></td></tr>";
 	foreach($product->items as $item){
@@ -58,6 +59,7 @@ foreach($this->products as $product){
 			}else{
 				$class = "alert alert-danger";
 				$result = JText::_('MYMUSE_NOT_FOUND');
+				$missing[] = $full_path;
 			}
 			echo "<tr><td>----</td><td>Preview</td><td class='$class'>$full_path</td></tr>";
 		}
@@ -89,6 +91,7 @@ foreach($this->products as $product){
 			}else{
 				$class = "alert alert-danger";
 				$result = JText::_('MYMUSE_NOT_FOUND');
+				$missing[] = $full_path;
 			}
 			echo "<tr><td>----</td><td>Download</td><td class='$class'>$full_path</td></tr>";
 		}
@@ -98,4 +101,13 @@ foreach($this->products as $product){
 }
 ?>
 </table>
+
+<?php if(count($missing)){ ?>
+<h2>Missing!</h2>
+	<?php foreach($missing as $m){ 
+		echo '<span class="alert alert-danger">'.$m.'</span><br />';
+		
+	}?>
+	
+<?php }?>
 </div>

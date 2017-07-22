@@ -271,8 +271,23 @@ class myMuseViewStore extends JViewLegacy
         		 $bucket = $params->get('my_download_dir');
         		 $uri = $artist_alias.DS.$album_alias.DS.$filename;
         		 $lifetime = $params->get('my_s3time');
+        		 
+        		 $expires = time() + $lifetime;
+        		 $minutes = $lifetime / 60 - 1;
+        		 
+        		 //echo "lifetime = $lifetime";
+        		 // echo '+'.$minutes.' minutes'; exit;
+        		 
         		 //getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false, $realname = '')
-        		 $s3URL = $s3->getAuthenticatedURL($bucket, $uri, $lifetime, false, false, $realname);
+        		 //$s3URL = $s3->getAuthenticatedURL($bucket, $uri, $lifetime, false, false, $realname);
+        		 $cmd = $s3->getCommand('GetObject', [
+        		 		'Bucket' => $bucket,
+        		 		'Key'    => $uri
+        		 ]);
+        		
+        		 $request = $s3->createPresignedRequest($cmd, '+'.$minutes.' minutes');
+        		 $s3URL = (string) $request->getUri();
+        		
         		 $app = JFactory::getApplication();
         		 
         		 //log and redirect

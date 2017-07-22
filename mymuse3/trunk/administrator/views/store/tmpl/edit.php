@@ -91,10 +91,14 @@ method="post" name="adminForm" id="store-form" class="form-validate">
 
 		<fieldset class="adminform">
 		<legend><?php echo $this->form->getLabel('description'); ?></legend>
-			<?php echo $this->form->getInput('description'); ?>
+
+			<?php if(!$this->form->getInput('description')){
+				echo $this->form->getError();
+			 
+			}?>
 		</fieldset>
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
-		
+
 		
 		<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'css', JText::_('MYMUSE_EDIT_CSS', true)); ?>
 		<fieldset class="adminform">

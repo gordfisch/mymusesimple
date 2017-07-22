@@ -236,7 +236,7 @@ class MymuseViewProduct extends JViewLegacy
 		$user		= JFactory::getUser();
 		$isNew		= ($this->item->id == 0);
 		$layout 	= $this->getLayout();
-
+		
 		
         if (isset($this->item->checked_out)) {
 		    $checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
@@ -255,8 +255,12 @@ class MymuseViewProduct extends JViewLegacy
 	
 		if($layout == "listtracks"){
 			// LIST TRACKS
-			JToolBarHelper::custom('product.uploadtrack', 'save-new.png', 'save-new_f2.png', 'MYMUSE_UPLOAD_TRACKS', false);
-			JToolBarHelper::custom('product.uploadpreview', 'save-new.png', 'save-new_f2.png', 'MYMUSE_UPLOAD_PREVIEWS', false);
+			if(!$this->params->get('my_use_s3', 0)){
+				JToolBarHelper::custom('product.uploadtrack', 'save-new.png', 'save-new_f2.png', 'MYMUSE_UPLOAD_TRACKS', false);
+				JToolBarHelper::custom('product.uploadpreview', 'save-new.png', 'save-new_f2.png', 'MYMUSE_UPLOAD_PREVIEWS', false);
+			}
+			
+			
 			JToolBarHelper::editList('product.edit', 'MYMUSE_EDIT_TRACK');
 			JToolBarHelper::addNew('product.addfile', 'MYMUSE_NEW_TRACK');
 			JToolBarHelper::deleteList('','product.removefile','MYMUSE_DELETE_TRACKS');

@@ -342,14 +342,6 @@ class plgMymusePayment_Paypal extends JPlugin
 
 		$paypalpath = "/cgi-bin/webscr";
 
-		/**from akeeba subs 
-		$header = '';
-		$header .= "POST /cgi-bin/webscr HTTP/1.1\r\n";
-		$header .= "Host: $hostname:$port\r\n";
-		$header .= "Content-Type: application/x-www-form-urlencoded\r\n";
-		$header .= "Content-Length: " . strlen($req) . "\r\n";
-		$header .= "Connection: Close\r\n\r\n";
-		**/
 		
         $header = "POST $paypalpath HTTP/1.1\r\n";
         $header .= "Host: ".PAYPAL_HOST."\r\n";
