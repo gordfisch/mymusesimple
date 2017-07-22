@@ -543,7 +543,7 @@ class MyMuseModelProduct extends JModelItem
 					reset($preview_tracks);
 					$count = count($preview_tracks);
 					while (list($i,$track) = each( $preview_tracks )){
-						
+					
 						$flash = '';
 						$track->purchased = 0;
 						if($track->file_preview){
@@ -604,11 +604,11 @@ class MyMuseModelProduct extends JModelItem
 						}else{
 							$flash = '';
 						}
+		
 						$track->flash = $flash;
 
 					}//end for each preview track 
 				} // if count previews for 'each'
-				
 				
 				//get player buttons to play previews
 				if(count($preview_tracks) && $params->get('product_player_type') == "single"){

@@ -54,7 +54,7 @@ class MyMuseHelperAmazons3 extends JObject
 		//http://mybucket.s3-website.ca-central-1.amazonaws.com
 		$web = $params->get('my_s3web','');
 		if(!$web){
-			JFactory::getApplication()->enqueueMessage(JText::_('MYMUSE_NO_S3_WEBSITE'), 'error');
+			//JFactory::getApplication()->enqueueMessage(JText::_('MYMUSE_NO_S3_WEBSITE'), 'error');
 			return false;
 		}
 		$parts = explode('.',$web);
