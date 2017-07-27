@@ -348,7 +348,7 @@ class MymuseControllerProducts extends JControllerAdmin
 		$db->setQuery($query);
 		$tracks = $db->loadObjectList();
 		foreach($tracks as $track){
-
+			$res = '';
 			$html .= '<tr>
 					<td valign="top">'.$track->title.'</td>';
 			$track->download_real_path = MyMuseHelper::getDownloadPath($track->parentid, 1);

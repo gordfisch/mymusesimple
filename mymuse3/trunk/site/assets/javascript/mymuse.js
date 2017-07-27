@@ -6,11 +6,12 @@ var my_modal = (function(){
     method.center = function (target) {
 		var top, left;
 		
-    	top = Math.max(jQuery(window).height() - jQuery("#my_modal").outerHeight(), 0) / 2;
-    	left = Math.max(jQuery(window).width() / 2 - jQuery("#my_modal").outerWidth(), 0) / 2;
+    	top = jQuery(window).height() / 2  - jQuery("#my_modal").outerHeight() / 2;
+    	 
+    	left = jQuery(window).width() / 2  - jQuery("#my_modal").outerWidth() / 2;
     	
     	jQuery("#my_modal").css({
-        	top:jQuery(window).scrollTop() - top, 
+        	top:top, 
         	left:left
     	});
 	};
@@ -30,7 +31,7 @@ var my_modal = (function(){
     	jQuery(window).bind('resize.my_modal', method.center);
     	jQuery("#my_overlay").show();
 		jQuery("#my_modal").show();
-		jQuery("#my_modal").fadeOut(3000,method.close);
+		jQuery("#my_modal").delay(2000).fadeOut(1000,method.close);
 	};
 		
 
@@ -51,6 +52,10 @@ jQuery(document).ready(function($){
 	$("#my_modal").hide();
 	$("#my_overlay").hide();
 	jQuery("#my_close").click(function(e){
+		e.preventDefault();
+		my_modal.close();
+	})
+	jQuery("#my_overlay").click(function(e){
 		e.preventDefault();
 		my_modal.close();
 	})

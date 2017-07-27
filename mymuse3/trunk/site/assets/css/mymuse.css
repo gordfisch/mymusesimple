@@ -389,7 +389,7 @@ padding-bottom: 10px;
 }
 
 #my_modal {
-	position: absolute;
+	position: fixed;
 	background: rgba(0, 0, 0, 0.2);
 	border-radius: 14px;
 	padding: 8px;

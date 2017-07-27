@@ -167,7 +167,7 @@ class plgMymuseAudio_jplayer extends JPlugin
 
 					
 				if(isset($track->file_preview_2) && $track->file_preview_2 != ''){
-					$trs[1]['src'] = $track->path_2;
+					$trs[1]['src'] = addslashes($track->path_2);
 					$ext = MyMuseHelper::getExt($track->path_2);
 					if($ext == "ogg"){
 						$ext = "oga";
@@ -180,7 +180,7 @@ class plgMymuseAudio_jplayer extends JPlugin
 					}
 				}
 				if(isset($track->file_preview_3) && $track->file_preview_3 != ''){
-					$trs[2]['src'] = $track->path_3;
+					$trs[2]['src'] = addslashes($track->path_3);
 					$ext = MyMuseHelper::getExt($track->path_3);
 					if($ext == "ogg"){
 						$ext = "oga";
@@ -226,7 +226,7 @@ class plgMymuseAudio_jplayer extends JPlugin
 				jQuery(this).jPlayer("setMedia", {
           ';
 			foreach($trs as $source){
-            	$js .= $source['ext'].': "'.$source['src'].'",'."\n";
+            	$js .= strtolower($source['ext']).': "'.$source['src'].'",'."\n";
             }
             $js = preg_replace("/,\\n$/","",$js);
             
@@ -437,7 +437,7 @@ jQuery(document).ready(function(){
 			
 				
 			if(isset($track->file_preview_2) && $track->file_preview_2 != ''){
-				$trs[1]['src'] = $track->path_2;
+				$trs[1]['src'] = addslashes($track->path_2);
 				$ext = MyMuseHelper::getExt($track->path_2);
 				if($ext == "ogg"){
 					$ext = "oga";
@@ -450,7 +450,7 @@ jQuery(document).ready(function(){
 				}
 			}
 			if(isset($track->file_preview_3) && $track->file_preview_3 != ''){
-				$trs[2]['src'] = $track->path_3;
+				$trs[2]['src'] = addslashes($track->path_3);
 				$ext = MyMuseHelper::getExt($track->path_3);
 				if($ext == "ogg"){
 					$ext = "oga";
