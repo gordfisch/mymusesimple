@@ -774,6 +774,7 @@ class MymuseTableproduct extends JTable
 							$application->enqueueMessage(JText::_("MYMUSE_FOLDER_NOT_WRITABLE").": ".dirname($new), 'error');
 						}
 					}
+					chmod($new, 0644);
 				}else{
 					$application->enqueueMessage(JText::_("MYMUSE_FILE_EXISTS").": ".$new, 'error');
 				}
