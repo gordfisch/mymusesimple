@@ -41,6 +41,7 @@ var my_modal = (function(){
     	jQuery("#my_overlay").hide();
     	jQuery("#my_content").empty();
     	jQuery(window).unbind('resize.my_modal');
+    	//location.reload();
 	};
 
 
