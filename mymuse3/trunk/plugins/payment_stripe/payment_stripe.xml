@@ -2,8 +2,8 @@
 <extension version="3.0" type="plugin" group="mymuse">
 	<name>plg_mymuse_payment_stripe</name>
 	<author>Arboreta</author>
-	<creationDate>April 2017</creationDate>
-	<copyright>Copyright (C) 2016 Arboreta Internet Services. All rights reserved.</copyright>
+	<creationDate>Aug 2017</creationDate>
+	<copyright>Copyright (C) 2017 Arboreta Internet Services. All rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>info@arboreta.ca</authorEmail>
 	<authorUrl>www.arboreta.ca</authorUrl>
@@ -26,29 +26,6 @@
 		label="MYMUSE_STRIPE_EMAIL_LABEL" description="MYMUSE_STRIPE_EMAIL_DESC"
 		
 		/>
-		<field name="my_stripe_micropayments" type="radio" default="0" label="MYMUSE_STRIPE_MICROPAYMENTS_LABEL" description="MYMUSE_STRIPE_MICROPAYMENTS_DESC">
-		  <option value="0">JNO</option>
-		  <option value="1">JYES</option>
-		</field>
-	 	<field name="my_stripe_micro_email" type="text" size="35" default="" label="MYMUSE_STRIPE_MICRO_EMAIL_LABEL" description="MYMUSE_STRIPE_MICRO_EMAIL_DESC"/>
-		<field name="my_stripe_micropayments_cutoff" type="list" default="12" label="MYMUSE_STRIPE_MICROPAYMENTS_CUTOFF_LABEL" description="MYMUSE_STRIPE_MICROPAYMENTS_CUTOFF_DESC">
-		  <option value="5.00">M5</option>
-		  <option value="6.00">M6</option>
-		  <option value="7.00">M7</option>
-		  <option value="8.00">M8</option>
-		  <option value="9.00">M9</option>
-		  <option value="10.00">M10</option>
-		  <option value="11.00">M11</option>
-		  <option value="12.00">M12</option>
-		  <option value="13.00">M13</option>
-		  <option value="14.00">M14</option>
-		  <option value="15.00">M15</option>
-		  <option value="16.00">M16</option>
-		  <option value="17.00">M17</option>
-		  <option value="18.00">M18</option>
-		  <option value="19.00">M19</option>
-		  <option value="20.00">M20</option>
-		</field>
 		
         <field name="my_stripe_sandbox" type="radio" default="0" label="MYMUSE_STRIPE_USE_SANDBOX_LABEL" description="MYMUSE_STRIPE_USE_SANDBOX_DESC">
           <option value="0">JNO</option>
@@ -60,11 +37,20 @@
         <field name="my_use_image" 
         	type="radio" 
         	default="0" 
-        	label="MYMUSE_STRIPE_USE_IMAGE" 
+        	label="MYMUSE_STRIPE_USE_IMAGE_LABEL" 
         	description="MYMUSE_STRIPE_USE_IMAGE_DESC">
 		  <option value="0">JNO</option>
 		  <option value="1">JYES</option>
 		</field>
+		<field 
+			name="my_stripe_image_color" type="radio" 
+			default="white" 
+			label="MYMUSE_STRIPE_IMAGE_COLOR_LABEL" 
+			description="MYMUSE_STRIPE_IMAGE_COLOR_DESC">
+          <option value="white">MYMUSE_STRIPE_IMAGE_COLOR_WHITE</option>
+          <option value="blue">MYMUSE_STRIPE_IMAGE_COLOR_BLUE</option>
+          <option value="black">MYMUSE_STRIPE_IMAGE_COLOR_BLACK</option>
+        </field>
         <field type="spacer" />
         <field name="email_msg" 
         type="editor" 

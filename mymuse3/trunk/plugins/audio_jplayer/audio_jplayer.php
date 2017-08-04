@@ -168,7 +168,7 @@ class plgMymuseAudio_jplayer extends JPlugin
 					
 				if(isset($track->file_preview_2) && $track->file_preview_2 != ''){
 					$trs[1]['src'] = addslashes($track->path_2);
-					$ext = MyMuseHelper::getExt($track->path_2);
+					$ext = MyMuseHe$document->addScriptDeclaration($js);lper::getExt($track->path_2);
 					if($ext == "ogg"){
 						$ext = "oga";
 					}
