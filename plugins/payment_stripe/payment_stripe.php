@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: payment_stripe.php 1871 2017-07-22 15:42:21Z gfisch $
+ * @version		$Id$
  * @package		mymuse
  * @copyright	Copyright © 2010 - Arboreta Internet Services - All rights reserved.
  * @license		GNU/GPL
@@ -42,19 +42,9 @@ class plgMymusePayment_Stripe extends JPlugin
 	
 	function plgMyMusePayment_Stripe(&$subject, $config)  {
 		parent::__construct($subject, $config);
-		
-		
-		//PAYMENT URL
-		if($this->params->get('my_stripe_sandbox'))
-		{
-			define ("PAYPAL_URL","https://www.sandbox.stripe.com/cgi-bin/webscr");
-			define ("PAYPAL_HOST","www.sandbox.stripe.com");
-		}
-		else
-		{
-			define("PAYPAL_URL","https://www.stripe.com/cgi-bin/webscr");
-			define ("PAYPAL_HOST","www.stripe.com");
-		}
+		JHtml::_('script','https://js.stripe.com/v3/', false, true, false, false);
+		require_once __DIR__ . '/vendor/autoload.php';
+
 	}
 
 	/**
@@ -63,7 +53,27 @@ class plgMymusePayment_Stripe extends JPlugin
 	 */
 	function onBeforeMyMusePayment($shopper, $store, $order, $params, $Itemid=1 )
 	{
+		
+		\Stripe
+		\Stripe::setApiKey("sk_test_upEL0UR7TtsKPQUZBU1vWJcR");
+		
+		
+		$document = JFactory::getDocument();
+		//elements can accept options: font and local
+		$js = 'var elements = stripe.elements();';
+		$js .= 'stripe.createToken(card).then(function(result) {
+			// handle result.error or result.token
+		});
+		stripe.createToken';
 
+		$document->addScriptDeclaration($js);
+		//https://api.stripe.com
+		
+		
+		
+		
+		
+			
 		$mainframe 	= JFactory::getApplication();
 		$db			= JFactory::getDBO();
 		if(isset($shopper->profile['country'])){
@@ -158,11 +168,9 @@ class plgMymusePayment_Stripe extends JPlugin
 		$cancel_return = JURI::root().$cancel_return;
 		
 		$string = '
-		<form action="'.PAYPAL_URL.'" method="post" name="adminFormPayPal" >
+		<form action="'. JURI::root().'index.php?option=com_mymuse&task=notify"" method="post" name="adminFormStripe" >
 	    <input type="hidden" name="amount" value="'.sprintf("%.2f", $order->order_subtotal).'" />
 		<input type="hidden" name="tax_cart"        value="'. $order->tax_total.'" />
-		<input type="hidden" name="return"          value="'. $return.'" />
-		<input type="hidden" name="cancel_return"   value="'. $cancel_return.'" />
 		<input type="hidden" name="notify_url"      value="'. JURI::root().'index.php?option=com_mymuse&task=notify" />
 		
 		<input type="hidden" name="cmd"             value="_cart" />
@@ -187,7 +195,7 @@ class plgMymusePayment_Stripe extends JPlugin
 		<input type="hidden" name="country" 		value="'. $shopper->country.'" />
 		<input type="hidden" name="zip"     		value="'. $shopper->postal_code.'" />
 		<input type="hidden" name="payer_email"     value="'. $payer_email.'" />
-		<input type="hidden" name="bn"     			value="Arboreta_SP" />
+		<input type="hidden" name="token"     		value="" />
 		
 		';
 		
@@ -245,9 +253,11 @@ class plgMymusePayment_Stripe extends JPlugin
 			';
 		}
 		if($params->get('my_use_image', 0)){
-			$button_string = '<img src="https://www.stripeobjects.com/webstatic/en_US/i/buttons/buy-logo-large.png" alt="Buy now with PayPal" />';
+			$color = $params->get('my_stripe_image_color', 'white');
+			$button_string = '<img src="'.JURI::root().'plugins/mymuse/payment_stripe/images/Stripe%20Logo%20('.$color.').png" 
+					alt="'.JText::_('MYMUSE_PAY_AT_STRIPE').'" />';
 		}else{
-			$button_string = JText::_('MYMUSE_PAY_AT_PAYPAL');
+			$button_string = JText::_('MYMUSE_PAY_AT_STRIPE');
 		}
 		$string .= '
 		<div id="stripe_form" class="pull-right">
