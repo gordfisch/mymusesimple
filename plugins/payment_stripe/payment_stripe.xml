@@ -22,17 +22,21 @@
 	<config>
 	<fields  name="params">
 		<fieldset name="basic">
-		<field name="my_stripe_email" type="text" size="35" default="info@arboreta.ca"
-		label="MYMUSE_STRIPE_EMAIL_LABEL" description="MYMUSE_STRIPE_EMAIL_DESC"
-		
-		/>
-		
-        <field name="my_stripe_sandbox" type="radio" default="0" label="MYMUSE_STRIPE_USE_SANDBOX_LABEL" description="MYMUSE_STRIPE_USE_SANDBOX_DESC">
-          <option value="0">JNO</option>
-          <option value="1">JYES</option>
-        </field>
-        <field name="my_stripe_sandbox_email" type="text" size="35" default="" label="MYMUSE_STRIPE_SANDBOX_EMAIL_LABEL" description="MYMUSE_STRIPE_SANDBOX_EMAIL_DESC"/>
-        <field name="my_stripe_sandbox_customer_email" type="text" size="35" default="" label="MYMUSE_STRIPE_SANDBOX_CUSTOMER_EMAIL_LABEL" description="MYMUSE_STRIPE_SANDBOX_CUSTOMER_EMAIL_DESC"/>
+
+        <field name="my_stripe_public_key" 
+        	type="text" 
+        	size="55" default="" 
+        	label="MYMUSE_STRIPE_PUBLIC_LABEL" 
+        	description="MYMUSE_STRIPE_PUBLIC_DESC"
+        />
+        <field name="my_stripe_private_key" 
+        	type="text" 
+        	size="55" 
+        	default="" 
+        	label="MYMUSE_STRIPE_PRIVATE_LABEL" 
+        	description="MYMUSE_STRIPE_PRIVATE_DESC"
+        />
+        
         <field type="spacer" />
         <field name="my_use_image" 
         	type="radio" 
@@ -66,6 +70,9 @@
 	</fieldset>
 	</fields>
 	</config>
+	
+	
+	
 <!-- updateservers>
     <server type="extension" priority="1"
         name="Plug MyMuse Payment Stripe">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=42</server>

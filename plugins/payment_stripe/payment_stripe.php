@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id$
+ * @version		$$
  * @package		mymuse
  * @copyright	Copyright © 2010 - Arboreta Internet Services - All rights reserved.
  * @license		GNU/GPL
@@ -11,14 +11,11 @@
 
 // no direct access
 defined( '_JEXEC' ) or die( 'Restricted access' );
-
 jimport( 'joomla.plugin.plugin');
-/**
-* MyMuse PaymnetStripe plugin
-*
-* @package 		MyMuse
-* @subpackage	mymuse
-*/
+
+require_once(__DIR__.'/vendor/autoload.php');
+
+
 class plgMymusePayment_Stripe extends JPlugin
 {
 	/**
@@ -42,10 +39,19 @@ class plgMymusePayment_Stripe extends JPlugin
 	
 	function plgMyMusePayment_Stripe(&$subject, $config)  {
 		parent::__construct($subject, $config);
-		JHtml::_('script','https://js.stripe.com/v3/', false, true, false, false);
-		require_once __DIR__ . '/vendor/autoload.php';
+		//JHtml::_('script','https://js.stripe.com/v3/', false, true, false, false);
+
+		$stripe = array(
+				"secret_key"      => $this->params->get('my_paypal_sandbox'),
+				"publishable_key" => $this->params->get('my_stripe_private_key')
+		);
+		
+		\Stripe\Stripe::setApiKey($stripe['secret_key']);
 
 	}
+	
+	
+	
 
 	/**
 	 * PayPal Payment form
