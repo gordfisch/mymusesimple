@@ -38,6 +38,34 @@
         />
         
         <field type="spacer" />
+        <field name="my_stripe_need_zip_code" 
+        	type="radio" 
+        	default="0" 
+        	label="MYMUSE_STRIPE_NEED_ZIP_CODE_LABEL" 
+        	description="MYMUSE_STRIPE_NEED_ZIP_CODE_DESC">
+		  <option value="0">JNO</option>
+		  <option value="1">JYES</option>
+		</field>
+		
+        <field name="my_stripe_need_address" 
+        	type="radio" 
+        	default="0" 
+        	label="MYMUSE_STRIPE_NEED_ADDRESS_LABEL" 
+        	description="MYMUSE_STRIPE_NEED_ADDRESS_DESC">
+		  <option value="0">JNO</option>
+		  <option value="1">JYES</option>
+		</field>
+		
+		<field name="my_stripe_need_shipping" 
+        	type="radio" 
+        	default="0" 
+        	label="MYMUSE_STRIPE_NEED_SHIPPING_LABEL" 
+        	description="MYMUSE_STRIPE_NEED_SHIPPING_DESC">
+		  <option value="0">JNO</option>
+		  <option value="1">JYES</option>
+		</field>
+        
+        
         <field name="my_use_image" 
         	type="radio" 
         	default="0" 
