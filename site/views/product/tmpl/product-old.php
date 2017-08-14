@@ -1,6 +1,6 @@
 <?php 
 /**
- * @version		$Id: product.php 1328 2014-09-10 21:04:22Z gfisch $
+ * @version		$Id$
  * @package		mymuse
  * @copyright	Copyright © 2010 - Arboreta Internet Services - All rights reserved.
  * @license		GNU/GPL

@@ -52,13 +52,15 @@ class MyMuseHelperAmazons3 extends JObject
 		
 		$params = MyMuseHelper::getParams();
 		//http://mybucket.s3-website.ca-central-1.amazonaws.com
-		$web = $params->get('my_s3web','');
-		if(!$web){
+		if(!$params->get('my_use_s3',0)){
 			//JFactory::getApplication()->enqueueMessage(JText::_('MYMUSE_NO_S3_WEBSITE'), 'error');
 			return false;
 		}
-		$parts = explode('.',$web);
-		$region = $parts[2];
+		if(!$params->get('my_s3region',0)){
+			JFactory::getApplication()->enqueueMessage(JText::_('MYMUSE_NO_S3_REGION'), 'error');
+			return false;
+		}
+		$region = $params->get('my_s3region',0);
 		
 		
 		if(!is_object($instance)) {
@@ -79,8 +81,6 @@ class MyMuseHelperAmazons3 extends JObject
         				'secret' => $secretKey
     				]
 			]);
-
-
 
 			self::$__default_bucket = $params->get('my_download_dir', '');
 			self::$__default_acl = $params->get('my_s3perms','private');

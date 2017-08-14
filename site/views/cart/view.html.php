@@ -611,8 +611,8 @@ class myMuseViewCart extends JViewLegacy
 		ini_set('error_log', JPATH_ROOT.DS.'components'.DS.'com_mymuse'.DS.'php_error' );
 		
 		$jinput = JFactory::getApplication()->input;
-				
-		
+		$app = JFactory::getApplication();
+
 		$this->Itemid = $jinput->get("Itemid",'');
 		$params = MyMuseHelper::getParams();
 		
@@ -637,7 +637,7 @@ class myMuseViewCart extends JViewLegacy
      			$result = $r;
      		}
      	}
-     	
+ 	
      	if(!count($result)){
      		
      		if($params->get('my_debug')){
@@ -793,8 +793,8 @@ class myMuseViewCart extends JViewLegacy
         	$payment['institution'] 		= @$result['institution'];
         	$payment['amountin'] 			= $result['amountin'];
         	$payment['currency'] 			= $result['currency'];
-        	$payment['rate'] 				= $result['rate'];
-        	$payment['fees'] 				= $result['fees'];
+        	$payment['rate'] 				= @$result['rate'];
+        	$payment['fees'] 				= @$result['fees'];
         	$payment['transaction_id'] 		= $result['transaction_id'];
         	$payment['transaction_status'] 	= $result['transaction_status'];
         	$payment['description'] 		= $result['description'];
@@ -878,10 +878,13 @@ class myMuseViewCart extends JViewLegacy
   			exit;
   		}
   		
+  		// We have a redirect
         if(isset($result['redirect']) && $result['redirect'] != ""){
-        	header( 'Location: '.$result['redirect'] ) ;
+        	$message = isset($result['error'])? preg_replace("/\n/", "<br />",$result['error']) : ''; 
+        	$type = isset($result['error'])? 'error' : '';
+        	$app->redirect(JRoute::_($result['redirect'], false), $message, $type);
         }
-
+        
 		exit;
 	}
 	
