@@ -33,6 +33,12 @@
         <fileset dir="./modules/mod_mymuse_jplayer" id="mod_jplayer_files">
                 <include name="**" />
         </fileset>
+        <fileset dir="./plugins/payment_stripe/vendor" id="plug_stripe_vendor_files">
+                <include name="**" />
+        </fileset>
+        <fileset dir="./plugins/payment_stripe/images" id="plug_stripe_images_files">
+                <include name="**" />
+        </fileset>
  
         <!-- Copy Target -->
         <target name="copy_to_test351" description="copy target">
@@ -71,7 +77,11 @@
                         todir="${test}/administrator/language/en-GB" />
                 <copy file="${src}/plugins/payment_paypal/language/en-GB/en-GB.plg_mymuse_payment_paypal.sys.ini"
                         todir="${test}/administrator/language/en-GB" />
-                        
+                   
+                <copy file="${src}/plugins/payment_stripe/language/en-GB/en-GB.plg_mymuse_payment_stripe.ini"
+                        todir="${test}/administrator/language/en-GB" />
+                <copy file="${src}/plugins/payment_stripe/language/en-GB/en-GB.plg_mymuse_payment_stripe.sys.ini"
+                        todir="${test}/administrator/language/en-GB" />     
                                
                 <copy file="${src}/plugins/payment_offline/language/en-GB/en-GB.plg_mymuse_payment_offline.ini"
                         todir="${test}/administrator/language/en-GB" />
@@ -142,7 +152,17 @@
                         todir="${test}/plugins/mymuse/payment_paypal" />
                 <copy file="${src}/plugins/payment_paypal/payment_paypal.xml"
                         todir="${test}/plugins/mymuse/payment_paypal" />
- 
+                        
+ 				<copy file="${src}/plugins/payment_stripe/payment_stripe.php"
+                        todir="${test}/plugins/mymuse/payment_stripe" />
+                <copy file="${src}/plugins/payment_stripe/payment_stripe.xml"
+                        todir="${test}/plugins/mymuse/payment_stripe" />
+                <copy todir="${test}/plugins/mymuse/payment_stripe/vendor">
+                        <fileset refid="plug_stripe_vendor_files" />
+                </copy>
+                 <copy todir="${test}/plugins/mymuse/payment_stripe/images">
+                        <fileset refid="plug_stripe_images_files" />
+                </copy>
         	
                 <copy file="${src}/plugins/searchmymuse/searchmymuse.php"
                         todir="${test}/plugins/search/searchmymuse" />

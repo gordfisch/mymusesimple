@@ -264,6 +264,7 @@ Array
 				MyMuseHelper::logMessage( $debug  );
 			}
 			$result['error'] = "Missing Invoice!";
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		}
 
@@ -276,6 +277,7 @@ Array
 				MyMuseHelper::logMessage( $debug  );
 			}
 			$result['error'] = "Missing Amount!";
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		}else{
 			$amount = preg_replace("/\./","", $_POST['amount']);
@@ -295,6 +297,7 @@ Array
 				MyMuseHelper::logMessage( $debug  );
 			}
 			$result['error'] = "Could not find order!";
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		}
 		$result['order_id'] 	= $this_order->id;
@@ -326,6 +329,7 @@ Array
 			if (isset ( $err ['message'] )) {
 				$result['error'] .= 'Message is:' . $err ['message'] . "\n";
 			}
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		} catch (\Stripe\Error\RateLimit $e) {
 			$result['error'] = "create the customer: Too many requests made to the API too quickly\n";
@@ -345,6 +349,7 @@ Array
 			if (isset ( $err ['message'] )) {
 				$result['error'] .= 'Message is:' . $err ['message'] . "\n";
 			}
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		} catch (\Stripe\Error\InvalidRequest $e) {
 			// Invalid parameters were supplied to Stripe's API
@@ -365,6 +370,7 @@ Array
 			if (isset ( $err ['message'] )) {
 				$result['error'] .= 'Message is:' . $err ['message'] . "\n";
 			}
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		} catch (\Stripe\Error\Authentication $e) {
 			// Authentication with Stripe's API failed
@@ -386,6 +392,7 @@ Array
 			if (isset ( $err ['message'] )) {
 				$result['error'] .= 'Message is:' . $err ['message'] . "\n";
 			}
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		} catch (\Stripe\Error\ApiConnection $e) {
 			// Network communication with Stripe failed
@@ -406,6 +413,7 @@ Array
 			if (isset ( $err ['message'] )) {
 				$result['error'] .= 'Message is:' . $err ['message'] . "\n";
 			}
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		} catch (\Stripe\Error\Base $e) {
 			// Display a very generic error to the user, and maybe send
@@ -427,6 +435,7 @@ Array
 			if (isset ( $err ['message'] )) {
 				$result['error'] .= 'Message is:' . $err ['message'] . "\n";
 			}
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		} catch (Exception $e) {
 			$result['error'] = "create the customer: We had an unknown error\n";
@@ -446,6 +455,7 @@ Array
 			if (isset ( $err ['message'] )) {
 				$result['error'] .= 'Message is:' . $err ['message'] . "\n";
 			}
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		}
 		
@@ -475,6 +485,7 @@ Array
 			if (isset ( $err ['message'] )) {
 				$result['error'] .= 'Message is:' . $err ['message'] . "\n";
 			}
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		} catch (\Stripe\Error\RateLimit $e) {
 			$result['error'] = "Charge: Too many requests made to the API too quickly\n";
@@ -494,11 +505,28 @@ Array
 			if (isset ( $err ['message'] )) {
 				$result['error'] .= 'Message is:' . $err ['message'] . "\n";
 			}
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		} catch (\Stripe\Error\InvalidRequest $e) {
 			// Invalid parameters were supplied to Stripe's API
 			$result['error'] = "Charge: Invalid parameters were supplied to Stripe's API\n";
-			$result['error'] .= $this->makeErrorMessage($e);
+			$body = $e->getJsonBody();
+			$err = $body ['error'];
+			
+			$result['error'] .= 'Status is:' . $e->getHttpStatus () . "\n";
+			if (isset ( $err ['type'] )) {
+				$result['error'] .= 'Type is:' . $err ['type'] . "\n";
+			}
+			if (isset ( $err ['code'] )) {
+				$result['error'] .= 'Code is:' . $err ['code'] . "\n";
+			}
+			if (isset ( $err ['param'] )) {
+				$result['error'] .= 'Param is:' . $err ['param'] . "\n";
+			}
+			if (isset ( $err ['message'] )) {
+				$result['error'] .= 'Message is:' . $err ['message'] . "\n";
+			}
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		} catch (\Stripe\Error\Authentication $e) {
 			// Authentication with Stripe's API failed
@@ -520,11 +548,29 @@ Array
 			if (isset ( $err ['message'] )) {
 				$result['error'] .= 'Message is:' . $err ['message'] . "\n";
 			}
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		} catch (\Stripe\Error\ApiConnection $e) {
 			// Network communication with Stripe failed
 			$result['error'] = "Charge: Network communication with Stripe failed\n";
-			$result['error'] .= $this->makeErrorMessage($e);
+		$body = $e->getJsonBody();
+			$err = $body ['error'];
+			
+			$result['error'] .= 'Status is:' . $e->getHttpStatus () . "\n";
+			if (isset ( $err ['type'] )) {
+				$result['error'] .= 'Type is:' . $err ['type'] . "\n";
+			}
+			if (isset ( $err ['code'] )) {
+				$result['error'] .= 'Code is:' . $err ['code'] . "\n";
+			}
+			if (isset ( $err ['param'] )) {
+				$result['error'] .= 'Param is:' . $err ['param'] . "\n";
+			}
+			if (isset ( $err ['message'] )) {
+				$result['error'] .= 'Message is:' . $err ['message'] . "\n";
+			}
+			
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		} catch (\Stripe\Error\Base $e) {
 			// Display a very generic error to the user, and maybe send
@@ -546,6 +592,7 @@ Array
 			if (isset ( $err ['message'] )) {
 				$result['error'] .= 'Message is:' . $err ['message'] . "\n";
 			}
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		} catch (Exception $e) {
 			$result['error'] = "Charge: We had an unknown error\n";
@@ -565,46 +612,48 @@ Array
 			if (isset ( $err ['message'] )) {
 				$result['error'] .= 'Message is:' . $err ['message'] . "\n";
 			}
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 			return $result;
 		}		
-		echo "charge-paid = ".$charge['paid'];
-
-		exit;
-		//$charge['paid'] = true on success
+		
+		$result['message_sent'] 		= 1;
+		$result['message_received'] 	= 1; 
+		
+		//$charge['paid'] == true on success
 		if($charge['paid']){
-			$result ['payment_status'] = 'Complete';
+			$result ['payment_status'] = 'Completed';
 			$result ['txn_id'] = $charge ['balance_transaction'];
 			$result ['amountin'] = $_POST ['amount'];
-			$result ['currency'] = $_POST ['mcurrency'];
+			$result ['currency'] = $_POST ['currency'];
 			$result ['transaction_id'] = $charge ['balance_transaction'];
 			$result ['transaction_status'] = 1;
 			$result ['description'] = @$_POST ['note'];
+			$result ['order_verified'] = 1;
+
+        	// update the payment status
+        	$result ['order_found']  = 1;
+        	$result ['order_id'] 	= $this_order->id;
+        	$result ['order_number'] = $this_order->order_number;
+        	
+
+        	$MyMuseHelper = new MyMuseHelper();
+            $MyMuseHelper->orderStatusUpdate($result['order_id'] , "C");
+            $date = date('Y-m-d h:i:s');
+            $debug .= "$date 5. order COMPLETED at Stripe, update in DB\n\n";
+            $result['order_completed'] = 1;
+        	
+		}else{
+			$date = date('Y-m-d h:i:s');
+			$debug .= "$date 5. Charge made at Stripe, but still has status paid ".$charge['paid']."\n\n";
+			$result['order_completed'] = 0;
+			if($params->get('my_debug')){
+				MyMuseHelper::logMessage( $debug  );
+			}
+			$result['error'] = $debug;
+			$result['redirect'] = "index.php?option=com_mymuse&view=cart";
 		}
-
-        			// update the payment status
-        			$result['order_found']  = 1;
-        			$result['order_id'] 	= $this_order->id;
-        			$result['order_number'] = $this_order->order_number;
-        			if (preg_match ("/Completed/", $result['payment_status'])) {
-        				$MyMuseHelper = new MyMuseHelper();
-                		$MyMuseHelper->orderStatusUpdate($result['order_id'] , "C");
-                		$date = date('Y-m-d h:i:s');
-                		$debug .= "$date 5. order COMPLETED at Stripe, update in DB\n\n";
-                		$result['order_completed'] = 1;
-        			}else{
-        				// not completed, set order status to 
-        				
-                		$date = date('Y-m-d h:i:s');
-                		$debug .= "$date 5. order COMPLETED at Stripe, but still has status".$result['payment_status']."\n\n";
-                		$result['order_completed'] = 1;
-        			}
-      
-        		if($params->get('my_debug')){
-        			MyMuseHelper::logMessage( $debug  );
-        		}
-
-
-
+		
+		$result['redirect'] = JRoute::_('index.php?option=com_mymuse&task=thankyou&view=cart&pp=stripe&st=Completed');
         $date = date('Y-m-d h:i:s');
         $debug .= "$date Finished talking to Stripe \n\n";
 		$debug .= "-------END PLUGIN-------";
@@ -615,26 +664,6 @@ Array
 
 	}
 	
-	function makeErrorMessage($e){
-		$body = $e->getJsonBody();
-		$err  = $body['error'];
-		
-		$error = 'Status is:' . $e->getHttpStatus() . "\n";
-		if(isset($err['type'])){
-			$error .= 'Type is:' . $err['type'] . "\n";
-		}
-		if(isset($err['code'])){
-			$error .= 'Code is:' . $err['code'] . "\n";
-		}
-		if(isset($err['param'])){
-			$error .= 'Param is:' . $err['param'] . "\n";
-		}
-		if(isset($err['message'])){
-			$error .= 'Message is:' . $err['message'] . "\n";
-		}
-		return $error;
-		
-	}
 	
 	function onAfterMyMusePayment()
 	{

@@ -278,8 +278,6 @@ class myMuseViewStore extends JViewLegacy
         		 //echo "lifetime = $lifetime";
         		 // echo '+'.$minutes.' minutes'; exit;
         		 
-        		 //getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false, $realname = '')
-        		 //$s3URL = $s3->getAuthenticatedURL($bucket, $uri, $lifetime, false, false, $realname);
         		 $cmd = $s3->getCommand('GetObject', [
         		 		'Bucket' => $bucket,
         		 		'Key'    => $uri
@@ -287,7 +285,7 @@ class myMuseViewStore extends JViewLegacy
         		
         		 $request = $s3->createPresignedRequest($cmd, '+'.$minutes.' minutes');
         		 $s3URL = (string) $request->getUri();
-        		
+      
         		 $app = JFactory::getApplication();
         		 
         		 //log and redirect
