@@ -314,9 +314,9 @@ class MymuseViewCategory extends JViewLegacy
 
 			while (($menu->query['option'] != 'com_mymuse' || 
 					$menu->query['view'] == 'article' || 
-					$id != $category->id) 
+					$id != @$category->id) 
 					
-					&& $category->id > 1)
+					&& @$category->id > 1)
 			{
 				$path[] = array('title' => $category->title, 'link' => MyMuseHelperRoute::getCategoryRoute($category->id));
 				$category = $category->getParent();
