@@ -51,7 +51,7 @@ class MyMuseHelperAmazons3 extends JObject
 		
 		
 		$params = MyMuseHelper::getParams();
-		//http://mybucket.s3-website.ca-central-1.amazonaws.com
+
 		if(!$params->get('my_use_s3',0)){
 			//JFactory::getApplication()->enqueueMessage(JText::_('MYMUSE_NO_S3_WEBSITE'), 'error');
 			return false;

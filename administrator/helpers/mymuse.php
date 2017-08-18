@@ -506,6 +506,7 @@ class MyMuseHelper extends JObject
 			
 			$query = "SELECT artistid from #__mymuse_product
 			WHERE id ='$id'";
+			//echo $query;
 			$db->setQuery($query);
    			$artistid = $db->loadResult();
 		}
@@ -546,7 +547,7 @@ class MyMuseHelper extends JObject
 			$artistid = $db->loadResult();
 			
 		}else{
-			$query = "SELECT catid from #__mymuse_product
+			$query = "SELECT artistid from #__mymuse_product
 			WHERE id ='$id'";
 			$db->setQuery($query);
 			$artistid = $db->loadResult();

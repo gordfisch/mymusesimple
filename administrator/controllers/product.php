@@ -151,7 +151,7 @@ class MymuseControllerProduct extends JControllerForm
 					break;
 				}
 			}else {
-
+				
         		$this->msg = $this->getError();
         		JFactory::getApplication()->enqueueMessage($this->msg, 'error');
         		switch ($task )

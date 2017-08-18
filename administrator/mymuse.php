@@ -14,6 +14,7 @@ if(!defined('DS')){
 	define('DS',DIRECTORY_SEPARATOR);
 }
 
+
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 if(JRequest::getCmd('view','') == 'liveupdate') {
 	LiveUpdate::handleRequest();

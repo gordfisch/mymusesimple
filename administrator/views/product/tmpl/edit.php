@@ -88,9 +88,9 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 					<?php if(isset($this->item->alias) && $this->item->alias != ""){ ?>
 						<input type="hidden" name="old_alias" value="<?php echo $this->item->alias;?>" />
 					<?php }?>
-					<?php if(isset($this->item->catid) && $this->item->catid != ""){ ?>
-						<input type="hidden" name="old_catid"
-						value="<?php echo $this->item->catid;?>" />
+					<?php if(isset($this->item->artistid) && $this->item->artistid != ""){ ?>
+						<input type="hidden" name="old_artistid"
+						value="<?php echo $this->item->artistid;?>" />
 					<?php } ?>
 					<input type="hidden" name="task" value="" /> 
 					<input type="hidden" name="subtype" value="details" /> 

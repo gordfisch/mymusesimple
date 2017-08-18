@@ -121,13 +121,21 @@ class MymuseModelproduct extends JModelAdmin
 		
 		//Amazon S3
 		// getBucket($bucket, $prefix = null, $marker = null, $maxKeys = null, $delimiter = null, $returnCommonPrefixes = false)
-		if($this->_params->get('my_use_s3')){
+		if($this->_params->get('my_use_s3',0)){
 			require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
-			$this->_s3 = MyMuseHelperAmazons3::getInstance();
+			if(!$this->_s3 = MyMuseHelperAmazons3::getInstance()){
+				return false;
+			}
+
 			//$this->_previews = $this->_s3->getBucket($this->_params->get('my_preview_dir'));
-			$this->_previews = $this->_s3->listObjects([
-    			'Bucket' => $this->_params->get('my_preview_dir')
-			]);
+			//$this->_previews = $this->_s3->listObjects([
+    		//	'Bucket' => $this->_params->get('my_preview_dir')
+			//]);
+			$objects = $this->_s3->getIterator('ListObjects', array('Bucket' => $this->_params->get('my_preview_dir')));
+			foreach ($objects as $object) {
+				$this->_previews[] = $object['Key'];
+
+			}
 		}
 		
 		parent::__construct($config);
