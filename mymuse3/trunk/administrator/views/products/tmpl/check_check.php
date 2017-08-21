@@ -8,7 +8,8 @@ if(!defined('MYMUSE_ADMIN_PATH')){
 }
 $params 	= MyMuseHelper::getParams();
 
-
+$missing = $this->products['missing'];
+unset($this->products['missing']);
 require_once( MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php' );
 ?>
 <style>
@@ -28,9 +29,8 @@ require_once( MYMUSE_ADMIN_PATH.DS.'helpers'.DS.'mymuse.php' );
 	<h2>File Check</h2>
 <table>
 <?php 
-$missing = array();
 foreach($this->products as $product){
-	echo "<tr><td colspan='3'>". $product->id .' <b><a href=\"index.php?option=com_mymuse&view=product&layout=listtracks&id='.$product->id.'">'.$product->title."</b></td></tr>";
+	echo "<tr><td colspan='3'>". $product->id .' <b><a href="index.php?option=com_mymuse&view=product&layout=listtracks&id='.$product->id.'">'.$product->title."</b></td></tr>";
 	foreach($product->items as $item){
 		echo "<tr><td>&nbsp;</td><td>". $item->id ."</td><td>". $item->title ."</td></tr>";
 		
@@ -53,15 +53,7 @@ foreach($this->products as $product){
 		}
 		foreach($previews as $p){
 			$full_path = $preview_path.$p;
-			if(file_exists($full_path)){
-				$class = "alert alert-success";
-				$result = JText::_('MYMUSE_FOUND');
-			}else{
-				$class = "alert alert-danger";
-				$result = JText::_('MYMUSE_NOT_FOUND');
-				$missing[] = $full_path;
-			}
-			echo "<tr><td>----</td><td>Preview</td><td class='$class'>$full_path</td></tr>";
+			echo "<tr><td>----</td><td>Preview</td><td class='".$item->preview[$p]['class']."'>$full_path</td></tr>";
 		}
 		
 		
@@ -82,18 +74,9 @@ foreach($this->products as $product){
 				$filenames[] = $item->file_name;
 			}
 		}
-
 		foreach($filenames as $f){
 			$full_path = $path.$f;
-			if(file_exists($full_path)){
-				$class = "alert alert-success";
-				$result = JText::_('MYMUSE_FOUND');
-			}else{
-				$class = "alert alert-danger";
-				$result = JText::_('MYMUSE_NOT_FOUND');
-				$missing[] = $full_path;
-			}
-			echo "<tr><td>----</td><td>Download</td><td class='$class'>$full_path</td></tr>";
+			echo "<tr><td>----</td><td>Download</td><td class='".$item->download[$f]['class']."'>$full_path</td></tr>";
 		}
 		echo "<tr><td colspan='3'>&nbsp;</td></tr>";
 	}
@@ -105,7 +88,7 @@ foreach($this->products as $product){
 <?php if(count($missing)){ ?>
 <h2>Missing!</h2>
 	<?php foreach($missing as $m){ 
-		echo '<span class="alert alert-danger">'.$m.'</span><br />';
+		echo '<p class="alert alert-danger">'.$m.'</p>';
 		
 	}?>
 	

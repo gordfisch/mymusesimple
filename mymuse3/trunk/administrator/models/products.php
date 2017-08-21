@@ -488,8 +488,10 @@ class MymuseModelproducts extends JModelList
 	
 	function getCheck()
 	{
-
+		require_once(JPATH_COMPONENT_ADMINISTRATOR.DS.'helpers'.DS.'mymuse.php' );
+		$params = MyMuseHelper::getParams();
 		$products = $this->getItems();
+		$missing = array();
 		foreach ($products as $product){
 			
 			$model = new MymuseModelproducts;
@@ -497,7 +499,69 @@ class MymuseModelproducts extends JModelList
 			$model->setState('filter.allfiles', 0);
 			$model->setState('filter.parentid', $product->id);
 			$product->items = $model->getItems();
+			$table 			= JTable::getInstance('Product', 'MymuseTable', array());
+			
+			foreach($product->items as $item){
+				$filenames = array();
+				$previews = array();
+				$path = MyMuseHelper::getDownloadPath($product->id,1);
+				$preview_path = MyMuseHelper::getSitePath($product->id,1);
+				
+				if($item->file_preview != ''){
+					$previews[] = $item->file_preview;
+				}
+				if($item->file_preview_2 != ''){
+					$previews[] = $item->file_preview_2;
+				}
+				if($item->file_preview_3 != ''){
+					$previews[] = $item->file_preview_3;
+				}
+				if($item->file_preview_4 != ''){
+					$previews[] = $item->file_preview_4;
+				}
+				foreach($previews as $p){
+					$full_path = $preview_path.$p;
+					if($table->fileExists($full_path)){
+						$item->preview[$p]['class'] = "alert alert-success";
+						$item->preview[$p]['result'] = JText::_('MYMUSE_FOUND');
+					}else{
+						$item->preview[$p]['class'] = "alert alert-danger";
+						$item->preview[$p]['result'] = JText::_('MYMUSE_NOT_FOUND');
+						$missing[] = $full_path;
+					}
+
+				}
+				$jason = json_decode($item->file_name);
+				if(is_array($jason)){
+					foreach($jason as $j){
+						if($params->get('my_encode_filenames')){
+							$filenames[] = $j->file_alias;
+						}else{
+							$filenames[] = $j->file_name;
+						}
+					}
+				}else{
+					if($params->get('my_encode_filenames')){
+						$filenames[] = $item->alias;
+					}else{
+						$filenames[] = $item->file_name;
+					}
+				}
+				
+				foreach($filenames as $f){
+					$full_path = $path.$f;
+					if($table->fileExists($full_path)){
+						$item->download[$f]['class'] = "alert alert-success";
+						$item->download[$f]['result'] = JText::_('MYMUSE_FOUND');
+					}else{
+						$item->download[$f]['class'] = "alert alert-danger";
+						$item->download[$f]['result'] = JText::_('MYMUSE_NOT_FOUND');
+						$missing[] = $full_path;
+					}
+				}
+			}
 		}
+		$products['missing'] = $missing;
 		return $products;
 	
 	}

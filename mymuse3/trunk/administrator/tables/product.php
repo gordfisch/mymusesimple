@@ -1258,9 +1258,12 @@ class MymuseTableproduct extends JTable
     		$bucket = trim($bucket, DS);
     		$uri = implode(DS, $parts);
     		$uri = trim($uri,DS);
+    		$file = array_pop($parts);
+    		$prefix = implode(DS, $parts);
+    		
     		
     		try{
-    			$objects = $this->_s3->getIterator('ListObjects', array('Bucket' => $bucket));
+    			$objects = $this->_s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $prefix));
     			foreach ($objects as $object) {
     				if($object['Key'] == $uri){
     					return true;
@@ -1268,10 +1271,11 @@ class MymuseTableproduct extends JTable
 				}
     		} catch (S3Exception $e) {
     			//echo $e->getMessage() . "\n";
-    			$this->setError( 'S3 Error: '.$e->getMessage() );
-    			$application->enqueueMessage('S3 Error: '.$e->getMessage() , 'error');
+    			$this->setError( 'S3 Error: '.$this->_s3->getError() );
+    			$application->enqueueMessage('S3 Error: '.$this->_s3->getError() , 'error');
     			return false;
     		}
+    		
     		return false;
     		
     	}else{
@@ -1373,6 +1377,7 @@ class MymuseTableproduct extends JTable
     
     public function fileFilesize($src)
     {
+    	$application = JFactory::getApplication();
     	$params = MyMuseHelper::getParams();
     	if($params->get('my_use_s3')){
     		
@@ -1382,7 +1387,7 @@ class MymuseTableproduct extends JTable
     		$bucket = trim($bucket, DS);
     		$uri = implode(DS, $parts);
     		$uri = trim($uri,DS);
-    		//$header  = $s3->getObjectInfo($bucket, $uri);
+    		
     		try{
     			// HEAD object
     			$result= $this->_s3->headObject(array(

@@ -126,13 +126,6 @@ class MyMuseHelper extends JObject
 			'index.php?option=com_mymuse&view=products',
 			$vName == 'products'
 		);
-		if($view == "products"){
-			JHtmlSidebar::addEntry(
-					'&nbsp;&nbsp;'.JText::_('COM_MYMUSE_FILE_CHECK'),
-					'index.php?option=com_mymuse&view=products&layout=check',
-					$vName == 'check'
-			);
-		}
 		
 		JHtmlSidebar::addEntry(
 			JText::_('COM_MYMUSE_TITLE_SHOPPERGROUPS'),
