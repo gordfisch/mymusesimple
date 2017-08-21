@@ -421,16 +421,16 @@ class MymuseTableproduct extends JTable
 					if($params->get('my_encode_filenames') ){
 						$name = md5($select_file . time()).'.'.$ext;
 						$file_alias = $name;
-						$new_file = $download_path.DS.$name;
+						$new_file = $download_path.$name;
 					}else{
-						$new_file = $download_path.DS.$file_name;
+						$new_file = $download_path.$file_name;
 						$file_alias = '';
 					}
 					
-					$old_file = $download_path.DS.$select_file;
+					$old_file = $download_path.$select_file;
 
 					if($old_file != $new_file){
-						fileUpload($tmpName, $new);
+						//fileUpload($tmpName, $new);
 						if(!$this->fileCopy($old_file, $new_file)){
 							return false;
 						}
@@ -1303,7 +1303,6 @@ class MymuseTableproduct extends JTable
     		$targetUri = implode(DS, $parts);
     		$targetUri = trim($targetUri,DS);
 
-//echo "src = $src | dest = $dest <br /> srcBucket = $srcBucket | targetBucket = $targetBucket | srcUri = $uri : targetUri = $targetUri <br /><br /><br />";
   			try{
   				$objects = $this->_s3->getIterator('ListObjects', array('Bucket' => $srcBucket));
   				foreach ($objects as $object) {
@@ -1385,18 +1384,19 @@ class MymuseTableproduct extends JTable
     		$uri = trim($uri,DS);
     		//$header  = $s3->getObjectInfo($bucket, $uri);
     		try{
-    			$result = $this->_s3->getObject([
+    			// HEAD object
+    			$result= $this->_s3->headObject(array(
     					'Bucket' => $bucket,
     					'Key' => $uri
-    			]);
+    			));
     		} catch (S3Exception $e) {
     			//echo $e->getMessage() . "\n";
     			$this->setError( 'S3 Error: '.$this->_s3->getError() );
     			$application->enqueueMessage('S3 Error: '.$this->_s3->getError() , 'error');
     			return false;
     		}
-    		
-    		return $result['ContentLength'];
+    		$arr = $result->toArray();
+    		return $arr['ContentLength'];
     	}else{
     		return filesize($src);
     	}
