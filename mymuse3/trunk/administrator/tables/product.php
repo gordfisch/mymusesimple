@@ -1387,7 +1387,7 @@ class MymuseTableproduct extends JTable
     		try{
     			$result = $this->_s3->getObject([
     					'Bucket' => $bucket,
-    					'Key' => $folder
+    					'Key' => $uri
     			]);
     		} catch (S3Exception $e) {
     			//echo $e->getMessage() . "\n";
