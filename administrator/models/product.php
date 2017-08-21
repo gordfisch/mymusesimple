@@ -120,21 +120,17 @@ class MymuseModelproduct extends JModelAdmin
 		$this->_params 			= MyMuseHelper::getParams();
 		
 		//Amazon S3
-		// getBucket($bucket, $prefix = null, $marker = null, $maxKeys = null, $delimiter = null, $returnCommonPrefixes = false)
 		if($this->_params->get('my_use_s3',0)){
 			require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
 			if(!$this->_s3 = MyMuseHelperAmazons3::getInstance()){
 				return false;
 			}
 
-			//$this->_previews = $this->_s3->getBucket($this->_params->get('my_preview_dir'));
-			//$this->_previews = $this->_s3->listObjects([
-    		//	'Bucket' => $this->_params->get('my_preview_dir')
-			//]);
 			$objects = $this->_s3->getIterator('ListObjects', array('Bucket' => $this->_params->get('my_preview_dir')));
-			foreach ($objects as $object) {
-				$this->_previews[] = $object['Key'];
-
+			if(count($objects)){
+				foreach ($objects as $object) {
+					$this->_previews[] = $object['Key'];
+				}
 			}
 		}
 		
@@ -475,8 +471,6 @@ class MymuseModelproduct extends JModelAdmin
     		$i = 0;
     		foreach($this->_tracks as $track){
 
-    			
-    			
     			//main file
     			$jason = json_decode($track->file_name);
     			if(is_array($jason)){
@@ -624,11 +618,7 @@ class MymuseModelproduct extends JModelAdmin
     					$i++;
     				}
     			}
-    			
-    			//$time_end = microtime(true);
-    			//$time = $time_end - $time_start;
-    			//echo "Did nothing in $time seconds\n<br />";
-    			
+
     			$track->flash = $flash;
 
     			//make flash for admin to listen to Main File, we'll call it stream
