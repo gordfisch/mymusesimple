@@ -143,24 +143,30 @@ class modMyMuseLatestHelper
 			if($params->get('type_shown', 'tracks') == "tracks" && $results[$i]->file_preview){
 				$trs = array();
 				
-				$artist_alias = MyMuseHelper::getArtistAlias($results[$i]->parentid, '1');
-				$album_alias = MyMuseHelper::getAlbumAlias($results[$i]->parentid, '1');
+				if(1 == $params->get('my_previews_in_one_dir')){
+					$site_url = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base()).$params->get('my_preview_dir').'/';
+				}else{
+					$artist_alias = MyMuseHelper::getArtistAlias($results[$i]->parentid, '1');
+					$album_alias = MyMuseHelper::getAlbumAlias($results[$i]->parentid, '1');
 				
-					
-				$site_url = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base());
-				$site_url .= $params->get('my_use_s3')? '' :  $params->get('my_preview_dir');
-				$site_url .=  DS.$artist_alias.DS.$album_alias.DS;
+					$site_url = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base());
+					$site_url .= $params->get('my_use_s3')? '' :  $params->get('my_preview_dir');
+					$site_url .=  '/'.$artist_alias.'/'.$album_alias.'/';
+				}
+				
+				
+
 
 				$results[$i]->path = $site_url.$results[$i]->file_preview;
-				$results[$i]->real_path = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$results[$i]->file_preview;
+				//$results[$i]->real_path = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$results[$i]->file_preview;
 				
 				if($results[$i]->file_preview_2){
 					$results[$i]->path_2 = $site_url.$results[$i]->file_preview_2;
-					$results[$i]->real_path_2 = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$results[$i]->file_preview_2;
+					//$results[$i]->real_path_2 = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$results[$i]->file_preview_2;
 				}
 				if($results[$i]->file_preview_3){
 					$results[$i]->path_3 = $site_url.$results[$i]->file_preview_3;
-					$results[$i]->real_path_3 = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$results[$i]->file_preview_3;
+					//$results[$i]->real_path_3 = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$results[$i]->file_preview_3;
 				}
 
 							

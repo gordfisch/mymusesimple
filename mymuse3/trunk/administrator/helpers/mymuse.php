@@ -587,8 +587,7 @@ class MyMuseHelper extends JObject
 	{
 		$params = self::$_params;
 		if(1 == $params->get('my_previews_in_one_dir')){
-			$site_url = JURI::root();
-			$site_url .= $params->get('my_preview_dir').'/';
+			$site_url = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base()).$params->get('my_preview_dir').'/';
 		}else{
 			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
 			$album_alias = MyMuseHelper::getAlbumAlias($id,$parent);
