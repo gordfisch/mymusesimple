@@ -593,7 +593,7 @@ class MymuseModelproduct extends JModelAdmin
     						|| 
     						($this->_previews && array_key_exists($s3_path, $this->_previews))
     						){
-    				//if($table->fileExists($track->real_path)){
+    		
     					if($track->file_type == "video"){
     						//video
     							
@@ -856,18 +856,19 @@ class MymuseModelproduct extends JModelAdmin
 		$download_path = MyMuseHelper::getdownloadPath($parentid,1);
 
 		$files = array();
+		
+		
 		// get the preview lists
 		if($this->_params->get('my_use_s3')){
 			$folder = $artist_alias.'/'.$album_alias;
-			//$everything = $s3->listS3Contents($folder, $this->_params->get('my_preview_dir'));
-			
+
 			try{
 				$result = $this->_s3->listObjects([
 					'Bucket' => $this->_params->get('my_preview_dir'), 
 					'Prefix' => $folder
 				]);
 			} catch (S3Exception $e) {
-				//echo $e->getMessage() . "\n";
+
 				$this->setError( 'S3 Error: '.$this->_s3->getError() );
 				$application->enqueueMessage('S3 Error: '.$this->_s3->getError() , 'error');
 				return false;
@@ -875,7 +876,7 @@ class MymuseModelproduct extends JModelAdmin
 			$everything = $result['Contents'];
 			$folder = trim($folder,'/');
 			$dirLength = strlen($folder);
-			//print_pre($everything); exit;
+			print_pre($everything); exit;
 			if(count($everything)) {
 				foreach($everything as $info) {
 						// print_pre($info); exit;
