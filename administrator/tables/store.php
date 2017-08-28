@@ -200,6 +200,15 @@ class MymuseTablestore extends JTable
     		}
     	}
     	$jinput->set('jform[params][my_encode_filenames]', 0);
+    	
+    	//use zip does not work with S3,  my_use_s3 my_use_zip
+    	//print_pre($form); exit;
+    	if($form['params']['my_use_s3'] && $form['params']['my_use_zip']){
+    		$this->setError("Cannot use Zip All Files with Amazon S3! Make your own zip file, upload to S3 and make a track for it.");
+    		return false;
+    	}
+    	
+    	
     	return parent::store($updateNulls);
     
 
