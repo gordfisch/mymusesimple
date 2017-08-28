@@ -313,8 +313,16 @@ class myMuseViewStore extends JViewLegacy
         		$ext = array_pop($parts);
         		$files = array();
         		$path = MyMuseHelper::getDownloadPath($product->parentid, 1);
+        		$exclude = array();
+        		
     			foreach($prods as $prod){
-    				
+    				if(count($params->get('my_formats')) > 1){
+    					foreach($params->get('my_formats') as $format){
+    						if($format == $ext){
+    							$exclude[] = $format;
+    						}
+    					}
+    				}
     				if(1 == $params->get('my_download_dir_format')){
     					$path.= $ext.DS;
     				}
@@ -322,10 +330,8 @@ class myMuseViewStore extends JViewLegacy
     				if(is_array($jason)){
     					foreach($jason as $j){
     						if($ext == $j->file_ext
-    							||	'pdf' == $j->file_ext
-    							||	'zip' == $j->file_ext
-    							||	'jpg' == $j->file_ext
-    							||	'docx' == $j->file_ext
+    							||	!in_array($j->file_ext, $exclude)
+    							
     							){
     							$files[] = $j->file_name;
     						}
