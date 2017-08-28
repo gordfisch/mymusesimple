@@ -935,23 +935,7 @@ class MymuseModelproduct extends JModelAdmin
 					return false;
 				}
 				$result = array_merge($result, $format_result['Contents']);
-				/**
-				foreach($this->_params->get('my_formats') as $format) {
-					$format_result = array();
-					try{
-						$format_result = $this->_s3->listObjects([
-								'Bucket' => $download_path,
-								'Prefix' => $format
-						]);
-					} catch (S3Exception $e) {
-					
-						$this->setError( 'S3 Error: '.$this->_s3->getError() );
-						$application->enqueueMessage('S3 Error: '.$this->_s3->getError() , 'error');
-						return false;
-					}
-					$result = array_merge($result, $format_result['Contents']);
-				}
-				*/
+
 				$everything = $result;
 			}else{
 				$start = strlen($this->_params->get('my_download_dir'));

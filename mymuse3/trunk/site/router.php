@@ -72,7 +72,6 @@ function MymuseBuildRoute(&$query)
 			$query['Itemid']= $params->get('top_menu_item','');
 		}
 	}
-
 	/* use product alias in URL?
 	if( $params->get('top_menu_item','') && $params->get('my_use_alias','') && isset($query['view']) &&  $query['view'] == 'product' && isset($query['id']) ){
 		$q = 'SELECT alias from #__mymuse_product WHERE id="'.$query['id'].'"';
@@ -182,7 +181,6 @@ function MymuseBuildRoute(&$query)
     	$segments[] = "downloadfile";
     	return $segments;
     }
-    
 
 	// are we dealing with an product or category that is attached to a menu item?
 	if (($menuItem instanceof stdClass) && $menuItem->query['view'] == $query['view'] && isset($query['id']) 
@@ -298,9 +296,8 @@ function MymuseBuildRoute(&$query)
 		}
 
 		$segments = array_merge($segments, $array);
-
+	
 		if ($view == 'product') {
-			//print_pre($segments);
 			if ($advanced || $params->get('my_use_alias')) {
 				list($tmp, $id) = explode(':', $query['id'], 2);
 			}
@@ -347,7 +344,7 @@ function MymuseParseRoute($segments)
 	if($task == "user.logout"){
 		return $segments;
 	}
-	
+
 	$jinput->set('option', 'com_mymuse');
 	$menu	= $app->getMenu();
 	$item	= $menu->getActive();
@@ -356,10 +353,6 @@ function MymuseParseRoute($segments)
 	$advanced = $params->get('sef_advanced_link', 0);
 	$dbo = JFactory::getDBO();
 	
-	
-
-	//print_pre($segments);
-	//print_pre($item);exit;
 	// Count route segments
 	$count = count($segments);
 	
@@ -378,7 +371,6 @@ function MymuseParseRoute($segments)
     if (!isset($item)) {
 		$vars['view			}']	= $segments[0];
 		$vars['id']		= $segments[$count - 1];
-		//print_pre($vars);exit;
 		return $vars;
 	}
 
@@ -494,7 +486,7 @@ function MymuseParseRoute($segments)
         	$vars['task'] = 'downloadfile';
         	return $vars;
         }
-        
+
 
 		if($params->get('my_use_alias')){
 			
@@ -528,11 +520,12 @@ function MymuseParseRoute($segments)
 			
 
 		}
-				
+					
 		// we check to see if an alias is given.  If not, we assume it is an product
 		if (strpos($segments[0], ':') === false) {
 			$vars['view'] = 'product';
 			$vars['id'] = (int)$segments[0];
+			
 			return $vars;
 		}
 
@@ -564,7 +557,7 @@ function MymuseParseRoute($segments)
 	}
 
 	// if there was more than one segment, then we can determine where the URL points to
-	// because the first segment will have the target category id prepended to it.  If the
+	// because the last segment will have the target product id prepended to it.  If the
 	// last segment has a number prepended, it is a product, otherwise, it is a category.
 	if($params->get('my_use_alias') && $count == 2){
 		//check if this is a product alias.
@@ -622,10 +615,15 @@ function MymuseParseRoute($segments)
 			return $vars;
 		}
 	}
-	if($count == 2){
+	if($count > 2){
 		
 		//check if this is a category alias. Check last segment first
-		$query = 'SELECT id from #__categories WHERE alias="'.$segments[1].'" and extension="com_mymuse"';
+		$last = array_pop($segments);
+		if(strpos($last,':')){
+			$orig_segments = $segments;
+			$last = preg_replace('/:/',"-",$last);
+		}
+		$query = 'SELECT id from #__categories WHERE alias="'.$last.'" and extension="com_mymuse"';
 		
 		$dbo->setQuery($query);
 		if($category = $dbo->loadObject()){
@@ -635,6 +633,7 @@ function MymuseParseRoute($segments)
 			return $vars;
 		}
 		
+		//wasn't the last one, try the first
 		$query = 'SELECT id from #__categories WHERE alias="'.$segments[0].'" and extension="com_mymuse"';
 		
 		$dbo->setQuery($query);
