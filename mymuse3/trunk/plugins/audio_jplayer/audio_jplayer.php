@@ -119,7 +119,7 @@ class plgMymuseAudio_jplayer extends JPlugin
 	
 		$params 	= MyMuseHelper::getParams();
 
-		$swf_path = JURI::root() .'/plugins/mymuse/audio_jplayer/Jplayer.swf';
+		$swf_path = JURI::root() .'plugins/mymuse/audio_jplayer/Jplayer.swf';
 		//$swf_path = "http://www.jplayer.org/latest/js/Jplayer.swf";
 		$extarray = array(
 				'MP3' => 'audio/mpeg',

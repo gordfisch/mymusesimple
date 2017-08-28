@@ -715,49 +715,42 @@ class MyMuseCheckout
 		$order->items = $db->loadObjectList();
 
 		for($i = 0; $i < count($order->items); $i++){
-			$order->items[$i]->product = $MyMuseCart->getProduct($order->items[$i]->product_id);
-
-			$order->items[$i]->title = $order->items[$i]->product->title;
-			$order->items[$i]->quantity = $order->items[$i]->product_quantity;
-			$order->items[$i]->product_item_subtotal = $order->items[$i]->product_item_price * $order->items[$i]->product_quantity;
-			$order->items[$i]->product_in_stock = $order->items[$i]->product->product_in_stock;
-			if($order->items[$i]->product->product_allfiles){
-				$parts = explode('-',$order->items[$i]->file_name );
-				$order->items[$i]->ext = array_pop($parts);
-			}else{
-				$order->items[$i]->ext = pathinfo($order->items[$i]->file_name, PATHINFO_EXTENSION);
-			}
-			$order->items[$i]->attribs = $order->items[$i]->product->attribs;
-			$order->items[$i]->file_length = $order->items[$i]->product->file_length;
-			$order->items[$i]->file_time = $order->items[$i]->product->file_time;
-			
-			
-			
-			
-			$catid = 0;
-			// Does it have a parent?
-			if ($order->items[$i]->product->parentid){
-				$pid = $order->items[$i]->product->parentid;
-
-			}else{
-				$pid = $order->items[$i]->id;
-			}
-
-			$catid = $order->items[$i]->product->catid;
-
-				
-			$order->items[$i]->url = myMuseHelperRoute::getProductRoute($pid, $catid);
-			$order->items[$i]->cat_url = myMuseHelperRoute::getCategoryRoute($catid);
-			$query = "SELECT * FROM #__categories WHERE id='".$catid."'";
-			$db->setQuery($query);
-			$cat = $db->loadObject();
-				
-			$order->items[$i]->category_name = $cat->title;
-			if( $params->get('my_downloads_enable') == "1" ) {
-				if($order->items[$i]->file_name != ''){
-					$downloadable++;
+			if($order->items[$i]->product = $MyMuseCart->getProduct($order->items[$i]->product_id)){
+				$order->items [$i]->title = $order->items [$i]->product->title;
+				$order->items [$i]->quantity = $order->items [$i]->product_quantity;
+				$order->items [$i]->product_item_subtotal = $order->items [$i]->product_item_price * $order->items [$i]->product_quantity;
+				$order->items [$i]->product_in_stock = $order->items [$i]->product->product_in_stock;
+				if ($order->items [$i]->product->product_allfiles) {
+					$parts = explode ( '-', $order->items [$i]->file_name );
+					$order->items [$i]->ext = array_pop ( $parts );
+				} else {
+					$order->items [$i]->ext = pathinfo ( $order->items [$i]->file_name, PATHINFO_EXTENSION );
 				}
-
+				$order->items [$i]->attribs = $order->items [$i]->product->attribs;
+				$order->items [$i]->file_length = $order->items [$i]->product->file_length;
+				$order->items [$i]->file_time = $order->items [$i]->product->file_time;
+				$catid = 0;
+				// Does it have a parent?
+				if ($order->items [$i]->product->parentid) {
+					$pid = $order->items [$i]->product->parentid;
+				} else {
+					$pid = $order->items [$i]->id;
+				}
+				
+				$catid = $order->items [$i]->product->catid;
+				
+				$order->items [$i]->url = myMuseHelperRoute::getProductRoute ( $pid, $catid );
+				$order->items [$i]->cat_url = myMuseHelperRoute::getCategoryRoute ( $catid );
+				$query = "SELECT * FROM #__categories WHERE id='" . $catid . "'";
+				$db->setQuery ( $query );
+				$cat = $db->loadObject ();
+				
+				$order->items [$i]->category_name = $cat->title;
+				if ($params->get ( 'my_downloads_enable' ) == "1") {
+					if ($order->items [$i]->file_name != '') {
+						$downloadable ++;
+					}
+				}
 			}
 		}
 		if($downloadable){

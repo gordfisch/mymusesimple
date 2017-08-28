@@ -413,7 +413,7 @@ class MymuseTableproduct extends JTable
 						$file_name = $select_file;
 					}
 				
-					if( 1 == $params->get('my_download_dir_format')){
+					if( 1 == $params->get('my_download_dir_format') && !$params->get('my_use_s3')){
 						//by format
 						$download_path .= $ext;
 					}
@@ -428,9 +428,9 @@ class MymuseTableproduct extends JTable
 					}
 					
 					$old_file = $download_path.$select_file;
-
+					
 					if($old_file != $new_file){
-						//fileUpload($tmpName, $new);
+						echo "inside"; exit;
 						if(!$this->fileCopy($old_file, $new_file)){
 							return false;
 						}
@@ -440,7 +440,7 @@ class MymuseTableproduct extends JTable
 					}
 
 					$file_length = $this->fileFilesize($new_file);
-
+						
 					// TODO: get this to work with s3
 					$file_time = '';
 					

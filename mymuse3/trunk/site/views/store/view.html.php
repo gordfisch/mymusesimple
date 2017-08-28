@@ -237,6 +237,8 @@ class myMuseViewStore extends JViewLegacy
 			
 			$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
 			$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
+			
+			$download_path = MyMuseHelper::getDownloadPath($product->parentid,1);
 			$realname = stripslashes($order_item->file_name);
 			
 			$jason = json_decode($product->file_name);
@@ -267,9 +269,12 @@ class myMuseViewStore extends JViewLegacy
         		
         		 require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
         		 $s3 = MyMuseHelperAmazons3::getInstance();
-
+				 
         		 $bucket = $params->get('my_download_dir');
-        		 $uri = $artist_alias.DS.$album_alias.DS.$filename;
+        		 $start = strlen($params->get('my_download_dir'));
+				 $download_path = substr(trim($download_path,'/'), $start);
+        		 $uri = $download_path.$filename;
+        		
         		 $lifetime = $params->get('my_s3time');
         		 
         		 $expires = time() + $lifetime;
