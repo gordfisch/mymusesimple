@@ -65,8 +65,6 @@ class modMyMuseLatestHelper
 
 		
 		
-		echo "product_ids = $product_ids";
-		
 		if($product_ids && $type =="tracks"){
 			
 			//type = tracks

@@ -587,7 +587,7 @@ class MyMuseHelper extends JObject
 	{
 		$params = self::$_params;
 		if(1 == $params->get('my_previews_in_one_dir')){
-			$site_url = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base()).$params->get('my_preview_dir').'/';
+			$site_url = $params->get('my_use_s3')? $params->get('my_s3web').'/' : preg_replace("#administrator/#","",JURI::base()).$params->get('my_preview_dir').'/';
 		}else{
 			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
 			$album_alias = MyMuseHelper::getAlbumAlias($id,$parent);
@@ -614,13 +614,15 @@ class MyMuseHelper extends JObject
 			$site_path = $params->get('my_preview_dir').DS;
 			if( !$params->get('my_use_s3') ) {
 				$site_path = JPATH_ROOT.DS.$site_path;
+			}else{
+				$site_path = '';
 			}
 		}else{
 			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
 			$album_alias = MyMuseHelper::getAlbumAlias($id,$parent);	
-			$site_path = $params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS;
+			$site_path = $artist_alias.DS.$album_alias.DS;
 			if( !$params->get('my_use_s3') ) {
-				$site_path = JPATH_ROOT.DS.$site_path;
+				$site_path = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$site_path;
 			}
 		}
 		return $site_path;
@@ -637,11 +639,12 @@ class MyMuseHelper extends JObject
 		$params = self::$_params;
 		
 		if(1 == $params->get('my_download_dir_format')){ //downloads by format, we don't know the format here
-			$site_path = $params->get('my_download_dir').DS;
+				$site_path = $params->get('my_download_dir').DS;
 		}else{
 			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
 			$album_alias = MyMuseHelper::getAlbumAlias($id,$parent);
-			$site_path =$params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS;
+
+			$site_path = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS;
 		}
 
 		return $site_path;
