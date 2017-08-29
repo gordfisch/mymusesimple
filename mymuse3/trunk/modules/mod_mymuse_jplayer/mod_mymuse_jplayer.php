@@ -47,7 +47,7 @@ $document->addStyleSheet('https://code.jquery.com/ui/1.9.2/themes/base/jquery-ui
 if($list && $params->get('type_shown','tracks') == "tracks" && $params->get('show_track_preview', '1')){
 	
 	$site_url = preg_replace("#administrator/#","",JURI::base());
-	$swf_path = JURI::root() .'/plugins/mymuse/audio_html5/Jplayer.swf';
+	$swf_path = JURI::root() .'/plugins/mymuse/audio_jplayer/Jplayer.swf';
 
 	// player set to play the first list[0]
 	$supplied = array();

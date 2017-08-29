@@ -115,7 +115,7 @@ if($params->get('type_shown') == "tracks" && $params->get('show_track_preview'))
 		}
 	}
 	if(!$match){
-		$js_path = $site_url.'plugins/mymuse/audio_html5/js/jquery.jplayer.min.js';
+		$js_path = $site_url.'plugins/mymuse/audio_jplayer/js/jquery.jplayer.min.js';
 		$document->addScript( $js_path );
 	}
 	//load jplayer inspector?
@@ -126,7 +126,7 @@ if($params->get('type_shown') == "tracks" && $params->get('show_track_preview'))
 		}
 	}
 	if(!$match){
-		$js_path = $site_url.'plugins/mymuse/audio_html5/js/jquery.jplayer.inspector.js';
+		$js_path = $site_url.'plugins/mymuse/audio_jplayer/js/jquery.jplayer.inspector.js';
 		$document->addScript( $js_path );
 	}
 	
