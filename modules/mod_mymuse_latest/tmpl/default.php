@@ -2,7 +2,11 @@
 defined('_JEXEC') or die('Restricted access'); 
 $height 	= $params->get('product_image_height',0);
 ?>
-
+<style>
+.mymuse_latest .jp-play, .mymuse_latest .jp-pause {
+	width: 16px;
+}
+</style>
 <?php if(count($list)):?>	
 <div id="mod_mymuse_latest_<?php echo $params->get('module_number'); ?>">
 <?php if($params->get('display')){  //vertical ?>

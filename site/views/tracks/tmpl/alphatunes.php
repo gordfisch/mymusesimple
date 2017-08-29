@@ -132,14 +132,14 @@ function tableOrdering( order, dir, task )
 }
 
 .tracks a.jp-play {
-	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") 0 0 no-repeat;
+	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_jplayer/skin/jplayer.blue.monday.jpg") 0 0 no-repeat;
 }
 #main  .tracks a.jp-play:hover {
-	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") -41px 0 no-repeat;
+	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_jplayer/skin/jplayer.blue.monday.jpg") -41px 0 no-repeat;
 	
 }
 .tracks a.jp-pause {
-	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_html5/skin/jplayer.blue.monday.jpg") 0 -42px no-repeat;
+	background: url("<?php echo $this->baseurl."/"; ?>plugins/mymuse/audio_jplayer/skin/jplayer.blue.monday.jpg") 0 -42px no-repeat;
 }
 */
 </style>

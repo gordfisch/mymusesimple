@@ -132,6 +132,7 @@ class modMyMuseLatestHelper
 			AND ( p.publish_down = '.$db->Quote($nullDate).' OR p.publish_down >= '.$db->Quote($now).' )
 			AND p.parentid > 0
 			AND pa.state=1
+			AND p.file_preview <>""
 			';
 			if($search == 'p.featured'){
 				$query .= 'AND p.featured = 1 ';
@@ -145,7 +146,7 @@ class modMyMuseLatestHelper
 		if(!$results = $db->loadObjectList()){
 			return $results;
 		}
-		
+	
 		for($i=0; $i < count($results); $i++){
 			$id = ($results[$i]->parentid)? $results[$i]->parentid : $results[$i]->id;
 			$results[$i]->product_link = myMuseHelperRoute::getProductRoute($id,$results[$i]->artist_id );
