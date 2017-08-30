@@ -13,8 +13,9 @@
 	<files>
 		<filename plugin="payment_stripe">payment_stripe.php</filename>
 		<filename plugin="payment_stripe">composer.json</filename>
-		<folder>images</folder>
+		<filename plugin="payment_stripe">composer.lock</filename>
 		<folder>vendor</folder>
+		<folder>images</folder>
 	</files>
 
 	<languages>
@@ -25,14 +26,6 @@
 	<config>
 	<fields  name="params">
 		<fieldset name="basic">
-<<<<<<< .mine
-		<field name="my_stripe_public_key" type="text" size="60" default=""
-		label="MYMUSE_STRIPE_PUBLIC_LABEL" description="MYMUSE_STRIPE_PUBLIC_DESC"
-||||||| .r1878
-		<field name="my_stripe_email" type="text" size="35" default="info@arboreta.ca"
-		label="MYMUSE_STRIPE_EMAIL_LABEL" description="MYMUSE_STRIPE_EMAIL_DESC"
-		
-=======
 
         <field name="my_stripe_public_key" 
         	type="text" 
@@ -58,7 +51,6 @@
 		  <option value="1">JYES</option>
 		</field>
 		
->>>>>>> .r1886
         <field name="my_stripe_need_address" 
         	type="radio" 
         	default="0" 
@@ -67,21 +59,7 @@
 		  <option value="0">JNO</option>
 		  <option value="1">JYES</option>
 		</field>
-		<field name="my_stripe_secret_key" type="text" size="60" default=""
-		label="MYMUSE_STRIPE_SECRET_LABEL" description="MYMUSE_STRIPE_SECRET_DESC"
-		/>
 		
-<<<<<<< .mine
-        <field type="spacer" />
-||||||| .r1878
-        <field name="my_stripe_sandbox" type="radio" default="0" label="MYMUSE_STRIPE_USE_SANDBOX_LABEL" description="MYMUSE_STRIPE_USE_SANDBOX_DESC">
-          <option value="0">JNO</option>
-          <option value="1">JYES</option>
-        </field>
-        <field name="my_stripe_sandbox_email" type="text" size="35" default="" label="MYMUSE_STRIPE_SANDBOX_EMAIL_LABEL" description="MYMUSE_STRIPE_SANDBOX_EMAIL_DESC"/>
-        <field name="my_stripe_sandbox_customer_email" type="text" size="35" default="" label="MYMUSE_STRIPE_SANDBOX_CUSTOMER_EMAIL_LABEL" description="MYMUSE_STRIPE_SANDBOX_CUSTOMER_EMAIL_DESC"/>
-        <field type="spacer" />
-=======
 		<field name="my_stripe_need_shipping" 
         	type="radio" 
         	default="0" 
@@ -91,35 +69,6 @@
 		  <option value="1">JYES</option>
 		</field>
         
-        
->>>>>>> .r1886
-        <field name="my_use_image" 
-        	type="radio" 
-        	default="0" 
-        	label="MYMUSE_STRIPE_USE_IMAGE_LABEL" 
-        	description="MYMUSE_STRIPE_USE_IMAGE_DESC">
-		  <option value="0">JNO</option>
-		  <option value="1">JYES</option>
-		</field>
-		<field 
-			name="my_stripe_image_color" type="radio" 
-			default="white" 
-			label="MYMUSE_STRIPE_IMAGE_COLOR_LABEL" 
-			description="MYMUSE_STRIPE_IMAGE_COLOR_DESC">
-          <option value="white">MYMUSE_STRIPE_IMAGE_COLOR_WHITE</option>
-          <option value="blue">MYMUSE_STRIPE_IMAGE_COLOR_BLUE</option>
-          <option value="black">MYMUSE_STRIPE_IMAGE_COLOR_BLACK</option>
-        </field>
-        <field type="spacer" />
-        <field name="email_msg" 
-        type="editor" 
-        filter="raw" 
-        width="200px"
-        rows="35" 
-        cols="35" 
-        default="" 
-        label="MYMUSE_MSG_LABEL" 
-        description="MYMUSE_MSG_DESC" />
         
 
 	</fieldset>
