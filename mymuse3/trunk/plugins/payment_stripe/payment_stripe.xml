@@ -37,8 +37,8 @@
         	type="text" 
         	size="55" 
         	default="" 
-        	label="MYMUSE_STRIPE_PRIVATE_LABEL" 
-        	description="MYMUSE_STRIPE_PRIVATE_DESC"
+        	label="MYMUSE_STRIPE_SECRET_LABEL" 
+        	description="MYMUSE_STRIPE_SECRET_DESC"
         />
         
         <field type="spacer" />
