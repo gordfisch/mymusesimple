@@ -251,8 +251,8 @@ class plgMymusePayment_Paypal extends JPlugin
 		}
 		$string .= '
 		<div id="paypal_form" class="pull-right">
-			<button class="button uk-button shopper-info" 
-			type="submit" >'. $button_string.'</button>
+			<button class="paypal-button" 
+			type="submit" ><span style="display: block; min-height: 30px;">'. $button_string.'</span></button>
 		</div>
 		</form>
 		';
