@@ -540,6 +540,7 @@ class MyMuseModelProduct extends JModelItem
 				$dispatcher	= JDispatcher::getInstance();
 				if(count($preview_tracks) && ($params->get('product_player_type') == "each" || 
 					$params->get('product_player_type') == "single")){
+					
 					reset($preview_tracks);
 					$count = count($preview_tracks);
 					while (list($i,$track) = each( $preview_tracks )){
@@ -550,7 +551,7 @@ class MyMuseModelProduct extends JModelItem
 
 							$track->path = $site_url.$track->file_preview;
 							$track->real_path = $site_path.$track->file_preview;
-						
+				
 							if($track->file_preview_2){
 								$track->path_2 = $site_url.$track->file_preview_2;
 								$track->real_path_2 = $site_path.$track->file_preview_2;
@@ -563,8 +564,10 @@ class MyMuseModelProduct extends JModelItem
 							//should we use the real download file? Not available in AmazonS3
 							if(!$params->get('my_use_s3')){
 								$track->download_real_path = MyMuseHelper::getDownloadPath($track->parentid, 1);
-								if(1 == $params->get('my_download_dir_format',0)){ //downloads by format
-									$track->download_real_path .= $format.DS;
+								
+								if(1 == $params->get('my_download_dir_format',0)){ 
+									//downloads by format and we don't know the format
+									//$track->download_real_path .= $format.DS;
 								}
 								if($params->get('my_play_downloads', 0) && in_array($track->id, $myOrders)){
 									$track->path = isset($track->download_path)? $track->download_path : '';
@@ -606,7 +609,7 @@ class MyMuseModelProduct extends JModelItem
 						}
 		
 						$track->flash = $flash;
-
+					
 					}//end for each preview track 
 				} // if count previews for 'each'
 				
