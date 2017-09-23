@@ -88,9 +88,9 @@ class MyMuseModelProduct extends JModelItem
 	 */
 	protected function populateState()
 	{
-		$app = JFactory::getApplication('site');
+		$app 	= JFactory::getApplication('site');
 		$jinput = $app->input;
-		$params 	= MyMuseHelper::getParams();
+		$params = MyMuseHelper::getParams();
 
 		// Load state from the request.
 		$pk = $jinput->get('id');
