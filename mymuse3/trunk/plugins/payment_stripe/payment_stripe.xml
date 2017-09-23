@@ -77,8 +77,8 @@
 	
 	
 	
-<!-- updateservers>
+<updateservers>
     <server type="extension" priority="1"
-        name="Plug MyMuse Payment Stripe">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=42</server>
-</updateservers -->
+        name="Plug MyMuse Payment Stripe">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=76</server>
+</updateservers>
 </extension>
