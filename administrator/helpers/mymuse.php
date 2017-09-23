@@ -234,6 +234,7 @@ class MyMuseHelper extends JObject
 			
 			//store params
 			$params = new JRegistry($store->params);
+			
 			//get component params
 			$cparams = JComponentHelper::getParams( 'com_mymuse' );
 			$params->merge( $cparams );
