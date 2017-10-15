@@ -111,6 +111,7 @@ class MyMuseModelProduct extends JModelItem
 		
 		//over ride primary if we have filter request
 		$filter_order	= $jinput->get('filter_order', '', 'STRING');
+
 		if ($filter_order){
 			if(!in_array($filter_order, $this->filter_fields)) {
 				$filter_order = 'a.title';
@@ -134,7 +135,6 @@ class MyMuseModelProduct extends JModelItem
 			$this->setState('list.ordering', $primaryOrder );
 		
 		}
-
 		// Load the parameters.
 		$params = $app->getParams();
 		$this->setState('params', $params);
@@ -398,7 +398,7 @@ class MyMuseModelProduct extends JModelItem
 			$alpha = $this->getState('list.alpha','');
 			$searchword = $this->getState('list.searchword','');
 			$listDirn	= $this->getState('list.direction', 'ASC');
-			$this->setState('list.ordering', ProductHelperQuery::orderbySecondary($params->get('orderby_track', 'rdate'), $params->get('order_track_date')));
+			//$this->setState('list.ordering', ProductHelperQuery::orderbySecondary($params->get('orderby_track', 'rdate'), $params->get('order_track_date')));
 			$ordering 	= $this->getState('list.ordering', 'a.title');
 			if(preg_match("/ASC|DESC/", strtoupper($ordering))){
 				$listDirn = '';
@@ -425,8 +425,8 @@ class MyMuseModelProduct extends JModelItem
         		i.product_name, product_id as all_id
         		FROM #__mymuse_order_item as i
         		LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
-        		GROUP BY i.product_id )
-        		as x GROUP BY x.all_id) as s ON s.product_id = a.id
+        		GROUP BY i.product_id, i.product_name )
+        		as x GROUP BY x.all_id,x.product_name) as s ON s.product_id = a.id
 			WHERE parentid='".$pk."'
 			AND product_downloadable = 1
 			AND state=1
@@ -451,7 +451,11 @@ class MyMuseModelProduct extends JModelItem
 				//$orderby .= ", $secondaryOrder ";
 			}
 			$track_query .= $orderby;
-				
+
+
+	
+	
+	
 			$db->setQuery($track_query);
 			$tracks = $db->loadObjectList();
 	
@@ -727,6 +731,8 @@ class MyMuseModelProduct extends JModelItem
 					
 					if(count($params->get('my_formats'))) {
 						foreach($params->get('my_formats') as $format){
+							//make a link for download if we need it
+							$track->free_download_link[$format] = "index.php?option=com_mymuse&view=store&task=downloadit&id=".$track->id."&format=".$format;
 							if(1 == $params->get('my_price_by_product', 0) && isset($track->price[$format]) ){
 								$price = $track->price[$format];
 							}else{

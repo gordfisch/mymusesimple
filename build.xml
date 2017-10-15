@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project name="MyMuse3.5" basedir="." default="copy_to_test351">
+<project name="MyMuse3.4.0" basedir="." default="copy_to_test38">
  		<property name="myversion" value="3.5" override="true" />
 	<!-- arboreta/joomlamy3/callinish || mymusetest35 || nexgen || singsong || soundliaison/new || nexgen/staging -->
         <property name="test" value="/var/www/html/mymusetest38" override="true" />
@@ -41,8 +41,8 @@
         </fileset>
  
         <!-- Copy Target -->
-        <target name="copy_to_test351" description="copy target">
-                <echo>Copying files from MyMuse3.5 to mymusetest35...
+        <target name="copy_to_test38" description="copy target">
+                <echo>Copying files from MyMuse3.4.0 to mymusetest38...
                 </echo>
         	
         		<copy todir="${test}/components/com_mymuse">

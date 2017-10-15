@@ -457,7 +457,7 @@ padding-bottom: 10px;
 	/* Force table to not be like tables anymore */
 	.mymuse_cart table, .mymuse_cart thead, .mymuse_cart tbody, .mymuse_cart th, 
 	.mymuse_cart td, .mymuse_cart tr { 
-		display: block; 
+		display: table-row; 
 	}
 	
 	/* Hide table headers (but not display: none;, for accessibility) */
@@ -498,7 +498,7 @@ padding-bottom: 10px;
 		white-space: nowrap;
 		padding-right: 7%;
 		margin-right: 7%;
-		width: 30%;
+		width: 26%;
 		display: inline-block;
 		border-right: 1px solid #ccc;
 

@@ -459,6 +459,7 @@ class myMuseViewStore extends JViewLegacy
         {
         	// make sure we have an id
         	$id = $jinput->get('id',0);
+        	$mymuse = $jinput->get('mymuse',0);
         	$free = 0;
         	$owned = 0;
         	$db	= JFactory::getDBO();
@@ -524,7 +525,9 @@ class myMuseViewStore extends JViewLegacy
         		if(!isset($price) || 
         				$price['product_price'] == 0.00 || 
         				$price['product_price'] == '' || 
-        				!$price['product_price']){
+        				!$price['product_price'] ||
+        				$mymuse
+        				){
 
         			$free = 1;
         			if(is_array($jason)){
