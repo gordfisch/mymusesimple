@@ -1281,16 +1281,13 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_tax_rate` (
   `tax_rate` decimal(10,4) DEFAULT NULL,
   `tax_applies_to` char(1) NOT NULL DEFAULT 'S',
   `tax_name` varchar(32) NOT NULL DEFAULT 'Tax',
-  `tax_
-` set('RATE','AMOUNT') NOT NULL DEFAULT 'RATE',
+  `tax_format` set('RATE','AMOUNT') NOT NULL DEFAULT 'RATE',
   `compounded` char(1) NOT NULL DEFAULT '0',
   `ordering` tinyint(2) DEFAULT '99',
   `checked_out` int(11) NOT NULL,
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
 ) DEFAULT CHARSET=utf8;
-
-
 -- 
 -- Dumping data for table `#__mymuse_tax_rate`
 -- 
