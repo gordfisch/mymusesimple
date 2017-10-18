@@ -135,18 +135,14 @@
                         todir="${test}/plugins/mymuse/payment_paypal" />
                 <copy file="${src}/plugins/payment_paypal/payment_paypal.xml"
                         todir="${test}/plugins/mymuse/payment_paypal" />
-                        
-                </copy>
+                    
 
-        	
                 <copy file="${src}/plugins/searchmymuse/searchmymuse.php"
                         todir="${test}/plugins/search/searchmymuse" />
                 <copy file="${src}/plugins/searchmymuse/searchmymuse.xml"
                         todir="${test}/plugins/search/searchmymuse" />
         	
-        	
 
-        	
         		<copy file="${src}/plugins/audio_jplayer/audio_jplayer.php"
         	            todir="${test}/plugins/mymuse/audio_jplayer" /> 
         		<copy file="${src}/plugins/audio_jplayer/audio_jplayer.xml"
