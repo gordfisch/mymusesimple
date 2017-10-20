@@ -239,26 +239,7 @@
 				<option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
 		  </field>
-		  <field
-                name="my_formats"
-                type="list"
-                label="MYMUSE_SELLING_FORMATS_LABEL"
-                description="MYMUSE_SELLING_FORMATS_DESC"
-                class="inputbox"
-                size="4"
-                default="mp3"
-                multiple="true">
-                <option value="mp3">MP3</option>
-                <option value="wav">WAV</option>
-                <option value="flac">FLAC</option>
-                <option value="ogg">OGG</option>
-                <option value="webma">WEBMA</option>
-                <option value="webmv">WEBMV</option>
-                <option value="ogv">OGV</option>
-                <option value="m4v">M4V</option>
-                <option value="pdf">PDF</option>
-                <option value="other">OTHER</option>
-          </field> 
+
 		  <field
                 name="my_download_max"
                 type="text"
@@ -300,15 +281,15 @@
                 description="MYMUSE_DOWNLOADS_DIR_DESC"
                 class="inputbox"
                 size="40"
-                
+                readonly="1"
            />
            <field
                 name="my_download_dir_format"
-                type="list"
+                type="hidden"
                 label="MYMUSE_DOWNLOAD_DIR_FORMAT_LABEL"
                 description="MYMUSE_DOWNLOAD_DIR_FORMAT_DESC"
                 class="btn-group"
-                default="0">
+                default="1">
                 <option value="0">MYMUSE_ARIST_PRODUCT</option>
 				<option value="1">MYMUSE_BY_FORMAT</option>
             </field>
@@ -328,20 +309,22 @@
                 label="MYMUSE_DOWNLOADS_PREVIEW_DIR_LABEL"
                 description="MYMUSE_DOWNLOADS_PREVIEW_DIR_DESC"
                 class="inputbox"
-                default="images/A_MyMusePreviews"
+                default="images/mymuse/previews"
                 size="40"
+                readonly="1"
             />
             <field
                 name="my_previews_in_one_dir"
-                type="radio"
+                type="hidden"
                 label="MYMUSE_PREVIEWS_IN_ON_DIR_LABEL"
                 description="MYMUSE_PREVIEWS_IN_ON_DIR_DESC"
                 class="btn-group"
-                default="0">
+                default="1">
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
             </field>
             
+            <!--
         	<field
                 name="my_use_s3"
                 type="radio"
@@ -352,6 +335,7 @@
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
             </field>
+
         	<field 
         		name="my_s3web" 
         		type="text" 
@@ -440,7 +424,7 @@
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
             </field>
-           <!-- 
+         
             <field
                 name="my_play_downloads"
                 type="radio"
@@ -452,7 +436,19 @@
 				<option value="1">MYMUSE_YES</option>
             </field>
             -->
+
+            <field
+                name="my_use_string_url_safe"
+                type="hidden"
+                label="MYMUSE_STR_URL_SAFE_LABEL"
+                description="MYMUSE_STR_URL_SAFE_DESC"
+                class="btn-group"
+                default="1">
+                <option value="0">MYMUSE_NO</option>
+                <option value="1">MYMUSE_YES</option>
+            </field>
 	</fieldset>
+    <!--
 	<fieldset name="uploads" label="MYMUSE_UPLOADS_LABEL">
   		<field
                 name="my_use_string_url_safe"
@@ -651,11 +647,12 @@
         </field>
 
 	</fieldset>
+-->
 	<fieldset name="store" label="MYMUSE_STORE_OPTIONS_LABEL">
 			
 		<field 
 				name="my_saveorder" 
-				type="radio" 
+				type="hidden" 
 				default="before" 
 				label="MYMUSE_SAVEORDER_LABEL" 
 				description="MYMUSE_SAVEORDER_DESC">
@@ -663,16 +660,7 @@
   				<option value="after">MYMUSE_AFTER_PAYMENT</option>
   		</field>
   		
-  		<field
-                name="my_use_coupons"
-                type="radio"
-                label="MYMUSE_USE_COUPONS"
-                description="MYMUSE_USE_COUPONS_DESC"
-                class="btn-group"
-                default="0">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>>
-        </field>
+
 		<field
                 name="my_currency_separator"
                 type="text"
@@ -755,6 +743,16 @@
                 default="mymuse"
         />
         <field
+                name="my_use_coupons"
+                type="radio"
+                label="MYMUSE_USE_COUPONS"
+                description="MYMUSE_USE_COUPONS_DESC"
+                class="btn-group"
+                default="0">
+                <option value="0">MYMUSE_NO</option>
+                <option value="1">MYMUSE_YES</option>>
+        </field>
+        <field
                 name="my_use_alias"
                 type="radio"
                 label="MYMUSE_USE_ALIAS_LABEL"
@@ -793,37 +791,6 @@
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>>
         </field>
-        
-         <field
-                name="my_notes_required"
-                type="radio"
-                label="MYMUSE_NOTES_REQUIRED_LABEL"
-                description="MYMUSE_NOTES_REQUIRED_DESC"
-                class="btn-group"
-                default="0">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>>
-        </field>
-        
-        <field
-                name="my_notes_header"
-                type="text"
-                label="MYMUSE_NOTES_HEADER_LABEL"
-                description="MYMUSE_NOTES_HEADER_DESC"
-                class="inputbox"
-                size="15"
-        />
-        
-        <field 
-        		name="my_notes_msg" 
-        		type="textarea"  
-        		rows="3" 
-        		cols="35" 
-        		default="" 
-        		label="MYMUSE_NOTES_MSG_LABEL" 
-        		description="MYMUSE_NOTES_MSG_DESC" 
-        		filter="raw"
-        />
 
         <field
                 name="my_disable_css"
@@ -930,17 +897,7 @@
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>>
         </field>
-        <field
-                name="my_add_taxes"
-                type="radio"
-                label="MYMUSE_ADD_TAXES_LABEL"
-                description="MYMUSE_ADD_TAXES_DESC"
-                class="btn-group"
-                default="0">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>>
-        </field>
-        
+      
         <field
                 name="my_show_category_name"
                 type="radio"
@@ -966,7 +923,7 @@
         
         <field
                 name="my_default_shopper_group_id"
-                type="text"
+                type="hidden"
                 label="MYMUSE_DEFAULT_SHOPPER_GROUP_LABEL"
                 description="MYMUSE_DEFAULT_SHOPPER_GROUP_DESC"
                 class="inputbox"
@@ -977,7 +934,7 @@
 	<fieldset name="pricing" label="MYMUSE_PRICING_OPTIONS_LABEL">
 		<field
                 name="my_price_by_product"
-                type="list"
+                type="hidden"
                 label="MYMUSE_PRICING_LABEL"
                 description="MYMUSE_PRICING_DESC"
                 class="inputbox"
@@ -986,143 +943,7 @@
 				<option value="1">MYMUSE_PRICE_BY_PRODUCT</option>
 				
         </field>
-<!-- <option value="2">MYMUSE_PRICE_BY_LICENSE</option> -->
-        <field
-                name="my_license_0_name"
-                type="text"
-                label="MYMUSE_LICENSE_0_NAME"
-                description="MYMUSE_LICENSE_0_NAME"
-                class="inputbox"
-                default=""
-                showon="my_price_by_product:2"
-        />
-        <field
-                name="my_license_0_price"
-                type="text"
-                label="MYMUSE_LICENSE_0_PRICE"
-                description="MYMUSE_LICENSE_0_PRICE"
-                class="inputbox"
-                default=""
-                showon="my_price_by_product:2"
-        />
-        <field
-                name="my_license_0_desc"
-                type="textarea"
-                label="MYMUSE_LICENSE_0_DESC"
-                description="MYMUSE_LICENS_0_DESC"
-                class="inputbox"
-                default=""
-                showon="my_price_by_product:2"
-        />
-        <field
-                name="my_license_1_name"
-                type="text"
-                label="MYMUSE_LICENSE_1_NAME"
-                description="MYMUSE_LICENSE_1_NAME"
-                class="inputbox"
-                default=""
-                showon="my_price_by_product:2"
-        />
-        <field
-                name="my_license_1_price"
-                type="text"
-                label="MYMUSE_LICENSE_1_PRICE"
-                description="MYMUSE_LICENSE_1_PRICE"
-                class="inputbox"
-                default=""
-                showon="my_price_by_product:2"
-        />
-        <field
-                name="my_license_1_desc"
-                type="textarea"
-                label="MYMUSE_LICENSE_1_DESC"
-                description="MYMUSE_LICENSE_1_DESC"
-                class="inputbox"
-                default=""
-                showon="my_price_by_product:2"
-        />
-        <field
-                name="my_license_2_name"
-                type="text"
-                label="MYMUSE_LICENSE_2_NAME"
-                description="MYMUSE_LICENSE_2_NAME"
-                class="inputbox"
-                default=""
-                showon="my_price_by_product:2"
-        />
-        <field
-                name="my_license_2_price"
-                type="text"
-                label="MYMUSE_LICENSE_2_PRICE"
-                description="MYMUSE_LICENSE_2_PRICE"
-                class="inputbox"
-                default=""
-                showon="my_price_by_product:2"
-        />
-        <field
-                name="my_license_2_desc"
-                type="textarea"
-                label="MYMUSE_LICENSE_2_DESC"
-                description="MYMUSE_LICENSE_2_DESC"
-                class="inputbox"
-                default=""
-                showon="my_price_by_product:2"
-        />
-        <field
-                name="my_license_3_name"
-                type="text"
-                label="MYMUSE_LICENSE_3_NAME"
-                description="MYMUSE_LICENSE_3_NAME"
-                class="inputbox"
-                default=""
-                showon="my_price_by_product:2"
-        />
-        <field
-                name="my_license_3_price"
-                type="text"
-                label="MYMUSE_LICENSE_3_PRICE"
-                description="MYMUSE_LICENSE_3_PRICE"
-                class="inputbox"
-                default=""
-                showon="my_price_by_product:2"
-        />
-        <field
-                name="my_license_3_desc"
-                type="textarea"
-                label="MYMUSE_LICENSE_3_DESC"
-                description="MYMUSE_LICENSE_3_DESC"
-                class="inputbox"
-                default=""
-                showon="my_price_by_product:2"
-        />
-        <field
-                name="my_license_4_name"
-                type="text"
-                label="MYMUSE_LICENSE_4_NAME"
-                description="MYMUSE_LICENSE_4_NAME"
-                class="inputbox"
-                default=""
-                showon="my_price_by_product:2"
-        />
-        <field
-                name="my_license_4_price"
-                type="text"
-                label="MYMUSE_LICENSE_4_PRICE"
-                description="MYMUSE_LICENSE_4_PRICE"
-                class="inputbox"
-                default=""
-                showon="my_price_by_product:2"
-        />
-        <field
-                name="my_license_4_desc"
-                type="textarea"
-                label="MYMUSE_LICENSE_4_DESC"
-                description="MYMUSE_LICENSE_4_DESC"
-                class="inputbox"
-                default=""
-                showon="my_price_by_product:2"
-        />
-	
+
 	</fieldset>
 	<fieldset name="reports" label="MYMUSE_FRONT_END_SALES_REPORTS_LABEL">
 		<field

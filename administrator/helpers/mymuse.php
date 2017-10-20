@@ -238,7 +238,7 @@ class MyMuseHelper extends JObject
 			//get component params
 			$cparams = JComponentHelper::getParams( 'com_mymuse' );
 			$params->merge( $cparams );
-
+			$params->set('my_formats', '["mp3"]') ;
 			//merge app params includes menu
 			$app            = JFactory::getApplication();
 			if(!$app->isAdmin()){

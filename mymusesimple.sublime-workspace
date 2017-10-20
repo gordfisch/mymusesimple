@@ -11,6 +11,24 @@
 	},
 	"buffers":
 	[
+		{
+			"file": "administrator/models/forms/store.xml",
+			"settings":
+			{
+				"buffer_size": 40484,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "build.xml",
+			"settings":
+			{
+				"buffer_size": 11292,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		}
 	],
 	"build_system": "",
 	"build_system_choices":
@@ -20,11 +38,19 @@
 	"command_palette":
 	{
 		"height": 392.0,
-		"last_filter": "",
+		"last_filter": "git",
 		"selected_items":
 		[
+			[
+				"git",
+				"Git: Push"
+			],
+			[
+				"qu",
+				"Git: Quick Commit (repo)"
+			]
 		],
-		"width": 449.0
+		"width": 470.0
 	},
 	"console":
 	{
@@ -44,10 +70,16 @@
 	},
 	"expanded_folders":
 	[
-		"/var/www/html/mymuse-git/mymusesimple"
+		"/var/www/html/mymuse-git/mymusesimple",
+		"/var/www/html/mymuse-git/mymusesimple/administrator",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/models"
 	],
 	"file_history":
 	[
+		"/var/www/html/mymuse-git/mymusesimple/administrator/sql/uninstall.mysql.utf8.sql",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/sql/install.mysql.utf8.sql",
+		"/var/www/html/mymuse-git/mymusesimple/build.xml",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/mymuse.php",
 		"/var/www/html/hilltop/aked/live/templates/aked3/css/aked3.css",
 		"/var/www/html/hilltop/aked/live/administrator/language/en-GB/en-GB.com_myplayer.ini",
 		"/var/www/html/hilltop/aked/live/templates/aked5/html/com_content/category/blog.php",
@@ -171,15 +203,11 @@
 		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch_portfolio/html/modules.php",
 		"/var/www/html/hilltop/echo/staging/modules/mod_random-article/mod_random-article.php",
 		"/var/www/html/hilltop/echo/staging/modules/mod_random-article/helper.php",
-		"/var/www/html/hilltop/echo/staging/modules/mod_random-article/css/random-article.css",
-		"/var/www/html/hilltop/echo/staging/modules/mod_random-article/css/style.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch_team/html/com_content/category/blog_summary.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch_team/html/com_content/category/blog_item.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch/html/com_content/category/blog_item.php"
+		"/var/www/html/hilltop/echo/staging/modules/mod_random-article/css/random-article.css"
 	],
 	"find":
 	{
-		"height": 23.0
+		"height": 38.0
 	},
 	"find_in_files":
 	{
@@ -193,6 +221,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"sinm",
+			"mymusetest38"
 		],
 		"highlight": true,
 		"in_selection": false,
@@ -200,6 +230,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"mymusesimple"
 		],
 		"reverse": false,
 		"show_context": true,
@@ -210,8 +241,75 @@
 	"groups":
 	[
 		{
+			"selected": 1,
 			"sheets":
 			[
+				{
+					"buffer": 0,
+					"file": "administrator/models/forms/store.xml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 40484,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								13946,
+								13946
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/XML/XML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 5871.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "build.xml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11292,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								347,
+								347
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/XML/XML.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
 			]
 		}
 	],
@@ -221,7 +319,7 @@
 	},
 	"input":
 	{
-		"height": 31.0
+		"height": 35.0
 	},
 	"layout":
 	{
@@ -246,9 +344,17 @@
 		]
 	},
 	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 102.0
+	},
 	"output.find_results":
 	{
 		"height": 0.0
+	},
+	"output.git":
+	{
+		"height": 102.0
 	},
 	"output.sftp":
 	{
@@ -258,7 +364,7 @@
 	"project": "mymusesimple.sublime-project",
 	"replace":
 	{
-		"height": 42.0
+		"height": 68.0
 	},
 	"save_all_on_build": true,
 	"select_file":

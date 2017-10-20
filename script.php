@@ -51,10 +51,10 @@ class com_mymuseInstallerScript
 		// $parent is the class calling this method
 		// $parent->getParent()->setRedirectURL('index.php?option=com_mymuse');
 		// first check if PHP5 is running
-		if (version_compare(PHP_VERSION, '5.0.0', '<')) {
+		if (version_compare(PHP_VERSION, '5.4.0', '<')) {
 		
 			echo '<div class="fc-error">';
-			echo 'Please upgrade PHP above version 5.0.0<br />';
+			echo 'Please upgrade PHP above version 5.4.0<br />';
 			echo '</div>';
 			return false;
 		}
@@ -347,239 +347,11 @@ class com_mymuseInstallerScript
 			$db = JFactory::getDBO();
 		
 
-			$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'ordering'";
-			$db->setQuery($query);
-			if(!$col = $db->loadObject()){
-				$query = "ALTER TABLE `#__mymuse_country` ADD `ordering` int(11) NOT NULL AFTER `country_2_code`  ";
-				$db->setQuery($query);
-				$db->execute();
-			}
-		
-			$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'plugin'";
-			$db->setQuery($query);
-			if(!$col = $db->loadObject()){
-				$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'zone_id'";
-				$db->setQuery($query);
-				if($col = $db->loadObject()){
-					$query = "ALTER TABLE `#__mymuse_country` CHANGE `zone_id` `plugin` TINYTEXT NOT NULL ";
-				}else{
-					$query = "ALTER TABLE `#__mymuse_country` ADD `plugin` TINYTEXT NOT NULL AFTER `id`  ";
-				}
-				$db->setQuery($query);
-				$db->execute();
 			
-				$paypal_countries = '
-				"Australia",
-				"Austria",
-				"Belgium",
-				"Bulgaria",
-				"Canada",
-				"Croatia",
-				"Cyprus",
-				"Czech Republic",
-				"Denmark",
-				"Estonia",
-				"Finland",
-				"France",
-				"Germany",
-				"Greece",
-				"Hong Kong",
-				"Hungary",
-				"Ireland",
-				"Israel",
-				"Italy",
-				"Japan",
-				"Kenya",
-				"Latvia",
-				"Liechtenstein",
-				"Lithuania",
-				"Luxembourg",
-				"Malta",
-				"Mexico",
-				"Netherlands",
-				"New Zealand",
-				"Norway"';
-			
-				$query = "UPDATE #__mymuse_country set plugin='paypal' WHERE country_name IN ($paypal_countries)";
-				$db->setQuery($query);
-				$db->execute();	
-				
-			}
-		
-			//add EU bloc
-			$query = "SHOW COLUMNS FROM #__mymuse_country LIKE 'bloc'";
-			$db->setQuery($query);
-			if(!$col = $db->loadObject()){
-				$query = "ALTER TABLE `#__mymuse_country` ADD `bloc` TINYTEXT NOT NULL AFTER `id`  ";
-				$db->setQuery($query);
-				$db->execute();
-				$eu_countries = '
-				"AUT",
-"BEL",
-"BGR",
-"HRV",
-"CYP",
-"CZE",
-"DNK",
-"EST",
-"FIN",
-"FRA",
-"DEU",
-"GRC",
-"HUN",
-"IRL",
-"ITA",
-"LVA",
-"LTU",
-"LUX",
-"MLT",
-"NLD",
-"POL",
-"PRT",
-"ROM",
-"SVK",
-"SVN",
-"ESP",
-"SWE",
-"GBR"';
-			$query = "UPDATE #__mymuse_country set bloc='EU' WHERE country_3_code IN ($eu_countries)";
-			$db->setQuery($query);
-			$db->execute();
-			}
-			
-			// add table for product recommendations
-			$query = "CREATE TABLE IF NOT EXISTS `#__mymuse_product_recommend_xref` (
-  		`product_id` int(11) NOT NULL DEFAULT '0',
-  		`recommend_id` int(11) NOT NULL DEFAULT '0'
-		) ENGINE=MyISAM DEFAULT CHARSET=utf8;";
-		$db->setQuery($query);
-		$db->execute();
-		
-		//see if mymuse downloads table exists
-		$query = "SHOW TABLES LIKE '#__mymuse_downloads'";
-		$db->setQuery($query);
-		if(!$db->loadResult()){
-			//add the table
-			$query = "CREATE TABLE IF NOT EXISTS `#__mymuse_downloads` (
-  `id` int(11) NOT NULL AUTO_INCREMENT,
-  `user_id` int(11) NOT NULL DEFAULT '1',
-  `user_name` varchar(64) DEFAULT NULL,
-  `user_email` varchar(255) NOT NULL,
-  `order_id` int(11) NOT NULL,
-  `date` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `product_id` int(11) NOT NULL DEFAULT '1',
-  `product_filename` varchar(255) NOT NULL DEFAULT '',
-  PRIMARY KEY (`id`),
-  KEY `idx_product_filename` (`product_filename`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Download records';";
-			$db->setQuery($query);
-			$db->execute();
-			
-		}
-
-			
-			// see if mymuse_downloads table needs updating
-			$query = "SHOW COLUMNS FROM #__mymuse_downloads LIKE 'user_email'";
-			$db->setQuery ( $query );
-			if (! $col = $db->loadObject ()) {
-				$query = "ALTER TABLE `#__mymuse_downloads` ADD `user_email` VARCHAR(255)";
-				$db->setQuery ( $query );
-				if(!$db->execute ()){
-					$app->enqueueMessage($query, 'error');
-				}
-			}
-			$query = "SHOW COLUMNS FROM #__mymuse_downloads LIKE 'order_id'";
-			$db->setQuery ( $query );
-			if (! $col = $db->loadObject ()) {
-				$query = "ALTER TABLE `#__mymuse_downloads` ADD `order_id` INT( 11 ) NOT NULL AFTER `user_email`";
-				$db->setQuery ( $query );
-				if(!$db->execute ()){
-					$app->enqueueMessage($query, 'error');
-				}
-			}
-			
-			// see if mymuse_orders table needs updating
-			$query = "SHOW COLUMNS FROM #__mymuse_order LIKE 'shopper_group_discount'";
-			$db->setQuery ( $query );
-			if (! $col = $db->loadObject ()) {
-				$query = "ALTER TABLE `#__mymuse_order` ADD `shopper_group_discount` decimal(10,2) NOT NULL DEFAULT '0.00' AFTER `discount`";
-				$db->setQuery ( $query );
-				$db->execute ();
-			}
-			
-			$query = "SHOW COLUMNS FROM #__mymuse_order LIKE 'licence'";
-			$db->setQuery ( $query );
-			if (! $col = $db->loadObject ()) {
-				$query = "ALTER TABLE `#__mymuse_order` ADD `licence` varchar(255) NOT NULL AFTER `ordering`  ";
-				$db->setQuery ( $query );
-				if(!$db->execute ()){
-					$app->enqueueMessage($query, 'error');
-				}
-			}
-			
-			// see if notes field needs updating
-			$query = "SHOW FIELDS FROM `#__mymuse_order` WHERE Field = 'notes'";
-			$db->setQuery ( $query );
-			$res = $db->loadObject ();
-			if ($res->Type != 'text') {
-				
-				$query = "ALTER TABLE `#__mymuse_order` CHANGE `notes` `notes` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL";
-				$db->setQuery ( $query );
-				$db->execute ();
-			}
-			
-			// June 2017 see if product->file_name field needs updating
-			$query = "SHOW FIELDS FROM `#__mymuse_product` WHERE Field = 'file_name'";
-			$db->setQuery ( $query );
-			$res = $db->loadObject ();
-			if ($res->Type != 'text') {
-				$query = "ALTER TABLE `#__mymuse_product` CHANGE `file_name` `file_name` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT NULL";
-				$db->setQuery ( $query );
-				if(!$db->execute ()){
-					$app->enqueueMessage($query, 'error');
-				}
-			}
-			
-			// Nov 2015 3.4.0 see if mymuse_product table needs artistid
-			$query = "SHOW COLUMNS FROM #__mymuse_product LIKE 'artistid'";
-			$db->setQuery ( $query );
-			if (! $col = $db->loadObject ()) {
-				$query = "ALTER TABLE `#__mymuse_product` ADD `artistid` INT( 11 ) NOT NULL AFTER `catid`";
-				$db->setQuery ( $query );
-				$db->execute ();
-				$query = "UPDATE `#__mymuse_product` SET `artistid` = `catid` WHERE 1";
-				$db->setQuery ( $query );
-				if(!$db->execute ()){
-					$app->enqueueMessage($query, 'error');
-				}
-			}
-			
-			// Mar 2017 update old product names to json encoded strings
-			$query = "SELECT * FROM #__mymuse_product WHERE product_downloadable = '1' AND file_name != '' AND file_name NOT LIKE '{%}'";
-			$db->setQuery ( $query );
-			$res = $db->loadObjectList ();
-			foreach ( $res as $r ) {
-				$current_files = json_decode ( $r->file_name );
-				if (! is_array ( $current_files )) {
-					$ext = MyMuseHelper::getExt ( $r->file_name );
-					$current_files [] = ( object ) array (
-							'file_name' => $r->file_name,
-							'file_length' => $r->file_length,
-							'file_ext' => $ext,
-							'file_alias' => $r->alias,
-							'file_downloads' => $r->file_downloads 
-					);
-				}
-				$query = "UPDATE #__mymuse_product SET file_name=" . $db->quote ( json_encode ( $current_files ) ) . " WHERE id='" . $r->id . "'";
-				$db->setQuery ( $query );
-				if(!$db->execute ()){
-					$app->enqueueMessage($query, 'error');
-				}
-			}
 				
 			// DEFAULT DOWNLOAD DIRECTORY
 			$name = JText::_ ( "MYMUSE_MAKE_DOWNLOAD_DIR" );
-			$download_dir = JPATH_ROOT . DS . "images" . DS . "A_MyMuseDownloads";
+			$download_dir = JPATH_ROOT . DS . "images" . DS . "mymuse" . DS . "mp3";
 			if (! file_exists ( $download_dir )) {
 				if (! JFolder::create ( $download_dir )) {
 					$alt = JText::_ ( "MYMUSE_FAILED" );
@@ -603,7 +375,7 @@ class com_mymuseInstallerScript
 			
 			// DEFAULT PREVIEW DIRECTORY
 			$name = JText::_ ( "MYMUSE_MAKE_PREVIEW_DIR" );
-			$preview_dir = JPATH_ROOT . DS . "images" . DS . "A_MyMusePreviews";
+			$preview_dir = JPATH_ROOT . DS . "images" . DS . "mymuse" . DS . "previews";
 			if (! file_exists ( $preview_dir )) {
 				if (! JFolder::create ( $preview_dir )) {
 					$alt = JText::_ ( "MYMUSE_FAILED" );
@@ -625,29 +397,6 @@ class com_mymuseInstallerScript
 					'status' => $astatus 
 			);
 			
-			// DIRECTORY FOR GRAPHICS
-			$name = JText::_ ( "MYMUSE_MAKE_ALBUM_DIR" );
-			$album_dir = JPATH_ROOT . DS . "images" . DS . "A_MyMuseImages";
-			if (! file_exists ( $album_dir )) {
-				if (! JFolder::create ( $album_dir )) {
-					$alt = JText::_ ( "MYMUSE_FAILED" );
-					$astatus = 0;
-					$message = JText::_ ( "MYMUSE_COULD_NOT_MAKE_DIR" ) . "<br />$album_dir";
-				} else {
-					$alt = JText::_ ( "MYMUSE_INSTALLED" );
-					$astatus = 1;
-					$message = JText::_ ( "MYMUSE_DIR_CREATED" ) . " " . $album_dir;
-				}
-			} else {
-				$alt = JText::_ ( "MYMUSE_INSTALLED" );
-				$astatus = 1;
-				$message = JText::_ ( "MYMUSE_DIR_EXISTS" );
-			}
-			$actions [] = array (
-					'name' => $name,
-					'message' => $message,
-					'status' => $astatus 
-			);
 			
 			// copy index.html to Download Dir
 			$name = Jtext::_ ( "index.html to Download Dir" );
@@ -704,22 +453,6 @@ class com_mymuseInstallerScript
 					'status' => $astatus 
 			);
 			
-			// copy index.html to Album Dir
-			$name = Jtext::_ ( "MYMUSE_COPY_INDEX_TO_ALBUM_DIR" );
-			if (! JFile::copy ( JPATH_ROOT . DS . "administrator" . DS . "components" . DS . "com_mymuse" . DS . "assets" . DS . "index.html", $album_dir . DS . "index.html" )) {
-				$alt = JText::_ ( "MYMUSE_FAILED" );
-				$astatus = 0;
-				$message = JText::_ ( "MYMUSE_COULD_NOT_COPY_FILE" );
-			} else {
-				$alt = JText::_ ( "MYMUSE_INSTALLED" );
-				$astatus = 1;
-				$message = JText::_ ( "MYMUSE_FILE_COPIED" );
-			}
-			$actions [] = array (
-					'name' => $name,
-					'message' => $message,
-					'status' => $astatus 
-			);
 			
 			// MOVE LOGO
 			$name = JText::_ ( "MYMUSE_COPY_LOGO" ) . " /images/logo150sq.jpg";
@@ -749,7 +482,7 @@ class com_mymuseInstallerScript
 		if(!$this->already_installed && $type == "install"){
 	
 			// update store download dir
-			$download_dir =  JPATH_ROOT.DS."images".DS."A_MyMuseDownloads";
+			$download_dir =  JPATH_ROOT.DS."images".DS."mymuse".DS."mp3";
 			$name = JText::_("MYMUSE_UPDATING_STORE");
 			$query = "SELECT params FROM #__mymuse_store WHERE id='1'";
 			$db->setQuery($query);
@@ -816,9 +549,7 @@ class com_mymuseInstallerScript
 			$name = JText::_("MYMUSE_ENABLE_PLUGINS");
 			$query = "UPDATE #__extensions SET enabled=1 WHERE
 			element='payment_offline' OR
-			element='shipping_standard' OR
 			element='audio_jplayer' OR
-			element='video_jplayer' OR
 			element='payment_paypal' OR
 			element='search_mymuse'
 			";

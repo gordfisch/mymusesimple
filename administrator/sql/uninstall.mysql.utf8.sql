@@ -26,10 +26,8 @@ DROP TABLE IF EXISTS `#__mymuse_order_item`;
 DROP TABLE IF EXISTS `#__mymuse_order_status`;
 
 DROP TABLE IF EXISTS `#__mymuse_order_payment`;
-DROP TABLE IF EXISTS `#__mymuse_order_shipping`;
 DROP TABLE IF EXISTS `#__mymuse_product`;
-DROP TABLE IF EXISTS `#__mymuse_product_attribute`;
-DROP TABLE IF EXISTS `#__mymuse_product_attribute_sku`;
+
 DROP TABLE IF EXISTS `#__mymuse_product_category_xref`;
 DROP TABLE IF EXISTS `#__mymuse_product_recommend_xref`;
 DROP TABLE IF EXISTS `#__mymuse_product_file`;
@@ -39,5 +37,4 @@ DROP TABLE IF EXISTS `#__mymuse_shopper_group`;
 DROP TABLE IF EXISTS `#__mymuse_state`;
 DROP TABLE IF EXISTS `#__mymuse_store`;
 DROP TABLE IF EXISTS `#__mymuse_tax_rate`;
-DELETE FROM `#_assets` WHERE name LIKE "%mymuse%";
 

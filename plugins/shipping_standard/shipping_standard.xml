@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="plugin" group="mymuse">
+	<name>plg_mymuse_shipping_standard</name>
+	<author>Arboreta</author>
+	<creationDate>June 2013</creationDate>
+	<copyright>Copyright (C) 2013 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>3.2.0</version>
+	<description>MYMUSE_SHIPPING_STANDARD_DESC</description>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_shipping_standard.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.plg_mymuse_shipping_standard.sys.ini</language>
+	</languages>
+	<files>
+		<filename plugin="shipping_standard">shipping_standard.php</filename>
+	</files>
+	<config>
+		<fields name="params">
+		<fieldset name="MYMUSE_SHIPSTANDARD_OPTIONS">
+			<field name="max_shipping" type="text" size="35" default="0.00" 
+			label="MYMUSE_MAX_SHIPPING_LABEL" 
+			description="MYMUSE_MAX_SHIPPING_DESC"
+		/>
+		<field name="translate" type="radio" default="0" 
+		label="MYMUSE_SHIPSTANDARD_TRANSLATE_LABEL" 
+		description="MYMUSE_SHIPSTANDARD_TRANSLATE_DESC">
+	 			<option value="0">JNO</option>
+	 			<option value="1">JYES</option>
+	 	</field>
+		</fieldset>
+		
+		
+		<fieldset name="SHIPPER1">
+			
+		<field name="ship_1_active" type="radio" default="1" 
+		label="MYMUSE_SHIPACTIVE_1_LABEL" 
+		description="MYMUSE_SHIPACTIVE_1_DESC">
+	 			<option value="0">JNO</option>
+	 			<option value="1">JYES</option>
+	 	</field>
+	 	
+		<field name="ship_carrier_1" type="text" size="35" default="Shipper" 
+		label="MYMUSE_SHIPCARRIER_1_LABEL" 
+		description="MYMUSE_SHIPCARRIER_1_DESC"
+		/>
+		
+		<field name="ship_method_1" type="text" size="35" default="Ground" 
+		label="MYMUSE_SHIPMETHOD_1_LABEL" 
+		description="MYMUSE_SHIPMETHOD_1_DESC"
+		/>
+		
+		<field name="ship_handling_1" type="text" size="20" default="5.00" 
+		label="MYMUSE_SHIPHANDLING_1_LABEL" 
+		description="MYMUSE_SHIPHANDLING_1_DESC"
+		/>
+		
+		<field name="ship_additional_1" type="text" size="20" default="1.00" 
+		label="MYMUSE_SHIPADDITI0NAL_1_LABEL" 
+		description="MYMUSE_SHIPADDITI0NAL_1_DESC"
+		/>
+		<field name="ship_all_countries_1" type="radio" default="1" 
+		label="MYMUSE_SHIPALLCOUNTRIES_1_LABEL" 
+		description="MYMUSE_SHIPALLCOUNTRIES_1_DESC">
+	 			<option value="0">JNO</option>
+	 			<option value="1">JYES</option>
+	 	</field>
+		<field
+				name="ship_countries_1"
+				type="sql"
+				description="MYMUSE_SHIPCOUNTRY_1_DESC"
+				default="CAN"
+				multiple="true" 
+				size="8"
+				key_field="ship_countries_1"
+				value_field="value"
+				label="MYMUSE_SHIPCOUNTRY_1_LABEL"
+				message="MYMUSE_SHIPCOUNTRY_1_MESSAGE"
+				query="SELECT  '' as ship_countries_1 ,' none' as value UNION 
+				SELECT country_3_code as ship_countries_1, country_name as value FROM #__mymuse_country 
+				ORDER by value"
+			/>
+		
+		</fieldset>
+		
+		<fieldset name="SHIPPER2">
+		
+		<field name="ship_2_active" type="radio" default="0" 
+		label="MYMUSE_SHIPACTIVE_1_LABEL" 
+		description="MYMUSE_SHIPACTIVE_1_DESC">
+	 			<option value="0">JNO</option>
+	 			<option value="1">JYES</option>
+	 	</field>
+	 	
+		<field name="ship_carrier_2" type="text" size="35" default="Shipper" 
+		label="MYMUSE_SHIPCARRIER_1_LABEL" 
+		description="MYMUSE_SHIPCARRIER_1_DESC"
+		/>
+		
+		<field name="ship_method_2" type="text" size="35" default="Priority" 
+		label="MYMUSE_SHIPMETHOD_1_LABEL" 
+		description="MYMUSE_SHIPMETHOD_1_DESC"
+		/>
+		
+		<field name="ship_handling_2" type="text" size="20" default="20.00" 
+		label="MYMUSE_SHIPHANDLING_1_LABEL" 
+		description="MYMUSE_SHIPHANDLING_1_DESC"
+		/>
+		
+		<field name="ship_additional_2" type="text" size="20" default="2.00" 
+		label="MYMUSE_SHIPADDITI0NAL_1_LABEL" 
+		description="MYMUSE_SHIPADDITI0NAL_1_DESC"
+		/>
+		<field name="ship_all_countries_2" type="radio" default="1" 
+		label="MYMUSE_SHIPALLCOUNTRIES_1_LABEL" 
+		description="MYMUSE_SHIPALLCOUNTRIES_1_DESC">
+	 			<option value="0">JNO</option>
+	 			<option value="1">JYES</option>
+	 	</field>
+		<field
+				name="ship_countries_2"
+				type="sql"
+				description="MYMUSE_SHIPCOUNTRY_1_DESC"
+				default="CAN"
+				multiple="true" 
+				size="8"
+				key_field="ship_countries_2"
+				value_field="value"
+				label="MYMUSE_SHIPCOUNTRY_1_LABEL"
+				message="MYMUSE_SHIPCOUNTRY_1_MESSAGE"
+				query="SELECT  '' as ship_countries_2 ,' none' as value UNION 
+				SELECT country_3_code as ship_countries_2, country_name as value FROM #__mymuse_country 
+				ORDER by value"
+			/>
+			
+		</fieldset>
+		
+		<fieldset name="SHIPPER3">
+		
+		<field name="ship_3_active" type="radio" default="0" 
+		label="MYMUSE_SHIPACTIVE_1_LABEL" 
+		description="MYMUSE_SHIPACTIVE_1_DESC">
+	 			<option value="0">JNO</option>
+	 			<option value="1">JYES</option>
+	 	</field>
+		<field name="ship_carrier_3" type="text" size="35" default="Shipper" 
+		label="MYMUSE_SHIPCARRIER_1_LABEL" 
+		description="MYMUSE_SHIPCARRIER_1_DESC"
+		/>
+		
+		<field name="ship_method_3" type="text" size="35" default="Overnight" 
+		label="MYMUSE_SHIPMETHOD_1_LABEL" 
+		description="MYMUSE_SHIPMETHOD_1_DESC"
+		/>
+		
+		<field name="ship_handling_3" type="text" size="20" default="30.00" 
+		label="MYMUSE_SHIPHANDLING_1_LABEL" 
+		description="MYMUSE_SHIPHANDLING_1_DESC"
+		/>
+		
+		<field name="ship_additional_3" type="text" size="20" default="3.00" 
+		label="MYMUSE_SHIPADDITI0NAL_1_LABEL" 
+		description="MYMUSE_SHIPADDITI0NAL_1_DESC"
+		/>
+		<field name="ship_all_countries_3" type="radio" default="1" 
+		label="MYMUSE_SHIPALLCOUNTRIES_1_LABEL" 
+		description="MYMUSE_SHIPALLCOUNTRIES_1_DESC">
+	 			<option value="0">JNO</option>
+	 			<option value="1">JYES</option>
+	 	</field>
+		<field
+				name="ship_countries_3"
+				type="sql"
+				description="MYMUSE_SHIPCOUNTRY_1_DESC"
+				default="CAN"
+				multiple="true" 
+				size="8"
+				key_field="ship_countries_3"
+				value_field="value"
+				label="MYMUSE_SHIPCOUNTRY_1_LABEL"
+				message="MYMUSE_SHIPCOUNTRY_1_MESSAGE"
+				query="SELECT  '' as ship_countries_3 ,' none' as value UNION 
+				SELECT country_3_code as ship_countries_3, country_name as value FROM #__mymuse_country 
+				ORDER by value"
+			/>
+			
+		</fieldset>
+			
+		<fieldset name="SHIPPER4">
+		
+		<field name="ship_4_active" type="radio" default="0" 
+		label="MYMUSE_SHIPACTIVE_1_LABEL" 
+		description="MYMUSE_SHIPACTIVE_1_DESC">
+	 			<option value="0">JNO</option>
+	 			<option value="1">JYES</option>
+	 	</field>
+		<field name="ship_carrier_4" type="text" size="35" default="Shipper" 
+		label="MYMUSE_SHIPCARRIER_1_LABEL" 
+		description="MYMUSE_SHIPCARRIER_1_DESC"
+		/>
+		
+		<field name="ship_method_4" type="text" size="35" default="Overnight" 
+		label="MYMUSE_SHIPMETHOD_1_LABEL" 
+		description="MYMUSE_SHIPMETHOD_1_DESC"
+		/>
+		
+		<field name="ship_handling_4" type="text" size="20" default="30.00" 
+		label="MYMUSE_SHIPHANDLING_1_LABEL" 
+		description="MYMUSE_SHIPHANDLING_1_DESC"
+		/>
+		
+		<field name="ship_additional_4" type="text" size="20" default="3.00" 
+		label="MYMUSE_SHIPADDITI0NAL_1_LABEL" 
+		description="MYMUSE_SHIPADDITI0NAL_1_DESC"
+		/>
+		<field name="ship_all_countries_4" type="radio" default="1" 
+		label="MYMUSE_SHIPALLCOUNTRIES_1_LABEL" 
+		description="MYMUSE_SHIPALLCOUNTRIES_1_DESC">
+	 			<option value="0">JNO</option>
+	 			<option value="1">JYES</option>
+	 	</field>
+		<field
+				name="ship_countries_4"
+				type="sql"
+				description="MYMUSE_SHIPCOUNTRY_1_DESC"
+				default="CAN"
+				multiple="true" 
+				size="8"
+				key_field="ship_countries_4"
+				value_field="value"
+				label="MYMUSE_SHIPCOUNTRY_1_LABEL"
+				message="MYMUSE_SHIPCOUNTRY_1_MESSAGE"
+				query="SELECT country_3_code as ship_countries_4, country_name as value FROM #__mymuse_country 
+				ORDER by value"
+			/>
+			
+			</fieldset>
+		</fields>
+	</config>
+<updateservers>
+    <server type="extension" priority="1"
+        name="Plug MyMuse Shipping Standard">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=47</server>
+</updateservers>
+</extension>
