@@ -294,6 +294,18 @@
 				<option value="1">MYMUSE_BY_FORMAT</option>
             </field>
             <field
+                name="my_formats"
+                type="hidden"
+                label="MYMUSE_SELLING_FORMATS_LABEL"
+                description="MYMUSE_SELLING_FORMATS_DESC"
+                class="btn-group"
+                default="mp3">
+                <option value="mp3">MYMUSE_ARIST_PRODUCT</option>
+                <option value="wav">MYMUSE_BY_FORMAT</option>
+            </field>
+
+            
+            <field
                 name="my_use_zip"
                 type="radio"
                 label="MYMUSE_USE_ZIP_LABEL"
@@ -323,120 +335,18 @@
                 <option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
             </field>
-            
-            <!--
-        	<field
-                name="my_use_s3"
-                type="radio"
-                label="MYMUSE_USE_S3_LABEL"
-                description="MYMUSE_USE_S3_DESC"
-                class="btn-group"
-                default="0">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>
-            </field>
-
-        	<field 
-        		name="my_s3web" 
-        		type="text" 
-        		default="" 
-        		label="MYMUSE_CONFIG_S3_WEB_LABEL" 
-        		description="MYMUSE_CONFIG_S3_WEB_DESC" 
-        		size="100" 
-        		filter="raw" 
-        		showon="my_use_s3:1"
-        	/>
-        	<field 
-        		name="my_s3access" 
-        		type="text" 
-        		default="" 
-        		label="MYMUSE_CONFIG_S3_ACCESSKEY_LABEL" 
-        		description="MYMUSE_CONFIG_S3_ACCESSKEY_DESC" 
-        		size="50" 
-        		filter="raw" 
-        		showon="my_use_s3:1"
-        	/>
-			<field 
-				name="my_s3secret" 
-				type="password" 
-				default="" 
-				label="MYMUSE_CONFIG_S3_SECRETKEY_LABEL" 
-				description="MYMUSE_CONFIG_S3_SECRETKEY_DESC" 
-				size="50" 
-				filter="raw" 
-				showon="my_use_s3:1"
-			/>
-			<field 
-        		name="my_s3region" 
-        		type="text" 
-        		default="" 
-        		label="MYMUSE_CONFIG_S3_REGION_LABEL" 
-        		description="MYMUSE_CONFIG_S3_REGION_DESC" 
-        		size="50" 
-        		filter="raw" 
-        		showon="my_use_s3:1"
-        	/>
-
-			<field 
-				name="my_s3perms" type="list" default="private"
-				label="MYMUSE_CONFIG_S3_PERMS_LABEL"
-				description ="MYMUSE_CONFIG_S3_PERMS_DESC"
-				showon="my_use_s3:1"
-				>
-				<option value="private">MYMUSE_CONFIG_S3_PERMS_PRIVATE</option>
-				<option value="public-read">MYMUSE_CONFIG_S3_PERMS_PUBLIC_READ</option>
-				<option value="public-read-write">MYMUSE_CONFIG_S3_PERMS_PUBLIC_READ_WRITE</option>
-				<option value="authenticated-read">MYMUSE_CONFIG_S3_PERMS_ACL_AUTHENTICATED_READ</option>
-				<option value="bucket-owner-read">MYMUSE_CONFIG_S3_PERMS_ACL_BUCKET_OWNER_READ</option>
-				<option value="bucket-owner-full-control">MYMUSE_CONFIG_S3_PERMS_ACL_BUCKET_OWNER_FULL_CONTROL</option>
-			</field>
-			<field 
-				name="my_s3time" type="list" default="900"
-				label="MYMUSE_CONFIG_S3_TIME_LABEL" desc="MYMUSE_CONFIG_S3_TIME_DESC"
-				showon="my_use_s3:1"
-				>
-				<option value="60">MYMUSE_CONFIG_S3_TIME_1MINUTE</option>
-				<option value="900">MYMUSE_CONFIG_S3_TIME_15MINUTES</option>
-				<option value="3600">MYMUSE_CONFIG_S3_TIME_1HOUR</option>
-				<option value="21600">MYMUSE_CONFIG_S3_TIME_6HOURS</option>
-				<option value="43200">MYMUSE_CONFIG_S3_TIME_12HOURS</option>
-				<option value="86400">MYMUSE_CONFIG_S3_TIME_1DAY</option>
-				<option value="604800">MYMUSE_CONFIG_S3_TIME_7DAYS</option>
-			</field>
-           
             <field
                 name="my_encode_filenames"
-                type="radio"
+                type="hidden"
                 label="MYMUSE_DOWNLOADS_ENCODE_LABEL"
                 description="MYMUSE_DOWNLOADS_ENCODE_DESC"
                 class="btn-group"
                 default="0">
                 <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>
+                <option value="1">MYMUSE_YES</option>
             </field>
-            <field
-                name="my_free_downloads"
-                type="radio"
-                label="MYMUSE_FREE_DOWNLOADS_LABEL"
-                description="MYMUSE_FREE_DOWNLOADS_DESC"
-                class="btn-group"
-                default="0">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>
-            </field>
-         
-            <field
-                name="my_play_downloads"
-                type="radio"
-                label="MYMUSE_PLAY_DOWNLOADS_LABEL"
-                description="MYMUSE_PLAY_DOWNLOADS_DESC"
-                class="btn-group"
-                default="0">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>
-            </field>
-            -->
-
+            
+   
             <field
                 name="my_use_string_url_safe"
                 type="hidden"
@@ -448,206 +358,7 @@
                 <option value="1">MYMUSE_YES</option>
             </field>
 	</fieldset>
-    <!--
-	<fieldset name="uploads" label="MYMUSE_UPLOADS_LABEL">
-  		<field
-                name="my_use_string_url_safe"
-                type="radio"
-                label="MYMUSE_STR_URL_SAFE_LABEL"
-                description="MYMUSE_STR_URL_SAFE_DESC"
-                class="btn-group"
-                default="1">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>
-            </field>
-		<field 
-		  		name="my_plupload_runtime" 
-		  		type="list" 
-		  		label="MYMUSE_UPLOADER_RUNTIME_LABEL"
-				description="MYMUSE_UPLOADER_RUNTIME_LABEL_DESC" 
-				class="btn-group"
-				default="full">
-				<option value="full">MYMUSE_UPLOADER_RUNTIME_ALL</option>
-				<option value="html5">MYMUSE_UPLOADER_RUNTIME_HTML5</option>
-				<option value="flash">MYMUSE_UPLOADER_RUNTIME_FLASH</option>
-				<option value="gears">MYMUSE_UPLOADER_RUNTIME_GEARS</option>
-				<option value="silverlight">MYMUSE_UPLOADER_RUNTIME_SILVERLIGHT</option>
-				<option value="browserplus">MYMUSE_UPLOADER_RUNTIME_BROWSERPLUS</option>
-				<option value="html4">MYMUSE_UPLOADER_RUNTIME_HTML4</option>
-		  </field>
-		  <field
-                name="my_plupload_max_file_size"
-                type="text"
-                label="MYMUSE_UPLOADER_MAX_FILE_SIZE"
-                description="MYMUSE_UPLOADER_MAX_FILE_SIZE_DESC"
-                class="inputbox"
-                size="4"
-                default="100"
-           />
-           <field
-                name="my_plupload_chunk_size"
-                type="text"
-                label="MYMUSE_UPLOADER_CHUNK_SIZE"
-                description="MYMUSE_UPLOADER_CHUNK_SIZE_DESC"
-                class="inputbox"
-                size="4"
-                default="0"
-           />
-           <field 
-		  		name="my_plupload_chunk_unit" 
-		  		type="list" 
-		  		label="MYMUSE_UPLOADER_CHUNK_UNIT"
-				description="MYMUSE_UPLOADER_CHUNK_UNIT_DESC" 
-				class="btn-group"
-				default="mb">
-				<option value="b">B</option>
-				<option value="kb">KB</option>
-				<option value="mb">MB</option>
 
-		  </field>
-		  <field
-                name="my_plupload_rename"
-                type="radio"
-                label="MYMUSE_UPLOADER_RENAME"
-                description="MYMUSE_UPLOADER_RENAME_DESC"
-                class="btn-group"
-                default="0">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>
-            </field>
-            <field
-                name="my_plupload_image_file_extensions"
-                type="text"
-                label="MYMUSE_UPLOADER_IMAGE_FILE_EXTENSIONS"
-                description="MYMUSE_UPLOADER_IMAGE_FILE_EXTENSIONS_DESC"
-                class="inputbox"
-                size="100"
-                default="gif,png,jpg,jpeg,GIF,PNG,JPG,JPEG"
-           />
-           <field
-                name="my_plupload_other_file_extensions"
-                type="text"
-                label="MYMUSE_UPLOADER_OTHER_FILE_EXTENSIONS"
-                description="MYMUSE_UPLOADER_OTHER_FILE_EXTENSIONS_DESC"
-                class="inputbox"
-                size="100"
-                default="zip,rar,pdf,doc,txt,mp3,m4a,oga,ogg,webma,flac,webmv,ogv,m4v,wav,MP3,M4A,OGA,OGG,WEBMA,FLAC,WEBMV,OGV,M4V,ZIP,RAR,PDF,DOC,TXT,WAV"
-           />
-           <field
-                name="my_plupload_unique_names"
-                type="radio"
-                label="MYMUSE_UPLOADER_UNIQUE_NAMES"
-                description="MYMUSE_UPLOADER_UNIQUE_NAMES_DESC"
-                class="btn-group"
-                default="0">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>
-            </field>
-             <field
-                name="my_plupload_enable_image_resizing"
-                type="radio"
-                label="MYMUSE_UPLOADER_ENABLE_IMAGE_RESIZING"
-                description="MYMUSE_UPLOADER_ENABLE_IMAGE_RESIZING_DESC"
-                class="btn-group"
-                default="0">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>
-            </field>
-            <field
-                name="my_plupload_resize_width"
-                type="text"
-                label="MYMUSE_UPLOADER_RESIZE_WIDTH"
-                description="MYMUSE_UPLOADER_RESIZE_WIDTH_DESC"
-                class="inputbox"
-                size="4"
-                default="640"
-           />
-           <field
-                name="my_plupload_resize_height"
-                type="text"
-                label="MYMUSE_UPLOADER_RESIZE_HEIGHT"
-                description="MYMUSE_UPLOADER_RESIZE_HEIGHT_DESC"
-                class="inputbox"
-                size="4"
-                default="480"
-           />
-           <field
-                name="my_plupload_resize_quality"
-                type="text"
-                label="MYMUSE_UPLOADER_RESIZE_QUALITY"
-                description="MYMUSE_UPLOADER_RESIZE_QUALITY_DESC"
-                class="inputbox"
-                size="4"
-                default="90"
-           />
-           <field
-                name="my_plupload_enable_uploader_log"
-                type="radio"
-                label="MYMUSE_UPLOADER_ENABLE_LOG"
-                description="MYMUSE_UPLOADER_ENABLE_LOG_DESC"
-                class="btn-group"
-                default="0">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>
-            </field>
-            
-           
-    </fieldset>
-	<fieldset name="physical" label="MYMUSE_PHYSICAL_LABEL">
-		<field
-                name="my_use_shipping"
-                type="radio"
-                label="MYMUSE_USE_SHIPPING_LABEL"
-                description="MYMUSE_USE_SHIPPING_DESC"
-                class="btn-group"
-                default="0">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>
-        </field>
-        <field
-                name="my_add_shipping_auto"
-                type="radio"
-                label="MYMUSE_ADD_SHIPPING_AUTO_LABEL"
-                description="MYMUSE_ADD_SHIPPING_AUTO_DESC"
-                class="btn-group"
-                default="0">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>
-        </field>
-        
-        <field
-                name="my_use_stock"
-                type="radio"
-                label="MYMUSE_USE_STOCK_LABEL"
-                description="MYMUSE_USE_STOCK_DESC"
-                class="btn-group"
-                default="0">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>
-        </field>
-        <field
-                name="my_check_stock"
-                type="radio"
-                label="MYMUSE_CHECK_STOCK_LABEL"
-                description="MYMUSE_CHECK_STOCK_DESC"
-                class="btn-group"
-                default="0">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>
-        </field>
-        <field
-                name="my_add_stock_zero"
-                type="radio"
-                label="MYMUSE_ADD_STOCK_ZERO_LABEL"
-                description="MYMUSE_ADD_STOCK_ZERO_DESC"
-                class="btn-group"
-                default="0">
-                <option value="0">MYMUSE_NO</option>
-				<option value="1">MYMUSE_YES</option>
-        </field>
-
-	</fieldset>
--->
 	<fieldset name="store" label="MYMUSE_STORE_OPTIONS_LABEL">
 			
 		<field 

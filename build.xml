@@ -54,10 +54,10 @@
                         
 				<!--  languages -->
 
-                <copy file="${src}/administrator/language/en-GB/en-GB.com_mymuse.sys.ini"
+                <copy file="${src}/administrator/language/en-GB/en-GB.com_mymusesimple.sys.ini"
                         todir="${test}/administrator/language/en-GB" />
                         
-                <copy file="${src}/administrator/language/en-GB/en-GB.com_mymuse.ini"
+                <copy file="${src}/administrator/language/en-GB/en-GB.com_mymusesimple.ini"
                         todir="${test}/administrator/language/en-GB" />
                         
                 <copy file="${src}/site/language/en-GB/en-GB.com_mymuse.ini"

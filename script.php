@@ -482,7 +482,7 @@ class com_mymuseInstallerScript
 		if(!$this->already_installed && $type == "install"){
 	
 			// update store download dir
-			$download_dir =  JPATH_ROOT.DS."images".DS."mymuse".DS."mp3";
+			$download_dir =  JPATH_ROOT.DS."images".DS."mymuse". DS . "mp3";
 			$name = JText::_("MYMUSE_UPDATING_STORE");
 			$query = "SELECT params FROM #__mymuse_store WHERE id='1'";
 			$db->setQuery($query);
@@ -542,12 +542,42 @@ class com_mymuseInstallerScript
 					}
 				}
 			}
-				
 			$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+
+
+			//UPDATE MEDIA MANAGER TO ALLOW MP3's
+			$name = JText::_("MYMUSE_UPDATING_MEDIA_MANAGER");
+			$query = "SELECT params FROM #__extensions WHERE element='com_media'";
+			$db->setQuery($query);
+			$media_params = json_decode($db->loadResult(), TRUE);
+			if($media_params){
+				$media_params['upload_extensions'] = $media_params['upload_extensions'].",mp3,MP3";
+				$registry = new JRegistry;
+				$registry->loadArray($media_params);
+				$new_params = (string)$registry;
+				
+				$query = "UPDATE #__extensions set ";
+				$query .= "params='$new_params' WHERE element='com_media'
+				";
+
+				$db->setQuery($query);
+				if(!$db->execute()){
+					$alt = JText::_( "MYMUSE_FAILED" );
+					$astatus = 0;
+					$message =  JText::_("MYMUSE_PROBLEM_UPDATING_MEDIA_MANAGER").$db->_errorMsg;
+				}else{
+					$alt = JText::_( "MYMUSE_INSTALLED" );
+					$astatus = 1;
+					$message =  JText::_("MYMUSE_MEDIA_MANAGER_UPDATED");
+				}
+			}
+			$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
+			
 			
 			//UPDATE PLUGINS
 			$name = JText::_("MYMUSE_ENABLE_PLUGINS");
 			$query = "UPDATE #__extensions SET enabled=1 WHERE
+			element='mymuse' OR
 			element='payment_offline' OR
 			element='audio_jplayer' OR
 			element='payment_paypal' OR

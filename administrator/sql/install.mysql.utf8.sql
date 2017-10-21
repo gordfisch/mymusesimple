@@ -517,8 +517,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product_file` (
   `file_preview_3` varchar(255) NOT NULL DEFAULT '',
   `file_preview_4` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
-  KEY `idx_product_id` (`product_id`),
-  KEY `idx_file` (`file`)
+  KEY `idx_product_id` (`product_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 
@@ -563,7 +562,11 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `product_publisher` varchar(255) NOT NULL,
   `product_producer` varchar(255) NOT NULL,
   `product_studio` varchar(255) NOT NULL,
-
+  `file` JSON NULL,
+  `file_preview` varchar(255) NOT NULL DEFAULT '',
+  `file_preview_2` varchar(255) NOT NULL DEFAULT '',
+  `file_preview_3` varchar(255) NOT NULL DEFAULT '',
+  `file_preview_4` varchar(255) NOT NULL DEFAULT '',
   `featured` tinyint(3) unsigned NOT NULL DEFAULT '0' COMMENT 'Set if product is featured.',
   `language` char(7) NOT NULL COMMENT 'The language code for the article.',
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
@@ -589,40 +592,6 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
 -- Dumping data for table `#__mymuse_product`
 -- 
 
--- 
--- Table structure for table `#__mymuse_product_attribute`
--- 
-
-CREATE TABLE IF NOT EXISTS `#__mymuse_product_attribute` (
-  `id` int(11) NOT NULL auto_increment,
-  `product_id` int(11) NOT NULL default '0',
-  `product_attribute_sku_id` int(11) NOT NULL default '0',
-  `attribute_name` varchar(255) NOT NULL,
-  `attribute_value` char(255) default NULL,
-  PRIMARY KEY  (`id`)
-) DEFAULT CHARSET=utf8  ;
-
--- 
--- Dumping data for table `#__mymuse_product_attribute`
--- 
-
--- --------------------------------------------------------
-
--- 
--- Table structure for table `#__mymuse_product_attribute_sku`
--- 
-
-CREATE TABLE IF NOT EXISTS `#__mymuse_product_attribute_sku` (
-  `id` int(11) NOT NULL auto_increment,
-  `name` varchar(255) default NULL,
-  `product_parent_id` int(11) NOT NULL default '0',
-  `ordering` int(11) default NULL,
-  PRIMARY KEY  (`id`)
-) DEFAULT CHARSET=utf8 ;
-
--- 
--- Dumping data for table `#__mymuse_product_attribute_sku`
--- 
 
 -- --------------------------------------------------------
 

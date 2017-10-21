@@ -189,25 +189,9 @@ class MymuseTablestore extends JTable
     	}
     	
     	//if encode filenames has changed
-    	$my_encode_filenames = $form['params']['my_encode_filenames'];
-    	
-   
-    	if($my_encode_filenames !== $myparams->get('my_encode_filenames') ){
-    		echo "encode_filenames submitted: $my_encode_filenames , encode_filenames_params = ".$myparams->get('my_encode_filenames');
-    		if(!$this->change_encoding($my_encode_filenames)){
-    			$app->enqueueMessage("Encode Filenames has changed and I wasn't able to change the files!");
-    			//return false;
-    		}
-    	}
+    	$form['params']['my_encode_filenames'] = 0;
     	$jinput->set('jform[params][my_encode_filenames]', 0);
-    	
-    	//use zip does not work with S3,  my_use_s3 my_use_zip
-    	//print_pre($form); exit;
-    	if($form['params']['my_use_s3'] && $form['params']['my_use_zip']){
-    		$this->setError("Cannot use Zip All Files with Amazon S3! Make your own zip file, upload to S3 and make a track for it.");
-    		return false;
-    	}
-    	
+
     	
     	return parent::store($updateNulls);
     

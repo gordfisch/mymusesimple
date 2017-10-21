@@ -56,8 +56,8 @@
 			<folder>install</folder>
 		</files>
 		<languages folder="administrator">
-			<language tag="en-GB">language/en-GB/en-GB.com_mymuse.ini</language>
-			<language tag="en-GB">language/en-GB/en-GB.com_mymuse.sys.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_mymusesimple.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_mymusesimple.sys.ini</language>
 		</languages>
 	</administration>  
 	
@@ -102,9 +102,7 @@
 		<plugin name="mymuse_discount" folder="plugins/mymuse_discount">MyMuse Discount</plugin>
         <plugin name="payment_offline" folder="plugins/payment_offline">Payment Offline</plugin>
         <plugin name="payment_paypal" folder="plugins/payment_paypal">Payment Paypal</plugin>
-        <plugin name="payment_stripe" folder="plugins/payment_stripe">Payment Stripe</plugin>
 		<plugin name="searchmymuse" folder="plugins/searchmymuse">Search</plugin>
-		<plugin name="shipping_standard" folder="plugins/shipping_standard">Shipping Standard</plugin>
 		<plugin name="mymuse" folder="plugins/user_mymuse">MyMuse User Profile</plugin>
         <plugin name="mymusenoreg" folder="plugins/user_mymusenoreg">MyMuse No Registration Profile</plugin>
         <plugin name="redirectonlogin" folder="plugins/user_redirectonlogin">MyMuse Redirect on Login</plugin>
