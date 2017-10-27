@@ -212,13 +212,7 @@ class MyMuseUpdateHelper extends JObject
 						'product_special' => $p->product_special,
 						'product_discount' => $p->product_discount,
 						'reservation_fee' => $p->reservation_fee,
-						'file_length' => $p->file_length,
-						'file_name' => $p->file_name,
-						'file_downloads' => $p->file_downloads,
-						'file_contents' => $p->file_contents,
-						'file_type' => $p->file_type,
-						'file_preview' => $p->file_preview,
-						'file-time' => $p->file_time,
+						'file' => $p->file,
 						'featured' => $p->product_special,
 						'language' => '*',
 						'othercats' => $p->othercats,
@@ -462,14 +456,7 @@ function makeProductObject($p)
 						'product_in_stock' => $p->product_in_stock,
 						'product_special' => $p->product_special,
 						'product_discount' => $p->product_discount,
-						'reservation_fee' => $p->reservation_fee,
-						'file_length' => $p->file_length,
-						'file_name' => $p->file_name,
-						'file_downloads' => $p->file_downloads,
-						'file_contents' => $p->file_contents,
-						'file_type' => $p->file_type,
-						'file_preview' => $p->file_preview,
-						'file_time' => $p->file_time,
+						'file' => $p->file,
 						'featured' => $p->product_special,
 						'language' => '*',
 						'othercats' => $p->othercats,
@@ -563,6 +550,7 @@ function makeProductObject($p)
 		$token = JSession::getFormToken();
 		$cookie = session_name()."=".session_id();
 		$params = MyMuseHelper::getParams();
+		$download_dir = 
 	
 	
 		// add a top category

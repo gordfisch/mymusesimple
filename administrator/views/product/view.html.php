@@ -105,105 +105,7 @@ class MymuseViewProduct extends JViewLegacy
   
         }
      
-        //item
-        elseif($task == "additem" || $task == "product.additem" || (isset($this->item->parentid) && $this->item->parentid > 0 && $this->item->product_physical == 1)){
-        
-        	$layout = 'edititems';
-        	$this->setLayout('edititems');
-        	$this->attribute_skus = $this->get('Attributeskus');
-        	$this->attributes = $this->get('Attributes');
-        	if(!count($this->attribute_skus)){
-        		//no attributes yet!!
-        		$msg = JText::_("MYMUSE_CREATE_ATTRIBUTE_FIRST");
-        		$url = "index.php?option=com_mymuse&view=product&layout=listitems&id=".$this->item->parentid;
-        		$app->redirect($url, $msg);
-        		exit;
-        	}
-        	
-        	
-        	$isNew  = (@$items->id < 1);
-        	$this->lists['isNew'] = $isNew;
-        	JRequest::setVar('subtype','item');
-        	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'item');
-        	
-        }
 
-        //upload screen
-        elseif($task == "uploadtrack" || $task == "uploadpreview" ){
-        	
-        	JHtml::_('jquery.framework');
-        	require_once (JPATH_COMPONENT.DS.'helpers'.DS.'pluploadscript.php');
-        	
-        	$this->setLayout('upload');
-        	$this->item->artist_alias = MyMuseHelper::getArtistAlias($this->item->id, 1);
-        	$this->item->album_alias = MyMuseHelper::getAlbumAlias($this->item->id, 1);
-        	$language = JFactory::getLanguage();
-        	$lang = $language->getTag();
-        	if($this->task == "uploadtrack" ){
-        		//my_formats
-        		//my_download_dir_format
-        		$this->message = JText::_("MYMUSE_UPLOAD_TRACKS");
-        		if($this->params->get('my_download_dir_format',0)){
-        			$format = $input->get('myformat','');
-        			if(!$format){
-        				$tpl = "choose-format";
-        				$this->addToolbar($subtype,$this->item->parentid);
-        				parent::display($tpl);
-        				return true;
-        			}else{
-        				$this->currentDir = $this->params->get('my_download_dir') . DS . $format;
-        			}
-        			
-        		}else{
-        			$this->currentDir = $this->params->get('my_download_dir') . DS . $this->item ->artist_alias . DS . $this->item->album_alias . DS;
-        			
-        		}
-        	}else{
-        		$this->message = JText::_("MYMUSE_UPLOAD_PREVIEWS");
-        		if($this->params->get('my_previews_in_one_dir')){
-        			$this->currentDir = JPATH_ROOT . DS . $this->params->get('my_preview_dir');
-        		}else{
-        			$this->currentDir = JPATH_ROOT . DS . $this->params->get('my_preview_dir') . DS . $this->item ->artist_alias . DS . $this->item->album_alias . DS;
-        		}
-        	}
-        	
-        	$langfiles        = JPATH_COMPONENT_ADMINISTRATOR.'/assets/plupload/js/i18n/';
-        	$PLdataDir        = JURI::root() . "administrator/components/com_mymuse/assets/plupload/";
-        	$document         = JFactory::getDocument();
-
-        	
-        	$PLuploadScript   = new PLuploadScript($PLdataDir, $this->currentDir);
-        	
-        	$runtimeScript    = $PLuploadScript->runtimeScript;
-        	$runtime          = $PLuploadScript->runtime;
-        	//add default PL css
-        	$document->addStyleSheet($PLdataDir . 'css/plupload.css');
-        	
-        	//add PL styles and scripts
-        	$document->addStyleSheet($PLdataDir . 'js/jquery.plupload.queue/css/jquery.plupload.queue.css', 'text/css', 'screen');
-        	//$document->addScript($PLdataDir . 'js/jquery.min.js');
-        	$document->addScript($PLdataDir . 'js/plupload.full.min.js');
-        	
-        	// load plupload language file
-        	if ($lang){
-        		if (JFile::exists($langfiles . $lang.'.js')){
-        			$document->addScript($PLdataDir . 'js/i18n/'.$lang.'.js');
-        		} else {
-        			$document->addScript($PLdataDir . 'js/i18n/en-GB.js');
-        		}
-        	}
-        	$document->addScript($PLdataDir . 'js/jquery.plupload.queue/jquery.plupload.queue.js');
-        	$document->addScriptDeclaration( $PLuploadScript->getScript() );
-        	
-        	//set variables for the template
-        	$this->enableLog =$this->params->get("my_plupload_enable_uploader_log");
-        	$this->runtime = $runtime;
-        	
-        	
-        	$this->addToolbar($subtype,$this->item->parentid);
-        	parent::display($tpl);
-        	return true;
-        }
 
         //It's the parent, set the user state
         if($this->item->id && $this->item->parentid == 0){
@@ -253,93 +155,7 @@ class MymuseViewProduct extends JViewLegacy
 		}
 		JToolBarHelper::title(JText::_('COM_MYMUSE').' : '. $title, 'mymuse.png');
 	
-		if($layout == "listtracks"){
-			// LIST TRACKS
-			if(!$this->params->get('my_use_s3', 0)){
-				JToolBarHelper::custom('product.uploadtrack', 'save-new.png', 'save-new_f2.png', 'MYMUSE_UPLOAD_TRACKS', false);
-				JToolBarHelper::custom('product.uploadpreview', 'save-new.png', 'save-new_f2.png', 'MYMUSE_UPLOAD_PREVIEWS', false);
-			}
-			
-			
-			JToolBarHelper::editList('product.edit', 'MYMUSE_EDIT_TRACK');
-			JToolBarHelper::addNew('product.addfile', 'MYMUSE_NEW_TRACK');
-			JToolBarHelper::deleteList('','product.removefile','MYMUSE_DELETE_TRACKS');
-			
-			
-			if(!$this->all_files){ 
-				JToolBarHelper::addNew('product.new_allfiles', 'MYMUSE_ALL_TRACKS');
-			}		  
-			JToolBarHelper::apply('product.productreturn', 'MYMUSE_RETURN_TO_PRODUCT');
-			
-			
-			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-tracks?tmpl=component');
-		}elseif($layout == "listitems"){
-			// LIST ITEMS
-			JToolBarHelper::apply('product.productreturn', 'MYMUSE_RETURN_TO_PRODUCT');
-			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-items?tmpl=component');
-			
-		}elseif ($this->task == "uploadtrack" || $this->task == "uploadpreview" ){
-			JToolBarHelper::apply('product.cancelfile', 'MYMUSE_RETURN_TO_TRACKS');
-			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-items?tmpl=component');
-		
-		}elseif($subtype == "file" && $parentid){
-			//TRACK
-			// If not checked out, can save the item.
-			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
-			{
-				JToolBarHelper::apply('product.applyfile', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('product.savefile', 'JTOOLBAR_SAVE');
-			}
-			if (!$checkedOut && ($canDo->get('core.create'))){
-				JToolBarHelper::custom('product.save2newfile', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			}
 
-			if (empty($this->item->id)) {
-				JToolBarHelper::cancel('product.cancelfile', 'JTOOLBAR_CANCEL');
-			}
-			else {
-				JToolBarHelper::cancel('product.cancelfile', 'JTOOLBAR_CLOSE');
-			}
-			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-tracks?tmpl=component#new-edit-track');			
-		
-		}elseif($subtype == "allfiles" && $parentid){
-			// ALLFILES
-			// If not checked out, can save the item.
-			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
-			{
-				JToolBarHelper::apply('product.apply_allfiles', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('product.save_allfiles', 'JTOOLBAR_SAVE');
-			}
-
-			if (empty($this->item->id)) {
-				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CANCEL');
-			}
-			else {
-				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CLOSE');
-			}
-			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-tracks?tmpl=component#tracks-all-tracks');		
-		
-		}elseif($subtype == "item" && $parentid){
-			// ITEMS
-			// If not checked out, can save the item.
-			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
-			{
-				JToolBarHelper::apply('product.applyitem', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('product.saveitem', 'JTOOLBAR_SAVE');
-			}
-			if (!$checkedOut && ($canDo->get('core.create'))){
-				JToolBarHelper::custom('product.save2newitem', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			}
-
-			if (empty($this->item->id)) {
-				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CANCEL');
-			}
-			else {
-				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CLOSE');
-			}
-			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/248-product-items?tmpl=component');
-				
-		}else{
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
 			{
@@ -357,7 +173,6 @@ class MymuseViewProduct extends JViewLegacy
 				JToolBarHelper::cancel('product.cancel', 'JTOOLBAR_CLOSE');
 			}
 			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/238-product-new-edit?tmpl=component');
-		}
 		
 	}
 	

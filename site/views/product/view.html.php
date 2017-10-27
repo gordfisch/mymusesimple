@@ -44,16 +44,7 @@ class myMuseViewProduct extends JViewLegacy
 
 		$this->MyMuseStore		=& MyMuse::getObject('store','models');
 		$this->store			= $this->MyMuseStore->getStore();
-
 		$this->item		= $this->get('Item');
-
-		if($this->item->parentid > 0){
-			//send them to the parent
-			$item->route = MyMuseHelperRoute::getProductRoute($this->item->id, $this->item->catid, $this->item->language);
-			$app->redirect($item->route);
-		}
-	
-		
 		$this->print			= $jinput->get('print',0, 'INT');
 		$this->state			= $this->get('State');
 		$this->user				= $user;

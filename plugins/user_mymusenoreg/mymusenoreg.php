@@ -369,9 +369,9 @@ class plgUserMyMusenoreg extends JPlugin
 		}
 		list.length = i;
 	}
-	window.onload = function(e){ 
+	jQuery(document).ready(function(){
 		changeDynaList2(jform_profile_region, jform_profile_country, countrystates,0,0); 
-	}
+	});
 
 		";
 						$document->addScriptDeclaration($js);

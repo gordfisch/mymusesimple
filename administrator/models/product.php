@@ -251,13 +251,13 @@ class MymuseModelproduct extends JModelAdmin
 				}
 				$item->flash_type = '';
 				
-				$jason = json_decode($item->file_name);
+				$jason = json_decode($item->file);
 				if(is_array($jason)){
-					$item->file_name = $jason;
-				}elseif($item->file_name != ''){
-					$jason = (object) array('file_name' => $item->file_name);
-					$item->file_name = array();
-					$item->file_name[] = $jason;
+					$item->file = $jason;
+				}elseif($item->file != ''){
+					$jason = (object) array('file' => $item->file);
+					$item->file = array();
+					$item->file[] = $jason;
 				}
 				
 			}
@@ -341,56 +341,11 @@ class MymuseModelproduct extends JModelAdmin
 		$lists['other_cats'] = $this->_db->loadObjectList();
 		
 		
-		// Items, Attributes, Files
-		$lists['attributes'] 	= array();
+		// Files
 		$lists['attribute_sku'] = array();
 		$lists['items'] 		= array();
 		$lists['files'] 		= array();
 	
-		//attributes
-		$subtype				= $input->get('subtype', '');
-		if($this->_item->parentid){
-			//we want the parentid
-			$pid = $this->_item->parentid;
-		}else{
-			$pid = $id;
-		}
-		$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE
-			product_parent_id='.$pid.'
-			ORDER BY ordering';
-
-		$this->_db->setQuery($query);
-		$lists['attribute_sku'] = $this->_db->loadObjectList();
-
-		// items
-		$query = "SELECT a.* from #__mymuse_product as a WHERE parentid=".$pid."
-			AND product_downloadable=0 ";
-		if($filter_item_order){
-			$query .= "ORDER BY $filter_item_order ";
-		}
-		if($filter_item_order && $filter_item_order_Dir){
-			$query .= "$filter_item_order_Dir";
-		}
-			
-		$this->_db->setQuery($query);
-
-		if($lists['items'] = $this->_db->loadObjectList()){
-
-			foreach($lists['items'] as $item){
-				foreach($lists['attribute_sku'] as $a_sku){
-					$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$item->id.'
-						AND product_attribute_sku_id='.$a_sku->id;
-				
-					$this->_db->setQuery($query);
-					$item->attributes[$a_sku->name] = $this->_db->loadResult();
-				}
-				$query = 'SELECT * from #__mymuse_product_attribute WHERE product_id='.$item->id;
-			
-				$this->_db->setQuery($query);
-				$lists['attributes'][$item->id] = $this->_db->loadObjectList();
-
-			}
-		}
 
 		return $lists;
     }

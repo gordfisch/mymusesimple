@@ -1,0 +1,510 @@
+<?xml version="1.0" encoding="utf-8"?>
+<form>
+	<fieldset>
+         <field 
+         		name="id" 
+         		type="text" 
+         		default="0" 
+         		label="JGLOBAL_FIELD_ID_LABEL"
+            	readonly="true" class="readonly"
+             	description="JGLOBAL_FIELD_ID_DESC" 
+         /> 
+
+
+         <field
+                name="published"
+                type="list"
+                label="JSTATUS"
+                description="JFIELD_PUBLISHED_DESC"
+                class="inputbox"
+                size="1"
+                default="1">
+                <option value="1">JPUBLISHED</option>
+                <option value="0">JUNPUBLISHED</option>
+         </field>
+         
+         <field
+                name="title"
+                type="text"
+                label="MYMUSE_TITLE_LABEL"
+                description="MYMUSE_TITLE_DESC"
+                class="inputbox"
+                size="45"
+                required="true"
+          />
+
+
+          <field 
+          		name="alias" 
+          		type="text" 
+          		label="MYMUSE_ALIAS_LABEL"
+				description="MYMUSE_ALIAS_DESC" 
+				class="inputbox" 
+				size="45" 
+		  />
+           
+          <field 
+          		name="description" 
+          		type="editor" 
+          		class="inputbox"
+				label="MYMUSE_STORE_DESC_LABEL" 
+				description="MYMUSE_STORE_DESC_DESC"
+				buttons="true" 
+		  />
+			
+		  <field 
+		  		name="language" 
+		  		type="contentlanguage" 
+		  		label="JFIELD_LANGUAGE_LABEL"
+				description="MYMUSE_LANGUAGE_DESC" 
+				class="inputbox">
+				<option value="*">JALL</option>
+		  </field>	
+		   
+
+	
+		
+		<field
+                name="product_id"
+                type="text"
+                label="MYMUSE_PARENT"
+                description="MYMUSE_PARENT"
+                class="inputbox"
+                size="3"
+                required="false"
+                default="0"
+          />
+		
+		<field
+                name="price"
+                type="text"
+                label="MYMUSE_PRICE"
+                description="MYMUSE_PRICE"
+                class="inputbox"
+                size="10"
+                required="false"
+                default="0.00"
+         />
+         
+			
+		<field
+				name="buttonspacer"
+				description="JGLOBAL_ACTION_PERMISSIONS_DESCRIPTION"
+				type="spacer" 
+		/>
+			
+		<field 
+			name="created" 
+			type="calendar" 
+			label="MYMUSE_CREATED_LABEL"
+			description="MYMUSE_CREATED_DESC" 
+			class="inputbox" size="22"
+			format="%Y-%m-%d %H:%M:%S" 
+			filter="user_utc" 
+		/>
+
+		<field 
+			name="created_by" 
+			type="user"
+			label="MYMUSE_CREATED_BY_LABEL" 
+			description="MYMUSE_CREATED_BY_DESC"
+		/>
+
+
+		<field name="modified" 
+			type="calendar" 
+			class="readonly"
+			label="JGLOBAL_FIELD_MODIFIED_LABEL" 
+			description="MYMUSE_MODIFIED_DESC"
+			size="22" 
+			readonly="true" 
+			format="%Y-%m-%d %H:%M:%S" 
+			filter="user_utc" 
+		/>
+
+		<field 
+			name="modified_by" 
+			type="user"
+			label="JGLOBAL_FIELD_MODIFIED_BY_LABEL"
+			class="readonly"
+			readonly="true"
+			filter="unset" 
+		/>
+
+		<field name="checked_out" type="hidden" filter="unset" />
+
+		<field name="checked_out_time" type="hidden" filter="unset" />
+
+
+		<field 
+			name="version" 
+			type="text" 
+			class="readonly"
+			label="MYMUSE_VERSION_LABEL" 
+			size="6" 
+			description="MYMUSE_VERSION_DESC"
+			readonly="true" 
+			filter="unset" 
+		/>
+
+		<field name="ordering" type="text" label="JFIELD_ORDERING_LABEL"
+			description="JFIELD_ORDERING_DESC" class="inputbox" size="6"
+			default="0" 
+		/>
+
+
+
+		<field 
+			name="access" 
+			type="accesslevel" 
+			label="JFIELD_ACCESS_LABEL"
+			description="JFIELD_ACCESS_DESC" 
+			class="inputbox" 
+			size="1"
+		/>
+
+		<field 
+			name="hits" 
+			type="text" 
+			label="JGLOBAL_HITS"
+			description="MYMUSE_HITS_DESC" 
+			class="readonly" 
+			size="6"
+			readonly="true" 
+			filter="unset" 
+		/>
+
+		<field 
+			name="featured" 
+			type="list"
+			label="JFEATURED"
+			description="MYMUSE_FEATURED"
+			default="0"
+			>
+			<option value="0">JNO</option>
+			<option value="1">JYES</option>
+		</field>
+
+
+
+          <field
+                name="track"
+                type="text"
+                label="MYMUSE_FILE_NAME"
+                description="MYMUSE_FILE_NAME"
+                class="readonly"
+                readonly="1"
+                size="20"
+                required="false"
+          />
+          <field
+                name="preview"
+                type="text"
+                label="MYMUSE_FILE_NAME"
+                description="MYMUSE_FILE_NAME"
+                class="readonly"
+                readonly="1"
+                size="80"
+                required="false"
+          />
+          
+          <field
+                name="preview_2"
+                type="text"
+                label="MYMUSE_FILE_NAME"
+                description="MYMUSE_FILE_NAME"
+                class="readonly"
+                readonly="1"
+                size="80"
+                required="false"
+          />
+          <field
+                name="preview_3"
+                type="text"
+                label="MYMUSE_FILE_NAME"
+                description="MYMUSE_FILE_NAME"
+                class="readonly"
+                readonly="1"
+                size="80"
+                required="false"
+          />
+          <field
+                name="preview_4"
+                type="text"
+                label="MYMUSE_FILE_NAME"
+                description="MYMUSE_FILE_NAME"
+                class="readonly"
+                readonly="1"
+                size="20"
+                required="false"
+          />
+
+          
+          <field
+                name="product_sku"
+                type="text"
+                label="MYMUSE_SKU"
+                description="MYMUSE_SKU_DESC"
+                class="inputbox"
+                size="20"
+                required="true"
+          	/>
+          	>
+			
+			<field 
+          		name="allfiles" 
+          		type="list"
+				label="MYMUSE_PRODUCT_ALLFILES_LABEL"
+				description="MYMUSE_PRODUCT_ALLFILES_DESC"
+				default="0"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			
+			<field 
+          		name="type" 
+          		type="list"
+				label="MYMUSE_PRODUCT_FILE_TYPE_LABEL"
+				description="MYMUSE_PRODUCT_FILE_TYPE_DESC"
+				default="audio"
+				>
+				<option value="audio">MYMUSE_AUDIO</option>
+				<option value="video">MYMUSE_VIDEO</option>
+				<option value="other">MYMUSE_OTHER</option>
+			</field>
+			
+
+ 
+	</fieldset>
+	
+	
+
+	<fields name="attribs">
+		<fieldset name="attribs" label="MYMUSE_PARAMETERS_ATTRIBUTES">
+
+			<field
+                name="media_rls"
+                type="modal_article"
+                label="MYMUSE_NEWS_RLS_LABEL"
+                description="MYMUSE_NEWS_RLS_DESC"
+                class="inputbox"
+				edit="true"
+				clear="true"
+                required="false"
+          	/>
+          	<field
+                name="media_link"
+                type="media"
+                label="MYMUSE_MEDIA_LINK_LABEL"
+                description="MYMUSE_MEDIA_LINK_DESC"
+                class="inputbox"
+				directory="/"
+                required="false"
+          	/>
+          	<field
+                name="isrc_code"
+                type="text"
+                label="MYMUSE_ISRC_LABEL"
+                description="MYMUSE_ISRC_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	
+          	<field 
+          		name="product_preorder" 
+          		type="list"
+				label="MYMUSE_PRODUCT_PREORDER_LABEL"
+				description="MYMUSE_PRODUCT_PREORDER_DESC"
+				default="0"
+				>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+          	
+          	<field
+                name="product_price_mp3"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_MP3_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_MP3_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_mp3_all"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_MP3_ALL_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_MP3_ALL_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_wav"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_WAV_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_WAV_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_wav_all"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_WAV_ALL_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_WAV_ALL_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/> 
+          	<field
+                name="product_price_flac"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_FLAC_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_FLAC_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_flac_all"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_FLAC_ALL_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_FLAC_ALL_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/> 
+          	<field
+                name="product_price_ogg"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_OGG_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_OGG_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_ogg_all"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_OGG_ALL_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_OGG_ALL_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/> 
+          	<field
+                name="product_price_webma"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_WEBMA_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_WEBMA_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_webma_all"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_WEBMA_ALL_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_WEBMA_ALL_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/> 
+          	<field
+                name="product_price_webmv"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_WEBMV_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_WEBMV_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_webmv_all"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_WEBMV_ALL_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_WEBMV_ALL_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_ogv"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_OGV_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_OGV_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_ogv_all"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_OGV_ALL_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_OGV_ALL_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_m4v"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_M4V_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_M4V_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_m4v_all"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_M4V_ALL_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_M4V_ALL_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_pdf"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_PDF_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_PDF_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_pdf_all"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_PDF_ALL_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_PDF_ALL_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_other"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_OTHER_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_OTHER_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	<field
+                name="product_price_other_all"
+                type="text"
+                label="MYMUSE_PRODUCT_PRICE_OTHER_ALL_LABEL"
+                description="MYMUSE_PRODUCT_PRICE_OTHER_ALL_DESC"
+                class="inputbox"
+                size="45"
+                required="false"
+          	/>
+          	
+		</fieldset>
+	</fields>
+</form>

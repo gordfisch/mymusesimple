@@ -18,20 +18,20 @@
 
 -- Table structure for table `#__mymuse_country`
 -- 
-
+SET sql_mode = '';
 
 DROP TABLE IF EXISTS `#__mymuse_country`;
 CREATE TABLE IF NOT EXISTS `#__mymuse_country` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `bloc` tinytext NOT NULL,
   `plugin` tinytext NOT NULL,
-  `country_name` varchar(64) DEFAULT NULL,
-  `country_3_code` char(3) DEFAULT NULL,
+  `country_name` varchar(64)  DEFAULT NULL,
+  `country_3_code` char(3)  DEFAULT NULL,
   `country_2_code` char(2) DEFAULT NULL,
   `ordering` int(11) NOT NULL,
   PRIMARY KEY (`id`),
   KEY `idx_country_name` (`country_name`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COMMENT='Country records' AUTO_INCREMENT=245 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=245 ;
 
 --
 -- Dumping data for table `#__mymuse_country`
@@ -290,19 +290,19 @@ INSERT INTO `#__mymuse_country` (`id`, `bloc`, `plugin`, `country_name`, `countr
 
 CREATE TABLE IF NOT EXISTS `#__mymuse_coupon` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `title` varchar(64) DEFAULT '',
+  `title` varchar(64)  DEFAULT '',
   `state` tinyint(3) NOT NULL DEFAULT '0',
-  `code` varchar(64) DEFAULT '',
+  `code` varchar(64)  DEFAULT '',
   `coupon_type` tinyint(1) NOT NULL DEFAULT '0' COMMENT '0=Per Order, 1=Per Product',
   `product_id` int(11) unsigned NOT NULL DEFAULT '0',
   `coupon_value` decimal(12,5) DEFAULT NULL,
   `coupon_value_type` tinyint(1) NOT NULL COMMENT '0=Flat-rate, 1=Percentage',
   `currency_id` int(11) DEFAULT NULL,
-  `description` text,
-  `params` text NOT NULL,
+  `description` text ,
+  `params` text  NOT NULL,
   `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `created_by` int(11) unsigned NOT NULL DEFAULT '0',
-  `created_by_alias` varchar(255) NOT NULL DEFAULT '',
+  `created_by_alias` varchar(255)  NOT NULL DEFAULT '',
   `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   `modified_by` int(11) unsigned NOT NULL DEFAULT '0',
   `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
@@ -317,7 +317,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_coupon` (
 
   `ordering` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 
@@ -332,7 +332,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_currency` (
   `symbol` varchar(4) NOT NULL default '$',
   PRIMARY KEY  (`id`),
   KEY `idx_currency_name` (`currency_name`)
-) DEFAULT CHARSET=utf8 COMMENT='Used to store currencies' ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 
 -- Dumping data for table `#__mymuse_currency`
@@ -378,7 +378,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_downloads` (
   `product_filename` varchar(255) NOT NULL DEFAULT '',
   PRIMARY KEY (`id`),
   KEY `idx_product_filename` (`product_filename`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COMMENT='Download records';
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 -- --------------------------------------------------------
@@ -415,7 +415,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_order` (
   `ordering` int(11) NOT NULL DEFAULT '0',
   `licence` varchar(255) NOT NULL,
   PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8 AUTO_INCREMENT=1001 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci AUTO_INCREMENT=1001 ;
 
 -- 
 -- Dumping data for table `#__mymuse_order`
@@ -442,7 +442,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_order_item` (
   `modified` datetime default '0000-00-00 00:00:00',
   `product_in_stock` int(1) default NULL,
   PRIMARY KEY  (`id`)
-) DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 
 -- Dumping data for table `#__mymuse_order_item`
@@ -476,7 +476,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_order_payment` (
   KEY `order_id` (`order_id`),
   KEY `date` (`date`),
   KEY `transaction_id` (`transaction_id`(32))
-) DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 -- --------------------------------------------------------
@@ -494,7 +494,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_order_status` (
   `name` varchar(64) default NULL,
   `ordering` int(11) default NULL,
   PRIMARY KEY  (`id`)
-) DEFAULT CHARSET=utf8 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 
 -- Dumping data for table `#__mymuse_order_status`
@@ -507,18 +507,38 @@ INSERT IGNORE INTO `#__mymuse_order_status` (`id`, `code`, `name`, `ordering`) V
 (4, 'S', 'Shipped', 4),
 (5, 'I', 'Invalid', 5);
 
+
 -- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `#__mymuse_product_file` (
+CREATE TABLE IF NOT EXISTS `#__mymuse_track` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `asset_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to the #__assets table.',
   `product_id` int(11) NOT NULL DEFAULT '0',
-  `file` JSON NULL,
-  `file_preview` varchar(255) NOT NULL DEFAULT '',
-  `file_preview_2` varchar(255) NOT NULL DEFAULT '',
-  `file_preview_3` varchar(255) NOT NULL DEFAULT '',
-  `file_preview_4` varchar(255) NOT NULL DEFAULT '',
+  `title` varchar(255) NOT NULL DEFAULT '',
+  `track` JSON NULL,
+  `product_sku` varchar(64) NOT NULL DEFAULT '',
+  `preview` varchar(255) NOT NULL DEFAULT '',
+  `preview_2` varchar(255) NOT NULL DEFAULT '',
+  `preview_3` varchar(255) NOT NULL DEFAULT '',
+  `preview_4` varchar(255) NOT NULL DEFAULT '',
+  `type` varchar(32) NOT NULL,
+  `allfiles` tinyint(1) NOT NULL DEFAULT '0',
+  `version` int(11) unsigned NOT NULL DEFAULT '1',
+  `description` mediumtext NOT NULL DEFAULT '',
+  `ordering` int(11) NOT NULL DEFAULT '0',
+  `access` int(11) unsigned NOT NULL DEFAULT '0',
+  `hits` int(11) unsigned NOT NULL DEFAULT '0',
+  `featured` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Set if product is featured.',
+  `language` char(7) NOT NULL COMMENT 'The language code for the article.',
+  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
+  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `modified_by` int(11) unsigned NOT NULL DEFAULT '0',
+  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
+  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
+  `published` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `idx_product_id` (`product_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 -- 
@@ -584,7 +604,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   KEY `idx_checkout` (`checked_out`),
   KEY `idx_state` (`state`),
   KEY `idx_createdby` (`created_by`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 
@@ -602,7 +622,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
 CREATE TABLE IF NOT EXISTS `#__mymuse_product_category_xref` (
   `catid` int(11) NOT NULL default '0',
   `product_id` int(11) NOT NULL default '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 
 -- Dumping data for table `#__mymuse_product_category_xref`
@@ -616,7 +636,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product_category_xref` (
 CREATE TABLE IF NOT EXISTS `#__mymuse_product_recommend_xref` (
   `product_id` int(11) NOT NULL DEFAULT '0',
   `recommend_id` int(11) NOT NULL DEFAULT '0'
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 -- --------------------------------------------------------
@@ -631,7 +651,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product_rating` (
   `rating_count` int(10) unsigned NOT NULL DEFAULT '0',
   `lastip` varchar(50) NOT NULL DEFAULT '',
   PRIMARY KEY (`product_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 
 -- --------------------------------------------------------
@@ -650,7 +670,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_shopper_group` (
   `checked_out` int(11) NOT NULL,
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Dumping data for table `#__mymuse_shopper_group`
@@ -674,7 +694,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_state` (
   `state_2_code` char(2) default NULL,
   PRIMARY KEY  (`id`),
   KEY `idx_country_id` (`country_id`)
-) DEFAULT CHARSET=utf8 COMMENT='States that are assigned to a country' ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 
 -- Dumping data for table `#__mymuse_state`
@@ -1193,7 +1213,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_store` (
   `my_catid` smallint(11) NOT NULL,
   `state` int(1) NOT NULL,
   PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8 AUTO_INCREMENT=2 ;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- 
 -- Dumping data for table `#__mymuse_store`
@@ -1223,7 +1243,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_tax_rate` (
   `checked_out` int(11) NOT NULL,
   `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
   PRIMARY KEY (`id`)
-) DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 -- 
 -- Dumping data for table `#__mymuse_tax_rate`
 -- 

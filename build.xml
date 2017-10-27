@@ -29,9 +29,7 @@
         <fileset dir="./modules/mod_mymuse_latest" id="mod_latest_files">
                 <include name="**" />
         </fileset>
-        <fileset dir="./modules/mod_mymuse_jplayer" id="mod_jplayer_files">
-                <include name="**" />
-        </fileset>
+
 
  
         <!-- Copy Target -->
@@ -116,10 +114,6 @@
         		<copy file="${src}/modules/mod_mymuse_latest/language/en-GB/en-GB.mod_mymuse_latest.sys.ini"
         	             todir="${test}/language/en-GB" />
         	             
-      			<copy file="${src}/modules/mod_mymuse_jplayer/language/en-GB/en-GB.mod_mymuse_jplayer.ini"
-                        todir="${test}/language/en-GB" />
-        		<copy file="${src}/modules/mod_mymuse_jplayer/language/en-GB/en-GB.mod_mymuse_jplayer.sys.ini"
-        	             todir="${test}/language/en-GB" />
         	               	            
         	    
 				
@@ -200,8 +194,6 @@
                 <copy todir="${test}/modules/mod_mymuse_latest">
                         <fileset refid="mod_latest_files" />
                 </copy>
-                <copy todir="${test}/modules/mod_mymuse_jplayer">
-                        <fileset refid="mod_jplayer_files" />
-                </copy>
+
         </target>
 </project>

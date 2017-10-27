@@ -98,8 +98,17 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 					<?php echo JHtml::_('form.token'); ?>
 					</form>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+
+				<?php 
+				if(!$this->item->id){
+					$link = strtoupper(JText::_('MYMUSE_TRACKS', true));
+				}else{
+					$link = '<b><a href="index.php?option=com_mymuse&view=tracks&product_id='.$this->item->id.'">'.strtoupper(JText::_('MYMUSE_TRACKS', true)).'</a></b>';
+				}
+
+				echo JHtml::_( 'bootstrap.addTab', 'myTab', 'tracks', $link ); ?>
 				
-				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'tracks', '<b>'.strtoupper(JText::_('MYMUSE_TRACKS', true))).'</b>'; ?>
 				<?php 
 					if(!$this->item->id){
 						echo JText::_('MYMUSE_SAVE_THEN_ADD_TRACKS');
@@ -107,19 +116,7 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 						echo $this->loadTemplate('listtracks');
 					} ?>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
-				
-				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'items', '<b>'.strtoupper(JText::_('MYMUSE_ITEMS', true))).'</b>'; ?>
-					<?php 
-					if(!$this->item->id){
-						echo JText::_('MYMUSE_SAVE_THEN_ADD_ITEMS');
-					}else{
-						echo $this->loadTemplate('listitems');
-					} ?>
-				<?php echo JHtml::_('bootstrap.endTab'); ?>
-				
-				
 
-				
 			
 		</div>
 	</div>

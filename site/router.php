@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     $Id$
+ * @version     $Id: router.php 1918 2017-10-23 14:53:00Z gfisch $
  * @package     com_mymuse3
  * @copyright   Copyright (C) 2011. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -345,6 +345,7 @@ function MymuseParseRoute($segments)
 		return $segments;
 	}
 
+	
 	$jinput->set('option', 'com_mymuse');
 	$menu	= $app->getMenu();
 	$item	= $menu->getActive();
@@ -489,9 +490,9 @@ function MymuseParseRoute($segments)
 
 
 		if($params->get('my_use_alias')){
-			
+			$orig_segments = $segments;
 			if(strpos($segments[0],':')){
-                $orig_segments = $segments;
+                
 				$segments[0] = preg_replace('/:/',"-",$segments[0]);
 			}
 		
@@ -616,11 +617,11 @@ function MymuseParseRoute($segments)
 		}
 	}
 	if($count > 2){
-		
+
 		//check if this is a category alias. Check last segment first
+		$orig_segments = $segments;
 		$last = array_pop($segments);
 		if(strpos($last,':')){
-			$orig_segments = $segments;
 			$last = preg_replace('/:/',"-",$last);
 		}
 		$query = 'SELECT id from #__categories WHERE alias="'.$last.'" and extension="com_mymuse"';
@@ -643,12 +644,21 @@ function MymuseParseRoute($segments)
 			$vars['id'] = (int)$category->id;
 			return $vars;
 		}
+		$segments = $orig_segments;
 	}
 	
 	if (!$advanced) {
 		$cat_id = (int)$segments[0];
+		if(strpos($cat_id,':')){
+			list($cat_id, $cat_name) = explode('/:/',"-",$cat_id);
+		}
 
-		$product_id = (int)$segments[$count - 1];
+		$new_count = count($segments);
+		$product_id = (int)$segments[$new_count - 1];
+		
+		if(strpos($product_id,':')){
+			list($product_id, $product_name) = explode('/:/',"-",$product_id);
+		}
 
 		if ($product_id > 0) {
 			$vars['view'] = 'product';
@@ -658,7 +668,6 @@ function MymuseParseRoute($segments)
 			$vars['view'] = 'category';
 			$vars['id'] = $cat_id;
 		}
-
 		return $vars;
 	}
 

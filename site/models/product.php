@@ -188,10 +188,10 @@ class MyMuseModelProduct extends JModelItem
 				// use created if modified is 0
 				'CASE WHEN a.modified = 0 THEN a.created ELSE a.modified END as modified, ' .
 					'a.modified_by, a.checked_out, a.checked_out_time, a.publish_up, a.publish_down, ' .
-					'a.list_image, a.detail_image, a.attribs, a.version, a.parentid, a.ordering, ' .
-					'a.metakey, a.metadesc, a.access, a.hits, a.metadata, a.featured, a.language, a.product_physical, ' .
-					'a.product_downloadable, a.product_sku, a.product_made_date, a.product_in_stock, a.product_discount, ' .
-					'a.urls, a.price, a.reservation_fee, a.product_allfiles, ' .
+					'a.list_image, a.detail_image, a.attribs, a.version, a.ordering, ' .
+					'a.metakey, a.metadesc, a.access, a.hits, a.metadata, a.featured, a.language, ' .
+					'a.product_downloadable, a.product_sku, a.product_made_date, a.product_discount, ' .
+					'a.urls, a.price, ' .
 					'a.product_full_time, a.product_producer, a.product_publisher, a.product_studio'
 					)
 				);
@@ -407,57 +407,9 @@ class MyMuseModelProduct extends JModelItem
 			$secondaryOrder = $this->getState('list.secondaryOrder', '');
 			
 
-			$track_query = "SELECT a.id,a.title,title_alias,introtext,`fulltext`, parentid, catid, artistid, 
-			product_physical, product_downloadable, product_allfiles, product_sku,
-			product_made_date, price, featured, product_discount, product_package_ordering, 
-			product_package,file_length,file_time,
-			file_name,file_downloads, file_preview,file_preview_2, file_preview_3,file_type, 
-			detail_image,a.access,
-			ROUND(v.rating_sum / v.rating_count, 0) AS rating, v.rating_count as rating_count, s.sales,
-			c.title as category_name
-			FROM #__mymuse_product as a
-			LEFT JOIN #__mymuse_product_rating AS v ON a.id = v.product_id
-			LEFT JOIN #__categories AS c ON c.id = a.catid
 			
-        
-			LEFT JOIN (SELECT sum(quantity) as sales, x.product_name, x.product_id FROM
-        		(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
-        		i.product_name, product_id as all_id
-        		FROM #__mymuse_order_item as i
-        		LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
-        		GROUP BY i.product_id, i.product_name )
-        		as x GROUP BY x.all_id,x.product_name) as s ON s.product_id = a.id
-			WHERE parentid='".$pk."'
-			AND product_downloadable = 1
-			AND state=1
-					";
-			
-			
-			if($alpha != ''){
-				$track_query .= "AND a.title LIKE '$alpha%' ";
-			}
-			if($searchword != ''){
-				$track_query .= "AND (
-        		a.title LIKE ".$db->quote('%'.$searchword.'%')."
-        		OR a.file_name LIKE ".$db->quote('%'.$searchword.'%')."
-
-        		)";
-			}
-		
-			$orderby = "ORDER BY $ordering $listDirn
-			";
-
-			if($secondaryOrder){
-				//$orderby .= ", $secondaryOrder ";
-			}
-			$track_query .= $orderby;
-
-
-	
-	
-	
-			$db->setQuery($track_query);
-			$tracks = $db->loadObjectList();
+			//$db->setQuery($track_query);
+			$tracks = array();
 	
 			$site_url = MyMuseHelper::getSiteUrl($pk,'1');
 			$site_path = MyMuseHelper::getSitePath($pk,'1');
@@ -785,96 +737,7 @@ class MyMuseModelProduct extends JModelItem
 			//end of tracks
 		
 			
-			// get child items with prices
-			$query = "SELECT * FROM #__mymuse_product as p
-			WHERE p.parentid='".$pk."'
-			AND product_downloadable = 0
-			and state=1
-			ORDER BY ordering
-			";
-			$db->setQuery($query);
-			$items = $db->loadObjectList();
-
 			
-			//attributes
-			$query = 'SELECT * from #__mymuse_product_attribute_sku WHERE 
-			product_parent_id='.$this->_item[$pk]->id.'
-			ORDER BY ordering';
-			$db->setQuery($query);
-			$this->_item[$pk]->attribute_sku = $db->loadObjectList();
-	
-			while (list($i,$item)= each( $items )){
-				foreach($this->_item[$pk]->attribute_sku as $a_sku){
-					$query = 'SELECT attribute_value from #__mymuse_product_attribute WHERE product_id='.$item->id.'
-					AND product_attribute_sku_id='.$a_sku->id;
-					$db->setQuery($query);
-					$items[$i]->attributes[$a_sku->name] = $db->loadResult();
-				}
-	
-					
-				$query = 'SELECT a.*,b.name from #__mymuse_product_attribute as a 
-				LEFT JOIN #__mymuse_product_attribute_sku as b on b.id=a.product_attribute_sku_id
-				WHERE a.product_id='.$item->id;
-				
-				$db->setQuery($query);
-				$tmp[$item->id] = $db->loadObjectList();
-				foreach($tmp[$item->id] as $att){
-					$attributes[$item->id][$att->product_attribute_sku_id] = $att;
-				}
-
-				$items[$i]->price = $this->getPrice($item);
-				if($params->get('my_add_taxes')){
-					$items[$i]->price["product_price"] = MyMuseCheckout::addTax($items[$i]->price["product_price"]);
-				}
-				
-
-			}//each item
-			
-			if(count($items) && $params->get('product_item_selectbox',0)){ 
-				$newitems = array();
-				$titles = array();
-				foreach($items as $i => $item){
-					//group by title
-					$titles[strtolower($item->title)] = $item->title;
-				}
-				$i = 0;
-				foreach($titles as $title){
-					$newitem = new stdClass;
-					$newitem->title = $title;
-					$hidden = '';
-					$newitem->pidselect=$i;
-					$newitem->select = '<select name="productid[]" id="pidselect'.$i.'"';
-					$i++;
-					if($params->get('product_show_quantity')){
-						$newitem->select .= 'onchange="updateq('.$item->id.')"';
-					}
-					$newitem->select .= '>';
-					$newitem->select .= '<option value="">'.JText::_("MYMUSE_SELECT").'</option>
-					';
-					foreach($items as $item){
-						if($item->title == $title){
-					
-							$newitem->select .= '<option value="'.$item->id.'">'.$item->title.": ";
-							foreach($this->_item[$pk]->attribute_sku as $a_sku){
-								$newitem->select .= $item->attributes[$a_sku->name]." ";
-							}
-							$newitem->select .= MyMuseHelper::printMoneyPublic($item->price).'</option>
-							';
-							$hidden .= '<input type="hidden" name="quantity['.$item->id.']" value="1"
-							id="quantity'.$item->id.'">
-							';
-						}
-					}
-					$newitem->select .=  '</select>';
-					$newitem->select .= $hidden;
-					$newitems[] = $newitem;
-				}
-
-				$items = $newitems;
-			}//if count items
-
-					
-			$this->_item[$pk]->items = $items;
 			
 			//get maincategory
 			$query = "SELECT * from #__categories WHERE id='".$this->_item[$pk]->catid."'";

@@ -16,14 +16,10 @@ JLoader::import('joomla.filesystem.file');
 /**
  * product Table class
  */
-class MymuseTableproduct extends JTable
+class MymuseTabletrack extends JTable
 {
 	
-	/**
-	 * @var		object
-	 */
-	protected $_s3 = null;
-	
+
 	
 	/**
 	 * Constructor
@@ -32,14 +28,8 @@ class MymuseTableproduct extends JTable
 	 */
 	public function __construct(&$db)
 	{
-		$params = MyMuseHelper::getParams();
-		if($params->get('my_use_s3',0)){
-			require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
-			if(!$this->_s3 = MyMuseHelperAmazons3::getInstance()){
-				return false;
-			}
-		}
-		parent::__construct('#__mymuse_product', 'id', $db);
+
+		parent::__construct('#__mymuse_track', 'id', $db);
 	}
 	
 	/**
@@ -58,46 +48,6 @@ class MymuseTableproduct extends JTable
         8 => "UPLOAD_ERR_EXTENSION"
         );
 
-	public function bind($array, $ignore = '')
-	{
-	
-		$form = JRequest::getVar('jform','','post','', JREQUEST_ALLOWRAW );
-		if(isset($form['articletext'])){
-			$array['articletext'] = $form['articletext'];
-		}
-		// Search for the {readmore} tag and split the text up accordingly.
-		if (isset($array['articletext'])) {
-			$pattern = '#<hr\s+id=("|\')system-readmore("|\')\s*\/*>#i';
-			$tagPos	= preg_match($pattern, $array['articletext']);
-
-			if ($tagPos == 0) {
-				$this->introtext	= $array['articletext'];
-				$this->fulltext         = '';
-			} else {
-				list($this->introtext, $this->fulltext) = preg_split($pattern, $array['articletext'], 2);
-			}
-		}
-
-		if (isset($array['attribs']) && is_array($array['attribs'])) {
-			$registry = new JRegistry;
-			$registry->loadArray($array['attribs']);
-			$array['attribs'] = (string)$registry;
-		}
-
-		if (isset($array['metadata']) && is_array($array['metadata'])) {
-			$registry = new JRegistry;
-			$registry->loadArray($array['metadata']);
-			$array['metadata'] = (string)$registry;
-		}
-
-		// Bind the rules.
-		if (isset($array['rules']) && is_array($array['rules'])) {
-			$rules = new JRules($array['rules']);
-			$this->setRules($rules);
-		}
-
-		return parent::bind($array, $ignore);
-	}
 
 	/**
 	 * Overloaded check function
@@ -127,50 +77,12 @@ class MymuseTableproduct extends JTable
 			$this->alias = JFactory::getDate()->format('Y-m-d-H-i-s');
 		}
 
-		if (trim(str_replace('&nbsp;', '', $this->fulltext)) == '') {
-			$this->fulltext = '';
+		if (trim(str_replace('&nbsp;', '', $this->description)) == '') {
+			$this->description = '';
 		}
 
-		//if (trim($this->introtext) == '' && trim($this->fulltext) == '' && !$this->parentid) {
-		//	$this->setError(JText::_('JGLOBAL_ARTICLE_MUST_HAVE_TEXT'));
-		//	return false;
-		//}
 
-		
-		// Check the publish down date is not earlier than publish up.
-		if ($this->publish_down > $this->_db->getNullDate() && $this->publish_down < $this->publish_up) {
-			echo "Swap the dates.";
-			$temp = $this->publish_up;
-			$this->publish_up = $this->publish_down;
-			$this->publish_down = $temp;
-		}
-		
-		//set a default publish up
-		if(!isset($this->publish_up) || $this->publish_up == "" || $this->publish_up == "0000-00-00 00:00:00"){
-			$this->publish_up = JFactory::getDate()->format('Y-m-d H:i:s');
-		}
-		
-		if($this->publish_down == "1970-01-01 00:00:01" || $this->publish_down == $this->publish_up){
-			$this->publish_down = '';
-		}
-		
-		// Clean up keywords -- eliminate extra spaces between phrases
-		// and cr (\r) and lf (\n) characters from string
-		if (!empty($this->metakey)) {
-			// Only process if not empty
-			$bad_characters = array("\n", "\r", "\"", "<", ">"); // array of characters to remove
-			$after_clean = JString::str_ireplace($bad_characters, "", $this->metakey); // remove bad characters
-			$keys = explode(',', $after_clean); // create array using commas as delimiter
-			$clean_keys = array();
 
-			foreach($keys as $key) {
-				if (trim($key)) {
-					// Ignore blank keywords
-					$clean_keys[] = trim($key);
-				}
-			}
-			$this->metakey = implode(", ", $clean_keys); // put array back together delimited by ", "
-		}
 		
 		//check for unique sku
 		$query = "SELECT product_sku FROM #__mymuse_product WHERE product_sku='".$this->_db->escape($this->product_sku)."'";
@@ -257,6 +169,23 @@ class MymuseTableproduct extends JTable
 			$isNew = 1;
 		}
 
+		//converting old style file_name to json
+		if(!$isNew && $this->file){
+			$current_files = json_decode($this->file);
+			if(!is_array($current_files) && $this->file){
+				$ext = MyMuseHelper::getExt($this->file);
+				$current_files[] = (object) array(
+						'file_name' => $this->file,
+						'file_length' => $this->file_length,
+						'file_ext' => $ext,
+						'file_alias'=> $this->alias,
+						'file_downloads'=> $this->file_downloads
+				);
+			}
+		}else{
+			$current_files = array();
+		}
+		
 		
         // get artist alias
         if($this->parentid){
@@ -273,14 +202,258 @@ class MymuseTableproduct extends JTable
         }
         
 
+ 		// if they selected a file from drop down
+ 		$select_files = isset( $post['select_file'] )? $post['select_file']: '';
+ 		if(count($select_files)){
+ 			$arr = array();
+ 			for( $i = 0; $i < count($select_files); $i++ ){
+ 				if(isset($select_files[$i]) && $select_files[$i] != ''){
+ 					$arr[] = $select_files[$i];
+ 				}
+ 			}
+ 			$select_files = $arr;
+ 		}
+ 		$done = 0;
+ 		
+ 		//one format and it's a child product
+ 		if(1 == count($params->get('my_formats'))&& $this->parentid ){
+ 			
+ 			//we only have one format, upload should be only $_FILES OR select_files
+ 			if( (isset($_FILES['product_file']['name']) && $_FILES['product_file']['name'] != "") 
+ 					&& (count($select_files) && $select_files[0] != $current_files[0]->file_name) ){
+ 				$this->setError ( JText::_('MYMUSE_DOUBLE_UPLOAD') );
+ 				return false;
+ 			}
+ 			
+			// Uploaded product file
+			$new = 0;
+			if (isset ( $_FILES['product_file']['name'] ) && $_FILES['product_file']['name'] != "") {
 
+				if(!file_exists($_FILES['product_file']['tmp_name'])){
+					print_pre($_FILES['product_file']);
+					echo "File does not exist ".$_FILES['product_file']['tmp_name']; exit;
+				}
+				if (isset ( $_FILES['product_file']['error'] ) && $_FILES['product_file']['error']) {
+					$this->setError ( Jtext::_ ( $this->_upload_errors [$_FILES['product_file']['error']] ) );
+					return false;
+				}
+				$this->product_downloadable = 1;
+				$new = 1;
+				$tmpName = $_FILES['product_file']['tmp_name'];
+				$current_files[0] = new StdClass();
+				$ext = MyMuseHelper::getExt ( $_FILES['product_file']['name'] );
+				
+				$_FILES['product_file']['name'] = preg_replace ( "/\.$ext$/", "", $_FILES['product_file']['name'] );
+				if($params->get('my_use_string_url_safe')){
+					$current_files[0]->file_name = JFilterOutput::stringURLSafe ( $_FILES['product_file']['name'] ) . '.' . $ext;
+				}else{
+					$current_files[0]->file_name = $_FILES['product_file']['name'] . '.' . $ext;
+				}
+					
+				$current_files[0]->file_ext = $ext;
+				$current_files[0]->file_length = $_FILES['product_file']['size'];
+				$current_files[0]->file_downloads = isset($current_files[0]->file_downloads)? $current_files[0]->file_downloads : 0;
+				
+				// do we save it to the database?
+				if ($params->get ( 'my_use_database' )) {
+					$fp = fopen ( $tmpName, 'r' );
+					$this->file_contents = fread ( $fp, filesize ( $tmpName ) );
+					fclose ( $fp );
+					// echo "stored in DB";
+				} else {
+					
+					// make name and copy it to the download dir
+					if ($params->get ( 'my_encode_filenames' )) {
+						$ext = MyMuseHelper::getExt ( $current_files[0]->file_name );
+						$name = md5 ( $current_files[0]->file_name . time () ) . '.' . $ext;
+						$this->title_alias = $name;
+					} else {
+						$name = $current_files[0]->file_name;
+					}
+					if(1 == $params->get('my_download_dir_format')){ //downloads by format
+						$download_path .= $ext.DS;
+					}
+					$new_file = $download_path . $name;
+					
+					if (! $this->fileUpload ( $tmpName, $new_file )) {
+						return false;
+					}
+				}
+				$this->file = json_encode($current_files);
+				$done = 1;
+			}
+		
+ 		}
  		
  
+		//removing one of the variations
+		if($task == 'deletevariation'){
+			$variationid = $input->get('variation','');
+			
+			$new_current = array();
+			$new_select = array();
+					
+			for( $i = 0; $i < count($select_files); $i++ ){
+				if($i != $variationid && isset($current_files[$i]) && $select_files[$i]){
+					$new_select[] = $select_files[$i];
+					$new_current[] = $current_files[$i];
+				}
+			}
+			$select_files = $new_select;
+			$current_files = $new_current;
+			$this->file = json_encode($current_files);
+			$done = 1;
+			
+		}
 
 
+		//chosen from select dropdown
+		if(is_array( $select_files ) && !$done){
+			
+			for( $i = 0; $i < count($select_files); $i++ ){
+				//rename if necessary
+				$select_file = $select_files[$i];
+				if($select_file &&  $select_file != @$current_files[$i]->file_name){
+					
+					
+					// tidy up name and copy it to the download dir
+					$ext = MyMuseHelper::getExt($select_file);
+					$name = preg_replace("/$ext$/","",$select_file);
+					if($params->get('my_use_sring_url_safe')){
+						$file_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
+					}else{
+						$file_name = $select_file;
+					}
+				
+					if( 1 == $params->get('my_download_dir_format') && !$params->get('my_use_s3',0)){
+						//by format
+						$download_path .= $ext;
+					}
+					
+					if($params->get('my_encode_filenames') ){
+						$name = md5($select_file . time()).'.'.$ext;
+						$file_alias = $name;
+						$new_file = $download_path.$name;
+					}else{
+						$new_file = $download_path.$file_name;
+						$file_alias = '';
+					}
+					
+					$old_file = $download_path.$select_file;
+					
+					if($old_file != $new_file){
+						echo "inside"; exit;
+						if(!$this->fileCopy($old_file, $new_file)){
+							return false;
+						}
+						if(!$this->fileDelete($old_file)){
+							return false;
+						}
+					}
 
+					$file_length = $this->fileFilesize($new_file);
+						
+					// TODO: get this to work with s3
+					$file_time = '';
+					
+					if(isset($new_file) && is_file($new_file)
+							&& strtolower(pathinfo($new_file, PATHINFO_EXTENSION)) == "mp3"){
+						$m = new mp3file($new_file);
+						$a = $m->get_metadata();
+						if ($a['Encoding']=='VBR' || $a['Encoding']=='CBR'){
+							$this->file_time = $a["Length mm:ss"];
+						}
+					}
+					
+					$file_downloads = isset($current[$i]->file_downloads)? $current[$i]->file_downloads : "0";
+					//  save this to the file_name
+					$current_files[$i] = array(
+							'file_name' => $file_name,
+							'file_length' => $file_length,
+							'file_ext' => $ext,
+							'file_alias'=> $file_alias,
+							'file_downloads'=> $file_downloads
+					);
+				}
+			}
+			
+			$this->file = json_encode($current_files);
+		}
+		
+		//all files
+		if(isset($post['product_allfiles']) && $post['product_allfiles']){
 
+			for($p = 0; $p < count($params->get('my_formats')); $p++){
+				$current_files[$p] = array(
+							'file_name' => JFilterOutput::stringURLSafe($form['product_sku']."-full-release-". $params->get('my_formats')[$p]),
+							'file_length' => '',
+							'file_ext' => $params->get('my_formats')[$p],
+							'file_alias'=> '',
+							'file_downloads'=> ''
+					);
 
+			}
+			$this->file = json_encode($current_files);
+			$this->file_type = "audio";
+		}
+		
+		// Previews
+		
+		//from select boxes
+		$this->file_preview = isset($post['current_preview'])? $post['current_preview'] : $this->file_preview;
+		$this->file_preview_2 = isset($post['current_preview_2'])? $post['current_preview_2'] : $this->file_preview_2;
+		$this->file_preview_3 = isset($post['current_preview_3'])? $post['current_preview_3'] : $this->file_preview_3;
+		if($params->get('my_use_sring_url_safe')){
+			
+			
+		}
+		
+		//check for errors with upload previews
+		if(isset($_FILES['product_preview']['name']) && $_FILES['product_preview']['name'] != ""){
+			if(isset($_FILES['product_preview']['error']) && $_FILES['product_preview']['error'])
+			{
+				JError::raiseError( 500, Jtext::_($this->_upload_errors[$_FILES['product_preview']['error']]) );
+				return false;
+			}
+		}
+		if(isset($_FILES['product_preview_2']['name']) && $_FILES['product_preview_2']['name'] != ""){
+			if(isset($_FILES['product_preview_2']['error']) && $_FILES['product_preview_2']['error'])
+			{
+				JError::raiseError( 500, Jtext::_($this->_upload_errors[$_FILES['product_preview_2']['error']]) );
+				return false;
+			}
+		}
+		if(isset($_FILES['product_preview_3']['name']) && $_FILES['product_preview_3']['name'] != ""){
+			if(isset($_FILES['product_preview_3']['error']) && $_FILES['product_preview_3']['error'])
+			{
+				JError::raiseError( 500, Jtext::_($this->_upload_errors[$_FILES['product_preview_3']['error']]) );
+				return false;
+			}
+		}
+		
+		if($this->parentid){
+			$path = MyMuseHelper::getSitePath($this->parentid, 1);
+		}elseif ($this->id){
+			$path = MyMuseHelper::getSitePath($this->id, 0);
+		}
+		
+
+		// Previews 1
+		if(!$this->managePreview('preview', $path)){
+			$this->setError(JText::_("MYMUSE_COULD_NOT_SET_PREVIEW")." preview ".$path);
+			return false;
+		}
+		// Previews 2
+		if(!$this->managePreview('preview_2', $path)){
+			$this->setError(JText::_("MYMUSE_COULD_NOT_SET_PREVIEW")." preview2 ".$path);
+			return false;
+		}
+		// Previews 3
+		if(!$this->managePreview('preview_3', $path)){
+			$this->setError(JText::_("MYMUSE_COULD_NOT_SET_PREVIEW")." preview3 ".$path);
+			return false;
+		}
+		//END of previews
 	
 
         // if it is the parent. Parentid will be 0

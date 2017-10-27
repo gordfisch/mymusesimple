@@ -552,6 +552,7 @@ class com_mymuseInstallerScript
 			$media_params = json_decode($db->loadResult(), TRUE);
 			if($media_params){
 				$media_params['upload_extensions'] = $media_params['upload_extensions'].",mp3,MP3";
+				$media_params['upload_mime'] = $media_params['upload_mime'].",audio/mpeg";
 				$registry = new JRegistry;
 				$registry->loadArray($media_params);
 				$new_params = (string)$registry;
@@ -572,7 +573,7 @@ class com_mymuseInstallerScript
 				}
 			}
 			$actions[] = array('name'=>$name,'message'=>$message, 'status'=>$astatus );
-			
+
 			
 			//UPDATE PLUGINS
 			$name = JText::_("MYMUSE_ENABLE_PLUGINS");
