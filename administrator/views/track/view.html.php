@@ -91,37 +91,9 @@ class MymuseViewTrack extends JViewLegacy
 			$title .= " : ".$this->item->title;
 		}
 		JToolBarHelper::title(JText::_('COM_MYMUSE').' : '. $title, 'mymuse.png');
-	
-		if($layout == "listtracks"){
-			// LIST TRACKS
-			if(!$this->params->get('my_use_s3', 0)){
-				JToolBarHelper::custom('product.uploadtrack', 'save-new.png', 'save-new_f2.png', 'MYMUSE_UPLOAD_TRACKS', false);
-				JToolBarHelper::custom('product.uploadpreview', 'save-new.png', 'save-new_f2.png', 'MYMUSE_UPLOAD_PREVIEWS', false);
-			}
-			
-			
-			JToolBarHelper::editList('product.edit', 'MYMUSE_EDIT_TRACK');
-			JToolBarHelper::addNew('product.addfile', 'MYMUSE_NEW_TRACK');
-			JToolBarHelper::deleteList('','product.removefile','MYMUSE_DELETE_TRACKS');
-			
-			
-			if(!$this->all_files){ 
-				JToolBarHelper::addNew('product.new_allfiles', 'MYMUSE_ALL_TRACKS');
-			}		  
-			JToolBarHelper::apply('product.productreturn', 'MYMUSE_RETURN_TO_PRODUCT');
-			
-			
-			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-tracks?tmpl=component');
-		}elseif($layout == "listitems"){
-			// LIST ITEMS
-			JToolBarHelper::apply('product.productreturn', 'MYMUSE_RETURN_TO_PRODUCT');
-			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-items?tmpl=component');
-			
-		}elseif ($this->task == "uploadtrack" || $this->task == "uploadpreview" ){
-			JToolBarHelper::apply('product.cancelfile', 'MYMUSE_RETURN_TO_TRACKS');
-			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-items?tmpl=component');
 		
-		}elseif($subtype == "file" && $product_id){
+
+		if($subtype == "file" && $product_id){
 			//TRACK
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))

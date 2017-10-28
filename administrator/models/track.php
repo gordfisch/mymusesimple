@@ -275,7 +275,24 @@ class MymuseModeltrack extends JModelAdmin
     }
     
     
+	/**
+     * Method to set the track lists
+     *
+     * @access    public
+     * @return    array
+     */
+    function getLists()
+    {
+    	global $option;
 
+		
+		// Files
+		$lists['attribute_sku'] = array();
+		$lists['items'] 		= array();
+		$lists['files'] 		= array();
+	
+
+		return $lists;
     
     /**
      * Method to get the file lists.
@@ -321,6 +338,7 @@ class MymuseModeltrack extends JModelAdmin
 		$files = array();
 
 		$directory = MyMuseHelper::getDownloadPath($product_id,'1');
+		echo $directory; exit;
 		if($this->_params->get('my_download_dir_format')){
 			//by format
 			$files = array();
