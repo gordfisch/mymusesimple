@@ -290,21 +290,9 @@
                 description="MYMUSE_DOWNLOAD_DIR_FORMAT_DESC"
                 class="btn-group"
                 default="1">
-                <option value="0">MYMUSE_ARIST_PRODUCT</option>
 				<option value="1">MYMUSE_BY_FORMAT</option>
             </field>
-            <field
-                name="my_formats"
-                type="hidden"
-                label="MYMUSE_SELLING_FORMATS_LABEL"
-                description="MYMUSE_SELLING_FORMATS_DESC"
-                class="btn-group"
-                default="mp3">
-                <option value="mp3">MYMUSE_ARIST_PRODUCT</option>
-                <option value="wav">MYMUSE_BY_FORMAT</option>
-            </field>
 
-            
             <field
                 name="my_use_zip"
                 type="radio"

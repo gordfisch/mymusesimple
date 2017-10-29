@@ -53,7 +53,7 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 	}
 </script>
 
-<form action="<?php echo JRoute::_('index.php?option=com_mymuse&view=products'); ?>" method="post" name="adminForm" id="adminForm">
+<form action="<?php echo JRoute::_('index.php?option=com_mymuse&view=tracks'); ?>" method="post" name="adminForm" id="adminForm">
 
 	<div id="j-sidebar-container" class="span2">
 	<?php
@@ -263,6 +263,7 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
 		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
+		<input type="hidden" name="product_id" value="<?php echo $this->parent->id; ?>" />
 		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 		<?php echo JHtml::_('form.token'); ?>
 	</div>

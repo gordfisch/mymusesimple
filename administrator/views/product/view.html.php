@@ -171,6 +171,7 @@ class MymuseViewProduct extends JViewLegacy
 			}
 			else {
 				JToolBarHelper::cancel('product.cancel', 'JTOOLBAR_CLOSE');
+				JToolBarHelper::custom('product.listtracks', 'save-new.png', 'save-new_f2.png', 'COM_MYMUSE_TITLE_TRACKS', false);
 			}
 			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/238-product-new-edit?tmpl=component');
 		

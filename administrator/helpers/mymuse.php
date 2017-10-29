@@ -129,7 +129,7 @@ class MyMuseHelper extends JObject
 
 		JHtmlSidebar::addEntry(
 			JText::_('COM_MYMUSE_TITLE_TRACKS'),
-			'index.php?option=com_mymuse&view=trackss',
+			'index.php?option=com_mymuse&view=tracks',
 			$vName == 'tracks'
 		);
 		
@@ -244,7 +244,7 @@ class MyMuseHelper extends JObject
 			//get component params
 			$cparams = JComponentHelper::getParams( 'com_mymuse' );
 			$params->merge( $cparams );
-			$params->set('my_formats', '["mp3"]') ;
+			$params->set('my_formats', 'mp3') ;
 			//merge app params includes menu
 			$app            = JFactory::getApplication();
 			if(!$app->isAdmin()){
@@ -593,16 +593,9 @@ class MyMuseHelper extends JObject
 	static function getSiteUrl($id, $parent=0)
 	{
 		$params = self::$_params;
-		if(1 == $params->get('my_previews_in_one_dir')){
-			$site_url = $params->get('my_use_s3')? $params->get('my_s3web').'/' : preg_replace("#administrator/#","",JURI::base()).$params->get('my_preview_dir').'/';
-		}else{
-			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
-			$album_alias = MyMuseHelper::getAlbumAlias($id,$parent);
-	
-			$site_url = $params->get('my_use_s3')? $params->get('my_s3web') : preg_replace("#administrator/#","",JURI::base());
-			$site_url .= $params->get('my_use_s3')? '' :  $params->get('my_preview_dir');
-			$site_url .=  '/'.$artist_alias.'/'.$album_alias.'/';
-		}
+
+		$site_url = preg_replace("#administrator/#","",JURI::base()).$params->get('my_preview_dir').DS;
+
 		return $site_url;
 	}
 	
@@ -644,16 +637,7 @@ class MyMuseHelper extends JObject
 	static function getDownloadPath($id, $parent=0)
 	{
 		$params = self::$_params;
-		
-		if(1 == $params->get('my_download_dir_format')){ //downloads by format, we don't know the format here
-				$site_path = $params->get('my_download_dir').DS;
-		}else{
-			$artist_alias = MyMuseHelper::getArtistAlias($id,$parent);
-			$album_alias = MyMuseHelper::getAlbumAlias($id,$parent);
-
-			$site_path = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS;
-		}
-
+		$site_path = $params->get('my_download_dir').DS.$params->get('my_formats').DS;
 		return $site_path;
 	}	
 	

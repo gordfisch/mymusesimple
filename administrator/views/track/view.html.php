@@ -27,6 +27,7 @@ class MymuseViewTrack extends JViewLegacy
 	public function display($tpl = null)
 	{
 		$input = JFactory::getApplication()->input;
+		print_pre($input);
 		$this->task 	= $task 	= $input->get('task', 'edit');
 		$this->state	= $this->get('State');
 		$this->item		= $this->get('Item');

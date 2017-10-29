@@ -605,76 +605,12 @@ class MymuseControllerUpgrade extends JControllerAdmin
 			$prodx[$r->id] = $r->newprodid;
 		}
 		
-		$table = $dbprefix."_mymuse_product_attribute_sku";
-		$query = "INSERT INTO `#__mymuse_product_attribute_sku`
-		SELECT *
-		FROM `$table`";
-		$db->setQuery($query);
-		if($db->execute()){
-			$this->msg .= "$i. Copied $table to new DB <br />";
-		}else{
-			$this->msg .= "$i. Problem copying $table <br />";
-			$this->msg .= $db->getErrorMsg();
-			return false;
-		}
-		
-		$query = "SELECT * FROM #__mymuse_product_attribute_sku";
-		$db->setQuery($query);
-		$res = $db->loadObjectList();
-		foreach($res as $r){
-			$query = "UPDATE #__mymuse_product_attribute_sku
-			SET product_parent_id ='". $prodx[$r->product_parent_id]  ."' WHERE
-			id=".$r->id;
-			$db->setQuery($query);
-			$db->execute();
-			$i++;
-		}
 		$i--;
 		$this->msg .= "Update $i product numbers in $table<br />";
 		
 		return true;
 	}
-	
-	function productAttibute($dbprefix)
-	{
-		$db = JFactory::getDBO();
-		$i = 1;
-		$query = "SELECT id,newprodid from ".$dbprefix."_mymuse_product";
-		$db->setQuery($query);
-		$res = $db->loadObjectList();
-		foreach($res as $r){
-			$prodx[$r->id] = $r->newprodid;
-		}
-		
-		$table = $dbprefix."_mymuse_product_attribute";
-		$query = "INSERT INTO `#__mymuse_product_attribute`
-		SELECT *
-		FROM `$table`";
-		$db->setQuery($query);
-		if($db->execute()){
-			$this->msg .= "$i. Copied $table to new DB <br />";
-		}else{
-			$this->msg .= "$i. Problem copying $table <br />";
-			$this->msg .= $db->getErrorMsg();
-			return false;
-		}
-		
-		$query = "SELECT * FROM #__mymuse_product_attribute";
-		$db->setQuery($query);
-		$res = $db->loadObjectList();
-		foreach($res as $r){
-			$query = "UPDATE #__mymuse_product_attribute
-			SET product_id ='". $prodx[$r->product_id]  ."' WHERE
-			id=".$r->id;
-			$db->setQuery($query);
-			$db->execute();
-			$i++;
-		}
-		$i--;
-		$this->msg .= "Update $i product numbers in $table<br />";
-		
-		return true;
-	}
+
 	
 
 	

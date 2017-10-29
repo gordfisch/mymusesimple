@@ -18,34 +18,6 @@ class MymuseModelproducts extends JModelList
 {
 
  
-  	/**
-  	* stores _parent_product
-  	*
-  	* @var array
-  	*/
-  	var $_parent_product = null;
-  	
-  	/**
-  	* stores _parentid
-  	*
-  	* @var array
-  	*/
-  	var $_parentid = null;
-  	
-  	/**
-  	* stores _attribute_skus
-  	*
-  	* @var array
-  	*/
-  	var $_attribute_skus = null;
-  	
-  	/**
-  	* stores _attributes
-  	*
-  	* @var array
-  	*/
-  	var $_attributes = null;
-  	
         
     /**
      * Constructor.
@@ -390,7 +362,7 @@ class MymuseModelproducts extends JModelList
          
             // Check if it has children!
             foreach ($cid as $id){
-            	$query = "SELECT title FROM #__mymuse_product WHERE parentid='$id'";
+            	$query = "SELECT title FROM #__mymuse_track WHERE product_id='$id'";
             	$this->_db->setQuery($query);
             	$row = $this->_db->loadObject();
             	
@@ -400,9 +372,8 @@ class MymuseModelproducts extends JModelList
             	}
             }
       
-            // Let's get rid of associated entries
 
-            // first the product_category_xref
+            // clear product_category_xref
             $query = "DELETE FROM #__mymuse_product_category_xref WHERE"
             . " product_id IN (". $cids  .")";
             $this->_db->setQuery($query);
@@ -411,63 +382,8 @@ class MymuseModelproducts extends JModelList
             	$this->setError($this->_db->getErrorMsg());
             	return false;
             }
-
-
-            // then the product_attribute
-            $query = "DELETE FROM #__mymuse_product_attribute WHERE"
-            . " product_id IN (". $cids  .")";
-            $this->_db->setQuery($query);
-            if (!$this->_db->execute())
-            {
-            	$this->setError($this->_db->getErrorMsg());
-            	return false;
-            }
-
             
-            foreach ($cid as $id){
-            	//see if there is a file to delete
-            	$query = "SELECT file_name, title_alias, file_preview, parentid FROM
-            	#__mymuse_product WHERE id='$id'";
-            	$this->_db->setQuery($query);
-            	$row = $this->_db->loadObject();
-
-
-            	if($row->parentid && $row->file_name != ''){
-            		// get artist alias
-        		
-        			$artist_alias = MyMuseHelper::getArtistAlias($row->parentid, 1);
-        			$album_alias = MyMuseHelper::getAlbumAlias($row->parentid);
-            	
-        			if($params->get('my_encode_filenames')){
-        				$name = $row->title_alias;
-        			}else{
-        				$name = $row->file_name;
-        			}
-
-
-        			$old = $params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
-        			if(file_exists($old)){
-        				if(!JFile::delete($old)){
-        					$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old);
-        				}
-        			}
-
-        			//see if there is a preview to delete
-        			if($row->file_preview){
-        				$old = JPATH_ROOT.DS.$params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$row->file_preview;
-        				if(file_exists($old)){
-        					if(!JFile::delete($old)){
-        						$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".$old);
-        					}
-        				}
-        			}
-        		
-            	}
-			
-            }
-
-            
-            // finally the product
+            // clear the product
             $query = 'DELETE FROM #__mymuse_product'
             . ' WHERE id IN ( '.$cids.' )';
             $this->_db->setQuery( $query );

@@ -20,6 +20,7 @@ class MymuseViewTracks extends JViewLegacy
 	protected $items;
 	protected $pagination;
 	protected $state;
+	protected $parent;
 
 	/**
 	 * Display the view
@@ -31,13 +32,14 @@ class MymuseViewTracks extends JViewLegacy
 		$layout = $input->get('layout', '');
 
 		if($layout == "check"){
-			$this->products = $this->get('Check');
+			$this->trackss = $this->get('Check');
 			$this->sidebar = JHtmlSidebar::render();
 
 			parent::display('check');
 		}else{
 			$this->state = $this->get ( 'State' );
 			$this->items = $this->get ( 'Items' );
+			$this->parent = $this->get ( 'Parent' );
 			
 			$this->pagination = $this->get ( 'Pagination' );
 			$this->authors = $this->get ( 'Authors' );
@@ -84,8 +86,14 @@ class MymuseViewTracks extends JViewLegacy
 
 		$state	= $this->get('State');
 		$canDo	= MymuseHelper::getActions($state->get('filter.category_id'));
+		$input = JFactory::getApplication()->input;
+		$product_id = $input->get('product_id', 0);
 
-		JToolBarHelper::title(JText::_('MYMUSE').' : '.JText::_('COM_MYMUSE_TITLE_TRACKS'), 'mymuse.png');
+		$title = JText::_('MYMUSE').' : '.JText::_('COM_MYMUSE_TITLE_TRACKS');
+		if($this->parent){
+			$title .= ' : '.$this->parent->title;
+		}
+		JToolBarHelper::title($title, 'mymuse.png');
 
 
         //Check if the form exists before showing the add/edit buttons
@@ -97,7 +105,7 @@ class MymuseViewTracks extends JViewLegacy
 		    }
 
 		    if ($canDo->get('core.edit')) {
-			    JToolBarHelper::editList('product.edit','JTOOLBAR_EDIT');
+			    JToolBarHelper::editList('track.edit','JTOOLBAR_EDIT');
 		    }
 
         }

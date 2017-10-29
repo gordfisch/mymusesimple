@@ -303,6 +303,26 @@ class MymuseModeltracks extends JModelList
 	}
 	
 	/**
+	 * get parent from product_id
+	 *
+	 * @return	object or 0
+	 * @since	3.5
+	 */
+	public function getParent() {
+		$db = $this->getDbo();
+		$input = JFactory::getApplication()->input;
+		$product_id = $input->get('product_id', 0);
+
+		if($product_id){
+			$query = "SELECT * from #__mymuse_product WHERE id='$product_id'";
+			$db->setQuery($query);
+			return $db->loadObject();
+		}else{
+			return (object) array('id' => 0, 'title'=> JText::_('COM_MYMUSE_NO_PRODUCT_SELECTED'));
+		}
+	}
+
+	/**
 	 * Build a list of authors
 	 *
 	 * @return	JDatabaseQuery

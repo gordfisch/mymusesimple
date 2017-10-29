@@ -227,43 +227,6 @@ class MymuseModeltrack extends JModelAdmin
 	}
 	
 	
-	/**
-     * Method to set the track lists
-     *
-     * @access    public
-     * @return    array
-     */
-    function getLists()
-    {
-    	global $option;
-    	$app 				= JFactory::getApplication();
-    	$input 				= $app->input;
-    	$id 				= $input->get('id', 0);
-
-    	$filter_state 		= $app->getUserStateFromRequest( $option.'filter_state', 'filter_state', '', 'word' );
-		$filter_catid 		= $app->getUserStateFromRequest( $option.'filter_catid', 'filter_catid', 0, 'int' );
-		$filter_artistid 	= $app->getUserStateFromRequest( $option.'filter_artistid', 'filter_artistid', 0, 'int' );
-		$filter_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
-		$filter_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
-
-		$filter_item_order 		= $app->getUserStateFromRequest( $option.'filter_order', 'filter_order', 'a.ordering', 'cmd' );
-		$filter_item_order_Dir 	= $app->getUserStateFromRequest( $option.'filter_order_Dir', 'filter_order_Dir', 'asc', 'word' );
-		
-		$this->setState('file.ordering', $filter_order);
-		$this->setState('file.direction', $filter_order_Dir);
-		
-		$this->setState('item.ordering', $filter_order);
-		$this->setState('item.direction', $filter_item_order_Dir);
-		
-		$lists['order'] = $filter_order;
-		$lists['order_Dir'] = $filter_order_Dir;
-		$edit = $input->get('edit', 0);	
-		
-		$lists['files'] 		= array();
-
-
-		return $lists;
-    }
     
   
     function getTrackPagination()
@@ -274,33 +237,14 @@ class MymuseModeltrack extends JModelAdmin
     	return $this->_trackPagination;
     }
     
-    
-	/**
-     * Method to set the track lists
-     *
-     * @access    public
-     * @return    array
-     */
-    function getLists()
-    {
-    	global $option;
 
-		
-		// Files
-		$lists['attribute_sku'] = array();
-		$lists['items'] 		= array();
-		$lists['files'] 		= array();
-	
-
-		return $lists;
-    
     /**
      * Method to get the file lists.
      *
      * @access    public
      * @return    array
      */
-    function getFileLists()
+    function getLists()
     {
     	$input = JFactory::getApplication()->input;
     	$product_id = $this->_item->product_id;
@@ -329,16 +273,16 @@ class MymuseModeltrack extends JModelAdmin
 		foreach ( $files as $file ) {
 				$previews[] = JHTML::_('select.option',  $file );
 		}
-		$lists['previews'] = JHTML::_('select.genericlist',  $previews, 'preview', 'class="inputbox" size="1" ', 'value', 'text', $this->_item->file_preview );
-		$lists['previews_2'] = JHTML::_('select.genericlist',  $previews, 'preview_2', 'class="inputbox" size="1" ', 'value', 'text', $this->_item->file_preview_2 );
-		$lists['previews_3'] = JHTML::_('select.genericlist',  $previews, 'preview_3', 'class="inputbox" size="1" ', 'value', 'text', $this->_item->file_preview_3 );
+		$lists['previews'] = JHTML::_('select.genericlist',  $previews, 'preview', 'class="inputbox" size="1" ', 'value', 'text', $this->_item->preview );
+		$lists['previews_2'] = JHTML::_('select.genericlist',  $previews, 'preview_2', 'class="inputbox" size="1" ', 'value', 'text', $this->_item->preview_2 );
+		$lists['previews_3'] = JHTML::_('select.genericlist',  $previews, 'preview_3', 'class="inputbox" size="1" ', 'value', 'text', $this->_item->preview_3 );
 		
 		
 		// get the download tracks lists
 		$files = array();
 
 		$directory = MyMuseHelper::getDownloadPath($product_id,'1');
-		echo $directory; exit;
+
 		if($this->_params->get('my_download_dir_format')){
 			//by format
 			$files = array();

@@ -32,13 +32,11 @@ class MymuseController extends JControllerLegacy
 		require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 
 		// Load the submenu.
-		$view = JRequest::getCmd('view', 'mymuse');
+		$view = JFactory::getApplication()->input->get('view', 'mymuse');
 
 		if($view != "product"){
 			MymuseHelper::addSubmenu($view);
 		}
-		$view		= JRequest::getCmd('view', 'mymuse');
-        JRequest::setVar('view', $view);
 
 		parent::display();
 

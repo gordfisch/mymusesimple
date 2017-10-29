@@ -232,32 +232,12 @@ JHTML::_('behavior.tooltip');
 
 	<legend><?php echo JText::_('MYMUSE_TRACKS'); ?></legend>
 	<div class="pull-left span10">
-		<?php
 
-		if(1 == count($this->params->get('my_formats')) ){ ?>
-			<div class="control-group">
-				<div class="control-label">
-				<?php echo JText::_( 'MYMUSE_UPLOAD_NEW_FILE' ); ?>
-				</div>
-				<div class="controls">
-				<input class="inputbox" type="file" name="product_file" id="jform_product_file" size="40" /><br />
-				upload_max_filesize: <?php echo ini_get('upload_max_filesize'); ?><br />
-				post_max_size: <?php echo ini_get('post_max_size'); ?><br />
-				
-				</div>
-			</div>
-		<?php } ?>
-		<?php if(!$this->params->get('my_use_database')){ ?>
-			<div class="control-group">
-				<div class="control-label">
-				<?php echo JText::_( 'MYMUSE_DOWNLOAD_PATH' ); ?>
-				</div>
-				<div class="controls">
-				<input  type="text" name="download_dir" id="jform_download_dir" value="<?php echo $lists['download_dir']; ?>" 
-				class="readonly" readonly="readonly" style="font-weight:normal; font-size: 10px;" size="60" />
-				</div>
-			</div>
-		<?php } ?>
+
+
+				<h3><a href="index.php?option=com_media"><?php echo JText::_( 'MYMUSE_UPLOAD_NEW_FILE' ); ?></a></h3>
+
+
 		<table class="table table-striped" id="articleList">
 				<thead>
 					<tr>
@@ -396,18 +376,14 @@ JHTML::_('behavior.tooltip');
 
 		<input type="hidden" name="product_id" value="<?php echo $item->product_id ?>" />
 		<input type="hidden" name="jform[product_id]" value="<?php echo $item->product_id ?>" />
-		<input type="hidden" name="jform[catid]" value="<?php echo $item->parent->catid ?>" />
-		<input type="hidden" name="jform[artistid]" value="<?php echo $item->parent->artistid ?>" />
-		<input type="hidden" name="current_preview" value="<?php echo stripslashes($item->file_preview) ?>" />
-		<input type="hidden" name="current_preview_2" value="<?php echo stripslashes($item->file_preview_2) ?>" />
-		<input type="hidden" name="current_preview_3" value="<?php echo stripslashes($item->file_preview_3) ?>" />
+		<input type="hidden" name="current_preview" value="<?php echo stripslashes($item->preview) ?>" />
+		<input type="hidden" name="current_preview_2" value="<?php echo stripslashes($item->preview_2) ?>" />
+		<input type="hidden" name="current_preview_3" value="<?php echo stripslashes($item->preview_3) ?>" />
 		
-		<input type="hidden" name="view" value="product" />
+		<input type="hidden" name="view" value="track" />
 		<input type="hidden" name="id" value="<?php echo $item->id; ?>" />
 		<input type="hidden" name="jform[version]" value="<?php echo $item->version; ?>" />
-		<input type="hidden" name="jform[product_downloadable]" value="1" />
-		<input type="hidden" name="subtype" value="file" />
-		<input type="hidden" name="layout" value="editfile" />
+		<input type="hidden" name="layout" value="edit" />
 		<input type="hidden" name="option" value="com_mymuse" />
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="variation" value="" />
