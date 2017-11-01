@@ -56,8 +56,8 @@
 			<folder>install</folder>
 		</files>
 		<languages folder="administrator">
-			<language tag="en-GB">language/en-GB/en-GB.com_mymusesimple.ini</language>
-			<language tag="en-GB">language/en-GB/en-GB.com_mymusesimple.sys.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_mymuse.ini</language>
+			<language tag="en-GB">language/en-GB/en-GB.com_mymuse.sys.ini</language>
 		</languages>
 	</administration>  
 	
