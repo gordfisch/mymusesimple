@@ -4,7 +4,7 @@
 	<!-- arboreta/joomlamy3/callinish || mymusetest35 || nexgen || singsong || soundliaison/new || nexgen/staging -->
         <property name="test" value="/var/www/html/mymusesimple" override="true" />
         <property name="testadmincomp"
-                value="/var/www/html/mymusesimple/administrator/components/com_mymusesimple"
+                value="/var/www/html/mymusesimple/administrator/components/com_mymuse"
                 override="true" />
         <property name="src" value="${project.basedir}" override="true" />
 
@@ -34,7 +34,7 @@
  
         <!-- Copy Target -->
         <target name="simple" description="copy target">
-                <echo>Copying files from mymusesimple working dir to mymusesimple...
+                <echo>Copying files from mymusesimple working dir to mymuse...
                 </echo>
         	
         		<copy todir="${test}/components/com_mymuse">
@@ -52,10 +52,10 @@
                         
 				<!--  languages -->
 
-                <copy file="${src}/administrator/language/en-GB/en-GB.com_mymusesimple.sys.ini"
+                <copy file="${src}/administrator/language/en-GB/en-GB.com_mymuse.sys.ini"
                         todir="${test}/administrator/language/en-GB" />
                         
-                <copy file="${src}/administrator/language/en-GB/en-GB.com_mymusesimple.ini"
+                <copy file="${src}/administrator/language/en-GB/en-GB.com_mymuse.ini"
                         todir="${test}/administrator/language/en-GB" />
                         
                 <copy file="${src}/site/language/en-GB/en-GB.com_mymuse.ini"

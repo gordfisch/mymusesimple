@@ -36,5 +36,6 @@ DROP TABLE IF EXISTS `#__mymuse_shopper`;
 DROP TABLE IF EXISTS `#__mymuse_shopper_group`;
 DROP TABLE IF EXISTS `#__mymuse_state`;
 DROP TABLE IF EXISTS `#__mymuse_store`;
+DROP TABLE IF EXISTS `#__mymuse_track`;
 DROP TABLE IF EXISTS `#__mymuse_tax_rate`;
 
