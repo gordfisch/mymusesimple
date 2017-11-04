@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <extension type="component" version="3.3.0" method="upgrade">
-	<name>MyMuseSimple</name>
-	<creationDate>October 2017</creationDate>
+	<name>MyMuse</name>
+	<creationDate>November 2017</creationDate>
 	<copyright>Copyright (C) 2017. All rights reserved.</copyright>
 	<license>GNU General Public License version 2 or later; see LICENSE.txt</license>
     <author>Arboreta</author>
 	<authorEmail>gord@arboreta.ca</authorEmail>
 	<authorUrl>http://www.joomlamymuse.com</authorUrl>
-	<version>1.0.0</version>
+	<version>1.0.1</version>
 	<description>Sell your CD's and tracks online. Visit http://www.joomlamymuse.com for more info.</description>
 
 	<media destination="com_mymuse" folder="media">
@@ -113,10 +113,9 @@
 	</modules>
 
 
-	<updateservers>
-    <server type="collection" priority="1" name="Mymuse Updates"
-    >http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=77&amp;dummy=extension.xml</server>
+<updateservers>
+		<!-- Note: No spaces or linebreaks allowed between the server tags -->
+		<server type="extension" name="MyMuseSimple  Updates">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=77&amp;dummy=extension.xml</server>
 	</updateservers>
-
 </extension>
 
