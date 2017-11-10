@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 jimport('joomla.application.component.view');
 
 /**
- * View class for a list of Mymuse.
+ * View class for a list of Mymuse Tracks.
  */
 class MymuseViewTracks extends JViewLegacy
 {
@@ -44,6 +44,8 @@ class MymuseViewTracks extends JViewLegacy
 			$this->pagination = $this->get ( 'Pagination' );
 			$this->authors = $this->get ( 'Authors' );
 			$this->featured = $this->get ( 'Featured' );
+			$this->filterForm    = $this->get('FilterForm');
+			$this->activeFilters = $this->get('ActiveFilters');
 			
 			// Check for errors.
 			if (count ( $errors = $this->get ( 'Errors' ) )) {
@@ -51,26 +53,13 @@ class MymuseViewTracks extends JViewLegacy
 				return false;
 			}
 			
-			// Levels filter.
-			$options = array ();
-			$options [] = JHtml::_ ( 'select.option', '1', JText::_ ( 'J1' ) );
-			$options [] = JHtml::_ ( 'select.option', '2', JText::_ ( 'J2' ) );
-			$options [] = JHtml::_ ( 'select.option', '3', JText::_ ( 'J3' ) );
-			$options [] = JHtml::_ ( 'select.option', '4', JText::_ ( 'J4' ) );
-			$options [] = JHtml::_ ( 'select.option', '5', JText::_ ( 'J5' ) );
-			$options [] = JHtml::_ ( 'select.option', '6', JText::_ ( 'J6' ) );
-			$options [] = JHtml::_ ( 'select.option', '7', JText::_ ( 'J7' ) );
-			$options [] = JHtml::_ ( 'select.option', '8', JText::_ ( 'J8' ) );
-			$options [] = JHtml::_ ( 'select.option', '9', JText::_ ( 'J9' ) );
-			$options [] = JHtml::_ ( 'select.option', '10', JText::_ ( 'J10' ) );
-			
-			$this->f_levels = $options;
+
 			// We don't need toolbar in the modal window.
 			if ($this->getLayout () !== 'modal') {
 				$this->addToolbar ();
 				$this->sidebar = JHtmlSidebar::render ();
 			}
-			$this->getSubCats ( $this->items );
+
 			parent::display ( $tpl );
 		}
 	}
@@ -88,6 +77,21 @@ class MymuseViewTracks extends JViewLegacy
 		$canDo	= MymuseHelper::getActions($state->get('filter.category_id'));
 		$input = JFactory::getApplication()->input;
 		$product_id = $input->get('product_id', 0);
+
+		$jform 		= $input->get('jform', array(), 'ARRAY'); 
+		$product_ids = isset($jform['product_id'])? $jform['product_id'] : 0;
+		if($product_ids && count($product_ids)){
+			$dbo = JFactory::getDBO();
+			$titles = array();
+			$product_id = $product_ids[0];
+			foreach($product_ids as $prod_id){
+				$query = "SELECT title from #__mymuse_product WHERE id='$prod_id'";
+				$dbo->setQuery($query);
+				$titles[] = $dbo->loadResult();
+			}
+			$this->parent->title = implode(" : ",$titles);
+		}
+
 
 		$title = JText::_('MYMUSE').' : '.JText::_('COM_MYMUSE_TITLE_TRACKS');
 		if($this->parent){
@@ -147,52 +151,7 @@ class MymuseViewTracks extends JViewLegacy
 		}
 		JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/239-products-list?tmpl=component');
 	
-		//Sidebar stuff
-		JHtmlSidebar::setAction('index.php?option=com_mymuse&view=tracks');
-		
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_PUBLISHED'),
-			'filter_published',
-			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
-		);
 
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_CATEGORY'),
-			'filter_category_id',
-			JHtml::_('select.options', JHtml::_('category.options', 'com_mymuse'), 'value', 'text', $this->state->get('filter.category_id'))
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_MAX_LEVELS'),
-			'filter_level',
-			JHtml::_('select.options', $this->f_levels, 'value', 'text', $this->state->get('filter.level'))
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_ACCESS'),
-			'filter_access',
-			JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'))
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_AUTHOR'),
-			'filter_author_id',
-			JHtml::_('select.options', $this->authors, 'value', 'text', $this->state->get('filter.author_id'))
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_LANGUAGE'),
-			'filter_language',
-			JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
-		);
-
-		JHtmlSidebar::addFilter(
-		'-' . JText::_('JSELECT') . ' ' . JText::_('JTAG') . '-',
-		'filter_tag',
-		JHtml::_('select.options', JHtml::_('tag.options', true, true), 'value', 'text', $this->state->get('filter.tag'))
-		);
-	
-	
 	
 	}
 	
@@ -220,32 +179,4 @@ class MymuseViewTracks extends JViewLegacy
 		);
 	}
 	
-	/*
-	 * getSubCats
-	* find cross referenced categories for each product
-	* object $items
-	*
-	* return objects $items
-	*/
-	function getSubCats(&$items)
-	{
-		$db = JFactory::getDBO();
-		for($i=0; $i < count($items); $i++){
-			$query = "SELECT c.title FROM #__mymuse_product_category_xref as x
-			LEFT JOIN #__categories as c on x.catid=c.id
-			WHERE x.product_id=".$items[$i]->id;
-			$items[$i]->subcats = "";
-			$db->setQuery($query);
-			if($res = $db->loadObjectList()){
-				foreach($res as $r){
-					$items[$i]->subcats .= $r->title.",";
-				}
-			}
-			$items[$i]->subcats = preg_replace("/,$/","",$items[$i]->subcats);
-			
-			$registry = new JRegistry;
-			$items[$i]->attribs = $registry->loadString($items[$i]->attribs);
-		}
-		 
-	}
 }

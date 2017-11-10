@@ -68,7 +68,13 @@ JHTML::_('behavior.tooltip');
 		}
 		//-->
 		</script>
-		<h2><?php echo empty($this->item->id) ? JText::_('MYMUSE_NEW_TRACK') : JText::_('MYMUSE_EDIT_TRACK'); ?> <?php echo $item->title; ?></h2>
+		<h2><?php echo empty($item->id) ? JText::_('MYMUSE_NEW_TRACK') : JText::_('MYMUSE_EDIT_TRACK'); ?> 
+
+			<?php if(isset($item->parent)){
+				echo ' : <a href="index.php?option=com_mymuse&view=product&task=product.edit&id='.$item->parent->id.'">'.$item->parent->title."</a> : ";
+			}
+			?>
+			<?php echo $item->title; ?></h2>
 
 		<form action="index.php" method="post" name="adminForm" id="adminForm" enctype="multipart/form-data">
 	<div class="row-fluid">
@@ -172,18 +178,10 @@ JHTML::_('behavior.tooltip');
 
 				
 			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('state'); ?>
+				<div class="control-label"><?php echo $this->form->getLabel('published'); ?>
 				</div>
 				<div class="controls">
-				<?php echo $this->form->getInput('state'); ?>
-				</div>
-			</div>
-
-			<div class="control-group">
-				<div class="control-label"><?php echo $this->form->getLabel('access'); ?>
-				</div>
-				<div class="controls">
-				<?php echo $this->form->getInput('access'); ?>
+				<?php echo $this->form->getInput('published'); ?>
 				</div>
 			</div>
 
@@ -203,16 +201,14 @@ JHTML::_('behavior.tooltip');
 				</div>
 			</div>
 			
-
-			
 			<div class="control-group">
-				<div class="control-label">
-					<?php echo $this->form->getLabel('recommend'); ?>
+				<div class="control-label"><?php echo $this->form->getLabel('access'); ?>
 				</div>
 				<div class="controls">
-					<?php echo $this->form->getInput('recommend'); ?>
+				<?php echo $this->form->getInput('access'); ?>
 				</div>
 			</div>
+
 	</div>
 	</fieldset>
 		<fieldset class="adminform">

@@ -139,7 +139,7 @@ foreach ($fieldSets as $name => $fieldSet) {
 	$fieldSets = $this->form->getFieldsets('attribs'); 
 	$physical = 0;
 	foreach($this->params->get('my_formats') as $variation=>$format)
-	{
+	{	
 	 	foreach ($fieldSets as $name => $fieldSet)
 	 	{
 

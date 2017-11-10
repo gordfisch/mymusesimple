@@ -1,6 +1,5 @@
 <?php defined('_JEXEC') or die('Restricted access'); 
 ?>
-<form action="<?php echo JRoute::_('index.php?option=com_categories&view=categories'); ?>" method="post" name="adminForm" id="adminForm">
 
 	<div id="j-sidebar-container" class="span2">
 	<?php
@@ -19,16 +18,16 @@
 			<br />
 			<?php echo JText::_("MYMUSE_TAGLINE"); ?></td>
 		</tr>
-		<tr>
+		<!-- tr>
 			<td align="middle" width="100%"><h3><?php echo LiveUpdate::getIcon(); ?></h3></td>
 		</tr>
-		<tr>
+		<tr -->
 			<td align="left" width="100%">
 			<p><b><?php echo JText::_("MYMUSE_QUICKSTART"); ?></b></p>
 			<ul>
-			<li><b><a href="index.php?option=com_mymuse&task=addSampleData"><?php echo JText::_("MYMUSE_ADD_SAMPLE_DATA"); ?></a></b> 
+			<!-- li><b><a href="index.php?option=com_mymuse&task=addSampleData"><?php echo JText::_("MYMUSE_ADD_SAMPLE_DATA"); ?></a></b> 
 
-			</li>
+			</li -->
 			<li><b><a href="index.php?option=com_mymuse&view=store&layout=edit&id=1"><?php echo JText::_("MYMUSE_STORE"); ?></a></b> 
 			<?php echo JText::_("MYMUSE_STORE_DESC"); ?>
 			</li>
@@ -52,7 +51,7 @@
 			<li><b><a href="index.php?option=com_mymuse&view=products"><?php echo JText::_("MYMUSE_PRODUCTS_ALBUMS"); ?></a></b> 
 			<?php echo JText::_("MYMUSE_PRODUCTS_ALBUMS_DESC"); ?></li>
 			
-			<li><b><a href="index.php?option=com_mymuse&view=tax_rate"><?php echo JText::_("MYMUSE_TAXES"); ?></a></b> 
+			<li><b><a href="index.php?option=com_mymuse&view=taxrates"><?php echo JText::_("MYMUSE_TAXES"); ?></a></b> 
 			<?php echo JText::_("MYMUSE_TAXES_DESC"); ?></li>
 			
 			<li><b><a href="index.php?option=com_mymuse&task=addEuroTax"><?php echo JText::_("MYMUSE_ADD_EURO_TAXES"); ?></a></b> 
@@ -64,7 +63,7 @@
 			<li><b><?php echo JText::_("MYMUSE_HELP"); ?></b> 
 			<?php echo JText::_("MYMUSE_HELP_DESC"); ?>
 			<br /><br /></li>
-			<li><?php echo JText::_("MYMUSE_CONTACT"); ?> <a href="mailto:info@mymuse.ca">info@mymuse.ca</a> <?php echo JText::_("MYMUSE_WEBSITE"); ?> <a href="http://www.mymuse.ca">www.mymuse.ca</a>
+			<li><?php echo JText::_("MYMUSE_CONTACT"); ?> <a href="mailto:info@joomlamymuse.com">info@joomlamymuse.com</a> <?php echo JText::_("MYMUSE_WEBSITE"); ?> <a targete="_new" href="https://www.joomlamymuse.com">www.joomlamymuse.com</a>
 			</ul>
 			</td>
 		</tr>
@@ -72,10 +71,6 @@
 
 		</table>
 		</fieldset>
-		<!--  
-		<a class="btn btn-small btn-success" href="index.php?option=com_mymuse&task=product.import_products">Import</a>&nbsp;&nbsp;
-		<a class="btn btn-small"href="index.php?option=com_mymuse&task=product.import_products&clear=1">Clear Products</a>&nbsp;&nbsp;
-		<a class="btn btn-small"href="components/com_mymuse/log.html" target="_new">view Log</a>
-		-->
+	
 	</div>
 </form>

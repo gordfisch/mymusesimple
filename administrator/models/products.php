@@ -36,7 +36,7 @@ class MymuseModelproducts extends JModelList
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
 				'catid', 'a.catid', 'category_title',
-				'artistid', 'a.artistid',
+				'artistid', 'a.artistid', 'artist_title',
 				'state', 'a.state',
 				'access', 'a.access', 'access_level',
 				'created', 'a.created',

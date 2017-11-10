@@ -12,19 +12,94 @@
 	"buffers":
 	[
 		{
-			"file": "administrator/models/forms/store.xml",
+			"file": "administrator/views/track/view.html.php",
 			"settings":
 			{
-				"buffer_size": 40484,
+				"buffer_size": 5394,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "build.xml",
+			"file": "administrator/views/track/tmpl/edit.php",
 			"settings":
 			{
-				"buffer_size": 11292,
+				"buffer_size": 13434,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "administrator/controllers/track.php",
+			"settings":
+			{
+				"buffer_size": 5768,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "administrator/models/track.php",
+			"settings":
+			{
+				"buffer_size": 12775,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "administrator/tables/track.php",
+			"settings":
+			{
+				"buffer_size": 30783,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "administrator/models/forms/track.xml",
+			"settings":
+			{
+				"buffer_size": 11495,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "administrator/mymuse.php",
+			"settings":
+			{
+				"buffer_size": 1304,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "administrator/views/tracks/view.html.php",
+			"settings":
+			{
+				"buffer_size": 5616,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "<?php\n/**\n * @version     $Id$\n * @package     com_mymuse3\n * @copyright   Copyright (C) 2011. All rights reserved.\n * @license     GNU General Public License version 2 or later; see LICENSE.txt\n * @author      Gord Fisch arboreta.ca\n */\n\n\n// no direct access\ndefined('_JEXEC') or die;\n\nJHtml::addIncludePath(JPATH_COMPONENT.'/helpers/html');\nJHtml::_('bootstrap.tooltip');\nJHtml::_('behavior.multiselect');\nJHtml::_('formbehavior.chosen', '.multipleProducts', null, array('placeholder_text_multiple' => JText::_('MYMUSE_SELECT_PRODUCTS')));\nJHtml::_('formbehavior.chosen', '.multipleArtists', null, array('placeholder_text_multiple' => JText::_('MYMUSE_FILTER_ARTIST')));\nJHtml::_('formbehavior.chosen', '.multipleAccessLevels', null, array('placeholder_text_multiple' => JText::_('JOPTION_SELECT_ACCESS')));\nJHtml::_('formbehavior.chosen', '.multipleAuthors', null, array('placeholder_text_multiple' => JText::_('JOPTION_SELECT_AUTHOR')));\nJHtml::_('formbehavior.chosen', 'select');\n\n$app\t\t= JFactory::getApplication();\n$user\t\t= JFactory::getUser();\n$userId\t\t= $user->get('id');\n$listOrder\t= $this->escape($this->state->get('list.ordering'));\n$listDirn\t= $this->escape($this->state->get('list.direction'));\n$saveOrder\t= $listOrder == 'a.ordering';\nif ($saveOrder)\n{\n\t$saveOrderingUrl = 'index.php?option=com_mymuse&task=trackss.saveOrderAjax&tmpl=component';\n\tJHtml::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);\n}\n\n$sortFields = $this->getSortFields();\n$assoc\t\t= isset($app->item_associations) ? $app->item_associations : 0;\n\nrequire_once JPATH_COMPONENT.'/helpers/mymuse.php';\n\n?>\n\n\n<form action=\"<?php echo JRoute::_('index.php?option=com_mymuse&view=tracks'); ?>\" method=\"post\" name=\"adminForm\" id=\"adminForm\">\n\n<?php if (!empty( $this->sidebar)) : ?>\n\t<div id=\"j-sidebar-container\" class=\"span2\">\n\t\t<?php echo $this->sidebar; ?>\n\t</div>\n\t<div id=\"j-main-container\" class=\"span10\">\n<?php else : ?>\n\t<div id=\"j-main-container\">\n<?php endif; ?>\n\t\t<?php\n\t\t// Search tools bar\n\t\techo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));\n\t\t?>\n\t\t<?php if (empty($this->items)) : ?>\n\t\t\t<div class=\"alert alert-no-items\">\n\t\t\t\t<?php echo JText::_('JGLOBAL_NO_MATCHING_RESULTS'); ?>\n\t\t\t</div>\n\t\t<?php else : ?>\n\n\t\t\t<div class=\"filter-search btn-group pull-left\">\n\t\t\t\t<label for=\"filter_search\" class=\"element-invisible\"><?php echo JText::_('MYMUSE_FILTER'); ?></label>\n\t\t\t\t<input type=\"text\" name=\"filter_search\" placeholder=\"<?php echo JText::_('MYMUSE_FILTER'); ?>\" id=\"filter_search\" value=\"<?php echo $this->escape($this->state->get('filter.search')); ?>\" title=\"<?php echo JText::_('MYMUSE_FILTER'); ?>\" />\n\t\t\t</div>\n\t\t\t<div class=\"btn-group pull-left hidden-phone\">\n\t\t\t\t<button class=\"btn tip hasTooltip\" type=\"submit\" title=\"<?php echo JText::_('JSEARCH_FILTER_SUBMIT'); ?>\"><i class=\"icon-search\"></i></button>\n\t\t\t\t<button class=\"btn tip hasTooltip\" type=\"button\" onclick=\"document.id('filter_search').value='';this.form.submit();\" title=\"<?php echo JText::_('JSEARCH_FILTER_CLEAR'); ?>\"><i class=\"icon-remove\"></i></button>\n\t\t\t</div>\n\t\t\t<div class=\"btn-group pull-right hidden-phone\">\n\t\t\t\t<label for=\"limit\" class=\"element-invisible\"><?php echo JText::_('JFIELD_PLG_SEARCH_SEARCHLIMIT_DESC'); ?></label>\n\t\t\t\t<?php echo $this->pagination->getLimitBox(); ?>\n\t\t\t</div>\n\t\t\t<div class=\"btn-group pull-right hidden-phone\">\n\t\t\t\t<label for=\"directionTable\" class=\"element-invisible\"><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></label>\n\t\t\t\t<select name=\"directionTable\" id=\"directionTable\" class=\"input-medium\" onchange=\"Joomla.orderTable()\">\n\t\t\t\t\t<option value=\"\"><?php echo JText::_('JFIELD_ORDERING_DESC'); ?></option>\n\t\t\t\t\t<option value=\"asc\" <?php if ($listDirn == 'asc') echo 'selected=\"selected\"'; ?>><?php echo JText::_('JGLOBAL_ORDER_ASCENDING'); ?></option>\n\t\t\t\t\t<option value=\"desc\" <?php if ($listDirn == 'desc') echo 'selected=\"selected\"'; ?>><?php echo JText::_('JGLOBAL_ORDER_DESCENDING');  ?></option>\n\t\t\t\t</select>\n\t\t\t</div>\n\t\t\t<div class=\"btn-group pull-right\">\n\t\t\t\t<label for=\"sortTable\" class=\"element-invisible\"><?php echo JText::_('JGLOBAL_SORT_BY'); ?></label>\n\t\t\t\t<select name=\"sortTable\" id=\"sortTable\" class=\"input-medium\" onchange=\"Joomla.orderTable()\">\n\t\t\t\t\t<option value=\"\"><?php echo JText::_('JGLOBAL_SORT_BY');?></option>\n\t\t\t\t\t<?php echo JHtml::_('select.options', $sortFields, 'value', 'text', $listOrder); ?>\n\t\t\t\t</select>\n\t\t\t</div>\n\t\t\n\t\n\n\n\t<table id=\"articleList\" class=\"table table-striped\">\n\t\t<thead>\n\t\t\t<tr>\n\t\t\t\t<th width=\"1%\" class=\"nowrap center hidden-phone\">\n\t\t\t\t\t\t<?php echo JHtml::_('grid.sort', '<i class=\"icon-menu-2\"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>\n\t\t\t\t</th>\n\t\t\t\t<th width=\"1%\">\n\t\t\t\t\t<input type=\"checkbox\" name=\"checkall-toggle\" value=\"\" title=\"<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>\" onclick=\"Joomla.checkAll(this)\" />\n\t\t\t\t</th>\n\t\t\t\t<th width=\"1%\">\n\t\t\t\t\tOrdering\n\t\t\t\t</th>\n\t\t\t\t<th width=\"10%\">\n\t\t\t\t\t<?php echo JHtml::_('grid.sort', 'MYMUSE_SKU', 'a.product_sku', $listDirn, $listOrder); ?>\n\t\t\t\t</th>\n\t\t\t\t<th width=\"25%\">\n\t\t\t\t\t<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>\n\t\t\t\t</th>\n\t\t\t\t<th width=\"5%\">\n\t\t\t\t\t<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>\n\t\t\t\t</th>\n\t\t\t\t<th width=\"5%\">\n\t\t\t\t\t<?php echo JHtml::_('grid.sort', 'JFEATURED', 'a.featured', $listDirn, $listOrder, NULL, 'desc'); ?>\n\t\t\t\t</th>\n\t\t\t\t<th width=\"10%\">\n\t\t\t\t\t<?php echo JHtml::_('grid.sort', 'JCATEGORY', 'category_title', $listDirn, $listOrder); ?>\n\t\t\t\t</th>\n\t\t\t\t<th width=\"10%\">\n\t\t\t\t\t<?php echo JHtml::_('grid.sort', 'MYMUSE_ARTIST', 'artist_title', $listDirn, $listOrder); ?>\n\t\t\t\t</th>\n\t\t\t\t<th width=\"10%\">\n\t\t\t\t\t<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>\n\t\t\t\t</th>\n\t\t\t\t<!--  \n\t\t\t\t<th width=\"10%\">\n\t\t\t\t\t<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_CREATED_BY', 'a.created_by', $listDirn, $listOrder); ?>\n\t\t\t\t</th>\n\t\t\t\t-->\n\t\t\t\t<th width=\"5%\">\n\t\t\t\t\t<?php echo JHtml::_('grid.sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>\n\t\t\t\t</th>\n\t\t\t\t<th width=\"5%\">\n\t\t\t\t\t<?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>\n\t\t\t\t</th>\n\t\t\t\t<th width=\"5%\">\n\t\t\t\t\t<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>\n\t\t\t\t</th>\n\t\t\t\t<th width=\"1%\" class=\"nowrap\">\n\t\t\t\t\t<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>\n\t\t\t\t</th>\n\t\t\t</tr>\n\t\t</thead>\n\t\t<tfoot>\n\t\t\t<tr>\n\t\t\t\t<td colspan=\"15\">\n\t\t\t\t\t<?php \n\n\t\t\t\t\techo $this->pagination->getListFooter(); \n\n\t\t\t\t\t?>\n\t\t\t\t</td>\n\t\t\t</tr>\n\t\t</tfoot>\n\t\t<tbody>\n\t\t<?php foreach ($this->items as $i => $item) :\n\t\t\t$item->max_ordering = 0; //??\n\t\t\t$ordering\t= ($listOrder == 'a.ordering');\n\t\t\t$canCreate\t= $user->authorise('core.create',\t\t'com_mymuse.product.'.$item->product_id);\n\t\t\t$canEdit\t= $user->authorise('core.edit',\t\t\t'com_mymuse.product.'.$item->id);\n\t\t\t$canCheckin\t= $user->authorise('core.manage',\t\t'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;\n\t\t\t$canEditOwn\t= $user->authorise('core.edit.own',\t\t'com_mymuse.product.'.$item->id) && $item->created_by == $userId;\n\t\t\t$canChange\t= $user->authorise('core.edit.state',\t'com_mymuse.product.'.$item->id) && $canCheckin;\n\t\t\n\t\t\t?>\n\t\t\t<tr class=\"row<?php echo $i % 2; ?>\">\n\t\t\t\t<td class=\"order nowrap center hidden-phone\">\n\t\t\t\t\t<?php if ($canChange) :\n\t\t\t\t\t\t$disableClassName = '';\n\t\t\t\t\t\t$disabledLabel\t  = '';\n\n\t\t\t\t\t\tif (!$saveOrder) :\n\t\t\t\t\t\t\t$disabledLabel    = JText::_('JORDERINGDISABLED');\n\t\t\t\t\t\t\t$disableClassName = 'inactive tip-top';\n\t\t\t\t\t\tendif; ?>\n\t\t\t\t\t\t<span class=\"sortable-handler hasTooltip <?php echo $disableClassName; ?>\" title=\"<?php echo $disabledLabel; ?>\">\n\t\t\t\t\t\t\t<i class=\"icon-menu\"></i>\n\t\t\t\t\t\t</span>\n\t\t\t\t\t\t<input type=\"text\" style=\"display:none\" name=\"order[]\" size=\"5\" value=\"<?php echo $item->ordering; ?>\" class=\"width-20 text-area-order \" />\n\t\t\t\t\t<?php else : ?>\n\t\t\t\t\t\t<span class=\"sortable-handler inactive\" >\n\t\t\t\t\t\t\t<i class=\"icon-menu\"></i>\n\t\t\t\t\t\t</span>\n\t\t\t\t\t<?php endif; ?>\n\t\t\t\t</td>\n\t\t\t\t<td class=\"center\">\n\t\t\t\t\t<?php echo JHtml::_('grid.id', $i, $item->id); ?>\n\t\t\t\t</td>\n\t\t\t\t<td class=\"center\">\n\t\t\t\t\t<?php echo $item->ordering; ?>\n\t\t\t\t</td>\n\t\t\t\t<td>\n\t\t\t\t\t<?php echo $item->product_sku; ?>\n\t\t\t\t</td>\n\t\t\t\t<td>\n\t\t\t\t\t<?php if ($item->checked_out) : ?>\n\t\t\t\t\t\t<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'products.', $canCheckin); ?>\n\t\t\t\t\t<?php endif; ?>\n\t\t\t\t\t<?php if ($canEdit || $canEditOwn) : ?>\n\t\t\t\t\t\t<a href=\"<?php echo JRoute::_('index.php?option=com_mymuse&task=product.edit&id='.$item->id);?>\">\n\t\t\t\t\t\t\t<?php echo $this->escape($item->title); ?></a>\n\t\t\t\t\t<?php else : ?>\n\t\t\t\t\t\t<?php echo $this->escape($item->title); ?>\n\t\t\t\t\t<?php endif; ?>\n\t\t\t\t</td>\n\t\t\t\t<td class=\"center\">\n\t\t\t\t\t<?php echo JHtml::_('jgrid.published', $item->published, $i, 'tracks.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>\n\t\t\t\t</td>\n\t\t\t\t<td class=\"center\">\n\t\t\t\t\t<?php echo JHtml::_('mymuseadministrator.featured', $item->featured, $i, $canChange); ?>\n\t\t\t\t</td>\n\t\t\t\t<td class=\"center\">\n\t\t\t\t\t<?php echo $this->escape($item->category_title); ?>\n\n\t\t\t\t</td>\n\t\t\t\t<td class=\"center\">\n\t\t\t\t\t<?php echo $this->escape($item->artist_title);  ?>\n\t\t\t\t</td>\n\n\t\t\t\t<td class=\"center\">\n\t\t\t\t\t<?php echo $this->escape($item->access_level); ?>\n\t\t\t\t</td>\n\t\t\t\t<!--  \n\t\t\t\t<td class=\"center\">\n\t\t\t\t\t<?php echo $this->escape($item->author_name); ?>\n\t\t\t\t</td>\n\t\t\t\t-->\n\t\t\t\t<td class=\"center nowrap\">\n\t\t\t\t\t<?php echo JHtml::_('date',$item->created, JText::_('DATE_FORMAT_LC4')); ?>\n\t\t\t\t</td>\n\t\t\t\t<td class=\"center\">\n\t\t\t\t\t<?php echo (int) $item->hits; ?>\n\t\t\t\t</td>\n\t\t\t\t<td class=\"center\">\n\t\t\t\t\t<?php if ($item->language=='*'):?>\n\t\t\t\t\t\t<?php echo JText::alt('JALL','language'); ?>\n\t\t\t\t\t<?php else:?>\n\t\t\t\t\t\t<?php echo $item->language_title ? $this->escape($item->language_title) : JText::_('JUNDEFINED'); ?>\n\t\t\t\t\t<?php endif;?>\n\t\t\t\t</td>\n\t\t\t\t<td class=\"center\">\n\t\t\t\t\t<?php echo (int) $item->id; ?>\n\t\t\t\t</td>\n\t\t\t</tr>\n\t\t\t<?php endforeach; ?>\n\t\t</tbody>\n\t</table>\n<?php endif; ?>\n\t<?php //Load the batch processing form. ?>\n\t<?php //echo $this->loadTemplate('batch'); ?>\n\n\t<div>\n\t\t<input type=\"hidden\" name=\"task\" value=\"\" />\n\t\t<input type=\"hidden\" name=\"boxchecked\" value=\"0\" />\n\t\t<input type=\"hidden\" name=\"filter_order\" value=\"<?php echo $listOrder; ?>\" />\n\n\t\t<input type=\"hidden\" name=\"filter_order_Dir\" value=\"<?php echo $listDirn; ?>\" />\n\t\t<?php echo JHtml::_('form.token'); ?>\n\t</div>\n</form>\n",
+			"file": "administrator/views/tracks/tmpl/default.php",
+			"file_size": 10671,
+			"file_write_time": 131545452880218637,
+			"settings":
+			{
+				"buffer_size": 10544,
+				"encoding": "UTF-8",
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "administrator/sql/install.mysql.utf8.sql",
+			"settings":
+			{
+				"buffer_size": 49993,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -72,13 +147,66 @@
 	[
 		"/var/www/html/mymuse-git/mymusesimple",
 		"/var/www/html/mymuse-git/mymusesimple/administrator",
-		"/var/www/html/mymuse-git/mymusesimple/administrator/models"
+		"/var/www/html/mymuse-git/mymusesimple/administrator/sql",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/tracks",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/tracks/tmpl"
 	],
 	"file_history":
 	[
-		"/var/www/html/mymuse-git/mymusesimple/administrator/sql/uninstall.mysql.utf8.sql",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/tables/product.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/controllers/product.php",
 		"/var/www/html/mymuse-git/mymusesimple/administrator/sql/install.mysql.utf8.sql",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/models/forms/track.xml",
+		"/var/www/html/mymuse-git/mymusesimple/manifest.xml",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/models/forms/store.xml",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/helpers/mymuse.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/tracks/view.html.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/models/tracks.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/controllers/track.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/models/fields/productid.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/tracks/tmpl/default.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/product/view.html.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/controllers/tracks.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/track/tmpl/edit.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/products/view.html.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/product/tmpl/edit.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/models/forms/product.xml",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/products/tmpl/default.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/models/forms/filter_tracks.xml",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/models/forms/filter_products.xml",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/language/en-GB/en-GB.com_mymuse.ini",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/models/products.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/product/tmpl/edit_details.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/mymuse/tmpl/default.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/liveupdate/config.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/language/en-GB/en-GB.com_mymuse.sys.ini",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/store/tmpl/default.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/taxrate/tmpl/edit.php",
+		"/var/www/html/mymuse-git/mymusesimple/buildsimple.sh",
+		"/var/www/html/mymuse-git/mymusesimple/site/views/store/tmpl/default_message.php",
 		"/var/www/html/mymuse-git/mymusesimple/build.xml",
+		"/var/www/html/mymuse-git/mymusesimple/plugins/user_mymusenoreg/mymusenoreg.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/track/view.html.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/product/tmpl/edittracks.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/models/track.php",
+		"/var/www/html/mymuse-git/mymusesimple/site/router.php",
+		"/var/www/html/mymuse-git/mymusesimple/site/models/product.php",
+		"/var/www/html/mymuse-git/mymusesimple/site/views/product/view.html.php",
+		"/var/www/html/mymuse-git/mymusesimple/site/views/product/tmpl/product.php",
+		"/var/www/html/mymuse-git/mymusesimple/site/models/tracks.php",
+		"/var/www/html/mymuse-git/mymusesimple/site/models/products.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/tables/track.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/language/en-GB/en-GB.com_mymusesimple.ini",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/models/product.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/controller.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/helpers/update.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/store/tmpl/edit.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/sql/uninstall.mysql.utf8.sql",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/tables/store.php",
+		"/var/www/html/mymuse-git/mymusesimple/script.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/language/en-GB/en-GB.com_mymusesimple.sys.ini",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/install/install.mymuse.php",
 		"/var/www/html/mymuse-git/mymusesimple/administrator/mymuse.php",
 		"/var/www/html/hilltop/aked/live/templates/aked3/css/aked3.css",
 		"/var/www/html/hilltop/aked/live/administrator/language/en-GB/en-GB.com_myplayer.ini",
@@ -153,57 +281,7 @@
 		"/var/www/html/hilltop/aked/staging/administrator/components/com_myplayer/views/playlists/view.html.php",
 		"/var/www/html/hilltop/aked/staging/templates/hilltop_birch/index.php",
 		"/var/www/html/hilltop/aked/staging/templates/hilltop_birch/css/template.css",
-		"/var/www/html/hilltop/aked/staging/administrator/components/com_myplayer/models/playlists.php",
-		"/var/www/html/hilltop/aked/staging/administrator/components/com_myplayer/controllers/playlists.php",
-		"/var/www/html/hilltop/aked/staging/administrator/components/com_myplayer/controllers/tracks.php",
-		"/var/www/html/hilltop/aked/staging/administrator/components/com_myplayer/views/tracks/view.html.php",
-		"/var/www/html/hilltop/aked/staging/administrator/components/com_myplayer/controller.php",
-		"/var/www/html/hilltop/aked/staging/administrator/components/com_myplayer/myplayer.php",
-		"/var/www/html/hilltop/aked/staging/administrator/components/com_myplayer/controllers/playlist.php",
-		"/var/www/html/hilltop/aked/staging/administrator/components/com_myplayer/controllers/playlistform.php",
-		"/var/www/html/hilltop/aked/staging/sftp-config.json",
-		"/var/www/html/hilltop/aked/staging/configuration.php",
-		"/var/www/html/hilltop/aked/staging/templates/hilltop_birch/html/mod_bt_contentslider/default.php",
-		"/var/www/html/hilltop/aked/staging/templates/hilltop_birch/js/template.js",
-		"/var/www/html/hilltop/aked/staging/configuration-online.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch/js/template.js",
-		"/var/www/html/hilltop/aked/staging/components/com_myplayer/assets/js/soundmanager/soundmanager2.js",
-		"/var/www/html/hilltop/aked/staging/templates/hilltop_birch/html/mod_myplayer_playlist/default.php",
-		"/var/www/html/hilltop/aked/staging/templates/hilltop_birch/html/com_content/article/talent.php",
-		"/home/gord/.config/sublime-text-3/Packages/User/SFTP.errors.log",
-		"/var/www/html/hilltop/aked/staging/components/com_myplayer/assets/soundmanager/bar-ui/css/bar-ui.css",
-		"/var/www/html/hilltop/aked/staging/templates/protostar/css/template.css",
-		"/var/www/html/hilltop/aked/staging/modules/mod_myplayer_playlist/mod_myplayer_playlist.php",
-		"/var/www/html/hilltop/aked/staging/templates/hilltop_birch/html/mod_myplayer/default.php",
-		"/var/www/html/hilltop/aked/staging/modules/mod_myplayer_playlist/tmpl/default.php",
-		"/var/www/html/hilltop/aked/staging/modules/mod_hilltop_menu/tmpl/default.php",
-		"/var/www/html/hilltop/aked/staging/media/mod_hilltop_menu/css/hilltop_menu.css",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch/css/template.css",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch_blog/index.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch_blog/html/com_content/category/blog_item.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch_blog/html/com_content/category/blog_leading.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch_blog/html/com_content/article/default.php",
-		"/var/www/html/hilltop/echo/staging/sftp-config.json",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch/html/com_content/article/default.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch_expertise/html/com_content/category/blog_item.php",
-		"/var/www/html/hilltop/echo/staging/components/com_content/views/article/view.html.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch_portfolio/html/com_content/category/blog.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch_portfolio/html/com_content/category/blog_item.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch_expertise/html/com_content/category/blog.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch/html/com_search/search/default.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch/html/com_search/search/default_results.php",
-		"/var/www/html/hilltop/echo/staging/modules/mod_random-article/tmpl/default.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch_portfolio/html/com_content/article/default.php",
-		"/var/www/html/hilltop/echo/staging/administrator/components/com_breezingforms/libraries/jquery/jq.js",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch_portfolio/index.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch_expertise/html/com_content/article/default.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch/index.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch/html/modules.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch_blog/html/modules.php",
-		"/var/www/html/hilltop/echo/staging/templates/hilltop_birch_portfolio/html/modules.php",
-		"/var/www/html/hilltop/echo/staging/modules/mod_random-article/mod_random-article.php",
-		"/var/www/html/hilltop/echo/staging/modules/mod_random-article/helper.php",
-		"/var/www/html/hilltop/echo/staging/modules/mod_random-article/css/random-article.css"
+		"/var/www/html/hilltop/aked/staging/administrator/components/com_myplayer/models/playlists.php"
 	],
 	"find":
 	{
@@ -221,6 +299,51 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"getSubCats",
+			"$this->file",
+			"file",
+			"input",
+			"recomm",
+			"product",
+			"artist",
+			"category",
+			"required",
+			"product_id",
+			"MYMUSE_SELECT_PUB",
+			"MYMUSE_SELECT_PRODUCTS",
+			"JOPTION",
+			"COM_CONTENT",
+			"JOPTION",
+			"com_my",
+			"com_content",
+			"getFroup",
+			"mp3",
+			"my_format",
+			"sales",
+			"Contact:",
+			"simple",
+			"price",
+			"parentid",
+			"articletext",
+			"save",
+			"parentid",
+			"#__track",
+			"model",
+			"products",
+			"protected",
+			"attribut",
+			"parentid",
+			"collate",
+			"jason",
+			"$this->file_name",
+			"mod_mymuse_jp",
+			"images",
+			"format",
+			"change_encoding",
+			"mp3",
+			"enable_plugin_success",
+			"art",
+			"buyer",
 			"sinm",
 			"mymusetest38"
 		],
@@ -230,6 +353,12 @@
 		"regex": false,
 		"replace_history":
 		[
+			"$this->track",
+			"track",
+			"MYMUSE",
+			"com_mymuse",
+			"product_id",
+			"$this->file",
 			"mymusesimple"
 		],
 		"reverse": false,
@@ -241,24 +370,24 @@
 	"groups":
 	[
 		{
-			"selected": 1,
+			"selected": 8,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "administrator/models/forms/store.xml",
+					"file": "administrator/views/track/view.html.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 40484,
+						"buffer_size": 5394,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								13946,
-								13946
+								3714,
+								3701
 							]
 						],
 						"settings":
@@ -266,32 +395,160 @@
 							"incomplete_sync": null,
 							"remote_loading": false,
 							"synced": false,
-							"syntax": "Packages/XML/XML.sublime-syntax",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 5871.0,
+						"translation.y": 1191.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 1,
+					"stack_index": 8,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "build.xml",
+					"file": "administrator/views/track/tmpl/edit.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 11292,
+						"buffer_size": 13434,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								347,
-								347
+								12442,
+								12442
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 4942.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 9,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "administrator/controllers/track.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5768,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2998,
+								2998
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 900.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "administrator/models/track.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 12775,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								487,
+								360
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 88.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "administrator/tables/track.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 30783,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3447,
+								3447
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 1686.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "administrator/models/forms/track.xml",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 11495,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								475,
+								475
 							]
 						],
 						"settings":
@@ -300,14 +557,142 @@
 							"remote_loading": false,
 							"synced": false,
 							"syntax": "Packages/XML/XML.sublime-syntax",
-							"tab_size": 4,
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "administrator/mymuse.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1304,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								669,
+								669
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "administrator/views/tracks/view.html.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 5616,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1374,
+								1374
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 216.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "administrator/views/tracks/tmpl/default.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 10544,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								8098,
+								8098
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 2700.0,
+						"zoom_level": 1.0
+					},
 					"stack_index": 0,
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "administrator/sql/install.mysql.utf8.sql",
+					"semi_transient": true,
+					"settings":
+					{
+						"buffer_size": 49993,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/SQL/SQL.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 7945.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
 					"type": "text"
 				}
 			]
@@ -373,6 +758,10 @@
 		"last_filter": "",
 		"selected_items":
 		[
+			[
+				"",
+				"site/views/store/tmpl/default_message.php"
+			]
 		],
 		"width": 0.0
 	},

@@ -279,8 +279,14 @@ class MymuseControllerProduct extends JControllerForm
     
     public function listtracks()
     {
+        $model = $this->getModel('product');
+        $model->checkin();
+        //store the product_id
+        $app = JFactory::getApplication();
+
         $input = JFactory::getApplication()->input;
-        $id = $input->get('id');
+        $id = $input->get('id',0);
+        $app->getUserStateFromRequest( "com_mymuse.product_id", 'product_id', $id );
         $url = 'index.php?option=com_mymuse&view=tracks&product_id='.$id;
         $this->setRedirect( $url);
         return;

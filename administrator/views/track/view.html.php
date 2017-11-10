@@ -26,16 +26,18 @@ class MymuseViewTrack extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$input = JFactory::getApplication()->input;
-		print_pre($input);
+		$app 			= JFactory::getApplication();
+		$input 			= $app->input;
+		
 		$this->task 	= $task 	= $input->get('task', 'edit');
 		$this->state	= $this->get('State');
 		$this->item		= $this->get('Item');
+
 		$this->form		= $this->get('Form');
 		$this->lists 	= $this->get('Lists');
 		$this->params 	= MyMuseHelper::getParams();
 
-		$app 			= JFactory::getApplication();
+		
 		$view 			= $input->get('view');
 		
         $isNew  		= ($this->item->id < 1);
@@ -86,7 +88,7 @@ class MymuseViewTrack extends JViewLegacy
 		$canDo		= MymuseHelper::getActions();
 		$title = JText::_('COM_MYMUSE_TITLE_PRODUCT');
 
-		if($this->item->product_id){
+		if($this->item->product_id && $this->item->parent->title){
 			$title .= ' : <a href="index.php?option=com_mymuse&view=product&task=product.edit&id='.$this->item->product_id.'">'.$this->item->parent->title."</a>";
 		}else{
 			$title .= " : ".$this->item->title;
@@ -94,81 +96,41 @@ class MymuseViewTrack extends JViewLegacy
 		JToolBarHelper::title(JText::_('COM_MYMUSE').' : '. $title, 'mymuse.png');
 		
 
-		if($subtype == "file" && $product_id){
-			//TRACK
-			// If not checked out, can save the item.
-			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
-			{
-				JToolBarHelper::apply('product.applyfile', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('product.savefile', 'JTOOLBAR_SAVE');
-			}
-			if (!$checkedOut && ($canDo->get('core.create'))){
-				JToolBarHelper::custom('product.save2newfile', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			}
-
-			if (empty($this->item->id)) {
-				JToolBarHelper::cancel('product.cancelfile', 'JTOOLBAR_CANCEL');
-			}
-			else {
-				JToolBarHelper::cancel('product.cancelfile', 'JTOOLBAR_CLOSE');
-			}
-			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-tracks?tmpl=component#new-edit-track');			
-		
-		}elseif($subtype == "allfiles" && $product_id){
+		if($subtype == "allfiles" && $product_id){
 			// ALLFILES
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
 			{
-				JToolBarHelper::apply('product.apply_allfiles', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('product.save_allfiles', 'JTOOLBAR_SAVE');
+				JToolBarHelper::apply('track.apply_allfiles', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save('track.save_allfiles', 'JTOOLBAR_SAVE');
 			}
 
 			if (empty($this->item->id)) {
-				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CANCEL');
+				JToolBarHelper::cancel('track.cancel', 'JTOOLBAR_CANCEL');
 			}
 			else {
-				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CLOSE');
+				JToolBarHelper::cancel('track.cancel', 'JTOOLBAR_CLOSE');
 			}
-			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-product-tracks?tmpl=component#tracks-all-tracks');		
+			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-track-tracks?tmpl=component#tracks-all-tracks');		
 		
-		}elseif($subtype == "item" && $product_id){
-			// ITEMS
-			// If not checked out, can save the item.
-			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
-			{
-				JToolBarHelper::apply('product.applyitem', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('product.saveitem', 'JTOOLBAR_SAVE');
-			}
-			if (!$checkedOut && ($canDo->get('core.create'))){
-				JToolBarHelper::custom('product.save2newitem', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			}
-
-			if (empty($this->item->id)) {
-				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CANCEL');
-			}
-			else {
-				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CLOSE');
-			}
-			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/248-product-items?tmpl=component');
-				
 		}else{
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
 			{
-				JToolBarHelper::apply('product.apply', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('product.save', 'JTOOLBAR_SAVE');
+				JToolBarHelper::apply('track.applytrack', 'JTOOLBAR_APPLY');
+				JToolBarHelper::save('track.savetrack', 'JTOOLBAR_SAVE');
 			}
 			if (!$checkedOut && ($canDo->get('core.create'))){
-				JToolBarHelper::custom('product.save2new', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
+				JToolBarHelper::custom('track.save2newtrack', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
 			}
 
 			if (empty($this->item->id)) {
-				JToolBarHelper::cancel('product.cancel', 'JTOOLBAR_CANCEL');
+				JToolBarHelper::cancel('track.cancel', 'JTOOLBAR_CANCEL');
 			}
 			else {
-				JToolBarHelper::cancel('product.cancel', 'JTOOLBAR_CLOSE');
+				JToolBarHelper::cancel('track.cancel', 'JTOOLBAR_CLOSE');
 			}
-			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/238-product-new-edit?tmpl=component');
+			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/238-track-new-edit?tmpl=component');
 		}
 		
 	}

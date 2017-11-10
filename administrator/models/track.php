@@ -76,6 +76,7 @@ class MymuseModeltrack extends JModelAdmin
 				'id', 'a.id',
 				'title', 'a.title',
 				'alias', 'a.alias',
+				'a.product_id', 'product_id',
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
 				'catid', 'p.catid', 'category_title',
@@ -123,8 +124,7 @@ class MymuseModeltrack extends JModelAdmin
 	 */
 	public function getForm($data = array(), $loadData = true)
 	{
-		// Initialise variables.
-		$app	= JFactory::getApplication();
+
 
 		// Get the form.
 		$form = $this->loadForm('com_mymuse.track', 'track', array('control' => 'jform', 'load_data' => $loadData));
@@ -168,13 +168,12 @@ class MymuseModeltrack extends JModelAdmin
 			$task = $input->get('task','');
 			$id = $input->get('id','');
 			
-			if($task == "addfile" || $task == "new_allfiles"){
-				$pk = 0;
-				$input->set('id',0);
-			}
 			
 			if ($item = parent::getItem($pk)) {
-				
+				if(!$item->product_id){
+					$mainframe = JFactory::getApplication();
+					$item->product_id= $mainframe->getUserStateFromRequest( "com_mymuse.product_id", 'product_id', 0 );
+				}
 
 				if($task == "new_allfiles"){
 					$item->allfiles = 1;
@@ -184,10 +183,6 @@ class MymuseModeltrack extends JModelAdmin
 					$this->_db->setQuery($q);
 					$this->_parent = $this->_db->loadObject();
 					$item->parent = $this->_parent;
-				}else{
-					//set the product id for the tracks 
-					$mainframe = JFactory::getApplication();
-					$product_id= $mainframe->getUserStateFromRequest( "com_mymuse.product_id", 'product_id', 0 );
 				}
 				$item->flash_type = '';
 				
@@ -200,6 +195,7 @@ class MymuseModeltrack extends JModelAdmin
 			
 			$this->_item = $item;
 	
+
 		}
 		return $this->_item;
 	}
@@ -321,6 +317,10 @@ class MymuseModeltrack extends JModelAdmin
 		for($i = $i++; $i < 9; $i++){
 			$lists['select_file'][$i] = JHTML::_('select.genericlist',  $myfiles, "select_file[$i]", 'class="inputbox" size="1" ', 'value', 'text','');
 		}
+
+
+
+
 		
 		// for display purposes
 		$lists['preview_dir'] = $site_path;

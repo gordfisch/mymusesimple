@@ -147,25 +147,7 @@ class MymuseTableproduct extends JTable
 			$this->metakey = implode(", ", $clean_keys); // put array back together delimited by ", "
 		}
 		
-		//check for unique sku
-		$query = "SELECT product_sku FROM #__mymuse_product WHERE product_sku='".$this->_db->escape($this->product_sku)."'";
-		if($this->id > 0){
-			$query .= "AND id !=".$this->id;
-		}
 
-		if(!$this->_db->setQuery($query)){
-			
-			$this->setError(JText::_('DB Error'). $db->getErrorMsg());
-			$app->enqueueMessage(JText::_('DB Error'). $db->getErrorMsg(), 'error');
-			return false;
-		}
-		
-		$this->_db->setQuery($query);
-		if($sku = $this->_db->loadResult()){
-			$this->setError(JText::_("MYMUSE_FILE_MUST_HAVE_A_UNIQUE_SKU").' '.$this->product_sku);
-			$app->enqueueMessage(JText::_("MYMUSE_FILE_MUST_HAVE_A_UNIQUE_SKU").' '.$this->product_sku, 'error');
-			return false;
-		}
 
 		//If there is an ordering column and this is a new row then get the next ordering value
 		if (property_exists($this, 'ordering') && $this->id == 0) {
@@ -253,12 +235,12 @@ class MymuseTableproduct extends JTable
 			
 			
 			// recommends
-			
 			// clear product_recommend_xref
 			$query = "DELETE FROM #__mymuse_product_recommend_xref WHERE product_id=".$this->id;
 			$db->setQuery($query);
 			$db->execute();
 
+			//now add
 			if(isset($jform['recommended']) && $this->id){
 
 				foreach($jform['recommended'] as $recommend_id){
@@ -273,6 +255,12 @@ class MymuseTableproduct extends JTable
 					 
 				}
 			}
+
+			//what about the sku?
+			if(!isset($this->product_sku) || $this->product_sku == ''){
+				$this->product_sku = $this->alias.'-'.$this->id;
+			}
+			$result = parent::store($updateNulls);
 			
 			// onMymuseAfterSave  onFinderAfterSave
 			$dispatcher = JEventDispatcher::getInstance();

@@ -14,7 +14,7 @@ class LiveUpdateConfig extends LiveUpdateAbstractConfig
 {
 	var $_extensionName			= 'com_mymuse';
 	var $_extensionTitle		= 'MyMuse for Joomla';
-	var $_updateURL				= 'http://www.joomlamymuse.com/en/?option=com_ars&view=update&format=ini&id=31';
+	var $_updateURL				= 'https://www.joomlamymuse.com/en/?option=com_ars&view=update&format=ini&id=77';
 
 	var $_requiresAuthorization	= true;
 	var $_versionStrategy		= 'vcompare';

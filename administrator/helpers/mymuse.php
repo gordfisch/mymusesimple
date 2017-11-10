@@ -244,7 +244,7 @@ class MyMuseHelper extends JObject
 			//get component params
 			$cparams = JComponentHelper::getParams( 'com_mymuse' );
 			$params->merge( $cparams );
-			$params->set('my_formats', 'mp3') ;
+			//$params->set('my_formats', 'mp3') ;
 			//merge app params includes menu
 			$app            = JFactory::getApplication();
 			if(!$app->isAdmin()){
@@ -637,7 +637,7 @@ class MyMuseHelper extends JObject
 	static function getDownloadPath($id, $parent=0)
 	{
 		$params = self::$_params;
-		$site_path = $params->get('my_download_dir').DS.$params->get('my_formats').DS;
+		$site_path = rtrim($params->get('my_download_dir'), '/').DS;
 		return $site_path;
 	}	
 	
@@ -1289,7 +1289,7 @@ class MyMuseHelper extends JObject
 		// Initialize variables
 		$db	= JFactory::getDBO();
 
-		$categories[] = JHTML::_('select.option', '0', '- '.JText::_('Select Category').' -');
+		$categories[] = JHTML::_('select.option', '0', '- '.JText::_('Select Category Baby').' -');
 		$db->setQuery($query);
 		$categories = array_merge($categories, $db->loadObjectList());
 

@@ -28,10 +28,6 @@ class MymuseViewProduct extends JViewLegacy
 	{
 		$input = JFactory::getApplication()->input;
 		$this->task 	= $task 	= $input->get('task', 'edit');
-		
-		if($task == "addfile" || $task == "additem" || $task == "new_allfiles"){
-			$input->set('id',0);
-		}
 
 		$this->state	= $this->get('State');
 		$this->item		= $this->get('Item');
@@ -40,7 +36,8 @@ class MymuseViewProduct extends JViewLegacy
 		$this->params 	= MyMuseHelper::getParams();
 
 		$app 			= JFactory::getApplication();
-		$subtype 		= $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'details');
+		$product_id = $app->getUserStateFromRequest( "com_mymuse.product_id", 'product_id', $this->item->id );
+		
 		$subtype 		='details';
 		$view 			= $input->get('view');
 		
@@ -93,17 +90,6 @@ class MymuseViewProduct extends JViewLegacy
         	
         }
         
-        // allfiles
-        elseif($task == "new_allfiles" || $task == "product.new_allfiles" || ($this->item->parentid && $this->item->product_allfiles)){
-        	$layout = 'new_allfiles';
-        	$this->setLayout('edit_allfiles');
-			if(!$this->item->parentid){
-        		$this->item->parentid= JRequest::getVar('parentid', 0);
-        	}
-        	JRequest::setVar('subtype','allfiles');
-        	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'allfiles');
-  
-        }
      
 
 

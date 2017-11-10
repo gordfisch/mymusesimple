@@ -239,7 +239,6 @@
 		/>
 
 
-
 		<field 
 			name="access" 
 			type="accesslevel" 
@@ -283,47 +282,47 @@
 			validate="rules" 
 		/>
 		<field
-      name="product_discount"
-      type="hidden"
-      label="MYMUSE_DISCOUNT"
-      description="MYMUSE_DISCOUNT"
-      class="inputbox"
-      size="10"
-      required="false"
-    />
+	      name="product_discount"
+	      type="hidden"
+	      label="MYMUSE_DISCOUNT"
+	      description="MYMUSE_DISCOUNT"
+	      class="inputbox"
+	      size="10"
+	      required="false"
+	    />
 
 
 
     <field
       name="product_sku"
-      type="text"
+      type="hidden"
       label="MYMUSE_SKU"
       description="MYMUSE_SKU_DESC"
       class="inputbox"
       size="20"
-      required="true"
-	   />
-          	
-		<field 
-			name="product_created" 
-			type="calendar" 
-			label="MYMUSE_PRODUCT_CREATED_LABEL"
-			description="MYMUSE_PRODUCT_CREATED_DESC" 
-			class="inputbox" 
-			size="22"
-			format="%Y-%m-%d" 
-				
-		/>
+      required="false"
+   />
+      	
+	<field 
+		name="product_created" 
+		type="calendar" 
+		label="MYMUSE_PRODUCT_CREATED_LABEL"
+		description="MYMUSE_PRODUCT_CREATED_DESC" 
+		class="inputbox" 
+		size="22"
+		format="%Y-%m-%d" 
 			
-		<field 
-			name="product_made_date" 
-			type="calendar" 
-			label="MYMUSE_PRODUCT_CREATED_LABEL"
-			description="MYMUSE_PRODUCT_CREATED_DESC" 
-			class="inputbox" size="22"
-			format="%Y-%m-%d" 
-			filter="user_utc" 
-		/>
+	/>
+			
+	<field 
+		name="product_made_date" 
+		type="calendar" 
+		label="MYMUSE_PRODUCT_CREATED_LABEL"
+		description="MYMUSE_PRODUCT_CREATED_DESC" 
+		class="inputbox" size="22"
+		format="%Y-%m-%d" 
+		filter="user_utc" 
+	/>
 		
     <field
       name="product_full_time"
@@ -378,20 +377,20 @@
 	 />
           	
     <field
-			name="metadesc"
-			type="textarea"
-			label="JFIELD_META_DESCRIPTION_LABEL"
-			description="JFIELD_META_DESCRIPTION_DESC"
-			rows="3"
-			cols="40"/>
+		name="metadesc"
+		type="textarea"
+		label="JFIELD_META_DESCRIPTION_LABEL"
+		description="JFIELD_META_DESCRIPTION_DESC"
+		rows="3"
+		cols="40"/>
 
-		<field
-			name="metakey"
-			type="textarea"
-			label="JFIELD_META_KEYWORDS_LABEL"
-			description="JFIELD_META_KEYWORDS_DESC"
-			rows="3"
-			cols="40"/>
+	<field
+		name="metakey"
+		type="textarea"
+		label="JFIELD_META_KEYWORDS_LABEL"
+		description="JFIELD_META_KEYWORDS_DESC"
+		rows="3"
+		cols="40"/>
 		
 	</fieldset>
 	
@@ -456,7 +455,25 @@
         required="false"
       />
           	
- 
+   	<field
+        name="product_price_mp3"
+        type="text"
+        label="MYMUSE_PRODUCT_PRICE_MP3_LABEL"
+        description="MYMUSE_PRODUCT_PRICE_MP3_DESC"
+        class="inputbox"
+        size="45"
+        required="false"
+  	/>
+  	<field
+        name="product_price_mp3_all"
+        type="text"
+        label="MYMUSE_PRODUCT_PRICE_MP3_ALL_LABEL"
+        description="MYMUSE_PRODUCT_PRICE_MP3_ALL_DESC"
+        class="inputbox"
+        size="45"
+        required="false"
+  	/>
+
 		</fieldset>
 	</fields>
 </form>

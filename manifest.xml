@@ -8,7 +8,7 @@
 	<authorEmail>gord@arboreta.ca</authorEmail>
 	<authorUrl>http://www.joomlamymuse.com</authorUrl>
 	<version>1.0.1</version>
-	<description>Sell your CD's and tracks online. Visit http://www.joomlamymuse.com for more info.</description>
+	<description>Sell your tracks online. Visit http://www.joomlamymuse.com for more info.</description>
 
 	<media destination="com_mymuse" folder="media">
          <filename>index.html</filename>
@@ -24,6 +24,8 @@
 				img="class:category" alt="Mymuse/Categories">COM_MYMUSE_CATEGORIES</menu>
 			<menu link="option=com_mymuse&amp;view=products" view="products" 
 				img="class:article" alt="Mymuse/Products">COM_MYMUSE_PRODUCTS</menu>
+			<menu link="option=com_mymuse&amp;view=tracks" view="tracks" 
+				img="class:article" alt="Mymuse/Products">COM_MYMUSE_TRACKS</menu>
 			<menu link="option=com_mymuse&amp;view=orders" view="orders" 
 				img="class:content" alt="Mymuse/Orders">COM_MYMUSE_ORDERS</menu>
 			<menu link="option=com_mymuse&amp;view=taxrates" view="taxrates" 

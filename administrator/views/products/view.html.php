@@ -17,13 +17,65 @@ jimport('joomla.application.component.view');
  */
 class MymuseViewProducts extends JViewLegacy
 {
+	/**
+	 * The item authors
+	 *
+	 * @var  stdClass
+	 */
+	protected $authors;
+
+	/**
+	 * An array of items
+	 *
+	 * @var  array
+	 */
 	protected $items;
+
+	/**
+	 * The pagination object
+	 *
+	 * @var  JPagination
+	 */
 	protected $pagination;
+
+	/**
+	 * The model state
+	 *
+	 * @var  object
+	 */
 	protected $state;
 
 	/**
-	 * Display the view
+	 * Form object for search filters
+	 *
+	 * @var  JForm
 	 */
+	public $filterForm;
+
+
+	/**
+	 * The active search filters
+	 *
+	 * @var  array
+	 */
+	public $activeFilters;
+
+	/**
+	 * The sidebar markup
+	 *
+	 * @var  string
+	 */
+	protected $sidebar;
+
+
+	/**
+	 * Display the view
+	 *
+	 * @param   string  $tpl  The name of the template file to parse; automatically searches through the template paths.
+	 *
+	 * @return  mixed  A string if successful, otherwise an Error object.
+	 */
+
 	public function display($tpl = null)
 	{
 
@@ -42,27 +94,15 @@ class MymuseViewProducts extends JViewLegacy
 			$this->pagination = $this->get ( 'Pagination' );
 			$this->authors = $this->get ( 'Authors' );
 			$this->featured = $this->get ( 'Featured' );
+			$this->filterForm    = $this->get('FilterForm');
+			$this->activeFilters = $this->get('ActiveFilters');
 			
 			// Check for errors.
 			if (count ( $errors = $this->get ( 'Errors' ) )) {
-				JError::raiseError ( 500, implode ( "\n", $errors ) );
-				return false;
+				throw new Exception(implode("\n", $errors), 500);
 			}
 			
-			// Levels filter.
-			$options = array ();
-			$options [] = JHtml::_ ( 'select.option', '1', JText::_ ( 'J1' ) );
-			$options [] = JHtml::_ ( 'select.option', '2', JText::_ ( 'J2' ) );
-			$options [] = JHtml::_ ( 'select.option', '3', JText::_ ( 'J3' ) );
-			$options [] = JHtml::_ ( 'select.option', '4', JText::_ ( 'J4' ) );
-			$options [] = JHtml::_ ( 'select.option', '5', JText::_ ( 'J5' ) );
-			$options [] = JHtml::_ ( 'select.option', '6', JText::_ ( 'J6' ) );
-			$options [] = JHtml::_ ( 'select.option', '7', JText::_ ( 'J7' ) );
-			$options [] = JHtml::_ ( 'select.option', '8', JText::_ ( 'J8' ) );
-			$options [] = JHtml::_ ( 'select.option', '9', JText::_ ( 'J9' ) );
-			$options [] = JHtml::_ ( 'select.option', '10', JText::_ ( 'J10' ) );
-			
-			$this->f_levels = $options;
+
 			// We don't need toolbar in the modal window.
 			if ($this->getLayout () !== 'modal') {
 				$this->addToolbar ();
@@ -138,54 +178,7 @@ class MymuseViewProducts extends JViewLegacy
 			JToolBarHelper::preferences('com_mymuse');
 		}
 		JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/239-products-list?tmpl=component');
-	
-		//Sidebar stuff
-		JHtmlSidebar::setAction('index.php?option=com_mymuse&view=products');
-		
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_PUBLISHED'),
-			'filter_published',
-			JHtml::_('select.options', JHtml::_('jgrid.publishedOptions'), 'value', 'text', $this->state->get('filter.published'), true)
-		);
 
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_CATEGORY'),
-			'filter_category_id',
-			JHtml::_('select.options', JHtml::_('category.options', 'com_mymuse'), 'value', 'text', $this->state->get('filter.category_id'))
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_MAX_LEVELS'),
-			'filter_level',
-			JHtml::_('select.options', $this->f_levels, 'value', 'text', $this->state->get('filter.level'))
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_ACCESS'),
-			'filter_access',
-			JHtml::_('select.options', JHtml::_('access.assetgroups'), 'value', 'text', $this->state->get('filter.access'))
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_AUTHOR'),
-			'filter_author_id',
-			JHtml::_('select.options', $this->authors, 'value', 'text', $this->state->get('filter.author_id'))
-		);
-
-		JHtmlSidebar::addFilter(
-			JText::_('JOPTION_SELECT_LANGUAGE'),
-			'filter_language',
-			JHtml::_('select.options', JHtml::_('contentlanguage.existing', true, true), 'value', 'text', $this->state->get('filter.language'))
-		);
-
-		JHtmlSidebar::addFilter(
-		'-' . JText::_('JSELECT') . ' ' . JText::_('JTAG') . '-',
-		'filter_tag',
-		JHtml::_('select.options', JHtml::_('tag.options', true, true), 'value', 'text', $this->state->get('filter.tag'))
-		);
-	
-	
-	
 	}
 	
 	

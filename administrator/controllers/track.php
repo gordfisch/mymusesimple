@@ -20,30 +20,45 @@ jimport( 'joomla.filesystem.file' );
 class MymuseControllerTrack extends JControllerForm
 {
 
+    /**
+     * @var     object
+     */
+    protected $input = null;
+    
+
     function __construct() {
 
 		$this->view_list = 'tracks';
+        $this->input = JFactory::getApplication()->input;
+
         parent::__construct();
+
+        $this->registerTask( 'savetrack', 'savetrack' );
+        $this->registerTask( 'applytrack', 'savetrack' );
+        $this->registerTask( 'save2newtrack', 'savetrack' );
+
+        $this->registerTask( 'new_allfiles', 'edit' );
+        $this->registerTask( 'edit_allfiles', 'edit' );
+        $this->registerTask( 'save_allfiles', 'savetrack' );
+        $this->registerTask( 'apply_allfiles', 'savetrack' );
     }
     
     
     
     /**
-	 * saveitem
+	 * savetrack
 	 * 
 	 * store the item to the database
 	 * @return void
 	 */
-    function save()
+    function savetrack($key = NULL, $urlVar = NULL)
     { 
 
         $this->id 			= $this->input->get('id', 0);
         $this->product_id 	= $this->input->get('product_id', 0);
-        $form 				= $this->input->getArray('jform');
-		$this->product_sku 	= $form['product_sku'];
-		$db 				= JFactory::getDBO();
-		
-		$layout 			= $this->input->get('layout', 0);
+        $form 				= $this->input->get('jform', '', 'array');
+
+		$layout 			= $this->input->get('layout', '');
 		$model 				= $this->getModel();
         $table 				= $model->getTable();
 
@@ -59,15 +74,8 @@ class MymuseControllerTrack extends JControllerForm
 			//get the track id
 			if(!$this->id){
 				$this->msg = JText::_( 'MYMUSE_COULD_NOT_FIND_ID' );
-				//do we have an SKU?
-				$query = "SELECT id FROM #__mymuse_product WHERE product_sku='".$this->product_sku."'";
-				$db->setQuery($query);
-
-				if(!$this->id = $db->loadResult()){
-					$this->msg .= JText::_( 'MYMUSE_COULD_NOT_FIND_SKU' );
-					$this->setRedirect( 'index.php?option=com_mymuse&iew=track&task=track.edit&product_id='. $this->product_id, $this->msg );
-					return false;
-				}
+                $this->setRedirect( 'index.php?option=com_mymuse&view=tracks&product_id='. $this->product_id, $this->msg );
+                return false;
 			}
 		
 			
@@ -80,17 +88,26 @@ class MymuseControllerTrack extends JControllerForm
 				break;
 			case 'save_allfiles':
 				$this->msg = JText::_( 'MYMUSE_ALL_FILE_SAVED' );
-				$this->setRedirect( 'index.php?option=com_mymuse&view=track&layout=listtracks&id='. $this->product_id.'&subtype=files', $this->msg );
+				$this->setRedirect( 'index.php?option=com_mymuse&view=tracks&product_id='. $this->product_id, $this->msg );
 				break;
-			
+
+			case 'apply_track':
+                $this->msg = JText::_( 'MYMUSE_CHANGES_TO_FILE_SAVED' );
+                $this->setRedirect( 'index.php?option=com_mymuse&view=track&task=track.edit&id='. $this->id.'&product_id='. $this->product_id, $this->msg );
+                break;
+            case 'savetrack':
+                $this->msg = JText::_( 'MYMUSE_FILE_SAVED' );
+                $this->setRedirect( 'index.php?option=com_mymuse&view=tracks&product_id='. $this->product_id, $this->msg );
+                break;
 			default:
 				$this->msg = JText::_( 'MYMUSE_FILE_SAVED' );;
-				$this->setRedirect( 'index.php?option=com_mymuse&view=track&layout=listtracks&id='. $this->product_id.'&subtype='.$post['subtype'], $this->msg );
+				$this->setRedirect( 'index.php?option=com_mymuse&view=track&product_id='. $this->product_id, $this->msg );
 				break;
 			}
 		}else{
 			
     		$this->msg = $this->getError();
+
     		JFactory::getApplication()->enqueueMessage($this->msg, 'error');
     		switch ($task )
     		{
@@ -99,16 +116,16 @@ class MymuseControllerTrack extends JControllerForm
     				
     			case 'save_allfiles':
     				if($this->id){
-    					$this->setRedirect( "index.php?option=com_mymuse&view=track&task=track.edit_allfiles&product_id=".$this->product_id.'&id='.$this->id.'&subtype='.$post['subtype'], $this->msg );
+    					$this->setRedirect( "index.php?option=com_mymuse&view=track&task=track.edit_allfiles&product_id=".$this->product_id.'&id='.$this->id, $this->msg );
     				}else{
-    					$this->setRedirect( "index.php?option=com_mymuse&view=track&task=track.new_allfiles&product_id=".$this->product_id.'&subtype='.$post['subtype'], $this->msg );
+    					$this->setRedirect( "index.php?option=com_mymuse&view=track&task=track.new_allfiles&product_id=".$this->product_id, $this->msg );
     				}
     				break;
     			default:
     				if($this->id){
-    					$this->setRedirect( "index.php?option=com_mymuse&view=track&task=track.editfile&product_id=".$this->product_id.'&id='.$this->id.'&subtype='.$post['subtype'], $this->msg );
+    					$this->setRedirect( "index.php?option=com_mymuse&view=track&task=track.edit&product_id=".$this->product_id.'&id='.$this->id, $this->msg );
     				}else{
-    					$this->setRedirect( "index.php?option=com_mymuse&view=track&task=track.addfile&product_id=".$this->product_id.'&id='.$this->id.'&subtype='.$post['subtype'], $this->msg );
+    					$this->setRedirect( "index.php?option=com_mymuse&view=track&task=track.add&product_id=".$this->product_id.'&id='.$this->id, $this->msg );
 					}
 					break;
     		}

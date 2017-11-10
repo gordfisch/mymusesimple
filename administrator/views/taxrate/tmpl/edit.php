@@ -24,7 +24,17 @@ JHtml::_('behavior.formvalidation');
 		}
 	}
 </script>
-<h3><?php echo JText::_('COM_MYMUSE_LEGEND_TAXRATE'); ?></h3>
+<h3>
+	<?php echo JText::_('COM_MYMUSE_LEGEND_TAXRATE'); ?>
+
+	<?php if($this->form->getValue('tax_name') != ''){
+		echo " : ".$this->form->getValue('tax_name');
+	} ?>
+	<?php if($this->form->getValue('country') != ''){
+		echo " : ".$this->form->getValue('country');
+	} ?>
+
+</h3>
 <form action="<?php echo JRoute::_('index.php?option=com_mymuse&layout=edit&id='.(int) $this->item->id); ?>" 
 method="post" name="adminForm" id="taxrate-form" class="form-validate">
 <div class="row-fluid">

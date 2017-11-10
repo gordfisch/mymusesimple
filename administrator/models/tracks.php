@@ -101,6 +101,9 @@ class MymuseModeltracks extends JModelList
 		$featured = $app->getUserStateFromRequest($this->context.'.filter.featured', 'filter_featured', '', 'string');
 		$this->setState('filter.featured', $featured);
 
+		$product_id = $app->getUserStateFromRequest('com_mymuse.product_id', 'product_id', '', 'string');
+		$this->setState('product_id', $product_id);
+
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_mymuse');
 		$this->setState('params', $params);
