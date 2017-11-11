@@ -321,46 +321,7 @@ JHTML::_('behavior.tooltip');
 				<?php echo $lists['previews']; ?> </li>
 			</ul>
 		</fieldset>
-		<fieldset class="adminform">
 
-			<legend><?php echo JText::_( 'MYMUSE_PREVIEW_PATH_STORE_2' ); ?></legend>
-			<ul class="adminformlist">
-				<li><label id="jform_product_preview-2-lbl" for="jform_product_preview_2"  class="hasTip" title="<?php echo JText::_("MYMUSE_BROWSE_TO_FILE")?>">
-				<?php echo JText::_( 'MYMUSE_UPLOAD_NEW_PREVIEW' ); ?></label>
-				<input class="inputbox" type="file" name="product_preview_2" id="jform_product_preview_2" size="40" /></li>
-
-				<li><?php echo $this->form->getLabel('file_preview_2'); ?>
-				<?php echo $this->form->getInput('file_preview_2'); ?></li>
-								
-				<li><label id="jform_remove_preview-2-lbl" for="jform_remove_preview_2"  class="hasTip" title="<?php echo JText::_("MYMUSE_DELETE_PREVIEW_DESC")?>">
-				<?php echo JText::_( 'MYMUSE_DELETE_PREVIEW' ); ?></label>
-				<input type="checkbox" name="remove_preview_2" id="jform_remove_preview_2" /></li>
-				
-				<li><label id="jform_preview_list-2-lbl" for="jform_preview_list_2"  class="hasTip" title="<?php echo JText::_("MYMUSE_PREVIEW_FILE")?>">
-				<?php echo JText::_( 'MYMUSE_PREVIEW_FILE' ); ?></label>
-				<?php echo $lists['previews_2']; ?> </li>
-			</ul>
-		</fieldset>
-		<fieldset class="adminform">
-
-			<legend><?php echo JText::_( 'MYMUSE_PREVIEW_PATH_STORE_3' ); ?></legend>
-			<ul class="adminformlist">
-				<li><label id="jform_product_preview-3-lbl" for="jform_product_preview_3"  class="hasTip" title="<?php echo JText::_("MYMUSE_BROWSE_TO_FILE")?>">
-				<?php echo JText::_( 'MYMUSE_UPLOAD_NEW_PREVIEW' ); ?></label>
-				<input class="inputbox" type="file" name="product_preview_3" id="jform_product_preview_3" size="40" /></li>
-
-				<li><?php echo $this->form->getLabel('file_preview_3'); ?>
-				<?php echo $this->form->getInput('file_preview_3'); ?></li>
-								
-				<li><label id="jform_remove_preview-3-lbl" for="jform_remove_preview_3"  class="hasTip" title="<?php echo JText::_("MYMUSE_DELETE_PREVIEW_DESC")?>">
-				<?php echo JText::_( 'MYMUSE_DELETE_PREVIEW' ); ?></label>
-				<input type="checkbox" name="remove_preview_3" id="jform_remove_preview_3" /></li>
-				
-				<li><label id="jform_preview_list-3-lbl" for="jform_preview_list_3"  class="hasTip" title="<?php echo JText::_("MYMUSE_PREVIEW_FILE")?>">
-				<?php echo JText::_( 'MYMUSE_PREVIEW_FILE' ); ?></label>
-				<?php echo $lists['previews_3']; ?> </li>
-			</ul>
-		</fieldset>
 
 	</div>
 
@@ -370,7 +331,7 @@ JHTML::_('behavior.tooltip');
 
 <div style="clear: both;"></div>
 
-		<input type="hidden" name="product_id" value="<?php echo $item->product_id ?>" />
+
 		<input type="hidden" name="jform[product_id]" value="<?php echo $item->product_id ?>" />
 		<input type="hidden" name="current_preview" value="<?php echo stripslashes($item->preview) ?>" />
 		<input type="hidden" name="current_preview_2" value="<?php echo stripslashes($item->preview_2) ?>" />
