@@ -35,7 +35,7 @@ class JFormFieldProductid extends JFormFieldSQL
 		$jinput = JFactory::getApplication()->input;
 		$finals = array();
 
-		$html[] = '<select id="product_id" name="product_id" class="multipleProducts" size="8" multiple="false" onchange="this.form.submit();">';
+		$html[] = '<select id="product_id" name="product_id"  size="1"  onchange="this.form.submit();">';
 		$product_id = $jinput->get('product_id',array());
 		// do the SQL
 		$db = JFactory::getDbo();

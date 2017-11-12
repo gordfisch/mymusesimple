@@ -298,20 +298,16 @@ JHTML::_('behavior.tooltip');
 <div class="pull-left">
 		<fieldset class="adminform">
 
-			<legend><?php echo JText::_( 'MYMUSE_PREVIEW_PATH_STORE' ); ?></legend>
+			<legend></legend>
 			<ul class="adminformlist">
 				<li><label id="jform_product_preview-lbl" for="jform_product_preview"  class="hasTip" title="<?php echo JText::_("MYMUSE_BROWSE_TO_FILE")?>">
-				<?php echo JText::_( 'MYMUSE_UPLOAD_NEW_PREVIEW' ); ?></label>
-				<input class="inputbox" type="file" name="product_preview" id="jform_product_preview" size="40" /></li>
+				<a href="administrator/index.php?option=com_media"><?php echo JText::_( 'MYMUSE_UPLOAD_NEW_PREVIEW' ); ?></a> : <?php echo $lists['preview_dir']; ?></label>
+				</li>
 
-				<li><?php echo $this->form->getLabel('file_preview'); ?>
-				<?php echo $this->form->getInput('file_preview'); ?></li>
+				<li><?php echo $this->form->getLabel('preview'); ?>
+				<?php echo $this->form->getInput('preview'); ?></li>
 				
-				<li><label id="jform_preview_dir-lbl" for="jform_preview_dir"  class="hasTip" title="<?php echo JText::_("MYMUSE_PREVIEW_PATH_DESC")?>">
-				<?php echo JText::_( 'MYMUSE_PREVIEW_PATH' ); ?></label>
-				<input  type="text" name="preview_dir" id="jform_preview_dir" value="<?php echo $lists['preview_dir']; ?>" 
-				class="readonly" readonly="readonly" style="font-weight:normal; font-size: 10px;" size="60" /></li>
-				
+
 				<li><label id="jform_remove_preview-lbl" for="jform_remove_preview"  class="hasTip" title="<?php echo JText::_("MYMUSE_DELETE_PREVIEW_DESC")?>">
 				<?php echo JText::_( 'MYMUSE_DELETE_PREVIEW' ); ?></label>
 				<input type="checkbox" name="remove_preview" id="jform_remove_preview" /></li>

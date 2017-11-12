@@ -11,6 +11,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.controlleradmin');
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * tracks list controller class.
@@ -85,11 +86,11 @@ class MymuseControllerTracks extends JControllerAdmin
 
 			if ($value == 1)
 			{
-				$message = JText::plural('COM_CONTENT_N_ITEMS_FEATURED', count($ids));
+				$message = JText::plural('MYMUSE_N_ITEMS_FEATURED', count($ids));
 			}
 			else
 			{
-				$message = JText::plural('COM_CONTENT_N_ITEMS_UNFEATURED', count($ids));
+				$message = JText::plural('MYMUSE_N_ITEMS_UNFEATURED', count($ids));
 			}
 		}
 
@@ -97,11 +98,11 @@ class MymuseControllerTracks extends JControllerAdmin
 
 		if ($view == 'featured')
 		{
-			$this->setRedirect(JRoute::_('index.php?option=com_content&view=featured', false), $message);
+			$this->setRedirect(JRoute::_('index.php?option=com_mymuse&view=featured', false), $message);
 		}
 		else
 		{
-			$this->setRedirect(JRoute::_('index.php?option=com_content&view=articles', false), $message);
+			$this->setRedirect(JRoute::_('index.php?option=com_mymuse&view=tracks', false), $message);
 		}
 	}
 	
@@ -270,75 +271,7 @@ class MymuseControllerTracks extends JControllerAdmin
 		}
 	}
 	
-	/**
-	 * Method to publish a list of items
-	 *
-	 * @return  void
-	 *
-	 * @since   11.1
-	 */
-	public function publish()
-	{
-		// Check for request forgeries
-		JSession::checkToken() or die(JText::_('JINVALID_TOKEN'));
-		$input 		= JFactory::getApplication()->input;
-		$view 		= $input->get('view','');
-		$product_id 	= $input->get('product_id','');
-		$layout 	= $input->get('layout','');
-		$id 		= $input->get('id','');
-		$subtype 	= $input->get('subtype', '');
 
-		// Get items to publish from the request.
-		$cid 		= $input->post->get('cid', array(), 'array');
-		$data 		= array('publish' => 1, 'unpublish' => 0, 'archive' => 2, 'trash' => -2, 'report' => -3);
-		$task 		= $this->getTask();
-		$value 		= JArrayHelper::getValue($data, $task, 0, 'int');
-
-		if (empty($cid))
-		{
-			JError::raiseWarning(500, JText::_($this->text_prefix . '_NO_ITEM_SELECTED'));
-		}
-		else
-		{
-			// Get the model.
-			$model = $this->getModel();
-
-			// Make sure the item ids are integers
-			JArrayHelper::toInteger($cid);
-
-			// Publish the items.
-			if (!$model->publish($cid, $value))
-			{
-				JError::raiseWarning(500, $model->getError());
-			}
-			else
-			{
-				if ($value == 1)
-				{
-					$ntext = $this->text_prefix . '_N_ITEMS_PUBLISHED';
-				}
-				elseif ($value == 0)
-				{
-					$ntext = $this->text_prefix . '_N_ITEMS_UNPUBLISHED';
-				}
-				elseif ($value == 2)
-				{
-					$ntext = $this->text_prefix . '_N_ITEMS_ARCHIVED';
-				}
-				else
-				{
-					$ntext = $this->text_prefix . '_N_ITEMS_TRASHED';
-				}
-				$this->setMessage(JText::plural($ntext, count($cid)));
-			}
-		}
-		
-		if($view == 'track' && $layout == 'edit' && $product_id){
-			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $view .'&layout='.$layout.'&id='.$product_id.'&subtype='.$subtype, false));
-		}else{
-			$this->setRedirect(JRoute::_('index.php?option=' . $this->option . '&view=' . $view .'&layout='.$layout.'&id='.$id, false));
-		}
-	}
 	
 
 	

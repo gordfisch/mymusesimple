@@ -115,14 +115,11 @@ class MymuseViewTracks extends JViewLegacy
         }
 
 		if ($canDo->get('core.edit.state')) {
-            if (isset($this->items[0]->state)) {
+            if (isset($this->items[0]->published)) {
 			    JToolBarHelper::divider();
 			    JToolBarHelper::custom('tracks.publish', 'publish.png', 'publish_f2.png','JTOOLBAR_PUBLISH', true);
 			    JToolBarHelper::custom('tracks.unpublish', 'unpublish.png', 'unpublish_f2.png', 'JTOOLBAR_UNPUBLISH', true);
 			    JToolBarHelper::custom('tracks.featured', 'featured.png', 'featured_f2.png', 'JFEATURED', true);
-            } else {
-                //If this component does not use state then show a direct delete button as we can not trash
-                JToolBarHelper::deleteList('', 'tracks.delete','JTOOLBAR_DELETE');
             }
 
             if (isset($this->items[0]->state)) {
@@ -136,7 +133,7 @@ class MymuseViewTracks extends JViewLegacy
 		}
         
         //Show trash and delete for components that uses the state field
-        if (isset($this->items[0]->state)) {
+        if (isset($this->items[0]->published)) {
 		    if ($state->get('filter.published') == -2 && $canDo->get('core.delete')) {
 			    JToolBarHelper::deleteList('', 'tracks.delete','JTOOLBAR_DELETE');
 			    JToolBarHelper::divider();

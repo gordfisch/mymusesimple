@@ -28,8 +28,8 @@ $listDirn	= $this->escape($this->state->get('list.direction'));
 $saveOrder	= $listOrder == 'a.ordering';
 if ($saveOrder)
 {
-	$saveOrderingUrl = 'index.php?option=com_mymuse&task=trackss.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	$saveOrderingUrl = 'index.php?option=com_mymuse&task=tracks.saveOrderAjax&tmpl=component';
+	JHtml::_('sortablelist.sortable', 'trackList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 
 $sortFields = $this->getSortFields();
@@ -52,7 +52,7 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 <?php endif; ?>
 		<?php
 		// Search tools bar
-		echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
+		echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this, 'filtersHidden' => 0));
 		?>
 		<?php if (empty($this->items)) : ?>
 			<div class="alert alert-no-items">
@@ -69,26 +69,21 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 		<thead>
 			<tr>
 				<th width="1%" class="nowrap center hidden-phone">
-						<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
+					<?php echo JHtml::_('searchtools.sort', '', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
 				</th>
-				<th width="1%">
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
+				<th width="1%" class="center nowrap">
+					<?php echo JHtml::_('grid.checkall'); ?>
 				</th>
-				<th width="1%">
-					Ordering
-				</th>
-				<th width="10%">
-					<?php echo JHtml::_('grid.sort', 'MYMUSE_SKU', 'a.product_sku', $listDirn, $listOrder); ?>
+				<th width="1%" class="center nowrap">
+					<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
 				<th width="25%">
 					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
-					<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
+				<th width="10%">
+					<?php echo JHtml::_('grid.sort', 'MYMUSE_SKU', 'a.product_sku', $listDirn, $listOrder); ?>
 				</th>
-				<th width="5%">
-					<?php echo JHtml::_('grid.sort', 'JFEATURED', 'a.featured', $listDirn, $listOrder, NULL, 'desc'); ?>
-				</th>
+				
 	
 				<th width="10%">
 					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
@@ -125,44 +120,47 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 		</tfoot>
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
-			$item->max_ordering = 0; //??
-			$ordering	= ($listOrder == 'a.ordering');
-			$canCreate	= $user->authorise('core.create',		'com_mymuse.product.'.$item->product_id);
-			$canEdit	= $user->authorise('core.edit',			'com_mymuse.product.'.$item->id);
-			$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $item->checked_out == 0;
-			$canEditOwn	= $user->authorise('core.edit.own',		'com_mymuse.product.'.$item->id) && $item->created_by == $userId;
-			$canChange	= $user->authorise('core.edit.state',	'com_mymuse.product.'.$item->id) && $canCheckin;
-		
+			$canEdit   = $user->authorise('core.edit',       'com_redirect');
+			$canChange = $user->authorise('core.edit.state', 'com_redirect');
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="order nowrap center hidden-phone">
-					<?php if ($canChange) :
-						$disableClassName = '';
-						$disabledLabel	  = '';
-
-						if (!$saveOrder) :
-							$disabledLabel    = JText::_('JORDERINGDISABLED');
-							$disableClassName = 'inactive tip-top';
-						endif; ?>
-						<span class="sortable-handler hasTooltip <?php echo $disableClassName; ?>" title="<?php echo $disabledLabel; ?>">
-							<i class="icon-menu"></i>
-						</span>
-						<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order " />
-					<?php else : ?>
-						<span class="sortable-handler inactive" >
-							<i class="icon-menu"></i>
-						</span>
+					<?php
+					$iconClass = '';
+					if (!$canChange)
+					{
+						$iconClass = ' inactive';
+					}
+					elseif (!$saveOrder)
+					{
+						$iconClass = ' inactive tip-top hasTooltip" title="' . JHtml::_('tooltipText', 'JORDERINGDISABLED');
+					}
+					?>
+					<span class="sortable-handler<?php echo $iconClass ?>">
+						<span class="icon-menu" aria-hidden="true"></span>
+					</span>
+					<?php if ($canChange && $saveOrder) : ?>
+						<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order" />
 					<?php endif; ?>
 				</td>
 				<td class="center">
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 				</td>
 				<td class="center">
-					<?php echo $item->ordering; ?>
+					<div class="btn-group">
+						<?php echo JHtml::_('track.published', $item->published, $i); ?>
+						<?php echo JHtml::_('track.featured', $item->featured, $i, $canChange); ?>
+						<?php // Create dropdown items and render the dropdown list.
+						if ($canChange)
+						{
+							JHtml::_('actionsdropdown.' . ((int) $item->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'tracks');
+							JHtml::_('actionsdropdown.' . ((int) $item->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'tracks');
+							echo JHtml::_('actionsdropdown.render', $this->escape($item->title));
+						}
+						?>
+					</div>
 				</td>
-				<td>
-					<?php echo $item->product_sku; ?>
-				</td>
+				
 				<td>
 					<?php if ($item->checked_out) : ?>
 						<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'products.', $canCheckin); ?>
@@ -174,21 +172,8 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 						<?php echo $this->escape($item->title); ?>
 					<?php endif; ?>
 				</td>
-				<td class="center">
-							<div class="btn-group">
-								<?php echo JHtml::_('track.published', $item->published, $i); ?>
-								<?php // Create dropdown items and render the dropdown list.
-								if ($canChange)
-								{
-									JHtml::_('actionsdropdown.' . ((int) $item->published === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'tracks');
-									JHtml::_('actionsdropdown.' . ((int) $item->published === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'tracks');
-									echo JHtml::_('actionsdropdown.render', $this->escape($item->title));
-								}
-								?>
-							</div>
-						</td>
-				<td class="center">
-					<?php echo JHtml::_('mymuseadministrator.featured', $item->featured, $i, $canChange); ?>
+				<td>
+					<?php echo $item->product_sku; ?>
 				</td>
 
 				<td class="center">

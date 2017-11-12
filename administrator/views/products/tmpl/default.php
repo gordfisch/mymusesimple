@@ -89,24 +89,20 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 		<thead>
 			<tr>
 				<th width="1%" class="nowrap center hidden-phone">
-						<?php echo JHtml::_('grid.sort', '<i class="icon-menu-2"></i>', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING'); ?>
-				</th>
-				<th width="1%">
-					<input type="checkbox" name="checkall-toggle" value="" title="<?php echo JText::_('JGLOBAL_CHECK_ALL'); ?>" onclick="Joomla.checkAll(this)" />
-				</th>
-				<th width="1%">
-					Ordering
-				</th>
-
-				<th width="25%">
-					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
-				</th>
-				<th width="5%">
-					<?php echo JHtml::_('grid.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
-				</th>
-				<th width="5%">
-					<?php echo JHtml::_('grid.sort', 'JFEATURED', 'a.featured', $listDirn, $listOrder, NULL, 'desc'); ?>
-				</th>
+							<?php echo JHtml::_('searchtools.sort', '', 'a.ordering', $listDirn, $listOrder, null, 'asc', 'JGRID_HEADING_ORDERING', 'icon-menu-2'); ?>
+						</th>
+						<th width="1%" class="center">
+							<?php echo JHtml::_('grid.checkall'); ?>
+						</th>
+						<th width="1%" class="nowrap center">
+							<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'a.state', $listDirn, $listOrder); ?>
+						</th>
+						<th style="min-width:100px" class="nowrap">
+							<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+						</th>
+						<th width="10%" class="nowrap hidden-phone">
+							<?php echo JHtml::_('searchtools.sort',  'JGRID_HEADING_ACCESS', 'a.access', $listDirn, $listOrder); ?>
+						</th>
 				<th width="10%">
 					<?php echo JHtml::_('grid.sort', 'MYMUSE_ARTIST', 'artist_title', $listDirn, $listOrder); ?>
 				</th>
@@ -114,14 +110,6 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 					<?php echo JHtml::_('grid.sort', 'JCATEGORY', 'category_title', $listDirn, $listOrder); ?>
 				</th>
 				
-				<th width="10%">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
-				</th>
-				<!--  
-				<th width="10%">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_CREATED_BY', 'a.created_by', $listDirn, $listOrder); ?>
-				</th>
-				-->
 				<th width="5%">
 					<?php echo JHtml::_('grid.sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
 				</th>
@@ -153,57 +141,61 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 			$canEditOwn	= $user->authorise('core.edit.own',		'com_mymuse.product.'.$item->id) && $item->created_by == $userId;
 			$canChange	= $user->authorise('core.edit.state',	'com_mymuse.product.'.$item->id) && $canCheckin;
 			?>
-			<tr class="row<?php echo $i % 2; ?>">
+			<tr class="row<?php echo $i % 2; ?>" sortable-group-id="<?php echo $item->catid; ?>">
 				<td class="order nowrap center hidden-phone">
-					<?php if ($canChange) :
-						$disableClassName = '';
-						$disabledLabel	  = '';
-
-						if (!$saveOrder) :
-							$disabledLabel    = JText::_('JORDERINGDISABLED');
-							$disableClassName = 'inactive tip-top';
-						endif; ?>
-						<span class="sortable-handler hasTooltip <?php echo $disableClassName; ?>" title="<?php echo $disabledLabel; ?>">
-							<i class="icon-menu"></i>
-						</span>
-						<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order " />
-					<?php else : ?>
-						<span class="sortable-handler inactive" >
-							<i class="icon-menu"></i>
-						</span>
+					<?php
+					$iconClass = '';
+					if (!$canChange)
+					{
+						$iconClass = ' inactive';
+					}
+					elseif (!$saveOrder)
+					{
+						$iconClass = ' inactive tip-top hasTooltip" title="' . JHtml::_('tooltipText', 'JORDERINGDISABLED');
+					}
+					?>
+					<span class="sortable-handler<?php echo $iconClass ?>">
+						<span class="icon-menu" aria-hidden="true"></span>
+					</span>
+					<?php if ($canChange && $saveOrder) : ?>
+						<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order" />
 					<?php endif; ?>
 				</td>
 				<td class="center">
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 				</td>
 				<td class="center">
-					<?php echo $item->ordering; ?>
+					<div class="btn-group">
+						<?php echo JHtml::_('jgrid.published', $item->state, $i, 'products.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
+						<?php echo JHtml::_('mymuseadministrator.featured', $item->featured, $i, $canChange); ?>
+						<?php // Create dropdown items and render the dropdown list.
+						if ($canChange)
+						{
+							JHtml::_('actionsdropdown.' . ((int) $item->state === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'products');
+							JHtml::_('actionsdropdown.' . ((int) $item->state === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'products');
+							echo JHtml::_('actionsdropdown.render', $this->escape($item->title));
+						}
+						?>
+					</div>
 				</td>
-
-				<td>
-					<?php if ($item->checked_out) : ?>
-						<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'products.', $canCheckin); ?>
-					<?php endif; ?>
-					<?php if ($canEdit || $canEditOwn) : ?>
-						<a href="<?php echo JRoute::_('index.php?option=com_mymuse&task=product.edit&id='.$item->id);?>">
-							<?php echo $this->escape($item->title); ?></a>
-					<?php else : ?>
-						<?php echo $this->escape($item->title); ?>
-					<?php endif; ?>
-					
-					<?php if($item->attribs->get('product_preorder')){
-					echo "<br /><b>".JText::_("MYMUSE_PRODUCT_PREORDER_LABEL")."</b>";
-					} ?>
-					
-					
-					<p class="smallsub">
-						<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias));?></p>
+				<td class="has-context">
+					<div class="pull-left break-word">
+						<?php if ($item->checked_out) : ?>
+							<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'articles.', $canCheckin); ?>
+						<?php endif; ?>
+						<?php if ($canEdit || $canEditOwn) : ?>
+							<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_mymuse&task=product.edit&id=' . $item->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
+								<?php echo $this->escape($item->title); ?></a>
+						<?php else : ?>
+							<span title="<?php echo JText::sprintf('JFIELD_ALIAS_LABEL', $this->escape($item->alias)); ?>"><?php echo $this->escape($item->title); ?></span>
+						<?php endif; ?>
+						<span class="small break-word">
+							<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($item->alias)); ?>
+						</span>
+					</div>
 				</td>
-				<td class="center">
-					<?php echo JHtml::_('jgrid.published', $item->state, $i, 'products.', $canChange, 'cb', $item->publish_up, $item->publish_down); ?>
-				</td>
-				<td class="center">
-					<?php echo JHtml::_('mymuseadministrator.featured', $item->featured, $i, $canChange); ?>
+				<td class="small hidden-phone">
+					<?php echo $this->escape($item->access_level); ?>
 				</td>
 				<td class="center">
 					<?php echo $this->escape($item->artist_title);  ?>
@@ -215,15 +207,6 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 					} ?>
 				</td>
 				
-
-				<td class="center">
-					<?php echo $this->escape($item->access_level); ?>
-				</td>
-				<!--  
-				<td class="center">
-					<?php echo $this->escape($item->author_name); ?>
-				</td>
-				-->
 				<td class="center nowrap">
 					<?php echo JHtml::_('date',$item->created, JText::_('DATE_FORMAT_LC4')); ?>
 				</td>

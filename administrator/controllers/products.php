@@ -62,7 +62,7 @@ class MymuseControllerProducts extends JControllerAdmin
 	
 
 	/**
-	 * Method to toggle the featured setting of a list of articles.
+	 * Method to toggle the featured setting of a list of products.
 	 *
 	 * @return	void
 	 */

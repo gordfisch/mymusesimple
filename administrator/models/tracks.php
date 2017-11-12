@@ -10,6 +10,7 @@
 defined('_JEXEC') or die;
 
 jimport('joomla.application.component.modellist');
+use Joomla\Utilities\ArrayHelper;
 
 /**
  * Methods supporting a list of Mymuse records.
@@ -102,7 +103,10 @@ class MymuseModeltracks extends JModelList
 		$this->setState('filter.featured', $featured);
 
 		$product_id = $app->getUserStateFromRequest('com_mymuse.product_id', 'product_id', '', 'string');
-		$this->setState('product_id', $product_id);
+		if(!$product_id){
+			$product_id = $app->getUserStateFromRequest($this->context.'.filter.product_id', 'filter_product_id', '', 'int');
+		}
+		$this->setState('filter.product_id', $product_id);
 
 		// Load the parameters.
 		$params = JComponentHelper::getParams('com_mymuse');
@@ -277,15 +281,12 @@ class MymuseModeltracks extends JModelList
 			$query->where('a.language = '.$db->quote($language));
 		}
 		
-		// It must be a parent?
+		// filter on product
 		if ($product_id = $this->getState('filter.product_id')) {
 			$query->where("a.product_id = $product_id");
 		}
 		
-		//downloadable??
-		if ($downloadable = $this->getState('filter.downloadable')) {
-			$query->where('a.product_downloadable = 1');
-		}
+
 		
 		//allfiles??
 		$allfiles = $this->getState('filter.allfiles', '');

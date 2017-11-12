@@ -79,8 +79,6 @@ class MymuseModeltrack extends JModelAdmin
 				'a.product_id', 'product_id',
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
-				'catid', 'p.catid', 'category_title',
-				'artistid', 'p.artistid', 'artist_title',
 				'access', 'a.access', 'access_level',
 				'created', 'a.created',
 				'created_by', 'a.created_by',

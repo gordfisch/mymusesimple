@@ -13,11 +13,11 @@
 			type="productid"
 			label="MYMUSE_FILTER_PRODUCT"
 			description="MYMUSE_FILTER_PRODUCT_DESC"
-			multiple="true"
+			multiple="false"
 			class="multipleProducts"
 			extension="com_mymuse"
 			onchange="this.form.submit();"
-			published="0,1,2"
+
 		/>
 		<field
 			name="published"
@@ -28,18 +28,6 @@
 			>
 			<option value="">MYMUSE_SELECT_PUBLISHED</option>
 		</field>
-
-		<field
-			name="product_id"
-			type="productid"
-			label="MYMUSE_FILTER_PRODUCT"
-			description="MYMUSE_FILTER_PRODUCT_DESC"
-			multiple="true"
-			class="multipleProducts"
-			extension="com_mymuse"
-			onchange="this.form.submit();"
-			published="0,1,2"
-		/>
 
 
 		<field
