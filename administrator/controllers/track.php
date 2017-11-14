@@ -30,23 +30,35 @@ class MymuseControllerTrack extends JControllerForm
 
 		$this->view_list = 'tracks';
         $this->input = JFactory::getApplication()->input;
-        $task = $this->input->get('task'); 
-        if(strpos($task,'allfiles')){
-            $this->input->set('allfiles',1);
-        }
         parent::__construct();
 
         $this->registerTask( 'savetrack', 'savetrack' );
         $this->registerTask( 'applytrack', 'savetrack' );
         $this->registerTask( 'save2newtrack', 'savetrack' );
 
-        $this->registerTask( 'new_allfiles', 'edit' );
-        $this->registerTask( 'edit_allfiles', 'edit' );
+        $this->registerTask( 'new_allfiles', 'edit_allfiles' );
         $this->registerTask( 'save_allfiles', 'savetrack' );
         $this->registerTask( 'apply_allfiles', 'savetrack' );
     }
     
     
+
+
+    function edit_allfiles()
+    {
+
+        $this->input->set('layout','edit_allfiles');
+        $this->edit();
+
+    }
+
+    function save_allfiles()
+    {
+
+        $this->input->set('layout','edit_allfiles');
+        $this->savetrack();
+
+    }
     
     /**
 	 * savetrack

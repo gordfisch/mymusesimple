@@ -275,7 +275,7 @@ class MymuseTableTrack extends JTable
 
 			}
 			$this->track = json_encode($current_files);
-			$this->track_type = "audio";
+			$this->type = "audio";
 		}
 		
 		// Previews

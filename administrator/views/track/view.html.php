@@ -30,6 +30,7 @@ class MymuseViewTrack extends JViewLegacy
 
 		$task 			= $input->get('task', 'edit');
 		$allfiles 		= $input->get('allfiles', 0);
+		echo "allfiles = $allfiles";
 		$this->state	= $this->get('State');
 		$this->item		= $this->get('Item');
 
@@ -49,7 +50,6 @@ class MymuseViewTrack extends JViewLegacy
 			//new_allfiles
         if($allfiles){
         	$this->setLayout('edit_allfiles');
-
         	$subtype = 'allfiles';
   
         }
