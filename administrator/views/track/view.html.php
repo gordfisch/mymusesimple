@@ -26,10 +26,10 @@ class MymuseViewTrack extends JViewLegacy
 	 */
 	public function display($tpl = null)
 	{
-		$app 			= JFactory::getApplication();
-		$input 			= $app->input;
-		
-		$this->task 	= $task 	= $input->get('task', 'edit');
+		$input 			= JFactory::getApplication()->input;
+
+		$task 			= $input->get('task', 'edit');
+		$allfiles 		= $input->get('allfiles', 0);
 		$this->state	= $this->get('State');
 		$this->item		= $this->get('Item');
 
@@ -43,16 +43,14 @@ class MymuseViewTrack extends JViewLegacy
         $isNew  		= ($this->item->id < 1);
 		$lists['isNew'] = $isNew;
 		
-		$subtype = 'track';
+
         // allfiles
-        if($task == "new_allfiles" || $task == "track.new_allfiles" || ($this->item->product_id && $this->item->allfiles)){
-        	$layout = 'new_allfiles';
+        $subtype = '';
+			//new_allfiles
+        if($allfiles){
         	$this->setLayout('edit_allfiles');
-			if(!$this->item->product_id){
-        		$this->item->product_id= JRequest::getVar('product_id', 0);
-        	}
-        	JRequest::setVar('subtype','allfiles');
-        	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'allfiles');
+
+        	$subtype = 'allfiles';
   
         }
 

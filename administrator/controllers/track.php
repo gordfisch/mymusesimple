@@ -30,7 +30,10 @@ class MymuseControllerTrack extends JControllerForm
 
 		$this->view_list = 'tracks';
         $this->input = JFactory::getApplication()->input;
-
+        $task = $this->input->get('task'); 
+        if(strpos($task,'allfiles')){
+            $this->input->set('allfiles',1);
+        }
         parent::__construct();
 
         $this->registerTask( 'savetrack', 'savetrack' );
@@ -55,9 +58,13 @@ class MymuseControllerTrack extends JControllerForm
     { 
 
         $this->id 			= $this->input->get('id', 0);
-        $this->product_id 	= $this->input->get('product_id', 0);
         $form 				= $this->input->get('jform', '', 'array');
-
+        $this->product_id   = $form['product_id'];
+        if(!$this->product_id){
+            $this->msg = JText::_( 'MYMUSE_COULD_NOT_FIND_ID' );
+            $this->setRedirect( 'index.php?option=com_mymuse&view=tracks', $this->msg );
+            return false;
+        }
 		$layout 			= $this->input->get('layout', '');
 		$model 				= $this->getModel();
         $table 				= $model->getTable();
@@ -101,7 +108,7 @@ class MymuseControllerTrack extends JControllerForm
                 break;
 			default:
 				$this->msg = JText::_( 'MYMUSE_FILE_SAVED' );;
-				$this->setRedirect( 'index.php?option=com_mymuse&view=track&product_id='. $this->product_id, $this->msg );
+				$this->setRedirect( 'index.php?option=com_mymuse&view=track&task=track.edit&id='. $this->id.'&product_id='. $this->product_id, $this->msg );
 				break;
 			}
 		}else{

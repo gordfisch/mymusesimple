@@ -11,6 +11,19 @@
        /> 
 
       <field
+        name="product_id"
+        type="sql"
+        label="MYMUSE_PRODUCT"
+        description="MYMUSE_PRODUCT"
+        class="inputbox"
+        required="true"
+        query="SELECT id, title FROM #__mymuse_product WHERE 1 ORDER BY title asc"
+        header="MYMUSE_SELECT_PRODUCT"
+        key_field="id"
+        value_field="title"
+      />
+
+      <field
         name="title"
         type="text"
         label="MYMUSE_TITLE_LABEL"
@@ -42,16 +55,7 @@
 
 	
 		
-		<field
-      name="product_id"
-      type="text"
-      label="MYMUSE_PARENT"
-      description="MYMUSE_PARENT"
-      class="inputbox"
-      size="3"
-      required="false"
-      default="0"
-    />
+
 		
 		<field
       name="price"

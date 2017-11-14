@@ -34,50 +34,6 @@ class MyMuseModelProduct extends JModelItem
 	
 	static $cart = null;
 	
-	protected $filer_fields = null;
-	
-	/**
-	 * Constructor.
-	 *
-	 * @param	array	An optional associative array of configuration settings.
-	 * @see		JController
-	 * @since	1.6
-	 */
-	public function __construct($config = array())
-	{
-		if (empty($config['filter_fields'])) {
-			$config['filter_fields'] = array(
-					'id', 'a.id',
-					'title', 'a.title',
-					'catid', 'a.catid', 'category_title',
-					'state', 'a.state',
-					'access', 'a.access', 'access_level',
-					'created', 'p.created',
-					'created_by', 'p.created_by',
-					'ordering', 'a.ordering',
-					'featured', 'a.featured',
-					'language', 'a.language',
-					'hits', 'a.hits',
-					'price','a.price',
-					'file_downloads', 'a.file_downloads',
-					'file_time', 'a.file_time',
-					'ABS(file_length)', 'ABS(a.file_length)',
-					'product_discount','a.product_discount',
-					'publish_up', 'a.publish_up',
-					'publish_down', 'a.publish_down',
-					'category_name', 'c.title',
-					'sales', 's.sales',
-					'created','p.created',
-					'modified','p.modified',
-					'product_made_date', 'p.product_made_date',
-					'c.lft'
-			);
-		}
-		
-		parent::__construct($config);
-		$this->filter_fields = $config['filter_fields'];
-
-	}
 
 	/**
 	 * Method to auto-populate the model state.
@@ -136,7 +92,7 @@ class MyMuseModelProduct extends JModelItem
 		
 		}
 		// Load the parameters.
-		$params = $app->getParams();
+		$params = array_merge($params, $app->getParams());
 		$this->setState('params', $params);
 
 		// TODO: Tune these values based on other permissions.

@@ -20,6 +20,13 @@ JHtml::_('formbehavior.chosen', '.multipleAccessLevels', null, array('placeholde
 JHtml::_('formbehavior.chosen', '.multipleAuthors', null, array('placeholder_text_multiple' => JText::_('JOPTION_SELECT_AUTHOR')));
 JHtml::_('formbehavior.chosen', 'select');
 
+
+JHtml::_('formbehavior.chosen', '.multipleTags', null, array('placeholder_text_multiple' => JText::_('JOPTION_SELECT_TAG')));
+JHtml::_('formbehavior.chosen', '.multipleCategories', null, array('placeholder_text_multiple' => JText::_('JOPTION_SELECT_CATEGORY')));
+
+
+
+
 $app		= JFactory::getApplication();
 $user		= JFactory::getUser();
 $userId		= $user->get('id');
@@ -29,7 +36,7 @@ $saveOrder	= $listOrder == 'a.ordering';
 if ($saveOrder)
 {
 	$saveOrderingUrl = 'index.php?option=com_mymuse&task=tracks.saveOrderAjax&tmpl=component';
-	JHtml::_('sortablelist.sortable', 'trackList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
+	JHtml::_('sortablelist.sortable', 'articleList', 'adminForm', strtolower($listDirn), $saveOrderingUrl);
 }
 
 $sortFields = $this->getSortFields();
@@ -52,7 +59,7 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 <?php endif; ?>
 		<?php
 		// Search tools bar
-		echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this, 'filtersHidden' => 0));
+		echo JLayoutHelper::render('joomla.searchtools.default', array('view' => $this));
 		?>
 		<?php if (empty($this->items)) : ?>
 			<div class="alert alert-no-items">
@@ -78,32 +85,35 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 					<?php echo JHtml::_('searchtools.sort', 'JSTATUS', 'a.published', $listDirn, $listOrder); ?>
 				</th>
 				<th width="25%">
-					<?php echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder); ?>
+				</th>
+				<th width="25%">
+					<?php echo JHtml::_('searchtools.sort', 'MYMUSE_PRODUCT', 'p.title', $listDirn, $listOrder); ?>
 				</th>
 				<th width="10%">
-					<?php echo JHtml::_('grid.sort', 'MYMUSE_SKU', 'a.product_sku', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('searchtools.sort', 'MYMUSE_SKU', 'a.product_sku', $listDirn, $listOrder); ?>
 				</th>
 				
 	
 				<th width="10%">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
 				</th>
 				<!--  
 				<th width="10%">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_CREATED_BY', 'a.created_by', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_CREATED_BY', 'a.created_by', $listDirn, $listOrder); ?>
 				</th>
 				-->
 				<th width="5%">
-					<?php echo JHtml::_('grid.sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('searchtools.sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%">
-					<?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_LANGUAGE', 'language', $listDirn, $listOrder); ?>
 				</th>
 				<th width="1%" class="nowrap">
-					<?php echo JHtml::_('grid.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ID', 'a.id', $listDirn, $listOrder); ?>
 				</th>
 			</tr>
 		</thead>
@@ -120,29 +130,29 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 		</tfoot>
 		<tbody>
 		<?php foreach ($this->items as $i => $item) :
-			$canEdit   = $user->authorise('core.edit',       'com_redirect');
-			$canChange = $user->authorise('core.edit.state', 'com_redirect');
+			$canEdit   = $user->authorise('core.edit',       'com_mymuse');
+			$canChange = $user->authorise('core.edit.state', 'com_mymuse');
 			?>
 			<tr class="row<?php echo $i % 2; ?>">
 				<td class="order nowrap center hidden-phone">
-					<?php
-					$iconClass = '';
-					if (!$canChange)
-					{
-						$iconClass = ' inactive';
-					}
-					elseif (!$saveOrder)
-					{
-						$iconClass = ' inactive tip-top hasTooltip" title="' . JHtml::_('tooltipText', 'JORDERINGDISABLED');
-					}
-					?>
-					<span class="sortable-handler<?php echo $iconClass ?>">
-						<span class="icon-menu" aria-hidden="true"></span>
-					</span>
-					<?php if ($canChange && $saveOrder) : ?>
-						<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order" />
-					<?php endif; ?>
-				</td>
+							<?php
+							$iconClass = '';
+							if (!$canChange)
+							{
+								$iconClass = ' inactive';
+							}
+							elseif (!$saveOrder)
+							{
+								$iconClass = ' inactive tip-top hasTooltip" title="' . JHtml::_('tooltipText', 'JORDERINGDISABLED');
+							}
+							?>
+							<span class="sortable-handler<?php echo $iconClass ?>">
+								<span class="icon-menu" aria-hidden="true"></span>
+							</span>
+							<?php if ($canChange && $saveOrder) : ?>
+								<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $item->ordering; ?>" class="width-20 text-area-order" />
+							<?php endif; ?>
+						</td>
 				<td class="center">
 					<?php echo JHtml::_('grid.id', $i, $item->id); ?>
 				</td>
@@ -163,9 +173,9 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 				
 				<td>
 					<?php if ($item->checked_out) : ?>
-						<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'products.', $canCheckin); ?>
+						<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'tracks.', $canEdit); ?>
 					<?php endif; ?>
-					<?php if ($canEdit || $canEditOwn) : ?>
+					<?php if ($canEdit) : ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_mymuse&task=track.edit&id='.$item->id);?>">
 							<?php echo $this->escape($item->title); ?></a>
 					<?php else : ?>
@@ -173,10 +183,13 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 					<?php endif; ?>
 				</td>
 				<td>
+					<?php echo $item->product_title; ?>
+				</td>
+				<td>
 					<?php echo $item->product_sku; ?>
 				</td>
 
-				<td class="center">
+				<td>
 					<?php echo $this->escape($item->access_level); ?>
 				</td>
 				<!--  
@@ -184,13 +197,13 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 					<?php echo $this->escape($item->author_name); ?>
 				</td>
 				-->
-				<td class="center nowrap">
+				<td>
 					<?php echo JHtml::_('date',$item->created, JText::_('DATE_FORMAT_LC4')); ?>
 				</td>
-				<td class="center">
+				<td>
 					<?php echo (int) $item->hits; ?>
 				</td>
-				<td class="center">
+				<td>
 					<?php if ($item->language=='*'):?>
 						<?php echo JText::alt('JALL','language'); ?>
 					<?php else:?>
@@ -205,15 +218,9 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 		</tbody>
 	</table>
 <?php endif; ?>
-	<?php //Load the batch processing form. ?>
-	<?php //echo $this->loadTemplate('batch'); ?>
 
-	<div>
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
-		<input type="hidden" name="filter_order" value="<?php echo $listOrder; ?>" />
-
-		<input type="hidden" name="filter_order_Dir" value="<?php echo $listDirn; ?>" />
 		<?php echo JHtml::_('form.token'); ?>
 	</div>
 </form>

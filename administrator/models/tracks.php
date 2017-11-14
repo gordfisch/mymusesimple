@@ -50,12 +50,13 @@ class MymuseModeltracks extends JModelList
 				'title', 'a.title',
 				'alias', 'a.alias',
 				'product_id',
+				'product_title', 'p.title',
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
 				'catid', 'a.catid', 
 				'category_title',
 				'artistid', 'a.artistid',
-				'state', 'a.state',
+				'product_sku', 'a.product_sku',
 				'access', 'a.access', 'access_level',
 				'created', 'a.created',
 				'created_by', 'a.created_by',
@@ -78,10 +79,12 @@ class MymuseModeltracks extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 */
-	protected function populateState($ordering = null, $direction = null)
+	protected function populateState($ordering = 'a.id', $direction = 'asc')
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
+
+		
 
 		// Load the filter state.
 		$search = $app->getUserStateFromRequest($this->context.'.filter.search', 'filter_search');
@@ -102,7 +105,7 @@ class MymuseModeltracks extends JModelList
 		$featured = $app->getUserStateFromRequest($this->context.'.filter.featured', 'filter_featured', '', 'string');
 		$this->setState('filter.featured', $featured);
 
-		$product_id = $app->getUserStateFromRequest('com_mymuse.product_id', 'product_id', '', 'string');
+		$product_id = $app->getUserStateFromRequest('com_mymuse.product_id', 'product_id', '', 'int');
 		if(!$product_id){
 			$product_id = $app->getUserStateFromRequest($this->context.'.filter.product_id', 'filter_product_id', '', 'int');
 		}
@@ -119,7 +122,9 @@ class MymuseModeltracks extends JModelList
 		$this->setState('filter.language', $language);
 
 		// List state information.
-		parent::populateState('a.id', 'asc');
+		parent::populateState($ordering, $direction);
+
+
 	}
 
 	/**
@@ -150,6 +155,8 @@ class MymuseModeltracks extends JModelList
 	 */
 	protected function getListQuery()
 	{
+		$input = JFactory::getApplication()->input;
+
 		// Create a new query object.
 		$db		= $this->getDbo();
 		$query	= $db->getQuery(true);
@@ -163,6 +170,10 @@ class MymuseModeltracks extends JModelList
 			)
 		);
 		$query->from('`#__mymuse_track` AS a');
+
+		// Join over the product
+		$query->select('p.title AS product_title');
+		$query->join('LEFT', '#__mymuse_product AS p ON p.id = a.product_id');
 
 		// Join over the language
 		$query->select('l.title AS language_title');
@@ -223,7 +234,7 @@ class MymuseModeltracks extends JModelList
 		elseif (is_array($categoryId)) {
 			JArrayHelper::toInteger($categoryId);
 			$categoryId = implode(',', $categoryId);
-			$query->where('p.catid IN ('.$categoryId.')');
+			$query->where('a.catid IN ('.$categoryId.')');
 		}
 
 		// Filter by a single or group of artists.
@@ -241,13 +252,9 @@ class MymuseModeltracks extends JModelList
 		elseif (is_array($artistId)) {
 			JArrayHelper::toInteger($artistId);
 			$artistId = implode(',', $artistId);
-			$query->where('p.artistid IN ('.$artistId.')');
+			$query->where('a.artistid IN ('.$artistId.')');
 		}
 		
-		// Filter on the level.
-		if ($level = $this->getState('filter.level')) {
-			$query->where('c.level <= '.((int) $level + (int) $baselevel - 1));
-		}
 
 		// Filter by author
 		$authorId = $this->getState('filter.author_id');
@@ -270,11 +277,12 @@ class MymuseModeltracks extends JModelList
 				$search = $db->Quote('%'.$db->escape($search, true).'%');
 				$query->where('(
 						a.title LIKE '.$search.' 
-						OR a.alias LIKE '.$search.'
+						OR p.title LIKE '.$search.'
 						OR a.product_sku LIKE '.$search.'
 						)');
 			}
 		}
+
 
 		// Filter on the language.
 		if ($language = $this->getState('filter.language')) {
@@ -297,12 +305,10 @@ class MymuseModeltracks extends JModelList
 		
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering');
-		$orderDirn	= $this->state->get('list.direction');
-        if ($orderCol && $orderDirn) {
-		    $query->order($orderCol.' '.$orderDirn);
-        }
-
+		$orderCol	= $this->state->get('list.ordering', 'a.id');
+		$orderDirn	= $this->state->get('list.direction', 'DESC');
+        $query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
+	//echo $db->replacePrefix((string) $query);
 		return $query;
 	}
 	

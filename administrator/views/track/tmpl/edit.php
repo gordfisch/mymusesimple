@@ -48,7 +48,7 @@ JHTML::_('behavior.tooltip');
 			}
 		}
 
-		var variation = <?php  echo count($item->file); ?>;
+		var variation = <?php  echo count($item->track); ?>;
 		function addvariation()
 		{
 			
@@ -89,6 +89,13 @@ JHTML::_('behavior.tooltip');
 
 	<legend><?php echo JText::_('MYMUSE_DETAILS'); ?></legend>
 	<div class="pull-left span5">
+			<div class="control-group">
+				<div class="control-label"><?php echo $this->form->getLabel('product_id'); ?>
+				</div>
+				<div class="controls">
+				<?php echo $this->form->getInput('product_id'); ?>
+				</div>
+			</div>
 			<div class="control-group">
 				<div class="control-label"><?php echo $this->form->getLabel('id'); ?>
 				</div>
@@ -231,7 +238,7 @@ JHTML::_('behavior.tooltip');
 
 
 
-				<h3><a href="index.php?option=com_media"><?php echo JText::_( 'MYMUSE_UPLOAD_NEW_FILE' ); ?></a></h3>
+				<h3><a href="index.php?option=com_media"><?php echo JText::_( 'MYMUSE_UPLOAD_NEW_FILE' ); ?></a> : <?php echo $lists['download_dir']; ?></h3>
 
 
 		<table class="table table-striped" id="articleList">
@@ -296,13 +303,14 @@ JHTML::_('behavior.tooltip');
 <!--  PREVIEWS TAB -->
 <?php echo JHtml::_('bootstrap.addTab', 'myTab', 'previews', '<b>'.strtoupper(JText::_('MYMUSE_PREVIEWS', true))).'</b>'; ?>
 <div class="pull-left">
+
+	<h3><a href="index.php?option=com_media"><?php echo JText::_( 'MYMUSE_UPLOAD_NEW_FILE' ); ?></a> : <?php echo $lists['preview_dir']; ?></h3>
+
 		<fieldset class="adminform">
 
-			<legend></legend>
+			<legend><?php echo JText::_('MYMUSE_PREVIEW'); ?></legend>
 			<ul class="adminformlist">
-				<li><label id="jform_product_preview-lbl" for="jform_product_preview"  class="hasTip" title="<?php echo JText::_("MYMUSE_BROWSE_TO_FILE")?>">
-				<a href="administrator/index.php?option=com_media"><?php echo JText::_( 'MYMUSE_UPLOAD_NEW_PREVIEW' ); ?></a> : <?php echo $lists['preview_dir']; ?></label>
-				</li>
+
 
 				<li><?php echo $this->form->getLabel('preview'); ?>
 				<?php echo $this->form->getInput('preview'); ?></li>
@@ -328,7 +336,6 @@ JHTML::_('behavior.tooltip');
 <div style="clear: both;"></div>
 
 
-		<input type="hidden" name="jform[product_id]" value="<?php echo $item->product_id ?>" />
 		<input type="hidden" name="current_preview" value="<?php echo stripslashes($item->preview) ?>" />
 		<input type="hidden" name="current_preview_2" value="<?php echo stripslashes($item->preview_2) ?>" />
 		<input type="hidden" name="current_preview_3" value="<?php echo stripslashes($item->preview_3) ?>" />

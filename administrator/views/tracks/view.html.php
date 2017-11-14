@@ -28,8 +28,9 @@ class MymuseViewTracks extends JViewLegacy
 	public function display($tpl = null)
 	{
 
-		$input = JFactory::getApplication()->input;
+		$input 	= JFactory::getApplication()->input;
 		$layout = $input->get('layout', '');
+		
 
 		if($layout == "check"){
 			$this->trackss = $this->get('Check');
@@ -59,6 +60,7 @@ class MymuseViewTracks extends JViewLegacy
 				$this->addToolbar ();
 				$this->sidebar = JHtmlSidebar::render ();
 			}
+			
 
 			parent::display ( $tpl );
 		}
@@ -106,6 +108,7 @@ class MymuseViewTracks extends JViewLegacy
 
             if ($canDo->get('core.create')) {
 			    JToolBarHelper::addNew('track.add','JTOOLBAR_NEW');
+			    JToolBarHelper::addNew('track.new_allfiles','MYMUSE_ALL_TRACKS');
 		    }
 
 		    if ($canDo->get('core.edit')) {

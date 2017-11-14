@@ -13,7 +13,7 @@ defined('_JEXEC') or die;
 /**
  * Mymuse model.
  */
-class MymuseModeltrack extends JModelAdmin
+class MymuseModelTrack extends JModelAdmin
 {
 	/**
 	 * @var		string	The prefix to use with controller messages.
@@ -28,20 +28,6 @@ class MymuseModeltrack extends JModelAdmin
 	 */
 	protected $_item = null;
 	
-	/**
-	 * @var		array of product(track) objects
-	 * @since	1.6
-	 */
-	protected $_tracks = null;
-	
-
-	
-	/**
-	 * @var		object
-	 * @since	1.6
-	 */
-	protected $_trackPaginition = null;
-	
 
 	/**
 	 * @var		array
@@ -53,12 +39,7 @@ class MymuseModeltrack extends JModelAdmin
 	 */
 	protected $_params = null;
 	
-	/**
-	 * @var		array
-	 */
-	protected $_previews = null;
-	
-	
+
 	/**
 	 * Constructor
 	 *
@@ -77,6 +58,7 @@ class MymuseModeltrack extends JModelAdmin
 				'title', 'a.title',
 				'alias', 'a.alias',
 				'a.product_id', 'product_id',
+				'a.ordering','ordering',
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
 				'access', 'a.access', 'access_level',
@@ -91,7 +73,7 @@ class MymuseModeltrack extends JModelAdmin
 				'author', 'a.author'
 		);
 		
-		$this->_params 			= MyMuseHelper::getParams();
+		$this->_params 	= MyMuseHelper::getParams();
 		
 		parent::__construct($config);
 	}

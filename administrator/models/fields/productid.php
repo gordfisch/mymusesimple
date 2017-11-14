@@ -39,7 +39,7 @@ class JFormFieldProductid extends JFormFieldSQL
 		$product_id = $jinput->get('product_id',array());
 		// do the SQL
 		$db = JFactory::getDbo();
-		$title = JText::_('MYMUSE_SELECT_PRODUCTS');
+		$title = JText::_('MYMUSE_SELECT_PRODUCT');
 		$query="SELECT 0 AS id, '$title' AS name 
 		UNION ALL SELECT id, title as name FROM #__mymuse_product WHERE 1 ORDER BY NAME asc";
 

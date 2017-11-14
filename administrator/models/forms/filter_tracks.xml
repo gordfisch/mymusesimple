@@ -8,17 +8,7 @@
 			description="MYMUSE_FILTER_SEARCH_DESC"
 			hint="JSEARCH_FILTER"
 		/>
-		<field
-			name="product_id"
-			type="productid"
-			label="MYMUSE_FILTER_PRODUCT"
-			description="MYMUSE_FILTER_PRODUCT_DESC"
-			multiple="false"
-			class="multipleProducts"
-			extension="com_mymuse"
-			onchange="this.form.submit();"
-
-		/>
+		
 		<field
 			name="published"
 			type="status"
@@ -66,6 +56,17 @@
 
 	<fields name="list">
 		<field
+			name="product_id"
+			type="productid"
+			label="MYMUSE_FILTER_PRODUCT"
+			description="MYMUSE_FILTER_PRODUCT_DESC"
+			multiple="false"
+			class="multipleProducts"
+			extension="com_mymuse"
+			onchange="this.form.submit();"
+
+		/>
+		<field
 			name="fullordering"
 			type="list"
 			label="MYMUSE_LIST_FULL_ORDERING"
@@ -76,20 +77,14 @@
 			<option value="">JGLOBAL_SORT_BY</option>
 			<option value="a.ordering ASC">JGRID_HEADING_ORDERING_ASC</option>
 			<option value="a.ordering DESC">JGRID_HEADING_ORDERING_DESC</option>
-			<option value="a.state ASC">JSTATUS_ASC</option>
-			<option value="a.state DESC">JSTATUS_DESC</option>
+			<option value="a.published ASC">JSTATUS_ASC</option>
+			<option value="a.published DESC">JSTATUS_DESC</option>
 			<option value="a.featured ASC">JFEATURED_ASC</option>
 			<option value="a.featured DESC">JFEATURED_DESC</option>
 			<option value="a.title ASC">JGLOBAL_TITLE_ASC</option>
 			<option value="a.title DESC">JGLOBAL_TITLE_DESC</option>
-			<option value="category_title ASC">JCATEGORY_ASC</option>
-			<option value="category_title DESC">JCATEGORY_DESC</option>
-			<option value="artist_title ASC">MYMUSE_ARTIST_ASC</option>
-			<option value="artist_title DESC">MYMUSE_ARTIST_DESC</option>
 			<option value="a.access ASC">JGRID_HEADING_ACCESS_ASC</option>
 			<option value="a.access DESC">JGRID_HEADING_ACCESS_DESC</option>
-			<option value="association ASC" requires="associations">JASSOCIATIONS_ASC</option>
-			<option value="association DESC" requires="associations">JASSOCIATIONS_DESC</option>
 			<option value="a.created_by ASC">JAUTHOR_ASC</option>
 			<option value="a.created_by DESC">JAUTHOR_DESC</option>
 			<option value="language ASC">JGRID_HEADING_LANGUAGE_ASC</option>
@@ -98,16 +93,8 @@
 			<option value="a.created DESC">JDATE_DESC</option>
 			<option value="a.modified ASC">MYMUSE_MODIFIED_ASC</option>
 			<option value="a.modified DESC">MYMUSE_MODIFIED_DESC</option>
-			<option value="a.publish_up ASC">MYMUSE_PUBLISH_UP_ASC</option>
-			<option value="a.publish_up DESC">MYMUSE_PUBLISH_UP_DESC</option>
-			<option value="a.publish_down ASC">MYMUSE_PUBLISH_DOWN_ASC</option>
-			<option value="a.publish_down DESC">MYMUSE_PUBLISH_DOWN_DESC</option>
 			<option value="a.hits ASC">JGLOBAL_HITS_ASC</option>
 			<option value="a.hits DESC">JGLOBAL_HITS_DESC</option>
-			<option value="rating_count ASC" requires="vote">JGLOBAL_VOTES_ASC</option>
-			<option value="rating_count DESC" requires="vote">JGLOBAL_VOTES_DESC</option>
-			<option value="rating ASC" requires="vote">JGLOBAL_RATINGS_ASC</option>
-			<option value="rating DESC" requires="vote">JGLOBAL_RATINGS_DESC</option>
 			<option value="a.id ASC">JGRID_HEADING_ID_ASC</option>
 			<option value="a.id DESC">JGRID_HEADING_ID_DESC</option>
 		</field>
