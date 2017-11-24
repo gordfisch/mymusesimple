@@ -143,7 +143,7 @@ class MyMuseCart {
             return False; 
      	}
 
-		$q = "SELECT product_in_stock, product_physical ";
+		  $q = "SELECT product_in_stock, product_physical ";
      	$q .= "FROM #__mymuse_product ";
      	$q .= "WHERE id= $product_id ";
 
@@ -165,7 +165,7 @@ class MyMuseCart {
                     }
      			}
      		}
-        }
+      }
 
         $updated = 0;
         // Check for duplicate and add to current quantity
@@ -587,7 +587,7 @@ class MyMuseCart {
 				$preview_tracks[$i] = $order->items[$i];
 			}
 			$ext = '';
-			$jason = json_decode($order->items[$i]->file_name);
+			$jason = json_decode($order->items[$i]->track);
 			if(is_array($jason)){
 				
 				$order->items[$i]->variation_select = '<select name="variation['.$this->cart[$i]['product_id'].']"
@@ -608,7 +608,7 @@ class MyMuseCart {
 				$order->items[$i]->ext = isset($jason[$this->cart[$i]["variation"]]->file_ext)?
 					$jason[$this->cart[$i]["variation"]]->file_ext : '';
 			}else{
-				$order->items[$i]->ext = pathinfo($order->items[$i]->file_name, PATHINFO_EXTENSION);
+				$order->items[$i]->ext = pathinfo($order->items[$i]->track, PATHINFO_EXTENSION);
 			}
 			
 			//other cats
@@ -915,7 +915,7 @@ class MyMuseCart {
 		$row->file_contents = null;
 		
 		//TODO: check this is the right array index
-		if($name = json_decode($row->file_name) && isset($name[0]->file_length)){
+		if($name = json_decode($row->track) && isset($name[0]->file_length)){
 
 			$row->file_length = $name[0]->file_length;
 		}

@@ -61,7 +61,8 @@ style="height: <?php echo $params->get('store_product_image_height'); ?>px"
 <?php endif; ?>
 
 
-<?php if ($params->get('store_show_readmore') && $this->item->readmore) :
+<?php 
+if ($params->get('store_show_readmore') && $this->item->readmore) :
 	if ($params->get('access-view')) :
 		$link = JRoute::_(MyMuseHelperRoute::getProductRoute($this->item->slug, $this->item->catid));
 	else :

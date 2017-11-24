@@ -44,7 +44,9 @@ class myMuseViewProduct extends JViewLegacy
 
 		$this->MyMuseStore		=& MyMuse::getObject('store','models');
 		$this->store			= $this->MyMuseStore->getStore();
-		$this->item		= $this->get('Item');
+
+		$this->item				= $this->get('Item');
+
 		$this->print			= $jinput->get('print',0, 'INT');
 		$this->state			= $this->get('State');
 		$this->user				= $user;
@@ -52,7 +54,7 @@ class myMuseViewProduct extends JViewLegacy
 		$this->sortColumn       = $this->state->get('list.ordering');
 		$this->filterAlpha     	= $jinput->get('filter_alpha', '', 'STRING');
 		$this->pagination 		= $this->get('Pagination');
-		$this->hide_player = JModuleHelper::isEnabled('mod_mymuse_jplayer');
+		$this->hide_player 		= JModuleHelper::isEnabled('mod_mymuse_jplayer');
 
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
@@ -178,19 +180,19 @@ class myMuseViewProduct extends JViewLegacy
 
 		//Escape strings for HTML output
 		$this->pageclass_sfx = htmlspecialchars($this->item->params->get('pageclass_sfx'));
-		
+
 		//if multiple variations, create select box
 		for($i=0; $i < count($item->tracks); $i++){
 			//print_r($item->tracks[$i]->file_name);
-			if(is_array($item->tracks[$i]->file_name) && count($item->tracks[$i]->file_name) > 1){
+			if(is_array($item->tracks[$i]->track) && count($item->tracks[$i]->track) > 1){
 				$item->tracks[$i]->variation_select = '<select name="variation['.$item->tracks[$i]->id.']" 
 						id = "variation_'.$item->tracks[$i]->id.'_id" class="inputbox variation_select" style="width: 5em;"
 						onchange="javascript:flip_price(\''.$item->tracks[$i]->id.'\')"
 						>
 								';
-				for($j = 0; $j < count($item->tracks[$i]->file_name); $j++){
+				for($j = 0; $j < count($item->tracks[$i]->track); $j++){
 					$item->tracks[$i]->variation_select .= '<option value="'.$j.'">'
-					.$item->tracks[$i]->file_name[$j]->file_ext.'</option>'."\n";
+					.$item->tracks[$i]->track[$j]->file_ext.'</option>'."\n";
 				}		
 				$item->tracks[$i]->variation_select .= "</select>";
 			}

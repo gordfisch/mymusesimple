@@ -1,6 +1,6 @@
 <?php
 /**
- * @version     $Id$
+ * @version     $Id: products.php 1919 2017-10-23 14:53:26Z gfisch $
  * @package     com_mymuse3
  * @copyright   Copyright (C) 2011. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
@@ -18,6 +18,34 @@ class MymuseModelproducts extends JModelList
 {
 
  
+  	/**
+  	* stores _parent_product
+  	*
+  	* @var array
+  	*/
+  	var $_parent_product = null;
+  	
+  	/**
+  	* stores _parentid
+  	*
+  	* @var array
+  	*/
+  	var $_parentid = null;
+  	
+  	/**
+  	* stores _attribute_skus
+  	*
+  	* @var array
+  	*/
+  	var $_attribute_skus = null;
+  	
+  	/**
+  	* stores _attributes
+  	*
+  	* @var array
+  	*/
+  	var $_attributes = null;
+  	
         
     /**
      * Constructor.
@@ -36,7 +64,7 @@ class MymuseModelproducts extends JModelList
 				'checked_out', 'a.checked_out',
 				'checked_out_time', 'a.checked_out_time',
 				'catid', 'a.catid', 'category_title',
-				'artistid', 'a.artistid', 'artist_title',
+				'artistid', 'a.artistid',
 				'state', 'a.state',
 				'access', 'a.access', 'access_level',
 				'created', 'a.created',
@@ -53,7 +81,6 @@ class MymuseModelproducts extends JModelList
 		}
 
         parent::__construct($config);
-       // print_pre(JFactory::getApplication('administrator')->input->post->getArray());
     }
 
 
@@ -62,7 +89,7 @@ class MymuseModelproducts extends JModelList
 	 *
 	 * Note. Calling getState in this method will result in recursion.
 	 */
-	protected function populateState($ordering = 'a.id', $direction = 'asc')
+	protected function populateState($ordering = null, $direction = null)
 	{
 		// Initialise variables.
 		$app = JFactory::getApplication('administrator');
@@ -97,7 +124,7 @@ class MymuseModelproducts extends JModelList
 		$this->setState('filter.language', $language);
 
 		// List state information.
-		parent::populateState($ordering, $direction);
+		parent::populateState('a.id', 'asc');
 	}
 
 	/**
@@ -266,13 +293,37 @@ class MymuseModelproducts extends JModelList
 			$query->where('a.language = '.$db->quote($language));
 		}
 		
+		// It must be a parent?
+		if ($parentid = $this->getState('filter.parentid')) {
+			$query->where("a.parentid = $parentid");
+		}else{
+			$query->where('a.parentid = 0');
+		}
+		
+		//downloadable??
+		if ($downloadable = $this->getState('filter.downloadable')) {
+			$query->where('a.product_downloadable = 1');
+		}
+		
+		//allfiles??
+		$allfiles = $this->getState('filter.allfiles', '');
+		if (is_int($allfiles)) {
+			$query->where('a.product_allfiles = '.$allfiles);
+		}
+		
+		//physical??
+		if ($physical = $this->getState('filter.physical')) {
+			$query->where('a.product_physical = 1');
+		}
+		
 
 		// Add the list ordering clause.
-		$orderCol	= $this->state->get('list.ordering', 'a.id');
-		$orderDirn	= $this->state->get('list.direction', 'DESC');
-        $query->order($db->escape($orderCol) . ' ' . $db->escape($orderDirn));
+		$orderCol	= $this->state->get('list.ordering');
+		$orderDirn	= $this->state->get('list.direction');
+        if ($orderCol && $orderDirn) {
+		    $query->order($orderCol.' '.$orderDirn);
+        }
 
-		//echo $db->replacePrefix((string) $query);
 		return $query;
 	}
 	
@@ -339,7 +390,7 @@ class MymuseModelproducts extends JModelList
          
             // Check if it has children!
             foreach ($cid as $id){
-            	$query = "SELECT title FROM #__mymuse_track WHERE product_id='$id'";
+            	$query = "SELECT title FROM #__mymuse_product WHERE parentid='$id'";
             	$this->_db->setQuery($query);
             	$row = $this->_db->loadObject();
             	
@@ -349,8 +400,9 @@ class MymuseModelproducts extends JModelList
             	}
             }
       
+            // Let's get rid of associated entries
 
-            // clear product_category_xref
+            // first the product_category_xref
             $query = "DELETE FROM #__mymuse_product_category_xref WHERE"
             . " product_id IN (". $cids  .")";
             $this->_db->setQuery($query);
@@ -359,8 +411,19 @@ class MymuseModelproducts extends JModelList
             	$this->setError($this->_db->getErrorMsg());
             	return false;
             }
+
+            // next the product_recommend_xref
+            $query = "DELETE FROM #__mymuse_product_recommend_xref WHERE"
+            . " product_id IN (". $cids  .")";
+            $this->_db->setQuery($query);
+            if (!$this->_db->execute())
+            {
+            	$this->setError($this->_db->getErrorMsg());
+            	return false;
+            }
+
             
-            // clear the product
+            // finally the product
             $query = 'DELETE FROM #__mymuse_product'
             . ' WHERE id IN ( '.$cids.' )';
             $this->_db->setQuery( $query );
@@ -385,6 +448,7 @@ class MymuseModelproducts extends JModelList
 		$params = MyMuseHelper::getParams();
 		$products = $this->getItems();
 		$missing = array();
+
 		foreach ($products as $product){
 			
 			$model = new MymuseModelproducts;

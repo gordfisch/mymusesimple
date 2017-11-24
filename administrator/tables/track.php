@@ -104,8 +104,9 @@ class MymuseTableTrack extends JTable
 		$task 			= $input->get('task');
 		$form 			= $input->get('jform', '', 'array');
 		$select_files 	= $input->get('select_file', '' ,'array');
-		$preview 		= $input->get('preview', '');
+		$preview 		= $input->getString('preview', '');
 		$current_preview = $input->get('current_preview', '');
+		$remove_preview = $input->get('remove_preview', '');
 		$date			= JFactory::getDate();
 		$user			= JFactory::getUser();
 	
@@ -219,7 +220,7 @@ class MymuseTableTrack extends JTable
 
 					
 					$old_file = $my_download_path.$select_file;
-					
+				
 					if($old_file != $new_file){
 						if(!$this->fileCopy($old_file, $new_file)){
 							return false;
@@ -278,10 +279,8 @@ class MymuseTableTrack extends JTable
 			$this->type = "audio";
 		}
 		
-		// Previews
-		
-		//from select boxes
-		if(isset($preview) && $preview){
+		// Preview from select boxe
+		if(isset($preview) && $preview && $preview != $current_preview){
 			if($this->product_id){
 				$path = MyMuseHelper::getSitePath($this->product_id, 1);
 			}elseif ($this->id){
@@ -297,7 +296,7 @@ class MymuseTableTrack extends JTable
 		
 			$old_file = $path.$preview;
 			$new_file = $path.$file_preview_name;
-			
+	
 			if($old_file != $new_file){
 				
 				if($this->fileExists($old_file)){
@@ -313,12 +312,14 @@ class MymuseTableTrack extends JTable
 		}else{
 			$this->preview = isset($current_preview)? $current_preview : '';
 		}
+		if($remove_preview){
+			$this->preview = '';
+		}
 
 		$this->checkin();
 
 		$result = parent::store($updateNulls);
 
-	
 		if($result){
 
 			// onMymuseAfterSave  onFinderAfterSave
@@ -655,7 +656,7 @@ class MymuseTableTrack extends JTable
      *
      * @return  boolean  True on success.
      */
-    public function fileCopy($old_file, $new_file)
+    public function fileCopy($src, $dest)
     {
     	$application = JFactory::getApplication();
     	$params = MyMuseHelper::getParams();
@@ -670,7 +671,7 @@ class MymuseTableTrack extends JTable
     		$jconfig = JFactory::getConfig();
     		$tmpName = $jconfig->get('tmp_path','').DS.array_pop($oldParts );
     		
-    		$parts = explode(DS,$new_file);
+    		$parts = explode(DS,$dest);
     		$newbucket = array_shift($parts);
     		$newbucket = trim($newbucket, DS);
     		$newname = implode(DS, $parts);
@@ -679,7 +680,7 @@ class MymuseTableTrack extends JTable
     		try{
     			$result = $this->_s3->copyObject([
     				'Bucket' => $newbucket,
-    				'CopySource' => $old_file,
+    				'CopySource' => $src,
     				'Key' => $newname,
     			]);
     		} catch (S3Exception $e) {
@@ -703,9 +704,9 @@ class MymuseTableTrack extends JTable
     		}
     	}else{
     
-    		if(!JFile::copy("$old_file", "$new_file")){
-    			$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file);
-    			$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file , 'error');
+    		if(!JFile::copy("$src", "$dest")){
+    			$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$src." ".$dest);
+    			$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$src." ".$dest , 'error');
     			return false;
     		}
     	}

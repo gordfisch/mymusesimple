@@ -98,11 +98,7 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 				<th width="10%">
 					<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_ACCESS', 'access_level', $listDirn, $listOrder); ?>
 				</th>
-				<!--  
-				<th width="10%">
-					<?php echo JHtml::_('searchtools.sort', 'JGRID_HEADING_CREATED_BY', 'a.created_by', $listDirn, $listOrder); ?>
-				</th>
-				-->
+
 				<th width="5%">
 					<?php echo JHtml::_('searchtools.sort', 'JDATE', 'a.created', $listDirn, $listOrder); ?>
 				</th>
@@ -175,15 +171,28 @@ require_once JPATH_COMPONENT.'/helpers/mymuse.php';
 					<?php if ($item->checked_out) : ?>
 						<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'tracks.', $canEdit); ?>
 					<?php endif; ?>
-					<?php if ($canEdit) : ?>
+					<?php if ($canEdit && $item->allfiles) : ?>
+						<a href="<?php echo JRoute::_('index.php?option=com_mymuse&task=track.edit_allfiles&id='.$item->id);?>">
+							<?php echo $this->escape($item->title); ?></a>
+
+					<?php elseif ($canEdit) : ?>
 						<a href="<?php echo JRoute::_('index.php?option=com_mymuse&task=track.edit&id='.$item->id);?>">
 							<?php echo $this->escape($item->title); ?></a>
 					<?php else : ?>
 						<?php echo $this->escape($item->title); ?>
 					<?php endif; ?>
+					<?php if ($item->allfiles) : 
+						echo '<br />&nbsp;&nbsp;'.JText::_('MYMUSE_PRODUCT_ALLFILES_LABEL');
+					else : 
+						foreach($item->track as $track){
+							echo '<br />&nbsp;&nbsp;'.$track->file_name;
+						}
+					endif; ?>
 				</td>
 				<td>
 					<?php echo $item->product_title; ?>
+
+
 				</td>
 				<td>
 					<?php echo $item->product_sku; ?>

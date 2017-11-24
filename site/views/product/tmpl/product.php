@@ -34,13 +34,13 @@ $listDirn	= $this->sortDirection;
 
 $uri = JFactory::getURI();
 $prod_uri = $uri->toString();
-$description = ($product->introtext != '')? $product->introtext : $product->title;
+$introtext = ($product->introtext != '')? $product->introtext : $product->title;
 $document 	= JFactory::getDocument();
 $document->setMetaData( 'og:site_name',$this->escape($this->store->title));
 $document->setMetaData( 'og:type', 'article');
 $document->setMetaData( 'og:url', $prod_uri);
 $document->setMetaData( 'og:title', $this->escape($product->title));
-$document->setMetaData( 'og:description', strip_tags($description));
+$document->setMetaData( 'og:description', strip_tags($introtext));
 $document->setMetaData( 'og:image', JURI::Root().$product->detail_image);
 
 $document->setMetaData( 'twitter:title', $this->escape($product->title));
@@ -48,7 +48,7 @@ $document->setMetaData( 'twitter:card', 'summary_large_image');
 $document->setMetaData( 'twitter:site', $this->params->get('twitter_handle'));
 $document->setMetaData( 'twitter:creator', $this->params->get('twitter_handle'));
 $document->setMetaData( 'twitter:url', $prod_uri);
-$document->setMetaData( 'twitter:description', strip_tags($description));
+$document->setMetaData( 'twitter:description', strip_tags($introtext));
 $document->setMetaData( 'twitter:image', JURI::Root().$product->detail_image);
 
 
@@ -66,7 +66,7 @@ if("1" == $this->params->get('my_price_by_product')){//price by product
 $all_tracks = 0;
 if(count($tracks)){ 
     foreach($tracks as $track){ 
-        if($track->product_allfiles == 1){
+        if($track->allfiles == 1){
             $all_tracks = $track;
         }
     }
@@ -119,7 +119,137 @@ function tableOrdering( order, dir, task )
 }
 ';
 
+//flip price between formats
+if(count($params->get('my_formats') > 1) ){	
+	
+	$js .= 'function flip_price(id) {'."\n";
+	$js .= ' var formats = new Array();'."\n";
+	foreach($params->get('my_formats') as $index=>$format) {
+		$js .= 'formats['.$index.'] = "'.$format.'"'."\n";
+	}
+	foreach($params->get('my_formats') as $format) {
+		$js .= 'var  '.$format.'_id = "#'.$format.'_"+id'."\n";
+	}
+	$js .= 'var select_id = "#variation_"+id+"_id"'."\n";
+    
+	for($i=0; $i < count($params->get('my_formats')); $i++){
+    	$js .= 'jQuery('.$params->get('my_formats')[$i].'_id).hide();'."\n";
+	}   		
+	$js .= '
+			//alert(formats[jQuery(select_id).val()]+"_"+id);
+			jQuery("#"+formats[jQuery(select_id).val()]+"_"+id).show();'."\n}";
+}
 
+$url = JURI::Root()."index.php?option=com_mymuse&task=ajaxtogglecart";
+foreach($tracks as $track){
+
+	$js .= '
+	jQuery(document).ready(function($){
+		$("#box_'.$track->id.'").click(function(e){
+			if(typeof document.mymuseform.variation_'.$track->id.'_id !== "undefined"){	
+				myvariation = document.mymuseform.variation_'.$track->id.'_id.value;
+				//alert("variation = "+myvariation);
+
+			}else{
+				myvariation = 0;
+			}
+			alert("'.$track->id.'");
+            $.post("'.$url.'",
+            {
+                "productid":"'.$track->id.'",
+                "variation['.$track->id.']":myvariation
+                		
+            },
+            function(data,status)
+            {
+        
+                var res = jQuery.parseJSON(data);
+                idx = res.idx;
+                msg = res.msg;
+                action = res.action;
+                //alert(res.msg);
+                if(action == "deleted"){
+                    $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/checkbox.png");
+                }else{
+                    $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/cart.png");
+                }
+                if(idx){
+                    if(idx == 1){
+                        txt = idx+" "+"item";
+                    }else{
+                        txt = idx+" "+"items";
+                    }
+                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>\';
+                    $("#mini-cart-text").html(txt);
+                    $("#mini-cart-link").html(link);
+                }else{
+
+                    $("#mini-cart-text").html(" ");
+                    $("#mini-cart-link").html("'.JText::_('MYMUSE_YOUR_CART_IS_EMPTY').'");
+                }
+                my_modal.open({content: msg+"<br />"+link, width: 300,target:'.$track->id.'});
+            });
+
+		});
+	});
+
+	';
+	}
+if(isset($product->product_physical) && $product->product_physical){
+	$js .= '
+jQuery(document).ready(function($){
+		$("#box_'.$product->id.'").click(function(e){
+			if(typeof document.mymuseform.variation_'.$product->id.'_id !== "undefined"){
+				myvariation = document.mymuseform.variation_'.$product->id.'_id.value;
+				//alert("variation = "+myvariation);
+	
+			}else{
+				myvariation = "";
+			}
+            $.post("'.$url.'",
+            {
+                "productid":"'.$product->id.'",
+                "variation['.$product->id.']":myvariation
+	
+            },
+            function(data,status)
+            {
+	
+                var res = jQuery.parseJSON(data);
+                idx = res.idx;
+                msg = res.msg;
+                action = res.action;
+                //alert(res.msg);
+                if(action == "deleted"){
+                    $("#img_'.$product->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/checkbox.png");
+                }else{
+                    $("#img_'.$product->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/cart.png");
+                }
+                if(idx){
+                    if(idx == 1){
+                        txt = idx+" "+"item";
+                    }else{
+                        txt = idx+" "+"items";
+                    }
+                    link = \''.'<a href="'.JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$Itemid).'">'.JText::_('MYMUSE_VIEW_CART').'</a>\';
+                    $("#mini-cart-text").html(txt);
+                    $("#mini-cart-link").html(link);
+                }else{
+	
+                    $("#mini-cart-text").html(" ");
+                    $("#mini-cart-link").html("'.JText::_('MYMUSE_YOUR_CART_IS_EMPTY').'");
+                }
+                my_modal.open({content: msg+"<br />"+link, width: 300 });
+            });
+	
+		});
+	});
+	
+';
+	
+	
+}
+$document->addScriptDeclaration($js);
 
 
 ?>
@@ -423,7 +553,7 @@ endif; ?>
     		<ul class="product-content">
 				<li class="product-content-item"><span class="category"><?php echo JText::_('MYMUSE_DESCRIPTION');?></span>
 					<span class="value">
-						<div class="product-description">
+						<div class="product-introtext">
                     
                         <?php echo $product->introtext ?>
                     
@@ -599,7 +729,7 @@ endif; ?>
       		
       		<?php 
       		foreach($tracks as $track) : 
-                if($track->product_allfiles == 1) :
+                if($track->allfiles == 1) :
                    // continue;
                 endif;
              	?>
@@ -607,11 +737,11 @@ endif; ?>
 					<!--  TITLE COLUMN -->
 					<td class="mytitle"><?php echo $track->title; ?> 
       						<?php  
-      						if($track->product_allfiles == "1") : 
+      						if($track->allfiles == "1") : 
 								echo "(".JText::_("MYMUSE_ALL_TRACKS").")";
 					 		endif; ?>
-					 		<?php if($track->introtext && $track->introtext != $track->title) :
-					 			echo '<br /><span class="track-text">'.$track->introtext.'</span>';
+					 		<?php if($track->description && $track->description != $track->title) :
+					 			echo '<br /><span class="track-text">'.$track->description.'</span>';
 							endif; ?>
                             
                            
@@ -641,7 +771,7 @@ endif; ?>
         			<?php  if($params->get('product_show_filesize', 0)) : ?>	
         				<td class="myfilesize">
         				<?php 
-        				if(!$track->product_allfiles) :
+        				if(!$track->allfiles) :
         					echo MyMuseHelper::ByteSize($track->file_length); 
 						endif; ?>
         				</td>
@@ -668,7 +798,7 @@ endif; ?>
         				if("1" == $params->get('my_price_by_product')) :
         					$first = 1;
         					$types = array();
- 							foreach($track->file_name as $file){
+ 							foreach($track->track as $file){
  								$types[] = $file->file_ext;
  							}
 							foreach($this->params->get('my_formats') as $format) :
@@ -738,7 +868,7 @@ endif; ?>
                     <!--  SELECT COLUMN -->
 			  		<?php  if($params->get('product_show_select_column', 1)) :?>
         				<td class="myselect" nowrap>
-                        <?php if($track->file_name || $track->product_allfiles) :?>
+                        <?php if($track->track || $track->allfiles) :?>
                         <a href="javascript:void(0)"
 						id="box_<?php echo $track->id; ?>"><img
 							id="img_<?php echo $track->id; ?>"
@@ -751,7 +881,7 @@ endif; ?>
                         ?>"></a>
       					<?php  endif; ?>
                         
-        				<?php if($track->file_name || $track->product_allfiles) :?>
+        				<?php if($track->track || $track->allfiles) :?>
         				<span class="mycheckbox"><input style="display: none;"
 							type="checkbox" name="productid[]"
 							value="<?php echo $track->id; ?>"

@@ -19,24 +19,58 @@ jimport( 'joomla.filesystem.file' );
  */
 class MymuseControllerProduct extends JControllerForm
 {
+    /**
+     * @var     int the saved id
+     * @since   1.6
+     */
+    protected $_parent = null;
 
     function __construct() {
-    	
-    	$input = JFactory::getApplication()->input;
-    	$this->view_list = 'products';
-    	parent::__construct();
+        
+        $input = JFactory::getApplication()->input;
+        $subtype = $input->get('subtype');
+        if(isset($subtype) && $subtype == "file"){
+            $this->view_list = "product";
+        }else{
+            $this->view_list = 'products';
+        }
+        
+        parent::__construct();
 
-   	 	$this->registerTask( 'additem', 'edititem' );
+        $this->registerTask( 'additem', 'edititem' );
         $this->registerTask( 'applyitem', 'saveitem' );
         $this->registerTask( 'save2newitem', 'saveitem' );
         
-		
-		$cid = $input->get( 'cid', array(0));
-		if($cid[0] > 0){
-			$input->set('id',$cid[0]);
-		}
-		$input->set('view','product');
-		
+        $this->registerTask( 'addfile', 'edititem' );
+        $this->registerTask( 'editfile', 'edititem' );
+        $this->registerTask( 'save2newfile', 'saveitem' );
+        $this->registerTask( 'savefile', 'saveitem' );
+        $this->registerTask( 'applyfile', 'saveitem' );
+        $this->registerTask( 'publishfile', 'publishitem' );
+        $this->registerTask( 'unpublishfile', 'publishitem' );
+        $this->registerTask( 'cancelfile', 'cancelitem' );
+        $this->registerTask( 'removefile', 'removeitem' );
+        
+        $this->registerTask( 'new_allfiles', 'edititem' );
+        $this->registerTask( 'edit_allfiles', 'edititem' );
+        $this->registerTask( 'save_allfiles', 'saveitem' );
+        $this->registerTask( 'apply_allfiles', 'saveitem' );
+        
+        $this->registerTask( 'addattribute', 'editattribute' );
+        
+        $this->registerTask( 'save2newfile', 'saveitem' );
+        
+        $this->registerTask( 'uploadtrack', 'uploadscreen' );
+        $this->registerTask( 'uploadpreview', 'uploadscreen' );
+        
+        $this->registerTask( 'deletevariation', 'saveitem' );
+        
+        $cid = $input->get( 'cid', array(0));
+        if($cid[0] > 0){
+            $input->set('id',$cid[0]);
+        }
+        $input->set('view','product');
+        
     }
     
     
@@ -77,22 +111,7 @@ class MymuseControllerProduct extends JControllerForm
 		if($subtype == "file" || $subtype == "allfiles"){
 			
 			if ($this->save()) {
-				//get the product id
-				if(!$this->id){
-					$this->msg = JText::_( 'MYMUSE_COULD_NOT_FIND_ID' );
-					//do we have an SKU?
-					$query = "SELECT id FROM #__mymuse_product WHERE product_sku='".$this->product_sku."'";
-					$db->setQuery($query);
 
-					if(!$this->id = $db->loadResult()){
-						$this->msg .= JText::_( 'MYMUSE_COULD_NOT_FIND_SKU' );
-						$this->setRedirect( 'index.php?option=com_mymuse&iew=product&task=product.edit&id='. $this->parentid, $this->msg );
-						return false;
-					}
-				}
-			
-				
-			
 				switch ($task )
 				{
 				case 'apply_allfiles':
@@ -193,6 +212,23 @@ class MymuseControllerProduct extends JControllerForm
     }
     
  
+    /**
+     * Function that allows child controller access to model data
+     * after the data has been saved.
+     *
+     * @param   \JModelLegacy  $model      The data model object.
+     * @param   array          $validData  The validated data.
+     *
+     * @return  void
+     *
+     * @since   1.6
+     */
+    protected function postSaveHook(JModelLegacy $model, $validData = array())
+    {
+
+        $this->id = $model->getState($this->context . '.id');
+
+    }
     function cancelitem()
     {
         // Checkin the item
@@ -276,7 +312,18 @@ class MymuseControllerProduct extends JControllerForm
     	JFactory::getApplication()->close();
     }
     
-    
+    public  function productreturn()
+    {
+        // Checkin the item
+        $model = $this->getModel('product');
+        $model->checkin();
+        $parentid = JRequest::getVar( 'parentid', '', 'post', 'int' );
+        
+        
+        $this->msg = JText::_( 'MYMUSE_ITEM_CANCELLED' );
+        $this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=edit&id='.$parentid,$this->msg );
+    }
+
     public function listtracks()
     {
         $model = $this->getModel('product');
@@ -288,6 +335,28 @@ class MymuseControllerProduct extends JControllerForm
         $id = $input->get('id',0);
         $app->getUserStateFromRequest( "com_mymuse.product_id", 'product_id', $id );
         $url = 'index.php?option=com_mymuse&view=tracks&product_id='.$id;
+        $this->setRedirect( $url);
+        return;
+    }
+
+    public function uploadtrack()
+    {
+        $params     = MyMuseHelper::getParams();
+        $remove = JPATH_SITE."/images/";
+
+        $dir = preg_replace("#$remove#", '',$params->get('my_download_dir'));
+        $url = 'index.php?option=com_media&folder='.$dir;
+
+        $this->setRedirect( $url);
+        return;
+
+    }
+    public function uploadpreview()
+    {
+        $params     = MyMuseHelper::getParams();
+        $dir = preg_replace("#^images/#", '',$params->get('my_preview_dir'));
+        $url = 'index.php?option=com_media&folder='.$dir;
+
         $this->setRedirect( $url);
         return;
     }

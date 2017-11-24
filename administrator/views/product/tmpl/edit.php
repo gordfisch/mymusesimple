@@ -98,6 +98,19 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 					<?php echo JHtml::_('form.token'); ?>
 					</form>
 				<?php echo JHtml::_('bootstrap.endTab'); ?>
+
+				<?php echo JHtml::_('bootstrap.addTab', 'myTab', 'tracks', '<b>'.strtoupper(JText::_('MYMUSE_TRACKS', true))).'</b>'; ?>
+				<?php 
+					if(!$this->item->id){
+						echo JText::_('MYMUSE_SAVE_THEN_ADD_TRACKS');
+					}else{
+						echo $this->loadTemplate('listtracks');
+					} ?>
+				<?php echo JHtml::_('bootstrap.endTab'); ?>
+				
+
+
+
 			
 		</div>
 	</div>

@@ -92,7 +92,7 @@ class MyMuseModelProduct extends JModelItem
 		
 		}
 		// Load the parameters.
-		$params = array_merge($params, $app->getParams());
+		$params = $app->getParams();
 		$this->setState('params', $params);
 
 		// TODO: Tune these values based on other permissions.
@@ -250,26 +250,6 @@ class MyMuseModelProduct extends JModelItem
 				$registry->loadString($data->metadata);
 				$data->metadata = $registry;
 
-				// Compute selected asset permissions.
-				$user	= JFactory::getUser();
-
-				// Technically guest could edit a product, but lets not check that to improve performance a little.
-				if (!$user->get('guest')) {
-					$userId	= $user->get('id');
-					$asset	= 'com_mymuse_product.article.'.$data->id;
-
-					// Check general edit permission first.
-					if ($user->authorise('core.edit', $asset)) {
-						$data->params->set('access-edit', true);
-					}
-					// Now check if edit.own is available.
-					elseif (!empty($userId) && $user->authorise('core.edit.own', $asset)) {
-						// Check for a valid user and that they are the owner.
-						if ($userId == $data->created_by) {
-							$data->params->set('access-edit', true);
-						}
-					}
-				}
 
 				// Compute view access permissions.
 				if ($access = $this->getState('filter.access')) {
@@ -362,10 +342,48 @@ class MyMuseModelProduct extends JModelItem
 
 			$secondaryOrder = $this->getState('list.secondaryOrder', '');
 			
+			/** TRACK QUERY */
+			$track_query = "SELECT a.*,
+			ROUND(v.rating_sum / v.rating_count, 0) AS rating, v.rating_count as rating_count, s.sales
+	
+			FROM #__mymuse_track as a
+			LEFT JOIN #__mymuse_product_rating AS v ON a.id = v.product_id
 
 			
-			//$db->setQuery($track_query);
-			$tracks = array();
+        
+			LEFT JOIN (SELECT sum(quantity) as sales, x.product_name, x.product_id FROM
+        		(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
+        		i.product_name, product_id as all_id
+        		FROM #__mymuse_order_item as i
+        		LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
+        		GROUP BY i.product_id, i.product_name )
+        		as x GROUP BY x.all_id,x.product_name) as s ON s.product_id = a.id
+			WHERE a.product_id='".$pk."'
+			AND a.published=1
+					";
+			
+			
+			if($alpha != ''){
+				$track_query .= "AND a.title LIKE '$alpha%' ";
+			}
+			if($searchword != ''){
+				$track_query .= "AND (
+        		a.title LIKE ".$db->quote('%'.$searchword.'%')."
+        		)";
+			}
+		
+			$orderby = "ORDER BY $ordering $listDirn
+			";
+
+			if($secondaryOrder){
+				//$orderby .= ", $secondaryOrder ";
+			}
+			$track_query .= $orderby;
+
+			$db->setQuery($track_query);
+			$tracks = $db->loadObjectList();
+			
+
 	
 			$site_url = MyMuseHelper::getSiteUrl($pk,'1');
 			$site_path = MyMuseHelper::getSitePath($pk,'1');
@@ -379,72 +397,41 @@ class MyMuseModelProduct extends JModelItem
 				$root = JPATH_ROOT.DS;
 				while (list($i,$track)= each( $tracks )){
 
-					if($name = json_decode($track->file_name)){
+					if($name = json_decode($track->track)){
 						if(isset($name[0]->file_length)){
 							$track->file_length = $name[0]->file_length;
 						}
 					}
 					//other cats
-					$othercats = array();
-					$query = "SELECT c.id, c.title FROM #__mymuse_product_category_xref as x
-					LEFT JOIN #__categories as c ON c.id=x.catid
-					WHERE product_id = '".$track->id."' 
-					AND catid != ".$track->catid."
-					AND catid != ".$track->artistid;
-					$db->setQuery($query);
-					if($res = $db->loadObjectList()){
-						foreach($res as $r){
-							$othercats[$r->id] = $r->title;
-						}
-					}else{
-						
-					}
-					$track->othercats = array_unique($othercats);
-					//$track->othercats = implode(', ',$othercats);
-					
-					
+					$track->othercats = '';
 					$tracks[$i]->price = $this->getPrice($track);
-
-
-					if ($params->get ( 'my_add_taxes' )) {
-						if(count($params->get('my_formats') > 1) && 1 == $params->get('my_price_by_product')){
-							foreach($params->get('my_formats') as $format){
-								$tracks [$i]->price [$format]["product_price"] = MyMuseCheckout::addTax ( $tracks [$i]->price [$format]["product_price"] );
-							}
-						}else{
-							$tracks [$i]->price ["product_price"] = MyMuseCheckout::addTax ( $tracks [$i]->price ["product_price"] );
-						}
-					}
-					
-					//TO DO work with formats
-					
 
 					//Audio/Video or some horrid mix of both
 					if($this->_item[$pk]->flash_type != "mix"){
-						if($this->_item[$pk]->flash_type == "audio" && $track->file_type == "video"){
+						if($this->_item[$pk]->flash_type == "audio" && $track->type == "video"){
 							//oh no it's a mix
 							$this->_item[$pk]->flash_type = "mix";
 							$track->flash_type = "mix";
-						}elseif($this->_item[$pk]->flash_type == "video" && $track->file_type == "audio"){
+						}elseif($this->_item[$pk]->flash_type == "video" && $track->type == "audio"){
 							//oh no it's a mix
 							$this->_item[$pk]->flash_type = "mix";
 							$track->flash_type = "mix";
 						}else{
-							$this->_item[$pk]->flash_type = $track->file_type;
-							$track->flash_type = $track->file_type;
+							$this->_item[$pk]->flash_type = $track->type;
+							$track->flash_type = $track->type;
 						}
 					}else{
 						$track->flash_type = "mix";
 					}
 		
-					if($track->file_preview){
+					if($track->preview){
 						$preview_tracks[] = $track;
 					}else{
 						$track->flash= '';
 					}
-					$jason = json_decode($track->file_name);
+					$jason = json_decode($track->track);
 					if(is_array($jason)){
-						$track->file_name = $jason;
+						$track->track = $jason;
 					}
 				} // each track
 				
@@ -459,23 +446,23 @@ class MyMuseModelProduct extends JModelItem
 					
 						$flash = '';
 						$track->purchased = 0;
-						if($track->file_preview){
+						if($track->preview){
 
-							$track->path = $site_url.$track->file_preview;
-							$track->real_path = $site_path.$track->file_preview;
+							$track->path = $site_url.$track->preview;
+							$track->real_path = $site_path.$track->preview;
 				
-							if($track->file_preview_2){
-								$track->path_2 = $site_url.$track->file_preview_2;
-								$track->real_path_2 = $site_path.$track->file_preview_2;
+							if($track->preview_2){
+								$track->path_2 = $site_url.$track->preview_2;
+								$track->real_path_2 = $site_path.$track->preview_2;
 							}
-							if($track->file_preview_3){
-								$track->path_3 = $site_url.$track->file_preview_3;
-								$track->real_path_3 = $site_path.$track->file_preview_3;
+							if($track->preview_3){
+								$track->path_3 = $site_url.$track->preview_3;
+								$track->real_path_3 = $site_path.$track->preview_3;
 							}
 							
 							//should we use the real download file? Not available in AmazonS3
 							if(!$params->get('my_use_s3')){
-								$track->download_real_path = MyMuseHelper::getDownloadPath($track->parentid, 1);
+								$track->download_real_path = MyMuseHelper::getDownloadPath($track->product_id, 1);
 								
 								if(1 == $params->get('my_download_dir_format',0)){ 
 									//downloads by format and we don't know the format
@@ -495,9 +482,9 @@ class MyMuseModelProduct extends JModelItem
 							}
 							//audio or video?
 							
-							$ext = MyMuseHelper::getExt($track->file_preview);
+							$ext = MyMuseHelper::getExt($track->preview);
 							$flash = '<!-- Begin Play -->';
-							if(substr_count($track->file_type,"video")){
+							if(substr_count($track->type,"video")){
 								//movie
 								
 								$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,$params->get('product_player_type'),0,0,$i, $count) );
@@ -505,7 +492,7 @@ class MyMuseModelProduct extends JModelItem
 									$flash .= $results[0];
 								}
 								
-							}elseif(substr_count($track->file_type,"audio")){
+							}elseif(substr_count($track->type,"audio")){
 								//audio
 								
 								$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,$params->get('product_player_type'),0,0,$i, $count));
@@ -536,9 +523,9 @@ class MyMuseModelProduct extends JModelItem
 					$audio = 0;
 					$video = 0;
 					foreach($preview_tracks as $track){
-						if($track->file_preview){
+						if($track->preview){
 							$flash .= '<!-- Begin Player -->';
-							if(substr_count($track->file_type,"video") && !$video){
+							if(substr_count($track->type,"video") && !$video){
 								//movie
 
 								$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
@@ -549,7 +536,7 @@ class MyMuseModelProduct extends JModelItem
 							
 								$video = 1;
 									
-							}elseif(substr_count($track->file_type,"audio") && !$audio){
+							}elseif(substr_count($track->type,"audio") && !$audio){
 								//audio
 								$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
 
@@ -581,21 +568,21 @@ class MyMuseModelProduct extends JModelItem
 					$i = 0;
 					$type = "";
 					foreach($preview_tracks as $track){
-						if($track->file_preview){
-							$track->path = $site_url.$track->file_preview;
+						if($track->preview){
+							$track->path = $site_url.$track->preview;
 						}
 
-						if($track->file_preview_2){
-							$track->path_2 = $site_url.$track->file_preview_2;
+						if($track->preview_2){
+							$track->path_2 = $site_url.$track->preview_2;
 						}
-						if($track->file_preview_3){
-							$track->path_3 = $site_url.$track->file_preview_3;
+						if($track->preview_3){
+							$track->path_3 = $site_url.$track->preview_3;
 						}
 						$this->_item[$pk]->previews[] = $track;
-						if(preg_match("/video/",$track->file_type)){
+						if(preg_match("/video/",$track->type)){
 							$type = "video";
 						}
-						if(preg_match("/audio/",$track->file_type)){
+						if(preg_match("/audio/",$track->type)){
 							$type = "audio";
 						}
 						
@@ -684,7 +671,7 @@ class MyMuseModelProduct extends JModelItem
 			}//isset tracks
 				
 			/*
-			 * $track->download_path = MYmUseHelper::getDownloadPath($track->parentid, 1);
+			 * $track->download_path = MYmUseHelper::getDownloadPath($track->product_id, 1);
 										if(1 == $params->get('my_download_dir_format',0)){ //downloads by format
 											$track->download_path .= $format.DS;
 										}
@@ -847,13 +834,12 @@ class MyMuseModelProduct extends JModelItem
 		$product_id = $product->id;
 		// Get the product_parent_id for this product/item
 		$product_parent_id = 0;
-		if(isset($product->parentid)){
-			$product_parent_id = $product->parentid;
+		if(isset($product->product_id)){
+			$product_parent_id = $product->product_id;
 			if($product_parent_id > 0){
 				$price_info["item"]=true;
 			}
 		}  
-		
 		
 		
 		// Get the shopper group id for this shopper
@@ -872,15 +858,14 @@ class MyMuseModelProduct extends JModelItem
 		// Get the product_parent_id for this product/item
 		$product_parent_id = 0;
 		
-		if (0 == $params->get ( 'my_price_by_product' ) || $product->product_physical) {
+		if (0 == $params->get ( 'my_price_by_product' ) || isset($product->product_physical)) {
 			// price by track
 			$price_info ["product_price"] = $product->price;
 			
 		} elseif (1 == $params->get ( 'my_price_by_product' )) {
 			// price by product
-			//print_pre($product); exit;
-			if ($product->parentid > 0) {
-				$query = "SELECT attribs FROM #__mymuse_product WHERE id='" . $product->parentid . "'";
+			if (isset($product->product_id) && $product->product_id > 0) {
+				$query = "SELECT attribs FROM #__mymuse_product WHERE id='" . $product->product_id . "'";
 				$db->setQuery ( $query );
 				if (! $product->attribs = $db->loadResult ()) {
 					$price_info ["product_price"] = $product_price = $product->price;
@@ -889,12 +874,12 @@ class MyMuseModelProduct extends JModelItem
 			$registry = new JRegistry ();
 			$registry->loadString ( $product->attribs );
 			$product->attribs = $registry;
-			if ($product->product_physical) {
+			if (isset($product->product_physical) && $product->product_physical) {
 				$key = 'product_price_physical';
 				$product->price = $product->attribs->get ( $key );
 				$price_info ["product_price"] = $product->price;
 				
-			} elseif ($product->product_allfiles) {
+			} elseif (isset($product->allfiles) && $product->allfiles) {
 			
 				//$key = 'product_price_' . $product->ext . '_all';
 				//$product->price = $product->attribs->get ( $key );
@@ -911,7 +896,7 @@ class MyMuseModelProduct extends JModelItem
 					$price_info [$format]["product_shopper_group_discount_amount"] = $product_price * $shopper_group_discount / 100;
 					$price_info [$format]["product_shopper_group_discount_amount"] = round ( $price_info [$format] ["product_shopper_group_discount_amount"], 2 );
 						
-					$discount = $product->product_discount;
+					$discount = isset($product->product_discount)? $product->product_discount : '';
 					$price_info[$format]["product_discount"] = $discount;
 						
 					$price_info[$format]["product_price"] = $price_info [$format]["product_price"] - ($product_price * $shopper_group_discount/100) - $discount;
@@ -920,7 +905,7 @@ class MyMuseModelProduct extends JModelItem
 				
 				return $price_info;
 				
-			} elseif($product->product_downloadable) {
+			} elseif(isset($product->track)) {
 				foreach($params->get('my_formats') as $format) {
 			
 					$key = 'product_price_' . $format;
@@ -932,7 +917,7 @@ class MyMuseModelProduct extends JModelItem
 					$price_info [$format]["product_shopper_group_discount_amount"] = $product_price * $shopper_group_discount / 100;
 					$price_info [$format]["product_shopper_group_discount_amount"] = round ( $price_info [$format] ["product_shopper_group_discount_amount"], 2 );
 			
-					$discount = $product->product_discount;
+					$discount = isset($product->product_discount)? $product->product_discount : '';
 					$price_info[$format]["product_discount"] = $discount;
 			
 					$price_info[$format]["product_price"] = $price_info [$format]["product_price"] - ($product_price * $shopper_group_discount/100) - $discount;
@@ -1183,7 +1168,7 @@ class MyMuseModelProduct extends JModelItem
   		
   		//get the products
   		$query = "SELECT id, title, catid, list_image, product_made_date FROM #__mymuse_product
-				WHERE catid IN ($catsin) AND parentid = 0
+				WHERE catid IN ($catsin) 
   		AND id != $productid
   		ORDER BY FIELD(catid, $catsin), product_made_date DESC 
   		LIMIT ".$params->get('my_max_recommended', 4);

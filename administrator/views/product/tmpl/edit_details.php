@@ -138,6 +138,7 @@ foreach ($fieldSets as $name => $fieldSet) {
 }elseif(1 == $this->params->get('my_price_by_product')){ 
 	$fieldSets = $this->form->getFieldsets('attribs'); 
 	$physical = 0;
+
 	foreach($this->params->get('my_formats') as $variation=>$format)
 	{	
 	 	foreach ($fieldSets as $name => $fieldSet)
@@ -154,6 +155,7 @@ foreach ($fieldSets as $name => $fieldSet) {
 					echo $field->renderField();
 					$physical++;
 				}
+
 				if (preg_match("/$format/",$field->name))
 				{
 					echo $field->renderField();

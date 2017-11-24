@@ -633,7 +633,7 @@ function MymuseParseRoute($segments)
 			$vars['id'] = (int)$category->id;
 			return $vars;
 		}
-		
+	
 		//wasn't the last one, try the first
 		$query = 'SELECT id from #__categories WHERE alias="'.$segments[0].'" and extension="com_mymuse"';
 		
@@ -659,7 +659,7 @@ function MymuseParseRoute($segments)
 		if(strpos($product_id,':')){
 			list($product_id, $product_name) = explode('/:/',"-",$product_id);
 		}
-
+	
 		if ($product_id > 0) {
 			$vars['view'] = 'product';
 			$vars['catid'] = $cat_id;
@@ -668,6 +668,7 @@ function MymuseParseRoute($segments)
 			$vars['view'] = 'category';
 			$vars['id'] = $cat_id;
 		}
+
 		return $vars;
 	}
 

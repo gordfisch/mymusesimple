@@ -110,7 +110,7 @@ echo " listOrder = $listOrder : saveOrder = $saveOrder";
 				</th>
 				
 				<th width="10%" class="nowrap hidden-phone">
-					<?php echo JHtml::_('searchtools.sort', 'MYMUSE_DATE' . strtoupper($orderingColumn), 'a.' . $orderingColumn, $listDirn, $listOrder); ?>
+					<?php echo JHtml::_('searchtools.sort', 'MYMUSE_DATE', 'a.' . $orderingColumn, $listDirn, $listOrder); ?>
 				</th>
 				<th width="5%">
 					<?php echo JHtml::_('searchtools.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
@@ -181,7 +181,7 @@ echo " listOrder = $listOrder : saveOrder = $saveOrder";
 				<td class="has-context">
 					<div class="pull-left break-word">
 						<?php if ($item->checked_out) : ?>
-							<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'articles.', $canCheckin); ?>
+							<?php echo JHtml::_('jgrid.checkedout', $i, $item->editor, $item->checked_out_time, 'products.', $canCheckin); ?>
 						<?php endif; ?>
 						<?php if ($canEdit || $canEditOwn) : ?>
 							<a class="hasTooltip" href="<?php echo JRoute::_('index.php?option=com_mymuse&task=product.edit&id=' . $item->id); ?>" title="<?php echo JText::_('JACTION_EDIT'); ?>">
@@ -240,5 +240,6 @@ echo " listOrder = $listOrder : saveOrder = $saveOrder";
 		<input type="hidden" name="task" value="" />
 		<input type="hidden" name="boxchecked" value="0" />
 		<?php echo JHtml::_('form.token'); ?>
-	</div>
+
 </form>
+</div>

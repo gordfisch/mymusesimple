@@ -32,6 +32,13 @@ class MymuseModeltracks extends JModelList
   	* @var array
   	*/
   	var $_parentid = null;
+
+  	/**
+  	* stores _items
+  	*
+  	* @var array
+  	*/
+  	var $_items = null;
   	
 
         
@@ -312,6 +319,23 @@ class MymuseModeltracks extends JModelList
 		return $query;
 	}
 	
+	/**
+	 * get Items
+	 *
+	 * @return	objects or 0
+	 * @since	3.5
+	 */
+	public function getItems() {
+		if(!$this->_items){
+			$this->_items = parent::getItems();
+		}
+		foreach($this->_items as $item){
+			$item->track = json_decode($item->track);
+
+		}
+		return $this->_items;
+	}
+
 	/**
 	 * get parent from product_id
 	 *

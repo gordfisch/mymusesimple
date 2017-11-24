@@ -45,7 +45,7 @@ JHTML::_('behavior.tooltip');
 		</script>
 
 		<form action="index.php" method="post" name="adminForm" id="adminForm">
-<h2><?php echo $item->parent->title; ?>: <?php echo JText::_("MYMUSE_ALL_FILES"); ?></h2>
+<h2><?php echo isset($item->parent->title)? $item->parent->title: JText::_('MYMUSE_SELECT_PRODUCT'); ?> : <?php echo JText::_("MYMUSE_ALL_FILES"); ?></h2>
 <div class="edittracks">
 	<div class="pull-left span5">
 

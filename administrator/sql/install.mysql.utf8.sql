@@ -521,6 +521,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_track` (
   `preview_3` varchar(255) NOT NULL DEFAULT '',
   `preview_4` varchar(255) NOT NULL DEFAULT '',
   `type` varchar(32) NOT NULL,
+  `price` decimal(10,4) default NULL,
   `allfiles` tinyint(1) NOT NULL DEFAULT '0',
   `version` int(11) unsigned NOT NULL DEFAULT '1',
   `description` mediumtext NOT NULL DEFAULT '',
@@ -573,15 +574,18 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `product_physical` tinyint(1) NOT NULL DEFAULT '0',
   `product_downloadable` tinyint(1) NOT NULL DEFAULT '0',
   `product_allfiles` tinyint(1) NOT NULL DEFAULT '0',
-  `product_made_date` date DEFAULT '0000-00-00 00:00:00',
+
   `product_in_stock` int(11) NOT NULL DEFAULT '1',
   `product_special` char(1) DEFAULT NULL,
   `product_discount` float(4,2) DEFAULT '0.00',
+
+  `product_made_date` date DEFAULT '0000-00-00 00:00:00',
   `product_full_time` varchar(8) NOT NULL,
   `product_country` char(2) NOT NULL,
   `product_publisher` varchar(255) NOT NULL,
   `product_producer` varchar(255) NOT NULL,
   `product_studio` varchar(255) NOT NULL,
+  
   `file` JSON NULL,
   `file_preview` varchar(255) NOT NULL DEFAULT '',
   `file_preview_2` varchar(255) NOT NULL DEFAULT '',

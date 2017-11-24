@@ -51,6 +51,7 @@ class MymuseTableproduct extends JTable
 			} else {
 				list($this->introtext, $this->fulltext) = preg_split($pattern, $array['articletext'], 2);
 			}
+
 		}
 
 		if (isset($array['attribs']) && is_array($array['attribs'])) {
@@ -86,7 +87,7 @@ class MymuseTableproduct extends JTable
 	{
 		$app = JFactory::getApplication();
 		$this->title = trim($this->title);
-		
+
 		if ($this->title == '') {
 			$this->setError(JText::_('MYMUSE_FILE_MUST_HAVE_A_TITLE').print_pre($this));
 			return false;
@@ -168,22 +169,34 @@ class MymuseTableproduct extends JTable
 	 */
 	public function store($updateNulls = false)
 	{
-		
-		$params 	= MyMuseHelper::getParams();
-		$app 		= JFactory::getApplication();
-		$input 		= $app->input;
-		$task 		= $input->get('task');
-		$post 		= JRequest::get('post');
-		$jform 		= $input->get('jform', array(), 'ARRAY'); 
-		$date		= JFactory::getDate();
-		$user		= JFactory::getUser();
-		$db = JFactory::getDBO();
+		require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_mymuse'.DS.'helpers'.DS.'mp3file.php');
 
-		if(!isset($this->id)){
-        	$this->id = $this->_id	= isset( $form['id'] )? $form['id'] : '' ;
+		$params 		= MyMuseHelper::getParams();
+		$app 			= JFactory::getApplication();
+		$input 			= $app->input;
+		$task 			= $input->get('task');
+		$post 			= JRequest::get('post');
+		$form 			= $input->get('jform', array(), 'ARRAY'); 
+		$select_files 	= $input->get('select_file', '' ,'array');
+		$preview 		= $input->getString('preview', '');
+		$current_preview = $input->get('current_preview', '');
+		$remove_preview = $input->get('remove_preview', '');
+		$date			= JFactory::getDate();
+		$user			= JFactory::getUser();
+		$db 			= JFactory::getDBO();
+
+print_pre($form); exit;
+		foreach($form as $key => $value){
+			if($key == "articletext"){
+				continue;
+			}
+			$this->$key = (isset($value) && $value)? $value : '';
+
 		}
-		
-		$this->version = isset($form['version'])? $form['version'] +1 : 1;
+
+
+
+
 
 		if ($this->id) {
 			// Existing item
@@ -203,10 +216,177 @@ class MymuseTableproduct extends JTable
 			$isNew = 1;
 		}
 
+
+		if(!$isNew && $this->file){
+			$current_files = json_decode($this->file);
+		}else{
+			$current_files = array();
+		}
+
+
+
+        // for tracks with parentids
+        if($this->parentid){
+        	$artist_alias = MyMuseHelper::getArtistAlias($this->parentid, 1);
+        	$album_alias = MyMuseHelper::getAlbumAlias($this->parentid, 1);
+        	$download_path = MyMuseHelper::getdownloadPath($this->parentid,1);
+        	
+        }   
+
+ 		$done = 0;
+ 		
+		//removing one of the variations
+		if($task == 'deletevariation'){
+			$variationid = $input->get('variation','');
+			
+			$new_current = array();
+			$new_select = array();
+					
+			for( $i = 0; $i < count($select_files); $i++ ){
+				if($i != $variationid && isset($current_files[$i]) && $select_files[$i]){
+					$new_select[] = $select_files[$i];
+					$new_current[] = $current_files[$i];
+				}
+			}
+			$select_files = $new_select;
+			$current_files = $new_current;
+			$this->file = json_encode($current_files);
+			$done = 1;
+			
+		}
+
+
+		//chosen from select dropdown
+		if(is_array( $select_files ) && !$done){
+			
+			for( $i = 0; $i < count($select_files); $i++ ){
+				//rename if necessary
+				$select_file = $select_files[$i];
+				if($select_file &&  $select_file != @$current_files[$i]->file_name){
+					
+					
+					// tidy up name and copy it to the download dir
+					$ext = MyMuseHelper::getExt($select_file);
+					$name = preg_replace("/$ext$/","",$select_file);
+					if($params->get('my_use_sring_url_safe')){
+						$file_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
+					}else{
+						$file_name = $select_file;
+					}
+				
+					if( 1 == $params->get('my_download_dir_format') && !$params->get('my_use_s3',0)){
+						//by format
+						$my_download_path = $download_path.$ext.DS;
+					}
+					
+
+					$new_file = $my_download_path.$file_name;
+
+					$file_alias = JApplication::stringURLSafe($file_name);
+
+					
+					$old_file = $my_download_path.$select_file;
+				
+					if($old_file != $new_file){
+						if(!$this->fileCopy($old_file, $new_file)){
+							return false;
+						}
+						if(!$this->fileDelete($old_file)){
+							return false;
+						}
+					}
+
+					$file_length = filesize($new_file);
+						
+					// TODO: get this to work with s3
+					$track_time = '';
+					
+					if(isset($new_file) && is_file($new_file)
+							&& strtolower(pathinfo($new_file, PATHINFO_EXTENSION)) == "mp3"){
+						$m = new mp3file($new_file);
+						$a = $m->get_metadata();
+						if ($a['Encoding']=='VBR' || $a['Encoding']=='CBR'){
+							$track_time = $a["Length mm:ss"];
+						}
+					}
+					
+					$file_downloads = isset($current[$i]->file_downloads)? $current[$i]->file_downloads : "0";
+					//  save this to the file_name
+					$current_files[$i] = array(
+							'file_name' => $file_name,
+							'file_length' => $file_length,
+							'file_ext' => $ext,
+							'file_alias'=> $file_alias,
+							'file_downloads'=> $file_downloads,
+							'file_time' => $track_time
+					);
+				}
+			}
+			
+			$this->file = json_encode($current_files);
+		}
+	
+		//all files
+		if(isset($form['allfiles']) && $form['allfiles']){
+
+			for($p = 0; $p < count($params->get('my_formats')); $p++){
+				$file_name = JFilterOutput::stringURLSafe($form['product_sku']."-full-release-". $params->get('my_formats')[$p]);
+				$current_files[$p] = array(
+							'file_name' => $file_name,
+							'file_length' => '',
+							'file_ext' => $params->get('my_formats')[$p],
+							'file_alias'=> $file_name,
+							'file_downloads'=> '',
+							'file_time' => $track_time
+					);
+
+			}
+			$this->file = json_encode($current_files);
+			$this->type = "audio";
+		}
 		
+		// Preview from select boxe
+		if(isset($preview) && $preview && $preview != $current_preview){
+			if($this->product_id){
+				$path = MyMuseHelper::getSitePath($this->product_id, 1);
+			}elseif ($this->id){
+				$path = MyMuseHelper::getSitePath($this->id, 0);
+			}
+			
+			$new = 1;
+			 
+			$ext = MyMuseHelper::getExt($preview);
+			$name = preg_replace("/\.$ext$/","",$preview);
+			$file_preview_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
+
+		
+			$old_file = $path.$preview;
+			$new_file = $path.$file_preview_name;
+	
+			if($old_file != $new_file){
+				
+				if($this->fileExists($old_file)){
+					if(!$this->fileCopy($old_file, $new_file)){
+						$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file);
+						$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$old_file." ".$new_file, 'error');
+						return false;
+					}
+					
+				}
+			}
+			$this->preview = $file_preview_name;
+		}else{
+			$this->preview = isset($current_preview)? $current_preview : '';
+		}
+		if($remove_preview){
+			$this->preview = '';
+		}
+
+
+
 		$this->checkin();
 		$result = parent::store($updateNulls);
-		
+print_pre($this); exit;				
 		if($result){
 
 			// clear product_category_xref
@@ -241,9 +421,9 @@ class MymuseTableproduct extends JTable
 			$db->execute();
 
 			//now add
-			if(isset($jform['recommended']) && $this->id){
+			if(isset($form['recommended']) && $this->id){
 
-				foreach($jform['recommended'] as $recommend_id){
+				foreach($form['recommended'] as $recommend_id){
 					$query = "INSERT INTO #__mymuse_product_recommend_xref
         			(product_id, recommend_id) VALUES (".$this->id.",".$recommend_id.")";
 					$db->setQuery($query);

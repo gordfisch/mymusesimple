@@ -29,11 +29,8 @@ class MymuseViewTrack extends JViewLegacy
 		$input 			= JFactory::getApplication()->input;
 
 		$task 			= $input->get('task', 'edit');
-		$allfiles 		= $input->get('allfiles', 0);
-		echo "allfiles = $allfiles";
 		$this->state	= $this->get('State');
 		$this->item		= $this->get('Item');
-
 		$this->form		= $this->get('Form');
 		$this->lists 	= $this->get('Lists');
 		$this->params 	= MyMuseHelper::getParams();
@@ -46,15 +43,11 @@ class MymuseViewTrack extends JViewLegacy
 		
 
         // allfiles
+        $layout = $this->getLayout();
         $subtype = '';
-			//new_allfiles
-        if($allfiles){
-        	$this->setLayout('edit_allfiles');
+        if($layout == "edit_allfiles"){
         	$subtype = 'allfiles';
-  
         }
-
-
 		// Check for errors.
 		if (count($errors = $this->get('Errors'))) {
 			JError::raiseError(500, implode("\n", $errors));
@@ -94,7 +87,7 @@ class MymuseViewTrack extends JViewLegacy
 		JToolBarHelper::title(JText::_('COM_MYMUSE').' : '. $title, 'mymuse.png');
 		
 
-		if($subtype == "allfiles" && $product_id){
+		if($subtype == "allfiles" ){
 			// ALLFILES
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
