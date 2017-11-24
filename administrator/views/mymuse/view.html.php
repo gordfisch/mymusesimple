@@ -5,8 +5,8 @@
  * @copyright	Copyright © 2010 - Arboreta Internet Services - All rights reserved.
  * @license		GNU/GPL
  * @author		Gordon Fisch
- * @author mail	info@mymuse.ca
- * @website		http://www.mymuse.ca
+ * @author mail	info@joomlamymuse.com
+ * @website		http://www.joomlamymuse.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -30,7 +30,7 @@ class MyMuseViewMyMuse extends JViewLegacy
 
         JToolBarHelper::title( JText::_( 'MyMuse' ), 'mymuse.png' );
         JToolBarHelper::preferences('com_mymuse');
-        JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/246-welcome-screen?tmpl=component');
+        JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/246-welcome-screen?tmpl=component');
         $this->sidebar = JHtmlSidebar::render();
         parent::display($tpl);
     }

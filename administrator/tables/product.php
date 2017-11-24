@@ -347,8 +347,8 @@ print_pre($form); exit;
 		
 		// Preview from select boxe
 		if(isset($preview) && $preview && $preview != $current_preview){
-			if($this->product_id){
-				$path = MyMuseHelper::getSitePath($this->product_id, 1);
+			if($this->parentid){
+				$path = MyMuseHelper::getSitePath($this->parentid, 1);
 			}elseif ($this->id){
 				$path = MyMuseHelper::getSitePath($this->id, 0);
 			}

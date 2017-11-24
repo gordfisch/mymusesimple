@@ -58,7 +58,7 @@ print_pre($params);
 			<li><b><?php echo JText::_("MYMUSE_HELP"); ?></b> 
 			<?php echo JText::_("MYMUSE_HELP_DESC"); ?>
 			<br /><br /></li>
-			<li><?php echo JText::_("MYMUSE_CONTACT"); ?> <a href="mailto:info@mymuse.ca">info@mymuse.ca</a> <?php echo JText::_("MYMUSE_WEBSITE"); ?> <a href="http://www.mymuse.ca">www.mymuse.ca</a>
+			<li><?php echo JText::_("MYMUSE_CONTACT"); ?> <a href="mailto:info@joomlamymuse.com">info@joomlamymuse.com</a> <?php echo JText::_("MYMUSE_WEBSITE"); ?> <a href="http://www.joomlamymuse.com">www.joomlamymuse.com</a>
 			</ul>
 			</td>
 		</tr>

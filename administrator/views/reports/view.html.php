@@ -94,7 +94,7 @@ class myMuseViewReports extends JViewLegacy
 		JToolBarHelper::custom('reports.downloadDownload','publish.png', 'publish_f2.png','MYMUSE_DOWNLOAD_CSV_DOWNLOADS',false);
 		
 		
-		JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/240-reports?tmpl=component');
+		JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/240-reports?tmpl=component');
 		
 
 

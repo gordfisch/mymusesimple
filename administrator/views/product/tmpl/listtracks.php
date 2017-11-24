@@ -219,7 +219,7 @@ Joomla.orderTable = function()
 				}
 
 				$ordering   = ($listOrder == 'a.ordering');
-				$canCreate	= $user->authorise('core.create',		'com_mymuse.category.'.$file->catid);
+				$canCreate	= $user->authorise('core.create',		'com_joomlamymuse.comtegory.'.$file->catid);
 				$canEdit	= $user->authorise('core.edit',			'com_mymuse.product.'.$file->id);
 				$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $file->checked_out == $userId || $file->checked_out == 0;
 				$canEditOwn	= $user->authorise('core.edit.own',		'com_mymuse.product.'.$file->id) && $file->created_by == $userId;

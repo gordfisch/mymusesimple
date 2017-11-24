@@ -4,7 +4,7 @@
  * @package     com_mymuse3.0
  * @copyright   Copyright (C) 2011. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
- * @author      Gord Fisch info@mymuse.ca
+ * @author      Gord Fisch info@joomlamymuse.com
  */
 // no direct access
 defined('_JEXEC') or die('Restricted access');

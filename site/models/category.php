@@ -5,8 +5,8 @@
  * @copyright	Copyright © 2010 - Arboreta Internet Services - All rights reserved.
  * @license		GNU/GPL
  * @author		Gordon Fisch
- * @author mail	info@mymuse.ca
- * @website		http://www.mymuse.ca
+ * @author mail	info@joomlamymuse.com
+ * @website		http://www.joomlamymuse.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -46,7 +46,7 @@ class MyMuseModelCategory extends JModelList
 	 *
 	 * @var		string
 	 */
-	protected $_context = 'com_mymuse.category';
+	protected $_context = 'com_joomlamymuse.comtegory';
 
 	/**
 	 * The category that applies.
@@ -169,13 +169,13 @@ class MyMuseModelCategory extends JModelList
 
 		// filter.order
 		$itemid = $jinput->get('id', 0, 'INT') . ':' . $jinput->get('Itemid', 0, 'INT');
-		$orderCol = $app->getUserStateFromRequest('com_mymuse.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
+		$orderCol = $app->getUserStateFromRequest('com_joomlamymuse.comtegory.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
 		if (!in_array($orderCol, $this->filter_fields)) {
 			$orderCol = 'a.ordering';
 		}
 		$this->setState('list.ordering', $orderCol);
 
-		$listOrder = $app->getUserStateFromRequest('com_mymuse.category.list.' . $itemid . '.filter_order_Dir',
+		$listOrder = $app->getUserStateFromRequest('com_joomlamymuse.comtegory.list.' . $itemid . '.filter_order_Dir',
 			'filter_order_Dir', '', 'cmd');
 		if (!in_array(strtoupper($listOrder), array('ASC', 'DESC', ''))) {
 			$listOrder = 'ASC';
@@ -190,7 +190,7 @@ class MyMuseModelCategory extends JModelList
 			$this->setState('list.links', $params->get('num_links'));
 		}
 		else {
-			$limit = $app->getUserStateFromRequest('com_mymuse.category.list.' . $itemid . '.limit', 'limit', $params->get('display_num'));
+			$limit = $app->getUserStateFromRequest('com_joomlamymuse.comtegory.list.' . $itemid . '.limit', 'limit', $params->get('display_num'));
 		}
 
 		$this->setState('list.limit', $limit);
@@ -239,7 +239,7 @@ class MyMuseModelCategory extends JModelList
 				$model->setState('filter.language', $this->getState('filter.language'));
 				$ordering = $this->getState('list.ordering');
 					
-				$orderCol = $app->getUserStateFromRequest('com_mymuse.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
+				$orderCol = $app->getUserStateFromRequest('com_joomlamymuse.comtegory.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
 				if (!in_array($orderCol, $this->filter_fields)) {
 					$model->setState('list.ordering', ProductHelperQuery::orderbySecondary($params->get('orderby_sec', 'rdate'), $params->get('order_date')));
 				}else{
@@ -284,7 +284,7 @@ class MyMuseModelCategory extends JModelList
 			$model->setState('filter.language', $this->getState('filter.language'));
 			$ordering = $this->getState('list.ordering');
 			
-			$orderCol = $app->getUserStateFromRequest('com_mymuse.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
+			$orderCol = $app->getUserStateFromRequest('com_joomlamymuse.comtegory.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
 			if (!in_array($orderCol, $this->filter_fields)) {
 				$model->setState('list.ordering', ProductHelperQuery::orderbySecondary($params->get('orderby_sec', 'rdate'), $params->get('order_date')));
 			}else{
@@ -331,8 +331,8 @@ class MyMuseModelCategory extends JModelList
 		$db			= $this->getDbo();
 		$params		= $this->state->params;
 		$itemid		= $jinput->get('id', 0, 'INT') . ':' . $jinput->get('Itemid', 0, 'INT');
-		$orderCol	= $app->getUserStateFromRequest('com_mymuse.category.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
-		$orderDirn	= $app->getUserStateFromRequest('com_mymuse.category.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
+		$orderCol	= $app->getUserStateFromRequest('com_joomlamymuse.comtegory.list.' . $itemid . '.filter_order', 'filter_order', '', 'string');
+		$orderDirn	= $app->getUserStateFromRequest('com_joomlamymuse.comtegory.list.' . $itemid . '.filter_order_Dir', 'filter_order_Dir', '', 'cmd');
 		$orderby	= ' ';
 
 		if (!in_array($orderCol, $this->filter_fields)) {
@@ -397,7 +397,7 @@ class MyMuseModelCategory extends JModelList
 				$params->merge( $cparams );
 				$user	= JFactory::getUser();
 				$userId	= $user->get('id');
-				$asset	= 'com_mymuse.category.'.$this->_item->id;
+				$asset	= 'com_joomlamymuse.comtegory.'.$this->_item->id;
 
 				// Check general create permission.
 				if ($user->authorise('core.create', $asset)) {

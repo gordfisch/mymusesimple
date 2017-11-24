@@ -5,8 +5,8 @@
  * @copyright	Copyright © 2010 - Arboreta Internet Services - All rights reserved.
  * @license		GNU/GPL
  * @author		Gordon Fisch
- * @author email	info@mymuse.ca
- * @website		http://www.mymuse.ca
+ * @author email	info@joomlamymuse.com
+ * @website		http://www.joomlamymuse.com
  */
 
 // no direct access

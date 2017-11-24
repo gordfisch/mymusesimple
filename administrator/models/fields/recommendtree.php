@@ -4,7 +4,7 @@
  * @package     com_mymuse3
  * @copyright   Copyright (C) 2011. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
- * @author      Gord Fisch info@mymuse.ca	
+ * @author      Gord Fisch info@joomlamymuse.com	
  * 
  * based on the file categorytree.php found in flexicontent. It seemed to be based on a 
  * joomla core file called category parent. At least, the head of that file had these comments:

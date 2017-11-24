@@ -166,12 +166,12 @@ class MymuseTablestore extends JTable
     		//print_pre($user); exit;
     		$data = array('name' => 'Guest Buyer',
     				'password'=>  $my_noreg_password,
-    				'email' => 'guest@mymuse.ca',
+    				'email' => 'guest@joomlamymuse.com',
 					'username' => 'buyer',
 					'password1' => $my_noreg_password,
 					'password2' => $my_noreg_password, 
-					'email1' => 'guest@mymuse.ca',
-					'email2' => 'guest@mymuse.ca' 
+					'email1' => 'guest@joomlamymuse.com',
+					'email2' => 'guest@joomlamymuse.com' 
  			);
     		// Bind the data.
     		if (!$user->bind($data))

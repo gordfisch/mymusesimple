@@ -102,7 +102,7 @@ class MymuseViewTrack extends JViewLegacy
 			else {
 				JToolBarHelper::cancel('track.cancel', 'JTOOLBAR_CLOSE');
 			}
-			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/247-track-tracks?tmpl=component#tracks-all-tracks');		
+			JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/247-track-tracks?tmpl=component#tracks-all-tracks');		
 		
 		}else{
 			// If not checked out, can save the item.
@@ -121,7 +121,7 @@ class MymuseViewTrack extends JViewLegacy
 			else {
 				JToolBarHelper::cancel('track.cancel', 'JTOOLBAR_CLOSE');
 			}
-			JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/238-track-new-edit?tmpl=component');
+			JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/238-track-new-edit?tmpl=component');
 		}
 		
 	}

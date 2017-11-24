@@ -5,8 +5,8 @@
  * @copyright	Copyright © 2010 - Arboreta Internet Services - All rights reserved.
  * @license		GNU/GPL
  * @author		Gordon Fisch
- * @author mail	info@mymuse.ca
- * @website		http://www.mymuse.ca
+ * @author mail	info@joomlamymuse.com
+ * @website		http://www.joomlamymuse.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -572,8 +572,8 @@ class mymuseModelShopper extends JModelForm
 		'username' => 'buyer',
 		'password1' => $myparams->get('my_noreg_password'),
 		'password2' => $myparams->get('my_noreg_password'), 
-		'email1' => 'guest@mymuse.ca',
-		'email2' => 'guest@mymuse.ca' 
+		'email1' => 'guest@joomlamymuse.com',
+		'email2' => 'guest@joomlamymuse.com' 
  		);
  		$config = JFactory::getConfig();
  		$db		= $this->getDbo();

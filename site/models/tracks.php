@@ -36,7 +36,7 @@ class MyMuseModelTracks extends JModelList
 	 *
 	 * @var		string
 	 */
-	protected $_context = 'com_mymuse.category';
+	protected $_context = 'com_joomlamymuse.comtegory';
     
     
 	/**

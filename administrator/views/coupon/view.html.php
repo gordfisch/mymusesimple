@@ -82,7 +82,7 @@ class MymuseViewCoupon extends JViewLegacy
 		else {
 			JToolBarHelper::cancel('coupon.cancel', 'JTOOLBAR_CLOSE');
 		}
-		JToolBarHelper::help('', false, 'http://www.mymuse.ca/en/documentation/72-help-files-3-x/229-coupons-new-edit?tmpl=component');
+		JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/229-coupons-new-edit?tmpl=component');
 		
 	}
 }

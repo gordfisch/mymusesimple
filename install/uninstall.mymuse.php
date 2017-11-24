@@ -5,7 +5,7 @@
  * @copyright	Copyright © 2012 - Arboreta Internet Services - All rights reserved.
  * @license		GNU/GPL
  * @author		Gordon Fisch
- * @website		http://www.mymuse.ca
+ * @website		http://www.joomlamymuse.com
  *
  * Original uninstall.php file
  * @package   Zoo Component

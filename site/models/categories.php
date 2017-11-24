@@ -25,7 +25,7 @@ class mymuseModelCategories extends JModelList
 	 *
 	 * @var		string
 	 */
-	public $_context = 'com_mymuse.categories';
+	public $_context = 'com_joomlamymuse.comtegories';
 
 	/**
 	 * The category context (allows other extensions to derived from this model).

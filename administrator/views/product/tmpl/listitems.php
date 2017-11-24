@@ -249,7 +249,7 @@ Joomla.orderTable = function()
 				
 				$checked 	= JHTML::_('grid.checkedout',  $item, $i );
 				
-				$canCreate	= $user->authorise('core.create',		'com_mymuse.category.'.$item->catid);
+				$canCreate	= $user->authorise('core.create',		'com_joomlamymuse.comtegory.'.$item->catid);
 				$canEdit	= $user->authorise('core.edit',			'com_mymuse.product.'.$item->id);
 				$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $item->checked_out == $userId || $file->checked_out == 0;
 				$canEditOwn	= $user->authorise('core.edit.own',		'com_mymuse.product.'.$item->id) && $item->created_by == $user->get('id');

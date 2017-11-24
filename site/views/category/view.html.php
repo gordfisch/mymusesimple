@@ -4,7 +4,7 @@
  * @package     com_mymuse3
  * @copyright   Copyright (C) 2011. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
- * @author      Gord Fisch info@mymuse.ca
+ * @author      Gord Fisch info@joomlamymuse.com
  */
 
 // Check to ensure this file is included in Joomla!
@@ -126,16 +126,16 @@ class MymuseViewCategory extends JViewLegacy
 		$offset = 0;
 		
 		JPluginHelper::importPlugin('mymuse');
-		$results = $dispatcher->trigger('onProductBeforeHeader', array ('com_mymuse.category', &$category, &$this->params, $offset));
+		$results = $dispatcher->trigger('onProductBeforeHeader', array ('com_joomlamymuse.comtegory', &$category, &$this->params, $offset));
 		$category->event->beforeDisplayHeader = trim(implode("\n", $results));
 		
-		$results = $dispatcher->trigger('onProductAfterTitle', array('com_mymuse.category', &$category, &$this->params, $offset));
+		$results = $dispatcher->trigger('onProductAfterTitle', array('com_joomlamymuse.comtegory', &$category, &$this->params, $offset));
 		$category->event->afterDisplayTitle = trim(implode("\n", $results));
 		
-		$results = $dispatcher->trigger('onProductBeforeDisplay', array('com_mymuse.category', &$category, &$this->params, $offset));
+		$results = $dispatcher->trigger('onProductBeforeDisplay', array('com_joomlamymuse.comtegory', &$category, &$this->params, $offset));
 		$category->event->beforeDisplayProduct = trim(implode("\n", $results));
 		
-		$results = $dispatcher->trigger('onProductAfterDisplay', array('com_mymuse.category', &$category, &$this->params, $offset));
+		$results = $dispatcher->trigger('onProductAfterDisplay', array('com_joomlamymuse.comtegory', &$category, &$this->params, $offset));
 		$category->event->afterDisplayProduct = trim(implode("\n", $results));
 
 		// PREPARE THE DATA
@@ -163,7 +163,7 @@ class MymuseViewCategory extends JViewLegacy
 				
 				// Ignore content plugins on links.
 				if ($i < $numLeading + $numIntro && isset($item->introtext)) {
-					$item->introtext = JHtml::_ ( 'content.prepare', $item->introtext, '', 'com_mymuse.category' );
+					$item->introtext = JHtml::_ ( 'content.prepare', $item->introtext, '', 'com_joomlamymuse.comtegory' );
 					
 					$results = $dispatcher->trigger ( 'onContentAfterTitle', array (
 							'com_mymuse.article',
