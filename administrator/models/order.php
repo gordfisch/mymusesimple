@@ -242,14 +242,6 @@ class MymuseModelorder extends JModelAdmin
 				}
 			}
 			 
-			// get shipping history
-			$q = "SELECT * from #__mymuse_order_shipping
-        			WHERE order_id='".$item->id."'
-        			ORDER BY created";
-			$db->setQuery($q);
-			$item->order_shipments = $db->loadObjectList();
-        			
-			
 			
 			
 			if(isset($item->user->profile['shopper_group'])){

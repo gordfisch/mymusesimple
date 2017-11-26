@@ -351,7 +351,7 @@ class com_mymuseInstallerScript
 				
 			// DEFAULT DOWNLOAD DIRECTORY
 			$name = JText::_ ( "MYMUSE_MAKE_DOWNLOAD_DIR" );
-			$download_dir = JPATH_ROOT . DS . "images" . DS . "mymuse" . DS . "mp3";
+			$download_dir = JPATH_ROOT . DS . "images" . DS . "mymuse" . DS . "downloads";
 			if (! file_exists ( $download_dir )) {
 				if (! JFolder::create ( $download_dir )) {
 					$alt = JText::_ ( "MYMUSE_FAILED" );

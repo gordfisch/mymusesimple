@@ -587,7 +587,7 @@ class MyMuseCart {
 				$preview_tracks[$i] = $order->items[$i];
 			}
 			$ext = '';
-			$jason = json_decode($order->items[$i]->track);
+			$jason = json_decode($order->items[$i]->file);
 			if(is_array($jason)){
 				
 				$order->items[$i]->variation_select = '<select name="variation['.$this->cart[$i]['product_id'].']"
@@ -608,7 +608,7 @@ class MyMuseCart {
 				$order->items[$i]->ext = isset($jason[$this->cart[$i]["variation"]]->file_ext)?
 					$jason[$this->cart[$i]["variation"]]->file_ext : '';
 			}else{
-				$order->items[$i]->ext = pathinfo($order->items[$i]->track, PATHINFO_EXTENSION);
+				$order->items[$i]->ext = pathinfo($order->items[$i]->file, PATHINFO_EXTENSION);
 			}
 			
 			//other cats
@@ -887,8 +887,8 @@ class MyMuseCart {
 	function getProduct($id=null)
 	{
 		
-		$mainframe 	= JFactory::getApplication();
-    	$params 	= MyMuseHelper::getParams();;
+
+    $params 	= MyMuseHelper::getParams();;
     	
 		$MyMuseShopper  =& MyMuse::getObject('shopper','models');
 		$shopper 		= $MyMuseShopper->getShopper();
@@ -915,7 +915,7 @@ class MyMuseCart {
 		$row->file_contents = null;
 		
 		//TODO: check this is the right array index
-		if($name = json_decode($row->track) && isset($name[0]->file_length)){
+		if($name = json_decode($row->file) && isset($name[0]->file_length)){
 
 			$row->file_length = $name[0]->file_length;
 		}
@@ -952,12 +952,6 @@ class MyMuseCart {
 			$artistid = $row->parent->artistid;
 			// Get attributes
 
-			$attributes = $MyMuseProduct->getAttributes( $row->id, $row->parentid);
-			if($attributes){
-				foreach ($attributes as $attribute){
-					$row->title .= " (" . $attribute->attribute_value . ") ";
-				}
-			}
 
 		}else{
 			$row->parent = null;

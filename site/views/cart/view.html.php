@@ -282,7 +282,7 @@ class myMuseViewCart extends JViewLegacy
 				if($cart['idx'] > 0){
 					$this->order = $order 		= $MyMuseCart->buildOrder( $edit );
 					$order->show_checkout = 1;
-					$footer = $MyMuseCart->getRecommended();
+					//$footer = $MyMuseCart->getRecommended();
 				}
 				break;
 		}

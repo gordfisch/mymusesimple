@@ -98,17 +98,17 @@ class MyMuseCheckout
 			$cart[$i]['product'] = $MyMuseCart->getProduct($cart[$i]["product_id"]);
 			$ext = '';
 			
-			$jason = json_decode($cart[$i]['product']->file_name);
+			$jason = json_decode($cart[$i]['product']->file);
 			if(is_array($jason)){
 				$cart[$i]['product']->file_name = $jason[$cart[$i]["variation"]]->file_name;
 				$cart[$i]['product']->ext = $jason[$cart[$i]["variation"]]->file_ext;
+				$cart[$i]['product']->file_length = $jason[$cart[$i]["variation"]]->file_length;
 				//print_pre($jason);
 			}else{
 				
 				$cart[$i]['product']->ext = pathinfo($cart[$i]['product']->file_name, PATHINFO_EXTENSION);
 			}
 
-			
 			$cart[$i]['product']->price = MyMuseModelProduct::getPrice($cart[$i]["product"]);
 			
 			// SEE IF IT IS AN ALL_FILES and NOT ZIP, ADD ALL FILES TO CART
@@ -144,27 +144,6 @@ class MyMuseCheckout
 			}
 		}
 
-		// Loop over cart if 'my_check_stock' is on
-		if ($params->get('my_check_stock')) {
-			for($i = 0; $i < $cart["idx"]; $i++) {
-				if(isset($cart[$i]["coupon_id"]) && $cart[$i]["coupon_id"]){
-					continue;
-				}
-				if(!isset($cart[$i]["product_physical"]) || !$cart[$i]["product_physical"]){
-					continue;
-				}
-				$q = "SELECT product_in_stock ";
-				$q .= "FROM #__mymuse_product where id=";
-				$q .= $cart[$i]['product_id'];
-				$this->_db->setQuery($q);
-				$product_in_stock = $this->_db->loadResult();
-				if ($cart[$i]['quantity'] > $product_in_stock) {
-					$this->error = JText::_('MYMUSE_THIS_ORDER_EXEEDS_OUR_STOCK_FOR')." ". $cart[$i]['product']->title." : ";
-					$this->error .= JText::_('MYMUSE_CURRENT_IN_STOCK')." ".$product_in_stock;
-					return False;
-				}
-			}
-		}
 
 		/**
 		 // update stock moved to notify function
@@ -180,7 +159,6 @@ class MyMuseCheckout
 		}
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'order.php' );
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'orderitem.php' );
-		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'ordershipping.php' );
 		require_once( MYMUSE_ADMIN_PATH.DS.'tables'.DS.'orderpayment.php' );
 		$order 		= new MymuseTableorder( $this->_db );
 		$config 	= JFactory::getConfig();
@@ -249,13 +227,6 @@ class MyMuseCheckout
 		$order->pay_now				= $cart_order->must_pay_now;
 		$order->extra 				= @$cart['extra'];
 		
-		//LICENCE MODEL?
-		if(2 == $params->get('my_price_by_product',0)){
-			$my_licence = $session->get("my_licence",0);
-			$licence_name = $params->get('my_license_'.$my_licence.'_name');
-			$licence_price = $params->get('my_license_'.$my_licence.'_price');
-			$order->licence = $my_licence." | ".$licence_name.' | '.$licence_price;
-		}
 
 		//save the order number in the session
 		$session->set("order_number",$order->order_number);
@@ -277,6 +248,7 @@ class MyMuseCheckout
 		// LOOP OVER CART ITEMS TO STORE TO DB
 		$order->idx = 0;
 		for($i = 0; $i < $cart["idx"]; $i++) {
+
 			if(@$cart[$i]["coupon_id"]){
 				continue;
 			}
@@ -363,27 +335,7 @@ class MyMuseCheckout
 			}
 		}
 
-		//Shipping
-		if ($params->get('my_use_shipping') && $cart_order->need_shipping
-				&& isset($cart_order->order_shipping)) {
-			$order_shipping = new MymuseTableordershipping( $this->_db );
-			$order_shipping->order_id = $order->id;
-			$order_shipping->ship_type = $cart_order->order_shipping->ship_type;
-			$order_shipping->ship_carrier_code = $cart_order->order_shipping->ship_carrier_code;
-			$order_shipping->ship_carrier_name = $cart_order->order_shipping->ship_carrier_name;
-			$order_shipping->ship_method_code = $cart_order->order_shipping->ship_method_code;
-			$order_shipping->ship_method_name = $cart_order->order_shipping->ship_method_name;
-			$order_shipping->cost = $cart_order->order_shipping->cost;
-			$order_shipping->tracking_id = $cart_order->order_shipping->tracking_id;
-			$order_shipping->created = $date->toSql();
-			if (!$order_shipping->store()) {
-				JError::raiseError( 500, $this->_db->stderr() );
-				return false;
-			}
-		}
-
 		//add more to the order object for printing
-		$order->total_res 		= $cart_order->reservation_fee;
 		$order->idx 			= $cart["idx"];
 		$order->do_html 		= 0;
 		$order->show_checkout 	= 0;
@@ -391,8 +343,7 @@ class MyMuseCheckout
 		$order->status_name 	= MyMuseHelper::getStatusName($order->order_status );
 		$order->tax_total 		= $total_tax;
 		$order->downloadable  	= $downloadable;
-		$order->ship_method_id 	= @$cart_order->order_shipping->id;
-		$order->order_shipping  = $order_shipping;
+
 		 
 		// All done with inserting ORDER!!
 		// attach the current order to the shopper
@@ -727,8 +678,18 @@ class MyMuseCheckout
 					$order->items [$i]->ext = pathinfo ( $order->items [$i]->file_name, PATHINFO_EXTENSION );
 				}
 				$order->items [$i]->attribs = $order->items [$i]->product->attribs;
-				$order->items [$i]->file_length = $order->items [$i]->product->file_length;
-				$order->items [$i]->file_time = $order->items [$i]->product->file_time;
+
+				$order->items[$i]->product->file = json_decode($order->items[$i]->product->file);
+				$variation = 0;
+				foreach($order->items[$i]->product->file as $key => $f){
+					if($f->file_name == $order->items [$i]->file_name){
+						$variation = $key;
+					}
+				}
+				$order->items [$i]->file_length = $order->items [$i]->product->file[$variation]->file_length;
+				$order->items [$i]->file_time = $order->items [$i]->product->file[$variation]->file_time;
+
+
 				$catid = 0;
 				// Does it have a parent?
 				if ($order->items [$i]->product->parentid) {
@@ -777,6 +738,7 @@ class MyMuseCheckout
 		$order->payments = $db->loadObjectList();
 
 		//add shipments
+		/**
 		$query = "SELECT * from #__mymuse_order_shipping WHERE order_id=$id ORDER BY id";
 		$db->setQuery($query);
 		if($order->shipments = $db->loadObjectList()){
@@ -785,12 +747,14 @@ class MyMuseCheckout
 			$order->order_shipping = new JObject;
 			$order->order_shipping->cost = 0;
 		}
+		*/
+
 
 		//add more to the order object for printing
 		$order->idx = count($order->items);
 		$order->status_name = MyMuseHelper::getStatusName($order->order_status );
 		$order->subtotal_before_discount = $order->order_subtotal  + @$order->coupon->discount + @$order->discount;
-		$order->order_total = $order->order_subtotal + $order->order_shipping->cost + $order->tax_total;
+		$order->order_total = $order->order_subtotal + $order->tax_total;
 		if($order->order_total < 0){
 			$order->order_total = 0.00;
 		}

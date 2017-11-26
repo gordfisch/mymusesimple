@@ -197,7 +197,6 @@ Joomla.orderTable = function()
 					<th class="title" colspan="2"><?php echo JText::_('MYMUSE_PREVIEW_NAME');?></th>
 					
 					<th width="1%" class="title">ID</th>
-					<th width="1%" class="title">Order</th>
 				</tr>
 			</thead>
 			<tfoot>
@@ -210,20 +209,21 @@ Joomla.orderTable = function()
 		    $now = JFactory::getDate();
 			for ($i=0, $n=count( $this->tracks ); $i < $n; $i++)
 			{
-				$file = &$this->tracks[$i];
-				$file->max_ordering = 0;
-				if($file->product_allfiles == "1"){
-					$link 	= 'index.php?option=com_mymuse&task=product.edit_allfiles&type=allfiles&id='. $file->id.'&parentid='.$file->parentid;
+				$track = &$this->tracks[$i];
+				$files = json_decode($track->file);
+				$track->max_ordering = 0;
+				if($track->product_allfiles == "1"){
+					$link 	= 'index.php?option=com_mymuse&task=product.edit_allfiles&type=allfiles&id='. $track->id.'&parentid='.$track->parentid;
 				}else{
-					$link 	= 'index.php?option=com_mymuse&task=product.editfile&type=file&id='. $file->id.'&parentid='.$file->parentid;
+					$link 	= 'index.php?option=com_mymuse&task=product.editfile&type=file&id='. $track->id.'&parentid='.$track->parentid;
 				}
 
 				$ordering   = ($listOrder == 'a.ordering');
-				$canCreate	= $user->authorise('core.create',		'com_joomlamymuse.comtegory.'.$file->catid);
-				$canEdit	= $user->authorise('core.edit',			'com_mymuse.product.'.$file->id);
-				$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $file->checked_out == $userId || $file->checked_out == 0;
-				$canEditOwn	= $user->authorise('core.edit.own',		'com_mymuse.product.'.$file->id) && $file->created_by == $userId;
-				$canChange	= $user->authorise('core.edit.state',	'com_mymuse.product.'.$file->id) && $canCheckin;
+				$canCreate	= $user->authorise('core.create',		'com_joomlamymuse.comtegory.'.$track->catid);
+				$canEdit	= $user->authorise('core.edit',			'com_mymuse.product.'.$track->id);
+				$canCheckin	= $user->authorise('core.manage',		'com_checkin') || $track->checked_out == $userId || $track->checked_out == 0;
+				$canEditOwn	= $user->authorise('core.edit.own',		'com_mymuse.product.'.$track->id) && $track->created_by == $userId;
+				$canChange	= $user->authorise('core.edit.state',	'com_mymuse.product.'.$track->id) && $canCheckin;
 
 				
 				?>
@@ -242,7 +242,7 @@ Joomla.orderTable = function()
 						<span class="sortable-handler hasTooltip <?php echo $disableClassName; ?>" title="<?php echo $disabledLabel; ?>">
 							<i class="icon-menu"></i>
 						</span>
-						<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $file->ordering; ?>" class="width-20 text-area-order " />
+						<input type="text" style="display:none" name="order[]" size="5" value="<?php echo $track->ordering; ?>" class="width-20 text-area-order " />
 					<?php else : ?>
 						<span class="sortable-handler inactive" >
 							<i class="icon-menu"></i>
@@ -250,74 +250,73 @@ Joomla.orderTable = function()
 					<?php endif; ?>
 					</td>
 					<td class="center hidden-phone">
-						<?php echo JHtml::_('grid.id', $i, $file->id); ?>
+						<?php echo JHtml::_('grid.id', $i, $track->id); ?>
 					</td>
 					<td class="center">
 						<div class="btn-group">
-								<?php echo JHtml::_('jgrid.published', $file->state, $i, 'products.', $canChange, 'cb', $file->publish_up, $file->publish_down); ?>
-								<?php echo JHtml::_('mymuseadministrator.featured', $file->featured, $i, $canChange); ?>
+								<?php echo JHtml::_('jgrid.published', $track->state, $i, 'products.', $canChange, 'cb', $track->publish_up, $track->publish_down); ?>
+								<?php echo JHtml::_('mymuseadministrator.featured', $track->featured, $i, $canChange); ?>
 								<?php // Create dropdown items and render the dropdown list.
 								if ($canChange)
 								{
-									JHtml::_('actionsdropdown.' . ((int) $file->state === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'products');
-									JHtml::_('actionsdropdown.' . ((int) $file->state === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'products');
-									echo JHtml::_('actionsdropdown.render', $this->escape($file->title));
+									JHtml::_('actionsdropdown.' . ((int) $track->state === 2 ? 'un' : '') . 'archive', 'cb' . $i, 'products');
+									JHtml::_('actionsdropdown.' . ((int) $track->state === -2 ? 'un' : '') . 'trash', 'cb' . $i, 'products');
+									echo JHtml::_('actionsdropdown.render', $this->escape($track->title));
 								}
 								?>
 							</div>
 					</td>
 					
 					<td>
-					<a href="<?php echo $link ?>"><?php echo $this->escape($file->title); ?></a> 
-					<?php  if($file->product_allfiles == "1"){ 
+					<a href="<?php echo $link ?>"><?php echo $this->escape($track->title); ?></a> 
+					<?php  if($track->product_allfiles == "1"){ 
 						echo JText::_("MYMUSE_ALL_TRACKS");
 					 } ?>
 					 
 					</td>
 					<td class="small hidden-phone">
-						<?php echo $this->escape($file->access_level); ?>
+						<?php echo $this->escape($track->access_level); ?>
 					</td>
 					
 				<?php if(!$this->params->get('my_price_by_product')){ ?>	
-					<td><?php echo $file->price; ?></td>
-					<td><?php echo $file->product_discount; ?></td>
+					<td><?php echo $track->price; ?></td>
+					<td><?php echo $track->product_discount; ?></td>
 				<?php } ?>	
 					
 					
-					<td><div id="product_player"><?php echo $file->stream; ?></div></td>
+					<td><div id="product_player"></div></td>
 					<td  align="center">
-						<?php echo stripslashes($file->file); ?>
-						<?php if($params->get('my_encode_filenames',0)){ ?>
-							<p class="smallsub">
-							<?php echo JText::sprintf('JGLOBAL_LIST_ALIAS', $this->escape($file->title_alias));?></p>
-						<?php } ?>
+						<?php 
+						foreach($files as $file){
+							echo stripslashes($file->file_name)."<br />"; 
+						}
+						?>
+
 					</td>
 					<td nowrap="nowrap" align="center">
-						<?php echo $file->file_downloads; ?>
+						<?php 
+						foreach($files as $file){
+							echo stripslashes($file->file_downloads)."<br />"; 
+						}
+						?>
 					</td>
 					<td  align="center">
-						<?php echo MyMuseHelper::ByteSize($file->file_length); ?>
+						<?php 
+						foreach($files as $file){
+							echo MyMuseHelper::ByteSize($file->file_length)."<br />"; 
+						}
+						?>
 					</td>
 					
-					<td><div id="product_player"><?php echo $file->flash; ?></div></td>
+					<td><div id="product_player"></div></td>
 					<td  align="center">
-						<?php echo htmlspecialchars($file->file_preview, ENT_QUOTES); 
-						if($file->file_preview_2){
-							echo "<br />".htmlspecialchars($file->file_preview_2, ENT_QUOTES);
-						}
-						if($file->file_preview_3){
-							echo "<br />".htmlspecialchars($file->file_preview_3, ENT_QUOTES);
-						}
-						
+						<?php echo htmlspecialchars($track->file_preview, ENT_QUOTES); 						
 						?>
 					</td>
 					
 
 					<td>
-						<?php echo $file->id; ?>
-					</td>
-					<td>
-						<?php echo $file->ordering; ?>
+						<?php echo $track->id; ?>
 					</td>
 				</tr>
 				<?php

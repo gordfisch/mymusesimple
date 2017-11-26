@@ -241,7 +241,7 @@ class myMuseViewStore extends JViewLegacy
 			$download_path = MyMuseHelper::getDownloadPath($product->parentid,1);
 			$realname = stripslashes($order_item->file_name);
 			
-			$jason = json_decode($product->file_name);
+			$jason = json_decode($product->file);
 			if(is_array($jason)){
 				foreach($jason as $j){
 					if($j->file_name == $realname){
@@ -807,10 +807,12 @@ class myMuseViewStore extends JViewLegacy
 		$date = JFactory::getDate()->format('Y-m-d H:i:s');
 		$order_id = (isset($order_item->order_id))? $order_item->order_id : '';
 		
+        /**
 		//update the product
 		$query = "UPDATE #__mymuse_product SET file_downloads = file_downloads +1 WHERE id=".$product->id;
 		$db->setQuery($query);
 		$db->execute();
+        */
 		
 		// update the order_item
 		if($order_item){
@@ -819,15 +821,15 @@ class myMuseViewStore extends JViewLegacy
 			$db->execute();
 		}
 		//update the product file_name json entry
-		$jason = json_decode($product->file_name);
+		$jason = json_decode($product->file);
 		if(is_array($jason)){
 			for($i = 0; $i < count($jason); $i++){
 				if($jason[$i]->file_name == $filename){
 					$jason[$i]->file_downloads = $jason[$i]->file_downloads + 1;
 				}
 			}
-			$file_name = json_encode($jason);
-			$query = "UPDATE #__mymuse_product SET file_name='$file_name' WHERE id=".$product->id;
+			$file = json_encode($jason);
+			$query = "UPDATE #__mymuse_product SET file='$file' WHERE id=".$product->id;
 			$db->setQuery($query);
 			$db->execute();
 		}

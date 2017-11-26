@@ -37,21 +37,7 @@
 				</div>
 			</div>
 			
-			<div class="control-group">
-				<div class="control-label">
-					<label id="jform_preview_list-lbl" for="jform_preview_list"  class="hasTip" title="<?php echo JText::_("MYMUSE_SELECT_OTHER_CATS")?>">
-				<?php echo JText::_( 'MYMUSE_SELECT_OTHER_CATS' ); ?></label>
-				</div>
-				<div class="controls">
-				<?php 
-				if(!$this->item->id){
-					echo JText::_( 'MYMUSE_SAVE_THEN_ADD_CATS' );
-				}else{
-					echo $this->form->getInput('othercats'); 
-				}	
-				?>
-				</div>
-			</div>
+
 			<div class="control-group">
 				<div class="control-label">
 					<?php echo $this->form->getLabel('product_sku'); ?>

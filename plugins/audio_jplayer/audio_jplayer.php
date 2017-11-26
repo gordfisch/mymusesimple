@@ -319,7 +319,7 @@ class plgMymuseAudio_jplayer extends JPlugin
     
     	';
         
-        if(($count && ($index +1) == $count) || $count == 0){
+        if($count && ($index +1) == $count){
 
         	if($this->params->get("my_player_errors")){
         		for($i = 0; $i < $count; $i++){

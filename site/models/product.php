@@ -346,11 +346,8 @@ class MyMuseModelProduct extends JModelItem
 			$track_query = "SELECT a.*,
 			ROUND(v.rating_sum / v.rating_count, 0) AS rating, v.rating_count as rating_count, s.sales
 	
-			FROM #__mymuse_track as a
+			FROM #__mymuse_product as a
 			LEFT JOIN #__mymuse_product_rating AS v ON a.id = v.product_id
-
-			
-        
 			LEFT JOIN (SELECT sum(quantity) as sales, x.product_name, x.product_id FROM
         		(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
         		i.product_name, product_id as all_id
@@ -358,8 +355,8 @@ class MyMuseModelProduct extends JModelItem
         		LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
         		GROUP BY i.product_id, i.product_name )
         		as x GROUP BY x.all_id,x.product_name) as s ON s.product_id = a.id
-			WHERE a.product_id='".$pk."'
-			AND a.published=1
+			WHERE a.parentid='".$pk."' AND a.product_downloadable =1
+			AND a.state=1
 					";
 			
 			
@@ -397,41 +394,34 @@ class MyMuseModelProduct extends JModelItem
 				$root = JPATH_ROOT.DS;
 				while (list($i,$track)= each( $tracks )){
 
-					if($name = json_decode($track->track)){
-						if(isset($name[0]->file_length)){
-							$track->file_length = $name[0]->file_length;
-						}
-					}
+					$track->file = json_decode($track->file);
+
 					//other cats
 					$track->othercats = '';
 					$tracks[$i]->price = $this->getPrice($track);
 
 					//Audio/Video or some horrid mix of both
 					if($this->_item[$pk]->flash_type != "mix"){
-						if($this->_item[$pk]->flash_type == "audio" && $track->type == "video"){
+						if($this->_item[$pk]->flash_type == "audio" && $track->file_type == "video"){
 							//oh no it's a mix
 							$this->_item[$pk]->flash_type = "mix";
 							$track->flash_type = "mix";
-						}elseif($this->_item[$pk]->flash_type == "video" && $track->type == "audio"){
+						}elseif($this->_item[$pk]->flash_type == "video" && $track->file_type == "audio"){
 							//oh no it's a mix
 							$this->_item[$pk]->flash_type = "mix";
 							$track->flash_type = "mix";
 						}else{
-							$this->_item[$pk]->flash_type = $track->type;
-							$track->flash_type = $track->type;
+							$this->_item[$pk]->flash_type = $track->file_type;
+							$track->flash_type = $track->file_type;
 						}
 					}else{
 						$track->flash_type = "mix";
 					}
 		
-					if($track->preview){
+					if($track->file_preview){
 						$preview_tracks[] = $track;
 					}else{
 						$track->flash= '';
-					}
-					$jason = json_decode($track->track);
-					if(is_array($jason)){
-						$track->track = $jason;
 					}
 				} // each track
 				
@@ -446,23 +436,23 @@ class MyMuseModelProduct extends JModelItem
 					
 						$flash = '';
 						$track->purchased = 0;
-						if($track->preview){
+						if($track->file_preview){
 
-							$track->path = $site_url.$track->preview;
-							$track->real_path = $site_path.$track->preview;
+							$track->path = $site_url.$track->file_preview;
+							$track->real_path = $site_path.$track->file_preview;
 				
-							if($track->preview_2){
-								$track->path_2 = $site_url.$track->preview_2;
-								$track->real_path_2 = $site_path.$track->preview_2;
+							if($track->file_preview_2){
+								$track->path_2 = $site_url.$track->file_preview_2;
+								$track->real_path_2 = $site_path.$track->file_preview_2;
 							}
-							if($track->preview_3){
-								$track->path_3 = $site_url.$track->preview_3;
-								$track->real_path_3 = $site_path.$track->preview_3;
+							if($track->file_preview_3){
+								$track->path_3 = $site_url.$track->file_preview_3;
+								$track->real_path_3 = $site_path.$track->file_preview_3;
 							}
 							
 							//should we use the real download file? Not available in AmazonS3
 							if(!$params->get('my_use_s3')){
-								$track->download_real_path = MyMuseHelper::getDownloadPath($track->product_id, 1);
+								$track->download_real_path = MyMuseHelper::getDownloadPath($track->parentid, 1);
 								
 								if(1 == $params->get('my_download_dir_format',0)){ 
 									//downloads by format and we don't know the format
@@ -482,9 +472,9 @@ class MyMuseModelProduct extends JModelItem
 							}
 							//audio or video?
 							
-							$ext = MyMuseHelper::getExt($track->preview);
+							$ext = MyMuseHelper::getExt($track->file_preview);
 							$flash = '<!-- Begin Play -->';
-							if(substr_count($track->type,"video")){
+							if(substr_count($track->file_type,"video")){
 								//movie
 								
 								$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,$params->get('product_player_type'),0,0,$i, $count) );
@@ -492,7 +482,7 @@ class MyMuseModelProduct extends JModelItem
 									$flash .= $results[0];
 								}
 								
-							}elseif(substr_count($track->type,"audio")){
+							}elseif(substr_count($track->file_type,"audio")){
 								//audio
 								
 								$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,$params->get('product_player_type'),0,0,$i, $count));
@@ -523,9 +513,9 @@ class MyMuseModelProduct extends JModelItem
 					$audio = 0;
 					$video = 0;
 					foreach($preview_tracks as $track){
-						if($track->preview){
+						if($track->file_preview){
 							$flash .= '<!-- Begin Player -->';
-							if(substr_count($track->type,"video") && !$video){
+							if(substr_count($track->file_type,"video") && !$video){
 								//movie
 
 								$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
@@ -536,7 +526,7 @@ class MyMuseModelProduct extends JModelItem
 							
 								$video = 1;
 									
-							}elseif(substr_count($track->type,"audio") && !$audio){
+							}elseif(substr_count($track->file_type,"audio") && !$audio){
 								//audio
 								$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
 
@@ -568,15 +558,15 @@ class MyMuseModelProduct extends JModelItem
 					$i = 0;
 					$type = "";
 					foreach($preview_tracks as $track){
-						if($track->preview){
-							$track->path = $site_url.$track->preview;
+						if($track->file_preview){
+							$track->path = $site_url.$track->file_preview;
 						}
 
-						if($track->preview_2){
-							$track->path_2 = $site_url.$track->preview_2;
+						if($track->file_preview_2){
+							$track->path_2 = $site_url.$track->file_preview_2;
 						}
-						if($track->preview_3){
-							$track->path_3 = $site_url.$track->preview_3;
+						if($track->file_preview_3){
+							$track->path_3 = $site_url.$track->file_preview_3;
 						}
 						$this->_item[$pk]->previews[] = $track;
 						if(preg_match("/video/",$track->type)){
@@ -768,50 +758,6 @@ class MyMuseModelProduct extends JModelItem
 	}
 
 
-	
-	/**
-     * getAttributes
-     * 
-     * @param int $item_id
-     * @param int $product_id
-     * @param string $attribute_name
-     * @return object
-     */
-  function getAttributes($item_id="",$product_id="",$attribute_name="") {
-
-  	$db = JFactory::getDBO();
-    if ($item_id and $product_id) {
-      $q  = "SELECT * FROM #__mymuse_product_attribute as pa, #__mymuse_product_attribute_sku as pas  \n";
-      $q .= "WHERE pa.product_id = '$item_id'  \n";
-      $q .= "AND pas.product_parent_id =$product_id  \n";
-      if ($attribute_name) {
-        $q .= "AND pa.attribute_name"." = '$attribute_name'  \n";
-      }
-      $q .= "AND pa.product_attribute_sku_id=pas.id  \n";
-      $q .= "ORDER BY ordering, pa.attribute_name  \n";
-    } elseif ($item_id) {
-      $q  = "SELECT * FROM #__mymuse_product_attribute  \n";
-      $q .= "WHERE product_id = $item_id ";
-      if ($attribute_name) {
-        $q .= "AND attribute_name = '$attribute_name'  \n";
-      }
-    } elseif ($product_id) {
-      $q  = "SELECT * FROM #__mymuse_product_attribute_sku  \n";
-      $q .= "WHERE product_parent_id =$product_id  \n";
-      if ($attribute_name) {
-        $q .= "AND #__mymuse_product_attribute.attribute_name = '$attribute_name'  \n";
-      }
-      $q .= " ORDER BY ordering,attribute_name \n";
-      //$q .= " ORDER BY attribute_list ";
-    } else {
-      $this->error = JText::_("MYMUSE_ERROR_GET_ATTRIBUTE");
-      return false;
-    }
-
-	$db->setQuery($q);
-	$res = $db->loadObjectList();
-    return $res;
-  }
 	
    /**
      * getPrice
@@ -1151,6 +1097,7 @@ class MyMuseModelProduct extends JModelItem
   			}
   		}
 	
+	/**
   		//other cats
   		$query = "SELECT * FROM #__mymuse_product_category_xref
 				WHERE product_id = '".$productid."'";
@@ -1161,6 +1108,9 @@ class MyMuseModelProduct extends JModelItem
   				$cats[] = $r->catid;
   			}
   		}
+  		*/
+
+
   		$cats = array_unique($cats);
   		$catsin = implode(",",$cats);
   		
@@ -1168,7 +1118,8 @@ class MyMuseModelProduct extends JModelItem
   		
   		//get the products
   		$query = "SELECT id, title, catid, list_image, product_made_date FROM #__mymuse_product
-				WHERE catid IN ($catsin) 
+		WHERE catid IN ($catsin) 
+		AND product_downloadable != 1
   		AND id != $productid
   		ORDER BY FIELD(catid, $catsin), product_made_date DESC 
   		LIMIT ".$params->get('my_max_recommended', 4);

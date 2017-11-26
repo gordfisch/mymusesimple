@@ -35,7 +35,7 @@ class MymuseTableproduct extends JTable
 
 	public function bind($array, $ignore = '')
 	{
-	
+
 		$form = JRequest::getVar('jform','','post','', JREQUEST_ALLOWRAW );
 		if(isset($form['articletext'])){
 			$array['articletext'] = $form['articletext'];
@@ -72,6 +72,12 @@ class MymuseTableproduct extends JTable
 			$this->setRules($rules);
 		}
 
+		if (trim($array['alias']) == '') {
+			$array['alias'] = $array['title'];
+		}
+		$array['alias'] = JApplication::stringURLSafe($array['alias']);
+
+
 		return parent::bind($array, $ignore);
 	}
 
@@ -89,7 +95,7 @@ class MymuseTableproduct extends JTable
 		$this->title = trim($this->title);
 
 		if ($this->title == '') {
-			$this->setError(JText::_('MYMUSE_FILE_MUST_HAVE_A_TITLE').print_pre($this));
+			$this->setError(JText::_('MYMUSE_FILE_MUST_HAVE_A_TITLE'));
 			return false;
 		}
 
@@ -115,7 +121,6 @@ class MymuseTableproduct extends JTable
 		
 		// Check the publish down date is not earlier than publish up.
 		if ($this->publish_down > $this->_db->getNullDate() && $this->publish_down < $this->publish_up) {
-			echo "Swap the dates.";
 			$temp = $this->publish_up;
 			$this->publish_up = $this->publish_down;
 			$this->publish_down = $temp;
@@ -178,24 +183,12 @@ class MymuseTableproduct extends JTable
 		$post 			= JRequest::get('post');
 		$form 			= $input->get('jform', array(), 'ARRAY'); 
 		$select_files 	= $input->get('select_file', '' ,'array');
-		$preview 		= $input->getString('preview', '');
+		$preview 		= $input->getString('file_preview', '');
 		$current_preview = $input->get('current_preview', '');
 		$remove_preview = $input->get('remove_preview', '');
 		$date			= JFactory::getDate();
 		$user			= JFactory::getUser();
 		$db 			= JFactory::getDBO();
-
-print_pre($form); exit;
-		foreach($form as $key => $value){
-			if($key == "articletext"){
-				continue;
-			}
-			$this->$key = (isset($value) && $value)? $value : '';
-
-		}
-
-
-
 
 
 		if ($this->id) {
@@ -345,7 +338,7 @@ print_pre($form); exit;
 			$this->type = "audio";
 		}
 		
-		// Preview from select boxe
+		// Preview from select box
 		if(isset($preview) && $preview && $preview != $current_preview){
 			if($this->parentid){
 				$path = MyMuseHelper::getSitePath($this->parentid, 1);
@@ -374,19 +367,18 @@ print_pre($form); exit;
 					
 				}
 			}
-			$this->preview = $file_preview_name;
+			$this->file_preview = $file_preview_name;
 		}else{
-			$this->preview = isset($current_preview)? $current_preview : '';
+			$this->file_preview = isset($current_preview)? $current_preview : '';
 		}
 		if($remove_preview){
-			$this->preview = '';
+			$this->file_preview = '';
 		}
-
 
 
 		$this->checkin();
 		$result = parent::store($updateNulls);
-print_pre($this); exit;				
+
 		if($result){
 
 			// clear product_category_xref
@@ -441,7 +433,7 @@ print_pre($this); exit;
 				$this->product_sku = $this->alias.'-'.$this->id;
 			}
 			$result = parent::store($updateNulls);
-			
+	
 			// onMymuseAfterSave  onFinderAfterSave
 			$dispatcher = JEventDispatcher::getInstance();
 			JPluginHelper::importPlugin('finder');
@@ -630,4 +622,377 @@ print_pre($this); exit;
     
     
 
+    /**
+     * Create a new folder
+     * 
+     * @param   string folder name
+     *
+     * @return  boolean  True on success.
+     */
+    public function folderNew($dir)
+    {
+    	$application = JFactory::getApplication();
+    	$params = MyMuseHelper::getParams();
+    	if($params->get('my_use_s3')){
+
+    		// first section is bucket name
+    		$parts = explode(DS,$dir);
+    		$bucket = array_shift($parts);
+    		$bucket = trim($bucket, DS);
+    		$uri = implode(DS, $parts);
+    		$uri = trim($uri,DS).DS;
+
+    		try{
+    			$result = $this->_s3->putObject([
+    					'Bucket'     => $bucket,
+    					'Key'        => $uri,
+    					'Body' => '',
+    			]);
+    		} catch (S3Exception $e) {
+    			//echo $e->getMessage() . "\n";
+    			$this->setError( 'S3 Error: '.$e->getMessage() );
+    			$application->enqueueMessage('S3 Error: '.$e->getMessage() , 'error');
+    			return false;
+    		}
+    		
+
+    	}else{
+    		$status = JFolder::create($dir);
+    		if(!$status){
+    			$this->setError( "Could not create $dir");
+    			$application->enqueueMessage("Could not create $dir" , 'error');
+    			return false;
+    		}
+    		if(!JFile::copy(JPATH_ROOT.DS."administrator".DS."components".DS."com_mymuse".DS."assets".DS."index.html",
+    				$dir.DS."index.html")){
+    			$this->setError(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").": ".$artistdir);
+    			$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_COPY_INDEX").": ".$artistdir, 'error');
+    			return false;
+    		}
+    	}
+    	 
+    	return true;
+    }
+    
+    
+    /**
+     * Delete a file
+     * 
+     * @param   string file name
+     *
+     * @return  boolean  True on success.
+     */
+    public function fileDelete($file)
+    {
+    	$application = JFactory::getApplication();
+    	$params = MyMuseHelper::getParams();
+    	if($params->get('my_use_s3')){
+    		
+    		// first section is bucket name
+    		$parts = explode(DS,$file);
+    		$bucket = array_shift($parts);
+    		$bucket = trim($bucket, DS);
+    		$uri = implode(DS, $parts);
+    		$uri = trim($uri,DS);
+
+    		try{
+    			$result = $this->_s3->deleteObject([
+    					'Bucket'     => $bucket,
+    					'Key'        => $uri
+    			]);
+    		} catch (S3Exception $e) {
+    			//echo $e->getMessage() . "\n";
+    			$this->setError( 'S3 Error: '.$e->getMessage() );
+    			$application->enqueueMessage('S3 Error: '.$e->getMessage() , 'error');
+    			return false;
+    		}
+    	}else{
+    		if(!JFile::delete($file)){
+    			$this->setError(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".file);
+    			$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_DELETE_FILE").": ".file , 'error');
+    		}
+    	}
+    	return true;
+    }
+    
+    /**
+     * Upload a file
+     * 
+     * @param   string file to 
+     * @param   string file name moving to
+     *
+     * @return  boolean  True on success.
+     */
+    public function fileUpload($tmpName, $new_file)
+    {
+    	if(!file_exists($tmpName)){
+    		$this->setError(JText::_("MYMUSE_FILE_DOES_NOT_EXIST").": ".$tmpName);
+    		return false;
+    	}
+    	$application = JFactory::getApplication();
+    	$params = MyMuseHelper::getParams();
+    	
+    	
+    	
+    	if($params->get('my_use_s3')){
+    		$s3 = MyMuseHelperAmazons3::getInstance();
+    		// first section is bucket name
+    		$parts = explode(DS,$new_file);
+    		$bucket = array_shift($parts);
+    		$bucket = trim($bucket, DS);
+    		$uri = implode(DS, $parts);
+    		$uri = trim($uri,DS);
+    		try{
+    			$result = $this->_s3->putObject([
+    					'Bucket'     => $bucket,
+    					'Key'        => $uri,
+    					'SourceFile' => $tmpName,
+    			]);
+    		} catch (S3Exception $e) {
+    			//echo $e->getMessage() . "\n";
+    			$this->setError( 'S3 Error: '.$e->getMessage());
+    			$application->enqueueMessage('S3 Error: '.$e->getMessage() , 'error');
+    			echo $this->_s3->getError(); exit;
+    			return false;
+    		}
+    	}else{
+    		
+    		if(!JFile::upload($tmpName, $new_file)){
+    			$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$tmpName." ".$new_file);
+    			return false;
+    		}
+    	}
+    	return true;
+    	 
+    }
+    
+    /**
+     * Copy a file
+     * 
+     * @param   string file to copy
+     * @param   string file name copy to
+     *
+     * @return  boolean  True on success.
+     */
+    public function fileCopy($src, $dest)
+    {
+    	$application = JFactory::getApplication();
+    	$params = MyMuseHelper::getParams();
+    	if($params->get('my_use_s3')){
+    		//they are both on s3. Must download one 
+    		$oldParts = explode(DS,$old_file);
+    		
+    		$oldBucket = array_shift($oldParts);
+    		$oldBucket = trim($oldBucket, DS);
+    		$uri = implode(DS, $oldParts);
+    		
+    		$jconfig = JFactory::getConfig();
+    		$tmpName = $jconfig->get('tmp_path','').DS.array_pop($oldParts );
+    		
+    		$parts = explode(DS,$dest);
+    		$newbucket = array_shift($parts);
+    		$newbucket = trim($newbucket, DS);
+    		$newname = implode(DS, $parts);
+    		
+
+    		try{
+    			$result = $this->_s3->copyObject([
+    				'Bucket' => $newbucket,
+    				'CopySource' => $src,
+    				'Key' => $newname,
+    			]);
+    		} catch (S3Exception $e) {
+    			//echo $e->getMessage() . "\n";
+    			$this->setError( 'S3 Error: '.$e->getMessage() );
+    			$application->enqueueMessage('S3 Error: '.$e->getMessage() , 'error');
+    			return false;
+    		}
+    		
+    		//now delete the old one
+    		try{
+    			$result = $this->_s3->deleteObject([
+    					'Bucket'     => $oldBucket,
+    					'Key'        => $uri
+    			]);
+    		} catch (S3Exception $e) {
+    			//echo $e->getMessage() . "\n";
+    			$this->setError( 'S3 Error: '.$e->getMessage() );
+    			$application->enqueueMessage('S3 Error: '.$e->getMessage() , 'error');
+    			return false;
+    		}
+    	}else{
+    
+    		if(!JFile::copy("$src", "$dest")){
+    			$this->setError(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$src." ".$dest);
+    			$application->enqueueMessage(JText::_("MYMUSE_COULD_NOT_MOVE_FILE").": ".$src." ".$dest , 'error');
+    			return false;
+    		}
+    	}
+    	return true;
+    
+    }
+    
+    /**
+     * File Exists?
+     * 
+     * @param   string file name
+     *
+     * @return  boolean  True on success.
+     */
+    public function fileExists($file)
+    {
+    	$params = MyMuseHelper::getParams();
+    	
+    	if($params->get('my_use_s3')){
+
+    		$parts = explode(DS,$file);
+    		$bucket = array_shift($parts);
+    		$bucket = trim($bucket, DS);
+    		$uri = implode(DS, $parts);
+    		$uri = trim($uri,DS);
+    		$file = array_pop($parts);
+    		$prefix = implode(DS, $parts);
+    		
+    		
+    		try{
+    			$objects = $this->_s3->getIterator('ListObjects', array('Bucket' => $bucket, 'Prefix' => $prefix));
+    			foreach ($objects as $object) {
+    				if($object['Key'] == $uri){
+    					return true;
+    				}
+				}
+    		} catch (S3Exception $e) {
+    			//echo $e->getMessage() . "\n";
+    			$this->setError( 'S3 Error: '.$this->_s3->getError() );
+    			$application->enqueueMessage('S3 Error: '.$this->_s3->getError() , 'error');
+    			return false;
+    		}
+    		
+    		return false;
+    		
+    	}else{
+    		return file_exists($file);
+    	}
+    }
+    
+    public function folderMove($src, $dest)
+    {
+    	$application = JFactory::getApplication();
+    	$params = MyMuseHelper::getParams();
+    	if($params->get('my_use_s3')){
+    		if(!$this->folderNew($dest)){
+    			return false;
+    		}
+    		$old_files = array();
+    		$new_files = array();
+    		// first section is bucket name
+    		$parts = explode(DS,$src);
+    		$srcBucket = array_shift($parts);
+    		$srcBucket = trim($srcBucket, DS);
+    		$uri = implode(DS, $parts);
+    		$uri = trim($uri,DS);
+    		$uri = $uri.'/';
+    		
+    		$parts = explode(DS,$dest);
+    		$targetBucket = array_shift($parts);
+    		$targetBucket = trim($targetBucket, DS);
+    		$targetUri = implode(DS, $parts);
+    		$targetUri = trim($targetUri,DS);
+
+  			try{
+  				$objects = $this->_s3->getIterator('ListObjects', array('Bucket' => $srcBucket));
+  				foreach ($objects as $object) {
+  					$pos = strpos($object['Key'], $uri);
+  					
+  					if($pos !== false){
+  						
+  						$old_files[] = $object['Key'];
+  						
+  						$parts = explode(DS,$object['Key']);
+  						$key = array_pop($parts);	
+  						//copy the file
+  						$targetKey = $targetUri.'/'.$key;
+  						$copySource = $srcBucket.'/'.$object['Key'];
+  						$new_files[] = $targetBucket.'/'.$targetKey;
+  						//echo "object['Key'] = ".$object['Key'].' uri '.$uri.' MATCH<br /><br />';
+  						//echo "Bucket = $targetBucket : Key = $targetKey : copySource = ".$copySource." <br /><br />";
+  						if (! $this->trackExists ( $targetBucket.'/'.$targetKey )) {
+							try {
+								$this->_s3->copyObject ( array (
+										'Bucket' => $targetBucket,
+										'Key' => $targetKey,
+										'CopySource' => $copySource 
+								) );
+							} catch ( S3Exception $e ) {
+								// echo $e->getMessage() . "\n";
+								$this->setError ( 'S3 Error: ' . $e->getMessage () );
+								$application->enqueueMessage ( 'S3 Error: ' . $e->getMessage (), 'error' );
+								return false;
+							}
+							// delete the old
+							$result = $this->_s3->deleteObject ( array (
+									'Bucket' => $srcBucket,
+									'Key' => $object ['Key'] 
+							) );
+  						}
+  					
+  						
+  					}
+  					//echo "object['Key'] ".$object['Key'].' NO MATCH <br />';
+  				}
+
+  			} catch (S3Exception $e) {
+  				//echo $e->getMessage() . "\n";
+  				$this->setError( 'S3 Error: '.$e->getMessage() );
+  				$application->enqueueMessage('S3 Error: '.$e->getMessage() , 'error');
+  				return false;
+  			}
+    		
+    	}else{
+    		if ( !JFolder::create($dest) ) {
+                //Throw error message and stop script
+                $this->setError("Could not create $dest");
+                return false;
+            }
+            $files = JFolder::files($src);
+            foreach ($files as $file) {
+                JFile::move($src. DS . $file, $dest . DS. $file);
+            }
+    	}
+    	return true;
+
+    }
+    
+    public function fileFilesize($src)
+    {
+    	$application = JFactory::getApplication();
+    	$params = MyMuseHelper::getParams();
+    	if($params->get('my_use_s3')){
+    		
+    		// first section is bucket name
+    		$parts = explode(DS,$src);
+    		$bucket = array_shift($parts);
+    		$bucket = trim($bucket, DS);
+    		$uri = implode(DS, $parts);
+    		$uri = trim($uri,DS);
+    		
+    		try{
+    			// HEAD object
+    			$result= $this->_s3->headObject(array(
+    					'Bucket' => $bucket,
+    					'Key' => $uri
+    			));
+    		} catch (S3Exception $e) {
+    			//echo $e->getMessage() . "\n";
+    			$this->setError( 'S3 Error: '.$this->_s3->getError() );
+    			$application->enqueueMessage('S3 Error: '.$this->_s3->getError() , 'error');
+    			return false;
+    		}
+    		$arr = $result->toArray();
+    		return $arr['ContentLength'];
+    	}else{
+    		return filesize($src);
+    	}
+    }
 }
+  

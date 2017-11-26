@@ -185,7 +185,7 @@ class MymuseModelproduct extends JModelAdmin
 	 * @return	mixed	Object on success, false on failure.
 	 * @since	1.6
 	 */
-public function getItem($pk = null)
+    public function getItem($pk = null)
 	{
 		if(!$this->_item){
 			$input = JFactory::getApplication()->input;
@@ -199,7 +199,7 @@ public function getItem($pk = null)
 			}
 			
 			if ($item = parent::getItem($pk)) {
-				
+				//print_pre($item); exit; 
 				// Convert the attribs field to an array.
 				$registry = new JRegistry;
 				$registry->loadString($item->attribs);
@@ -242,7 +242,7 @@ public function getItem($pk = null)
 				}
 				
 			}
-			
+		
 			$this->_item = $item;
 	
 		}
@@ -300,7 +300,7 @@ public function getItem($pk = null)
 
     		if ($limit >= 0) {
     			$this->_tracks = $model->getItems();
-   
+
     			if ($this->_tracks  === false) {
     				$this->setError($model->getError());
     			}
@@ -311,282 +311,8 @@ public function getItem($pk = null)
     
     		$this->_trackPagination = $model->getPagination();
     	}
+
   
-    	$artist_alias 		= MyMuseHelper::getArtistAlias($this->_item->catid);
-    	$album_alias 		= MyMuseHelper::getAlbumAlias($this->_item->id);
-    	 
-    	$site_url = MyMuseHelper::getSiteUrl($this->_item->id,'1');
-    	$site_path = MyMuseHelper::getSitePath($this->_item->id,'1');
-    	$download_path = MyMuseHelper::getdownloadPath($this->_item->id,'1');
-    	
-    	
-    	if(count($this->_tracks)){
-    		
-    		//need count minus any alltracks minus any missing files
-    		$i = 0;
-    		foreach($this->_tracks as $track){
-
-    			//main file
-    			$jason = json_decode($track->file);
-    			if(is_array($jason)){
-    				$track->file = '';
-    				$track->file_length = '';
-    				$track->file_downloads = '';
-    				foreach($jason as $j){
-    					$track->file .= $j->file."<br />";
-    					$track->file_length .= $j->file_length."<br />";
-    					$track->file_downloads .= $j->file_downloads."<br />";
-    				}
-    			}else{
-    				//echo "NOT JASON";
-    				//$track->file = myMuseHelper::getJsonError();
-    				//echo $track->file; exit;
-    			}
-                
-                if($track->product_allfiles){
-    				continue;
-    			}
-                
-    			if($this->_params->get('my_encode_filenames')){
-    				$name = $track->title_alias;
-    			}else{
-    				$name = $track->file;
-    			}
-    			if($this->_params->get('my_download_dir_format') == 1){
-    				//by format
-    				$ext = MyMuseHelper::getExt($name);
-    				$download_path .= $ext.DS;
-    			}
-    			$full_filename = $filename = $site_path.$name;
-    			if(!$this->_params->get('my_use_s3') && file_exists($full_filename) ){
-    				$i++;
-    			}
-    			
-    			//preview
-    			$path = ($this->_params->get('my_use_s3')? $artist_alias.DS.$album_alias.DS : $site_path);
-    			$preview_full_filename = $path.$track->file_preview;
-    			
-    			if(!$this->_params->get('my_use_s3')  && file_exists($preview_full_filename)
-    				||
-    					($this->_previews && array_key_exists($preview_full_filename, $this->_previews))
-    					){
-    				$i++;
-    			}
-    		}
-
-    		$count = $i;
-
-    		JPluginHelper::importPlugin( 'mymuse' );
-    		$dispatcher		= JDispatcher::getInstance();
-    		$i = 0;
-    		$download_dir = $this->_params->get('my_download_dir');
-
-    		if(stristr(PHP_OS, 'win') && !$this->_params->get('my_use_s3')){
-    			$root = str_replace("\\","/", $root);
-    			$download_dir = str_replace("\\","/", $download_dir);
-    		}
-
-    		$i = 0;
-    		$preview_tracks = array();
-    		foreach($this->_tracks as $track){
-    			if($track->file_preview){
-    				$preview_tracks[$i] = $track;
-    				$i++;
-    			}else{
-    				$track->stream = '';
-    				$track->flash= '';
-    			}
-    		}
-
-    		$i = 0;
-
-    		foreach($preview_tracks as $track){
-    			$flash = '';
-    			
-    			//Audio/Video or some horrid mix of both
-    				
-    			if($this->_item->flash_type != "mix"){
-    				if($this->_item->flash_type == "audio" && $track->file_type == "video"){
-    					//oh christ it's a mix
-    					$this->_item->flash_type = "mix";
-    					$track->flash_type = "mix";
-    				}elseif($this->_item->flash_type == "video" && $track->file_type == "audio"){
-    					//oh christ it's a mix
-    					$this->_item->flash_type = "mix";
-    					$track->flash_type = "mix";
-    				}else{
-    					$this->_item->flash_type = $track->file_type;
-    					$track->flash_type = $track->file_type;
-    				}
-    			}else{
-    				$track->flash_type = "mix";
-    			}
-    			
-    				
-    			//make flash for admin to listen to Preview
-    			if($track->file_preview){
-    				$ext = MyMuseHelper::getExt($track->file_preview);
-    				
-    				
-    				$track->path = $site_url.$track->file_preview;
-    				$track->real_path = ($this->_params->get('my_use_s3')? '' : JPATH_ROOT.DS) . $this->_params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview;
-    				$s3_path = $artist_alias.DS.$album_alias.DS.$track->file_preview;
-    				
-    				
-    				if($track->file_preview_2){
-    					$track->real_path2 = ($this->_params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$this->_params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview_2;
-    					$track->path_2 = $site_url.$track->file_preview_2;
-    				}
-    				if($track->file_preview_3){
-    					$track->real_path3 = ($this->_params->get('my_use_s3')? '' : JPATH_ROOT.DS) .$this->_params->get('my_preview_dir').DS.$artist_alias.DS.$album_alias.DS.$track->file_preview_3;
-    					$track->path_3 = $site_url.$track->file_preview_3;
-
-    				}
-    				$track->flash_type = $track->file_type;
-				
-    				if((!$this->_params->get('my_use_s3')  && file_exists($track->real_path))
-    						|| 
-    						($this->_previews && array_key_exists($s3_path, $this->_previews))
-    						){
-    		
-    					if($track->file_type == "video"){
-    						//video
-    							
-    						$flash = '<!-- Begin Flash Preview Player -->';
-    						$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track, 'single',192, 256, $i, $count));
-    						if(isset($results[0]) && $results[0] != ''){
-    							$flash .= $results[0];
-    						}
-    						$flash .= '<!-- End Flash Preview Player -->';
-    							
-    					}elseif($track->file_type == "audio"){
-    						//echo 'audio';
-    						$flash = '<!-- Begin Flash Preview Player -->';
-    						$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track, 'single', 25, 200, $i, $count ) );
-    						if(isset($results[0]) && $results[0] != ''){
-    							$flash .= $results[0];
-    						}
-    						$flash .= '<!-- End Flash Preview Player -->';
-    							
-    					}
-
-    					$i++;
-    				}
-    			}
-
-    			$track->flash = $flash;
-
-    			//make flash for admin to listen to Main File, we'll call it stream
-    			$stream = "";
-    			$htaccess = "";
-    			if($this->_params->get('my_encode_filenames')){
-    				$name = $track->title_alias;
-    			}else{
-    				$name = $track->file;
-    			}
-    			if(file_exists($this->_params->get('my_download_dir').DS.'.htaccess')){
-    				$htaccess = 1;
-    			}
-
-    			if($name && !$htaccess){
-    				$full_filename = $this->_params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
-    				if(!file_exists($full_filename)){
-    					//try with the root
-    					$full_filename = JPATH_ROOT.DS.$this->_params->get('my_download_dir').DS.$artist_alias.DS.$album_alias.DS.$name;
-    				}
-    				//echo $full_filename."<br />";
-    				if(!file_exists($full_filename)){
-    					$stream = '';
-    				}elseif( !$track->product_allfiles ){
-    						
-    					// see if it is inside the web root
-    					//echo "root = $root<br />download_dir = $download_dir<br />";
-    					if(preg_match("#$root#",$download_dir)){
-
-    						$ext = MyMuseHelper::getExt($name);
-    						$site_url = preg_replace("#administrator/#","",JURI::base());
-    						$track->path = $site_url.str_replace($root,'',$download_dir);
-    						$track->path .= "/".$name;
-    						$track->oldid = $track->id;
-    						$track->id = "m".$track->id;
-    						$track->file_preview_2 = '';
-    						$track->file_preview_3 = '';
-
-    						if($track->file_type == "video"){
-    							//video
-
-    							$stream  = '<!-- Begin Fulltrack Player -->';
-    							$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track, 'single',192, 256, $i, $count));
-    							if(is_array($results) && $results[0] != ''){
-    								$stream  .= $results[0];
-    							}
-    							$stream  .= '<!-- End Fulltrack Player -->';
-
-    						}elseif($track->file_type == "audio"){
-    							//audio
-    							$stream  = '<!-- Begin Fulltrack Player -->';
-    							$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track, 'single', 25, 100, $i, $count ));
-    							if(is_array($results) && isset($results[0]) && $results[0] != ''){
-    								$stream  .= $results[0];
-    							}
-    							$stream  .= '<!-- End  Fulltrack Player -->';
-
-    						}
-
-    						$i++;
-    						$track->id = $track->oldid;
-    					}
-    				}
-
-    			}
-    				
-    			
-    			$track->stream = $stream;
-
-    		}
-
-    		// if there were previews
-    		if($i){
-    			// make a controller for the play/pause buttons
-    			$results = $dispatcher->trigger('onPrepareMyMuseMp3PlayerControl',array(&$preview_tracks) );
-
-    			// get main player, set to play first track
-    			reset($preview_tracks);
-    			$flash = '';
-    			$audio = 0;
-    			$video = 0;
-    			$done = 0;
-    			if(isset($preview_tracks[0])){
-    				$track = $preview_tracks[0];
-    				if($track->file_preview){
-    					if($track->file_type == "video" && !$video){
-    						//movie
-    						$flash .= '<!-- Begin VIDEO Player -->';
-    						$results = $dispatcher->trigger('onPrepareMyMuseVidPlayer',array(&$track,'singleplayer') );
-    						if(is_array($results) && $results[0] != ''){
-    							$flash .= $results[0];
-    						}
-    						$flash .= '<!-- End Player -->';
-    						$video = 1;
-
-    					}elseif($track->file_type == "audio" && !$audio){
-    						//audio
-    						$flash .= '<!-- Begin AUDIO Player -->';
-    						$results = $dispatcher->trigger('onPrepareMyMuseMp3Player',array(&$track,'singleplayer') );
-
-    						if(is_array($results) && isset($results[0]) && $results[0] != ''){
-    							$flash .= $results[0];
-    						}
-    						$flash .= '<!-- End Player -->';
-    						$audio = 1;
-    					}
-    					$this->_item->flash = $flash;
-    					$this->_item->flash_id = $track->id;
-    				}
-    			}
-    		}
-    	}
-
     	return $this->_tracks;
     }
 	/**
@@ -657,13 +383,13 @@ public function getItem($pk = null)
  		// file lists for albums
  		$artist_alias = MyMuseHelper::getArtistAlias($parentid,1);
 		$album_alias = MyMuseHelper::getAlbumAlias($parentid,1);
-	
+
 		$site_url = MyMuseHelper::getSiteUrl($parentid,1);
 		$site_path = MyMuseHelper::getSitePath($parentid,1);
 		$download_path = MyMuseHelper::getdownloadPath($parentid,1);
 
 		$files = array();
-		
+
 		
 		// get the preview lists
 		if($this->_params->get('my_use_s3')){
@@ -718,61 +444,16 @@ public function getItem($pk = null)
 				$previews[] = JHTML::_('select.option',  $file );
 		}
 		$lists['previews'] = JHTML::_('select.genericlist',  $previews, 'file_preview', 'class="inputbox" size="1" ', 'value', 'text', $this->_item->file_preview );
-		$lists['previews_2'] = JHTML::_('select.genericlist',  $previews, 'file_preview_2', 'class="inputbox" size="1" ', 'value', 'text', $this->_item->file_preview_2 );
-		$lists['previews_3'] = JHTML::_('select.genericlist',  $previews, 'file_preview_3', 'class="inputbox" size="1" ', 'value', 'text', $this->_item->file_preview_3 );
+
 		
 		
 		// get the download tracks lists
 		$files = array();
-		if($this->_params->get('my_use_s3')){
-			if(1 == $this->_params->get('my_download_dir_format')){ //downloads by format
-				$result = array();
-				$download_path = trim($download_path, '/');
-				//get main folder, might be some 'other' files
-				$format_result = array();
-				try{
-					$format_result = $this->_s3->listObjects([
-							'Bucket' => $download_path,
-							'Prefix' => ''
-					]);
-				} catch (S3Exception $e) {
-						
-					$this->setError( 'S3 Error: '.$this->_s3->getError() );
-					$application->enqueueMessage('S3 Error: '.$this->_s3->getError() , 'error');
-					return false;
-				}
-				$result = array_merge($result, $format_result['Contents']);
 
-				$everything = $result;
-			}else{
-				$start = strlen($this->_params->get('my_download_dir'));
-				$prefix = substr($download_path, $start);
-				
-				$result = $this->_s3->listObjects([
-					'Bucket' => $this->_params->get('my_download_dir'), // REQUIRED
-					'Prefix' => $prefix
-				]);
-				$everything = $result['Contents'];
-			}
-			
-			
-			$folder = trim($download_path,'/');
-			$dirLength = strlen($folder);
-			if(count($everything)) foreach($everything as $info) {
-				if(array_key_exists('Size', $info) && (substr($info['Key'], -1) != '/')) {
-					$path = $info['Key'];
-					if(substr($info['Key'], 0, $dirLength) == $folder) {
-						$path = substr($info['Key'], $dirLength);
-					}
-					$path = trim($path,'/');
-					$files[] = $path;
-				}
-			}
-
-		}else{
-			$directory = MyMuseHelper::getDownloadPath($parentid,'1');
+			$directory = rtrim(MyMuseHelper::getDownloadPath($parentid,'1'), '/');
 			if($this->_params->get('my_download_dir_format')){
 				//by format
+
 				$files = array();
 				foreach($this->_params->get('my_formats') as $format){
 					if(!JFolder::exists( $directory.DS.$format )){
@@ -783,13 +464,13 @@ public function getItem($pk = null)
 						$files = array_merge($files,$arr);
 					}
 				}
+
 			}else{
 				if(!JFolder::exists( $directory )){
 					JFolder::create( $directory );
 				}
 				$files = JFolder::files( $directory );
 			}
-		}
 		
 		$myfiles = array(  JHTML::_('select.option',  '', '- '. JText::_( 'MYMUSE_SELECT_FILE' ) .' -' ) );
 		foreach($files as $file){
@@ -801,7 +482,7 @@ public function getItem($pk = null)
 		$i = 0;
 		if($current){
 			for($i = 0; $i < count($current); $i++){
-				$lists['select_file'][$i] = JHTML::_('select.genericlist',  $myfiles, "select_file[$i]", 'class="inputbox" size="1" ', 'value', 'text', $current[$i]->file);
+				$lists['select_file'][$i] = JHTML::_('select.genericlist',  $myfiles, "select_file[$i]", 'class="inputbox" size="1" ', 'value', 'text', $current[$i]->file_name);
 			}
 		}else{
 			$lists['select_file'][0] = JHTML::_('select.genericlist',  $myfiles, "select_file[0]", 'class="inputbox" size="1" ', 'value', 'text','');

@@ -106,7 +106,16 @@
 				multiple="false" 
 		/>
 		
-
+    <field
+          name="file_preview"
+          type="text"
+          label="MYMUSE_FILE_NAME"
+          description="MYMUSE_FILE_NAME"
+          class="readonly"
+          readonly="1"
+          size="80"
+          required="false"
+    />
 		
 		<field
                 name="parentid"
@@ -121,7 +130,7 @@
 		
 		<field
                 name="price"
-                type="hidden"
+                type="text"
                 label="MYMUSE_PRICE"
                 description="MYMUSE_PRICE"
                 class="inputbox"
@@ -283,7 +292,7 @@
 		/>
 		<field
 	      name="product_discount"
-	      type="hidden"
+	      type="text"
 	      label="MYMUSE_DISCOUNT"
 	      description="MYMUSE_DISCOUNT"
 	      class="inputbox"
@@ -295,14 +304,36 @@
 
     <field
       name="product_sku"
-      type="hidden"
+      type="text"
       label="MYMUSE_SKU"
       description="MYMUSE_SKU_DESC"
       class="inputbox"
       size="20"
       required="false"
    />
-      	
+   <field 
+        name="file_type" 
+        type="list"
+        label="MYMUSE_PRODUCT_FILE_TYPE_LABEL"
+        description="MYMUSE_PRODUCT_FILE_TYPE_DESC"
+        default="audio"
+        >
+        <option value="audio">MYMUSE_AUDIO</option>
+        <option value="video">MYMUSE_VIDEO</option>
+        <option value="other">MYMUSE_OTHER</option>
+      </field>
+
+    <field 
+        name="product_downloadable" 
+        type="list"
+        label="MYMUSE_PRODUCT_DOWNLOADABLE_LABEL"
+        description="MYMUSE_PRODUCT_DOWNLOADABLE_DESC"
+        default="0"
+        >
+        <option value="0">JNO</option>
+        <option value="1">JYES</option>
+      </field>
+
 	<field 
 		name="product_created" 
 		type="calendar" 

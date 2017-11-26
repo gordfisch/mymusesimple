@@ -196,6 +196,7 @@ class MyMuseHttpdownload {
         {
             
             $size = filesize($this->data);
+     
             if ($seek > ($size - 1)) $seek = 0;
             if ($this->filename == null) $this->filename = basename($this->data);
             

@@ -66,7 +66,7 @@ if("1" == $this->params->get('my_price_by_product')){//price by product
 $all_tracks = 0;
 if(count($tracks)){ 
     foreach($tracks as $track){ 
-        if($track->allfiles == 1){
+        if($track->product_allfiles == 1){
             $all_tracks = $track;
         }
     }
@@ -148,12 +148,10 @@ foreach($tracks as $track){
 		$("#box_'.$track->id.'").click(function(e){
 			if(typeof document.mymuseform.variation_'.$track->id.'_id !== "undefined"){	
 				myvariation = document.mymuseform.variation_'.$track->id.'_id.value;
-				//alert("variation = "+myvariation);
 
 			}else{
 				myvariation = 0;
 			}
-			alert("'.$track->id.'");
             $.post("'.$url.'",
             {
                 "productid":"'.$track->id.'",
@@ -167,7 +165,6 @@ foreach($tracks as $track){
                 idx = res.idx;
                 msg = res.msg;
                 action = res.action;
-                //alert(res.msg);
                 if(action == "deleted"){
                     $("#img_'.$track->id.'").attr("src","'.JURI::root().'/components/com_mymuse/assets/images/checkbox.png");
                 }else{
@@ -729,7 +726,7 @@ endif; ?>
       		
       		<?php 
       		foreach($tracks as $track) : 
-                if($track->allfiles == 1) :
+                if($track->product_allfiles == 1) :
                    // continue;
                 endif;
              	?>
@@ -737,11 +734,11 @@ endif; ?>
 					<!--  TITLE COLUMN -->
 					<td class="mytitle"><?php echo $track->title; ?> 
       						<?php  
-      						if($track->allfiles == "1") : 
+      						if($track->product_allfiles == "1") : 
 								echo "(".JText::_("MYMUSE_ALL_TRACKS").")";
 					 		endif; ?>
-					 		<?php if($track->description && $track->description != $track->title) :
-					 			echo '<br /><span class="track-text">'.$track->description.'</span>';
+					 		<?php if($track->introtext && $track->introtext != $track->title) :
+					 			echo '<br /><span class="track-text">'.$track->introtext.'</span>';
 							endif; ?>
                             
                            
@@ -771,8 +768,8 @@ endif; ?>
         			<?php  if($params->get('product_show_filesize', 0)) : ?>	
         				<td class="myfilesize">
         				<?php 
-        				if(!$track->allfiles) :
-        					echo MyMuseHelper::ByteSize($track->file_length); 
+        				if(!$track->product_allfiles) :
+        					echo MyMuseHelper::ByteSize($track->file[0]->file_length); 
 						endif; ?>
         				</td>
         			<?php endif; ?>
@@ -868,7 +865,7 @@ endif; ?>
                     <!--  SELECT COLUMN -->
 			  		<?php  if($params->get('product_show_select_column', 1)) :?>
         				<td class="myselect" nowrap>
-                        <?php if($track->track || $track->allfiles) :?>
+       
                         <a href="javascript:void(0)"
 						id="box_<?php echo $track->id; ?>"><img
 							id="img_<?php echo $track->id; ?>"
@@ -879,15 +876,15 @@ endif; ?>
                                 echo "components/com_mymuse/assets/images/checkbox.png";
                             endif;
                         ?>"></a>
-      					<?php  endif; ?>
+    
                         
-        				<?php if($track->track || $track->allfiles) :?>
+        			
         				<span class="mycheckbox"><input style="display: none;"
 							type="checkbox" name="productid[]"
 							value="<?php echo $track->id; ?>"
 							id="box<?php echo $check; $check++; ?>" /> </span>
 
-      					<?php  endif; ?>
+      		
       					</td>
       				<?php  endif; ?>	
         			
@@ -914,7 +911,7 @@ echo $product->fulltext;
 endif;
 ?>
 
-<?php if(isset($this->recommends_display)) : ?>
+<?php if(isset($this->recommends_display) && $this->recommends_display != '') : ?>
 <!-- START RECOMMENDS -->
 <?php echo $this->recommends_display; ?>
 <!-- END RECOMMENDS -->
