@@ -12,29 +12,36 @@
 	"buffers":
 	[
 		{
-			"file": "site/models/product.php",
+			"file": "site/views/store/view.html.php",
 			"settings":
 			{
-				"buffer_size": 41227,
+				"buffer_size": 30131,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "site/views/product/view.html.php",
+			"file": "administrator/sql/install.mysql.utf8.sql",
 			"settings":
 			{
-				"buffer_size": 11079,
+				"buffer_size": 48455,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "site/views/product/tmpl/product.php",
+			"file": "administrator/views/products/tmpl/check_check.php",
 			"settings":
 			{
-				"buffer_size": 32803,
-				"encoding": "UTF-8",
+				"buffer_size": 2544,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "administrator/models/products.php",
+			"settings":
+			{
+				"buffer_size": 14753,
 				"line_ending": "Unix"
 			}
 		}
@@ -80,13 +87,27 @@
 	"expanded_folders":
 	[
 		"/var/www/html/mymuse-git/mymusesimple",
-		"/var/www/html/mymuse-git/mymusesimple/site",
-		"/var/www/html/mymuse-git/mymusesimple/site/views",
-		"/var/www/html/mymuse-git/mymusesimple/site/views/product",
-		"/var/www/html/mymuse-git/mymusesimple/site/views/product/tmpl"
+		"/var/www/html/mymuse-git/mymusesimple/administrator",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/models",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/sql",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views"
 	],
 	"file_history":
 	[
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/order/tmpl/edit.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/views/order/tmpl/order_customer.php",
+		"/var/www/html/mymuse-git/mymusesimple/site/helpers/httpdownload.php",
+		"/var/www/html/mymuse-git/mymusesimple/administrator/models/order.php",
+		"/var/www/html/mymuse-git/mymusesimple/site/models/product.php",
+		"/var/www/html/mymuse-git/mymusesimple/site/views/product/view.html.php",
+		"/var/www/html/mymuse-git/mymusesimple/site/views/product/tmpl/product.php",
+		"/var/www/html/mymuse-git/mymusesimple/site/views/cart/tmpl/cart_cart.php",
+		"/var/www/html/mymuse-git/mymusesimple/site/views/cart/tmpl/cart.xml",
+		"/var/www/html/mymuse-git/mymusesimple/site/views/cart/tmpl/cart_checkout_footer.php",
+		"/var/www/html/mymuse-git/mymusesimple/site/views/cart/view.html.php",
+		"/var/www/html/mymuse-git/mymusesimple/site/helpers/checkout.php",
+		"/var/www/html/mymuse-git/mymusesimple/site/helpers/cart.php",
+		"/var/www/html/mymuse-git/mymusesimple/site/controller.php",
 		"/var/www/html/mymuse-git/mymusesimple/administrator/tables/product.php",
 		"/var/www/html/mymuse-git/mymusesimple/administrator/models/forms/product.xml",
 		"/var/www/html/mymuse-git/mymusesimple/administrator/controllers/product.php",
@@ -123,7 +144,6 @@
 		"/var/www/html/mymuse-git/mymusesimple/administrator/views/coupons/view.html.php",
 		"/var/www/html/mymuse-git/mymusesimple/administrator/views/mymuse/view.html.php",
 		"/var/www/html/mymuse-git/mymusesimple/administrator/views/order/view.html.php",
-		"/var/www/html/mymuse-git/mymusesimple/administrator/views/order/tmpl/order_customer.php",
 		"/var/www/html/mymuse-git/mymusesimple/administrator/views/orders/view.html.php",
 		"/var/www/html/mymuse-git/mymusesimple/administrator/views/product/tmpl/edit_allfiles.php",
 		"/var/www/html/mymuse-git/mymusesimple/administrator/views/product/tmpl/edititems.php",
@@ -159,14 +179,11 @@
 		"/var/www/html/mymuse-git/mymusesimple/site/mymuse.class.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/assets/css/mobile_css.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/controllers/reports.php",
-		"/var/www/html/mymuse-git/mymusesimple/site/helpers/cart.php",
-		"/var/www/html/mymuse-git/mymusesimple/site/helpers/checkout.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/helpers/query.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/helpers/route.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/models/categories.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/models/category.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/models/order.php",
-		"/var/www/html/mymuse-git/mymusesimple/site/models/product.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/models/reports.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/models/shopper.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/models/store.php",
@@ -177,10 +194,7 @@
 		"/var/www/html/mymuse-git/mymusesimple/site/templates/mail_html_header.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/templates/thank_you.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/templates/com_users/profile/edit.php",
-		"/var/www/html/mymuse-git/mymusesimple/site/views/cart/view.html.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/views/cart/tmpl/cart.php",
-		"/var/www/html/mymuse-git/mymusesimple/site/views/cart/tmpl/cart_cart.php",
-		"/var/www/html/mymuse-git/mymusesimple/site/views/cart/tmpl/cart_checkout_footer.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/views/cart/tmpl/cart_checkout_header.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/views/cart/tmpl/cart_coupon.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/views/cart/tmpl/cart_downloads.php",
@@ -198,9 +212,7 @@
 		"/var/www/html/mymuse-git/mymusesimple/site/views/category/tmpl/default.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/views/category/tmpl/productalpha.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/views/category/tmpl/tracks.php",
-		"/var/www/html/mymuse-git/mymusesimple/site/views/product/view.html.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/views/product/tmpl/product-old.php",
-		"/var/www/html/mymuse-git/mymusesimple/site/views/product/tmpl/product.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/views/product/tmpl/product_recommends.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/views/reports/view.html.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/views/reports/tmpl/default.php",
@@ -209,12 +221,7 @@
 		"/var/www/html/mymuse-git/mymusesimple/site/views/shopper/tmpl/listorders.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/views/store/tmpl/default.php",
 		"/var/www/html/mymuse-git/mymusesimple/site/views/store/tmpl/default_downloads.php",
-		"/var/www/html/mymuse-git/mymusesimple/site/views/store/tmpl/default_item.php",
-		"/var/www/html/mymuse-git/mymusesimple/site/views/store/tmpl/default_message.php",
-		"/var/www/html/mymuse-git/mymusesimple/site/views/tracks/view.html.php",
-		"/var/www/html/mymuse-git/mymusesimple/site/views/tracks/tmpl/alphatunes.php",
-		"/var/www/html/mymuse-git/mymusesimple/site/views/shopper/tmpl/login_to_download.php",
-		"/var/www/html/mymuse-git/mymusesimple/site/views/shopper/tmpl/register.php"
+		"/var/www/html/mymuse-git/mymusesimple/site/views/store/tmpl/default_item.php"
 	],
 	"find":
 	{
@@ -233,6 +240,16 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"->file",
+			"file",
+			"_logDownload",
+			"getRecommended",
+			"->track",
+			"getAttributes",
+			"mainframe",
+			"getProduct",
+			"product_att",
+			"ajax",
 			"allfiles",
 			"$track->preview",
 			"download",
@@ -355,6 +372,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"->file",
 			"product_allfiles",
 			"$track->file_preview",
 			"$track",
@@ -384,24 +402,24 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 3,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "site/models/product.php",
+					"file": "site/views/store/view.html.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 41227,
+						"buffer_size": 30131,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								40622,
-								40622
+								27178,
+								27178
 							]
 						],
 						"settings":
@@ -410,30 +428,64 @@
 							"remote_loading": false,
 							"synced": false,
 							"syntax": "Packages/PHP/PHP.sublime-syntax",
-							"translate_tabs_to_spaces": false
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 15640.0,
+						"translation.y": 11034.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 3,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "site/views/product/view.html.php",
+					"file": "administrator/sql/install.mysql.utf8.sql",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 11079,
+						"buffer_size": 48455,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7377,
-								7366
+								22480,
+								22480
+							]
+						],
+						"settings":
+						{
+							"incomplete_sync": null,
+							"remote_loading": false,
+							"synced": false,
+							"syntax": "Packages/SQL/SQL.sublime-syntax",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 7134.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "administrator/views/products/tmpl/check_check.php",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 2544,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
 							]
 						],
 						"settings":
@@ -445,27 +497,27 @@
 							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 2352.0,
+						"translation.y": 126.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
 					"type": "text"
 				},
 				{
-					"buffer": 2,
-					"file": "site/views/product/tmpl/product.php",
+					"buffer": 3,
+					"file": "administrator/models/products.php",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 32803,
+						"buffer_size": 14753,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								32621,
-								32621
+								13903,
+								13903
 							]
 						],
 						"settings":
@@ -473,13 +525,14 @@
 							"incomplete_sync": null,
 							"remote_loading": false,
 							"synced": false,
-							"syntax": "Packages/PHP/PHP.sublime-syntax"
+							"syntax": "Packages/PHP/PHP.sublime-syntax",
+							"translate_tabs_to_spaces": false
 						},
 						"translation.x": 0.0,
-						"translation.y": 12541.0,
+						"translation.y": 6414.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 0,
 					"type": "text"
 				}
 			]

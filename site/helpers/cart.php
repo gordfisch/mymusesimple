@@ -68,20 +68,20 @@ class MyMuseCart {
   function addToCart() {
 
     // Process the cart preparation plugins
-    $dispatcher	= JDispatcher::getInstance();
-	JPluginHelper::importPlugin('system');
-	$results = $dispatcher->trigger('onBeforeAddToCart', array (&$_POST, &$this->cart ));
+    JPluginHelper::importPlugin('system');
+    $dispatcher	    = JDispatcher::getInstance();
+    $results        = $dispatcher->trigger('onBeforeAddToCart', array (&$_POST, &$this->cart ));
 
-	$app 			= JFactory::getApplication();
-	$jinput 		= $app->input;
-    $params 		= MyMuseHelper::getParams();
+    $app 			      = JFactory::getApplication();
+    $jinput 		    = $app->input;
+    $params 		    = MyMuseHelper::getParams();
 
-    $catid 			= $jinput->get('catid',  0, 'INT');
-    $parentid 		= $jinput->get('parentid',  0, 'INT');
-    $productid 		= $jinput->get('productid',array(), 'ARRAY');
-    $quantity 		= $jinput->get('quantity',array(), 'ARRAY');
-    $variation 		= $jinput->get('variation',array(), 'ARRAY');
-    $item_quantity 	= $jinput->get('item_quantity',array(), 'ARRAY');
+    $catid 			    = $jinput->get('catid',  0, 'INT');
+    $parentid 		  = $jinput->get('parentid',  0, 'INT');
+    $productid 		  = $jinput->get('productid',array(), 'ARRAY');
+    $quantity 		  = $jinput->get('quantity',array(), 'ARRAY');
+    $variation		  = $jinput->get('variation',array(), 'ARRAY');
+    $item_quantity  = $jinput->get('item_quantity',array(), 'ARRAY');
     
    // $Itemid = $jinput->get('Itemid',  0,'INT');
 
@@ -167,28 +167,28 @@ class MyMuseCart {
      		}
       }
 
-        $updated = 0;
-        // Check for duplicate and add to current quantity
-        for ($i=0;$i<$this->cart["idx"];$i++) {
-              if (@$this->cart[$i]["product_id"] == $product_id && 
-              		@$variation[$product_id] == @$this->cart[$i]["variation"]) {
-                    $updated = 1;
-                    $this->cart[$i]["quantity"] += $quantity[$val];
-              }
-        }
-    
-        // If we did not update then add the item
-        if (!$updated) {
-            $this->cart[$this->cart["idx"]]["quantity"] = $quant;
-            $this->cart[$this->cart["idx"]]["product_id"] = $product_id;
-            $this->cart[$this->cart["idx"]]["catid"] = $category_id;
-            $this->cart[$this->cart["idx"]]["product_physical"] = $product_physical;
-            $this->cart[$this->cart["idx"]]["variation"] = (isset($variation[$product_id]))? $variation[$product_id] : '';
-            
-            $this->cart["idx"]++;
-        }
+      $updated = 0;
+      // Check for duplicate and add to current quantity
+      for ($i=0;$i<$this->cart["idx"];$i++) {
+            if (@$this->cart[$i]["product_id"] == $product_id && 
+            		@$variation[$product_id] == @$this->cart[$i]["variation"]) {
+                  $updated = 1;
+                  $this->cart[$i]["quantity"] += $quantity[$val];
+            }
+      }
+  
+      // If we did not update then add the item
+      if (!$updated) {
+          $this->cart[$this->cart["idx"]]["quantity"] = $quant;
+          $this->cart[$this->cart["idx"]]["product_id"] = $product_id;
+          $this->cart[$this->cart["idx"]]["catid"] = $category_id;
+          $this->cart[$this->cart["idx"]]["product_physical"] = $product_physical;
+          $this->cart[$this->cart["idx"]]["variation"] = (isset($variation[$product_id]))? $variation[$product_id] : '';
+          
+          $this->cart["idx"]++;
+      }
     } // end of while loop
-    
+
     //move coupons to the end
     $j = 0;
     $coupon_id = 0;
@@ -587,7 +587,7 @@ class MyMuseCart {
 				$preview_tracks[$i] = $order->items[$i];
 			}
 			$ext = '';
-			$jason = json_decode($order->items[$i]->file);
+			$jason = json_decode($order->items[$i]->file_name);
 			if(is_array($jason)){
 				
 				$order->items[$i]->variation_select = '<select name="variation['.$this->cart[$i]['product_id'].']"
@@ -608,7 +608,7 @@ class MyMuseCart {
 				$order->items[$i]->ext = isset($jason[$this->cart[$i]["variation"]]->file_ext)?
 					$jason[$this->cart[$i]["variation"]]->file_ext : '';
 			}else{
-				$order->items[$i]->ext = pathinfo($order->items[$i]->file, PATHINFO_EXTENSION);
+				$order->items[$i]->ext = pathinfo($order->items[$i]->file_name, PATHINFO_EXTENSION);
 			}
 			
 			//other cats
@@ -915,7 +915,7 @@ class MyMuseCart {
 		$row->file_contents = null;
 		
 		//TODO: check this is the right array index
-		if($name = json_decode($row->file) && isset($name[0]->file_length)){
+		if($name = json_decode($row->file_name) && isset($name[0]->file_length)){
 
 			$row->file_length = $name[0]->file_length;
 		}

@@ -210,7 +210,7 @@ Joomla.orderTable = function()
 			for ($i=0, $n=count( $this->tracks ); $i < $n; $i++)
 			{
 				$track = &$this->tracks[$i];
-				$files = json_decode($track->file);
+				$files = json_decode($track->file_name);
 				$track->max_ordering = 0;
 				if($track->product_allfiles == "1"){
 					$link 	= 'index.php?option=com_mymuse&task=product.edit_allfiles&type=allfiles&id='. $track->id.'&parentid='.$track->parentid;

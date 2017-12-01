@@ -98,7 +98,7 @@ class MyMuseCheckout
 			$cart[$i]['product'] = $MyMuseCart->getProduct($cart[$i]["product_id"]);
 			$ext = '';
 			
-			$jason = json_decode($cart[$i]['product']->file);
+			$jason = json_decode($cart[$i]['product']->file_name);
 			if(is_array($jason)){
 				$cart[$i]['product']->file_name = $jason[$cart[$i]["variation"]]->file_name;
 				$cart[$i]['product']->ext = $jason[$cart[$i]["variation"]]->file_ext;
@@ -679,7 +679,7 @@ class MyMuseCheckout
 				}
 				$order->items [$i]->attribs = $order->items [$i]->product->attribs;
 
-				$order->items[$i]->product->file = json_decode($order->items[$i]->product->file);
+				$order->items[$i]->product->file = json_decode($order->items[$i]->product->file_name);
 				$variation = 0;
 				foreach($order->items[$i]->product->file as $key => $f){
 					if($f->file_name == $order->items [$i]->file_name){

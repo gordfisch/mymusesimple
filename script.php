@@ -351,7 +351,7 @@ class com_mymuseInstallerScript
 				
 			// DEFAULT DOWNLOAD DIRECTORY
 			$name = JText::_ ( "MYMUSE_MAKE_DOWNLOAD_DIR" );
-			$download_dir = JPATH_ROOT . DS . "images" . DS . "mymuse" . DS . "downloads";
+			$download_dir = JPATH_ROOT . DS . "images" . DS . "mymuse" . DS . "downloads". DS ."mp3";
 			if (! file_exists ( $download_dir )) {
 				if (! JFolder::create ( $download_dir )) {
 					$alt = JText::_ ( "MYMUSE_FAILED" );
@@ -482,7 +482,7 @@ class com_mymuseInstallerScript
 		if(!$this->already_installed && $type == "install"){
 	
 			// update store download dir
-			$download_dir =  JPATH_ROOT.DS."images".DS."mymuse". DS . "mp3";
+			$download_dir =  JPATH_ROOT.DS."images".DS."mymuse". DS . "downloads" .DS . "mp3";
 			$name = JText::_("MYMUSE_UPDATING_STORE");
 			$query = "SELECT params FROM #__mymuse_store WHERE id='1'";
 			$db->setQuery($query);

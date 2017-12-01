@@ -44,7 +44,7 @@ class myMuseViewStore extends JViewLegacy
 		$this->params->merge($state->params);
 		$Itemid 	= $jinput->get('Itemid');
 		$user 		= JFactory::getUser();
-
+   
 		// Present a list of downloadable files
         if($task == "downloads"){
         	
@@ -124,7 +124,7 @@ class myMuseViewStore extends JViewLegacy
         	return true;
         }
         
-        
+  
         // trying to download a file!!
         if($task == "downloadfile"){
         	$jinput 	= JFactory::getApplication()->input;
@@ -235,70 +235,26 @@ class myMuseViewStore extends JViewLegacy
 			$db->setQuery($query);
 			$product = $db->loadObject();
 			
-			$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
-			$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
-			
 			$download_path = MyMuseHelper::getDownloadPath($product->parentid,1);
 			$realname = stripslashes($order_item->file_name);
 			
-			$jason = json_decode($product->file);
+			$jason = json_decode($product->file_name);
 			if(is_array($jason)){
 				foreach($jason as $j){
 					if($j->file_name == $realname){
-						if($params->get('my_encode_filenames')){
-							$filename = $j->file_alias;
-						}else{
-							$filename = $realname;
-						}
+						$filename = $realname;
 					}
 			
 				}
 			}else{
-				if($params->get('my_encode_filenames')){
-					$filename = $product->alias;
-				}else{
-					$filename = $realname;
-				}
+
+				$filename = $realname;
+	
 			}
 			$product->realname = $realname;
 						
         	$object	=& MyMuse::getObject('httpdownload','helpers');
         	
-        	//is it s3? redirect
-        	if($params->get('my_use_s3',0)){
-        		
-        		 require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
-        		 $s3 = MyMuseHelperAmazons3::getInstance();
-				 
-        		 $bucket = $params->get('my_download_dir');
-        		 $start = strlen($params->get('my_download_dir'));
-				 $download_path = substr(trim($download_path,'/'), $start);
-        		 $uri = $download_path.$filename;
-        		
-        		 $lifetime = $params->get('my_s3time');
-        		 
-        		 $expires = time() + $lifetime;
-        		 $minutes = $lifetime / 60 - 1;
-        		 
-        		 //echo "lifetime = $lifetime";
-        		 // echo '+'.$minutes.' minutes'; exit;
-        		 
-        		 $cmd = $s3->getCommand('GetObject', [
-        		 		'Bucket' => $bucket,
-        		 		'Key'    => $uri
-        		 ]);
-        		
-        		 $request = $s3->createPresignedRequest($cmd, '+'.$minutes.' minutes');
-        		 $s3URL = (string) $request->getUri();
-      
-        		 $app = JFactory::getApplication();
-        		 
-        		 //log and redirect
-        		 $this->_logDownload($user, $product, $order_item);
-        		 $app->redirect($s3URL);
-        		 exit;
-        		 
-        	}
 
         	// is it an allfiles and zip is on?
         	if($product->product_allfiles && $params->get('my_use_zip',0)){
@@ -323,9 +279,7 @@ class myMuseViewStore extends JViewLegacy
     						}
     					}
     				}
-    				if(1 == $params->get('my_download_dir_format')){
-    					$path.= $ext.DS;
-    				}
+
     				$jason = json_decode($prod->file_name);
     				if(is_array($jason)){
     					foreach($jason as $j){
@@ -364,87 +318,61 @@ class myMuseViewStore extends JViewLegacy
         			$object->download(); //Download File
         		}
      		
-        		$this->_logDownload($user, $product, $order_item);
+        		if(!$this->_logDownload($user, $product, $order_item)){
+                    $message = "Could not log download";
+                    return false;
+                }
         		
         		exit;
         		
         	}
         
-        	// download data from the database
-        	if($params->get('my_use_database')){
-        		if(!$object->set_bydata($product->file_contents)){
-        			$message = JText::_('MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_DATA');
-        			if($params->get('my_debug')){
-        				$message .= $product->file_name;
-        			}
-        			$jinput->set('msg',$message);
-        			return false;
 
-        		}else{
+    		//download a file from the filesystem
+    		if(!$filename){
+    			$message = JText::_('MYMUSE_NO_FILENAME_FOUND'). " ".$filename;
+    			if($params->get('my_debug')){
+    				$message .= $filename;
+    			}
+    			$jinput->set('msg',$message);
+    			return false;
+    		}
+			
+   
+    		$download_path = MyMuseHelper::getDownloadPath($order_item->product_id, 0);
+    		
+    		$full_filename = $download_path.$filename;
 
-        			$object->use_resume = true; //Enable Resume Mode
-        			$object->set_filename(stripslashes($product->file_name)); //Set download name
-        			//$mime = $product->file_type;
-        			if($product->product_allfiles == '1'){
-        				$mime = "application/zip";
-        			}else{
-        				$mime = "application/otect-stream";
-        			}
-
-        			$object->set_mime($mime); //File MIME (Default: application/otect-stream)
-        			$object->download(); //Download File
-
-        		}
-        	}else{
-        		//download a file from the filesystem
-        		if(!$filename){
-        			$message = JText::_('MYMUSE_NO_FILENAME_FOUND'). " ".$filename;
-        			if($params->get('my_debug')){
-        				$message .= $filename;
-        			}
-        			$jinput->set('msg',$message);
-        			return false;
-        		}
-				
-       
-        		$download_path = MyMuseHelper::getDownloadPath($order_item->product_id, 0);
-        		if($params->get('my_download_dir_format') == 1){
-        			//by format
-        			$ext = MyMuseHelper::getExt($filename);
-        			$download_path .= $ext.DS;
-        		
-       		}
-        		
-        		$full_filename = $download_path.$filename;
-
-        		if(!file_exists($full_filename)){
-        			echo $full_filename; exit;
-        			$message = JText::_('MYMUSE_NO_FILE_FOUND')." ";
-        			if($params->get('my_debug')){
-        				$message .= ": ".$full_filename;
-        			}
-        			$jinput->set('msg',$message);
-        			return false;
-        		}
-        		
-        		if(!$object->set_byfile($full_filename,$filename)){ 
-        			//Download from a file
-        			$message = JText::_('MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_FILE')." ".$filename;
-        			if($params->get('my_debug')){
-        				$message .= $full_filename;
-        			}
-        			$jinput->set('msg',$message);
-        			return false;
-        		}else{
-        			$object->use_resume = true; //Enable Resume Mode
-        			$object->download(); //Download File
-        		}
-        	}
+    		if(!file_exists($full_filename)){
+    
+    			$message = JText::_('MYMUSE_NO_FILE_FOUND')." ";
+    			if($params->get('my_debug')){
+    				$message .= ": ".$full_filename;
+    			}
+    			$jinput->set('msg',$message);
+    			return false;
+    		}
+if(!$this->_logDownload($user, $product, $order_item)){
+                    $message = "Could not log download";
+                    return false;
+            }
+    		if(!$object->set_byfile($full_filename,$filename)){ 
+    			//Download from a file
+    			$message = JText::_('MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_FILE')." ".$filename;
+    			if($params->get('my_debug')){
+    				$message .= $full_filename;
+    			}
+    			$jinput->set('msg',$message);
+    			return false;
+    		}else{
+    			$object->use_resume = true; //Enable Resume Mode
+    			$object->download(); //Download File
+    		}
+      
         	
         	// All is good
         	
         	
-        	$this->_logDownload($user, $product, $order_item);
 
         	exit;
         	
@@ -482,10 +410,7 @@ class myMuseViewStore extends JViewLegacy
         	$product->price = MyMuseModelProduct::getPrice($product);
         	
         	$jason = json_decode($product->file_name);
-        	
-        	$artist_alias = MyMuseHelper::getArtistAlias($product->parentid,1);
-        	$album_alias = MyMuseHelper::getAlbumAlias($product->parentid,1);
-  	
+
         	// see if it is owned
         	$query = "SELECT o.order_status as status, i.file_name FROM #__mymuse_order as o, #__mymuse_order_item as i
         		WHERE i.product_id=$id 
@@ -500,11 +425,7 @@ class myMuseViewStore extends JViewLegacy
         		if(is_array($jason)){
         			foreach($jason as $j){
         				if($j->file_name == $realname){
-        					if($params->get('my_encode_filenames')){
-        						$filename = $j->file_alias;
-        					}else{
-        						$filename = $realname;
-        					}
+        					$filename = $realname;
         				}
         				
         			}
@@ -533,24 +454,15 @@ class myMuseViewStore extends JViewLegacy
         			if(is_array($jason)){
         				foreach($jason as $file){
         					if($file->file_ext == $format){
-        						if($params->get('my_encode_filenames')){
-        							$filename = $file->file_alias;
-        							$realname = $file->file_name;
-        						}else{
-        							$filename = $realname = $file->file_name;
-        						}
+        						$filename = $realname = $file->file_name;
         					}
         				}
         				
         			}else{
-        				//old style
-        				if($params->get('my_encode_filenames')){
-        					$filename = $product->title_alias;
-        					$realname = $product->file_name;
-        				}else{
-        					$filename = $product->file_name;
-        					$realname = $product->file_name;
-        				}
+        				//old stylee{
+        				$filename = $product->file_name;
+        				$realname = $product->file_name;
+
         			}
         		}
         	}
@@ -567,101 +479,61 @@ class myMuseViewStore extends JViewLegacy
         	$product->realname = $realname;
         	$object	=& MyMuse::getObject('httpdownload','helpers');
         	 
-        	if($params->get('my_use_s3',0)){
-        		require_once JPATH_ADMINISTRATOR.'/components/com_mymuse/helpers/amazons3.php';
-        		$s3 = MyMuseHelperAmazons3::getInstance();
+        	
 
-        		$bucket = $params->get('my_download_dir');
-        		$uri = $artist_alias.DS.$album_alias.DS.$filename;
-        		$lifetime = $params->get('my_s3time');
-        		//getAuthenticatedURL($bucket, $uri, $lifetime = null, $hostBucket = false, $https = false, $realname = '')
-        		$s3URL = $s3->getAuthenticatedURL($bucket, $uri, $lifetime, false, false, $realname);
-        		$app =& JFactory::getApplication();
-        		$app->redirect($s3URL);
-        		return false;
-        	}
-        	
-        	// download data from the database
-        	if($params->get('my_use_database')){
-        		if(!$object->set_bydata($product->file_contents)){
-        			$message = JText::_('MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_DATA');
-        			if($params->get('my_debug')){
-        				$message .= $product->file_name;
-        			}
-        			$this->assignRef( 'message', $message );
-        			$tpl = "message";
-        			parent::display($tpl);
-        			return false;
-        	
-        		}else{
-        	
-        			$object->use_resume = true; //Enable Resume Mode
-        			$object->set_filename(stripslashes($realname)); //Set download name
-        			//$mime = $product->file_type;
-        			if($product->product_allfiles == '1'){
-        				$mime = "application/zip";
-        			}else{
-        				$mime = "application/otect-stream";
-        			}
-        	
-        			$object->set_mime($mime); //File MIME (Default: application/otect-stream)
-        			$object->download(); //Download File
-        	
-        		}
-        	}else{
-        		//download a physical file
-        		if(!$filename){
-        			$message = JText::_('MYMUSE_NO_FILENAME_FOUND');
-        			if($params->get('my_debug')){
-        				$message .= $filename;
-        			}
-        			$this->assignRef( 'message', $message );
-        			$tpl = "message";
-        			parent::display($tpl);
-        			return false;
-        		}
-        		
+    		//download a  file
+    		if(!$filename){
+    			$message = JText::_('MYMUSE_NO_FILENAME_FOUND');
+    			if($params->get('my_debug')){
+    				$message .= $filename;
+    			}
+    			$this->assignRef( 'message', $message );
+    			$tpl = "message";
+    			parent::display($tpl);
+    			return false;
+    		}
+    		
 
-        		$download_dir = MyMuseHelper::getDownloadPath($product->parentid, 1);
-        		if(1 == $params->get('my_download_dir_format',0)){ //downloads by format
-        			$download_dir .= $format.DS;
-        		}
-        		
-        		
-        		$full_filename = $download_dir.$filename;
-        		$full_filename1 = $full_filename;
-        		if(!file_exists($full_filename)){
-        			//try with the root
-        			$full_filename = JPATH_ROOT.DS.$download_dir.$filename;
-        		}
-        		if(!file_exists($full_filename)){
-        			$message = JText::_('MYMUSE_NO_FILE_FOUND')." ";
-        			if($params->get('my_debug')){
-        				$message .= ": ".$full_filename1;
-        			}
-        			$this->assignRef( 'message', $message );
-        			$tpl = "message";
-        			parent::display($tpl);
-        			return false;
-        		}
-        	
-        		if(!$object->set_byfile($full_filename,$realname)){ //Download from a file
-        			$message = JText::_('MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_FILE')." ".$full_filename;
-        			if($params->get('my_debug')){
-        				$message .= $name;
-        			}
-        			$this->assignRef( 'message', $message );
-        			$tpl = "message";
-        			parent::display($tpl);
-        			return false;
-        		}else{
-        			$object->use_resume = true; //Enable Resume Mode
-        			$object->download(); //Download File
-        			
-        		}
-        	}
+    		$download_dir = MyMuseHelper::getDownloadPath($product->parentid, 1);
+    		
+    		
+    		$full_filename = $download_dir.$filename;
+    		$full_filename1 = $full_filename;
+    		if(!file_exists($full_filename)){
+    			//try with the root
+    			$full_filename = JPATH_ROOT.DS.$download_dir.$filename;
+    		}
+    		if(!file_exists($full_filename)){
+    			$message = JText::_('MYMUSE_NO_FILE_FOUND')." ";
+    			if($params->get('my_debug')){
+    				$message .= ": ".$full_filename1;
+    			}
+    			$this->assignRef( 'message', $message );
+    			$tpl = "message";
+    			parent::display($tpl);
+    			return false;
+    		}
+    	
+    		if(!$object->set_byfile($full_filename,$realname)){ //Download from a file
+    			$message = JText::_('MYMUSE_DOWNLOAD_UNABLE_TO_LOAD_FILE')." ".$full_filename;
+    			if($params->get('my_debug')){
+    				$message .= $name;
+    			}
+    			$this->assignRef( 'message', $message );
+    			$tpl = "message";
+    			parent::display($tpl);
+    			return false;
+    		}else{
+    			$object->use_resume = true; //Enable Resume Mode
+    			$object->download(); //Download File
+    			
+    		}
+      
         	// All is good
-        	$this->_logDownload($user, $product);
+        	if(!$this->_logDownload($user, $product, $order_item)){
+                    $message = "Could not log download";
+                    return false;
+                }
         	exit;
         } // end of downloadit
 
@@ -807,31 +679,33 @@ class myMuseViewStore extends JViewLegacy
 		$date = JFactory::getDate()->format('Y-m-d H:i:s');
 		$order_id = (isset($order_item->order_id))? $order_item->order_id : '';
 		
-        /**
-		//update the product
-		$query = "UPDATE #__mymuse_product SET file_downloads = file_downloads +1 WHERE id=".$product->id;
-		$db->setQuery($query);
-		$db->execute();
-        */
 		
 		// update the order_item
 		if($order_item){
 			$query = "UPDATE #__mymuse_order_item SET downloads = downloads +1 WHERE id=".$order_item->id;
 			$db->setQuery($query);
-			$db->execute();
+			if(!$db->execute()){
+                $msg = $db->getErrorMessage();
+                JFactory::getApplication()->enqueueMessage($msg, 'warning');
+                return false;
+            }
 		}
 		//update the product file_name json entry
-		$jason = json_decode($product->file);
+		$jason = json_decode($product->file_name);
 		if(is_array($jason)){
 			for($i = 0; $i < count($jason); $i++){
 				if($jason[$i]->file_name == $filename){
 					$jason[$i]->file_downloads = $jason[$i]->file_downloads + 1;
 				}
 			}
-			$file = json_encode($jason);
-			$query = "UPDATE #__mymuse_product SET file='$file' WHERE id=".$product->id;
+			$files = json_encode($jason);
+			$query = "UPDATE #__mymuse_product SET file_name='$files' WHERE id=".$product->id;
 			$db->setQuery($query);
-			$db->execute();
+			if(!$db->execute()){
+                $msg = $db->getErrorMessage();
+                JFactory::getApplication()->enqueueMessage($msg, 'warning');
+                return false;
+            }
 		}
 		
 		//add to downloads table

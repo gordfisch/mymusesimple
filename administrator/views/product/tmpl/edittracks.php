@@ -49,7 +49,7 @@ JHTML::_('behavior.tooltip');
 			}
 		}
 
-		var variation = <?php  echo count($item->file); ?>;
+		var variation = <?php  echo count($item->file_name); ?>;
 		function addvariation()
 		{
 			
@@ -282,13 +282,13 @@ $fieldSets = $this->form->getFieldsets('attribs');
 					<tr class="<?php echo $class;?>" id="row_<?php echo $i; ?>">
 						<td><?php echo $lists['select_file'][$i]; ?>
 						</td>
-						<td><?php echo isset($item->file[$i]->file_name)? $item->file[$i]->file_name : ''; ?>
+						<td><?php echo isset($item->file_name[$i]->file_name)? $item->file_name[$i]->file_name : ''; ?>
 						</td>
-						<td><?php echo isset($item->file[$i]->file_alias)? $item->file[$i]->file_alias : ''; ?>
+						<td><?php echo isset($item->file_name[$i]->file_alias)? $item->file_name[$i]->file_alias : ''; ?>
 						</td>
-						<td><?php echo isset($item->file[$i]->file_length)? MyMuseHelper::ByteSize($item->file[$i]->file_length) : ''; ?>
+						<td><?php echo isset($item->file_name[$i]->file_length)? MyMuseHelper::ByteSize($item->file_name[$i]->file_length) : ''; ?>
 						</td>
-						<td><?php echo isset($item->file[$i]->file_downloads)? $item->file[$i]->file_downloads : ''; ?>
+						<td><?php echo isset($item->file_name[$i]->file_downloads)? $item->file_name[$i]->file_downloads : ''; ?>
 						</td>
 						<td><a href="javascript:deletevariation(<?php echo $i; ?>)"><?php echo JText::_( 'MYMUSE_DELETE_ITEM' ); ?></a>
 						</td>

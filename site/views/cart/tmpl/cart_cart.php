@@ -461,7 +461,7 @@ if($notes_required  && $user->username == 'buyer'){
 			<?php } ?>
 			
 			<div class="pull-left  mymuse-button-right cart">
-				<button class="button uk-button" 
+				<button class="button uk-button pull-left" 
 				type="button" 
 				onclick="location.href='<?php echo $params->get('my_continue_shopping'); ?>'">
 				<?php echo JText::_('MYMUSE_CONTINUE_SHOPPING'); ?></button>

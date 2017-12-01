@@ -184,7 +184,7 @@ class myMuseViewProduct extends JViewLegacy
 		//if multiple variations, create select box
 		for($i=0; $i < count($item->tracks); $i++){
 			//print_r($item->tracks[$i]->file_name);
-			if(is_array($item->tracks[$i]->file) && count($item->tracks[$i]->file) > 1){
+			if(is_array($item->tracks[$i]->file_name) && count($item->tracks[$i]->file_name) > 1){
 				$item->tracks[$i]->variation_select = '<select name="variation['.$item->tracks[$i]->id.']" 
 						id = "variation_'.$item->tracks[$i]->id.'_id" class="inputbox variation_select" style="width: 5em;"
 						onchange="javascript:flip_price(\''.$item->tracks[$i]->id.'\')"

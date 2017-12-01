@@ -210,8 +210,8 @@ class MymuseTableproduct extends JTable
 		}
 
 
-		if(!$isNew && $this->file){
-			$current_files = json_decode($this->file);
+		if(!$isNew && $this->file_name){
+			$current_files = json_decode($this->file_name);
 		}else{
 			$current_files = array();
 		}
@@ -220,10 +220,7 @@ class MymuseTableproduct extends JTable
 
         // for tracks with parentids
         if($this->parentid){
-        	$artist_alias = MyMuseHelper::getArtistAlias($this->parentid, 1);
-        	$album_alias = MyMuseHelper::getAlbumAlias($this->parentid, 1);
         	$download_path = MyMuseHelper::getdownloadPath($this->parentid,1);
-        	
         }   
 
  		$done = 0;
@@ -243,7 +240,7 @@ class MymuseTableproduct extends JTable
 			}
 			$select_files = $new_select;
 			$current_files = $new_current;
-			$this->file = json_encode($current_files);
+			$this->file_name = json_encode($current_files);
 			$done = 1;
 			
 		}
@@ -261,25 +258,22 @@ class MymuseTableproduct extends JTable
 					// tidy up name and copy it to the download dir
 					$ext = MyMuseHelper::getExt($select_file);
 					$name = preg_replace("/$ext$/","",$select_file);
-					if($params->get('my_use_sring_url_safe')){
+					if($params->get('my_use_string_url_safe')){
 						$file_name = JFilterOutput::stringURLSafe($name).'.'.$ext;
 					}else{
 						$file_name = $select_file;
 					}
 				
-					if( 1 == $params->get('my_download_dir_format') && !$params->get('my_use_s3',0)){
-						//by format
-						$my_download_path = $download_path.$ext.DS;
-					}
-					
+					$my_download_path = $download_path;
 
 					$new_file = $my_download_path.$file_name;
 
 					$file_alias = JApplication::stringURLSafe($file_name);
 
-					
 					$old_file = $my_download_path.$select_file;
-				
+
+					
+
 					if($old_file != $new_file){
 						if(!$this->fileCopy($old_file, $new_file)){
 							return false;
@@ -288,21 +282,25 @@ class MymuseTableproduct extends JTable
 							return false;
 						}
 					}
-
 					$file_length = filesize($new_file);
+				
 						
-					// TODO: get this to work with s3
 					$track_time = '';
 					
 					if(isset($new_file) && is_file($new_file)
 							&& strtolower(pathinfo($new_file, PATHINFO_EXTENSION)) == "mp3"){
 						$m = new mp3file($new_file);
+
 						$a = $m->get_metadata();
 						if ($a['Encoding']=='VBR' || $a['Encoding']=='CBR'){
 							$track_time = $a["Length mm:ss"];
 						}
 					}
-					
+
+//echo "params->get('my_use_string_url_safe') =".$params->get('my_use_string_url_safe')."<br />";
+//echo "download_path = $download_path <br /> my_download_path = $my_download_path <br />old_file = $old_file <br /> ";
+//echo "new_file = $new_file <br /> file_alias = $file_alias file_length = $file_length <br /> track_time = $track_time"; exit;	
+
 					$file_downloads = isset($current[$i]->file_downloads)? $current[$i]->file_downloads : "0";
 					//  save this to the file_name
 					$current_files[$i] = array(
@@ -316,28 +314,31 @@ class MymuseTableproduct extends JTable
 				}
 			}
 			
-			$this->file = json_encode($current_files);
+			$this->file_name = json_encode($current_files);
 		}
 	
 		//all files
-		if(isset($form['allfiles']) && $form['allfiles']){
+		if(isset($form['product_allfiles']) && $form['product_allfiles']){
 
+			$this->product_allfiles = 1;
 			for($p = 0; $p < count($params->get('my_formats')); $p++){
-				$file_name = JFilterOutput::stringURLSafe($form['product_sku']."-full-release-". $params->get('my_formats')[$p]);
+				$file_name = JFilterOutput::stringURLSafe($this->alias."-full-release-". $params->get('my_formats')[$p]);
 				$current_files[$p] = array(
 							'file_name' => $file_name,
 							'file_length' => '',
 							'file_ext' => $params->get('my_formats')[$p],
 							'file_alias'=> $file_name,
-							'file_downloads'=> '',
-							'file_time' => $track_time
+							'file_downloads'=> '0',
+							'file_time' => ''
 					);
 
 			}
-			$this->file = json_encode($current_files);
-			$this->type = "audio";
+			$this->file_name = json_encode($current_files);
+			$this->file_type = "audio";
 		}
 		
+
+
 		// Preview from select box
 		if(isset($preview) && $preview && $preview != $current_preview){
 			if($this->parentid){
@@ -446,7 +447,7 @@ class MymuseTableproduct extends JTable
 			}
 			
 		}
-		
+
 		return $result; 
 
 	}
@@ -686,7 +687,7 @@ class MymuseTableproduct extends JTable
     {
     	$application = JFactory::getApplication();
     	$params = MyMuseHelper::getParams();
-    	if($params->get('my_use_s3')){
+    	if($params->get('my_use_s3',0)){
     		
     		// first section is bucket name
     		$parts = explode(DS,$file);
@@ -734,7 +735,7 @@ class MymuseTableproduct extends JTable
     	
     	
     	
-    	if($params->get('my_use_s3')){
+    	if($params->get('my_use_s3',0)){
     		$s3 = MyMuseHelperAmazons3::getInstance();
     		// first section is bucket name
     		$parts = explode(DS,$new_file);
@@ -778,7 +779,7 @@ class MymuseTableproduct extends JTable
     {
     	$application = JFactory::getApplication();
     	$params = MyMuseHelper::getParams();
-    	if($params->get('my_use_s3')){
+    	if($params->get('my_use_s3',0)){
     		//they are both on s3. Must download one 
     		$oldParts = explode(DS,$old_file);
     		
@@ -843,7 +844,7 @@ class MymuseTableproduct extends JTable
     {
     	$params = MyMuseHelper::getParams();
     	
-    	if($params->get('my_use_s3')){
+    	if($params->get('my_use_s3',0)){
 
     		$parts = explode(DS,$file);
     		$bucket = array_shift($parts);
@@ -879,7 +880,7 @@ class MymuseTableproduct extends JTable
     {
     	$application = JFactory::getApplication();
     	$params = MyMuseHelper::getParams();
-    	if($params->get('my_use_s3')){
+    	if($params->get('my_use_s3',0)){
     		if(!$this->folderNew($dest)){
     			return false;
     		}
@@ -967,7 +968,7 @@ class MymuseTableproduct extends JTable
     {
     	$application = JFactory::getApplication();
     	$params = MyMuseHelper::getParams();
-    	if($params->get('my_use_s3')){
+    	if($params->get('my_use_s3',0)){
     		
     		// first section is bucket name
     		$parts = explode(DS,$src);

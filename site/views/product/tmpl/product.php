@@ -760,7 +760,7 @@ endif; ?>
       				<!--  TIME COLUMN -->
         			<?php  if($params->get('product_show_filetime', 0)) : ?>	
         				<td class="mytime">
-        				<?php echo $track->file_time ?>
+        				<?php echo $track->file_name[0]->file_time ?>
         				</td>
         			<?php endif; ?>
         			
@@ -769,7 +769,7 @@ endif; ?>
         				<td class="myfilesize">
         				<?php 
         				if(!$track->product_allfiles) :
-        					echo MyMuseHelper::ByteSize($track->file[0]->file_length); 
+        					echo MyMuseHelper::ByteSize($track->file_name[0]->file_length); 
 						endif; ?>
         				</td>
         			<?php endif; ?>
@@ -784,7 +784,7 @@ endif; ?>
         			<!--  DOWNLOADS COLUMN -->
         			<?php  if($params->get('product_show_downloads', 0)) : ?>	
         				<td class="mydownloads">
-        				<?php echo $track->file_downloads; ?>
+        				<?php echo $track->file_name[0]->file_downloads; ?>
         				</td>
         			<?php endif; ?>
         			

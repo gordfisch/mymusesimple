@@ -24,8 +24,6 @@
 				img="class:category" alt="Mymuse/Categories">COM_MYMUSE_CATEGORIES</menu>
 			<menu link="option=com_mymuse&amp;view=products" view="products" 
 				img="class:article" alt="Mymuse/Products">COM_MYMUSE_PRODUCTS</menu>
-			<menu link="option=com_mymuse&amp;view=tracks" view="tracks" 
-				img="class:article" alt="Mymuse/Products">COM_MYMUSE_TRACKS</menu>
 			<menu link="option=com_mymuse&amp;view=orders" view="orders" 
 				img="class:content" alt="Mymuse/Orders">COM_MYMUSE_ORDERS</menu>
 			<menu link="option=com_mymuse&amp;view=taxrates" view="taxrates" 

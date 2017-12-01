@@ -394,7 +394,7 @@ class MyMuseModelProduct extends JModelItem
 				$root = JPATH_ROOT.DS;
 				while (list($i,$track)= each( $tracks )){
 
-					$track->file = json_decode($track->file);
+					$track->file_name = json_decode($track->file_name);
 
 					//other cats
 					$track->othercats = '';

@@ -508,40 +508,6 @@ INSERT IGNORE INTO `#__mymuse_order_status` (`id`, `code`, `name`, `ordering`) V
 (5, 'I', 'Invalid', 5);
 
 
--- --------------------------------------------------------
-CREATE TABLE IF NOT EXISTS `#__mymuse_track` (
-  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `asset_id` int(10) unsigned NOT NULL DEFAULT '0' COMMENT 'FK to the #__assets table.',
-  `product_id` int(11) NOT NULL DEFAULT '0',
-  `title` varchar(255) NOT NULL DEFAULT '',
-  `track` JSON NULL,
-  `product_sku` varchar(64) NOT NULL DEFAULT '',
-  `preview` varchar(255) NOT NULL DEFAULT '',
-  `preview_2` varchar(255) NOT NULL DEFAULT '',
-  `preview_3` varchar(255) NOT NULL DEFAULT '',
-  `preview_4` varchar(255) NOT NULL DEFAULT '',
-  `type` varchar(32) NOT NULL,
-  `price` decimal(10,4) default NULL,
-  `allfiles` tinyint(1) NOT NULL DEFAULT '0',
-  `version` int(11) unsigned NOT NULL DEFAULT '1',
-  `description` mediumtext NOT NULL DEFAULT '',
-  `ordering` int(11) NOT NULL DEFAULT '0',
-  `access` int(11) unsigned NOT NULL DEFAULT '0',
-  `hits` int(11) unsigned NOT NULL DEFAULT '0',
-  `featured` tinyint(1) unsigned NOT NULL DEFAULT '0' COMMENT 'Set if product is featured.',
-  `language` char(7) NOT NULL COMMENT 'The language code for the article.',
-  `created` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `created_by` int(11) unsigned NOT NULL DEFAULT '0',
-  `modified` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `modified_by` int(11) unsigned NOT NULL DEFAULT '0',
-  `checked_out` int(11) unsigned NOT NULL DEFAULT '0',
-  `checked_out_time` datetime NOT NULL DEFAULT '0000-00-00 00:00:00',
-  `published` tinyint(1) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`id`),
-  KEY `idx_product_id` (`product_id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-
 -- 
 -- Table structure for table `#__mymuse_product`
 -- 
@@ -560,6 +526,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `catid` int(11) NOT NULL,
   `artistid` int(11) NOT NULL,
   `price` decimal(10,4) default NULL,
+  `product_discount` float(4,2) DEFAULT '0.00',
   `list_image` varchar(255) NOT NULL,
   `detail_image` varchar(255) NOT NULL,
   `urls` text NOT NULL,
@@ -577,7 +544,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
 
   `product_in_stock` int(11) NOT NULL DEFAULT '1',
   `product_special` char(1) DEFAULT NULL,
-  `product_discount` float(4,2) DEFAULT '0.00',
+
 
   `product_made_date` date DEFAULT '0000-00-00 00:00:00',
   `product_full_time` varchar(8) NOT NULL,
@@ -586,7 +553,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `product_producer` varchar(255) NOT NULL,
   `product_studio` varchar(255) NOT NULL,
   
-  `file` JSON NULL,
+  `file_name` JSON NULL,
   `file_type` varchar(32) NOT NULL,
   `file_preview` varchar(255) NOT NULL DEFAULT '',
   `file_preview_2` varchar(255) NOT NULL DEFAULT '',
@@ -1226,7 +1193,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_store` (
 
 
 INSERT IGNORE INTO `#__mymuse_store` (`id`, `title`, `name`, `alias`, `scope`, `description`, `published`, `checked_out`, `checked_out_time`, `ordering`, `access`, `count`, `params`, `currency`, `version`, `metadesc`, `metakey`, `metadata`, `my_catid`, `state`) VALUES
-(1, 'MyMuse Store', '', 'mymuse', 'store', '<p>MyMuse Store Description</p>', 0, 0, '0000-00-00 00:00:00', 1, 0, 0, '{"contact_first_name":"Gord","contact_last_name":"Fisch","contact_title":"Mister","contact_email":"gord@arboreta.ca","phone":"514-481-8524","fax":"514-481-3333","address_1":"5382 King Edward","address_2":"","city":"Montreal","province":"Quebec","country":"CA","zip":"H4A 2K1","twitter_handle":"@MyMuseforJoomla","currency":"CAD","store_thumb_image":"images\\/logo150sq.jpg","my_downloads_enable":"1","my_formats":["mp3"],"my_download_max":"3","my_previews_in_one_dir":"1","my_download_expire":"432000","my_download_enable_status":"C","my_download_dir":"\\/var\\/www\\/html\\/mymusetest35\\/images\\/mymuse","my_preview_dir":"images\\/mymuse\\/previews","my_encode_filenames":"0","my_free_downloads":"0","my_play_downloads":"0","my_use_shipping":"0","my_use_stock":"0","my_check_stock":"0","my_add_stock_zero":"0","my_saveorder":"before","my_use_coupons":"0","my_currency_separator":",","my_currency_dec_point":".","my_currency_position":"0","my_registration_redirect":"registration","my_registration":"joomla","my_checkout":"regular","my_profile_key":"mymuse","my_plugin_email":"0","my_cc_webmaster":"1","my_webmaster":"info@joomlamymuse.com","my_webmaster_name":"Joe Strummer","my_continue_shopping":"index.php?option=com_mymuse","my_date_format":"d M Y","my_email_msg":"","my_max_recommended":"4","my_show_original_price":"0","my_add_taxes":"0","my_default_shopper_group_id":"1","my_ownergid":"3","my_owner_percent":"100","my_shop_test":"0","my_debug":"0"}', 'CAD', '3.3.0', '', '', '{"robots":"","author":"","rights":"","xreference":""}', 49, 1);
+(1, 'MyMuse Store', '', 'mymuse', 'store', '<p>MyMuse Store Description</p>', 0, 0, '0000-00-00 00:00:00', 1, 0, 0, '{"contact_first_name":"Gord","contact_last_name":"Fisch","contact_title":"Mister","contact_email":"gord@arboreta.ca","phone":"514-481-8524","fax":"514-481-3333","address_1":"5382 King Edward","address_2":"","city":"Montreal","province":"Quebec","country":"CA","zip":"H4A 2K1","twitter_handle":"@MyMuseforJoomla","currency":"CAD","store_thumb_image":"images\/logo150sq.jpg","my_downloads_enable":"1","my_formats":["mp3"],"my_download_max":"3","my_download_expire":"432000","my_download_enable_status":"C","my_download_dir":"\/var\/www\/html\/mymusesimple\/images\/mymuse\/downloads\/mp3","my_download_dir_format":"1","my_use_zip":"0","my_preview_dir":"images\/mymuse\/previews","my_previews_in_one_dir":"1","my_encode_filenames":"0","my_use_string_url_safe":"1","my_saveorder":"before","my_currency_separator":",","my_currency_dec_point":".","my_currency_position":"0","my_registration_redirect":"registration","my_registration":"joomla","my_noreg_password":"buyer","my_checkout":"regular","my_profile_key":"mymuse","my_use_coupons":"0","my_use_alias":"0","top_menu_item":"101","my_show_cart_preview":"0","my_show_cart_player":"0","my_disable_css":"0","my_plugin_email":"0","my_cc_webmaster":"1","my_webmaster":"info@joomlamymuse.com","my_webmaster_name":"Joe Strummer","my_continue_shopping":"index.php?option=com_mymuse","my_date_format":"d M Y","my_default_itemid":"","my_email_msg":"","my_max_recommended":"4","my_show_original_price":"0","my_show_category_name":"1","my_show_sku":"0","my_default_shopper_group_id":"1","my_price_by_product":"0","my_ownergid":"3","my_owner_percent":"100","my_shop_test":"0","my_debug":"0"}', 'CAD', '1.0.0', '', '', '{"robots":"","author":"","rights":"","xreference":""}', 49, 1);
 
 -- --------------------------------------------------------
 

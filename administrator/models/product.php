@@ -232,19 +232,19 @@ class MymuseModelproduct extends JModelAdmin
 				}
 				$item->flash_type = '';
 				
-				$jason = json_decode($item->file);
+				$jason = json_decode($item->file_name);
 				if(is_array($jason)){
-					$item->file = $jason;
-				}elseif($item->file != ''){
-					$jason = (object) array('file' => $item->file);
-					$item->file = array();
-					$item->file[] = $jason;
+					$item->file_name = $jason;
+				}elseif($item->file_name != ''){
+					$jason = (object) array('file_name' => $item->file_name);
+					$item->file_name = array();
+					$item->file_name[] = $jason;
 				}
 				
 			}
 		
 			$this->_item = $item;
-	
+
 		}
 		return $this->_item;
 	}
@@ -450,34 +450,24 @@ class MymuseModelproduct extends JModelAdmin
 		// get the download tracks lists
 		$files = array();
 
-			$directory = rtrim(MyMuseHelper::getDownloadPath($parentid,'1'), '/');
-			if($this->_params->get('my_download_dir_format')){
-				//by format
 
-				$files = array();
-				foreach($this->_params->get('my_formats') as $format){
-					if(!JFolder::exists( $directory.DS.$format )){
-						JFolder::create( $directory.DS.$format );
-					}
-					$arr = JFolder::files( $directory.DS.$format );
-					if(is_array($arr)){
-						$files = array_merge($files,$arr);
-					}
-				}
+		$directory = rtrim(MyMuseHelper::getDownloadPath($parentid,'1'), '/');
 
-			}else{
-				if(!JFolder::exists( $directory )){
-					JFolder::create( $directory );
-				}
-				$files = JFolder::files( $directory );
+		if($this->_params->get('my_download_dir_format')){
+			//by format. We only have the one mp3
+
+			if(!JFolder::exists( $directory )){
+				JFolder::create( $directory );
 			}
+			$files = JFolder::files( $directory );
+		}
 		
 		$myfiles = array(  JHTML::_('select.option',  '', '- '. JText::_( 'MYMUSE_SELECT_FILE' ) .' -' ) );
 		foreach($files as $file){
 				$myfiles[] = JHTML::_('select.option',  $file, stripslashes($file) );
 		}
 		
-		$current = $this->_item->file;
+		$current = $this->_item->file_name;
 
 		$i = 0;
 		if($current){

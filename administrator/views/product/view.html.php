@@ -94,14 +94,12 @@ class MymuseViewProduct extends JViewLegacy
         }
         
         // allfiles
-        elseif($task == "new_allfiles" || $task == "product.new_allfiles" || ($this->item->parentid && $this->item->product_allfiles)){
-        	$layout = 'new_allfiles';
+        elseif($task == "edit_allfiles" || $task == "new_allfiles" || $task == "product.new_allfiles" || ($this->item->parentid && $this->item->product_allfiles)){
         	$this->setLayout('edit_allfiles');
 			if(!$this->item->parentid){
         		$this->item->parentid= JRequest::getVar('parentid', 0);
         	}
-        	JRequest::setVar('subtype','allfiles');
-        	$subtype = $app->getUserStateFromRequest("com_mymuse.subtype", 'subtype', 'allfiles');
+        	$subtype = 'allfiles';
   
         }
      
@@ -162,7 +160,7 @@ class MymuseViewProduct extends JViewLegacy
 		$isNew		= ($this->item->id == 0);
 		$layout 	= $this->getLayout();
 		
-		
+
         if (isset($this->item->checked_out)) {
 		    $checkedOut	= !($this->item->checked_out == 0 || $this->item->checked_out == $user->get('id'));
         } else {
