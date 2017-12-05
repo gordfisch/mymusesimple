@@ -156,10 +156,10 @@ class MyMuseUpdateHelper extends JObject
 		);
 	
 		if($p->image != ""){
-			$p->image = 'images/A_MyMuseImages/'.$p->image;
+			$p->image = 'images/mymuse/'.$p->image;
 		}
 		if($p->images != ""){
-			$p->images = 'images/A_MyMuseImages/'.$p->images;
+			$p->images = 'images/mymuse/'.$p->images;
 		}
 	
 		$model = $controller->getModel('product', 'MymuseModel',
@@ -308,23 +308,12 @@ class MyMuseUpdateHelper extends JObject
 			exit;
 			return $this->upgradeProduct($data);
 		}
+		$query = "SELECT MAX(id) from #__mymuse_product WHERE 1";
 	
-		/**
-			$user = JFactory::getUser();
-			$userid = $user->get('id');
-	
-			require_once (JPATH_ADMINISTRATOR.DS.'components'.DS.'com_mymuse'.DS.'controllers'.DS.'product.php');
-	
-			$controller	= new MymuseControllerProduct(array(
-			'base_path' => JPATH_ADMINISTRATOR.DS.'components'.DS.'com_mymuse'.DS,
-			'model_prefix' => 'MymuseModel',
-			'model_path' => JPATH_ADMINISTRATOR.DS.'components'.DS.'com_mymuse'.DS.'models',
-			'table_path' => JPATH_ADMINISTRATOR.DS.'components'.DS.'com_mymuse'.DS.'tables'
-			)
-			);
-			*/
-	
-	
+		$db->setQuery($query);
+		$res = $db->loadResult();
+		//$data['jform']['id'] = $res + 1;
+
 		$str = http_build_query($data);
 		$url = JURI::base()."index.php";
 		$cookie = session_name()."=".session_id();
@@ -369,7 +358,7 @@ class MyMuseUpdateHelper extends JObject
 	
 	
 	/**
-	 * makeProduct
+	 * makeProductObject
 	 *
 	 * @param object $p the product form input
 	 *
@@ -401,10 +390,10 @@ function makeProductObject($p)
 		);
 	
 		if($p->image != ""){
-			$p->image = 'images/A_MyMuseImages/'.$p->image;
+			$p->image = 'images/mymuse/'.$p->image;
 		}
 		if($p->images != ""){
-			$p->images = 'images/A_MyMuseImages/'.$p->images;
+			$p->images = 'images/mymuse/'.$p->images;
 		}
 	
 		$model = $controller->getModel('product', 'MymuseModel',
@@ -557,7 +546,7 @@ function makeProductObject($p)
 		$title = 'MyMuse';
 		$parent = '1';
 		$description = 'Top Level Sample MyMuse Category';
-		$image = 'images/A_MyMuseImages/mymuse.jpg';
+		$image = 'images/mymuse/mymuse.jpg';
 		if(!$topcatid = $this->makeCategory($title,$parent,$description,$image)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -570,7 +559,7 @@ function makeProductObject($p)
 		$title = 'Artists';
 		$parent = $topcatid;
 		$description = 'All Artist Unite!';
-		$image = 'images/A_MyMuseImages/artists.png';
+		$image = 'images/mymuse/artists.png';
 		if(!$artcatid = $this->makeCategory($title,$parent,$description,$image)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -582,7 +571,7 @@ function makeProductObject($p)
 		$title = 'Genres';
 		$parent = $topcatid;
 		$description = 'Genres make the world go round. Can I be in BOTH genres?';
-		$image = 'images/A_MyMuseImages/genres.png';
+		$image = 'images/mymuse/genres.png';
 		if(!$genreid = $this->makeCategory($title,$parent,$description,$image)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -594,7 +583,7 @@ function makeProductObject($p)
 		$title = 'Iron Brew';
 		$parent = $artcatid;
 		$description = 'Iron Brew. Warning: Celtic Nuts.';
-		$image = 'images/A_MyMuseImages/ironbrew.jpg';
+		$image = 'images/mymuse/ironbrew.jpg';
 		if(!$ironbrewid = $this->makeCategory($title,$parent,$description,$image)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -606,7 +595,7 @@ function makeProductObject($p)
 		$title = 'World Beat';
 		$parent = $genreid;
 		$description = 'And the beat goes on.';
-		$image = 'images/A_MyMuseImages/worldbeat.jpg';
+		$image = 'images/mymuse/worldbeat.jpg';
 		if(!$worldbeatid = $this->makeCategory($title,$parent,$description,$image)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -624,19 +613,19 @@ function makeProductObject($p)
 						'alias' => '',
 						'catid' => "$worldbeatid",
 						'artistid' => "$ironbrewid",
-						'product_sku' => "mm001$artcatid",
-						'product_physical' => '1',
-						'price' => '20.00',
+						'product_sku' => "",
+						'product_physical' => '0',
+						'price' => '',
 						'state' => '1',
 						'access' => '1',
-						'featured' => '0',
+						'featured' => '1',
 						'language' => '*',
 						'id' => '0',
 						'articletext' => '<p>The great first album</p>',
 						'attribs' => Array
 						(
-								'product_made_date' => '2012-05-25 23:43:40',
-								'product_in_stock' => ''
+								'media_urls' => '',
+								'media_link' => ''
 						),
 	
 						'created_by' => '0',
@@ -644,6 +633,8 @@ function makeProductObject($p)
 						'created' => '',
 						'publish_up' => '',
 						'publish_down' => '',
+						'metadesc' => '',
+						'metakey' => '',
 						'metadata' => Array
 						(
 								'robots' => '',
@@ -652,8 +643,8 @@ function makeProductObject($p)
 								'xreference' => ''
 						),
 	
-						'list_image' => 'images/A_MyMuseImages/sister.jpg',
-						'detail_image' => 'images/A_MyMuseImages/sister.jpg',
+						'list_image' => 'images/mymuse/sister.jpg',
+						'detail_image' => 'images/mymuse/sister.jpg',
 						'version' => '0',
 						'othercats' => array()
 				),
@@ -680,7 +671,7 @@ function makeProductObject($p)
 	
 		//get some files
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/mymuse.jpg";
-		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."mymuse.jpg";
+		$to = JPATH_ROOT.DS."images".DS."mymuse".DS."mymuse.jpg";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -688,7 +679,7 @@ function makeProductObject($p)
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/worldbeat.jpg";
-		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."worldbeat.jpg";
+		$to = JPATH_ROOT.DS."images".DS."mymuse".DS."worldbeat.jpg";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -696,7 +687,7 @@ function makeProductObject($p)
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/ironbrew.jpg";
-		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."ironbrew.jpg";
+		$to = JPATH_ROOT.DS."images".DS."mymuse".DS."ironbrew.jpg";
 		if(!$this->get_data($from, $to)){
 			echo $this->error;
 			$application->enqueueMessage($this->error, 'error');
@@ -704,7 +695,7 @@ function makeProductObject($p)
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/sister.jpg";
-		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."sister.jpg";
+		$to = JPATH_ROOT.DS."images".DS."mymuse".DS."sister.jpg";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -712,7 +703,7 @@ function makeProductObject($p)
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/artists.png";
-		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."artists.png";
+		$to = JPATH_ROOT.DS."images".DS."mymuse".DS."artists.png";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
@@ -720,21 +711,19 @@ function makeProductObject($p)
 		}
 	
 		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/genres.png";
-		$to = JPATH_ROOT.DS."images".DS."A_MyMuseImages".DS."genres.png";
+		$to = JPATH_ROOT.DS."images".DS."mymuse".DS."genres.png";
 		if(!$this->get_data($from, $to)){
 			$application->enqueueMessage($this->error, 'error');
 			echo $this->error;
 			return false;
 		}
-		$msg .= "Downloaded some graphics to /images/A_MyMuseImages<br />";
+		$msg .= "Downloaded some graphics to /images/mymuse<br />";
 	
 	
 		// get some mp3's
 		//downloads
 		$download_path = MyMuseHelper::getDownloadPath($parentid, 1);
-		if(1 == $params->get('my_download_dir_format')){ //downloads by format
-			$download_path .= 'mp3'.DS;
-		}
+
 		//previews
 		$preview_path = MyMuseHelper::getSitePath($parentid, 1);
 		
@@ -780,14 +769,8 @@ function makeProductObject($p)
 			return false;
 		}
 	
-		$from = "http://www.joomlamymuse.com/mysoftware/mymuse-downloads/foggy-preview.ogg";
-		$to = $preview_path."foggy-preview.ogg";
-		if(!$this->get_data($from, $to)){
-			$application->enqueueMessage($this->error, 'error');
-			echo $this->error;
-			return false;
-		}
-		$msg .= "Downloaded 'Foggy Dew' track and previews<br />";
+
+		$msg .= "Downloaded 'Foggy Dew' track and preview<br />";
 	
 		//make a track for Are You My Sister Song
 		$data = Array(
@@ -807,11 +790,11 @@ function makeProductObject($p)
 					'access' => '1',
 					'featured' => '0',
 					'language' => '*',
-					'id' => '0',
+					'id' => '',
 					'file_preview' => 'sister-preview.mp3',
-					'file_preview_2' => 'sister-preview.ogg',
+					'file_preview_2' => '',
 					'file_preview_3' => '',
-					'articletext' =>'<p>This file is mp3 for download with two previews, one in mp3 and one in ogg</p>',
+					'articletext' =>'',
 					'parentid' => "$parentid",
 					'catid' => "$worldbeatid",
 					'artistid' => "$ironbrewid",
@@ -823,7 +806,7 @@ function makeProductObject($p)
 			'download_dir' => $download_path,
 				'preview_dir' => $preview_path,
 				'file_preview' => 'sister-preview.mp3',
-				'file_preview_2' => 'sister-preview.ogg',
+				'file_preview_2' => '',
 				'file_preview_3' => '',
 				'parentid' => "$parentid",
 				'current_preview' => '',
@@ -866,11 +849,11 @@ function makeProductObject($p)
 						'access' => '1',
 						'featured' => '0',
 						'language' => '*',
-						'id' => '0',
+						'id' => '',
 						'file_preview' => 'foggy-preview.mp3',
-						'file_preview_2' => 'foggy-preview.ogg',
+						'file_preview_2' => '',
 						'file_preview_3' => '',
-						'articletext' => '<p>This file is mp3 for download with two previews, one in mp3 and one in ogg</p>',
+						'articletext' => '',
 						'parentid' => "$parentid",
 						'catid' => "$worldbeatid",
 						'artistid' => "$ironbrewid",
@@ -882,7 +865,7 @@ function makeProductObject($p)
 				'download_dir' => $download_path,
 				'preview_dir' => $preview_path,
 				'file_preview' => 'foggy-preview.mp3',
-			'file_preview_2' => 'foggy-preview.ogg',
+			'file_preview_2' => '',
 			'file_preview_3' => '',
 			'parentid' => "$parentid",
 			'current_preview' => '',

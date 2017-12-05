@@ -19,7 +19,6 @@ JLoader::import('joomla.filesystem.file');
 class MymuseTableproduct extends JTable
 {
 	
-
 	
 	/**
 	 * Constructor
@@ -377,7 +376,8 @@ class MymuseTableproduct extends JTable
 		}
 
 
-		$this->checkin();
+		//$this->checkin();
+
 		$result = parent::store($updateNulls);
 
 		if($result){

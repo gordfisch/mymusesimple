@@ -28,12 +28,8 @@
 				img="class:content" alt="Mymuse/Orders">COM_MYMUSE_ORDERS</menu>
 			<menu link="option=com_mymuse&amp;view=taxrates" view="taxrates" 
 				img="class:themes" alt="Mymuse/Taxrates">COM_MYMUSE_TAXRATES</menu>
-			<menu link="option=com_mymuse&amp;view=coupons" view="coupons" 
-				img="class:component" alt="Mymuse/Coupons">COM_MYMUSE_COUPONS</menu>
 			<menu link="option=com_mymuse&amp;view=reports" view="reports" 
 				img="class:themes" alt="Mymuse/Reports">COM_MYMUSE_REPORTS</menu>
-			<menu link="option=com_mymuse&amp;view=shoppergroups" view="shoppergroups" 
-				img="class:groups" alt="Mymuse/Shoppergroups">COM_MYMUSE_SHOPPERGROUPS</menu>
 			<menu link="option=com_plugins&amp;view=plugins&amp;filter_folder=mymuse&amp;filter_order=name&amp;filter_dir=asc" view="plugins" 
 				img="class:themes" alt="Mymuse/Plugins">COM_MYMUSE_PLUGINS</menu>	
 			<menu link="option=com_plugins&amp;view=plugins&amp;filter_folder=user&amp;filter_order=name&amp;filter_dir=asc" view="plugins" 

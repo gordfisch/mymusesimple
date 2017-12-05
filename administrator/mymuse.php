@@ -22,7 +22,7 @@ require_once (JPATH_COMPONENT.DS.'helpers'.DS.'permission.php');
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
 //initialize
 $params = MyMuseHelper::getParams();
-print_pre($input->post->getArray());
+//print_pre($input->post->getArray());
 if($input->get('view','') == 'liveupdate') {
 	
 	LiveUpdate::handleRequest();

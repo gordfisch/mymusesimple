@@ -40,7 +40,9 @@ $assoc = isset($app->item_associations) ? $app->item_associations : 0;
 		}
 	}
 </script>
-
+<style>
+#jform_params_my_formats_chzn, #jform_params_my_formats-lbl { display: none; }
+</style>
 <form action="<?php echo JRoute::_('index.php?option=com_mymuse&view=store&layout=edit&id='.(int) $this->item->id); ?>" 
 method="post" name="adminForm" id="store-form" class="form-validate">
 	<div class="row-fluid">
@@ -95,7 +97,9 @@ method="post" name="adminForm" id="store-form" class="form-validate">
 			<?php if(!$this->form->getInput('description')){
 				echo $this->form->getError();
 			 
-			}?>
+			}
+			echo $this->form->getInput('description');
+			?>
 		</fieldset>
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
 

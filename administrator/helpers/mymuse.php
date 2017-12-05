@@ -129,12 +129,6 @@ class MyMuseHelper extends JObject
 
 		
 		JHtmlSidebar::addEntry(
-			JText::_('COM_MYMUSE_TITLE_SHOPPERGROUPS'),
-			'index.php?option=com_mymuse&view=shoppergroups',
-			$vName == 'shoppergroups'
-		);
-		
-		JHtmlSidebar::addEntry(
 			JText::_('COM_MYMUSE_TITLE_ORDERS'),
 			'index.php?option=com_mymuse&view=orders',
 			$vName == 'orders'
@@ -146,11 +140,6 @@ class MyMuseHelper extends JObject
 			$vName == 'taxrates'
 		);
 		
-		JHtmlSidebar::addEntry(
-			JText::_('COM_MYMUSE_TITLE_COUPONS'),
-			'index.php?option=com_mymuse&view=coupons',
-			$vName == 'coupons'
-		);
 		
 		JHtmlSidebar::addEntry(
 			JText::_('MYMUSE_MYMUSE_REPORTS'),

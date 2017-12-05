@@ -20,7 +20,7 @@ jimport( 'joomla.filesystem.file' );
 class MymuseControllerProduct extends JControllerForm
 {
     /**
-     * @var     int the saved id
+     * @var     int the saved parent
      * @since   1.6
      */
     protected $_parent = null;
@@ -55,6 +55,7 @@ class MymuseControllerProduct extends JControllerForm
         $this->registerTask( 'edit_allfiles', 'edititem' );
         $this->registerTask( 'save_allfiles', 'saveitem' );
         $this->registerTask( 'apply_allfiles', 'saveitem' );
+        $this->registerTask( 'apply', 'saveitem' );
         
         $this->registerTask( 'addattribute', 'editattribute' );
         
@@ -84,8 +85,8 @@ class MymuseControllerProduct extends JControllerForm
     function saveitem()
     { 
     	$input 				= JFactory::getApplication()->input;
-        $post 				= JRequest::get('post');
-  
+        $post 				= $input->post->getArray();
+
         $this->id 			= isset($post['id'])? $post['id'] : null ;
         $this->parentid 	= isset($post['parentid'])? $post['parentid'] : 0;
         $form 				= $post['jform'];
