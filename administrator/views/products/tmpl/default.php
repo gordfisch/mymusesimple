@@ -57,7 +57,7 @@ $sortFields = $this->getSortFields();
 $assoc		= isset($app->item_associations) ? $app->item_associations : 0;
 
 require_once JPATH_COMPONENT.'/helpers/mymuse.php';
-
+echo " listOrder = $listOrder : saveOrder = $saveOrder";
 ?>
 
 

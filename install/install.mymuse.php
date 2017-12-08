@@ -40,10 +40,10 @@ $status = new JObject;
 
 
 // first check if PHP5 is running
-if (version_compare(PHP_VERSION, '5.0.0', '<')) {
+if (version_compare(PHP_VERSION, '5.6.0', '<')) {
 
 	echo '<div class="fc-error">';
-	echo 'Please upgrade PHP above version 5.0.0<br />';
+	echo 'Please upgrade PHP above version 5.6.0<br />';
 	echo '</div>';
 	return false;
 }

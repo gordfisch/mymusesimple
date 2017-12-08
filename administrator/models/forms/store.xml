@@ -48,7 +48,7 @@
 				label="MYMUSE_STORE_DESC_LABEL" 
 				description="MYMUSE_STORE_DESC_DESC"
 				filter="safehtml"
-				/>
+				buttons="true" />
 			
 		  <field 
 		  		name="language" 
@@ -239,7 +239,26 @@
 				<option value="0">MYMUSE_NO</option>
 				<option value="1">MYMUSE_YES</option>
 		  </field>
- 
+                  <field
+                name="my_formats"
+                type="list"
+                label="MYMUSE_SELLING_FORMATS_LABEL"
+                description="MYMUSE_SELLING_FORMATS_DESC"
+                class="inputbox"
+                size="4"
+                default="mp3"
+                multiple="true">
+                <option value="mp3">MP3</option>
+                <option value="wav">WAV</option>
+                <option value="flac">FLAC</option>
+                <option value="ogg">OGG</option>
+                <option value="webma">WEBMA</option>
+                <option value="webmv">WEBMV</option>
+                <option value="ogv">OGV</option>
+                <option value="m4v">M4V</option>
+                <option value="pdf">PDF</option>
+                <option value="other">OTHER</option>
+          </field> 
 		  <field
                 name="my_download_max"
                 type="text"
@@ -345,16 +364,6 @@
                 <option value="0">MYMUSE_NO</option>
                 <option value="1">MYMUSE_YES</option>
             </field>
-            <field
-                name="my_formats"
-                type="list"
-                label="MYMUSE_SELLING_FORMATS_LABEL"
-                description="MYMUSE_SELLING_FORMATS_DESC"
-                size="4"
-                default="mp3"
-                multiple="true">
-                <option value="mp3">MP3</option>
-          </field>
 	</fieldset>
 
 	<fieldset name="store" label="MYMUSE_STORE_OPTIONS_LABEL">
@@ -453,7 +462,7 @@
         />
         <field
                 name="my_use_coupons"
-                type="hidden"
+                type="radio"
                 label="MYMUSE_USE_COUPONS"
                 description="MYMUSE_USE_COUPONS_DESC"
                 class="btn-group"
@@ -589,7 +598,7 @@
         />
         <field
                 name="my_max_recommended"
-                type="hidden"
+                type="text"
                 label="MYMUSE_MAX_RECOMMENDED_LABEL"
                 description="MYMUSE_MAX_RECOMMENDED_DESC"
                 class="inputbox"
@@ -652,23 +661,26 @@
 				<option value="1">MYMUSE_PRICE_BY_PRODUCT</option>
 				
         </field>
-        <field
-                name="my_ownergid" 
-                type="hidden" 
-                default="19" 
-                label="MYMUSE_OWNERGID_LABEL" 
-                description="MYMUSE_OWNERGID_DESC" 
-        />
-        <field
-                name="my_owner_percent" 
-                type="hidden" 
-                default="100" 
-                size="5" 
-                label="MYMUSE_OWNER_PERCENT_LABEL" 
-                description="MYMUSE_OWNER_PERCENT_DESC" 
-        />
-	</fieldset>
 
+	</fieldset>
+	<fieldset name="reports" label="MYMUSE_FRONT_END_SALES_REPORTS_LABEL">
+		<field
+				name="my_ownergid" 
+				type="usergroup" 
+				default="19" 
+				label="MYMUSE_OWNERGID_LABEL" 
+    			description="MYMUSE_OWNERGID_DESC" 
+    	/>
+    	<field
+    			name="my_owner_percent" 
+    			type="text" 
+    			default="100" 
+    			size="5" 
+    			label="MYMUSE_OWNER_PERCENT_LABEL" 
+    			description="MYMUSE_OWNER_PERCENT_DESC" 
+    	/>
+	
+	</fieldset>
 
 	<fieldset name="testing" label="MYMUSE_TEST_OPTIONS_LABEL">
 		<field

@@ -553,7 +553,7 @@ CREATE TABLE IF NOT EXISTS `#__mymuse_product` (
   `product_producer` varchar(255) NOT NULL,
   `product_studio` varchar(255) NOT NULL,
   
-  `file_name` JSON NULL,
+  `file_name` varchar(2048) NULL,
   `file_type` varchar(32) NOT NULL,
   `file_preview` varchar(255) NOT NULL DEFAULT '',
   `file_preview_2` varchar(255) NOT NULL DEFAULT '',
