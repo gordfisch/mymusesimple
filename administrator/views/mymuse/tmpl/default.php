@@ -25,9 +25,9 @@
 			<td align="left" width="100%">
 			<p><b><?php echo JText::_("MYMUSE_QUICKSTART"); ?></b></p>
 			<ul>
-			<!-- li><b><a href="index.php?option=com_mymuse&task=addSampleData"><?php echo JText::_("MYMUSE_ADD_SAMPLE_DATA"); ?></a></b> 
+			<li><b><a href="index.php?option=com_mymuse&task=addSampleData"><?php echo JText::_("MYMUSE_ADD_SAMPLE_DATA"); ?></a></b> 
 
-			</li -->
+			</li>
 			<li><b><a href="index.php?option=com_mymuse&view=store&layout=edit&id=1"><?php echo JText::_("MYMUSE_STORE"); ?></a></b> 
 			<?php echo JText::_("MYMUSE_STORE_DESC"); ?>
 			</li>

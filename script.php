@@ -483,6 +483,9 @@ class com_mymuseInstallerScript
 	
 			// update store download dir
 			$download_dir =  JPATH_ROOT.DS."images".DS."mymuse". DS . "downloads" .DS . "mp3";
+			if (stristr ( PHP_OS, 'win' )) {
+				$download_dir = addslashes($download_dir);
+			}
 			$name = JText::_("MYMUSE_UPDATING_STORE");
 			$query = "SELECT params FROM #__mymuse_store WHERE id='1'";
 			$db->setQuery($query);
@@ -551,8 +554,16 @@ class com_mymuseInstallerScript
 			$db->setQuery($query);
 			$media_params = json_decode($db->loadResult(), TRUE);
 			if($media_params){
-				$media_params['upload_extensions'] = $media_params['upload_extensions'].",mp3,MP3";
-				$media_params['upload_mime'] = $media_params['upload_mime'].",audio/mpeg";
+				if (!stristr ( $media_params['upload_extensions'], 'mp3' )) {
+					$media_params['upload_extensions'] .= ",mp3,MP3"
+				}
+				if (!stristr ( $media_params['upload_mime'], 'audio/mpeg' )) {
+					$media_params['upload_mime'] .= ",audio/mpeg"
+				}
+				if !(stristr ( $media_params['ignore_extensions'], 'mp3' )) {
+					$media_params['ignore_extensions'] = $media_params['ignore_extensions'] != ''? $media_params['ignore_extensions'].",mp3" : "mp3";
+				}
+
 				$registry = new JRegistry;
 				$registry->loadArray($media_params);
 				$new_params = (string)$registry;

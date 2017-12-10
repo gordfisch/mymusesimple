@@ -44,6 +44,7 @@ class myMuseViewStore extends JViewLegacy
 		$this->params->merge($state->params);
 		$Itemid 	= $jinput->get('Itemid');
 		$user 		= JFactory::getUser();
+        $app        = JFactory::getApplication();
    
 		// Present a list of downloadable files
         if($task == "downloads"){
@@ -253,9 +254,22 @@ class myMuseViewStore extends JViewLegacy
 			}
 			$product->realname = $realname;
 						
-        	$object	=& MyMuse::getObject('httpdownload','helpers');
         	
+        	
+            //is it s3 redirect? plugin should return a redirect URL
+            $dispatcher     = JDispatcher::getInstance();
+            JPluginHelper::importPlugin('mymuse');
+            $results = $dispatcher->trigger('onDownloadFile', array($filename) );
+            if(isset($results[0])){
+                $URL = $results[0];
+                $this->_logDownload($user, $product, $order_item);
+                $app->redirect($URL);
+                exit;
+            }
 
+
+
+            $object =& MyMuse::getObject('httpdownload','helpers');
         	// is it an allfiles and zip is on?
         	if($product->product_allfiles && $params->get('my_use_zip',0)){
                 // Get current directory
