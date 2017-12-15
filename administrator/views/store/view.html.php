@@ -76,7 +76,7 @@ class MymuseViewStore extends JViewLegacy
 		else {
 			JToolBarHelper::cancel('store.cancel', 'JTOOLBAR_CLOSE');
 		}
-		JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/243-store-edit?tmpl=component');
+		JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/support/documentation/documentation-mymusesimple/store-edit?tmpl=component');
 		
 	}
 }

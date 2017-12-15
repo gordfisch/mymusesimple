@@ -295,8 +295,7 @@ class com_mymuseInstallerScript
 					<td valign="top" width="40%"><img
 						src="<?php echo 'components/com_mymuse/assets/images/logo325.jpg'; ?>"
 						height="325" width="190" alt="MyMuse Logo" align="left" /></td>
-					<td valign="top" width="60%"><strong>MyMuse</strong><br /> <span>MyMuse
-							for Joomla! 3</span><br /> <font class="small">by <a
+					<td valign="top" width="60%"><strong>MyMuse Simple</strong><br /> <span><a href="https://www.joomlamymuse.com">Home</a></span><br /> <font class="small">by <a
 							href="http://www.arboreta.ca" target="_blank">Arboreta.ca</a>
 					</font><br /> To get started
 						<ol>
@@ -555,12 +554,12 @@ class com_mymuseInstallerScript
 			$media_params = json_decode($db->loadResult(), TRUE);
 			if($media_params){
 				if (!stristr ( $media_params['upload_extensions'], 'mp3' )) {
-					$media_params['upload_extensions'] .= ",mp3,MP3"
+					$media_params['upload_extensions'] .= ",mp3,MP3";
 				}
 				if (!stristr ( $media_params['upload_mime'], 'audio/mpeg' )) {
-					$media_params['upload_mime'] .= ",audio/mpeg"
+					$media_params['upload_mime'] .= ",audio/mpeg";
 				}
-				if !(stristr ( $media_params['ignore_extensions'], 'mp3' )) {
+				if (!stristr ( $media_params['ignore_extensions'], 'mp3' )) {
 					$media_params['ignore_extensions'] = $media_params['ignore_extensions'] != ''? $media_params['ignore_extensions'].",mp3" : "mp3";
 				}
 

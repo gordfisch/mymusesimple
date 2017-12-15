@@ -195,16 +195,12 @@ class MymuseViewProduct extends JViewLegacy
 			JToolBarHelper::apply('product.productreturn', 'MYMUSE_RETURN_TO_PRODUCT');
 			
 			
-			JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/247-product-tracks?tmpl=component');
+			JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/support/documentation/documentation-mymusesimple/product-tracks?tmpl=component');
 		}elseif($layout == "listitems"){
 			// LIST ITEMS
 			JToolBarHelper::apply('product.productreturn', 'MYMUSE_RETURN_TO_PRODUCT');
-			JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/247-product-items?tmpl=component');
+			JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/support/documentation/documentation-3-x/product-items?tmpl=component');
 			
-		}elseif ($this->task == "uploadtrack" || $this->task == "uploadpreview" ){
-			JToolBarHelper::apply('product.cancelfile', 'MYMUSE_RETURN_TO_TRACKS');
-			JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/247-product-items?tmpl=component');
-		
 		}elseif($subtype == "file" && $parentid){
 			//TRACK
 			// If not checked out, can save the item.
@@ -223,7 +219,7 @@ class MymuseViewProduct extends JViewLegacy
 			else {
 				JToolBarHelper::cancel('product.cancelfile', 'JTOOLBAR_CLOSE');
 			}
-			JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/247-product-tracks?tmpl=component#new-edit-track');			
+			JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/support/documentation/documentation-mymusesimple/product-tracks?tmpl=component#new-edit-track');			
 		
 		}elseif($subtype == "allfiles" && $parentid){
 			// ALLFILES
@@ -240,7 +236,7 @@ class MymuseViewProduct extends JViewLegacy
 			else {
 				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CLOSE');
 			}
-			JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/247-product-tracks?tmpl=component#tracks-all-tracks');		
+			JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/support/documentation/documentation-mymusesimple/product-tracks?tmpl=component#tracks-all-tracks');		
 		
 		}elseif($subtype == "item" && $parentid){
 			// ITEMS
@@ -260,7 +256,7 @@ class MymuseViewProduct extends JViewLegacy
 			else {
 				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CLOSE');
 			}
-			JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/248-product-items?tmpl=component');
+			JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/support/documentation/documentation-3-x/product-items?tmpl=component');
 				
 		}else{
 			// If not checked out, can save the item.
@@ -279,7 +275,7 @@ class MymuseViewProduct extends JViewLegacy
 			else {
 				JToolBarHelper::cancel('product.cancel', 'JTOOLBAR_CLOSE');
 			}
-			JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/238-product-new-edit?tmpl=component');
+			JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/support/documentation/documentation-mymusesimple/product-new-edit?tmpl=component');
 		}
 		
 	}

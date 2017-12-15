@@ -122,6 +122,6 @@ class MymuseViewOrders extends JViewLegacy
 		if ($canDo->get('core.admin')) {
 			JToolBarHelper::preferences('com_mymuse');
 		}
-		JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/236-orders-list?tmpl=component');
+		JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/support/documentation/documentation-mymusesimple/orders-list?tmpl=component');
 	}
 }

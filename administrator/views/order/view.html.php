@@ -108,7 +108,7 @@ class MymuseViewOrder extends JViewLegacy
 		else {
 			JToolBarHelper::cancel('order.cancel', 'JTOOLBAR_CLOSE');
 		}
-		JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/235-order-view?tmpl=component');
+		JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/support/documentation/documentation-mymusesimple/order-view?tmpl=component');
 		
 	}
 }

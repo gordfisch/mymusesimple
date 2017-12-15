@@ -96,6 +96,6 @@ class MymuseViewTaxrates extends JViewLegacy
 		    }
         }
 
-		JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/244-taxrates-list?tmpl=component');
+		JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/support/documentation/documentation-mymusesimple/taxrates-list?tmpl=component');
 	}
 }

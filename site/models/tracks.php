@@ -253,9 +253,7 @@ class MyMuseModelTracks extends JModelList
         // get child tracks with prices
         $query = "SELECT a.id as my_track_id,a.id, a.title, a.title_alias,a.alias, a.introtext, a.fulltext, a.parentid, a.product_physical, 
         a.product_downloadable, a.product_allfiles, a.product_sku, a.hits,
-        a.price, a.featured, a.product_discount, a.product_package_ordering, a.file_downloads,
-        a.product_package,
-        a.file_length,a.file_time,
+        a.price, a.featured, a.product_discount,
         a.file_name,a.file_preview,a.file_preview_2, a.file_preview_3,a.file_type, a.detail_image,
         p.id as parentid, p.title as product_title, p.alias as parent_alias, p.catid, p.artistid as artistid, 
         p.product_made_date as product_made_date,
@@ -274,8 +272,8 @@ class MyMuseModelTracks extends JModelList
         		i.product_name, product_id as all_id
         		FROM #__mymuse_order_item as i
         		LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
-        		GROUP BY i.product_id )
-        		as x GROUP BY x.all_id) as s ON s.product_id = a.id
+        		GROUP BY i.product_id, i.product_name )
+        		as x GROUP BY x.all_id, x.product_name) as s ON s.product_id = a.id
         LEFT JOIN #__users AS ua ON ua.id = p.created_by
         LEFT JOIN #__users AS uam ON uam.id = p.modified_by
         ";
@@ -324,7 +322,7 @@ class MyMuseModelTracks extends JModelList
         	$query .= " AND a.featured=1
         	";
         }
-        $query .=  " GROUP BY a.id ";
+        $query .=  " GROUP BY a.id, s.sales ";
         if($params->get('group_by',0)){
         	$query .= " ".$params->get('group_by',0)."
         	";
@@ -336,7 +334,7 @@ class MyMuseModelTracks extends JModelList
         	$orderby .= ", $secondaryOrder ";
         }
         $query .= $orderby;
-
+		//echo $this->_db->replacePrefix((string) $query); exit;
 		return $query;
 	}
 
@@ -354,7 +352,8 @@ class MyMuseModelTracks extends JModelList
         $limit = 10000;
 
 		if ($this->_products === null && $category = $this->getCategory()) {
-			$model = JModelLegacy::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
+
+			$model = JModelList::getInstance('Products', 'MyMuseModel', array('ignore_request' => true));
 			$model->setState('params', JFactory::getApplication()->getParams());
 			$model->setState('filter.category_id', $category->id);
 			$model->setState('filter.published', '1');
@@ -386,7 +385,7 @@ class MyMuseModelTracks extends JModelList
 			}
 
 		}
-  
+
 		$IN = '(';
 		foreach($this->_products as $p){
 			$IN .= $p->id.',';
@@ -546,9 +545,12 @@ class MyMuseModelTracks extends JModelList
 				
 				$jason = json_decode($tracks [$i]->file_name);
 				if(is_array($jason)){
-					$tracks [$i]->first_file_name = $jason[0]->file_name;
-					$tracks [$i]->first_file_alias = isset($jason[0]->file_alias)? $jason[0]->file_alias : '';
-					$tracks [$i]->first_file_ext = isset($jason[0]->file_ext)? $jason[0]->file_ext : '';
+					$tracks [$i]->file_name = $jason[0]->file_name;
+					$tracks [$i]->file_alias = isset($jason[0]->file_alias)? $jason[0]->file_alias : '';
+					$tracks [$i]->file_ext = isset($jason[0]->file_ext)? $jason[0]->file_ext : '';
+					$tracks [$i]->file_length = isset($jason[0]->file_length)? $jason[0]->file_length : '';
+					$tracks [$i]->file_downloads = isset($jason[0]->file_downloads)? $jason[0]->file_downloads : '';
+					$tracks [$i]->file_time = isset($jason[0]->file_time)? $jason[0]->file_time : '';
 					if(1 == $params->get('my_price_by_product')){
 						$tracks [$i]->first_price = $tracks [$i]->price [$track->first_file_ext];
 					}else{
@@ -557,16 +559,13 @@ class MyMuseModelTracks extends JModelList
 				}
 				
 				
-				
-				if($params->get('my_encode_filenames')){
-					$tracks [$i]->download_name = $tracks [$i]->first_title_alias;
-				}else{
-					$tracks [$i]->download_name = $tracks [$i]->first_file_name;
-				}
+
+				$tracks [$i]->download_name = $tracks [$i]->file_name;
+
 				
 				
 				if(1 == $params->get('my_download_dir_format')){ //downloads by format
-					$tracks [$i]->download_path .= DS.$tracks [$i]->first_file_ext;
+					//$tracks [$i]->download_path .= DS.$tracks [$i]->first_file_ext;
 				}
 				$tracks [$i]->download_real_path = $tracks [$i]->download_path . $tracks [$i]->download_name;	
 				
@@ -601,10 +600,6 @@ class MyMuseModelTracks extends JModelList
 					$tracks [$i]->flash = '';
 				}
 				
-				$jason = json_decode($tracks [$i]->file_name);
-				if(is_array($jason)){
-					$track->file_name = $jason;
-				}
 			}
 		}
 		

@@ -269,6 +269,7 @@ class MyMuseModelCategory extends JModelList
 				}
 			
 				$this->_pagination = $res[2];
+
 				return $this->_tracks;
 			}
 		}
@@ -393,6 +394,7 @@ class MyMuseModelCategory extends JModelList
 
 			// Compute selected asset permissions.
 			if (is_object($this->_item)) {
+
 				$params = new JRegistry($this->_item->params);
 				$params->merge( $cparams );
 				$user	= JFactory::getUser();

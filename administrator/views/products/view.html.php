@@ -177,7 +177,7 @@ class MymuseViewProducts extends JViewLegacy
 		if ($canDo->get('core.admin')) {
 			JToolBarHelper::preferences('com_mymuse');
 		}
-		JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/239-products-list?tmpl=component');
+		JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/support/documentation/documentation-mymusesimple/products-list?tmpl=component');
 
 	}
 	

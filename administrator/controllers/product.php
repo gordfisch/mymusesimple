@@ -61,9 +61,6 @@ class MymuseControllerProduct extends JControllerForm
         
         $this->registerTask( 'save2newfile', 'saveitem' );
         
-        $this->registerTask( 'uploadtrack', 'uploadscreen' );
-        $this->registerTask( 'uploadpreview', 'uploadscreen' );
-        
         $this->registerTask( 'deletevariation', 'saveitem' );
         
         $cid = $input->get( 'cid', array(0));
@@ -109,7 +106,8 @@ class MymuseControllerProduct extends JControllerForm
 		}
 
 		$task = $input->get('task');
-		if($subtype == "file" || $subtype == "allfiles"){
+     
+		if($subtype == "file" || $subtype == "allfiles" || $task == "apply"){
 			
 			if ($this->save()) {
 
@@ -136,10 +134,13 @@ class MymuseControllerProduct extends JControllerForm
 					$this->setRedirect( 'index.php?option=com_mymuse&view=product&task=product.editfile&id='. $this->id.'&subtype='.$post['subtype'], $this->msg );
 					break;
 				case 'savefile':
-				default:
 					$this->msg = JText::_( 'MYMUSE_FILE_SAVED' );;
 					$this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=listtracks&id='. $this->parentid.'&subtype='.$post['subtype'], $this->msg );
 					break;
+                case 'apply':
+                default:
+                    $this->msg = JText::_( 'MYMUSE_ITEM_SAVED' );;
+                    $this->setRedirect( 'index.php?option=com_mymuse&view=product&layout=edit&id='. $this->id.'&subtype='.$post['subtype'], $this->msg );
 				}
 			}else {
 				

@@ -376,12 +376,12 @@ as x GROUP BY x.all_id, x.product_name, x.product_id) as s ON s.product_id = a.i
                 }
             }
                 
-                if(!count($in)){
-                	$in[] = 0;
-                }
-                $IN = "(".implode(",",$in).")";
+            if(!count($in)){
+            	$in[] = 0;
+            }
+            $IN = "(".implode(",",$in).")";
                 
-                
+              
             if ($includeSubcategories) {
 				
 				$levels = (int) $this->getState('filter.max_category_levels', '1');
@@ -565,6 +565,7 @@ as x GROUP BY x.all_id, x.product_name, x.product_id) as s ON s.product_id = a.i
 		parent.id, parent.path, parent.alias, v.rating_sum, v.rating_count, c.published, c.lft, 
 		a.ordering, parent.lft,  c.id, a.urls, s.sales');
 
+//echo $this->_db->replacePrefix((string) $query); exit;
 		return $query;
 	}
 

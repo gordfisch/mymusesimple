@@ -130,7 +130,7 @@
 
 	 		<field 
 	 			name="product_show_quantity" 
-	 			type="radio"
+	 			type="hidden"
 				class="btn-group btn-group-yesno"
 	 			default="0" 
 	 			label="MYMUSE_SHOW_QUANTITY" 
@@ -218,7 +218,7 @@
 	 				
 	 		<field 
 	 			name="product_player_type" 
-	 			type="list"
+	 			type="hidden"
 	 			default="single" 
 	 			label="MYMUSE_PRODUCT_PLAYERTYPE_LABEL" 
 	 			description="MYMUSE_PRODUCT_PLAYERTYPE_DESC"
@@ -230,7 +230,7 @@
 	 		
 	 		<field 
 	 			name="product_player_width" 
-	 			type="text" 
+	 			type="hidden" 
 	 			size="6" 
 	 			default="" 
 				label="MYMUSE_PLAYER_WIDTH_LABEL" 
@@ -239,7 +239,7 @@
 		
 			<field 
 				name="product_player_height" 
-				type="text" 
+				type="hidden" 
 				size="6" 
 				default="" 
 				label="MYMUSE_PLAYER_HEIGHT_LABEL" 
@@ -320,7 +320,7 @@
 	 		
 	 		<field 
 	 			name="product_item_selectbox" 
-	 			type="radio"
+	 			type="hidden"
 				class="btn-group btn-group-yesno"
 	 			default="0" 
 	 			label="MYMUSE_ITEM_SELECTBOX" 
@@ -455,7 +455,7 @@
 			
 			<field 
 				name="show_vote" 
-				type="radio"
+				type="hidden"
 				class="btn-group btn-group-yesno"
 				default="0"
 				label="MYMUSE_SHOW_VOTE_LABEL"
@@ -1264,7 +1264,7 @@
 		
 		<field 
 			name="category_match_level"
-			type="radio"
+			type="hidden"
 			class="btn-group btn-group-yesno"
 			default="product"
 			label="MYMUSE_CATEGORY_MATCH_LEVEL_LABEL"

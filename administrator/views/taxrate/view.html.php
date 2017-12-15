@@ -78,6 +78,6 @@ class MymuseViewTaxrate extends JViewLegacy
 		else {
 			JToolBarHelper::cancel('taxrate.cancel', 'JTOOLBAR_CLOSE');
 		}
-		JToolBarHelper::help('', false, 'http://www.joomlamymuse.com/en/documentation/72-help-files-3-x/245-taxrates-new-edit?tmpl=component');
+		JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/support/documentation/documentation-mymusesimple/taxrates-new-edit?tmpl=component');
 	}
 }
