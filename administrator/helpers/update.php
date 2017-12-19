@@ -303,10 +303,7 @@ class MyMuseUpdateHelper extends JObject
 		$res = $db->loadResult();
 	
 		if($res > 0){
-			echo "$query <bre />had product with id $res";
-			print_pre($data);
-			exit;
-			return $this->upgradeProduct($data);
+			return $res;
 		}
 		$query = "SELECT MAX(id) from #__mymuse_product WHERE 1";
 	

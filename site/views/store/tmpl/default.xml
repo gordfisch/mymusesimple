@@ -20,7 +20,7 @@
 				label="JGLOBAL_SUBSLIDER_BLOG_LAYOUT_LABEL"
 				class="text"
 			/>
-						<field 
+			<field 
 				name="store_show_title" 
 				type="list"
 				useglobal="true"

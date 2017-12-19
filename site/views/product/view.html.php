@@ -205,7 +205,6 @@ class myMuseViewProduct extends JViewLegacy
 		$this->_prepareDocument();
 		
 		$recommends = $this->get('Recommended');
-		print_pre($recommends);
 		if($recommends){
 			$this->assignRef('recommends', $recommends);
 				
