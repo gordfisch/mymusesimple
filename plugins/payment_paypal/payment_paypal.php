@@ -155,7 +155,7 @@ class plgMymusePayment_Paypal extends JPlugin
 		
 		
 		$cancel_return = JRoute::_('index.php?option=com_mymuse&task=paycancel&view=cart&Itemid='.$Itemid);
-		$cancel_return = JURI::root().$cancel_return;
+		$cancel_return = rtrim(JURI::root(),"/").$cancel_return;
 		
 		$string = '
 		<form action="'.PAYPAL_URL.'" method="post" name="adminFormPayPal" >

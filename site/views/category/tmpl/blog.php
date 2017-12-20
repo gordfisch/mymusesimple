@@ -97,7 +97,7 @@ $document->setMetaData( 'twitter:image', JURI::Root().$this->category->getParams
 		<div class="leading-<?php echo $leadingcount; ?><?php echo $item->state == 0 ? ' system-unpublished' : null; ?>">
 			<?php
 				$this->item = &$item;
-				echo $this->loadTemplate('item');
+				echo $this->loadTemplate('leading');
 			?>
 		</div>
 		<?php
