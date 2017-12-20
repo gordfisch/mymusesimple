@@ -55,6 +55,8 @@ class MyMuseUpdateHelper extends JObject
 		}
 		
 		$url .= "index.php";
+		$user = JFactory::getUser();
+		$userid = $user->get('id');
 	
 		$token = JSession::getFormToken();
 		$cookie = session_name()."=".session_id();
@@ -76,7 +78,7 @@ class MyMuseUpdateHelper extends JObject
 		}
 		$str = "jform[title]=$title&jform[alias]=$alias&jform[extension]=com_mymuse";
 		$str .= "&jform[parent_id]=$parent_id&jform[published]=1&jform[access]=1&jform[language]=*&jform[id]=0";
-		$str .= "&jform[description]=$description&jform[created_user_id]=59&jform[note]=&jform[metadesc]=";
+		$str .= "&jform[description]=$description&jform[created_user_id]=$userid&jform[note]=&jform[metadesc]=";
 		$str .= "&jform[metakey]=&jform[params][category_layout]=&jform[params][image]=$image";
 		$str .= "&jform[metadata][author]=&jform[metadata][robots]=&task=category.save&option=com_categories";
 		$str .= "&$token=1&extension=com_mymuse";

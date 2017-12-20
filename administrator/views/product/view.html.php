@@ -238,26 +238,6 @@ class MymuseViewProduct extends JViewLegacy
 			}
 			JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/support/documentation/documentation-mymusesimple/product-tracks?tmpl=component#tracks-all-tracks');		
 		
-		}elseif($subtype == "item" && $parentid){
-			// ITEMS
-			// If not checked out, can save the item.
-			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))
-			{
-				JToolBarHelper::apply('product.applyitem', 'JTOOLBAR_APPLY');
-				JToolBarHelper::save('product.saveitem', 'JTOOLBAR_SAVE');
-			}
-			if (!$checkedOut && ($canDo->get('core.create'))){
-				JToolBarHelper::custom('product.save2newitem', 'save-new.png', 'save-new_f2.png', 'JTOOLBAR_SAVE_AND_NEW', false);
-			}
-
-			if (empty($this->item->id)) {
-				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CANCEL');
-			}
-			else {
-				JToolBarHelper::cancel('product.cancelitem', 'JTOOLBAR_CLOSE');
-			}
-			JToolBarHelper::help('', false, 'https://www.joomlamymuse.com/support/documentation/documentation-3-x/product-items?tmpl=component');
-				
 		}else{
 			// If not checked out, can save the item.
 			if (!$checkedOut && ($canDo->get('core.edit')||($canDo->get('core.create'))))

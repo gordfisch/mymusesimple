@@ -40,9 +40,7 @@
 			</li>
 			
 			
-			<li><b><a class="modal" href="index.php?option=com_config&amp;view=component&amp;component=com_mymuse&amp;path=&amp;tmpl=component" rel="{handler: 'iframe', size: {x: 800, y: 600}, onClose: function() {}}">
-<?php echo JText::_("MYMUSE_PARAMETERS"); ?>
-</a></b> 
+			<li><b><a  href="index.php?option=com_config&amp;view=component&amp;component=com_mymuse&amp;"><?php echo JText::_("MYMUSE_PARAMETERS"); ?></a></b> 
 			<?php echo JText::_("MYMUSE_PARAMETERS_DESC"); ?></li>
 			
 			<li><b><a href="index.php?option=com_categories&extension=com_mymuse"><?php echo JText::_("MYMUSE_CATEGORIES_ARTISTS"); ?></a></b> 
