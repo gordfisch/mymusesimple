@@ -249,15 +249,7 @@
                 default="mp3"
                 multiple="true">
                 <option value="mp3">MP3</option>
-                <option value="wav">WAV</option>
-                <option value="flac">FLAC</option>
-                <option value="ogg">OGG</option>
-                <option value="webma">WEBMA</option>
-                <option value="webmv">WEBMV</option>
-                <option value="ogv">OGV</option>
-                <option value="m4v">M4V</option>
-                <option value="pdf">PDF</option>
-                <option value="other">OTHER</option>
+
           </field> 
 		  <field
                 name="my_download_max"
@@ -428,7 +420,7 @@
 				<option value="full">MYMUSE_FULL</option>
 				<option value="jomsocial">MYMUSE_JOMSOCIAL</option>
 				<option value="no_reg">MYMUSE_NO_REGISTRATION</option>
-				<option value="full_guest">MYMUSE_FULL_OR_GUEST</option>
+
         </field>
         
          <field
@@ -462,7 +454,7 @@
         />
         <field
                 name="my_use_coupons"
-                type="radio"
+                type="hidden"
                 label="MYMUSE_USE_COUPONS"
                 description="MYMUSE_USE_COUPONS_DESC"
                 class="btn-group"
