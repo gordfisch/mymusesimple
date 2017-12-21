@@ -43,8 +43,9 @@ function MymuseBuildRoute(&$query)
 	$q = 'SELECT id from #__menu WHERE home=1';
 	$dbo->setQuery($q);
 	$home_id = $dbo->loadResult();
+
 	if($params->get('top_menu_item') == $home_id){
-		$params->set('top_menu_item', '');
+		//$params->set('top_menu_item', '');
 	}
 
 	// we need a menu item.  Either the one specified in the query, or the current active one if none specified
@@ -67,10 +68,13 @@ function MymuseBuildRoute(&$query)
 	}
 	
 	// is there a top menu item specified?
-	if($params->get('top_menu_item','') && $params->get('top_menu_item') != $home_id){
-		if(!isset($query['Itemid'])){
+	if($params->get('top_menu_item','') 
+		//&& $params->get('top_menu_item') != $home_id
+	)
+	{
+		//if(!isset($query['Itemid'])){
 			$query['Itemid']= $params->get('top_menu_item','');
-		}
+		//}
 	}
 	/* use product alias in URL?
 	if( $params->get('top_menu_item','') && $params->get('my_use_alias','') && isset($query['view']) &&  $query['view'] == 'product' && isset($query['id']) ){
@@ -81,7 +85,7 @@ function MymuseBuildRoute(&$query)
 		}
 	}
 	*/
-	
+	//echo $query['Itemid'];
     if(isset($query['task']) && $query['task'] == "checkout"){
     	unset($query['task']);
     	unset($query['view']);
