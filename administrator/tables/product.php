@@ -183,7 +183,7 @@ class MymuseTableproduct extends JTable
 		$form 			= $input->get('jform', array(), 'ARRAY'); 
 		$select_files 	= $input->get('select_file', '' ,'array');
 		$preview 		= $input->getString('file_preview', '');
-		$current_preview = $input->get('current_preview', '');
+		$current_preview = $input->get('current_preview', $this->file_preview);
 		$remove_preview = $input->get('remove_preview', '');
 		$date			= JFactory::getDate();
 		$user			= JFactory::getUser();

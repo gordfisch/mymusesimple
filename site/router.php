@@ -43,7 +43,7 @@ function MymuseBuildRoute(&$query)
 	$q = 'SELECT id from #__menu WHERE home=1';
 	$dbo->setQuery($q);
 	$home_id = $dbo->loadResult();
-
+	//print_pre($query); 
 	if($params->get('top_menu_item') == $home_id){
 		//$params->set('top_menu_item', '');
 	}
@@ -72,9 +72,9 @@ function MymuseBuildRoute(&$query)
 		//&& $params->get('top_menu_item') != $home_id
 	)
 	{
-		//if(!isset($query['Itemid'])){
+		if(!isset($query['Itemid'])){
 			$query['Itemid']= $params->get('top_menu_item','');
-		//}
+		}
 	}
 	/* use product alias in URL?
 	if( $params->get('top_menu_item','') && $params->get('my_use_alias','') && isset($query['view']) &&  $query['view'] == 'product' && isset($query['id']) ){
