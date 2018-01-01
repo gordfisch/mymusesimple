@@ -224,9 +224,9 @@
 
 <fieldset name="product" label="MYMUSE_ATTRIBS_FIELDSET_LABEL">
 
-			<field 
-				name="show_title" 
-				type="list"
+			<field name="show_title" 
+			type="radio"
+			class="btn-group"
 				description="MYMUSE_SHOW_TITLE_DESC"
 				label="MYMUSE_SHOW_TITLE_LABEL"
 			>
@@ -234,301 +234,10 @@
 				<option value="0">JHIDE</option>
 				<option value="1">JSHOW</option>
 			</field>
-
-
-			<field 
-				name="show_intro" 
-				type="list"
-				description="MYMUSE_SHOW_INTRO_DESC"
-				label="MYMUSE_SHOW_INTRO_LABEL"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
 			
-			<field 
-				name="product_show_product_image" 
-				type="list" 
-				label="MYMUSE_SHOW_PRODUCT_IMAGE" 
-				description="MYMUSE_SHOW_PRODUCT_IMAGE_DESC">
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field>
-			<field 
-				name="product_product_image_height" 
-				type="text" 
-
-				label="MYMUSE_PRODUCT_IMAGE_HEIGHT" 
-				description="MYMUSE_PRODUCT_PRODUCT_IMAGE_HEIGHT_DESC"
-	 		/>
-	 		<field 
-	 			name="product_show_quantity" 
-	 			type="list" 
-
-	 			label="MYMUSE_SHOW_QUANTITY" 
-	 			description="MYMUSE_SHOW_QUANTITY_DESC">
-	 			<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="product_show_fulltext" 
-	 			type="list" 
-	 		
-	 			label="MYMUSE_SHOW_FULLTEXT_LABEL" 
-	 			description="MYMUSE_SHOW_FULLTEXT_DESC">
-	 			<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="product_item_selectbox" 
-	 			type="list" 
-	 		
-	 			label="MYMUSE_ITEM_SELECTBOX" 
-	 			description="MYMUSE_ITEM_SELECTBOX_DESC">
-	 			<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">MYMUSE_NO</option>
-	 			<option value="1">MYMUSE_YES</option>
-	 		</field>
-
-	<field type="spacer" name="spacerdownload" label="MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" /> 		
-			
-			<field 
-				name="product_show_tracks" 
-				type="radio" 
-			
-				label="MYMUSE_SHOW_TRACKS_LABEL" 
-				description="MYMUSE_SHOW_TRACKS_DESC">
-	 			<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field> 
-	 		
-			<field 
-				name="product_player_type" 
-				type="list" 
-				default="single" 
-				label="MYMUSE_PRODUCT_PLAYERTYPE_LABEL" 
-				description="MYMUSE_PRODUCT_PLAYERTYPE_DESC">
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="single">MYMUSE_SINGLE</option>
-	 			<option value="playlist">MYMUSE_PLAYLIST</option>
-	 		</field>
-
-	 		<field 
-	 			name="product_player_width" 
-	 			type="text" 
-	 			size="6"
-				label="MYMUSE_PLAYER_WIDTH_LABEL" 
-				description="MYMUSE_PLAYER_WIDTH_DESC"
-			/>
-
-			<field 
-				name="product_player_height" 
-				type="text" 
-				size="6"
-				label="MYMUSE_PLAYER_HEIGHT_LABEL" 
-				description="MYMUSE_PLAYER_HEIGHT_DESC"
-			/>
-
-			<field 
-				name="product_show_tracks" 
-				type="list" 
-				label="MYMUSE_SHOW_TRACKS_LABEL" 
-				description="MYMUSE_SHOW_TRACKS_DESC">
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field>
-		
-			<field 
-				name="product_show_select_column" 
-				type="list" 
-			
-				label="MYMUSE_SHOW_SELECT_COLUMN" 
-				description="MYMUSE_SHOW_SELECT_COLUMN_DESC">
-	 			<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="product_show_filesize" 
-	 			type="list" 
-	 			
-	 			label="MYMUSE_SHOW_FILESIZE" 
-	 			description="MYMUSE_SHOW_FILESIZE_DESC">
-	 			<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="product_show_cost_column" 
-	 			type="list" 
-	 			default="1" 
-	 			label="MYMUSE_SHOW_COST_COLUMN" 
-	 			description="MYMUSE_SHOW_COST_COLUMN_DESC">
-	 			<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="product_show_preview_column" 
-	 			type="list" 
-	 		 
-	 			label="MYMUSE_SHOW_PREVIEW_COLUMN" 
-	 			description="MYMUSE_SHOW_PREVIEW_COLUMN_DESC">
-	 			<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field>
-	 		
-	 		<field 
-	 			name="product_show_cartadd" 
-	 			type="list" 
-	 			
-	 			label="MYMUSE_SHOW_CARTADD" 
-	 			description="MYMUSE_SHOW_CARTADD_DESC">
-	 			<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field>
-	 		
-	<field type="spacer" name="myspacer" hr="true" /> 	
-			
-	 		
-
-
-			<field 
-				name="show_category" type="list"
-				description="MYMUSE_SHOW_CATEGORY_DESC"
-				label="MYMUSE_SHOW_CATEGORY_LABEL"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field name="link_category" type="list"
-				description="JGLOBAL_LINK_CATEGORY_DESC"
-				label="JGLOBAL_LINK_CATEGORY_LABEL"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
-
-			<field name="show_parent_category" type="list"
-				description="MYMUSE_SHOW_PARENT_CATEGORY_DESC"
-				label="MYMUSE_SHOW_PARENT_CATEGORY_LABEL"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field name="link_parent_category" type="list"
-				description="JGLOBAL_LINK_PARENT_CATEGORY_DESC"
-				label="JGLOBAL_LINK_PARENT_CATEGORY_LABEL"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JNO</option>
-				<option value="1">JYES</option>
-			</field>
-
-			<field name="show_author" type="list"
-				description="MYMUSE_SHOW_AUTHOR_DESC"
-				label="MYMUSE_SHOW_AUTHOR_LABEL"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field name="link_author" type="list"
-				description="JGLOBAL_LINK_AUTHOR_DESC"
-				label="JGLOBAL_LINK_AUTHOR_LABEL"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JNo</option>
-				<option value="1">JYes</option>
-			</field>
-
-			<field name="show_create_date" type="list"
-				description="MYMUSE_SHOW_CREATE_DATE_DESC"
-				label="MYMUSE_SHOW_CREATE_DATE_LABEL"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field name="show_modify_date" type="list"
-				description="MYMUSE_SHOW_MODIFY_DATE_DESC"
-				label="MYMUSE_SHOW_MODIFY_DATE_LABEL"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field name="show_publish_date" type="list"
-				description="MYMUSE_SHOW_PUBLISH_DATE_DESC"
-				label="MYMUSE_SHOW_PUBLISH_DATE_LABEL"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field name="show_item_navigation" type="list"
-				description="MYMUSE_SHOW_NAVIGATION_DESC"
-				label="MYMUSE_SHOW_NAVIGATION_LABEL"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-			<field
-				name="show_vote" type="list"
-				label="MYMUSE_SHOW_VOTE_LABEL"
-				description="MYMUSE_SHOW_VOTE_DESC"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option	value="1">JSHOW</option>
-			</field>
-
-			<field
-				name="show_readmore"
-				type="list"
-				description="MYMUSE_SHOW_READMORE_DESC"
-				label="MYMUSE_SHOW_READMORE_LABEL"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field
-				name="show_readmore_title"
-				type="list"
-				label="MYMUSE_SHOW_READMORE_TITLE_LABEL"
-				description="MYMUSE_SHOW_READMORE_TITLE_DESC"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option value="1">JSHOW</option>
-			</field>
-
-			<field name="show_icons" type="list"
+			<field name="show_icons" 
+				type="radio"
+				class="btn-group"
 				description="JGLOBAL_SHOW_ICONS_DESC"
 				label="JGLOBAL_SHOW_ICONS_LABEL"
 			>
@@ -537,7 +246,9 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field name="show_print_icon" type="list"
+			<field name="show_print_icon" 
+				type="radio"
+				class="btn-group"
 				description="JGLOBAL_SHOW_PRINT_ICON_DESC"
 				label="JGLOBAL_SHOW_PRINT_ICON_LABEL"
 			>
@@ -546,7 +257,9 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field name="show_email_icon" type="list"
+			<field name="show_email_icon" 
+				type="radio"
+				class="btn-group"
 				description="MYMUSE_SHOW_EMAIL_ICON_DESC"
 				label="JGLOBAL_SHOW_EMAIL_ICON_LABEL"
 			>
@@ -555,7 +268,110 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field name="show_hits" type="list"
+			
+	<field type="spacer" name="spacerddetails" label="MYMUSE_PRODUCT_DETAILS" /> 
+			
+			<field name="show_parent_category" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_SHOW_PARENT_CATEGORY_DESC"
+				label="MYMUSE_SHOW_PARENT_CATEGORY_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			
+			<field name="link_parent_category" 
+				type="list"
+				description="JGLOBAL_LINK_PARENT_CATEGORY_DESC"
+				label="JGLOBAL_LINK_PARENT_CATEGORY_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+			
+			<field name="show_category" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_SHOW_CATEGORY_DESC"
+				label="MYMUSE_SHOW_CATEGORY_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="link_category" 
+				type="radio"
+				class="btn-group"
+				description="JGLOBAL_LINK_CATEGORY_DESC"
+				label="JGLOBAL_LINK_CATEGORY_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JNO</option>
+				<option value="1">JYES</option>
+			</field>
+
+			<field name="show_author" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_SHOW_AUTHOR_DESC"
+				label="MYMUSE_SHOW_AUTHOR"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="link_author" 
+				type="radio"
+				class="btn-group"
+				description="JGLOBAL_LINK_AUTHOR_DESC"
+				label="JGLOBAL_LINK_AUTHOR_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JNo</option>
+				<option value="1">JYes</option>
+			</field>
+
+			<field name="show_create_date" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_SHOW_CREATE_DATE_DESC"
+				label="MYMUSE_SHOW_CREATE_DATE_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_modify_date" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_SHOW_MODIFY_DATE_DESC"
+				label="MYMUSE_SHOW_MODIFY_DATE_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_publish_date" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_SHOW_PUBLISH_DATE_DESC"
+				label="MYMUSE_SHOW_PUBLISH_DATE_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_hits" 
+				type="radio"
+				class="btn-group"
 				description="MYMUSE_SHOW_HITS_DESC"
 				label="MYMUSE_SHOW_HITS_LABEL"
 			>
@@ -564,7 +380,9 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field name="show_noauth" type="list"
+			<field name="show_noauth" 
+				type="radio"
+				class="btn-group"
 				description="MYMUSE_SHOW_UNAUTH_LINKS_DESC"
 				label="MYMUSE_SHOW_UNAUTH_LINKS_LABEL"
 			>
@@ -572,6 +390,237 @@
 				<option value="0">JNO</option>
 				<option value="1">JYES</option>
 			</field>
+			
+          	<field name="show_minicart" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_SHOW_MINICART_DESC"
+				label="MYMUSE_SHOW_MINICART_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			
+			
+	<field type="spacer" name="spacerdescription" label="MYMUSE_PRODUCT_DESCRIPTION" /> 		
+			<field 
+				name="show_recording_details" 
+				type="radio"
+				class="btn-group"
+				label="MYMUSE_SHOW_RECORDING_DETAILS_LABEL"
+				description="MYMUSE_SHOW_RECORDING_DETAILS_DESC"  
+				>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+          	</field>
+          	
+          	<field 
+				name="show_release_info" 
+				type="radio"
+				class="btn-group"
+				label="MYMUSE_SHOW_RELEASE_INFO_LABEL"
+				description="MYMUSE_SHOW_RELEASE_INFO_DESC"  
+				>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+          	</field>
+          	
+			<field name="show_intro" 
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_SHOW_INTRO_DESC"
+				label="MYMUSE_SHOW_INTRO_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			
+			<field name="product_show_product_image" 
+				type="radio"
+				class="btn-group"
+				default="1" 
+				label="MYMUSE_SHOW_PRODUCT_IMAGE" 
+				description="MYMUSE_SHOW_PRODUCT_IMAGE_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">MYMUSE_HIDE</option>
+	 			<option value="1">MYMUSE_SHOW</option>
+	 		</field>
+			<field name="product_product_image_height" 
+				type="text" 
+				default="0" 
+				label="MYMUSE_PRODUCT_IMAGE_HEIGHT" 
+				description="MYMUSE_PRODUCT_PRODUCT_IMAGE_HEIGHT_DESC"
+	 		/>
+	 		<field name="show_readmore"
+				type="radio"
+				class="btn-group"
+				description="MYMUSE_SHOW_READMORE_DESC"
+				label="MYMUSE_SHOW_READMORE_LABEL"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+
+			<field name="show_readmore_title"
+				type="radio"
+				class="btn-group"
+				label="MYMUSE_SHOW_READMORE_TITLE_LABEL"
+				description="MYMUSE_SHOW_READMORE_TITLE_DESC"
+			>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+			</field>
+			
+			<field name="product_show_fulltext" 
+	 			type="radio"
+				class="btn-group"
+	 			label="MYMUSE_SHOW_FULLTEXT_LABEL" 
+	 			description="MYMUSE_SHOW_FULLTEXT_DESC">
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">MYMUSE_HIDE</option>
+	 			<option value="1">MYMUSE_SHOW</option>
+	 		</field>
+			
+	 		
+	<field type="spacer" name="spacerdownload" label="MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" /> 		
+
+	 		
+			<field name="product_show_tracks" 
+				type="list"
+				label="MYMUSE_SHOW_TRACKS_LABEL" 
+				description="MYMUSE_SHOW_TRACKS_DESC">
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">MYMUSE_HIDE</option>
+	 			<option value="1">MYMUSE_SHOW</option>
+	 		</field> 
+	 		<field name="orderby_track"
+				type="list"
+				label="MYMUSE_TRACK_ORDER_LABEL"
+				description="MYMUSE_TRACK_ORDER_DESC"
+				>
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+				<option value="rdate">JGLOBAL_MOST_RECENT_FIRST</option>
+				<option value="date">JGLOBAL_OLDEST_FIRST</option>
+				<option value="alpha">JGLOBAL_TITLE_ALPHABETICAL</option>
+				<option value="ralpha">JGLOBAL_TITLE_REVERSE_ALPHABETICAL</option>
+				<option value="hits">JGLOBAL_MOST_HITS</option>
+				<option value="rhits">JGLOBAL_LEAST_HITS</option>
+				<option value="sales">MYMUSE_MOST_SALES_ORDER</option>
+				<option value="order">MYMUSE_PRODUCT_MANAGER_ORDER</option>
+			</field>
+
+		<field 
+			name="order_track_date" 
+			type="list"
+			description="JGLOBAL_ORDERING_DATE_DESC"
+			label="JGLOBAL_ORDERING_DATE_LABEL"
+		>
+			<option value="">JGLOBAL_USE_GLOBAL</option>
+			<option value="created">JGLOBAL_CREATED</option>
+			<option value="modified">JGLOBAL_MODIFIED</option>
+			<option value="published">JPUBLISHED</option>
+			<option value="product_made_date">MYMUSE_PRODUCT_CREATED_LABEL</option>
+				
+		</field>
+	 		
+			<field name="product_player_type" 
+				type="hidden"
+				class="btn-group"
+				default="single" 
+				label="MYMUSE_PRODUCT_PLAYERTYPE_LABEL" 
+				description="MYMUSE_PRODUCT_PLAYERTYPE_DESC">
+				<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="single">MYMUSE_SINGLE</option>
+	 		</field>
+
+		
+			<field name="product_show_select_column"
+			 	type="radio"
+				class="btn-group"
+			 	default="1" 
+			 	label="MYMUSE_SHOW_SELECT_COLUMN" 
+			 	description="MYMUSE_SHOW_SELECT_COLUMN_DESC">
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">MYMUSE_HIDE</option>
+	 			<option value="1">MYMUSE_SHOW</option>
+	 		</field>
+	 		
+	 		<field name="product_show_filesize" 
+	 			type="radio"
+				class="btn-group"
+	 			default="1" 
+	 			label="MYMUSE_SHOW_FILESIZE" 
+	 			description="MYMUSE_SHOW_FILESIZE_DESC">
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">MYMUSE_HIDE</option>
+	 			<option value="1">MYMUSE_SHOW</option>
+	 		</field>
+	 		
+	 		<field name="product_show_filetime" 
+	 			type="radio"
+				class="btn-group"
+	 			label="MYMUSE_SHOW_FILETIME" 
+	 			description="MYMUSE_SHOW_FILETIME_DESC">
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+	 		</field>
+	 		
+	 		<field name="product_show_sales" 
+	 			type="radio"
+				class="btn-group"
+	 			label="MYMUSE_SHOW_SALES" 
+	 			description="MYMUSE_SHOW_SALES_DESC">
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+	 		</field>
+	 		
+	 		<field name="product_show_downloads" 
+	 			type="radio"
+				class="btn-group"
+	 			label="MYMUSE_SHOW_DOWNLOADS" 
+	 			description="MYMUSE_SHOW_DOWNLOADS_DESC">
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">JHIDE</option>
+				<option value="1">JSHOW</option>
+	 		</field>
+	 		
+	 		<field name="product_show_cost_column" 
+	 			type="radio"
+				class="btn-group"
+	 			label="MYMUSE_SHOW_COST_COLUMN" 
+	 			description="MYMUSE_SHOW_COST_COLUMN_DESC">
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">MYMUSE_HIDE</option>
+	 			<option value="1">MYMUSE_SHOW</option>
+	 		</field>
+	 		
+	 		<field name="product_show_preview_column" 
+	 			type="radio"
+				class="btn-group"
+	 			label="MYMUSE_SHOW_PREVIEW_COLUMN" 
+	 			description="MYMUSE_SHOW_PREVIEW_COLUMN_DESC">
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">MYMUSE_HIDE</option>
+	 			<option value="1">MYMUSE_SHOW</option>
+	 		</field>
+	 		
+	 		<field name="product_show_cartadd" 
+	 			type="radio"
+				class="btn-group"
+	 			label="MYMUSE_SHOW_CARTADD" 
+	 			description="MYMUSE_SHOW_CARTADD_DESC">
+	 			<option value="">JGLOBAL_USE_GLOBAL</option>
+	 			<option value="0">MYMUSE_HIDE</option>
+	 			<option value="1">MYMUSE_SHOW</option>
+	 		</field>
 		</fieldset>
 		<fieldset name="integration">
 

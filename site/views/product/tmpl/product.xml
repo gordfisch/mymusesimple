@@ -64,16 +64,6 @@
 				<option value="1">JSHOW</option>
 			</field>
 
-			<field name="show_vote" 
-				type="radio"
-				class="btn-group"
-				label="MYMUSE_SHOW_VOTE_LABEL"
-				description="MYMUSE_SHOW_VOTE_DESC"
-			>
-				<option value="">JGLOBAL_USE_GLOBAL</option>
-				<option value="0">JHIDE</option>
-				<option	value="1">JSHOW</option>
-			</field>
 			
 	<field type="spacer" name="spacerddetails" label="MYMUSE_PRODUCT_DETAILS" /> 
 			
@@ -293,26 +283,6 @@
 	 			<option value="1">MYMUSE_SHOW</option>
 	 		</field>
 			
-	 <field type="spacer" name="spaceritems" label="MYMUSE_PRODUCT_PAGES_ITEMS_SECTION" /> 		
-			<field name="product_show_quantity" 
-	 			type="radio"
-				class="btn-group"
-	 			label="MYMUSE_SHOW_QUANTITY" 
-	 			description="MYMUSE_SHOW_QUANTITY_DESC">
-	 			<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">MYMUSE_HIDE</option>
-	 			<option value="1">MYMUSE_SHOW</option>
-	 		</field>
-	 		
-	 		<field name="product_item_selectbox" 
-	 			type="radio"
-				class="btn-group"
-	 			label="MYMUSE_ITEM_SELECTBOX" 
-	 			description="MYMUSE_ITEM_SELECTBOX_DESC">
-	 			<option value="">JGLOBAL_USE_GLOBAL</option>
-	 			<option value="0">MYMUSE_NO</option>
-	 			<option value="1">MYMUSE_YES</option>
-	 		</field>
 	 		
 	<field type="spacer" name="spacerdownload" label="MYMUSE_PRODUCT_PAGES_DOWNLOAD_SECTION" /> 		
 
@@ -356,26 +326,15 @@
 		</field>
 	 		
 			<field name="product_player_type" 
-				type="list"
+				type="hidden"
+				class="btn-group"
+				default="single" 
 				label="MYMUSE_PRODUCT_PLAYERTYPE_LABEL" 
 				description="MYMUSE_PRODUCT_PLAYERTYPE_DESC">
 				<option value="">JGLOBAL_USE_GLOBAL</option>
 	 			<option value="single">MYMUSE_SINGLE</option>
-	 			<option value="playlist">MYMUSE_PLAYLIST</option>
-	 			<option value="module">MYMUSE_PLAYER_IN_A_MODULE</option>
 	 		</field>
-	 		<field name="product_player_width" 
-	 			type="text" 
-	 			size="6"
-				label="MYMUSE_PLAYER_WIDTH_LABEL" 
-				description="MYMUSE_PLAYER_WIDTH_DESC"
-			/>
-			<field name="product_player_height" 
-				type="text" 
-				size="6"
-				label="MYMUSE_PLAYER_HEIGHT_LABEL" 
-				description="MYMUSE_PLAYER_HEIGHT_DESC"
-			/>
+
 		
 			<field name="product_show_select_column"
 			 	type="radio"
