@@ -334,7 +334,6 @@ class MyMuseModelProduct extends JModelItem
 			$alpha = $this->getState('list.alpha','');
 			$searchword = $this->getState('list.searchword','');
 			$listDirn	= $this->getState('list.direction', 'ASC');
-			//$this->setState('list.ordering', ProductHelperQuery::orderbySecondary($params->get('orderby_track', 'rdate'), $params->get('order_track_date')));
 			$ordering 	= $this->getState('list.ordering', 'a.title');
 			if(preg_match("/ASC|DESC/", strtoupper($ordering))){
 				$listDirn = '';
@@ -380,7 +379,6 @@ class MyMuseModelProduct extends JModelItem
 			$db->setQuery($track_query);
 			$tracks = $db->loadObjectList();
 			
-
 	
 			$site_url = MyMuseHelper::getSiteUrl($pk,'1');
 			$site_path = MyMuseHelper::getSitePath($pk,'1');
@@ -780,13 +778,13 @@ class MyMuseModelProduct extends JModelItem
 		$product_id = $product->id;
 		// Get the product_parent_id for this product/item
 		$product_parent_id = 0;
+
 		if(isset($product->product_id)){
 			$product_parent_id = $product->product_id;
 			if($product_parent_id > 0){
 				$price_info["item"]=true;
 			}
 		}  
-		
 		
 		// Get the shopper group id for this shopper
 		$shopper_group_id = @$shopper->shopper_group->id;
@@ -801,32 +799,44 @@ class MyMuseModelProduct extends JModelItem
 		}
 		$shopper_group_discount = $shopper->shopper_group->discount;
 		
-		// Get the product_parent_id for this product/item
-		$product_parent_id = 0;
-		
-		if (0 == $params->get ( 'my_price_by_product' ) || isset($product->product_physical)) {
+
+
+		if (0 == $params->get ( 'my_price_by_product' )) {
 			// price by track
 			$price_info ["product_price"] = $product->price;
 			
 		} elseif (1 == $params->get ( 'my_price_by_product' )) {
 			// price by product
-			if (isset($product->product_id) && $product->product_id > 0) {
-				$query = "SELECT attribs FROM #__mymuse_product WHERE id='" . $product->product_id . "'";
-				$db->setQuery ( $query );
-				if (! $product->attribs = $db->loadResult ()) {
-					$price_info ["product_price"] = $product_price = $product->price;
-				}
+
+			if (isset($product->parentid) && $product->parentid > 0) {
+				$id = $product->parentid;
+				echo "parent <br />";
+			}else{
+				$id = $product->id;
 			}
+			$query = "SELECT attribs FROM #__mymuse_product WHERE id='" . $id . "'";
+			echo "query $query <br >";
+			$db->setQuery ( $query );
+			if (! $product->attribs = $db->loadResult ()) {
+				$price_info ["product_price"] = $product_price = $product->price;
+			}
+
+
 			$registry = new JRegistry ();
 			$registry->loadString ( $product->attribs );
 			$product->attribs = $registry;
+
+			
 			if (isset($product->product_physical) && $product->product_physical) {
+				//physical
 				$key = 'product_price_physical';
 				$product->price = $product->attribs->get ( $key );
 				$price_info ["product_price"] = $product->price;
 				
 			} elseif (isset($product->allfiles) && $product->allfiles) {
-			
+				//all files
+
+
 				//$key = 'product_price_' . $product->ext . '_all';
 				//$product->price = $product->attribs->get ( $key );
 				//$price_info ["product_price"] = $product->price;
@@ -851,7 +861,8 @@ class MyMuseModelProduct extends JModelItem
 				
 				return $price_info;
 				
-			} elseif(isset($product->track)) {
+			} elseif(isset($product->parentid) && $product->parentid){
+
 				foreach($params->get('my_formats') as $format) {
 			
 					$key = 'product_price_' . $format;
@@ -869,6 +880,7 @@ class MyMuseModelProduct extends JModelItem
 					$price_info[$format]["product_price"] = $price_info [$format]["product_price"] - ($product_price * $shopper_group_discount/100) - $discount;
 					$price_info [$format]["product_price"] = round ( $price_info [$format]["product_price"], 2 );		
 				}
+	
 				return $price_info;
 				
 			} else {

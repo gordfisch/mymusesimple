@@ -795,7 +795,8 @@ endif; ?>
         				if("1" == $params->get('my_price_by_product')) :
         					$first = 1;
         					$types = array();
- 							foreach($track->track as $file){
+
+ 							foreach($track->file_name as $file){
  								$types[] = $file->file_ext;
  							}
 							foreach($this->params->get('my_formats') as $format) :

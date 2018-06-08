@@ -15,7 +15,7 @@
 			"file": "administrator/models/forms/track.xml",
 			"settings":
 			{
-				"buffer_size": 14067,
+				"buffer_size": 11655,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -24,7 +24,7 @@
 			"file": "administrator/controllers/track.php",
 			"settings":
 			{
-				"buffer_size": 5185,
+				"buffer_size": 5704,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -33,7 +33,7 @@
 			"file": "administrator/models/track.php",
 			"settings":
 			{
-				"buffer_size": 14726,
+				"buffer_size": 12481,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -42,7 +42,7 @@
 			"file": "administrator/views/track/view.html.php",
 			"settings":
 			{
-				"buffer_size": 7057,
+				"buffer_size": 5005,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -51,7 +51,7 @@
 			"file": "administrator/views/track/tmpl/edit.php",
 			"settings":
 			{
-				"buffer_size": 14660,
+				"buffer_size": 10552,
 				"encoding": "UTF-8",
 				"line_ending": "Unix"
 			}
@@ -228,7 +228,7 @@
 	],
 	"find":
 	{
-		"height": 21.0
+		"height": 38.0
 	},
 	"find_in_files":
 	{
@@ -274,15 +274,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 14067,
+						"buffer_size": 11655,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1447,
-								1447
+								0,
+								0
 							]
 						],
 						"settings":
@@ -307,15 +307,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5185,
+						"buffer_size": 5704,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								4306,
-								4306
+								0,
+								0
 							]
 						],
 						"settings":
@@ -340,15 +340,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 14726,
+						"buffer_size": 12481,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2271,
-								2271
+								0,
+								0
 							]
 						],
 						"settings":
@@ -372,15 +372,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 7057,
+						"buffer_size": 5005,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2759,
-								2759
+								0,
+								0
 							]
 						],
 						"settings":
@@ -404,15 +404,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 14660,
+						"buffer_size": 10552,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								7246,
-								7246
+								0,
+								0
 							]
 						],
 						"settings":
@@ -435,7 +435,7 @@
 	],
 	"incremental_find":
 	{
-		"height": 21.0
+		"height": 22.0
 	},
 	"input":
 	{
@@ -484,7 +484,7 @@
 	"project": "mymusesimple.sublime-project",
 	"replace":
 	{
-		"height": 38.0
+		"height": 40.0
 	},
 	"save_all_on_build": true,
 	"select_file":

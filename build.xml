@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="MyMuseSimple3.5.0" basedir="." default="copy_to_simple">
- 		<property name="myversion" value="3.5" override="true" />
+ 	<property name="myversion" value="3.5" override="true" />
 	<!-- arboreta/joomlamy3/callinish || mymusetest35 || nexgen || singsong || soundliaison/new || nexgen/staging -->
         <property name="test" value="/var/www/html/mymusesimple" override="true" />
         <property name="testadmincomp"
@@ -33,7 +33,7 @@
 
  
         <!-- Copy Target -->
-        <target name="simple" description="copy target">
+        <target name="copy_to_simple" description="copy target">
                 <echo>Copying files from mymusesimple working dir to mymuse...
                 </echo>
         	

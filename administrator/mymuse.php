@@ -2,7 +2,7 @@
 /**
  * @version     $Id$
  * @package     com_mymuse3
- * @copyright   Copyright (C) 2011. All rights reserved.
+ * @copyright   Copyright (C) 2018. All rights reserved.
  * @license     GNU General Public License version 2 or later; see LICENSE.txt
  * @author      Gord Fisch arboreta.ca
  */
@@ -20,11 +20,11 @@ $input = JFactory::getApplication()->input;
 require_once (JPATH_COMPONENT.DS.'helpers'.DS.'mymuse.php');
 require_once (JPATH_COMPONENT.DS.'helpers'.DS.'permission.php');
 require_once JPATH_COMPONENT_ADMINISTRATOR.DS.'liveupdate'.DS.'liveupdate.php';
+
 //initialize
 $params = MyMuseHelper::getParams();
-//print_pre($input->post->getArray());
+
 if($input->get('view','') == 'liveupdate') {
-	
 	LiveUpdate::handleRequest();
 	return;
 }
