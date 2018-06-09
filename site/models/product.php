@@ -810,12 +810,12 @@ class MyMuseModelProduct extends JModelItem
 
 			if (isset($product->parentid) && $product->parentid > 0) {
 				$id = $product->parentid;
-				echo "parent <br />";
+	
 			}else{
 				$id = $product->id;
 			}
 			$query = "SELECT attribs FROM #__mymuse_product WHERE id='" . $id . "'";
-			echo "query $query <br >";
+	
 			$db->setQuery ( $query );
 			if (! $product->attribs = $db->loadResult ()) {
 				$price_info ["product_price"] = $product_price = $product->price;
