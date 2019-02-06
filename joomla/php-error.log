@@ -1,0 +1,129 @@
+[05-Feb-2019 11:46:47 America/New_York] PHP Notice:  Trying to get property 'link' of non-object in /var/www/html/mymuse/joomla/components/com_mymuse/views/product/tmpl/product.php on line 44
+[05-Feb-2019 11:46:47 America/New_York] PHP Stack trace:
+[05-Feb-2019 11:46:47 America/New_York] PHP   1. {main}() /var/www/html/mymuse/joomla/index.php:0
+[05-Feb-2019 11:46:47 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuse/joomla/index.php:49
+[05-Feb-2019 11:46:47 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuse/joomla/libraries/src/Application/CMSApplication.php:196
+[05-Feb-2019 11:46:47 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuse/joomla/libraries/src/Application/SiteApplication.php:233
+[05-Feb-2019 11:46:47 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuse/joomla/libraries/src/Application/SiteApplication.php:194
+[05-Feb-2019 11:46:47 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymuse/joomla/libraries/src/Component/ComponentHelper.php:377
+[05-Feb-2019 11:46:47 America/New_York] PHP   7. require_once() /var/www/html/mymuse/joomla/libraries/src/Component/ComponentHelper.php:402
+[05-Feb-2019 11:46:47 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymuse/joomla/components/com_mymuse/mymuse.php:67
+[05-Feb-2019 11:46:47 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymuse/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[05-Feb-2019 11:46:47 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymuse/joomla/components/com_mymuse/controller.php:123
+[05-Feb-2019 11:46:47 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymuse/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[05-Feb-2019 11:46:47 America/New_York] PHP  12. myMuseViewProduct->display() /var/www/html/mymuse/joomla/components/com_mymuse/views/product/view.html.php:218
+[05-Feb-2019 11:46:47 America/New_York] PHP  13. myMuseViewProduct->loadTemplate() /var/www/html/mymuse/joomla/libraries/src/MVC/View/HtmlView.php:230
+[05-Feb-2019 11:46:47 America/New_York] PHP  14. include() /var/www/html/mymuse/joomla/libraries/src/MVC/View/HtmlView.php:697
+[05-Feb-2019 11:47:01 America/New_York] PHP Notice:  Trying to get property 'link' of non-object in /var/www/html/mymuse/joomla/components/com_mymuse/views/product/tmpl/product.php on line 44
+[05-Feb-2019 11:47:01 America/New_York] PHP Stack trace:
+[05-Feb-2019 11:47:01 America/New_York] PHP   1. {main}() /var/www/html/mymuse/joomla/index.php:0
+[05-Feb-2019 11:47:01 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuse/joomla/index.php:49
+[05-Feb-2019 11:47:01 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuse/joomla/libraries/src/Application/CMSApplication.php:196
+[05-Feb-2019 11:47:01 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuse/joomla/libraries/src/Application/SiteApplication.php:233
+[05-Feb-2019 11:47:01 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuse/joomla/libraries/src/Application/SiteApplication.php:194
+[05-Feb-2019 11:47:01 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymuse/joomla/libraries/src/Component/ComponentHelper.php:377
+[05-Feb-2019 11:47:01 America/New_York] PHP   7. require_once() /var/www/html/mymuse/joomla/libraries/src/Component/ComponentHelper.php:402
+[05-Feb-2019 11:47:01 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymuse/joomla/components/com_mymuse/mymuse.php:67
+[05-Feb-2019 11:47:01 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymuse/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[05-Feb-2019 11:47:01 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymuse/joomla/components/com_mymuse/controller.php:123
+[05-Feb-2019 11:47:01 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymuse/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[05-Feb-2019 11:47:01 America/New_York] PHP  12. myMuseViewProduct->display() /var/www/html/mymuse/joomla/components/com_mymuse/views/product/view.html.php:218
+[05-Feb-2019 11:47:01 America/New_York] PHP  13. myMuseViewProduct->loadTemplate() /var/www/html/mymuse/joomla/libraries/src/MVC/View/HtmlView.php:230
+[05-Feb-2019 11:47:01 America/New_York] PHP  14. include() /var/www/html/mymuse/joomla/libraries/src/MVC/View/HtmlView.php:697
+[05-Feb-2019 11:47:23 America/New_York] PHP Notice:  Trying to get property 'link' of non-object in /var/www/html/mymuse/joomla/components/com_mymuse/views/product/tmpl/product.php on line 44
+[05-Feb-2019 11:47:23 America/New_York] PHP Stack trace:
+[05-Feb-2019 11:47:23 America/New_York] PHP   1. {main}() /var/www/html/mymuse/joomla/index.php:0
+[05-Feb-2019 11:47:23 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuse/joomla/index.php:49
+[05-Feb-2019 11:47:23 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuse/joomla/libraries/src/Application/CMSApplication.php:196
+[05-Feb-2019 11:47:23 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuse/joomla/libraries/src/Application/SiteApplication.php:233
+[05-Feb-2019 11:47:23 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuse/joomla/libraries/src/Application/SiteApplication.php:194
+[05-Feb-2019 11:47:23 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymuse/joomla/libraries/src/Component/ComponentHelper.php:377
+[05-Feb-2019 11:47:23 America/New_York] PHP   7. require_once() /var/www/html/mymuse/joomla/libraries/src/Component/ComponentHelper.php:402
+[05-Feb-2019 11:47:23 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymuse/joomla/components/com_mymuse/mymuse.php:67
+[05-Feb-2019 11:47:23 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymuse/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[05-Feb-2019 11:47:23 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymuse/joomla/components/com_mymuse/controller.php:123
+[05-Feb-2019 11:47:23 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymuse/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[05-Feb-2019 11:47:23 America/New_York] PHP  12. myMuseViewProduct->display() /var/www/html/mymuse/joomla/components/com_mymuse/views/product/view.html.php:218
+[05-Feb-2019 11:47:23 America/New_York] PHP  13. myMuseViewProduct->loadTemplate() /var/www/html/mymuse/joomla/libraries/src/MVC/View/HtmlView.php:230
+[05-Feb-2019 11:47:23 America/New_York] PHP  14. include() /var/www/html/mymuse/joomla/libraries/src/MVC/View/HtmlView.php:697
+[05-Feb-2019 11:50:50 America/New_York] PHP Notice:  Trying to get property 'link' of non-object in /var/www/html/mymuse/joomla/components/com_mymuse/views/product/tmpl/product.php on line 44
+[05-Feb-2019 11:50:50 America/New_York] PHP Stack trace:
+[05-Feb-2019 11:50:50 America/New_York] PHP   1. {main}() /var/www/html/mymuse/joomla/index.php:0
+[05-Feb-2019 11:50:50 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuse/joomla/index.php:49
+[05-Feb-2019 11:50:50 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuse/joomla/libraries/src/Application/CMSApplication.php:196
+[05-Feb-2019 11:50:50 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuse/joomla/libraries/src/Application/SiteApplication.php:233
+[05-Feb-2019 11:50:50 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuse/joomla/libraries/src/Application/SiteApplication.php:194
+[05-Feb-2019 11:50:50 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymuse/joomla/libraries/src/Component/ComponentHelper.php:377
+[05-Feb-2019 11:50:50 America/New_York] PHP   7. require_once() /var/www/html/mymuse/joomla/libraries/src/Component/ComponentHelper.php:402
+[05-Feb-2019 11:50:50 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymuse/joomla/components/com_mymuse/mymuse.php:67
+[05-Feb-2019 11:50:50 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymuse/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[05-Feb-2019 11:50:50 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymuse/joomla/components/com_mymuse/controller.php:123
+[05-Feb-2019 11:50:50 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymuse/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[05-Feb-2019 11:50:50 America/New_York] PHP  12. myMuseViewProduct->display() /var/www/html/mymuse/joomla/components/com_mymuse/views/product/view.html.php:218
+[05-Feb-2019 11:50:50 America/New_York] PHP  13. myMuseViewProduct->loadTemplate() /var/www/html/mymuse/joomla/libraries/src/MVC/View/HtmlView.php:230
+[05-Feb-2019 11:50:50 America/New_York] PHP  14. include() /var/www/html/mymuse/joomla/libraries/src/MVC/View/HtmlView.php:697
+[06-Feb-2019 08:30:45 America/New_York] PHP Notice:  Undefined variable: res in /var/www/html/mymuse/joomla/components/com_mymuse/views/cart/view.html.php on line 525
+[06-Feb-2019 08:30:45 America/New_York] PHP Stack trace:
+[06-Feb-2019 08:30:45 America/New_York] PHP   1. {main}() /var/www/html/mymuse/joomla/index.php:0
+[06-Feb-2019 08:30:45 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuse/joomla/index.php:49
+[06-Feb-2019 08:30:45 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuse/joomla/libraries/src/Application/CMSApplication.php:196
+[06-Feb-2019 08:30:45 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuse/joomla/libraries/src/Application/SiteApplication.php:233
+[06-Feb-2019 08:30:45 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuse/joomla/libraries/src/Application/SiteApplication.php:194
+[06-Feb-2019 08:30:45 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymuse/joomla/libraries/src/Component/ComponentHelper.php:377
+[06-Feb-2019 08:30:45 America/New_York] PHP   7. require_once() /var/www/html/mymuse/joomla/libraries/src/Component/ComponentHelper.php:402
+[06-Feb-2019 08:30:45 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymuse/joomla/components/com_mymuse/mymuse.php:67
+[06-Feb-2019 08:30:45 America/New_York] PHP   9. MyMuseController->checkout() /var/www/html/mymuse/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[06-Feb-2019 08:30:45 America/New_York] PHP  10. MyMuseController->shipping() /var/www/html/mymuse/joomla/components/com_mymuse/controller.php:438
+[06-Feb-2019 08:30:45 America/New_York] PHP  11. MyMuseController->display() /var/www/html/mymuse/joomla/components/com_mymuse/controller.php:501
+[06-Feb-2019 08:30:45 America/New_York] PHP  12. MyMuseController->display() /var/www/html/mymuse/joomla/components/com_mymuse/controller.php:121
+[06-Feb-2019 08:30:45 America/New_York] PHP  13. myMuseViewCart->display() /var/www/html/mymuse/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[06-Feb-2019 08:30:45 America/New_York] PHP Warning:  array_merge(): Argument #1 is not an array in /var/www/html/mymuse/joomla/components/com_mymuse/views/cart/view.html.php on line 525
+[06-Feb-2019 08:30:45 America/New_York] PHP Stack trace:
+[06-Feb-2019 08:30:45 America/New_York] PHP   1. {main}() /var/www/html/mymuse/joomla/index.php:0
+[06-Feb-2019 08:30:45 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuse/joomla/index.php:49
+[06-Feb-2019 08:30:45 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuse/joomla/libraries/src/Application/CMSApplication.php:196
+[06-Feb-2019 08:30:45 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuse/joomla/libraries/src/Application/SiteApplication.php:233
+[06-Feb-2019 08:30:45 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuse/joomla/libraries/src/Application/SiteApplication.php:194
+[06-Feb-2019 08:30:45 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymuse/joomla/libraries/src/Component/ComponentHelper.php:377
+[06-Feb-2019 08:30:45 America/New_York] PHP   7. require_once() /var/www/html/mymuse/joomla/libraries/src/Component/ComponentHelper.php:402
+[06-Feb-2019 08:30:45 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymuse/joomla/components/com_mymuse/mymuse.php:67
+[06-Feb-2019 08:30:45 America/New_York] PHP   9. MyMuseController->checkout() /var/www/html/mymuse/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[06-Feb-2019 08:30:45 America/New_York] PHP  10. MyMuseController->shipping() /var/www/html/mymuse/joomla/components/com_mymuse/controller.php:438
+[06-Feb-2019 08:30:45 America/New_York] PHP  11. MyMuseController->display() /var/www/html/mymuse/joomla/components/com_mymuse/controller.php:501
+[06-Feb-2019 08:30:45 America/New_York] PHP  12. MyMuseController->display() /var/www/html/mymuse/joomla/components/com_mymuse/controller.php:121
+[06-Feb-2019 08:30:45 America/New_York] PHP  13. myMuseViewCart->display() /var/www/html/mymuse/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[06-Feb-2019 08:30:45 America/New_York] PHP  14. array_merge() /var/www/html/mymuse/joomla/components/com_mymuse/views/cart/view.html.php:525
+[06-Feb-2019 08:30:45 America/New_York] PHP Warning:  array_merge(): Argument #1 is not an array in /var/www/html/mymuse/joomla/components/com_mymuse/views/cart/view.html.php on line 525
+[06-Feb-2019 08:30:45 America/New_York] PHP Stack trace:
+[06-Feb-2019 08:30:45 America/New_York] PHP   1. {main}() /var/www/html/mymuse/joomla/index.php:0
+[06-Feb-2019 08:30:45 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuse/joomla/index.php:49
+[06-Feb-2019 08:30:45 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuse/joomla/libraries/src/Application/CMSApplication.php:196
+[06-Feb-2019 08:30:45 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuse/joomla/libraries/src/Application/SiteApplication.php:233
+[06-Feb-2019 08:30:45 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuse/joomla/libraries/src/Application/SiteApplication.php:194
+[06-Feb-2019 08:30:45 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymuse/joomla/libraries/src/Component/ComponentHelper.php:377
+[06-Feb-2019 08:30:45 America/New_York] PHP   7. require_once() /var/www/html/mymuse/joomla/libraries/src/Component/ComponentHelper.php:402
+[06-Feb-2019 08:30:45 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymuse/joomla/components/com_mymuse/mymuse.php:67
+[06-Feb-2019 08:30:45 America/New_York] PHP   9. MyMuseController->checkout() /var/www/html/mymuse/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[06-Feb-2019 08:30:45 America/New_York] PHP  10. MyMuseController->shipping() /var/www/html/mymuse/joomla/components/com_mymuse/controller.php:438
+[06-Feb-2019 08:30:45 America/New_York] PHP  11. MyMuseController->display() /var/www/html/mymuse/joomla/components/com_mymuse/controller.php:501
+[06-Feb-2019 08:30:45 America/New_York] PHP  12. MyMuseController->display() /var/www/html/mymuse/joomla/components/com_mymuse/controller.php:121
+[06-Feb-2019 08:30:45 America/New_York] PHP  13. myMuseViewCart->display() /var/www/html/mymuse/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[06-Feb-2019 08:30:45 America/New_York] PHP  14. array_merge() /var/www/html/mymuse/joomla/components/com_mymuse/views/cart/view.html.php:525
+[06-Feb-2019 08:30:45 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymuse/joomla/components/com_mymuse/views/cart/tmpl/cart_shipping_form.php on line 19
+[06-Feb-2019 08:30:45 America/New_York] PHP Stack trace:
+[06-Feb-2019 08:30:45 America/New_York] PHP   1. {main}() /var/www/html/mymuse/joomla/index.php:0
+[06-Feb-2019 08:30:45 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymuse/joomla/index.php:49
+[06-Feb-2019 08:30:45 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymuse/joomla/libraries/src/Application/CMSApplication.php:196
+[06-Feb-2019 08:30:45 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymuse/joomla/libraries/src/Application/SiteApplication.php:233
+[06-Feb-2019 08:30:45 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymuse/joomla/libraries/src/Application/SiteApplication.php:194
+[06-Feb-2019 08:30:45 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymuse/joomla/libraries/src/Component/ComponentHelper.php:377
+[06-Feb-2019 08:30:45 America/New_York] PHP   7. require_once() /var/www/html/mymuse/joomla/libraries/src/Component/ComponentHelper.php:402
+[06-Feb-2019 08:30:45 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymuse/joomla/components/com_mymuse/mymuse.php:67
+[06-Feb-2019 08:30:45 America/New_York] PHP   9. MyMuseController->checkout() /var/www/html/mymuse/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[06-Feb-2019 08:30:45 America/New_York] PHP  10. MyMuseController->shipping() /var/www/html/mymuse/joomla/components/com_mymuse/controller.php:438
+[06-Feb-2019 08:30:45 America/New_York] PHP  11. MyMuseController->display() /var/www/html/mymuse/joomla/components/com_mymuse/controller.php:501
+[06-Feb-2019 08:30:45 America/New_York] PHP  12. MyMuseController->display() /var/www/html/mymuse/joomla/components/com_mymuse/controller.php:121
+[06-Feb-2019 08:30:45 America/New_York] PHP  13. myMuseViewCart->display() /var/www/html/mymuse/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[06-Feb-2019 08:30:45 America/New_York] PHP  14. myMuseViewCart->display() /var/www/html/mymuse/joomla/components/com_mymuse/views/cart/view.html.php:534
+[06-Feb-2019 08:30:45 America/New_York] PHP  15. myMuseViewCart->loadTemplate() /var/www/html/mymuse/joomla/libraries/src/MVC/View/HtmlView.php:230
+[06-Feb-2019 08:30:45 America/New_York] PHP  16. include() /var/www/html/mymuse/joomla/libraries/src/MVC/View/HtmlView.php:697

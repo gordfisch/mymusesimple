@@ -1,0 +1,52 @@
+@CHARSET "UTF-8";
+/**
+CSS for module mymuse_latest
+*/
+/* module number */
+div#mod_mymuse_latest_1 {
+
+}
+
+
+/* no suffix */
+.mymuse_latest ul{
+   list-style-type:none;
+}
+.mymuse_latest li{
+	border-bottom : 1px solid #cccccc;
+	font-weight: bold;
+	list-style-type:none;
+	margin-left: -30px;
+	margin-bottom: 10px;
+}
+
+div#mod_mymuse_latest li a, div#mod_mymuse_latest_1 li a:active, div#mod_mymuse_latest_1 li a:visited{
+
+} 
+
+div#mod_mymuse_latest a:hover{
+
+}
+
+/* first module suffix */
+div#mod_mymuse_latest1 {
+
+}
+div#mod_mymuse_latest1 ul{
+   list-style-type:none;
+}
+div#mod_mymuse_latest1 li{
+	border-bottom : 1px solid #cccccc;
+    padding-top: 5px;
+	font-weight: bold;
+	float: left;
+
+}
+
+div#mod_mymuse_latest1 li a, div#mod_mymuse_latest_1 li a:active, div#mod_mymuse_latest_1 li a:visited{
+
+} 
+
+div#mod_mymuse_latest1 a:hover{
+
+} 
