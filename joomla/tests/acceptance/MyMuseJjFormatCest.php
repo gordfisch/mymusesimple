@@ -46,7 +46,7 @@ class MyMuseJjFormatCest
         $this->mock_cd->jform_attribs_product_price_wav         = "3.00";
         $this->mock_cd->jform_attribs_product_price_wav_all     = "15.00";
 
-        $path = "com_mymuse-latest.zip";
+        $path = "com_mymusesimple-latest.zip";
         $I->installExtensionFromFileUpload($path, 'Extension');
         $I->changeGlobalOptions($this->mock_user_config);
         $I->changeStoreConfig($this->mock_format_config);

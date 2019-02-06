@@ -7,7 +7,7 @@
     <author>Arboreta</author>
 	<authorEmail>gord@arboreta.ca</authorEmail>
 	<authorUrl>http://www.joomlamymuse.com</authorUrl>
-	<version>1.0.1</version>
+	<version>1.1.0</version>
 	<description>Sell your tracks online. Visit http://www.joomlamymuse.com for more info.</description>
 
 	<media destination="com_mymuse" folder="media">

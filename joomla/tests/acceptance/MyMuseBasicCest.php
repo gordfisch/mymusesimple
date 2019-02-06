@@ -51,7 +51,7 @@ class MyMuseBasicCest
         }
 
 
-        $path = "com_mymuse-latest.zip";
+        $path = "com_mymusesimple-latest.zip";
         $I->installExtensionFromFileUpload($path, 'Extension');
 
         $I->createMymuseCategories();
