@@ -1,0 +1,17 @@
+@CHARSET "UTF-8";
+.icon-48-mymuse {
+    background-image: url("../images/icon-48-mymuse.png");
+}
+.icon-16-mymuse {
+	background-image: url("../images/icon-16-mymuse.png");
+}
+.icon-mymuse {
+	background-image: url("../images/icon-48-mymuse.png");
+	display: inline-block;
+	width: 48px !important;
+	height: 48px !important;
+	margin-right: .25em;
+	line-height: 14px;
+}
+
+

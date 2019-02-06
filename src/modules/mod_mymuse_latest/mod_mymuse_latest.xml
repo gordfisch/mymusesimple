@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="utf-8"?>
+<extension version="3.0" type="module" client="site">
+	<name>mod_mymuse_latest</name>
+	<author>Arboreta</author>
+	<creationDate>April 2014</creationDate>
+	<copyright>Copyright (C) 2011 Arboreta Internet Services. All rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>info@arboreta.ca</authorEmail>
+	<authorUrl>www.arboreta.ca</authorUrl>
+	<version>3.3.0</version>
+	<description>MYMUSE_MOD_LATEST_DESC</description>
+	<files>
+		<filename module="mod_mymuse_latest">mod_mymuse_latest.php</filename>
+        <filename module="mod_mymuse_latest">index.html</filename>
+        <filename module="mod_mymuse_latest">helper.php</filename>
+        <filename module="mod_mymuse_latest">mod_mymuse_latest_style.css</filename>
+        <folder>tmpl</folder>
+        <folder>assets</folder>
+	</files>
+	<languages>
+		<language tag="en-GB">language/en-GB/en-GB.mod_mymuse_latest.ini</language>
+		<language tag="en-GB">language/en-GB/en-GB.mod_mymuse_latest.sys.ini</language>
+	</languages>
+	<config>
+	<fields name="params">
+		<fieldset name="basic">
+		<field name="module_number" type="text" default="1" label="PARAM_MODULE_NUMBER" description="PARAM_MODULE_NUMBER_DESC">
+	 	</field>
+		<field name="moduleclass_sfx" type="text" default="" label="Module Class Suffix" description="PARAMMODULECLASSSUFFIX" />
+		<field name="maximum_shown" type="text" default="5" label="PARAM_MAXIMUMSHOWN" description="PARAM_MAXIMUMSHOWN_DESC" />
+
+		<field name="show_artist_name" type="list" default="1" label="PARAM_ARTIST_NAME" description="PARAM_ARTIST_NAME_DESC">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field name="show_product_name" type="list" default="1" label="PARAM_PRODUCT_NAME" description="PARAM_PRODUCT_NAME_DESC">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field name="show_product_image" type="list" default="1" label="PARAM_PRODUCT_IMAGE" description="PARAM_PRODUCT_IMAGE_DESC">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field name="product_image_height" type="text" default="50" label="PARAM_PRODUCT_IMAGE_HEIGHT" description="PARAM_PRODUCT_IMAGE_HEIGHT_DESC">
+	 	</field>
+	 		<field name="type_shown" type="list" default="track" label="PARAM_TYPESHOWN" description="PARAM_TYPESHOWN_DESC">
+			<option value="albums">MYMUSE_ALBUMS</option>
+			<option value="tracks">MYMUSE_TRACKS</option>
+		</field>
+		<field type="spacer"  default="MYMUSE_TRACKS" />
+
+	 	<field name="type_search" type="list" default="p.created" label="PARAM_TYPESEARCH_LABEL" description="PARAM_TYPESEARCH_DESC">
+			<option value="p.created">MYMUSE_PRODUCT_ENTRY_CREATED</option>
+			<option value="p.product_made_date">MYMUSE_PRODUCT_MADE_DATE</option>
+			<option value="p.file_downloads">MYMUSE_MOST_DOWNLOADS</option>
+			<option value="pa.hits">MYMUSE_MOST_HITS</option>
+			<option value="p.featured">MYMUSE_FEATURED</option>
+			<option value="s.sales">MYMUSE_MOST_SALES_ORDER</option>
+			<option value="rand()">MYMUSE_RANDOM</option>
+		</field>
+		<field name="product_ids" 
+			type="text" 
+			default="" 
+			label="MYMUSE_PRODUCT_IDS" 
+			description="MYMUSE_PRODUCT_IDS_DESC" />
+		
+		<field name="show_number" type="list" default="0" label="PARAM_TRACK_SHOW_NUMBER" description="PARAM_TRACK_SHOW_NUMBER_DESC">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+	 	<field name="show_track_preview" type="list" default="1" label="PARAM_TRACK_PREVIEW" description="PARAM_TRACK_PREVIEW_DESC">
+			<option value="1">JYES</option>
+			<option value="0">JNO</option>
+		</field>
+		<field type="spacer"  default="MYMUSE_DISPLAY" />
+
+	 	<field name="display" type="list" default="1" label="PARAM_DISPLAY_LABEL" description="PARAM_DISPLAY_DESC">
+			<option value="1">MYMUSE_VERTICAL</option>
+			<option value="0">MYMUSE_HORIZONTAL</option>
+		</field>
+	</fieldset>
+	<fieldset name="advanced">
+				<field
+					name="layout"
+					type="modulelayout"
+					label="JFIELD_ALT_LAYOUT_LABEL"
+					description="JFIELD_ALT_MODULE_LAYOUT_DESC" />
+
+				<field
+					name="moduleclass_sfx"
+					type="text"
+					label="COM_MODULES_FIELD_MODULECLASS_SFX_LABEL"
+					description="COM_MODULES_FIELD_MODULECLASS_SFX_DESC" />
+
+				<field
+					name="cache"
+					type="list"
+					default="1"
+					label="COM_MODULES_FIELD_CACHING_LABEL"
+					description="COM_MODULES_FIELD_CACHING_DESC">
+					<option
+						value="1">JGLOBAL_USE_GLOBAL</option>
+					<option
+						value="0">COM_MODULES_FIELD_VALUE_NOCACHING</option>
+				</field>
+
+				<field
+					name="cache_time"
+					type="text"
+					default="900"
+					label="COM_MODULES_FIELD_CACHE_TIME_LABEL"
+					description="COM_MODULES_FIELD_CACHE_TIME_DESC" />
+				<field
+					name="cachemode"
+					type="hidden"
+					default="static">
+					<option
+						value="static"></option>
+				</field>
+	</fieldset>
+	</fields>
+	</config>
+<updateservers>
+    <server type="extension" priority="1"
+        name="Mod MyMuse Latest">http://www.joomlamymuse.com/index.php?option=com_ars&amp;view=update&amp;task=stream&amp;format=xml&amp;id=32&amp;dummy=extension.xml</server>
+</updateservers>
+</extension>

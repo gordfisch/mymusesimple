@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<form>
+	<fieldset>
+		  <field 
+		  		name="catid" 
+		  		type="categorytree" 
+		  		extension="com_mymuse"
+				label="MYMUSE_MAIN_CATEGORY_LABEL" 
+				description="MYMUSE_MAIN_CATEGORY_DESC"
+				class="inputbox" 
+				required="true"
+				multiple="false" 
+		/>
+		<field
+                name="filter_order_status"
+                type="orderstatus"
+                label="MYMUSE_ORDER_STATUS"
+                description="MYMUSE_ORDER_STATUS"
+                class="inputbox"
+
+                size="1"
+          	/>
+          	<field
+                name="filter_start_date"
+                type="calendar"
+                label="MYMUSE_START_DATE"
+                description="MYMUSE_START_DATE"
+                class="inputbox"
+
+          	/>
+          	<field
+                name="filter_end_date"
+                type="calendar"
+                label="MYMUSE_END_DATE"
+                description="MYMUSE_END_DATE"
+                class="inputbox"
+
+          	/>
+	</fieldset>
+</form>
