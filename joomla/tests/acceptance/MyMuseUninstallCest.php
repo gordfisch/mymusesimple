@@ -13,11 +13,11 @@ class MyMuseUninstallCest
 
         $I->amOnPage('/administrator/index.php?option=com_installer&view=manage');
         $I->waitForText('Extensions: Manage', '30', array('css' => 'H1'));
-        $I->searchForItem('MyMuse');
+        $I->searchForItem('MyMuse Simple');
         if($I->seePageHasText('There are no extensions installed matching your query')){
             //we are good to go. MyMuse is not installed.
         }else{
-            $I->uninstallExtension('mymuse');
+            $I->uninstallExtension('MyMuse Simple');
         }
         
         $I->amOnPage('/administrator/index.php?option=com_menus&view=items&menutype=mainmenu');

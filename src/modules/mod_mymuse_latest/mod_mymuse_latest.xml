@@ -52,7 +52,6 @@
 	 	<field name="type_search" type="list" default="p.created" label="PARAM_TYPESEARCH_LABEL" description="PARAM_TYPESEARCH_DESC">
 			<option value="p.created">MYMUSE_PRODUCT_ENTRY_CREATED</option>
 			<option value="p.product_made_date">MYMUSE_PRODUCT_MADE_DATE</option>
-			<option value="p.file_downloads">MYMUSE_MOST_DOWNLOADS</option>
 			<option value="pa.hits">MYMUSE_MOST_HITS</option>
 			<option value="p.featured">MYMUSE_FEATURED</option>
 			<option value="s.sales">MYMUSE_MOST_SALES_ORDER</option>

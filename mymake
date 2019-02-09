@@ -1,0 +1,30 @@
+#/bin/bash
+
+
+if  [[ $1 = "webdriver" ]]; then
+    echo "Starting chrome webdriver"
+    cd joomla
+    ./bin/chromedriver --url-base=/wd/hub &
+elif  [[ $1 = "phing" ]]; then
+    echo "Doing the phing thing"
+    cd src
+    phing
+elif  [[ $1 = "component" ]]; then
+    echo "Make the component"
+    ./make_component.sh
+elif  [[ $1 = "test" ]]; then
+	cd joomla
+	echo " Going testing..."
+	if  [ $2 ]; then
+		php vendor/bin/codecept --steps run acceptance $2
+	else
+		php vendor/bin/codecept --steps run acceptance
+	fi
+
+elif  [[ $1 = "all" ]]; then
+	./make_component.sh
+	cd joomla
+	php vendor/bin/codecept --steps run acceptance
+else
+	echo "What no options? webdriver, phing, component or test [sub-test]"
+fi

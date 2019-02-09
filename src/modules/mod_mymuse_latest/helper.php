@@ -111,7 +111,7 @@ class modMyMuseLatestHelper
 			$query .= 'ORDER BY '.$search.' DESC, artist_name ASC LIMIT 0,'.$maximum_shown;
 		}else{
 			//type = tracks
-			$query = 'SELECT p.id, p.title, p.file_preview, p.file_preview_2, p.file_preview_3, p.parentid, p.file_downloads, p.file_type,
+			$query = 'SELECT p.id, p.title, p.file_preview, p.file_preview_2, p.file_preview_3, p.parentid, p.file_type,
 			pa.title as product_name, pa.list_image, pa.hits,
 			c.id as artist_id, c.title as artist_name, s.sales as sales
 			from #__mymuse_product as p

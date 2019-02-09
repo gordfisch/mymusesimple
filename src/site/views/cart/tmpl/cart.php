@@ -26,7 +26,7 @@ if(isset($this->shipping_form)){
 	echo $this->shipping_form;
 }
 
-if(isset($this->order_summary) && !isset($this->download_page)){
+if(isset($this->order_summary)){
 	echo $this->order_summary;
 }
 

@@ -121,7 +121,7 @@ class MyMuseCart {
 
     // FOR EACH PRODUCT IN ARRAY
 
-    while(list($key,$val)=each($productid)) {
+    foreach($productid as $key => $val) {
     	if(!$val){ continue; }
      	$product_id = $val;
      	
@@ -267,7 +267,7 @@ class MyMuseCart {
     
         // FOR EACH PRODUCT  IN ARRAY
     
-        while(list($key,$val)=each($productid)) {
+        foreach($productid as $key => $val) {
             $product_id = $val;
             $quant = (isset($quantity[$val]))? $quantity[$val] : 1;
     
@@ -761,7 +761,7 @@ class MyMuseCart {
 		$order_tax = $MyMuseCheckout->calc_order_tax($order);
 
 		$order->tax_array = array();
-		while(list($key,$val) = each($order_tax)){
+		foreach($order_tax as $key => $val) {
 			if($val< 0){
 				$val = 0.00;
 			}

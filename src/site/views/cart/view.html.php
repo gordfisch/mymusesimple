@@ -300,7 +300,7 @@ class myMuseViewCart extends JViewLegacy
 				if(count($order->items) && $params->get('product_player_type') == "single"){
 					
 				$j = 0;
-				while (list($i,$track) = each( $order->items)){
+				foreach($order->items as $i => $track) {
 					if(!isset($track->parentid) || $track->parentid == 0){
 						continue;
 					}

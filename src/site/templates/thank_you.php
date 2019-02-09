@@ -141,7 +141,8 @@ defined('_JEXEC') or die('Restricted access');
 				
 		<?php // TAXES
 		if(@$order->tax_array){
-		    while(list($key,$val) = each($order->tax_array)){ 
+
+            foreach($order->tax_array as $key => $val)  {
 		    	$pre_key = preg_replace("/_/","", $key);
 		    	$key = preg_replace("/_/"," ", $key);
 		    	?>

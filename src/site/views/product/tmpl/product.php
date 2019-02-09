@@ -120,7 +120,7 @@ function tableOrdering( order, dir, task )
 ';
 
 //flip price between formats
-if(count($params->get('my_formats') > 1) ){	
+if(is_array($params->get('my_formats')) && count($params->get('my_formats')) > 1 ){	
 	
 	$js .= 'function flip_price(id) {'."\n";
 	$js .= ' var formats = new Array();'."\n";

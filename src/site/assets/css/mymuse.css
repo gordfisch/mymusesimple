@@ -230,7 +230,7 @@ table.mymuse_cart_inner {
 	width: 100%;
 }
 
-.mymuse_cart thead th{ 
+.mymuse_cart thead th, .mymuse_cart_top { 
     background-color: #ddd; 
     font-weight: bold; 
 	border: 1px solid #999999; 

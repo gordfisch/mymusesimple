@@ -395,7 +395,9 @@ if($downloads && $order->order_status == "C"){
 		
 		<?php // TAXES
 		if(@$order->tax_array){
-		    while(list($key,$val) = each($order->tax_array)){ ?>
+	
+		    foreach($order->tax_array as $key => $val)  {
+		    	?>
 		        <tr>
 		        <td colspan="<?php echo $order->colspan; ?>"><b><?php echo $key; ?></b></td>
 		        <td colspan="<?php echo $order->colspan2; ?>" align="right"><?php echo MyMuseHelper::printMoney($val); ?></td>

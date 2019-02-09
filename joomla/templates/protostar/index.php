@@ -186,7 +186,9 @@ else
 				<main id="content" role="main" class="<?php echo $span; ?>">
 					<!-- Begin Content -->
 					<jdoc:include type="modules" name="position-3" style="xhtml" />
+					<!-- Before mess -->
 					<jdoc:include type="message" />
+					<!-- after mess -->
 					<jdoc:include type="component" />
 					<div class="clearfix"></div>
 					<jdoc:include type="modules" name="position-2" style="none" />

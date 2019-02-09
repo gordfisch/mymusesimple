@@ -192,6 +192,24 @@ class MyMuseController extends JControllerLegacy
 		return;
 	}
 	
+	
+	/**
+	 * cartclear
+	 * clear the cart
+	 *
+	 * @access	public
+	 */
+	function cartClear()
+	{
+
+		if(!$this->MyMuseCart->reset()){
+			$msg = $this->MyMuseCart->error;
+			$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid), $msg );
+			return false;
+		}
+		//$this->setRedirect( JRoute::_('index.php?option=com_mymuse&task=showcart&view=cart&Itemid='.$this->Itemid) );
+		return;
+	}
 	/**
 	 * showcart
 	 * display the cart

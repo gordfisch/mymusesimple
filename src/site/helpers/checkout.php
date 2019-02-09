@@ -232,7 +232,7 @@ class MyMuseCheckout
 		$session->set("order_number",$order->order_number);
 
 
-		while(list($name,$amount) = each($cart_order->tax_array)){
+		foreach($cart_order->tax_array as $name => $amount)  {
 			$order->$name = $amount;
 		}
 

@@ -1324,7 +1324,8 @@ class MyMuseHelper extends JObject
       
       $string =  "<select class=\"inputbox\" name=\"$name\"  id=\"$name\" $opt>\n";
 
-      while (list($key, $val) = each($arr)) {
+
+      foreach($arr as $key => $val)  {
          if(strcmp($value, $key) == 0) {
             $string .= "<option value=\"$key\" SELECTED>$val\n";
          }

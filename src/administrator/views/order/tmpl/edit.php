@@ -517,7 +517,7 @@ method="post" name="adminForm" id="order-form" class="form-validate">
 		// TAXES
 		if(@$this->item->tax_array){
 			reset($this->item->tax_array);
-		    while(list($key,$val) = each($this->item->tax_array)){
+		    foreach($this->item->tax_array as $key => $val)  {
 		    	$key = preg_replace("/_/"," ", $key);
 		    	$string .= '
 		        <tr>

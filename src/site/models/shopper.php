@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id$
+ * @version		$Id: shopper.php 1990 2018-06-20 01:35:38Z gfisch $
  * @package		mymuse
  * @copyright	Copyright © 2010 - Arboreta Internet Services - All rights reserved.
  * @license		GNU/GPL
@@ -72,6 +72,14 @@ class mymuseModelShopper extends JModelForm
         	$db 	= JFactory::getDBO();
         	$session = JFactory::getSession();
         	$guestcheckout = $session->get('guestcheckout');
+        	$MyMuseCart		=& MyMuse::getObject('cart','helpers');
+        	$cart = $MyMuseCart->cart;
+        	$shipping_needed = 0;
+        	for ($i=0;$i<$cart["idx"];$i++) {
+        		if(isset($cart[$i]["product_phisical"]) && $cart[$i]["product_physical"] && $params->get('my_use_shipping')){
+        			$shipping_needed = 1;
+        		}
+        	}
 
         	//if this is no reg coming in for a download
         	if(($params->get('my_registration') == "no_reg" || $params->get('my_registration') == "full_guest") 
@@ -97,7 +105,7 @@ class mymuseModelShopper extends JModelForm
         		$registry->loadString($notes);
         		$fields = MyMuseHelper::getNoRegFields();
         	
-        		foreach($fields as $field){
+        		foreach ($fields as $field){
         			if($registry->get($field)){
         				$_POST['jform']['profile'][$field] = $registry->get($field);
         			}
@@ -114,7 +122,7 @@ class mymuseModelShopper extends JModelForm
         	}else{
         		$my_profile_key = $params->get('my_profile_key','mymuse');
         	}
-
+        	
 			if($user->get('id') > 0)
 			{
 				
@@ -122,10 +130,11 @@ class mymuseModelShopper extends JModelForm
 				$this->_id = $user->get('id');
 				$this->_shopper->user_id = $user->get('id');
 	
-				$profile = $this->_shopper->get('profile');
-				
+				$profile = (null !== $this->_shopper->get('profile'))? $this->_shopper->get('profile') : array();
+		
 				if(count($profile) < 1) {
 					//try to load their profile
+					
 					if(!$this->loadProfile($this->_shopper)){
 						$this->_shopper->perms = 0;
 						return $this->_shopper;
@@ -133,6 +142,10 @@ class mymuseModelShopper extends JModelForm
 						$profile = $this->_shopper->profile;
 					}
 				}
+				
+				
+				
+				
 				if(!isset($profile['shopper_group'])){
 					$profile['shopper_group'] = 1;
 				}
@@ -217,6 +230,15 @@ class mymuseModelShopper extends JModelForm
 								$value = $profile[$field];
 								if (
 									$profile_params->get('register-require_' . $field, 1) == 2 &&
+									(!isset($value) || $value == "") &&
+									!preg_match('/shipping/', $field)
+								) {
+									//this guy needs to update profile
+									$needed++;
+								}
+								if (	
+									$profile_params->get('register-require_' . $field, 1) == 2 &&
+									$shipping_needed && preg_match('/shipping/', $field) &&
 									(!isset($value) || $value == "")
 								) {
 									//this guy needs to update profile
@@ -225,6 +247,8 @@ class mymuseModelShopper extends JModelForm
 							}
 						}
 					}
+
+					
 					if($needed){
 						$this->_shopper->perms = 0;
 					}
@@ -251,7 +275,6 @@ class mymuseModelShopper extends JModelForm
 				$this->_shopper->shopper_group = $db->loadObject();
 				$this->_shopper->discount = $this->_shopper->shopper_group->discount;
 				$this->_shopper->shopper_group_name = $this->_shopper->shopper_group->shopper_group_name;
-
 				
 			}else{
 				$this->_shopper = new stdClass;
@@ -341,6 +364,7 @@ class mymuseModelShopper extends JModelForm
 		
 		if($shopper->username == 'buyer'){
 			$shopper->profile = $session->get('myprofile');
+			//->get('com_users')->get('registration')->get('data')->get('profile');
 			$shopper->profile['loaded'] = 1;
 			return true;
 		}
@@ -409,11 +433,61 @@ class mymuseModelShopper extends JModelForm
 	{
 		// Initialise variables.
 		$app	= JFactory::getApplication();
+		$params = MyMuseHelper::getParams();
 		$jinput = $app->input;
 		$user	= JFactory::getUser();
 		$fields = MyMuseHelper::getNoRegFields();
 		$myparams = MyMuseHelper::getParams();
-	
+		$application = JFactory::getApplication();
+		// Get the user data.
+		$post = $jinput->get('jform', array(), 'ARRAY');
+		// Save the data in the session.
+		$app->setUserState('com_users.registration.data', $post);
+
+		$MyMuseCart		=& MyMuse::getObject('cart','helpers');
+        $cart = $MyMuseCart->cart;
+        $shipping_needed = 0;
+        for ($i=0;$i<$cart["idx"];$i++) {
+        	if(isset($cart[$i]["product_physical"]) && $cart[$i]["product_physical"] && $myparams->get('my_use_shipping')){
+        		$shipping_needed = 1;
+        	}
+        }
+		$fields = MyMuseHelper::getNoRegFields();
+		//I want to see if any fields that are required have not been filled in
+		$plugin = JPluginHelper::getPlugin('user', 'mymusenoreg');
+		$profile_params = new JRegistry();
+		$needed = 0;
+
+
+		foreach ($fields as $field) {
+			if(isset($post['profile'][$field])){
+				$value = $post['profile'][$field];
+				//echo "field = $field, value = $value <br>";
+				if (
+					$profile_params->get('register-require_' . $field, 1) == 2 &&
+					(!isset($value) || $value == "")
+
+				) {
+					//check the shipping news
+					if(strstr($field, 'shipping') && !$shipping_needed){
+						continue;
+					}
+
+					//this guy needs to update profile
+					$application->enqueueMessage('Please enter a value for '.$field, 'warning');
+					$needed++;
+
+
+				}
+			}
+		}
+
+		if($needed){
+			return false;
+		}
+
+
+
 		if($user->get('id')){
 			return true;
 		}
@@ -435,20 +509,16 @@ class mymuseModelShopper extends JModelForm
 		}
 		
 
-		// Get the user data.
-		$requestData = $jinput->get('jform', array(), 'ARRAY');
+		
 
 		// Validate the posted data.
 		$form	= $this->getForm();
 		if (!$form) {
-			$app->enqueueMessage("No form. ".$this->getError(), 'warning');
+			$app->enqueueMessage("No form. ".$this->getError(), 'warning');	
 			return false;
 		}
 
-		// Save the data in the session.
-		$app->setUserState('com_users.registration.data', $requestData);
-		
-		$data	= $this->validate($form, $requestData);
+		$data	= $this->validate($form, $post);
 
 		// Check for validation errors.
 		if ($data === false) {
@@ -468,6 +538,7 @@ class mymuseModelShopper extends JModelForm
 			}
 		}
 
+
 		//save the currrent cart
 		$MyMuseCart = MyMuse::getObject('cart','helpers');
 		$currentCart = $MyMuseCart->cart;
@@ -478,11 +549,11 @@ class mymuseModelShopper extends JModelForm
 		$credentials['password'] = $myparams->get('my_noreg_password');
 		$options = array();
 		$error = $app->login($credentials, $options);
-			
+		//print_pre($credentials); print_pre($myparams); exit;
 		$queue = $app->getMessageQueue();
-
 		if(count($queue)){
-			return false;
+			//return false;
+			print_pre($queue); exit;
 		}
 		
 		//put the cart back in
@@ -492,43 +563,35 @@ class mymuseModelShopper extends JModelForm
 		
 		$user	= JFactory::getUser('buyer');
 		
-		//put values into user
-		$post = $jinput->post->getArray();
-	
-		if(isset($post['jform']['profile']['region']) && !isset($post['jform']['profile']['region_name']) ){
+		//put values into session
+		if(isset($post['profile']['region']) && !isset($post['profile']['region_name']) ){
 			$db = JFactory::getDBO();
 		
-			$query = "SELECT * FROM #__mymuse_state WHERE id='".$post['jform']['profile']['region']."'";
+			$query = "SELECT * FROM #__mymuse_state WHERE id='".$post['profile']['region']."'";
 			$db->setQuery($query);
 			if($row = $db->loadObject()){
-				$post['jform']['profile']['region_name'] = $row->state_name;
+				$post['profile']['region_name'] = $row->state_name;
 			}
 		}
 		
-		if(isset($post['jform']['profile']['shipping_region']) && !isset($post['jform']['profile']['shipping_region_name']) ){
+		if(isset($post['profile']['shipping_region']) && !isset($post['profile']['shipping_region_name']) ){
 			$db = JFactory::getDBO();
 		
-			$query = "SELECT * FROM #__mymuse_state WHERE id='".$post['jform']['profile']['shipping_region']."'";
+			$query = "SELECT * FROM #__mymuse_state WHERE id='".$post['profile']['shipping_region']."'";
 			$db->setQuery($query);
 			if($row = $db->loadObject()){
-				$post['jform']['profile']['shipping_region_name'] = $row->state_name;
+				$post['profile']['shipping_region_name'] = $row->state_name;
 			}
 		}
-		
-		if(isset($post['jform'])){
+		// set name
+		if(isset($post['profile']['first_name'])){
+			$post['profile']['name'] = $post['profile']['first_name']." ".@$post['profile']['last_name'];
+		}
 
-			$session->set('myprofile', $post['jform']['profile']);
-			/**
-			foreach($fields as $field){
-				if(isset($post['jform']['profile'][$field])){
-					$user->set($field,$post['jform']['profile'][$field]);
-				}
-			}
-		
-			if(isset($post['jform']['profile']['first_name']) || isset($post['jform']['profile']['last_name']) ){
-				$user->set('name',@$post['jform']['profile']['first_name']." ".@$post['jform']['profile']['last_name']);
-			}
-			*/
+		if(isset($post)){
+
+			$session->set('myprofile', $post['profile']);
+
 		}
 		
 		//$session->set('user', $user);
@@ -554,7 +617,7 @@ class mymuseModelShopper extends JModelForm
 		$db->setQuery($query);
 		$orders = $db->loadObjectList();
 
-		while(list($key,$order) = each($orders)){
+		foreach($orders as $key => $order){
 			$orders[$key] = $MyMuseCheckout->getOrder($order->id);
 			$orders[$key]->url = "index.php?option=com_mymuse&task=vieworder&orderid=".$order->id;
 		}
@@ -591,7 +654,7 @@ class mymuseModelShopper extends JModelForm
  		$system	= $params->get('new_usertype', 2);
  		$data['groups'][] = $system;
 
- 		
+ 		//print_pre($data); exit;
  		// Bind the data.
  		if (!$user->bind($data)) {
  			$this->setError(JText::sprintf('MYMUSE_REGISTRATION_BIND_FAILED', $user->getError()));

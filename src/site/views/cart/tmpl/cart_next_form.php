@@ -22,7 +22,7 @@ defined('_JEXEC') or die('Restricted access');
 			</tr>
 			<?php endif;?>
 			<tr>
-				<td><input type="submit" class="button" name="<?php echo $this->task; ?>" value="<?php echo $this->button; ?>"></td>
+				<td><input id="<?php echo $this->task; ?>" type="submit" class="button" name="<?php echo $this->task; ?>" value="<?php echo $this->button; ?>"></td>
 			</tr>
 		</table>
 		</form>

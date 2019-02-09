@@ -97,7 +97,7 @@ class plgMymuseAudio_jplayer extends JPlugin
 		}
 		
 		//load jquery.jplayer.min.js? Not if it has been added already
-		while(list($url,$arr) = each($document->_scripts)){
+		foreach($document->_scripts as $url => $arr){
 			if(preg_match("/jquery.jplayer.min.js/", $url)){
 				//echo "<br />audio url: ".$url;
 				$match = 1;

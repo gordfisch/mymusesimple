@@ -109,7 +109,7 @@ if($params->get('type_shown') == "tracks" && $params->get('show_track_preview'))
 	
 	//load jplayer?
 	$match = 0;
-	while(list($url,$arr) = each($document->_scripts)){
+	foreach($document->_scripts as $url => $arr)  {
 		if(preg_match("/jquery.jplayer.min.js/", $url)){
 			$match = 1;
 		}
@@ -120,7 +120,7 @@ if($params->get('type_shown') == "tracks" && $params->get('show_track_preview'))
 	}
 	//load jplayer inspector?
 	$match = 0;
-	while(list($url,$arr) = each($document->_scripts)){
+	foreach($document->_scripts as $url => $arr)  {
 		if(preg_match("/jquery.jplayer.inspector.js/", $url)){
 			$match = 1;
 		}

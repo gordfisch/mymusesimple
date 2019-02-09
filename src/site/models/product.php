@@ -391,7 +391,7 @@ class MyMuseModelProduct extends JModelItem
 			
 			if(count($tracks)){
 				$root = JPATH_ROOT.DS;
-				while (list($i,$track)= each( $tracks )){
+				foreach($tracks as $i => $track){
 
 					$track->file_name = json_decode($track->file_name);
 
@@ -431,7 +431,8 @@ class MyMuseModelProduct extends JModelItem
 					
 					reset($preview_tracks);
 					$count = count($preview_tracks);
-					while (list($i,$track) = each( $preview_tracks )){
+		
+					foreach($preview_tracks as $i => $track){
 					
 						$flash = '';
 						$track->purchased = 0;

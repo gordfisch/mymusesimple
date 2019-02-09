@@ -42,7 +42,7 @@ if($params->get('my_use_shipping') && isset($this->order->need_shipping)
 
             <table class="mymuse_cart" >
                 <tr class="mymuse_cart_top">
-                	<td class="mymuse_cart_top" colspan="<?php echo $colspan; ?>"><b><?php echo JText::_('MYMUSE_BILLING_ADDRESS') ?></b></td>
+                	<td class="mymuse_cart_top" colspan="2"><b><?php echo JText::_('MYMUSE_BILLING_ADDRESS') ?></b></td>
                 </tr>
                 
                 <tr>

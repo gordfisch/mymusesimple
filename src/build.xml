@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="MyMuseSimple3.5.0" basedir="." default="copy_to_simple">
  	<property name="myversion" value="3.5" override="true" />
-	<!-- arboreta/joomlamy3/callinish || mymusetest35 || nexgen || singsong || soundliaison/new || nexgen/staging -->
-        <property name="test" value="/var/www/html/mymusesimpletest" override="true" />
+
+        <property name="test" value="/var/www/html/mymusesimple/joomla" override="true" />
         <property name="testadmincomp"
-                value="/var/www/html/mymusesimpletest/administrator/components/com_mymuse"
+                value="/var/www/html/mymusesimple/joomla/administrator/components/com_mymuse"
                 override="true" />
         <property name="src" value="${project.basedir}" override="true" />
 

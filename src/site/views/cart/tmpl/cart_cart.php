@@ -38,54 +38,7 @@ for ($i=0;$i<count($order->items); $i++) {
     }
 }
 ?>
-<?php if(isset($this->lists['licences'])){ 
 
-	?>
-<script>
-jQuery(document).ready(function(){  
-	jQuery("#licence").on('change', function(e){
-		newval = jQuery('#licence>option:selected').val();
-		newtext = jQuery('#licence>option:selected').text();
-		//alert(newval);
-		items = <?php echo $no_items; ?>;
-		jQuery.post("index.php?option=com_mymuse&task=ajaxupdatelicence",
-		{
-			"my_licence":newval
-		},
-
-		function(data,status)
-		{
-			var res = jQuery.parseJSON(data);
-			msg = res.msg;
-			order = res.order;
-			console.log(JSON.stringify(order ,null, 4));
-
-
-			var output = '';
-			for (var property in order) {
-				 output += property + ': ' + order[property]+'; \n';
-			}
-			
-
-			for(i=0; i < items; i++){
-				jQuery("#item_price_"+i).html('<?php echo $params->get('my_currency_symbol')?>'+order["items"][i]["price"]["product_price"]);
-				jQuery("#product_item_subtotal_"+i).html('<?php echo $params->get('my_currency_symbol')?>'+order["items"][i]["product_item_subtotal"]);
-			}
-			jQuery("#mytotal").html('<?php echo $params->get('my_currency_symbol')?>'+order["order_subtotal"]);
-				my_modal.open({content: msg+"<br />", width: 300 });
-			for(i=0; i < 5; i++){
-				jQuery("#licence_desc_"+i).hide();
-			}	
-			jQuery("#licence_desc_"+newval).show();
-			
-				
-		});
-	});
-
-});
-
-</script>
-<?php } ?>
 		<?php if($order->do_html){ ?>
 			<form action="<?php JRoute::_("index.php?option=com_mymuse&view=cart&task=checkout") ?>" method="post" name="adminForm">
 		<?php } ?>
@@ -292,21 +245,7 @@ jQuery(document).ready(function(){
 		<?php  } 
 		} ?>
 		
-		<?php // SHIPPING
-		if ($params->get("my_use_shipping") && @$order->order_shipping->cost > 0) { ?>
-		    <tr>
-		    <td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_SHIPPING') ?>
-		    <?php echo $order->order_shipping->ship_carrier_name ?> <?php echo $order->order_shipping->ship_method_name ?></td>
-		    <td class="myshipping cart" colspan="<?php echo $order->colspan2; ?>">
-		    	<div id="order_shipping_cost">
-		    	<?php echo MyMuseHelper::printMoney($order->order_shipping->cost); ?>
-		    	</div>
-		    </td>
-		    <?php if(@$order->do_html){ ?>
-		        <td>&nbsp;</td>
-		        <?php } ?>
-		    </tr>
-		<?php } ?>
+
 		<tr>
 		    <td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>"><?php echo JText::_('MYMUSE_CART_TOTAL') ?>:</td>
 		    <td class="mytotal cart" colspan="<?php echo $order->colspan2; ?>">
@@ -314,7 +253,7 @@ jQuery(document).ready(function(){
 		    	</div>
 		    </td>
 		    <?php if($order->do_html){ ?>
-		        <td class="mobile-hide cart" >&nbsp;</td>
+		        <td class="mobile-hide cart" ><a href="<?php echo JRoute::_("index.php?option=com_mymuse&task=cartClear"); ?>"><?php echo JText::_('MYMUSE_CART_CLEAR') ?></a></td>
 		    <?php  } ?>
 		</tr>
 		
@@ -332,69 +271,9 @@ jQuery(document).ready(function(){
 
 		<?php } ?>
 		
-		<?php  if($order->reservation_fee > 0){ ?>
-		<tr>
-		    <td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_RESERVATION_FEE') ?>:</td>
-		    <td class="myreservationfee cart" colspan="<?php echo $order->colspan2; ?>" align="right">
-		    	<div id="reservation_fee"><b><?php echo MyMuseHelper::printMoney($order->reservation_fee); ?></b>
-		    	</div>
-		    </td>
-		    <?php if(@$order->do_html){ ?>
-		        <td>&nbsp;</td>
-		        <?php } ?>
-		</tr>
-			<?php  if($order->non_res_total > 0){ ?>
-			<tr>
-		    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_OTHER_CHARGES') ?>:</td>
-		    	<td class="myothercharges cart" colspan="<?php echo $order->colspan2; ?>" align="right">
-		    		<div id=">non_res_total"><b><?php echo MyMuseHelper::printMoney($order->non_res_total); ?></b>
-		    		</div>
-		    	</td>
-		    	<?php if(@$order->do_html){ ?>
-		        	<td>&nbsp;</td>
-		        	<?php } ?>
-			</tr>
-			<tr>
-		    	<td class="mobile-hide cart" colspan="<?php echo $order->colspan; ?>" align="right"><?php echo JText::_('MYMUSE_PAYNOW') ?>:</td>
-		    	<td class="mypaynow cart" colspan="<?php echo $order->colspan2; ?>" align="right">
-		    		<div id="must_pay_now">
-		    		<?php echo MyMuseHelper::printMoney($order->must_pay_now); ?>
-		    		</div>
-		    	</td>
-		    	<?php if(@$order->do_html){ ?>
-		        	<td>&nbsp;</td>
-		        	<?php } ?>
-			</tr>
-			<?php } ?>
-		
-		<?php } ?>
 
 	</table>
-		<?php 
-		//LICENCE MODEL?
-		if(2 == $params->get('my_price_by_product',0) && $user->username == 'buyer'){
-			echo '<h3>'.JText::_('MYMUSE_LICENCE').'</h3>';
-
-			if(!in_array($task, $post_order) && isset($this->lists['licences'])){
-				echo $this->lists['licences'];
-			}else{
-				echo '<span class="licence-text">'.$this->my_licence_text.'</span>';
-			}
-			if(isset($this->lists['licences']) && $task != "confirm"){
-				foreach($this->licence as $i=>$licence){
-					if($i == $this->my_licence){
-						$display = "block";
-					}else{
-						$display = "none";
-					}
-					$style = 'style="display:'.$display.'"';
-					echo '<div id="licence_desc_'.$i.'" class="licence-text" '.$style.'>'.nl2br($licence['desc']).'</div>';
-				}
-			}elseif(isset($this->my_licence_desc) && $task != "confirm"){
-				echo '<div id="licence_desc_'.$params->get('my_price_by_product',0).'" class="licence-text">'.nl2br($this->my_licence_desc).'</div>';
-			}
-		}
-		?>
+		
 		
 		
     <?php 
@@ -454,7 +333,7 @@ if($notes_required  && $user->username == 'buyer'){
 	
 			<?php if($user->username == '' && $params->get('my_registration') == "full_guest"){ ?>
 				<div class="pull-left  mymuse-button-left cart">
-					<button class="button uk-button" type="button"
+					<button class="button uk-button" type="button" id="guest"
 					onclick="location.href='<?php echo JRoute::_("index.php?option=com_mymuse&task=guestcheckout&view=cart&Itemid=$Itemid") ?>'">
 					Checkout as a guest.</button>
 				</div>
@@ -462,7 +341,7 @@ if($notes_required  && $user->username == 'buyer'){
 			
 			<div class="pull-left  mymuse-button-right cart">
 				<button class="button uk-button pull-left" 
-				type="button" 
+				type="button" id="continue-shopping"
 				onclick="location.href='<?php echo $params->get('my_continue_shopping'); ?>'">
 				<?php echo JText::_('MYMUSE_CONTINUE_SHOPPING'); ?></button>
 			</div>
@@ -475,7 +354,7 @@ if($notes_required  && $user->username == 'buyer'){
 				|| $user->username != 'buyer'){ 
 	  			?>
 				<div class="pull-right mymuse-button-right cart">
-					<button class="button uk-button" type="button" 
+					<button class="button uk-button" type="button" id="checkout"
 					onclick="location.href='<?php echo JRoute::_("index.php?option=com_mymuse&view=cart&task=checkout") ?>'">
 					<?php echo JText::_('MYMUSE_CHECKOUT'); ?></button>
 				</div>

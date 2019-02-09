@@ -1,0 +1,522 @@
+[07-Feb-2019 11:02:39 America/New_York] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/mymusesimple/joomla/components/com_mymuse/models/product.php on line 394
+[07-Feb-2019 11:02:39 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:02:39 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:02:39 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:02:39 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:02:39 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:02:39 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:02:39 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:02:39 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:02:39 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:02:39 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:02:39 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:123
+[07-Feb-2019 11:02:39 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:02:39 America/New_York] PHP  12. myMuseViewProduct->get() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/view.html.php:48
+[07-Feb-2019 11:02:39 America/New_York] PHP  13. MyMuseModelProduct->getItem() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:425
+[07-Feb-2019 11:02:39 America/New_York] PHP  14. each() /var/www/html/mymusesimple/joomla/components/com_mymuse/models/product.php:394
+[07-Feb-2019 11:02:39 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/tmpl/product.php on line 123
+[07-Feb-2019 11:02:39 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:02:39 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:02:39 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:02:39 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:02:39 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:02:39 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:02:39 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:02:39 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:02:39 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:02:39 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:02:39 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:123
+[07-Feb-2019 11:02:39 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:02:39 America/New_York] PHP  12. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/view.html.php:219
+[07-Feb-2019 11:02:39 America/New_York] PHP  13. myMuseViewProduct->loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:230
+[07-Feb-2019 11:02:39 America/New_York] PHP  14. include() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:697
+[07-Feb-2019 11:05:47 America/New_York] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/mymusesimple/joomla/components/com_mymuse/models/product.php on line 394
+[07-Feb-2019 11:05:47 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:05:47 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:05:47 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:05:47 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:05:47 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:05:47 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:05:47 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:05:47 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:05:47 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:05:47 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:05:47 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:123
+[07-Feb-2019 11:05:47 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:05:47 America/New_York] PHP  12. myMuseViewProduct->get() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/view.html.php:48
+[07-Feb-2019 11:05:47 America/New_York] PHP  13. MyMuseModelProduct->getItem() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:425
+[07-Feb-2019 11:05:47 America/New_York] PHP  14. each() /var/www/html/mymusesimple/joomla/components/com_mymuse/models/product.php:394
+[07-Feb-2019 11:05:47 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/tmpl/product.php on line 123
+[07-Feb-2019 11:05:47 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:05:47 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:05:47 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:05:47 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:05:47 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:05:47 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:05:47 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:05:47 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:05:47 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:05:47 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:05:47 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:123
+[07-Feb-2019 11:05:47 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:05:47 America/New_York] PHP  12. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/view.html.php:219
+[07-Feb-2019 11:05:47 America/New_York] PHP  13. myMuseViewProduct->loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:230
+[07-Feb-2019 11:05:47 America/New_York] PHP  14. include() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:697
+[07-Feb-2019 11:06:56 America/New_York] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/mymusesimple/joomla/components/com_mymuse/models/product.php on line 434
+[07-Feb-2019 11:06:56 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:06:56 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:06:56 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:06:56 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:06:56 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:06:56 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:06:56 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:06:56 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:06:56 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:06:56 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:06:56 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:123
+[07-Feb-2019 11:06:56 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:06:56 America/New_York] PHP  12. myMuseViewProduct->get() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/view.html.php:48
+[07-Feb-2019 11:06:56 America/New_York] PHP  13. MyMuseModelProduct->getItem() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:425
+[07-Feb-2019 11:06:56 America/New_York] PHP  14. each() /var/www/html/mymusesimple/joomla/components/com_mymuse/models/product.php:434
+[07-Feb-2019 11:06:56 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/tmpl/product.php on line 123
+[07-Feb-2019 11:06:56 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:06:56 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:06:56 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:06:56 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:06:56 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:06:56 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:06:56 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:06:56 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:06:56 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:06:56 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:06:56 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:123
+[07-Feb-2019 11:06:56 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:06:56 America/New_York] PHP  12. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/view.html.php:219
+[07-Feb-2019 11:06:56 America/New_York] PHP  13. myMuseViewProduct->loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:230
+[07-Feb-2019 11:06:56 America/New_York] PHP  14. include() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:697
+[07-Feb-2019 11:07:40 America/New_York] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/mymusesimple/joomla/plugins/mymuse/audio_jplayer/audio_jplayer.php on line 100
+[07-Feb-2019 11:07:40 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:07:40 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:07:40 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:07:40 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:07:40 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:07:40 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:07:40 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:07:40 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:07:40 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:07:40 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:07:40 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:123
+[07-Feb-2019 11:07:40 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:07:40 America/New_York] PHP  12. myMuseViewProduct->get() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/view.html.php:48
+[07-Feb-2019 11:07:40 America/New_York] PHP  13. MyMuseModelProduct->getItem() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:425
+[07-Feb-2019 11:07:40 America/New_York] PHP  14. JEventDispatcher->trigger() /var/www/html/mymusesimple/joomla/components/com_mymuse/models/product.php:488
+[07-Feb-2019 11:07:40 America/New_York] PHP  15. plgMymuseAudio_jplayer->update() /var/www/html/mymusesimple/joomla/libraries/joomla/event/dispatcher.php:160
+[07-Feb-2019 11:07:40 America/New_York] PHP  16. plgMymuseAudio_jplayer->onPrepareMyMuseMp3Player() /var/www/html/mymusesimple/joomla/libraries/joomla/event/event.php:70
+[07-Feb-2019 11:07:40 America/New_York] PHP  17. each() /var/www/html/mymusesimple/joomla/plugins/mymuse/audio_jplayer/audio_jplayer.php:100
+[07-Feb-2019 11:07:40 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/tmpl/product.php on line 123
+[07-Feb-2019 11:07:40 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:07:40 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:07:40 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:07:40 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:07:40 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:07:40 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:07:40 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:07:40 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:07:40 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:07:40 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:07:40 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:123
+[07-Feb-2019 11:07:40 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:07:40 America/New_York] PHP  12. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/view.html.php:219
+[07-Feb-2019 11:07:40 America/New_York] PHP  13. myMuseViewProduct->loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:230
+[07-Feb-2019 11:07:40 America/New_York] PHP  14. include() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:697
+[07-Feb-2019 11:08:51 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/tmpl/product.php on line 123
+[07-Feb-2019 11:08:51 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:08:51 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:08:51 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:08:51 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:08:51 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:08:51 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:08:51 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:08:51 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:08:51 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:08:51 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:08:51 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:123
+[07-Feb-2019 11:08:51 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:08:51 America/New_York] PHP  12. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/view.html.php:219
+[07-Feb-2019 11:08:51 America/New_York] PHP  13. myMuseViewProduct->loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:230
+[07-Feb-2019 11:08:51 America/New_York] PHP  14. include() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:697
+[07-Feb-2019 11:09:50 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/tmpl/product.php on line 123
+[07-Feb-2019 11:09:50 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:09:50 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:09:50 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:09:50 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:09:50 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:09:50 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:09:50 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:09:50 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:09:50 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:09:50 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:09:50 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:123
+[07-Feb-2019 11:09:50 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:09:50 America/New_York] PHP  12. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/view.html.php:219
+[07-Feb-2019 11:09:50 America/New_York] PHP  13. myMuseViewProduct->loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:230
+[07-Feb-2019 11:09:50 America/New_York] PHP  14. include() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:697
+[07-Feb-2019 11:09:56 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/tmpl/product.php on line 123
+[07-Feb-2019 11:09:56 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:09:56 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:09:56 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:09:56 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:09:56 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:09:56 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:09:56 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:09:56 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:09:56 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:09:56 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:09:56 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:123
+[07-Feb-2019 11:09:56 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:09:56 America/New_York] PHP  12. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/view.html.php:219
+[07-Feb-2019 11:09:56 America/New_York] PHP  13. myMuseViewProduct->loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:230
+[07-Feb-2019 11:09:56 America/New_York] PHP  14. include() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:697
+[07-Feb-2019 11:10:26 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/tmpl/product.php on line 123
+[07-Feb-2019 11:10:26 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:10:26 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:10:26 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:10:26 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:10:26 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:10:26 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:10:26 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:10:26 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:10:26 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:10:26 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:10:26 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:123
+[07-Feb-2019 11:10:26 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:10:26 America/New_York] PHP  12. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/view.html.php:219
+[07-Feb-2019 11:10:26 America/New_York] PHP  13. myMuseViewProduct->loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:230
+[07-Feb-2019 11:10:26 America/New_York] PHP  14. include() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:697
+[07-Feb-2019 11:10:28 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/tmpl/product.php on line 123
+[07-Feb-2019 11:10:28 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:10:28 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:10:28 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:10:28 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:10:28 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:10:28 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:10:28 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:10:28 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:10:28 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:10:28 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:10:28 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:123
+[07-Feb-2019 11:10:28 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:10:28 America/New_York] PHP  12. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/view.html.php:219
+[07-Feb-2019 11:10:28 America/New_York] PHP  13. myMuseViewProduct->loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:230
+[07-Feb-2019 11:10:28 America/New_York] PHP  14. include() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:697
+[07-Feb-2019 11:11:21 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/tmpl/product.php on line 123
+[07-Feb-2019 11:11:21 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:11:21 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:11:21 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:11:21 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:11:21 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:11:21 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:11:21 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:11:21 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:11:21 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:11:21 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:11:21 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:123
+[07-Feb-2019 11:11:21 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:11:21 America/New_York] PHP  12. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/view.html.php:219
+[07-Feb-2019 11:11:21 America/New_York] PHP  13. myMuseViewProduct->loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:230
+[07-Feb-2019 11:11:21 America/New_York] PHP  14. include() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:697
+[07-Feb-2019 11:11:42 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/tmpl/product.php on line 127
+[07-Feb-2019 11:11:42 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:11:42 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:11:42 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:11:42 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:11:42 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:11:42 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:11:42 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:11:42 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:11:42 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:11:42 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:11:42 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:123
+[07-Feb-2019 11:11:42 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:11:42 America/New_York] PHP  12. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/view.html.php:219
+[07-Feb-2019 11:11:42 America/New_York] PHP  13. myMuseViewProduct->loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:230
+[07-Feb-2019 11:11:42 America/New_York] PHP  14. include() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:697
+[07-Feb-2019 11:12:13 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/tmpl/product.php on line 127
+[07-Feb-2019 11:12:13 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:12:13 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:12:13 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:12:13 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:12:13 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:12:13 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:12:13 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:12:13 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:12:13 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:12:13 America/New_York] PHP   9. MyMuseController->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:12:13 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:123
+[07-Feb-2019 11:12:13 America/New_York] PHP  11. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:12:13 America/New_York] PHP  12. myMuseViewProduct->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/view.html.php:219
+[07-Feb-2019 11:12:13 America/New_York] PHP  13. myMuseViewProduct->loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:230
+[07-Feb-2019 11:12:13 America/New_York] PHP  14. include() /var/www/html/mymusesimple/joomla/libraries/src/MVC/View/HtmlView.php:697
+[07-Feb-2019 11:14:57 America/New_York] PHP Notice:  Array to string conversion in /var/www/html/mymusesimple/joomla/templates/protostar/error.php on line 120
+[07-Feb-2019 11:14:57 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:14:57 America/New_York] PHP   1. Joomla\CMS\Exception\ExceptionHandler::render() /var/www/html/mymusesimple/joomla/libraries/src/Exception/ExceptionHandler.php:0
+[07-Feb-2019 11:14:57 America/New_York] PHP   2. Joomla\CMS\Document\ErrorDocument->render() /var/www/html/mymusesimple/joomla/libraries/src/Exception/ExceptionHandler.php:111
+[07-Feb-2019 11:14:57 America/New_York] PHP   3. Joomla\CMS\Document\ErrorDocument->_loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/Document/ErrorDocument.php:175
+[07-Feb-2019 11:14:57 America/New_York] PHP   4. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Document/ErrorDocument.php:204
+[07-Feb-2019 11:14:57 America/New_York] PHP Notice:  Array to string conversion in /var/www/html/mymusesimple/joomla/templates/protostar/error.php on line 126
+[07-Feb-2019 11:14:57 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:14:57 America/New_York] PHP   1. Joomla\CMS\Exception\ExceptionHandler::render() /var/www/html/mymusesimple/joomla/libraries/src/Exception/ExceptionHandler.php:0
+[07-Feb-2019 11:14:57 America/New_York] PHP   2. Joomla\CMS\Document\ErrorDocument->render() /var/www/html/mymusesimple/joomla/libraries/src/Exception/ExceptionHandler.php:111
+[07-Feb-2019 11:14:57 America/New_York] PHP   3. Joomla\CMS\Document\ErrorDocument->_loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/Document/ErrorDocument.php:175
+[07-Feb-2019 11:14:57 America/New_York] PHP   4. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Document/ErrorDocument.php:204
+[07-Feb-2019 11:14:57 America/New_York] PHP Notice:  Array to string conversion in /var/www/html/mymusesimple/joomla/templates/protostar/error.php on line 130
+[07-Feb-2019 11:14:57 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:14:57 America/New_York] PHP   1. Joomla\CMS\Exception\ExceptionHandler::render() /var/www/html/mymusesimple/joomla/libraries/src/Exception/ExceptionHandler.php:0
+[07-Feb-2019 11:14:57 America/New_York] PHP   2. Joomla\CMS\Document\ErrorDocument->render() /var/www/html/mymusesimple/joomla/libraries/src/Exception/ExceptionHandler.php:111
+[07-Feb-2019 11:14:57 America/New_York] PHP   3. Joomla\CMS\Document\ErrorDocument->_loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/Document/ErrorDocument.php:175
+[07-Feb-2019 11:14:57 America/New_York] PHP   4. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Document/ErrorDocument.php:204
+[07-Feb-2019 11:14:57 America/New_York] PHP Notice:  Array to string conversion in /var/www/html/mymusesimple/joomla/templates/protostar/error.php on line 200
+[07-Feb-2019 11:14:57 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:14:57 America/New_York] PHP   1. Joomla\CMS\Exception\ExceptionHandler::render() /var/www/html/mymusesimple/joomla/libraries/src/Exception/ExceptionHandler.php:0
+[07-Feb-2019 11:14:57 America/New_York] PHP   2. Joomla\CMS\Document\ErrorDocument->render() /var/www/html/mymusesimple/joomla/libraries/src/Exception/ExceptionHandler.php:111
+[07-Feb-2019 11:14:57 America/New_York] PHP   3. Joomla\CMS\Document\ErrorDocument->_loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/Document/ErrorDocument.php:175
+[07-Feb-2019 11:14:57 America/New_York] PHP   4. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Document/ErrorDocument.php:204
+[07-Feb-2019 11:14:57 America/New_York] PHP Notice:  Array to string conversion in /var/www/html/mymusesimple/joomla/templates/protostar/error.php on line 211
+[07-Feb-2019 11:14:57 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:14:57 America/New_York] PHP   1. Joomla\CMS\Exception\ExceptionHandler::render() /var/www/html/mymusesimple/joomla/libraries/src/Exception/ExceptionHandler.php:0
+[07-Feb-2019 11:14:57 America/New_York] PHP   2. Joomla\CMS\Document\ErrorDocument->render() /var/www/html/mymusesimple/joomla/libraries/src/Exception/ExceptionHandler.php:111
+[07-Feb-2019 11:14:57 America/New_York] PHP   3. Joomla\CMS\Document\ErrorDocument->_loadTemplate() /var/www/html/mymusesimple/joomla/libraries/src/Document/ErrorDocument.php:175
+[07-Feb-2019 11:14:57 America/New_York] PHP   4. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Document/ErrorDocument.php:204
+[07-Feb-2019 11:52:53 America/New_York] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/cart.php on line 124
+[07-Feb-2019 11:52:53 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:52:53 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:52:53 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:52:53 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:52:53 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:52:53 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:52:53 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:52:53 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:52:53 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:52:53 America/New_York] PHP   9. MyMuseController->ajaxtogglecart() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:52:53 America/New_York] PHP  10. MyMuseCart->addToCart() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:1162
+[07-Feb-2019 11:52:53 America/New_York] PHP  11. each() /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/cart.php:124
+[07-Feb-2019 11:52:57 America/New_York] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/cart.php on line 764
+[07-Feb-2019 11:52:57 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:52:57 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:52:57 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:52:57 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:52:57 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:52:57 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:52:57 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:52:57 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:52:57 America/New_York] PHP   8. include_once() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:42
+[07-Feb-2019 11:52:57 America/New_York] PHP   9. MyMuseCart->buildOrder() /var/www/html/mymusesimple/joomla/components/com_mymuse/assets/css/mobile_css.php:15
+[07-Feb-2019 11:52:57 America/New_York] PHP  10. MyMuseCart->_buildOrder() /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/cart.php:511
+[07-Feb-2019 11:52:57 America/New_York] PHP  11. each() /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/cart.php:764
+[07-Feb-2019 11:53:00 America/New_York] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/cart.php on line 124
+[07-Feb-2019 11:53:00 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:53:00 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:53:00 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:53:00 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:53:00 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:53:00 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:53:00 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:53:00 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:53:00 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:53:00 America/New_York] PHP   9. MyMuseController->ajaxtogglecart() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:53:00 America/New_York] PHP  10. MyMuseCart->addToCart() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:1162
+[07-Feb-2019 11:53:00 America/New_York] PHP  11. each() /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/cart.php:124
+[07-Feb-2019 11:53:48 America/New_York] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/cart.php on line 764
+[07-Feb-2019 11:53:48 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:53:48 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:53:48 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:53:48 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:53:48 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:53:48 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:53:48 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:53:48 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:53:48 America/New_York] PHP   8. include_once() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:42
+[07-Feb-2019 11:53:48 America/New_York] PHP   9. MyMuseCart->buildOrder() /var/www/html/mymusesimple/joomla/components/com_mymuse/assets/css/mobile_css.php:15
+[07-Feb-2019 11:53:48 America/New_York] PHP  10. MyMuseCart->_buildOrder() /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/cart.php:511
+[07-Feb-2019 11:53:48 America/New_York] PHP  11. each() /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/cart.php:764
+[07-Feb-2019 11:56:41 America/New_York] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/mymusesimple/joomla/components/com_mymuse/views/cart/view.html.php on line 303
+[07-Feb-2019 11:56:41 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:56:41 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:56:41 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:56:41 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:56:41 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:56:41 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:56:41 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:56:41 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:56:41 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:56:41 America/New_York] PHP   9. MyMuseController->showcart() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:56:41 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:205
+[07-Feb-2019 11:56:41 America/New_York] PHP  11. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:121
+[07-Feb-2019 11:56:41 America/New_York] PHP  12. myMuseViewCart->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:56:41 America/New_York] PHP  13. each() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/cart/view.html.php:303
+[07-Feb-2019 11:57:51 America/New_York] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/mymusesimple/joomla/components/com_mymuse/views/cart/view.html.php on line 303
+[07-Feb-2019 11:57:51 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:57:51 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:57:51 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:57:51 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:57:51 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:57:51 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:57:51 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:57:51 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:57:51 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:57:51 America/New_York] PHP   9. MyMuseController->showcart() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:57:51 America/New_York] PHP  10. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:205
+[07-Feb-2019 11:57:51 America/New_York] PHP  11. MyMuseController->display() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:121
+[07-Feb-2019 11:57:51 America/New_York] PHP  12. myMuseViewCart->display() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:672
+[07-Feb-2019 11:57:51 America/New_York] PHP  13. each() /var/www/html/mymusesimple/joomla/components/com_mymuse/views/cart/view.html.php:303
+[07-Feb-2019 11:59:00 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/models/shopper.php on line 127
+[07-Feb-2019 11:59:00 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:59:00 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:59:00 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:59:00 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:59:00 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:59:00 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:59:00 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:59:00 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:59:00 America/New_York] PHP   8. include_once() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:42
+[07-Feb-2019 11:59:00 America/New_York] PHP   9. MyMuseCart->buildOrder() /var/www/html/mymusesimple/joomla/components/com_mymuse/assets/css/mobile_css.php:15
+[07-Feb-2019 11:59:00 America/New_York] PHP  10. MyMuseCart->_buildOrder() /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/cart.php:511
+[07-Feb-2019 11:59:00 America/New_York] PHP  11. myMuse::getObject() /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/cart.php:525
+[07-Feb-2019 11:59:00 America/New_York] PHP  12. mymuseModelShopper->__construct() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.class.php:78
+[07-Feb-2019 11:59:00 America/New_York] PHP  13. mymuseModelShopper->getShopper() /var/www/html/mymusesimple/joomla/components/com_mymuse/models/shopper.php:52
+[07-Feb-2019 11:59:50 America/New_York] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/checkout.php on line 235
+[07-Feb-2019 11:59:50 America/New_York] PHP Stack trace:
+[07-Feb-2019 11:59:50 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 11:59:50 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 11:59:50 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 11:59:50 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 11:59:50 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 11:59:50 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 11:59:50 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 11:59:50 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 11:59:50 America/New_York] PHP   9. MyMuseController->confirm() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 11:59:50 America/New_York] PHP  10. MyMuseCheckout->save() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:529
+[07-Feb-2019 11:59:50 America/New_York] PHP  11. each() /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/checkout.php:235
+[07-Feb-2019 12:17:00 America/New_York] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/checkout.php on line 235
+[07-Feb-2019 12:17:00 America/New_York] PHP Stack trace:
+[07-Feb-2019 12:17:00 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[07-Feb-2019 12:17:00 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[07-Feb-2019 12:17:00 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[07-Feb-2019 12:17:00 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[07-Feb-2019 12:17:00 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[07-Feb-2019 12:17:00 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[07-Feb-2019 12:17:00 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[07-Feb-2019 12:17:00 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[07-Feb-2019 12:17:00 America/New_York] PHP   9. MyMuseController->confirm() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[07-Feb-2019 12:17:00 America/New_York] PHP  10. MyMuseCheckout->save() /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php:529
+[07-Feb-2019 12:17:00 America/New_York] PHP  11. each() /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/checkout.php:235
+[08-Feb-2019 15:33:30 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php on line 339
+[08-Feb-2019 15:33:30 America/New_York] PHP Stack trace:
+[08-Feb-2019 15:33:30 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[08-Feb-2019 15:33:30 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[08-Feb-2019 15:33:30 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[08-Feb-2019 15:33:30 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[08-Feb-2019 15:33:30 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[08-Feb-2019 15:33:30 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[08-Feb-2019 15:33:30 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[08-Feb-2019 15:33:30 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[08-Feb-2019 15:33:30 America/New_York] PHP   9. MyMuseController->checkout() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[08-Feb-2019 15:37:02 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php on line 339
+[08-Feb-2019 15:37:02 America/New_York] PHP Stack trace:
+[08-Feb-2019 15:37:02 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[08-Feb-2019 15:37:02 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[08-Feb-2019 15:37:02 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[08-Feb-2019 15:37:02 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[08-Feb-2019 15:37:02 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[08-Feb-2019 15:37:02 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[08-Feb-2019 15:37:02 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[08-Feb-2019 15:37:02 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[08-Feb-2019 15:37:02 America/New_York] PHP   9. MyMuseController->checkout() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[08-Feb-2019 18:18:09 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php on line 339
+[08-Feb-2019 18:18:09 America/New_York] PHP Stack trace:
+[08-Feb-2019 18:18:09 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[08-Feb-2019 18:18:09 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[08-Feb-2019 18:18:09 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[08-Feb-2019 18:18:09 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[08-Feb-2019 18:18:09 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[08-Feb-2019 18:18:09 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[08-Feb-2019 18:18:09 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[08-Feb-2019 18:18:09 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[08-Feb-2019 18:18:09 America/New_York] PHP   9. MyMuseController->checkout() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[09-Feb-2019 13:19:09 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php on line 357
+[09-Feb-2019 13:19:09 America/New_York] PHP Stack trace:
+[09-Feb-2019 13:19:09 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[09-Feb-2019 13:19:09 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[09-Feb-2019 13:19:09 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[09-Feb-2019 13:19:09 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[09-Feb-2019 13:19:09 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[09-Feb-2019 13:19:09 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[09-Feb-2019 13:19:09 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[09-Feb-2019 13:19:09 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[09-Feb-2019 13:19:09 America/New_York] PHP   9. MyMuseController->checkout() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[09-Feb-2019 13:19:29 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php on line 357
+[09-Feb-2019 13:19:29 America/New_York] PHP Stack trace:
+[09-Feb-2019 13:19:29 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[09-Feb-2019 13:19:29 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[09-Feb-2019 13:19:29 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[09-Feb-2019 13:19:29 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[09-Feb-2019 13:19:29 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[09-Feb-2019 13:19:29 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[09-Feb-2019 13:19:29 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[09-Feb-2019 13:19:29 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[09-Feb-2019 13:19:29 America/New_York] PHP   9. MyMuseController->checkout() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[09-Feb-2019 13:19:30 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php on line 357
+[09-Feb-2019 13:19:30 America/New_York] PHP Stack trace:
+[09-Feb-2019 13:19:30 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[09-Feb-2019 13:19:30 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[09-Feb-2019 13:19:30 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[09-Feb-2019 13:19:30 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[09-Feb-2019 13:19:30 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[09-Feb-2019 13:19:30 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[09-Feb-2019 13:19:30 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[09-Feb-2019 13:19:30 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[09-Feb-2019 13:19:30 America/New_York] PHP   9. MyMuseController->checkout() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[09-Feb-2019 13:27:19 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php on line 357
+[09-Feb-2019 13:27:19 America/New_York] PHP Stack trace:
+[09-Feb-2019 13:27:19 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[09-Feb-2019 13:27:19 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[09-Feb-2019 13:27:19 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[09-Feb-2019 13:27:19 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[09-Feb-2019 13:27:19 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[09-Feb-2019 13:27:19 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[09-Feb-2019 13:27:19 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[09-Feb-2019 13:27:19 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[09-Feb-2019 13:27:19 America/New_York] PHP   9. MyMuseController->checkout() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[09-Feb-2019 13:27:40 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php on line 357
+[09-Feb-2019 13:27:40 America/New_York] PHP Stack trace:
+[09-Feb-2019 13:27:40 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[09-Feb-2019 13:27:40 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[09-Feb-2019 13:27:40 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[09-Feb-2019 13:27:40 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[09-Feb-2019 13:27:40 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[09-Feb-2019 13:27:40 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[09-Feb-2019 13:27:40 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[09-Feb-2019 13:27:40 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[09-Feb-2019 13:27:40 America/New_York] PHP   9. MyMuseController->checkout() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[09-Feb-2019 13:27:41 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php on line 357
+[09-Feb-2019 13:27:41 America/New_York] PHP Stack trace:
+[09-Feb-2019 13:27:41 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[09-Feb-2019 13:27:41 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[09-Feb-2019 13:27:41 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[09-Feb-2019 13:27:41 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[09-Feb-2019 13:27:41 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[09-Feb-2019 13:27:41 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[09-Feb-2019 13:27:41 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[09-Feb-2019 13:27:41 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[09-Feb-2019 13:27:41 America/New_York] PHP   9. MyMuseController->checkout() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[09-Feb-2019 15:31:17 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php on line 357
+[09-Feb-2019 15:31:17 America/New_York] PHP Stack trace:
+[09-Feb-2019 15:31:17 America/New_York] PHP   1. {main}() /var/www/html/mymusesimple/joomla/index.php:0
+[09-Feb-2019 15:31:17 America/New_York] PHP   2. Joomla\CMS\Application\SiteApplication->execute() /var/www/html/mymusesimple/joomla/index.php:49
+[09-Feb-2019 15:31:17 America/New_York] PHP   3. Joomla\CMS\Application\SiteApplication->doExecute() /var/www/html/mymusesimple/joomla/libraries/src/Application/CMSApplication.php:196
+[09-Feb-2019 15:31:17 America/New_York] PHP   4. Joomla\CMS\Application\SiteApplication->dispatch() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:233
+[09-Feb-2019 15:31:17 America/New_York] PHP   5. Joomla\CMS\Component\ComponentHelper::renderComponent() /var/www/html/mymusesimple/joomla/libraries/src/Application/SiteApplication.php:194
+[09-Feb-2019 15:31:17 America/New_York] PHP   6. Joomla\CMS\Component\ComponentHelper::executeComponent() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:377
+[09-Feb-2019 15:31:17 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
+[09-Feb-2019 15:31:17 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
+[09-Feb-2019 15:31:17 America/New_York] PHP   9. MyMuseController->checkout() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710

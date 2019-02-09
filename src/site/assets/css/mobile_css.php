@@ -17,7 +17,7 @@ $mobile_style 	= '';
 
 if(isset($order->tax_array) && count($order->tax_array)){
 	reset($order->tax_array);
-	while(list($key,$val) = each($order->tax_array)){
+	foreach($order->tax_array as $key => $val)  {
 		$mobile_style .= 'td.'.strtolower(preg_replace("/_/","", $key)).' {
 				align: right;
 				}
@@ -100,7 +100,7 @@ $mobile_style .= '
 
 if(isset($order->tax_array) && count($order->tax_array)){
 	reset($order->tax_array);
-	while(list($key,$val) = each($order->tax_array)){
+	foreach($order->tax_array as $key => $val)  {
 		$mobile_style .= 'td.'.strtolower(preg_replace("/_/","", $key)).':before { 
 				content: "'.JText::_(preg_replace("/_/"," ", $key)).'";  
 				white-space: nowrap;

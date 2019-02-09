@@ -280,13 +280,6 @@ class AcceptanceTester extends \Codeception\Actor
     $this->fillField(array('id' => 'jform_product_producer'), $mock->jform_product_producer);
     $this->fillField(array('id' => 'jform_product_studio'), $mock->jform_product_studio);
 
-    $this->comment('Fill in Dimensions fields');
-    $this->click('Dimensions');
-    $this->fillField(array('id' => 'jform_product_weight'), $mock->jform_product_weight);
-    $this->fillField(array('id' => 'jform_product_length'), $mock->jform_product_length);
-    $this->fillField(array('id' => 'jform_product_width'), $mock->jform_product_width);
-    $this->fillField(array('id' => 'jform_product_height'), $mock->jform_product_height);
-
 
     $this->comment('Fill in Details fields');
     $this->click('Details');
@@ -294,34 +287,6 @@ class AcceptanceTester extends \Codeception\Actor
 
     $this->selectOptionInChosenById('jform_artistid', $mock->jform_artist);
     $this->selectOptionInChosenById('jform_catid', $mock->jform_cat);
-
-
-    $this->fillField(array('id' => 'jform_product_in_stock'), $mock->jform_product_in_stock);
-    
-
-    if(isset($mock->jform_product_physical)){
-      $this->selectOptionInChosenById('jform_product_physical', $mock->jform_product_physical);
-    }
-
-    if(isset($mock->jform_attribs_product_price_physical)){
-      $this->fillField(array('id' => 'jform_attribs_product_price_physical'), $mock->jform_attribs_product_price_physical);
-    }else{
-      $this->fillField(array('id' => 'jform_price'), $mock->jform_price);
-    }
-
-    if(isset($mock->jform_attribs_product_price_mp3)){
-      $this->fillField(array('id' => 'jform_attribs_product_price_mp3'), $mock->jform_attribs_product_price_mp3);
-    }
-    if(isset($mock->jform_attribs_product_price_mp3_all)){
-      $this->fillField(array('id' => 'jform_attribs_product_price_mp3_all'), $mock->jform_attribs_product_price_mp3_all);
-    }
-    if(isset($mock->jform_attribs_product_price_wav)){
-      $this->fillField(array('id' => 'jform_attribs_product_price_wav'), $mock->jform_attribs_product_price_wav);
-    }
-    if(isset($mock->jform_attribs_product_price_wav_all)){
-      $this->fillField(array('id' => 'jform_attribs_product_price_wav_all'), $mock->jform_attribs_product_price_wav_all);
-    }
-    
 
     
     $this->waitForElement(array('id' => 'jform_articletext_ifr'));
@@ -390,13 +355,6 @@ class AcceptanceTester extends \Codeception\Actor
     $this->fillField(array('id' => 'jform_product_producer'), $mock->jform_product_producer);
     $this->fillField(array('id' => 'jform_product_studio'), $mock->jform_product_studio);
 
-    $this->comment('Fill in Dimensions fields');
-    $this->click('Dimensions');
-    $this->fillField(array('id' => 'jform_product_weight'), $mock->jform_product_weight);
-    $this->fillField(array('id' => 'jform_product_length'), $mock->jform_product_length);
-    $this->fillField(array('id' => 'jform_product_width'), $mock->jform_product_width);
-    $this->fillField(array('id' => 'jform_product_height'), $mock->jform_product_height);
-
 
     $this->comment('Fill in Details fields');
     $this->click('Details');
@@ -405,32 +363,6 @@ class AcceptanceTester extends \Codeception\Actor
     $this->selectOptionInChosenById('jform_artistid', $mock->jform_artist);
     $this->selectOptionInChosenById('jform_catid', $mock->jform_cat);
 
-
-    $this->fillField(array('id' => 'jform_product_in_stock'), $mock->jform_product_in_stock);
-    
-
-    if(isset($mock->jform_product_physical)){
-      $this->selectOptionInChosenById('jform_product_physical', $mock->jform_product_physical);
-    }
-
-    if(isset($mock->jform_attribs_product_price_physical)){
-      $this->fillField(array('id' => 'jform_attribs_product_price_physical'), $mock->jform_attribs_product_price_physical);
-    }else{
-      $this->fillField(array('id' => 'jform_price'), $mock->jform_price);
-    }
-
-    if(isset($mock->jform_attribs_product_price_mp3)){
-      $this->fillField(array('id' => 'jform_attribs_product_price_mp3'), $mock->jform_attribs_product_price_mp3);
-    }
-    if(isset($mock->jform_attribs_product_price_mp3_all)){
-      $this->fillField(array('id' => 'jform_attribs_product_price_mp3_all'), $mock->jform_attribs_product_price_mp3_all);
-    }
-    if(isset($mock->jform_attribs_product_price_wav)){
-      $this->fillField(array('id' => 'jform_attribs_product_price_wav'), $mock->jform_attribs_product_price_wav);
-    }
-    if(isset($mock->jform_attribs_product_price_wav_all)){
-      $this->fillField(array('id' => 'jform_attribs_product_price_wav_all'), $mock->jform_attribs_product_price_wav_all);
-    }
 
     if(isset($mock->jform_attribs_special_status)){
       $this->selectOptionInChosenById('jform_attribs_special_status', $mock->jform_attribs_special_status);
@@ -535,10 +467,26 @@ class AcceptanceTester extends \Codeception\Actor
 
       
       if($config['my_download_dir_format'] == "1"){
-        if(!file_exists($download_dir.'/are-you-my-sister.wav')){
-        copy($from_dir.'/are-you-my-sister.wav', $download_dir.'/wav/are-you-my-sister.wav');
+        if(in_array('wav',$config['my_formats'])){
+          if(!file_exists($download_dir.'/wav')){
+            if(!mkdir($download_dir.'/wav', 0755)){
+              $this->comment('Could not make dir '.$download_dir.'/wav');
+              return false;
+            }
+          }
         }
-        if(!file_exists($download_dir.'/the-foggy-dew.wav')){
+        if(in_array('mp3',$config['my_formats'])){
+          if(!file_exists($download_dir.'/mp3')){
+            if(!mkdir($download_dir.'/mp3', 0755)){
+              $this->comment('Could not make dir '.$download_dir.'/mp3');
+              return false;
+            }
+          }
+        }
+        if(!file_exists($download_dir.'/wav/are-you-my-sister.wav')){
+          copy($from_dir.'/are-you-my-sister.wav', $download_dir.'/wav/are-you-my-sister.wav');
+        }
+        if(!file_exists($download_dir.'/wav/the-foggy-dew.wav')){
           copy($from_dir.'/the-foggy-dew.wav', $download_dir.'/wav/the-foggy-dew.wav');
         }
         if(!file_exists($download_dir.'/are-you-my-sister.mp3')){
@@ -547,7 +495,9 @@ class AcceptanceTester extends \Codeception\Actor
         if(!file_exists($download_dir.'/the-foggy-dew.mp3')){
           copy($from_dir.'/the-foggy-dew.mp3', $download_dir.'/mp3/the-foggy-dew.mp3');
         }
+
       }else{
+
         if(!file_exists($download_dir.'/are-you-my-sister.mp3')){
         copy($from_dir.'/are-you-my-sister.mp3', $download_dir.'/are-you-my-sister.mp3');
         }
@@ -561,7 +511,10 @@ class AcceptanceTester extends \Codeception\Actor
       $this->amOnPage("administrator/index.php?option=com_mymuse&view=product&layout=edit&id=".$mock->id);
 
       $this->comment('List Tracks');
-      $this->click(["xpath" => '//button[@onclick="Joomla.submitbutton(\'product.listracks\');"]']);
+      //$this->click(["xpath" => '//button[@onclick="Joomla.submitbutton(\'product.listracks\');"]']);
+      $this->click("TRACKS");
+      $this->wait(1);
+      $this->click("Show Tracks");
 
       $this->comment('New Track');
       $this->click(["xpath" => '//button[@onclick="Joomla.submitbutton(\'product.addfile\');"]']);
@@ -570,15 +523,16 @@ class AcceptanceTester extends \Codeception\Actor
       $this->fillField(array('id' => 'jform_title'), $mock->jform_title);
       $this->fillField(array('id' => 'jform_product_sku'), $mock->jform_product_sku);
 
-      if($config['my_download_dir_format'] != "1"){
+      if($config['my_price_by_product'] != "1"){
         $this->fillField(array('id' => 'jform_price'), $mock->jform_price);
       }
 
+
       $this->comment('Choose Track');
       $this->click('TRACKS');
-      $this->selectOptionInChosenById('select_file0', $mock->track);
-      if($config['my_download_dir_format'] == "1"){
-         $this->selectOptionInChosenById('select_file1', $mock->wav);
+
+      for($i = 0; $i < count($config['my_formats']); $i++){
+        $this->selectOptionInChosenById('select_file'.$i, $mock->{$config['my_formats'][$i]});
       }
       
 
@@ -587,9 +541,12 @@ class AcceptanceTester extends \Codeception\Actor
       $this->selectOptionInChosenById('file_preview', $mock->preview);
 
       $this->comment('Save');
-      $this->click(["xpath" => '//button[@onclick="Joomla.submitbutton(\'product.savefile\');"]']);
+      $this->click(["xpath" => '//button[@onclick="Joomla.submitbutton(\'product.applyfile\');"]']);
 
       $this->see('File saved');
+      $id = $this->grabValueFrom('input[id=jform_id]');
+      $this->comment('Created track with id '.$id);
+      return $id;
 
     }
 
@@ -852,7 +809,47 @@ class AcceptanceTester extends \Codeception\Actor
         //$this->see('Configuration saved');
 
     }
+    /**
+     * Changes the module options
+     *
+     * @param   string  $module  The full name of the module
+     *
+     * @return  void
+     *
+     * @since   3.0.0
+     * @throws  \Exception
+     */
+    public function editModule($mock)
+    {
+      $this->amOnPage('administrator/index.php?option=com_modules');
+      $this->waitForElement(array('class' => 'page-title'));
+      $this->searchForItem($mock->module);
+      $this->click(array('link' => $mock->module));
+      $this->wait(1);
+      if($mock->tab){
+        $this->click($mock->tab);
+      }
+      
+      foreach($mock->select as $select){
+        if($select['type'] == "select"){
+          $this->selectOptionInChosenById($select['option'], $select['value']);
+        }elseif($select['type'] == "radio"){
+          $this->selectOptionInRadioField($select['option'], $select['value']);
 
+        }elseif($select['type'] == "multiSelect"){
+          $this->selectMultipleOptionsInChosen($select['option'], $select['value']);
+          $this->wait(1); 
+          $this->click($mock->tab);
+        }elseif($select['type'] == "text"){
+          $this->fillField(array('id' => $select['option']), $select['value']);
+
+        }   
+      }
+
+      $this->click(['xpath' => '//button[@onclick="Joomla.submitbutton(\'module.apply\');"]']);
+      $this->see('Module saved');
+
+    }
     /**
     * fillFullRegForm
     * @return  void

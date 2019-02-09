@@ -615,7 +615,7 @@ class MyMuseModelTracks extends JModelList
         	){
             reset($preview_tracks);
             $count = count($tracks);
-            while (list($i,$track) = each( $preview_tracks )){
+            foreach($preview_tracks as $i => $track)  {
                 if($track->product_allfiles == 1){
                     continue;
                 }
