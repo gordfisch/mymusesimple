@@ -1,0 +1,9 @@
+*.sublime*
+joomla/vendor/*
+joomla/configuration.php
+joomla/tests/_output/*
+*installation*
+joomla/tmp/*
+joomla/components/com_mymuse
+joomla/administrator/components/com_mymuse
+docs*
