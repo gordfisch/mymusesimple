@@ -520,3 +520,11 @@
 [09-Feb-2019 15:31:17 America/New_York] PHP   7. require_once() /var/www/html/mymusesimple/joomla/libraries/src/Component/ComponentHelper.php:402
 [09-Feb-2019 15:31:17 America/New_York] PHP   8. MyMuseController->execute() /var/www/html/mymusesimple/joomla/components/com_mymuse/mymuse.php:65
 [09-Feb-2019 15:31:17 America/New_York] PHP   9. MyMuseController->checkout() /var/www/html/mymusesimple/joomla/libraries/src/MVC/Controller/BaseController.php:710
+[02-May-2019 09:47:25 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/controller.php on line 357
+[02-May-2019 09:50:06 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/models/shopper.php on line 127
+[02-May-2019 09:50:06 America/New_York] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/mymusesimple/joomla/components/com_mymuse/models/product.php on line 394
+[02-May-2019 09:50:06 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/views/product/tmpl/product.php on line 123
+[02-May-2019 09:50:22 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/models/shopper.php on line 127
+[02-May-2019 09:50:22 America/New_York] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/cart.php on line 124
+[02-May-2019 09:50:24 America/New_York] PHP Warning:  count(): Parameter must be an array or an object that implements Countable in /var/www/html/mymusesimple/joomla/components/com_mymuse/models/shopper.php on line 127
+[02-May-2019 09:50:24 America/New_York] PHP Deprecated:  The each() function is deprecated. This message will be suppressed on further calls in /var/www/html/mymusesimple/joomla/components/com_mymuse/helpers/cart.php on line 764

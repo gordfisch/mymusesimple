@@ -19,6 +19,30 @@ $n			= count($this->items);
 $listOrder	= $this->escape($this->state->get('list.ordering'));
 $listDirn	= $this->escape($this->state->get('list.direction'));
 $height 	= $this->params->get('category_product_image_height',0);
+$inner_cols	= 0;
+if ($this->params->get('list_show_date') && $this->params->get('order_date')) {
+	$inner_cols++;
+}
+if ($this->params->get('list_show_author', 0)) {
+	$inner_cols++;
+}
+if ($this->params->get('list_show_hits', 0)) {
+	$inner_cols++;
+}
+if ($this->params->get('list_show_price', 0)) {
+	$inner_cols++;
+}
+if ($this->params->get('list_show_discount', 0))  {
+	$inner_cols++;
+}
+if ($this->params->get('list_show_sales', 0)) {
+	$inner_cols++;
+}
+if ($this->params->get('category_show_comment_total', 0) && file_exists($comments)) {
+	$inner_cols++;
+}
+$inner_span = floor(12 / $inner_cols);
+
 
 ?>
 <?php if (empty($this->items)) : ?>
@@ -60,21 +84,22 @@ $height 	= $this->params->get('category_product_image_height',0);
 <?php endif; ?>
 
 
-	<table class="mymuse_cart">
-		<?php if ($this->params->get('show_headings')) :?>
-		<thead>
-			<tr>
-			<?php if ($this->params->get('category_show_product_image')): ?>
-				<th class="list-image mymuse_cart_top"><?php echo JText::_('MYMUSE_IMAGE'); ?></th>
-			<?php endif; ?>
-				<th class="myselect" id="tableOrdering">
-					<?php  echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder) ; ?>
-				</th>
+<!-- table less -->
+<?php if ($this->params->get('show_headings')) :?>
+<div class="row row-fluid mymuse_cart_top hidden-phone">
+	<div class="span4 cols-md-4">
+		<div class="list-image "><?php echo JText::_('MYMUSE_IMAGE'); ?></div>
+	</div>
+	<div class="span4 cols-md-4">
 
-				<?php if ($this->params->get('list_show_date') && $this->params->get('order_date')) : 
-                		$date = $this->params->get('order_date');
-                ?>
-				<th class="mydate-<?php  echo $date; ?>" id="tableOrdering2">
+		<div class="list-title "><?php  echo JHtml::_('grid.sort', 'JGLOBAL_TITLE', 'a.title', $listDirn, $listOrder) ; ?></div>
+	</div>
+	<div class="span4 cols-md-4">
+		<div class="row row-fluid">
+			<?php if ($this->params->get('list_show_date') && $this->params->get('order_date')) : 
+					$date = $this->params->get('order_date');
+					?>
+				<div class="list-date  span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>">
 					<?php if ($date == "created") : ?>
 						<?php echo JHtml::_('grid.sort', 'MYMUSE_'.$date.'_DATE', 'a.created', $listDirn, $listOrder); ?>
 					<?php elseif ($date == "modified") : ?>
@@ -83,102 +108,65 @@ $height 	= $this->params->get('category_product_image_height',0);
 						<?php echo JHtml::_('grid.sort', 'MYMUSE_'.$date.'_DATE', 'a.publish_up', $listDirn, $listOrder); ?>
 					<?php elseif ($date == "product_made_date") : ?>
 						<?php echo JHtml::_('grid.sort', 'MYMUSE_'.$date.'_DATE', 'a.product_made_date', $listDirn, $listOrder); ?>
-					<?php endif; ?>
-				</th>
-				<?php endif; ?>
-
-				<?php if ($this->params->get('list_show_author', 1)) : ?>
-				<th class="myauthor" id="tableOrdering3">
-					<?php echo JHtml::_('grid.sort', 'JAUTHOR', 'author', $listDirn, $listOrder); ?>
-				</th>
-				<?php endif; ?>
-
-				<?php if ($this->params->get('list_show_hits', 1)) : ?>
-				<th class="myhits" id="tableOrdering4">
-					<?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?>
-				</th>
-				<?php endif; ?>
-				
-				<?php if ($this->params->get('list_show_price', 0)) : ?>
-				<th class="myprice" id="tableOrdering4">
-					<?php echo JHtml::_('grid.sort', 'MYMUSE_CART_PRICE', 'a.price', $listDirn, $listOrder); ?>
-				</th>
-				<?php endif; ?>
-				
-				<?php if ($this->params->get('list_show_discount', 0)) : ?>
-				<th class="list-discount mymuse_cart_top" id="tableOrdering6">
-					<?php echo JHtml::_('grid.sort', 'MYMUSE_DISCOUNT', 'a.product_discount', $listDirn, $listOrder); ?>
-				</th>
-				<?php endif; ?>
-				
-				<?php if ($this->params->get('list_show_sales', 0)) : ?>
-				<th class="mysales" id="tableOrdering7">
-					<?php echo JHtml::_('grid.sort', 'MYMUSE_SALES', 's.sales', $listDirn, $listOrder); ?>
-				</th>
-				<?php endif; ?>
-				
-				<?php if ($this->params->get('category_show_comment_total', 0) && file_exists($comments)) : ?>
-				<th class="mycomments" id="tableOrdering8">
-					<?php echo JHtml::_('grid.sort', 'COMMENTS_LIST_HEADER', 'a.price', $listDirn, $listOrder); ?>
-				</th>
-				<?php endif; ?>
-			</tr>
-		</thead>
-		<?php endif; ?>
-
-		<tbody>
-
-		<?php foreach ($this->items as $i => $product) : ?>
-			<?php if ($this->items[$i]->state == 0) : ?>
-				<tr class="system-unpublished cat-list-row<?php echo $i % 2; ?>">
-			<?php else: ?>
-				<tr class="cat-list-row<?php echo $i % 2; ?>" >
+					<?php endif; ?></div>
+			<?php endif; ?>
+			<?php if ($this->params->get('list_show_author')) : ?>
+				<div class="list-author  span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>"><?php echo JHtml::_('grid.sort', 'JAUTHOR', 'author', $listDirn, $listOrder); ?></div>
+			<?php endif; ?>
+			<?php if ($this->params->get('list_show_hits')) : ?>
+				<div class="list-hits  span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>"><?php echo JHtml::_('grid.sort', 'JGLOBAL_HITS', 'a.hits', $listDirn, $listOrder); ?></div>
+			<?php endif; ?>
+			<?php if ($this->params->get('list_show_price')) : ?>
+				<div class="list-price  span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>"><?php echo JHtml::_('grid.sort', 'MYMUSE_CART_PRICE', 'a.price', $listDirn, $listOrder); ?></div>
+			<?php endif; ?>
+			<?php if ($this->params->get('list_show_discount')) : ?>
+				<div class="list-discount  span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>"><?php echo JHtml::_('grid.sort', 'MYMUSE_DISCOUNT', 'a.product_discount', $listDirn, $listOrder); ?></div>
+			<?php endif; ?>
+			<?php if ($this->params->get('list_show_sales')) : ?>
+				<div class="list-sales  span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>"><?php echo JHtml::_('grid.sort', 'MYMUSE_SALES', 's.sales', $listDirn, $listOrder); ?></div>
+			<?php endif; ?>
+			<?php if ($this->params->get('category_show_comment_total', 0) && file_exists($comments)) : ?>
+			<div class="list-comments  span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>"><?php echo JText::_('COMMENTS_LIST_HEADER'); ?></div>
 			<?php endif; ?>
 
-			<?php if (in_array($product->access, $this->user->getAuthorisedViewLevels())) : ?>
-				<?php if ($this->params->get('category_show_product_image')): ?>
-				<td class="myimage"><?php if ($product->list_image): ?>
-					<a
-					href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($product->id, $this->category->id)); ?>">
-						<img <?php if($height) : ?> height="<?php echo $height; ?>"
-						<?php endif; ?> src="<?php echo $product->list_image; ?>"
-						alt="<?php echo htmlspecialchars($product->list_image); ?>" />
-				</a> <?php endif; ?>
-				</td>
-			<?php endif; ?>
+		</div>
+			
 
-				<td class="mytitle">
-				<?php //echo MyMuseHelperRoute::getProductRoute($product->id, $this->category->id);?>
-				<a
-					href="<?php 
-					
-					
-					echo JRoute::_(MyMuseHelperRoute::getProductRoute($product->id, $this->category->id)); ?>">
-						<?php echo $this->escape($product->title); ?>
-				</a> <?php if ($product->params->get('access-edit')) : ?> <!--  
-						 <ul class="actions">
-							<li class="edit-icon">
-								<?php echo JHtml::_('icon.edit', $product, $params); ?>
-							</li>
-						</ul>
-						--> <?php endif; ?>
-				</td>
+	</div>
+</div>
+<?php endif; ?>
 
-				
-				<?php if ($this->params->get('list_show_date')) : ?>
-					<td class="mydate-<?php  echo $date; ?>" valign="top">
-						<?php 
+<?php foreach ($this->items as $i => $product) : ?>
+<div class="row row-fluid">
+
+	<div class="span4 cols-md-4">
+		<div class="list-image "><a href="<?php echo JRoute::_(MyMuseHelperRoute::getProductRoute($product->id, $this->category->id)); ?>">
+			<img <?php if($height) : ?> style="height:<?php echo $height; ?>px"
+				<?php endif; ?> src="<?php echo $product->list_image; ?>"
+				alt="<?php echo htmlspecialchars($product->list_image); ?>" />
+			</a></div>
+	</div>
+
+	<div class="span4 cols-md-4">
+		
+			<div class="list-title "><a href="<?php 
+				echo JRoute::_(MyMuseHelperRoute::getProductRoute($product->id, $this->category->id)); ?>">
+				<?php echo $this->escape($product->title); ?>
+				</a>
+			</div>
+	</div>
+	<div class="span4 cols-md-4">
+		<div class="row row-fluid">
+			<?php if ($this->params->get('list_show_date')) : ?>
+				<div class="list-date mydate span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?>"><?php 
 						if($product->displayDate != '0000-00-00'){
 							echo JHtml::_('date', $product->displayDate, $this->escape(
 							$this->params->get('date_format', JText::_('DATE_FORMAT_LC3')))); 
 						}
-						?>
-					</td>
-				<?php endif; ?>
-
-				<?php if ($this->params->get('list_show_author', 1) ) : ?>
-					<td class="myauthor" valign="top">
-						<?php 
+						?></div>
+			<?php endif; ?>
+			<?php if ($this->params->get('list_show_author')) : ?>
+				<div class="list-author span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?> myauthor"><?php 
 						if(!empty($product->author )) : 
 							$author =  $product->author ?>
 						<?php $author = ($product->created_by_alias ? $product->created_by_alias : $author);?>
@@ -193,74 +181,42 @@ $height 	= $this->params->get('category_product_image_height',0);
 						<?php else :?>
 							<?php echo $author; ?>
 						<?php endif; ?>
-						<?php endif; ?>
-					</td>
-				<?php endif; ?>
-
-				<?php if ($this->params->get('list_show_hits', 1)) : ?>
-					<td class="myhits" valign="top">
-						<?php echo $product->hits; ?>
-					</td>
-				<?php endif; ?>
-					
-				<?php if ($this->params->get('list_show_price', 0)) : ?>
-					<td class="myprice" valign="top">
-						<?php echo myMuseHelper::printMoney($product->price); ?>
-					</td>
-				<?php endif; ?>
-					
-				<?php if ($this->params->get('list_show_discount', 0)) : ?>
-					<td class="mydiscount" valign="top">
-						<?php 
+						<?php endif; ?></div>
+			<?php endif; ?>
+			<?php if ($this->params->get('list_show_hits')) : ?>
+				<div class="list-hits span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?> myhits"><?php echo $product->hits; ?></div>
+			<?php endif; ?>
+			<?php if ($this->params->get('list_show_price')) : ?>
+				<div class="list-price span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?> myprice"><?php echo myMuseHelper::printMoney($product->price); ?></div>
+			<?php endif; ?>
+			<?php if ($this->params->get('list_show_discount')) : ?>
+				<div class="list-discount span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?> mydiscount"><?php 
 						if($product->product_discount > 0){
 							echo myMuseHelper::printMoney($product->product_discount); 
+						}else{
+							echo "-";
 						}
-						?>
-					</td>
-				<?php endif; ?>
-					
-				<?php if ($this->params->get('list_show_sales', 0)) : ?>
-					<td class="mysales" valign="top">
-						<?php echo $product->sales; ?>
-					</td>
-				<?php endif; ?>
-					
-				<?php if ($this->params->get('category_show_comment_total', 0) && file_exists($comments)) : ?>
-					<?php 
+						?></div>
+			<?php endif; ?>
+			<?php if ($this->params->get('list_show_sales')) : ?>
+				<div class="list-sales span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?> mysales"><?php echo $product->sales; ?></div>
+			<?php endif; ?>
+			<?php if ($this->params->get('list_show_comments')) : ?>
+				<div class="list-comments span<?php echo $inner_span; ?> cols-md-<?php echo $inner_span; ?> mycomments"><?php 
 						$count = JComments::getCommentsCount($product->id, 'com_mymuse');
 						if($count){
-							echo '<td class="mycomments" valign="top">'.$count.'</td>';
+							echo $count ;
 						}
-					?>
-				<?php endif; ?>
-					
+					?></div>
+			<?php endif; ?>
+		</div>
+	</div>
 
-				<?php else : // Show unauth links. ?>
-					<td class="myregister" valign="top">
-						<?php
-							echo $this->escape($product->title).' : ';
-							$menu		= JFactory::getApplication()->getMenu();
-							$active		= $menu->getActive();
-							$itemId		= $active->id;
-							$link = JRoute::_('index.php?option=com_users&view=login&Itemid='.$itemId);
-							$returnURL = JRoute::_(MyMuseHelperRoute::getProductRoute($product->id));
-							$fullURL = new JURI($link);
-							$fullURL->setVar('return', base64_encode($returnURL));
-						?>
-						<a href="<?php echo $fullURL; ?>" class="register">
-							<?php echo JText::_( 'MYMUSE_REGISTER_TO_READ_MORE' ); ?></a>
-					</td>
-				<?php endif; ?>
-				</tr>
-		<?php endforeach; ?>
-		</tbody>
-	</table>
-<?php endif; ?>
+</div>
+<?php endforeach; ?>
 
-<?php // Code to add a link to submit an product. ?>
-<?php if ($this->category->getParams()->get('access-create')) : ?>
-	<!-- <?php echo JHtml::_('icon.create', $this->category, $this->category->params); ?> -->
-<?php  endif; ?>
+
+
 
 <?php // Add pagination links ?>
 <?php if (!empty($this->items)) : ?>
@@ -279,4 +235,4 @@ $height 	= $this->params->get('category_product_image_height',0);
 
 <?php  endif; ?>
 </form>
-
+<?php endif; ?>
