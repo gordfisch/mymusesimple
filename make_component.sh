@@ -5,7 +5,7 @@ SUBVER=`git rev-list HEAD | wc -l`
 echo -n "SUBVER = "
 echo $SUBVER
 
-version=1.2.0-$SUBVER
+version=1.2.1-$SUBVER
 
 cd src
 

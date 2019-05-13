@@ -95,7 +95,11 @@ method="post" name="adminForm" id="store-form" class="form-validate">
 			<?php if(!$this->form->getInput('description')){
 				echo $this->form->getError();
 			 
-			}?>
+			}else{
+				echo $this->form->getInput('description');
+			}
+
+			?>
 		</fieldset>
 		<?php echo JHtml::_('bootstrap.endTab'); ?>
 
