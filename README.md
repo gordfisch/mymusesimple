@@ -1,6 +1,6 @@
-# MyMuseSimple for Joomla #
+# MyMuse for Joomla #
 
-Sell your tunes online. A component for Joomla. This is a test site. Find the official release at http://www.joomlamymuse.com
+Sell your tunes online. Sell your merchandise. A component for Joomla. This is a test site. Find the official release at http://www.joomlamymuse.com
 
 ## The component files are in the src directory ##
 
@@ -15,21 +15,6 @@ Sell your tunes online. A component for Joomla. This is a test site. Find the of
 * script.php - included in the component
 * build.xml - used by phing to copy files into /joomla
 
-### Building ###
-
-* mymake - shell script to aid in building
-
-	$ ./mymake webdriver
-	: Will start the chrome webdriver in the background
-
-	$ ./mymake phing
-	: Will copy files from src to joomla into correct spots. You need phing installed.
-
-	$ .mymake component
-	: Will zip up the component and put copies in /releases and joomla/tests/_data
-
-	$ ./mymake test [sub-test]
-	: Will run all acceptance tests, or the one you want (ex. ./mymake test MyMuseBasicCest.php). Do the 'composer' thing below.
 
 ### Releases ###
 
@@ -37,19 +22,18 @@ Sell your tunes online. A component for Joomla. This is a test site. Find the of
 * com_mymusesimple-latest.zip - copy of the latest build
 
 ### Testing with Linux ###
-Assuming you clone the repository to /var/www/html, you can reach the test install at
-http://localhost/mymuse/joomla
+If your web root is /var/www/html and you clone the repository there, you can reach the test install at
+http://localhost/mymusesimple/joomla
 
 To install, rename installation.dist to installation and go to http://localhost/mymuse/joomla
 
-Tests assume the admin account is user: admin, pass: admin.
+Tests assume the admin account is user: admin, pass: admin. Database prefix is: bf7gn_
+Edit the files joomla/tests/acceptance.suite.yml and reports.suite.yml with database credentials.
 
 You can also consult configuration.dist.php.
 
 Mail tests may require using smtpauth if you cannot mail from localhost.
 
-This directory has some files for adding sample data
-* joomla/mymuse-downloads
 
 #### Testing with Codeception and Joomla Browser ####
 You need 'composer' installed
@@ -58,7 +42,7 @@ $ cd joomla
 
 $ composer install
 
-The default is using the chrome webdriver we have put into joomla/bin
+We use the chrome webdriver we have put into joomla/bin
 
 Start it in the background like this
 
@@ -80,6 +64,39 @@ OR use the mymake script
 
 	$ ./mymake test
 
+### Building ###
+
+* mymake - shell script to aid in building
+
+	$ ./mymake webdriver
+	: Will start the chrome webdriver in the background
+
+	$ ./mymake phing
+	: Will copy files from src to joomla into correct spots. You need phing installed: https://www.phing.info/
+	
+	$ ./mymake phing watch
+	: Will copy files from src to joomla into correct spots whenever you save a file.
+
+	$ ./mymake component
+	: Will zip up the component and put copies in /releases and joomla/tests/data
+
+	$ ./mymake test [sub-test]
+	: Will run all acceptance tests, or the one you want (ex. ./mymake test MyMuseBasicCest.php).
+
+
+	$ ./mymake all
+	: Will make the component then run all tests
+
+	You can also run tests from the command line
+
+	cd joomla
+
+	php vendor/bin/codecept --steps run acceptance
+
+	php vendor/bin/codecept --steps run reports
+
+	php vendor/bin/codecept --steps run storage
+	
 
 
 

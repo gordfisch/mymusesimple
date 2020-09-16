@@ -6,25 +6,44 @@ if  [[ $1 = "webdriver" ]]; then
     cd joomla
     ./bin/chromedriver --url-base=/wd/hub &
 elif  [[ $1 = "phing" ]]; then
-    echo "Doing the phing thing"
-    cd src
-    phing
+	if  [[ $2 = "watch" ]]; then
+		echo "Doing the phing thing. Will watch your dir for changes"
+	    cd src
+	    ./rerun ../vendor/phing/phing/bin/phing
+	else
+    	echo "Doing the phing thing."
+    	cd src
+    	../vendor/phing/phing/bin/phing
+    fi
 elif  [[ $1 = "component" ]]; then
     echo "Make the component"
     ./make_component.sh
 elif  [[ $1 = "test" ]]; then
+	
+    ./make_component.sh
+    echo "Made the component before testing."
 	cd joomla
 	echo " Going testing..."
-	if  [ $2 ]; then
+	if  [[ $2 = "reports" ]]; then
+		php vendor/bin/codecept --steps run reports
+	elif  [[ $2 = "storage" ]]; then
+		php vendor/bin/codecept --steps run storage
+	elif  [[ $2 ]]; then
 		php vendor/bin/codecept --steps run acceptance $2
 	else
 		php vendor/bin/codecept --steps run acceptance
+		php vendor/bin/codecept --steps run reports
+		php vendor/bin/codecept --steps run storage
 	fi
 
 elif  [[ $1 = "all" ]]; then
 	./make_component.sh
 	cd joomla
 	php vendor/bin/codecept --steps run acceptance
+	php vendor/bin/codecept --steps run reports
+	php vendor/bin/codecept --steps run storage
 else
-	echo "What no options? webdriver, phing, component or test [sub-test]"
+	echo "What no options? webdriver, phing, phing watch, component or test [sub-test] or test reports"
+	echo "sub-tests: AdminLoginCest, MyMuseBasicCest, MyMuseEeStockCest, MyMuseGgShippingCest, "
+	echo "MyMuseJjFormatCest, MyMuseModuleCest, MyMuseOtherViewsCest, MyMuseUninstallCest"
 fi
