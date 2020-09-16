@@ -347,13 +347,13 @@ class MyMuseModelProduct extends JModelItem
 	
 			FROM #__mymuse_product as a
 			LEFT JOIN #__mymuse_product_rating AS v ON a.id = v.product_id
-			LEFT JOIN (SELECT sum(quantity) as sales, x.product_name, x.product_id FROM
+			LEFT JOIN (SELECT sum(quantity) as sales, x.product_id FROM
         		(SELECT sum(i.product_quantity) as quantity, i.product_id, p.parentid,
-        		i.product_name, product_id as all_id
+        		 product_id as all_id
         		FROM #__mymuse_order_item as i
         		LEFT JOIN #__mymuse_product as p ON i.product_id=p.id
-        		GROUP BY i.product_id, i.product_name )
-        		as x GROUP BY x.all_id,x.product_name) as s ON s.product_id = a.id
+        		GROUP BY i.product_id)
+        		as x GROUP BY x.all_id) as s ON s.product_id = a.id
 			WHERE a.parentid='".$pk."' AND a.product_downloadable =1
 			AND a.state=1
 					";
@@ -377,10 +377,10 @@ class MyMuseModelProduct extends JModelItem
 			$track_query .= $orderby;
 
 			$db->setQuery($track_query);
-			$tracks = $db->loadObjectList();
-			
+			echo '<!-- TRACKS QUERY'.$this->_db->replacePrefix((string) $track_query).' -->'; 
 
-	
+			$tracks = $db->loadObjectList();
+
 			$site_url = MyMuseHelper::getSiteUrl($pk,'1');
 			$site_path = MyMuseHelper::getSitePath($pk,'1');
 						
